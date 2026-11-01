@@ -9,7 +9,7 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**Post-event development: v0.4 preview.** The interactive **3D design**
+**Post-event development: v0.5 preview.** The interactive **3D design**
 workspace adds orbit/pan/zoom, selection, editable boxes/cylinders/rings,
 strip/coupler/ring templates, undo/redo, and portable geometry JSON. Open
 **Open runnable 3D waveguide** to run a finite-height core with an optional
@@ -21,8 +21,16 @@ earlier slab workflow. [3D simulation guide](docs/3D_SIMULATION.md).
 [3D workspace guide](docs/3D_WORKSPACE.md) · [Product roadmap](docs/ROADMAP.md) ·
 [Packaging and desktop design](docs/PACKAGING.md).
 
+**Ports · 2D** adds a guided-mode pulse, a straight-guide reference, and measured
+reflection/transmission spectra for a straight guide or a small cladding gap.
+Choose Meep CPU or FDTDX CPU/NVIDIA GPU, inspect the measured settling criteria,
+and export the raw monitor data, exact CSV and run passport.
+These are finite-aperture power ratios, not complex modal S-parameters or 3D
+port measurements. [Port measurement guide and evidence](docs/PORT_MEASUREMENTS.md).
+
 The submitted v0.2 releases and recordings below preserve the event build.
-The 3D editor was added after submission and is not part of that entry.
+The 3D editor, public benchmarks and port measurements were added after
+submission and are not part of that entry.
 
 ![Interactive 3D geometry workspace with an editable ring and bus](docs/3d-workspace.png)
 
@@ -80,7 +88,7 @@ The [v0.2.0 release bundle](https://github.com/srinjoyganguly/photonics-workbenc
 includes source and the built interface. After extracting it, install the API
 and solver environments in the setup guide, then run `bash scripts/start.sh`;
 you can skip the Node build step. Solver binaries and environments are not bundled.
-That release contains the submitted 2D workflow. The post-event 3D preview
+That release contains the submitted 2D workflow. The post-event preview
 requires the current source checkout and an interface build.
 
 Use Linux or WSL2, Python 3.11, Conda for Meep, and Node 22.12+ for building the
@@ -208,7 +216,7 @@ three-cell periodic z extrusion; Meep uses native 2D. Both sources ramp over fou
 optical periods. Meep injects an electric-current line while FDTDX injects a
 directed E/H plane, so absolute amplitudes are not cross-solver calibrated.
 
-The viewer shows a finite-time field snapshot and recorded time frames in arbitrary
+The original 2D field viewer shows a finite-time field snapshot and recorded time frames in arbitrary
 source units, including the PML region. Playback uses only saved numerical samples;
 the final snapshot can be later than the last recorded playback frame. It does
 **not** report normalized transmission,
@@ -216,6 +224,14 @@ S-parameters, mode purity, convergence, or experimentally validated device
 performance. Material interfaces and sampled coordinate grids differ between
 solvers. A minimum grid rule prevents obviously coarse inputs but does not
 replace a convergence study.
+
+The separate **Ports · 2D** study measures incident-normalized total power using
+a reference solve and coherent reflected-field subtraction. It masks bins when
+either solve has not met its energy/spectrum settling criteria or incident power
+is too weak. The residual `1-R-T` includes radiation outside the monitor aperture
+and numerical error; it is not absorption. Meep and FDTDX use distinct mode and
+grid implementations. Device agreement, settling and the reported refinement
+checks do not establish general commercial-solver accuracy.
 
 The application permits one job at a time and stops jobs exceeding five minutes.
 The 2D study caps its x-y grid at 180,000 cells; the 3D study has separate
@@ -236,8 +252,10 @@ are real, scalar and nondispersive. FDTDX's displayed components are spatially
 averaged to common cell centres, with raw Yee fields retained in exports; Meep
 samples its fields through its documented array API. Read each run's sampling
 metadata and numerical limitations before comparing results.
-MPB, BeamZ, generalized CAD/GDS editing, optimization, multiphysics, and broad
-commercial-tool feature parity are future work.
+MPB already supplies the separate public mode benchmarks and Meep port-source
+profiles; a general mode/band-study interface remains future work. BeamZ,
+generalized CAD/GDS editing, optimization, multiphysics, installable desktop
+packaging and broad commercial-tool feature parity are also future work.
 
 ## Contribution and licensing
 

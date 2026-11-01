@@ -1,0 +1,21 @@
+{
+  "schema_version": 3,
+  "study_type": "waveguide-ports-2d",
+  "device_kind": "gap",
+  "gap_um": 0.25,
+  "core_width_um": 0.625,
+  "core_index": 2.0,
+  "cladding_index": 1.0,
+  "wavelength_min_um": 1.45,
+  "wavelength_max_um": 1.65,
+  "frequency_points": 21,
+  "length_um": 12.0,
+  "height_um": 6.0,
+  "pml_um": 1.0,
+  "resolution": 32,
+  "max_after_sources_fs": 1000.0,
+  "decay_by": 1e-08,
+  "spectrum_tolerance": 0.0001,
+  "solver": "meep",
+  "device": "cpu"
+}

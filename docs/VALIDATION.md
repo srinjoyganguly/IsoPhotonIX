@@ -28,6 +28,19 @@ CPU/GPU agreement can reproduce the same modeling or discretization error on
 both devices. A nonzero plausible field, a smooth image, passing software tests,
 or a short runtime also does not establish external numerical correctness.
 
+## Two-dimensional port measurements
+
+The separate [2D guided-port study](PORT_MEASUREMENTS.md) now measures total
+incident-normalized power. Its [Meep evidence](verification/meep-ports.json)
+and [FDTDX evidence](verification/fdtdx-ports.json) record straight-guide checks,
+gap spectra and selected numerical sensitivities. Meep uses native 2D and MPB
+mode preparation; FDTDX uses three periodic z cells and local Tidy3D source-mode
+preparation. Their numerical sources and interfaces differ. Passing settling
+criteria is distinct from spatial/PML convergence, and CPU/GPU agreement checks
+one implementation. No external matched gap-spectrum reference or calibrated
+cross-solver field comparison has been established. This evidence does not
+change the driven-3D limitations above.
+
 ## Independent public mode benchmarks
 
 The workbench now reproduces four explicit input contracts from three public

@@ -60,9 +60,12 @@ and the notices distributed with each package.
 
 FDTDX's installed dependency set includes Equinox 0.13.8 (Apache-2.0),
 PyTreeClass 0.11.0 (Apache-2.0), gdstk 1.0.0 (BSL-1.0), and Tidy3D 2.11.2
-(LGPLv2+, as declared in its installed metadata). These are package dependencies, not claims that this
-application implements their broader features or uses a hosted commercial
-solver. Dependency licenses remain with their respective copyright holders.
+(LGPLv2+, as declared in its installed metadata). The guided-port adapter uses
+FDTDX's ModePlaneSource and its Tidy3D CPU mode-preparation dependency locally;
+the selected FDTDX CPU/CUDA runtime performs the time-domain evolution. No
+Tidy3D cloud service is called. This use does not implement those libraries'
+broader features. Dependency licenses remain with their respective copyright
+holders.
 
 ## Interface and service
 

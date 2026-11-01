@@ -49,3 +49,14 @@ used by the benchmarks. MPB 1.12.0 was already present in the qualified Meep
 environment. The mode implementations, numerical reports and convergence plots
 are new post-event work. Reference conflicts, refinement differences and the
 separate qualification scope of mode calculations are retained explicitly.
+
+The guided-port increment began at approximately 20:13 Europe/London on
+1 November 2026 from clean commit `3d0ca84`, on branch
+`feat/guided-port-measurements`. It adds an independent bounded 2D study,
+reference-normalized power monitors, spectra inspection and audited exports.
+The application adapters, interface and tests are new post-event code. Meep/MPB
+and FDTDX supply the numerical engines; FDTDX's installed Tidy3D dependency
+computes the local CPU source mode, with FDTD evolving on the explicitly chosen
+CPU or NVIDIA device. No hosted solver, commercial project assets, private
+handoff, screenshots or raw chats were used. Existing environments and all
+earlier 2D/3D work were preserved.

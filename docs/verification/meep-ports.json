@@ -1,0 +1,811 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-01T20:21:37.472946+00:00",
+  "solver": "Meep",
+  "actual_device": "CPU",
+  "scope": "Actual Meep invariant-z slab eigenmode pulse, incident-normalized flux; not finite-height 3D or modal S-parameters.",
+  "source_contract": {
+    "type": "Gaussian eigenmode pulse",
+    "component": "Ez",
+    "mode": "fundamental TE0, even y",
+    "eig_band": 1,
+    "eig_parity": "ODD_Z + EVEN_Y",
+    "direction": "+x",
+    "x_um": -4.5,
+    "aperture_um": 4.0,
+    "center_frequency_per_um": 0.6478578892371996,
+    "fwidth_per_um": 0.16718913270637414,
+    "cutoff": 6.0,
+    "source_duration_fs": 239.41562932847356,
+    "note": "Mode profile solved at pulse centre frequency; broadband injection error is possible and requires calibration/convergence."
+  },
+  "versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "cases": [
+    {
+      "case": "canonical",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 32,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "max_after_sources_fs": 1000
+      },
+      "within_gui_validation": true,
+      "outside_gui_reasons": [],
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2535906488455896,
+          "maximum": 0.29201060736542744
+        },
+        "transmittance": {
+          "minimum": 0.6364169293252647,
+          "maximum": 0.685587297306142
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06082205384826844,
+          "maximum": 0.07157246330930789
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 0.27375267476631776,
+        "transmittance": 0.6601660778693513,
+        "uncollected_fraction": 0.06608124736433096
+      },
+      "settlement": {
+        "reference": {
+          "settled": true,
+          "elapsed_fs": 300.25980506821156,
+          "after_source_fs": 60.84417064995376,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 5761,
+          "elapsed_s": 1.8402856009997777,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 3.494423435510804e-14,
+          "spectral_relative_change": 2.424333420669276e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        },
+        "device": {
+          "settled": true,
+          "elapsed_fs": 300.25980506821156,
+          "after_source_fs": 60.84417064995376,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 5761,
+          "elapsed_s": 1.8154930649998278,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 2.1850538174133406e-14,
+          "spectral_relative_change": 5.869705612286716e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 3.7625985009999567
+      },
+      "spectra_sha256": "cafe7723b4a30611fe8691f4c239c9372475e731b3484bd60649a5476b70bf8d",
+      "field_arrays_sha256": "5669369ca4f0323d375a6a546232a9012b274094428f66664a920d5ce1cef713",
+      "reference_monitor_transmission_range": [
+        0.9996269704386077,
+        0.9999997673143541
+      ]
+    },
+    {
+      "case": "straight",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "straight",
+        "gap_um": 0,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 32,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "max_after_sources_fs": 1000
+      },
+      "within_gui_validation": true,
+      "outside_gui_reasons": [],
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": -1.379352363759631e-31,
+          "maximum": 1.2511238437684382e-31
+        },
+        "transmittance": {
+          "minimum": 0.9996269704386077,
+          "maximum": 0.9999997673143541
+        },
+        "uncollected_fraction": {
+          "minimum": 2.3268564586231832e-07,
+          "maximum": 0.0003730295613922907
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 3.1063536801897886e-32,
+        "transmittance": 0.9999997673143541,
+        "uncollected_fraction": 2.3268564586231832e-07
+      },
+      "settlement": {
+        "reference": {
+          "settled": true,
+          "elapsed_fs": 300.25980506821156,
+          "after_source_fs": 60.84417064995376,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 5761,
+          "elapsed_s": 1.8260393340005976,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 3.494423435510804e-14,
+          "spectral_relative_change": 2.424333420669276e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        },
+        "device": {
+          "settled": true,
+          "elapsed_fs": 300.25980506821156,
+          "after_source_fs": 60.84417064995376,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 5761,
+          "elapsed_s": 1.8039321979995293,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 3.494423435510804e-14,
+          "spectral_relative_change": 2.4234290726366955e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 3.7498523120002574
+      },
+      "spectra_sha256": "0a0e3522510d572d8804991ab53ca5ffab7a4b5c2379480146a59c3ca50e57a2",
+      "field_arrays_sha256": "3fdfe41ebf6b00462de37aff52e445f33ca77d5d597bbc2a07078bc2b7daeeb4",
+      "reference_monitor_transmission_range": [
+        0.9996269704386077,
+        0.9999997673143541
+      ]
+    },
+    {
+      "case": "resolution48",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 48,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "max_after_sources_fs": 1000
+      },
+      "within_gui_validation": true,
+      "outside_gui_reasons": [],
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2543806429879867,
+          "maximum": 0.2933253879588364
+        },
+        "transmittance": {
+          "minimum": 0.634725507336874,
+          "maximum": 0.6846919301583502
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06092742685366315,
+          "maximum": 0.0719491047042895
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 0.2747968340133335,
+        "transmittance": 0.6589051397489332,
+        "uncollected_fraction": 0.06629802623773329
+      },
+      "settlement": {
+        "reference": {
+          "settled": true,
+          "elapsed_fs": 300.2424319382533,
+          "after_source_fs": 60.82679751999549,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 8641,
+          "elapsed_s": 5.798061412000607,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 1.9796721849663627e-15,
+          "spectral_relative_change": 2.3515922677437303e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        },
+        "device": {
+          "settled": true,
+          "elapsed_fs": 300.2424319382533,
+          "after_source_fs": 60.82679751999549,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 8641,
+          "elapsed_s": 5.4516243879998,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 1.5411667941358998e-15,
+          "spectral_relative_change": 1.3252469591755112e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 11.478298051999445
+      },
+      "spectra_sha256": "9f22dab85b8e560a57feb75fa68f6aa976f6ad1232212bbd04d0cf83cee4ef30",
+      "field_arrays_sha256": "f277041ffd89bb104256afa1e48f43d5ed714c951c6bd60c5d278e4b68c0363d",
+      "reference_monitor_transmission_range": [
+        0.9996414590008089,
+        0.9999999654204371
+      ]
+    },
+    {
+      "case": "resolution64",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 64,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "max_after_sources_fs": 1000
+      },
+      "within_gui_validation": false,
+      "outside_gui_reasons": [
+        "Input should be less than or equal to 48",
+        "294,912 x-y cells also exceed the interactive 180,000-cell cap; this direct-adapter case is qualification evidence only."
+      ],
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2546548052708016,
+          "maximum": 0.2937801742598573
+        },
+        "transmittance": {
+          "minimum": 0.6341388006547833,
+          "maximum": 0.684380167750015
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06096502697918349,
+          "maximum": 0.0720810250853593
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 0.27515843659846645,
+        "transmittance": 0.658467224929455,
+        "uncollected_fraction": 0.06637433847207852
+      },
+      "settlement": {
+        "reference": {
+          "settled": true,
+          "elapsed_fs": 300.2337453732742,
+          "after_source_fs": 60.8181109550164,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 11521,
+          "elapsed_s": 16.943780787999458,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 9.171514450835795e-16,
+          "spectral_relative_change": 1.1062083640272013e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        },
+        "device": {
+          "settled": true,
+          "elapsed_fs": 300.2337453732742,
+          "after_source_fs": 60.8181109550164,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 11521,
+          "elapsed_s": 16.326082886000222,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 6.537714937069915e-16,
+          "spectral_relative_change": 1.2930269204263598e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 33.7132157570004
+      },
+      "spectra_sha256": "7f5f3f28ec74aa28501f27e7f649c42a1dfeb0a6ac963f3dfa2f78157ba1e11a",
+      "field_arrays_sha256": "c1a2f35ad77b6e0964befb8cf299e595375f7a2c040cb3ae89831d4367ac2517",
+      "reference_monitor_transmission_range": [
+        0.9996462008535569,
+        0.9999999848837838
+      ]
+    },
+    {
+      "case": "pml15",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 13,
+        "height_um": 7,
+        "pml_um": 1.5,
+        "resolution": 32,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "max_after_sources_fs": 1000
+      },
+      "within_gui_validation": true,
+      "outside_gui_reasons": [],
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2535932674632096,
+          "maximum": 0.2920139947741282
+        },
+        "transmittance": {
+          "minimum": 0.6364113509656449,
+          "maximum": 0.6855881934406566
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06081853909613388,
+          "maximum": 0.0715746542602268
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 0.2737569024365464,
+        "transmittance": 0.6601626818084394,
+        "uncollected_fraction": 0.06608041575501422
+      },
+      "settlement": {
+        "reference": {
+          "settled": true,
+          "elapsed_fs": 300.25980506821156,
+          "after_source_fs": 60.84417064995376,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 5761,
+          "elapsed_s": 2.6199669409998023,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 5.593606758576243e-15,
+          "spectral_relative_change": 2.4240864420731297e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        },
+        "device": {
+          "settled": true,
+          "elapsed_fs": 300.25980506821156,
+          "after_source_fs": 60.84417064995376,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 5761,
+          "elapsed_s": 2.5638619149995066,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 4.42229187106218e-15,
+          "spectral_relative_change": 2.1329022824169493e-07,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 5.325029298000118
+      },
+      "spectra_sha256": "7278a6341440c502c66c88bf9467fc8ae18a050808c0561db98b328cb182f25e",
+      "field_arrays_sha256": "3d53c8f2e0c9aa8b09cc649882ce8cf33e58e19ae8342354854112a8b56e7e94",
+      "reference_monitor_transmission_range": [
+        0.999626975195411,
+        0.9999997670614645
+      ]
+    },
+    {
+      "case": "strict_settling",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 32,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-10,
+        "spectrum_tolerance": 1e-06,
+        "max_after_sources_fs": 1000
+      },
+      "within_gui_validation": false,
+      "outside_gui_reasons": [
+        "Input should be greater than or equal to 0.00000001"
+      ],
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.253590649649001,
+          "maximum": 0.2920106486543564
+        },
+        "transmittance": {
+          "minimum": 0.636416914302018,
+          "maximum": 0.685587238634938
+        },
+        "uncollected_fraction": {
+          "minimum": 0.060822111716061,
+          "maximum": 0.0715724370436257
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 0.27375266372335677,
+        "transmittance": 0.6601660926145819,
+        "uncollected_fraction": 0.06608124366206136
+      },
+      "settlement": {
+        "reference": {
+          "settled": true,
+          "elapsed_fs": 316.93800982811916,
+          "after_source_fs": 77.52237540986137,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 6081,
+          "elapsed_s": 2.110605339000358,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 3.738343028014479e-16,
+          "spectral_relative_change": 1.0667189108366737e-09,
+          "thresholds": {
+            "energy_decay": 1e-10,
+            "spectral_relative_change": 1e-06
+          }
+        },
+        "device": {
+          "settled": true,
+          "elapsed_fs": 316.93800982811916,
+          "after_source_fs": 77.52237540986137,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 6081,
+          "elapsed_s": 2.0757993059996807,
+          "reason": "energy_and_flux_decay",
+          "energy_ratio": 1.9307398976629566e-16,
+          "spectral_relative_change": 5.8210150298057684e-08,
+          "thresholds": {
+            "energy_decay": 1e-10,
+            "spectral_relative_change": 1e-06
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 4.298195588999988
+      },
+      "spectra_sha256": "bf1ca5aa3c9b783eb411af827aa156b0716d41ce0c731af23126048a00eeea28",
+      "field_arrays_sha256": "920e7d5e0afa1eee3d3d82c57de0c515713361ef61461b2ab854b772e037acc2",
+      "reference_monitor_transmission_range": [
+        0.999626969986606,
+        0.9999997668341392
+      ]
+    },
+    {
+      "case": "forced_timeout",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 32,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "max_after_sources_fs": 5
+      },
+      "within_gui_validation": false,
+      "outside_gui_reasons": [
+        "Input should be greater than or equal to 300"
+      ],
+      "spectra_valid": false,
+      "valid_bins": 0,
+      "frequency_bins": 21,
+      "wavelength_range_um": [
+        1.45,
+        1.6500000000000004
+      ],
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2532113823829895,
+          "maximum": 0.2918963153175922
+        },
+        "transmittance": {
+          "minimum": 0.6351583833246037,
+          "maximum": 0.684331934032909
+        },
+        "uncollected_fraction": {
+          "minimum": 0.0617496988275561,
+          "maximum": 0.07294530135780408
+        }
+      },
+      "middle_frequency_sample": {
+        "wavelength_um": 1.5435483870967743,
+        "reflectance": 0.2736723411994575,
+        "transmittance": 0.6597311518407102,
+        "uncollected_fraction": 0.06659650695983232
+      },
+      "settlement": {
+        "reference": {
+          "settled": false,
+          "elapsed_fs": 244.4399385123958,
+          "after_source_fs": 5.024304094137998,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 4690,
+          "elapsed_s": 1.8576490209998155,
+          "reason": "maximum_time_reached",
+          "energy_ratio": 0.0005930462583588732,
+          "spectral_relative_change": 0.0579282556749476,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        },
+        "device": {
+          "settled": false,
+          "elapsed_fs": 244.4399385123958,
+          "after_source_fs": 5.024304094137998,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 4690,
+          "elapsed_s": 1.5534347149996393,
+          "reason": "maximum_time_reached",
+          "energy_ratio": 0.00044534098051169757,
+          "spectral_relative_change": 0.05608713489587113,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          }
+        }
+      },
+      "timings_s": {
+        "total_s": 3.519622175999757
+      },
+      "spectra_sha256": "dbd60ca2cecb16007ff2e8c03a66d74df23721f0e3acce8dbea5e08090ecfb3d",
+      "field_arrays_sha256": "d606b54daead02dabad0986a27185f1572a639651fe1989efc0daee00e09c9c9",
+      "reference_monitor_transmission_range": [
+        0.9971916779686588,
+        1.0008878761877718
+      ]
+    }
+  ],
+  "sensitivity": {
+    "resolution48": {
+      "reflectance_max_absolute_difference": 0.0013147805934089485,
+      "transmittance_max_absolute_difference": 0.0016914219883906734
+    },
+    "resolution64": {
+      "reflectance_max_absolute_difference": 0.0017695668944298637,
+      "transmittance_max_absolute_difference": 0.002278128670481383
+    },
+    "pml15": {
+      "reflectance_max_absolute_difference": 4.595944727514567e-06,
+      "transmittance_max_absolute_difference": 5.578359619784479e-06
+    },
+    "strict_settling": {
+      "reflectance_max_absolute_difference": 4.1288928942506686e-08,
+      "transmittance_max_absolute_difference": 5.8671204006266464e-08
+    },
+    "resolution48_vs64": {
+      "reflectance_max_absolute_difference": 0.0004547863010209152,
+      "transmittance_max_absolute_difference": 0.0005867066820907096
+    }
+  },
+  "tests": {
+    "command": ".local/meep-conda/bin/python -m unittest tests.test_meep_ports_adapter -v",
+    "passed": 2,
+    "elapsed_s": 31.7,
+    "checks": [
+      "Explicit GPU request rejected before solver import",
+      "Straight reference-normalized R approximately zero and T within 0.001 of one",
+      "Nontrivial gap reflection/transmission and actual material change",
+      "Ratios match signed recorded flux; residual is never clipped",
+      "Actual finite final Ez/material arrays and coordinates",
+      "Forced timeout preserves numerical values while invalidating every bin"
+    ]
+  },
+  "limitations": [
+    "Resolution64 and decay1e-10 are direct-adapter qualification beyond current GUI limits. Forced-timeout5fs deliberately bypasses the GUI minimum to verify invalid-result handling.",
+    "One final Ez snapshot; no modal S-parameters or radiation-box measurement.",
+    "Checks are temporal settlement and limited grid/PML sensitivity, not a rigorous error bound or general convergence certificate.",
+    "Finite apertures do not collect all radiated power; residual is not absorption. No mode-resolved S-parameters.",
+    "Source eigenmode profile is computed at centre frequency; broadband modal purity is not established.",
+    "Existing solver environment reused. Timings depend on machine and concurrent work; they are not performance guarantees."
+  ],
+  "official_sources": [
+    "https://meep.readthedocs.io/en/latest/Python_Tutorials/Eigenmode_Source/",
+    "https://meep.readthedocs.io/en/latest/Python_Tutorials/Basics/#transmittance-spectrum-of-a-waveguide-bend",
+    "https://meep.readthedocs.io/en/latest/Python_User_Interface/#flux-spectra",
+    "https://meep.readthedocs.io/en/latest/Python_User_Interface/#run-and-step-functions"
+  ],
+  "superseded_spike": {
+    "note": "Historical diagnostic before the current source cutoff and independent spectrum tolerance were finalized; not the current default configuration. Retained to expose an unsuccessful settling check.",
+    "source": {
+      "type": "Gaussian eigenmode pulse",
+      "component": "Ez",
+      "mode": "fundamental TE0, even y",
+      "eig_band": 1,
+      "eig_parity": "ODD_Z + EVEN_Y",
+      "direction": "+x",
+      "x_um": -4.5,
+      "aperture_um": 4.0,
+      "center_frequency_per_um": 0.6478578892371996,
+      "fwidth_per_um": 0.16718913270637414,
+      "cutoff": 5.0,
+      "source_duration_fs": 199.51302444039464,
+      "note": "Mode profile solved at pulse centre frequency; broadband injection error is possible and requires calibration/convergence."
+    },
+    "spectra_valid": false,
+    "effective_energy_threshold": 1e-08,
+    "effective_spectrum_threshold": 1e-08,
+    "settlement": {
+      "reference": {
+        "settled": false,
+        "peak_energy": 21.014440461385085,
+        "last_energy_ratio": 5.0319465712284494e-14,
+        "last_flux_change": 1.748204771740707e-08,
+        "consecutive_checks": 0,
+        "actual_time_fs": 1199.5277579664796,
+        "actual_source_end_fs": 199.5130244403947,
+        "time_steps": 23015,
+        "elapsed_s": 7.044624887000282,
+        "reason": "maximum_time_reached",
+        "decay_by": 1e-08,
+        "check_interval_fs": 16.678204759907604,
+        "required_consecutive_checks": 2,
+        "definition": "Whole-cell electromagnetic energy relative to sampled peak and maximum per-bin flux change relative to incident power; both must pass twice after source turn-off."
+      },
+      "device": {
+        "settled": true,
+        "peak_energy": 21.014440461385085,
+        "last_energy_ratio": 5.3441330489799966e-14,
+        "last_flux_change": 5.3808145329226684e-09,
+        "consecutive_checks": 2,
+        "actual_time_fs": 934.0315859447005,
+        "actual_source_end_fs": 199.5130244403947,
+        "time_steps": 17921,
+        "elapsed_s": 5.36877685699983,
+        "reason": "energy_and_flux_decay",
+        "decay_by": 1e-08,
+        "check_interval_fs": 16.678204759907604,
+        "required_consecutive_checks": 2,
+        "definition": "Whole-cell electromagnetic energy relative to sampled peak and maximum per-bin flux change relative to incident power; both must pass twice after source turn-off."
+      }
+    }
+  },
+  "normalization_method": {
+    "reference": "uninterrupted straight guide with identical source, mesh and monitors",
+    "reflection": "negative flux after subtracting reference complex DFT E/H fields, divided by incident reference flux",
+    "transmission": "device transmitted total cross-section flux divided by incident reference flux",
+    "weak_incident_relative_threshold": 1e-06,
+    "clipping": false,
+    "opaque_dft_data": "Extra *_dft_e/h arrays are exact opaque Meep FluxData streams in native order, for identical monitor/chunk reload only. They are not wavelength-indexed or spatially labelled field arrays."
+  },
+  "settlement_method": {
+    "definition": "Whole-cell electromagnetic energy relative to sampled peak and maximum per-bin flux change relative to incident power; both must pass twice after source turn-off.",
+    "check_interval_fs": 16.678204759907604,
+    "required_consecutive_checks": 2
+  }
+}

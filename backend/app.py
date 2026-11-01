@@ -6,7 +6,7 @@ from urllib.parse import urlsplit
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from .capabilities import capabilities
@@ -18,6 +18,9 @@ from .study3d import Waveguide3DConfig, example3d
 from .volume import stored_volume, volume_info, volume_slice
 from .compare3d import compare_runs
 from .benchmarks import benchmark_report
+from .ports import PortStudy, example_ports
+from .ports_capabilities import port_capabilities
+from .spectra import stored_spectrum, spectrum_response, spectrum_csv
 from pydantic import BaseModel, ConfigDict, Field
 
 manager = JobManager()
@@ -29,7 +32,7 @@ async def lifespan(app):
     manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.4.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.5.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -46,7 +49,35 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.4.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.5.0-preview.1", "compute": "local"}
+
+
+@app.get('/api/ports/example')
+def port_example(kind: str = 'gap'):
+    if kind not in ('straight','gap'):
+        raise HTTPException(422,'Choose straight or gap.')
+    return example_ports(kind).model_dump()
+
+
+@app.get('/api/ports/capabilities')
+def ports_targets(refresh: bool = False):
+    return port_capabilities(refresh)
+
+
+@app.post('/api/ports/validate')
+def validate_ports(config: PortStudy):
+    return {'valid':True,'estimate':config.estimate(),'layout':config.layout(),'warnings':config.warnings()}
+
+
+@app.post('/api/ports/jobs',status_code=202)
+def submit_port(config: PortStudy):
+    target=next((target for target in port_capabilities()['targets'] if target['solver']==config.solver and target['device']==config.device),None)
+    if not target or not target['available']:
+        raise HTTPException(409,(target or {}).get('reason','Requested port-study target is unavailable.'))
+    try:
+        return manager.submit(config.model_dump())
+    except RuntimeError as exc:
+        raise HTTPException(409,str(exc)) from exc
 
 
 @app.get("/api/benchmarks")
@@ -202,6 +233,32 @@ def passport(job_id: str):
         raise HTTPException(409, "Saved result files are missing or invalid; a passport could not be produced.") from exc
 
 
+def port_output(job_id):
+    job,output=completed_output(job_id)
+    if job['config'].get('study_type') != 'waveguide-ports-2d':
+        raise HTTPException(409,'This run did not measure calibrated port spectra.')
+    try:
+        metadata=json.loads((output/'metadata.json').read_text())
+        config=json.loads((output/'config.json').read_text())
+        if metadata.get('config') != config or config != job['config']:
+            raise ValueError('Saved configuration mismatch.')
+        return stored_spectrum(output,metadata),metadata
+    except (OSError,ValueError,KeyError,TypeError,zipfile.BadZipFile) as exc:
+        raise HTTPException(409,'Saved power spectra are missing, inconsistent or invalid.') from exc
+
+
+@app.get('/api/jobs/{job_id}/spectrum')
+def spectrum(job_id: str):
+    data,metadata=port_output(job_id)
+    return spectrum_response(data,metadata)
+
+
+@app.get('/api/jobs/{job_id}/spectrum.csv')
+def spectrum_download(job_id: str):
+    data,_=port_output(job_id)
+    return Response(spectrum_csv(data),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="ports-{job_id[:8]}-spectrum.csv"'})
+
+
 def frame_data(job_id):
     _, output = completed_output(job_id)
     try:
@@ -238,7 +295,7 @@ def export(job_id: str):
     except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
         raise HTTPException(409, "Saved result files are missing or invalid; export could not be produced.") from exc
     with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
-        for name in ("config.json", "metadata.json", "arrays.npz"):
+        for name in manifest['files']:
             archive.write(output/name, name)
         archive.writestr("run-log.txt", job["logs"])
         archive.writestr("passport.html", passport_html(record))
@@ -246,7 +303,11 @@ def export(job_id: str):
         array_note = ("3D arrays: fields[component,z,y,x] in Ex/Ey/Ez order, field=Ey[z,y,x], epsilon[z,y,x], and x_um/y_um/z_um display coordinates. Final-time snapshots only. Read metadata field_sampling before interpreting interpolated Yee-grid samples. FDTDX also retains raw_fields and their coordinate convention. "
                       if job["config"].get("study_type") == "waveguide-3d" else
                       "2D arrays: field and epsilon[y,x], x_um/y_um, plus any frames/times_fs. Field is signed Ez. The final snapshot may be later than the last recorded frame. ")
-        archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json contains SHA256 hashes for config.json, metadata.json, arrays.npz. " + array_note + "Fields use arbitrary source amplitude, not normalized transmission. Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (new output directory).\n")
+        measurement_note = 'Fields use arbitrary source amplitude, not normalized transmission. '
+        if job['config'].get('study_type') == 'waveguide-ports-2d':
+            array_note = 'arrays.npz contains actual final-time Ez and material samples after the pulse. spectra.npz preserves signed measured powers and unclipped ratios. spectrum.csv retains raw values and valid_bin flags; ignore unqualified bins as measurements. Supplemental monitor files retain solver-specific provenance. '
+            measurement_note = 'R=-reflected_flux/incident_flux and T=transmitted_flux/incident_flux use the measured straight reference. 1-R-T is uncollected flux, not absorption. These are finite-aperture powers, not complex modal S-parameters. '
+        archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json identifies all original result files with SHA256. " + array_note + measurement_note + "Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (new output directory).\n")
     stream.seek(0)
     return StreamingResponse(stream, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="waveguide-{job_id[:8]}.zip"'})
 

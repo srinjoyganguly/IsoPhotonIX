@@ -1,0 +1,171 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T20:37:28.828Z",
+  "browser": "156.0.8078.74",
+  "run_id": "8df9fcdaefd449ccae713aea5785807d",
+  "solver": "fdtdx",
+  "requested_device": "cpu",
+  "actual_device": "cpu:0",
+  "device_name": "cpu",
+  "config": {
+    "schema_version": 3,
+    "study_type": "waveguide-ports-2d",
+    "device_kind": "gap",
+    "gap_um": 0.3125,
+    "core_width_um": 0.625,
+    "core_index": 2,
+    "cladding_index": 1,
+    "wavelength_min_um": 1.45,
+    "wavelength_max_um": 1.65,
+    "frequency_points": 21,
+    "length_um": 12,
+    "height_um": 6,
+    "pml_um": 1,
+    "resolution": 32,
+    "max_after_sources_fs": 1000,
+    "decay_by": 1e-8,
+    "spectrum_tolerance": 0.0001,
+    "solver": "fdtdx",
+    "device": "cpu"
+  },
+  "valid_bins": 21,
+  "observed_stages": [
+    "reference",
+    "device",
+    "normalization",
+    "complete"
+  ],
+  "settlement": {
+    "reference": {
+      "actual_device": "cpu:0",
+      "mode_neff_real": 1.8167533874511719,
+      "mode_neff_imag": 0,
+      "source_e_component_l2_fractions": [
+        0,
+        1.6250132533737896e-34,
+        1.0000000000000002
+      ],
+      "source_z_invariance_relative_l2": 5.228767196996387e-9,
+      "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+      "grid_shape": [
+        384,
+        192,
+        3
+      ],
+      "time_steps": 5698,
+      "actual_duration_fs": 339.48948770586463,
+      "settled": true,
+      "energy_tail_peak_over_run_peak": 9.659203775366776e-13,
+      "energy_tail_window_fs": 50,
+      "energy_ratio": 9.659203775366776e-13,
+      "spectral_relative_change": 1.9430895477044817e-10,
+      "spectrum_tolerance": 0.0001,
+      "thresholds": {
+        "energy_decay": 1e-8,
+        "spectral_relative_change": 0.0001
+      },
+      "elapsed_fs": 339.48948770586463,
+      "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately 50 fs checks; max over frequencies divided by monitor peak absolute current flux",
+      "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final 50 fs divided by maximum over run; samples approximately 1 fs apart; unexecuted detector slots excluded",
+      "source_effective_end_fs": 239.41562932847341,
+      "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+      "pulse_truncated": false,
+      "reached_time_cap": false,
+      "stopped_for_settling": true,
+      "settlement_history": [
+        {
+          "time_fs": 289.44189738067575,
+          "energy_ratio": 0.00007661080599064007,
+          "spectral_relative_change": null,
+          "settled": false
+        },
+        {
+          "time_fs": 339.48948770586463,
+          "energy_ratio": 9.659203775366776e-13,
+          "spectral_relative_change": 1.9430895477044817e-10,
+          "settled": true
+        }
+      ],
+      "max_after_sources_fs": 1000,
+      "decay_by": 1e-8,
+      "compile_s": 0.5940915940000195,
+      "compute_s": 43.09920263599997,
+      "total_s": 48.606335661999765
+    },
+    "device": {
+      "actual_device": "cpu:0",
+      "mode_neff_real": 1.8167533874511719,
+      "mode_neff_imag": 0,
+      "source_e_component_l2_fractions": [
+        0,
+        1.6250132533737896e-34,
+        1.0000000000000002
+      ],
+      "source_z_invariance_relative_l2": 5.228767196996387e-9,
+      "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+      "grid_shape": [
+        384,
+        192,
+        3
+      ],
+      "time_steps": 5698,
+      "actual_duration_fs": 339.48948770586463,
+      "settled": true,
+      "energy_tail_peak_over_run_peak": 9.625785411804255e-13,
+      "energy_tail_window_fs": 50,
+      "energy_ratio": 9.625785411804255e-13,
+      "spectral_relative_change": 2.11715253462349e-9,
+      "spectrum_tolerance": 0.0001,
+      "thresholds": {
+        "energy_decay": 1e-8,
+        "spectral_relative_change": 0.0001
+      },
+      "elapsed_fs": 339.48948770586463,
+      "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately 50 fs checks; max over frequencies divided by monitor peak absolute current flux",
+      "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final 50 fs divided by maximum over run; samples approximately 1 fs apart; unexecuted detector slots excluded",
+      "source_effective_end_fs": 239.41562932847341,
+      "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+      "pulse_truncated": false,
+      "reached_time_cap": false,
+      "stopped_for_settling": true,
+      "settlement_history": [
+        {
+          "time_fs": 289.44189738067575,
+          "energy_ratio": 0.00005136384061188437,
+          "spectral_relative_change": null,
+          "settled": false
+        },
+        {
+          "time_fs": 339.48948770586463,
+          "energy_ratio": 9.625785411804255e-13,
+          "spectral_relative_change": 2.11715253462349e-9,
+          "settled": true
+        }
+      ],
+      "max_after_sources_fs": 1000,
+      "decay_by": 1e-8,
+      "compile_s": 0.5200648330001059,
+      "compute_s": 42.71503212299922,
+      "total_s": 44.30925228900014
+    }
+  },
+  "checks": [
+    "No automatic target selection; invalid parameters cannot submit",
+    "Real matched-reference and device study completed with recorded settlement",
+    "Every plotted spectral sample equals its actual saved value; signed coordinates retained",
+    "R/T and uncollected residual match the signed incident normalization",
+    "Keyboard sample inspection and full numerical table",
+    "CSV and JSON exports equal the actual API data; result ZIP downloaded; spectrum hashes visible in passport",
+    "Edited parameters were submitted exactly; later edits cannot change saved configuration",
+    "Masked-bin UI fixture produces gaps and no fabricated zeros",
+    "HTTP-error UI fixture hides unavailable spectrum; retry restores actual data",
+    "390px layout has no horizontal page overflow",
+    "No browser exceptions"
+  ],
+  "new_solver_jobs": 1,
+  "ui_state_fixtures": [
+    "One masked bin based on an actual spectrum, explicitly not physical evidence",
+    "HTTP 503 spectrum response"
+  ],
+  "browser_errors": []
+}

@@ -33,7 +33,16 @@ convergence. This is a bounded first study, not a general CAD-to-solver pipeline
 A saved-run comparison reports repeatability for identical studies from one
 solver, including CPU/GPU pairs; it does not compare calibrated observables
 across solvers. [Validation status and remaining gates](VALIDATION.md) explicitly
-record that analytical qualification and commercial agreement are unfinished.
+record the limited public mode benchmarks separately from unfinished driven-3D
+analytical qualification and commercial agreement.
+
+The v0.5 preview begins milestone 6 with a separate bounded 2D guided-port
+study: a straight guide or cladding gap, mode-profile pulse, incident reference,
+coherent reflection subtraction and finite-aperture R/T spectra. It records
+settling, actual execution, raw monitors, CSV and file hashes. See
+[port measurement scope and evidence](PORT_MEASUREMENTS.md). General 3D ports,
+mode-resolved complex S-parameters, automated convergence and sweeps remain
+future work. Packaging and the BeamZ adapter have not been implemented.
 
 Keep these useful properties through every milestone: local computation,
 visible assumptions, reproducible files, actual device verification, and no

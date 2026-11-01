@@ -44,9 +44,10 @@ locally:
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The isolated API suite passed 15 tests with one Meep numerical test skipped
-because Meep lives in a separate interpreter. Its dedicated two-test suite
-passed separately. The API wheelhouse is a local cache and is not committed.
+The v0.5 API suite runs 80 checks: 77 pass and three Meep numerical tests are
+skipped in the API interpreter because Meep lives in a separate environment.
+Actual solver checks are recorded separately in the relevant study guides.
+The API wheelhouse is a local cache and is not committed.
 
 ## 2. Meep CPU environment
 
@@ -57,9 +58,12 @@ package. The unrelated package named `meep` on PyPI is not the solver.
 conda env create -p .local/meep-conda -f environment-meep.yml
 .local/meep-conda/bin/python -c 'import meep; print(meep.__version__)'
 .local/meep-conda/bin/python -m unittest discover -s tests -p test_meep_smoke.py -v
+.local/meep-conda/bin/python -m unittest tests.test_meep_ports_adapter -v
 ```
 
 The tested versions are PyMeep 1.35.0, Python 3.11.18, and NumPy 2.4.6.
+Port studies also require the included MPB support (`from meep import mpb`),
+tested with MPB 1.12.0. Their own readiness probe checks it before submission.
 The environment location above is detected automatically. To use another
 installation, set `MEEP_PYTHON` to its Python executable before starting the API.
 An exact Linux x86-64 package export is retained in

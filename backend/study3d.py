@@ -155,6 +155,9 @@ def example3d():
 def parse_study(value):
     # Preserve the v1 slab format and reject unknown versions, never downgrade.
     from .model import WaveguideConfig
+    if value.get("schema_version") == 3:
+        from .ports import PortStudy
+        return PortStudy.model_validate(value)
     if value.get("schema_version", 1) == 2:
         return Waveguide3DConfig.model_validate(value)
     return WaveguideConfig.model_validate(value)

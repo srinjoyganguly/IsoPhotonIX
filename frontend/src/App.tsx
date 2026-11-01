@@ -4,6 +4,7 @@ import { request } from './api';
 import { EvolutionPlayer } from './EvolutionPlayer';
 import { RunPassport } from './RunPassport';
 import { GeometryEditor } from './GeometryEditor';
+import { PortStudyWorkspace } from './PortStudyPanel';
 
 type Solver = 'meep' | 'fdtdx';
 type Device = 'cpu' | 'gpu';
@@ -69,7 +70,7 @@ function Geometry({config}: {config: Config}) {
 
 
 export default function App() {
-  const [workspace,setWorkspace]=useState<'design'|'simulation'>('design');
+  const [workspace,setWorkspace]=useState<'design'|'simulation'|'ports'>('design');
   const [config,setConfig]=useState<Config>(defaults);
   const [geometryConfig,setGeometryConfig]=useState<Config>(defaults);
   const [loaded,setLoaded]=useState(false);
@@ -157,9 +158,10 @@ export default function App() {
   const executionDevice=resultMetadata.device_name || resultMetadata.actual_device;
   const executionVersions=resultMetadata.versions as Record<string,string>|undefined;
   return <div className="app-shell">
-    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':'EXAMPLE / 01'}</span><strong>{workspace==='design'?'Local geometry workspace':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.4 preview · experimental</span></div></header>
-    <nav className="workspace-navigation" aria-label="Workspace"><button aria-pressed={workspace==='design'} onClick={()=>setWorkspace('design')}>3D design</button><button aria-pressed={workspace==='simulation'} onClick={()=>setWorkspace('simulation')}>2D simulation</button><span>Open geometry. Explicit hardware. Inspectable results.</span></nav>
+    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':workspace==='ports'?'ENGINEERING STUDIES':'EXAMPLE / 01'}</span><strong>{workspace==='design'?'Local geometry workspace':workspace==='ports'?'Reference-normalized port measurements':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.5 preview · experimental</span></div></header>
+    <nav className="workspace-navigation" aria-label="Workspace"><button aria-pressed={workspace==='design'} onClick={()=>setWorkspace('design')}>3D design</button><button aria-pressed={workspace==='simulation'} onClick={()=>setWorkspace('simulation')}>2D simulation</button><button aria-pressed={workspace==='ports'} onClick={()=>setWorkspace('ports')}>Ports · 2D</button><span>Open geometry. Explicit hardware. Inspectable results.</span></nav>
     <div hidden={workspace!=='design'}><GeometryEditor slabConfig={geometryConfig} onSimulation={()=>setWorkspace('simulation')}/></div>
+    <div hidden={workspace!=='ports'}><PortStudyWorkspace active={workspace==='ports'}/></div>
     <div hidden={workspace!=='simulation'}>
     <div className="intro-row"><div><span className="eyebrow">FROM GEOMETRY TO FIELD</span><h1>A small waveguide. Real physics.</h1><p>Real fields on your own hardware. No solver activation fees. Results you can inspect and reproduce.</p></div><button className="button secondary open-example" onClick={openExample} disabled={!loaded || !!busy}><Symbol kind="folder"/>Open bundled example</button></div>
     <main className="workbench">

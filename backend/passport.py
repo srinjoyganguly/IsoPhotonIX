@@ -53,6 +53,10 @@ def build_passport(job, output):
     config = json.loads((output / "config.json").read_text())
     metadata = json.loads((output / "metadata.json").read_text())
     is3d = config.get("study_type") == "waveguide-3d"
+    isports = config.get("study_type") == "waveguide-ports-2d"
+    snapshot_ok = metadata.get("config") == config and job["config"] == config
+    if (isports or job["config"].get("study_type") == "waveguide-ports-2d") and not snapshot_ok:
+        raise ValueError("Port result configuration differs between saved files and the run snapshot.")
     component = "Ey" if is3d else "Ez"
     with np.load(output / "arrays.npz", allow_pickle=False) as arrays:
         field, epsilon = arrays["field"], arrays["epsilon"]
@@ -69,7 +73,13 @@ def build_passport(job, output):
         frame_count = int(len(arrays["frames"])) if "frames" in arrays else 0
         coordinate_detail = f"{len(x)} x and {len(y)} y samples" if not is3d else f"{len(x)} x, {len(y)} y and {len(arrays['z_um'])} z samples"
     files = [file_record(output / name) for name in ("config.json", "metadata.json", "arrays.npz")]
-    snapshot_ok = metadata.get("config") == config and job["config"] == config
+    if isports:
+        from .spectra import stored_spectrum, spectrum_csv
+        spectra = stored_spectrum(output,metadata)
+        if (output/'spectrum.csv').read_bytes() != spectrum_csv(spectra).encode():
+            raise ValueError('Saved CSV differs from the recorded spectrum.')
+        files.extend(file_record(output/name) for name in ('spectra.npz','spectrum.csv'))
+        files.extend(file_record(output/name) for name in ('reference-monitors.npz','device-monitors.npz') if (output/name).exists())
     checks = [
         {"label": "Finite numerical values", "passed": finite,
          "detail": f"Final {component}, permittivity, and coordinate arrays contain no NaN or infinite values."},
@@ -95,7 +105,21 @@ def build_passport(job, output):
             str(metadata.get("field_sampling", "Read metadata for component sampling and material-grid conventions.")),
             "SHA256 identifies exported bytes; it is not a signature or an accuracy certificate.",
         ]
-    assumptions = metadata.get("assumptions", metadata.get("notes", []))
+    if isports:
+        checks[1] = {'label':'Measured nonzero incident reference','passed':bool(np.any(spectra['incident_flux']>0)),
+                     'detail':'The straight-guide pulse produces measured power. A zero final ringdown field is allowed.'}
+        checks.append({'label':'Reference and device settling','passed':all(metadata['settlement'][s]['settled'] for s in ('reference','device')),
+                       'detail':'Each stage must satisfy its requested energy and spectrum criteria; a failed check leaves its spectrum unqualified. This is not mesh convergence.'})
+        checks.append({'label':'Qualified spectral bins','passed':bool(np.all(spectra['valid_bin'])),
+                       'detail':f"{int(np.sum(spectra['valid_bin']))} of {len(spectra['valid_bin'])} bins have settled runs and sufficient incident power. Unqualified bins remain marked."})
+        limitations = ['2D invariant-z waveguide, lossless nondispersive materials. This does not qualify finite-height 3D port measurements.',
+                       'R and T are total power through finite monitor apertures normalized to a separate straight-guide incident run; they are not complex modal S-parameters.',
+                       '1-R-T is uncollected flux, including lateral radiation and numerical/monitor error; it is not absorption.',
+                       'Final Ez ringdown samples use arbitrary source units. Their amplitude is not a transmission measurement.',
+                       'The CSV retains raw ratios with valid_bin flags; unqualified bins must not be treated as settled measurements.',
+                       'CPU source-mode preparation may accompany GPU FDTD; execution metadata identifies both.',
+                       'SHA256 identifies exported bytes, not accuracy. Grid, boundary and source sensitivity require independent checks.']
+    assumptions = metadata.get("assumptions", metadata.get("notes", metadata.get('limitations',[])))
     if isinstance(assumptions, str):
         assumptions = [assumptions]
     command = ".venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run"
@@ -114,7 +138,7 @@ def build_passport(job, output):
         "boundaries": metadata.get("boundaries", {}), "source_assumptions": assumptions,
         "numerical": {"field_component": metadata.get("field_component", "Ez"),
             "field_units": metadata.get("field_units", "Not recorded"), "field_shape": list(field.shape),
-            "frame_count": frame_count, "requested_duration_fs": config["duration_fs"],
+            "frame_count": frame_count, "requested_duration_fs": config.get("duration_fs"),
             "actual_duration_fs": metadata.get("simulated_time_fs", metadata.get("actual_duration_fs")),
             "precision": metadata.get("precision", "Not recorded"), "timings": timings},
         "checks": checks, "files": files,
@@ -125,6 +149,12 @@ def build_passport(job, output):
     if is3d:
         passport["numerical"].update(dimensions="3D", components=["Ex", "Ey", "Ez"],
                                       array_order="component,z,y,x", field_sampling=metadata.get("field_sampling"))
+    if isports:
+        passport['numerical'].update(study_type='waveguide-ports-2d',maximum_after_source_fs=config['max_after_sources_fs'],
+            field_time_fs=metadata.get('field_time_fs'), frequency_bins=len(spectra['valid_bin']),
+            valid_frequency_bins=int(np.sum(spectra['valid_bin'])), settlement=metadata['settlement'],
+            normalization=metadata.get('normalization',metadata.get('monitor',{})),
+            array_order='Final field[y,x]; spectra indexed by increasing wavelength; native complex monitor streams are solver-specific.')
     manifest = {"schema_version": 1, "algorithm": "sha256", "run_id": job["id"],
                 "files": {record["name"]: {"sha256": record["sha256"], "size_bytes": record["size_bytes"]}
                           for record in files}}
@@ -154,7 +184,7 @@ def passport_html(passport):
 <strong>Requested target:</strong> {rendered(passport['requested_device'])}<br><strong>Recorded actual device:</strong> {rendered(passport['actual_device'])} · {rendered(passport['device_name'])}<br>
 <strong>Created:</strong> {rendered(passport['created_at'])}</p>
 <h2>Observed checks</h2><ul>{checks}</ul>{sections}
-<h2>File manifest · SHA256</h2><p>These hashes identify the three original result files included with this passport.</p>
+<h2>File manifest · SHA256</h2><p>These hashes identify the original result files included with this passport.</p>
 <table><thead><tr><th>File</th><th>Bytes</th><th>SHA256</th></tr></thead><tbody>{files}</tbody></table>
 <h2>Reproduce this configuration</h2><pre>{rendered(passport['reproduce_command'])}</pre>
 <ul>{''.join(f'<li>{rendered(note)}</li>' for note in passport['reproduction_notes'])}</ul>

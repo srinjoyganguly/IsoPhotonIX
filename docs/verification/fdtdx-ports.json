@@ -1,0 +1,2449 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-01T20:34:01.410930+00:00",
+  "solver": "FDTDX",
+  "scope": "Actual local invariant-z slab mode pulse with reference-normalized total cross-section flux. No finite-height 3D ports, modal S-parameters, commercial match or convergence certification.",
+  "runtime": "Existing WSL managed runtime; CPU and explicit NVIDIA CUDA FDTD; local CPU callback prepares the Tidy3D numerical mode with no account or cloud calls.",
+  "official_sources": [
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.ModePlaneSource.html",
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.PhasorDetector.html",
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.GaussianPulseProfile.html"
+  ],
+  "implementation_version_note": "Installed FDTDX 0.6.2 source was inspected; stable online documentation may describe newer releases. Continuous checks call the same installed forward Yee update without resetting fields, PML state or DFT accumulators.",
+  "reproduction": {
+    "supported_cases": "Write the selected exact case config below to a new JSON file, then run .venv/bin/python scripts/run_simulation.py CONFIG.json --output NEW_DIRECTORY. The launcher resolves the configured solver interpreter and requires a fresh output directory.",
+    "negative_case": "gpu-insufficient-ringdown deliberately bypasses the GUI minimum time cap: in a fresh configured FDTDX interpreter process call backend.adapters.fdtdx_ports_adapter.run(config, Path(NEW_DIRECTORY)). It is not a supported GUI configuration.",
+    "historical_case": "gpu-gap-full-cap-prototype used the same pulse/material/monitor equations but the earlier full-cap loop. Its raw saved monitor data are retained; the current adapter stops on measured criteria. A documented raw-reflection sign-only postprocessing correction was applied before recording its spectrum hash."
+  },
+  "cases": [
+    {
+      "case": "gpu-gap",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "within_gui_validation": true,
+      "historical_fixed_cap_prototype": false,
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2579038739204407,
+          "maximum": 0.29854798316955566
+        },
+        "transmittance": {
+          "minimum": 0.6294189095497131,
+          "maximum": 0.6811842322349548
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06091189384460449,
+          "maximum": 0.0720331072807312
+        }
+      },
+      "total_seconds": 24.543773338999927,
+      "settlement": {
+        "reference": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 5698,
+          "actual_duration_fs": 339.48948770586463,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 9.79719235426335e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 9.79719235426335e-13,
+          "spectral_relative_change": 1.9906486003886322e-10,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.48948770586463,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately50fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 7.661080599064007e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.48948770586463,
+              "energy_ratio": 9.79719235426335e-13,
+              "spectral_relative_change": 1.9906486003886322e-10,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.8706711899994843,
+          "compute_s": 5.753331224000249,
+          "total_s": 12.55241658399973
+        },
+        "device": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 5698,
+          "actual_duration_fs": 339.48948770586463,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 9.63849009286144e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 9.63849009286144e-13,
+          "spectral_relative_change": 3.0851296559605175e-09,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.48948770586463,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately50fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 5.868949301657267e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.48948770586463,
+              "energy_ratio": 9.63849009286144e-13,
+              "spectral_relative_change": 3.0851296559605175e-09,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.659502254000472,
+          "compute_s": 6.097877449000407,
+          "total_s": 8.07847260500057
+        }
+      },
+      "source": {
+        "kind": "ModePlaneSource; local Tidy3D numerical cross-section mode",
+        "mode_preparation_device": "CPU callback; FDTD arrays and time evolution use the explicitly selected target",
+        "frequency_hz": 194222909049111.84,
+        "gaussian_sigma_frequency_hz": 7977170590155.814,
+        "direction": "+x",
+        "mode_index": 0,
+        "physical_polarization": "Ez, even transverse slab fundamental",
+        "requested_x_um": -4.5,
+        "actual_x_um": -4.5,
+        "reference_device_mode_relative_difference": 0.0
+      },
+      "geometry": {
+        "actual_core_width_um": 0.625,
+        "actual_gap_um": 0.25
+      },
+      "reference_monitor_transmission_range": [
+        0.999649703502655,
+        0.9999985694885254
+      ],
+      "samples": {
+        "wavelength_um": [
+          1.45,
+          1.458841463414634,
+          1.4677914110429446,
+          1.4768518518518519,
+          1.486024844720497,
+          1.4953125,
+          1.5047169811320753,
+          1.5142405063291138,
+          1.5238853503184713,
+          1.533653846153846,
+          1.5435483870967743,
+          1.5535714285714286,
+          1.5637254901960784,
+          1.5740131578947367,
+          1.584437086092715,
+          1.595,
+          1.605704697986577,
+          1.6165540540540542,
+          1.6275510204081634,
+          1.6386986301369864,
+          1.65
+        ],
+        "frequency_per_um": [
+          0.6896551724137931,
+          0.6854754440961338,
+          0.6812957157784745,
+          0.677115987460815,
+          0.6729362591431557,
+          0.6687565308254964,
+          0.664576802507837,
+          0.6603970741901777,
+          0.6562173458725183,
+          0.652037617554859,
+          0.6478578892371996,
+          0.6436781609195402,
+          0.6394984326018809,
+          0.6353187042842215,
+          0.6311389759665622,
+          0.6269592476489029,
+          0.6227795193312435,
+          0.6185997910135841,
+          0.6144200626959248,
+          0.6102403343782654,
+          0.6060606060606061
+        ],
+        "incident_flux": [
+          154.28341674804688,
+          246.58914184570312,
+          375.13970947265625,
+          543.2265625,
+          748.756591796875,
+          982.34814453125,
+          1226.7545166015625,
+          1458.19921875,
+          1649.83349609375,
+          1776.7728271484375,
+          1821.3345947265625,
+          1777.10986328125,
+          1650.4619140625,
+          1459.02685546875,
+          1227.678466796875,
+          983.263916015625,
+          749.5869750976562,
+          543.9232177734375,
+          375.67901611328125,
+          246.9813995361328,
+          154.5516357421875
+        ],
+        "reflected_flux": [
+          -46.06100082397461,
+          -73.1575927734375,
+          -110.59001159667969,
+          -159.11102294921875,
+          -217.8785400390625,
+          -283.95465087890625,
+          -352.21514892578125,
+          -415.7970275878906,
+          -467.168212890625,
+          -499.55181884765625,
+          -508.39776611328125,
+          -492.4231872558594,
+          -453.92803955078125,
+          -398.24102783203125,
+          -332.51715087890625,
+          -264.2354736328125,
+          -199.83843994140625,
+          -143.83848571777344,
+          -98.53327941894531,
+          -64.23982238769531,
+          -39.859466552734375
+        ],
+        "transmitted_flux": [
+          97.10890197753906,
+          155.79177856445312,
+          237.91244506835938,
+          345.84063720703125,
+          478.5451965332031,
+          630.3033447265625,
+          790.2388916015625,
+          943.0714721679688,
+          1071.28466796875,
+          1158.34912109375,
+          1192.187255859375,
+          1167.9329833984375,
+          1089.08056640625,
+          966.6417846679688,
+          816.6419067382812,
+          656.6842041015625,
+          502.6218566894531,
+          366.1685791015625,
+          253.90841674804688,
+          167.58367919921875,
+          105.27813720703125
+        ],
+        "reflectance": [
+          0.29854798316955566,
+          0.2966780662536621,
+          0.2947968542575836,
+          0.2928999364376068,
+          0.29098713397979736,
+          0.28905704617500305,
+          0.2871113419532776,
+          0.285144180059433,
+          0.28316083550453186,
+          0.28115683794021606,
+          0.27913475036621094,
+          0.2770921587944031,
+          0.2750309109687805,
+          0.272949755191803,
+          0.27085036039352417,
+          0.26873302459716797,
+          0.26659807562828064,
+          0.26444631814956665,
+          0.26228049397468567,
+          0.2600998282432556,
+          0.2579038739204407
+        ],
+        "transmittance": [
+          0.6294189095497131,
+          0.6317868828773499,
+          0.634196937084198,
+          0.6366416215896606,
+          0.6391198635101318,
+          0.6416292786598206,
+          0.644170343875885,
+          0.6467370390892029,
+          0.6493289470672607,
+          0.6519399285316467,
+          0.6545679569244385,
+          0.6572092175483704,
+          0.6598641276359558,
+          0.6625249981880188,
+          0.6651920080184937,
+          0.6678615808486938,
+          0.6705317497253418,
+          0.6731989979743958,
+          0.6758652925491333,
+          0.6785275340080261,
+          0.6811842322349548
+        ],
+        "uncollected_fraction": [
+          0.0720331072807312,
+          0.07153505086898804,
+          0.07100620865821838,
+          0.07045844197273254,
+          0.0698930025100708,
+          0.06931367516517639,
+          0.0687183141708374,
+          0.06811878085136414,
+          0.0675102174282074,
+          0.06690323352813721,
+          0.06629729270935059,
+          0.06569862365722656,
+          0.06510496139526367,
+          0.06452524662017822,
+          0.06395763158798218,
+          0.06340539455413818,
+          0.06287017464637756,
+          0.0623546838760376,
+          0.06185421347618103,
+          0.06137263774871826,
+          0.06091189384460449
+        ]
+      },
+      "sha256": {
+        "arrays.npz": "f0f75840b19d63b67c35e20432f58a55065624bf19db6f7e32c365e54b216700",
+        "spectra.npz": "eb21fc838607763ea27aed237089f44169859ec0bed5bb337768e60d56a1d96c",
+        "reference-monitors.npz": "d030cdd994d2879b1afb969b84f2b96618ab1c970d0cd7121421fc143d82e621",
+        "device-monitors.npz": "8aea9dc8d11caaa6aaed4fea563886ae94316dc91474fef356333edbb90b9654"
+      }
+    },
+    {
+      "case": "cpu-gap",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "within_gui_validation": true,
+      "historical_fixed_cap_prototype": false,
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2579038143157959,
+          "maximum": 0.29854801297187805
+        },
+        "transmittance": {
+          "minimum": 0.6294190287590027,
+          "maximum": 0.6811842918395996
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06091189384460449,
+          "maximum": 0.07203295826911926
+        }
+      },
+      "total_seconds": 100.3705903580003,
+      "settlement": {
+        "reference": {
+          "actual_device": "cpu:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132533737896e-34,
+            1.0000000000000002
+          ],
+          "source_z_invariance_relative_l2": 5.228767196996387e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 5698,
+          "actual_duration_fs": 339.48948770586463,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 9.659203775366776e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 9.659203775366776e-13,
+          "spectral_relative_change": 1.9430895477044817e-10,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.48948770586463,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately50fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 7.661080599064007e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.48948770586463,
+              "energy_ratio": 9.659203775366776e-13,
+              "spectral_relative_change": 1.9430895477044817e-10,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.6081526030002351,
+          "compute_s": 44.525883168999826,
+          "total_s": 50.519770662000155
+        },
+        "device": {
+          "actual_device": "cpu:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132533737896e-34,
+            1.0000000000000002
+          ],
+          "source_z_invariance_relative_l2": 5.228767196996387e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 5698,
+          "actual_duration_fs": 339.48948770586463,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 9.66881522762586e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 9.66881522762586e-13,
+          "spectral_relative_change": 3.948053255944016e-09,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.48948770586463,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately50fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 5.8689434808911756e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.48948770586463,
+              "energy_ratio": 9.66881522762586e-13,
+              "spectral_relative_change": 3.948053255944016e-09,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.4863114570007383,
+          "compute_s": 43.128926272999706,
+          "total_s": 44.645518807999906
+        }
+      },
+      "source": {
+        "kind": "ModePlaneSource; local Tidy3D numerical cross-section mode",
+        "mode_preparation_device": "CPU callback; FDTD arrays and time evolution use the explicitly selected target",
+        "frequency_hz": 194222909049111.84,
+        "gaussian_sigma_frequency_hz": 7977170590155.814,
+        "direction": "+x",
+        "mode_index": 0,
+        "physical_polarization": "Ez, even transverse slab fundamental",
+        "requested_x_um": -4.5,
+        "actual_x_um": -4.5,
+        "reference_device_mode_relative_difference": 0.0
+      },
+      "geometry": {
+        "actual_core_width_um": 0.625,
+        "actual_gap_um": 0.25
+      },
+      "reference_monitor_transmission_range": [
+        0.999649703502655,
+        0.9999988079071045
+      ],
+      "samples": {
+        "wavelength_um": [
+          1.45,
+          1.458841463414634,
+          1.4677914110429446,
+          1.4768518518518519,
+          1.486024844720497,
+          1.4953125,
+          1.5047169811320753,
+          1.5142405063291138,
+          1.5238853503184713,
+          1.533653846153846,
+          1.5435483870967743,
+          1.5535714285714286,
+          1.5637254901960784,
+          1.5740131578947367,
+          1.584437086092715,
+          1.595,
+          1.605704697986577,
+          1.6165540540540542,
+          1.6275510204081634,
+          1.6386986301369864,
+          1.65
+        ],
+        "frequency_per_um": [
+          0.6896551724137931,
+          0.6854754440961338,
+          0.6812957157784745,
+          0.677115987460815,
+          0.6729362591431557,
+          0.6687565308254964,
+          0.664576802507837,
+          0.6603970741901777,
+          0.6562173458725183,
+          0.652037617554859,
+          0.6478578892371996,
+          0.6436781609195402,
+          0.6394984326018809,
+          0.6353187042842215,
+          0.6311389759665622,
+          0.6269592476489029,
+          0.6227795193312435,
+          0.6185997910135841,
+          0.6144200626959248,
+          0.6102403343782654,
+          0.6060606060606061
+        ],
+        "incident_flux": [
+          154.28335571289062,
+          246.58908081054688,
+          375.1396484375,
+          543.2264404296875,
+          748.7564697265625,
+          982.347900390625,
+          1226.754150390625,
+          1458.198974609375,
+          1649.8331298828125,
+          1776.772216796875,
+          1821.333984375,
+          1777.109619140625,
+          1650.4615478515625,
+          1459.026611328125,
+          1227.67822265625,
+          983.2637939453125,
+          749.5867919921875,
+          543.923095703125,
+          375.67889404296875,
+          246.98129272460938,
+          154.55160522460938
+        ],
+        "reflected_flux": [
+          -46.06098937988281,
+          -73.15758514404297,
+          -110.5899658203125,
+          -159.11102294921875,
+          -217.87847900390625,
+          -283.9544677734375,
+          -352.2149658203125,
+          -415.79693603515625,
+          -467.16796875,
+          -499.55169677734375,
+          -508.39764404296875,
+          -492.423095703125,
+          -453.927978515625,
+          -398.2409362792969,
+          -332.51708984375,
+          -264.2353515625,
+          -199.83836364746094,
+          -143.83840942382812,
+          -98.53321075439453,
+          -64.23979187011719,
+          -39.85944747924805
+        ],
+        "transmitted_flux": [
+          97.10887908935547,
+          155.791748046875,
+          237.9123992919922,
+          345.8405456542969,
+          478.5450439453125,
+          630.30322265625,
+          790.23876953125,
+          943.0712280273438,
+          1071.2843017578125,
+          1158.348876953125,
+          1192.1868896484375,
+          1167.932861328125,
+          1089.080322265625,
+          966.6416015625,
+          816.6417236328125,
+          656.68408203125,
+          502.62176513671875,
+          366.16851806640625,
+          253.90835571289062,
+          167.58364868164062,
+          105.27812194824219
+        ],
+        "reflectance": [
+          0.29854801297187805,
+          0.2966781258583069,
+          0.29479679465293884,
+          0.2928999960422516,
+          0.290987104177475,
+          0.2890569269657135,
+          0.2871112823486328,
+          0.285144180059433,
+          0.2831607460975647,
+          0.28115686774253845,
+          0.2791347801685333,
+          0.2770921289920807,
+          0.2750309407711029,
+          0.272949755191803,
+          0.27085036039352417,
+          0.2687329351902008,
+          0.26659804582595825,
+          0.2644462287425995,
+          0.2622804045677185,
+          0.2600998282432556,
+          0.2579038143157959
+        ],
+        "transmittance": [
+          0.6294190287590027,
+          0.6317868828773499,
+          0.6341968774795532,
+          0.6366415619850159,
+          0.6391197443008423,
+          0.6416293382644653,
+          0.6441704630851746,
+          0.6467369794845581,
+          0.649328887462616,
+          0.6519399881362915,
+          0.6545679569244385,
+          0.6572092175483704,
+          0.6598641276359558,
+          0.6625249981880188,
+          0.6651920080184937,
+          0.6678615212440491,
+          0.6705317497253418,
+          0.6731990575790405,
+          0.6758653521537781,
+          0.6785277128219604,
+          0.6811842918395996
+        ],
+        "uncollected_fraction": [
+          0.07203295826911926,
+          0.07153499126434326,
+          0.07100632786750793,
+          0.07045844197273254,
+          0.06989315152168274,
+          0.06931373476982117,
+          0.06871825456619263,
+          0.06811884045600891,
+          0.06751036643981934,
+          0.06690314412117004,
+          0.0662972629070282,
+          0.06569865345954895,
+          0.06510493159294128,
+          0.06452524662017822,
+          0.06395763158798218,
+          0.06340554356575012,
+          0.06287020444869995,
+          0.062354713678359985,
+          0.06185424327850342,
+          0.061372458934783936,
+          0.06091189384460449
+        ]
+      },
+      "sha256": {
+        "arrays.npz": "221943246e7f9cd83e4501c6fe3461a01ae5210be565467e1238d6028cdb1614",
+        "spectra.npz": "7debc1448aacc9fb56987b4cfd0fa4822dfaeca12c7a5a631ab3378ba904ddc5",
+        "reference-monitors.npz": "dfbb34189ec4c151a7809fe851854bee9b7c026879ff5fa744f265c9c21a3f40",
+        "device-monitors.npz": "9e50926199ea43dc1ba6c1f457a6ddd84c8be974b195cab77490bfd4b159df42"
+      }
+    },
+    {
+      "case": "gpu-straight",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "straight",
+        "gap_um": 0.0,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "within_gui_validation": true,
+      "historical_fixed_cap_prototype": false,
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "ranges": {
+        "reflectance": {
+          "minimum": -0.0,
+          "maximum": -0.0
+        },
+        "transmittance": {
+          "minimum": 0.999649703502655,
+          "maximum": 0.9999985694885254
+        },
+        "uncollected_fraction": {
+          "minimum": 1.430511474609375e-06,
+          "maximum": 0.0003502964973449707
+        }
+      },
+      "total_seconds": 24.14456383200013,
+      "settlement": {
+        "reference": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 5698,
+          "actual_duration_fs": 339.48948770586463,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 9.79719235426335e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 9.79719235426335e-13,
+          "spectral_relative_change": 1.9906486003886322e-10,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.48948770586463,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately50fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 7.661079871468246e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.48948770586463,
+              "energy_ratio": 9.79719235426335e-13,
+              "spectral_relative_change": 1.9906486003886322e-10,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.7974945630003276,
+          "compute_s": 5.691912020000018,
+          "total_s": 12.400347562000206
+        },
+        "device": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 5698,
+          "actual_duration_fs": 339.48948770586463,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 9.79719235426335e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 9.79719235426335e-13,
+          "spectral_relative_change": 1.9906486003886322e-10,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.48948770586463,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately50fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 7.661079871468246e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.48948770586463,
+              "energy_ratio": 9.79719235426335e-13,
+              "spectral_relative_change": 1.9906486003886322e-10,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.6451514000000316,
+          "compute_s": 5.952629690000322,
+          "total_s": 7.785918876999858
+        }
+      },
+      "source": {
+        "kind": "ModePlaneSource; local Tidy3D numerical cross-section mode",
+        "mode_preparation_device": "CPU callback; FDTD arrays and time evolution use the explicitly selected target",
+        "frequency_hz": 194222909049111.84,
+        "gaussian_sigma_frequency_hz": 7977170590155.814,
+        "direction": "+x",
+        "mode_index": 0,
+        "physical_polarization": "Ez, even transverse slab fundamental",
+        "requested_x_um": -4.5,
+        "actual_x_um": -4.5,
+        "reference_device_mode_relative_difference": 0.0
+      },
+      "geometry": {
+        "actual_core_width_um": 0.625,
+        "actual_gap_um": 0.0
+      },
+      "reference_monitor_transmission_range": [
+        0.999649703502655,
+        0.9999985694885254
+      ],
+      "samples": {
+        "wavelength_um": [
+          1.45,
+          1.458841463414634,
+          1.4677914110429446,
+          1.4768518518518519,
+          1.486024844720497,
+          1.4953125,
+          1.5047169811320753,
+          1.5142405063291138,
+          1.5238853503184713,
+          1.533653846153846,
+          1.5435483870967743,
+          1.5535714285714286,
+          1.5637254901960784,
+          1.5740131578947367,
+          1.584437086092715,
+          1.595,
+          1.605704697986577,
+          1.6165540540540542,
+          1.6275510204081634,
+          1.6386986301369864,
+          1.65
+        ],
+        "frequency_per_um": [
+          0.6896551724137931,
+          0.6854754440961338,
+          0.6812957157784745,
+          0.677115987460815,
+          0.6729362591431557,
+          0.6687565308254964,
+          0.664576802507837,
+          0.6603970741901777,
+          0.6562173458725183,
+          0.652037617554859,
+          0.6478578892371996,
+          0.6436781609195402,
+          0.6394984326018809,
+          0.6353187042842215,
+          0.6311389759665622,
+          0.6269592476489029,
+          0.6227795193312435,
+          0.6185997910135841,
+          0.6144200626959248,
+          0.6102403343782654,
+          0.6060606060606061
+        ],
+        "incident_flux": [
+          154.28341674804688,
+          246.58914184570312,
+          375.13970947265625,
+          543.2265625,
+          748.756591796875,
+          982.34814453125,
+          1226.7545166015625,
+          1458.19921875,
+          1649.83349609375,
+          1776.7728271484375,
+          1821.3345947265625,
+          1777.10986328125,
+          1650.4619140625,
+          1459.02685546875,
+          1227.678466796875,
+          983.263916015625,
+          749.5869750976562,
+          543.9232177734375,
+          375.67901611328125,
+          246.9813995361328,
+          154.5516357421875
+        ],
+        "reflected_flux": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "transmitted_flux": [
+          154.2293701171875,
+          246.5196533203125,
+          375.05718994140625,
+          543.1361083984375,
+          748.6654052734375,
+          982.2642822265625,
+          1226.689453125,
+          1458.149169921875,
+          1649.812255859375,
+          1776.7650146484375,
+          1821.33203125,
+          1777.1031494140625,
+          1650.43896484375,
+          1458.9810791015625,
+          1227.612548828125,
+          983.1844482421875,
+          749.499267578125,
+          543.8360595703125,
+          375.60113525390625,
+          246.91726684570312,
+          154.5023193359375
+        ],
+        "reflectance": [
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0,
+          -0.0
+        ],
+        "transmittance": [
+          0.999649703502655,
+          0.999718189239502,
+          0.9997800588607788,
+          0.9998334646224976,
+          0.9998782277107239,
+          0.9999146461486816,
+          0.9999469518661499,
+          0.9999656677246094,
+          0.9999871253967285,
+          0.9999955892562866,
+          0.9999985694885254,
+          0.9999962449073792,
+          0.9999861121177673,
+          0.9999686479568481,
+          0.9999462962150574,
+          0.9999191761016846,
+          0.9998829960823059,
+          0.9998397827148438,
+          0.9997926950454712,
+          0.9997403621673584,
+          0.9996809363365173
+        ],
+        "uncollected_fraction": [
+          0.0003502964973449707,
+          0.0002818107604980469,
+          0.0002199411392211914,
+          0.0001665353775024414,
+          0.00012177228927612305,
+          8.535385131835938e-05,
+          5.3048133850097656e-05,
+          3.4332275390625e-05,
+          1.2874603271484375e-05,
+          4.410743713378906e-06,
+          1.430511474609375e-06,
+          3.7550926208496094e-06,
+          1.3887882232666016e-05,
+          3.135204315185547e-05,
+          5.370378494262695e-05,
+          8.082389831542969e-05,
+          0.0001170039176940918,
+          0.00016021728515625,
+          0.0002073049545288086,
+          0.00025963783264160156,
+          0.000319063663482666
+        ]
+      },
+      "sha256": {
+        "arrays.npz": "7c7a4eb614ec12b5b697f328f2b86f665d00b4652413e9cc172079a3f7b5284d",
+        "spectra.npz": "df6eb20243adb44137da7b093d6a9705f946936a88cc5c21dc661b524bd89514",
+        "reference-monitors.npz": "147d1032e265a1e973842ae9169903fcffcee9f22189b6b7e602c16d880fbc29",
+        "device-monitors.npz": "147d1032e265a1e973842ae9169903fcffcee9f22189b6b7e602c16d880fbc29"
+      }
+    },
+    {
+      "case": "gpu-gap-res48",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 48,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "within_gui_validation": true,
+      "historical_fixed_cap_prototype": false,
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.25629064440727234,
+          "maximum": 0.2962164580821991
+        },
+        "transmittance": {
+          "minimum": 0.6316067576408386,
+          "maximum": 0.6827268004417419
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06098255515098572,
+          "maximum": 0.07217678427696228
+        }
+      },
+      "total_seconds": 43.363615795999976,
+      "settlement": {
+        "reference": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8163479566574097,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            9.077956845385975e-36,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 3.6128223968034945e-08,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            576,
+            288,
+            3
+          ],
+          "time_steps": 8546,
+          "actual_duration_fs": 339.44976739608273,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 5.66304327650341e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 5.66304327650341e-13,
+          "spectral_relative_change": 2.252854511879088e-11,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.44976739608273,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately 50 fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final 50 fs divided by maximum over run; samples approximately 1 fs apart; unexecuted detector slots excluded",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 7.28866143617779e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.44976739608273,
+              "energy_ratio": 5.66304327650341e-13,
+              "spectral_relative_change": 2.252854511879088e-11,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.7523482639999202,
+          "compute_s": 14.954508397999234,
+          "total_s": 21.995978887999627
+        },
+        "device": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8163479566574097,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            9.077956845385975e-36,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 3.6128223968034945e-08,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            576,
+            288,
+            3
+          ],
+          "time_steps": 8546,
+          "actual_duration_fs": 339.44976739608273,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 4.984728450320441e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 4.984728450320441e-13,
+          "spectral_relative_change": 1.1074197228985772e-09,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 339.44976739608273,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately 50 fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final 50 fs divided by maximum over run; samples approximately 1 fs apart; unexecuted detector slots excluded",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": false,
+          "stopped_for_settling": true,
+          "settlement_history": [
+            {
+              "time_fs": 289.44189738067575,
+              "energy_ratio": 5.1396058552199975e-05,
+              "spectral_relative_change": null,
+              "settled": false
+            },
+            {
+              "time_fs": 339.44976739608273,
+              "energy_ratio": 4.984728450320441e-13,
+              "spectral_relative_change": 1.1074197228985772e-09,
+              "settled": true
+            }
+          ],
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 0.6960158599995339,
+          "compute_s": 14.871524916000453,
+          "total_s": 17.234032614999705
+        }
+      },
+      "source": {
+        "kind": "ModePlaneSource; local Tidy3D numerical cross-section mode",
+        "mode_preparation_device": "CPU callback; FDTD arrays and time evolution use the explicitly selected target",
+        "frequency_hz": 194222909049111.84,
+        "gaussian_sigma_frequency_hz": 7977170590155.814,
+        "direction": "+x",
+        "gaussian_sigma_time_fs": 19.951302444039452,
+        "effective_end_fs": 239.41562932847341,
+        "mode_index": 0,
+        "physical_polarization": "Ez, even transverse slab fundamental",
+        "requested_x_um": -4.5,
+        "actual_x_um": -4.5,
+        "reference_device_mode_relative_difference": 0.0
+      },
+      "geometry": {
+        "actual_core_width_um": 0.625,
+        "actual_gap_um": 0.25,
+        "actual_domain_um": [
+          12.0,
+          6.0,
+          0.0625
+        ],
+        "actual_pml_um": 1.0,
+        "actual_core_y_bounds_um": [
+          -0.3125,
+          0.3125
+        ],
+        "actual_gap_x_bounds_um": [
+          -0.125,
+          0.125
+        ],
+        "material_grid_verified": true,
+        "discretization": "Lengths rounded to nearest grid-cell count; centered box lower index floored. Bounds describe material voxels, while exported Ez samples use Yee positions."
+      },
+      "reference_monitor_transmission_range": [
+        0.9996486306190491,
+        1.0000007152557373
+      ],
+      "samples": {
+        "wavelength_um": [
+          1.45,
+          1.458841463414634,
+          1.4677914110429446,
+          1.4768518518518519,
+          1.486024844720497,
+          1.4953125,
+          1.5047169811320753,
+          1.5142405063291138,
+          1.5238853503184713,
+          1.533653846153846,
+          1.5435483870967743,
+          1.5535714285714286,
+          1.5637254901960784,
+          1.5740131578947367,
+          1.584437086092715,
+          1.595,
+          1.605704697986577,
+          1.6165540540540542,
+          1.6275510204081634,
+          1.6386986301369864,
+          1.65
+        ],
+        "frequency_per_um": [
+          0.6896551724137931,
+          0.6854754440961338,
+          0.6812957157784745,
+          0.677115987460815,
+          0.6729362591431557,
+          0.6687565308254964,
+          0.664576802507837,
+          0.6603970741901777,
+          0.6562173458725183,
+          0.652037617554859,
+          0.6478578892371996,
+          0.6436781609195402,
+          0.6394984326018809,
+          0.6353187042842215,
+          0.6311389759665622,
+          0.6269592476489029,
+          0.6227795193312435,
+          0.6185997910135841,
+          0.6144200626959248,
+          0.6102403343782654,
+          0.6060606060606061
+        ],
+        "incident_flux": [
+          232.50146484375,
+          371.5821228027344,
+          565.2611083984375,
+          818.4899291992188,
+          1128.1038818359375,
+          1479.9609375,
+          1848.0712890625,
+          2196.6123046875,
+          2485.157958984375,
+          2676.22119140625,
+          2743.19140625,
+          2676.435302734375,
+          2485.572998046875,
+          2197.1611328125,
+          1848.673828125,
+          1480.551025390625,
+          1128.6337890625,
+          818.9276123046875,
+          565.5906372070312,
+          371.8152770996094,
+          232.65582275390625
+        ],
+        "reflected_flux": [
+          -68.87075805664062,
+          -109.38899993896484,
+          -165.364013671875,
+          -237.9239501953125,
+          -325.80865478515625,
+          -424.63006591796875,
+          -526.7197265625,
+          -621.8193359375,
+          -698.65625,
+          -747.1038818359375,
+          -760.3499755859375,
+          -736.4799194335938,
+          -678.9212036132812,
+          -595.6512451171875,
+          -497.36102294921875,
+          -395.237060546875,
+          -298.92095947265625,
+          -215.1600341796875,
+          -147.393310546875,
+          -96.09688568115234,
+          -59.62751388549805
+        ],
+        "transmitted_flux": [
+          146.84950256347656,
+          235.56198120117188,
+          359.6866455078125,
+          522.7939453125,
+          723.311279296875,
+          952.578125,
+          1194.1478271484375,
+          1424.927734375,
+          1618.4603271484375,
+          1749.788818359375,
+          1800.697998046875,
+          1763.865478515625,
+          1644.5911865234375,
+          1459.53955078125,
+          1232.9180908203125,
+          991.3153686523438,
+          758.6620483398438,
+          552.638671875,
+          383.1696472167969,
+          252.87136840820312,
+          158.84036254882812
+        ],
+        "reflectance": [
+          0.2962164580821991,
+          0.2943871319293976,
+          0.29254448413848877,
+          0.2906864583492279,
+          0.2888108491897583,
+          0.2869197726249695,
+          0.28501051664352417,
+          0.2830810546875,
+          0.2811315357685089,
+          0.2791637182235718,
+          0.2771771550178528,
+          0.2751719355583191,
+          0.27314475178718567,
+          0.27110040187835693,
+          0.2690366506576538,
+          0.26695266366004944,
+          0.26485204696655273,
+          0.2627338767051697,
+          0.2606006860733032,
+          0.2584533095359802,
+          0.25629064440727234
+        ],
+        "transmittance": [
+          0.6316067576408386,
+          0.6339432597160339,
+          0.6363194584846497,
+          0.6387298703193665,
+          0.6411743760108948,
+          0.6436508297920227,
+          0.6461589336395264,
+          0.648693323135376,
+          0.6512504816055298,
+          0.6538282036781311,
+          0.6564244627952576,
+          0.659035325050354,
+          0.6616547703742981,
+          0.6642842292785645,
+          0.6669203042984009,
+          0.6695584058761597,
+          0.6721950769424438,
+          0.6748321652412415,
+          0.6774681806564331,
+          0.6800994873046875,
+          0.6827268004417419
+        ],
+        "uncollected_fraction": [
+          0.07217678427696228,
+          0.07166960835456848,
+          0.07113605737686157,
+          0.07058367133140564,
+          0.07001477479934692,
+          0.06942939758300781,
+          0.06883054971694946,
+          0.06822562217712402,
+          0.0676179826259613,
+          0.06700807809829712,
+          0.06639838218688965,
+          0.0657927393913269,
+          0.06520047783851624,
+          0.06461536884307861,
+          0.06404304504394531,
+          0.0634889304637909,
+          0.06295287609100342,
+          0.06243395805358887,
+          0.06193113327026367,
+          0.061447203159332275,
+          0.06098255515098572
+        ]
+      },
+      "sha256": {
+        "arrays.npz": "be28ae61a9351f263fbd35343e0d177381cccebf8d9e726117ba68ca59607884",
+        "spectra.npz": "d07576bcebbd3fbad0fd9c81f8761bacdc334fb8662d153bf88e3df9dff5c35d",
+        "reference-monitors.npz": "6427104dc5cc7ef1488c8f34cfc0ad945416d9d7613a2dac8b23e3eb287bce2e",
+        "device-monitors.npz": "d420f919edb50d27a0bd58e5865d59a1af0607d4eae3791ed5ffcd8bea4a7877"
+      }
+    },
+    {
+      "case": "gpu-insufficient-ringdown",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 5,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "within_gui_validation": false,
+      "historical_fixed_cap_prototype": false,
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "spectra_valid": false,
+      "valid_bins": 0,
+      "frequency_bins": 21,
+      "ranges": {
+        "reflectance": {
+          "minimum": null,
+          "maximum": null
+        },
+        "transmittance": {
+          "minimum": null,
+          "maximum": null
+        },
+        "uncollected_fraction": {
+          "minimum": null,
+          "maximum": null
+        }
+      },
+      "total_seconds": 20.495993903999988,
+      "settlement": {
+        "reference": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 4102,
+          "actual_duration_fs": 244.39906608800572,
+          "settled": false,
+          "energy_tail_peak_over_run_peak": 0.2609317898750305,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 0.2609317898750305,
+          "spectral_relative_change": null,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 244.39906608800572,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately 50 fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final 50 fs divided by maximum over run; samples approximately 1 fs apart; unexecuted detector slots excluded",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": true,
+          "stopped_for_settling": false,
+          "settlement_history": [
+            {
+              "time_fs": 244.39906608800572,
+              "energy_ratio": 0.2609317898750305,
+              "spectral_relative_change": null,
+              "settled": false
+            }
+          ],
+          "max_after_sources_fs": 5,
+          "decay_by": 1e-08,
+          "compile_s": 0.8167418630000611,
+          "compute_s": 4.537346540999351,
+          "total_s": 10.946587628999623
+        },
+        "device": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 4102,
+          "actual_duration_fs": 244.39906608800572,
+          "settled": false,
+          "energy_tail_peak_over_run_peak": 0.23282639682292938,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 0.23282639682292938,
+          "spectral_relative_change": null,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 244.39906608800572,
+          "spectral_settlement_definition": "Largest normalized accumulated spectral-flux change at either monitor between consecutive approximately 50 fs checks; max over frequencies divided by monitor peak absolute current flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final 50 fs divided by maximum over run; samples approximately 1 fs apart; unexecuted detector slots excluded",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": true,
+          "stopped_for_settling": false,
+          "settlement_history": [
+            {
+              "time_fs": 244.39906608800572,
+              "energy_ratio": 0.23282639682292938,
+              "spectral_relative_change": null,
+              "settled": false
+            }
+          ],
+          "max_after_sources_fs": 5,
+          "decay_by": 1e-08,
+          "compile_s": 0.6423319819996323,
+          "compute_s": 3.990236454999831,
+          "total_s": 5.41825887899995
+        }
+      },
+      "source": {
+        "kind": "ModePlaneSource; local Tidy3D numerical cross-section mode",
+        "mode_preparation_device": "CPU callback; FDTD arrays and time evolution use the explicitly selected target",
+        "frequency_hz": 194222909049111.84,
+        "gaussian_sigma_frequency_hz": 7977170590155.814,
+        "direction": "+x",
+        "gaussian_sigma_time_fs": 19.951302444039452,
+        "effective_end_fs": 239.41562932847341,
+        "mode_index": 0,
+        "physical_polarization": "Ez, even transverse slab fundamental",
+        "requested_x_um": -4.5,
+        "actual_x_um": -4.5,
+        "reference_device_mode_relative_difference": 0.0
+      },
+      "geometry": {
+        "actual_core_width_um": 0.625,
+        "actual_gap_um": 0.25,
+        "requested_domain_xy_um": [
+          12.0,
+          6.0
+        ],
+        "requested_core_width_um": 0.625,
+        "requested_gap_um": 0.25,
+        "requested_pml_um": 1.0,
+        "actual_domain_um": [
+          12.0,
+          6.0,
+          0.09375
+        ],
+        "actual_pml_um": 1.0,
+        "actual_core_y_bounds_um": [
+          -0.3125,
+          0.3125
+        ],
+        "actual_gap_x_bounds_um": [
+          -0.125,
+          0.125
+        ],
+        "material_grid_verified": true,
+        "discretization": "Lengths rounded to nearest grid-cell count; centered box lower index floored. Bounds describe material voxels, while exported Ez samples use Yee positions."
+      },
+      "reference_monitor_transmission_range": [
+        0.9980468153953552,
+        1.0006310939788818
+      ],
+      "samples": {
+        "wavelength_um": [
+          1.45,
+          1.458841463414634,
+          1.4677914110429446,
+          1.4768518518518519,
+          1.486024844720497,
+          1.4953125,
+          1.5047169811320753,
+          1.5142405063291138,
+          1.5238853503184713,
+          1.533653846153846,
+          1.5435483870967743,
+          1.5535714285714286,
+          1.5637254901960784,
+          1.5740131578947367,
+          1.584437086092715,
+          1.595,
+          1.605704697986577,
+          1.6165540540540542,
+          1.6275510204081634,
+          1.6386986301369864,
+          1.65
+        ],
+        "frequency_per_um": [
+          0.6896551724137931,
+          0.6854754440961338,
+          0.6812957157784745,
+          0.677115987460815,
+          0.6729362591431557,
+          0.6687565308254964,
+          0.664576802507837,
+          0.6603970741901777,
+          0.6562173458725183,
+          0.652037617554859,
+          0.6478578892371996,
+          0.6436781609195402,
+          0.6394984326018809,
+          0.6353187042842215,
+          0.6311389759665622,
+          0.6269592476489029,
+          0.6227795193312435,
+          0.6185997910135841,
+          0.6144200626959248,
+          0.6102403343782654,
+          0.6060606060606061
+        ],
+        "incident_flux": [
+          154.28341674804688,
+          246.58914184570312,
+          375.13970947265625,
+          543.2265625,
+          748.756591796875,
+          982.34814453125,
+          1226.7545166015625,
+          1458.19921875,
+          1649.83349609375,
+          1776.7728271484375,
+          1821.3345947265625,
+          1777.10986328125,
+          1650.4619140625,
+          1459.02685546875,
+          1227.678466796875,
+          983.263916015625,
+          749.5869750976562,
+          543.9232177734375,
+          375.67901611328125,
+          246.9813995361328,
+          154.5516357421875
+        ],
+        "reflected_flux": [
+          -46.00131607055664,
+          -73.11178588867188,
+          -110.58973693847656,
+          -159.17913818359375,
+          -218.01223754882812,
+          -284.1171875,
+          -352.3448486328125,
+          -415.8353576660156,
+          -467.0859375,
+          -499.3687744140625,
+          -508.1759033203125,
+          -492.2432861328125,
+          -453.85064697265625,
+          -398.2814636230469,
+          -332.64361572265625,
+          -264.38836669921875,
+          -199.96160888671875,
+          -143.89923095703125,
+          -98.53125,
+          -64.19773864746094,
+          -39.8065185546875
+        ],
+        "transmitted_flux": [
+          96.98564910888672,
+          155.69192504882812,
+          237.9025421142578,
+          345.972900390625,
+          478.8202819824219,
+          630.6500854492188,
+          790.5286254882812,
+          943.169921875,
+          1071.119384765625,
+          1157.952392578125,
+          1191.6954345703125,
+          1167.524658203125,
+          1088.8951416015625,
+          966.724365234375,
+          816.9271850585938,
+          657.039794921875,
+          502.91326904296875,
+          366.31597900390625,
+          253.90646362304688,
+          167.483154296875,
+          105.14852905273438
+        ],
+        "reflectance": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "transmittance": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "uncollected_fraction": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "sha256": {
+        "arrays.npz": "af37d030fd890d5441646e5a07e31e7e88a7752a1625b6ca84f35a8bb84abd78",
+        "spectra.npz": "df9b4320c4bdd0d173d93a7ccf21f1d0c3c041166d055f32d89b4e2891b61ff9",
+        "reference-monitors.npz": "463e30a09afde001fa60567d5edde86c1154dcc4ce71d9abac8b7791bd3bc14e",
+        "device-monitors.npz": "1294e5ed8dfd174a3b2adc32d49c18a1b493719921c61c4870aefbe339b4cb5a"
+      }
+    },
+    {
+      "case": "gpu-gap-full-cap-prototype",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "within_gui_validation": true,
+      "historical_fixed_cap_prototype": true,
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "spectra_valid": true,
+      "valid_bins": 21,
+      "frequency_bins": 21,
+      "ranges": {
+        "reflectance": {
+          "minimum": 0.2579038739204407,
+          "maximum": 0.29854798316955566
+        },
+        "transmittance": {
+          "minimum": 0.6294189095497131,
+          "maximum": 0.6811842322349548
+        },
+        "uncollected_fraction": {
+          "minimum": 0.06091189384460449,
+          "maximum": 0.0720331072807312
+        }
+      },
+      "total_seconds": 76.92230148999988,
+      "settlement": {
+        "reference": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 20802,
+          "actual_duration_fs": 1239.3928261244992,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 7.78712272615778e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 7.78712272615778e-13,
+          "spectral_relative_change": 1.1411657128109245e-08,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 1239.3928261244992,
+          "spectral_settlement_definition": "Largest normalized spectral-flux change at either monitor from adding the final50fs phasor contribution; max over frequencies divided by monitor peak absolute full-run flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": true,
+          "stopped_for_settling": false,
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 1.4584567719994084,
+          "compute_s": 30.3864240339999,
+          "total_s": 38.60370702799992
+        },
+        "device": {
+          "actual_device": "cuda:0",
+          "mode_neff_real": 1.8167533874511719,
+          "mode_neff_imag": 0.0,
+          "source_e_component_l2_fractions": [
+            0.0,
+            1.6250132697542182e-34,
+            1.0
+          ],
+          "source_z_invariance_relative_l2": 8.70834515609431e-09,
+          "source_mode_kind": "Local numerical Ez fundamental slab mode; FDTDX tm filter maps to physical Ez under its transverse-axis convention",
+          "grid_shape": [
+            384,
+            192,
+            3
+          ],
+          "time_steps": 20802,
+          "actual_duration_fs": 1239.3928261244992,
+          "settled": true,
+          "energy_tail_peak_over_run_peak": 8.212682920880066e-13,
+          "energy_tail_window_fs": 50.0,
+          "energy_ratio": 8.212682920880066e-13,
+          "spectral_relative_change": 1.5555043871378894e-08,
+          "spectrum_tolerance": 0.0001,
+          "thresholds": {
+            "energy_decay": 1e-08,
+            "spectral_relative_change": 0.0001
+          },
+          "elapsed_fs": 1239.3928261244992,
+          "spectral_settlement_definition": "Largest normalized spectral-flux change at either monitor from adding the final50fs phasor contribution; max over frequencies divided by monitor peak absolute full-run flux",
+          "settlement_definition": "Maximum sampled non-PML electromagnetic energy in final50fs divided by maximum over run; samples approximately1fs apart",
+          "source_effective_end_fs": 239.41562932847341,
+          "source_end_definition": "Gaussian pulse centered six sigma after start, switched off six sigma after peak; cutoff envelope exp(-18)",
+          "pulse_truncated": false,
+          "reached_time_cap": true,
+          "stopped_for_settling": false,
+          "max_after_sources_fs": 1000.0,
+          "decay_by": 1e-08,
+          "compile_s": 1.0449032010001247,
+          "compute_s": 31.405481394000162,
+          "total_s": 34.09931478500039
+        }
+      },
+      "source": {
+        "kind": "ModePlaneSource; local Tidy3D numerical cross-section mode",
+        "mode_preparation_device": "CPU callback; FDTD arrays and time evolution use the explicitly selected target",
+        "frequency_hz": 194222909049111.84,
+        "gaussian_sigma_frequency_hz": 7977170590155.814,
+        "direction": "+x",
+        "mode_index": 0,
+        "physical_polarization": "Ez, even transverse slab fundamental",
+        "requested_x_um": -4.5,
+        "actual_x_um": -4.5,
+        "reference_device_mode_relative_difference": 0.0
+      },
+      "geometry": {
+        "actual_core_width_um": 0.625,
+        "actual_gap_um": 0.25
+      },
+      "reference_monitor_transmission_range": [
+        0.999649703502655,
+        0.9999985694885254
+      ],
+      "samples": {
+        "wavelength_um": [
+          1.45,
+          1.458841463414634,
+          1.4677914110429446,
+          1.4768518518518519,
+          1.486024844720497,
+          1.4953125,
+          1.5047169811320753,
+          1.5142405063291138,
+          1.5238853503184713,
+          1.533653846153846,
+          1.5435483870967743,
+          1.5535714285714286,
+          1.5637254901960784,
+          1.5740131578947367,
+          1.584437086092715,
+          1.595,
+          1.605704697986577,
+          1.6165540540540542,
+          1.6275510204081634,
+          1.6386986301369864,
+          1.65
+        ],
+        "frequency_per_um": [
+          0.6896551724137931,
+          0.6854754440961338,
+          0.6812957157784745,
+          0.677115987460815,
+          0.6729362591431557,
+          0.6687565308254964,
+          0.664576802507837,
+          0.6603970741901777,
+          0.6562173458725183,
+          0.652037617554859,
+          0.6478578892371996,
+          0.6436781609195402,
+          0.6394984326018809,
+          0.6353187042842215,
+          0.6311389759665622,
+          0.6269592476489029,
+          0.6227795193312435,
+          0.6185997910135841,
+          0.6144200626959248,
+          0.6102403343782654,
+          0.6060606060606061
+        ],
+        "incident_flux": [
+          154.28341674804688,
+          246.58914184570312,
+          375.13970947265625,
+          543.2265625,
+          748.756591796875,
+          982.34814453125,
+          1226.7545166015625,
+          1458.19921875,
+          1649.83349609375,
+          1776.7728271484375,
+          1821.3345947265625,
+          1777.10986328125,
+          1650.4619140625,
+          1459.02685546875,
+          1227.678466796875,
+          983.263916015625,
+          749.5869750976562,
+          543.9232177734375,
+          375.67901611328125,
+          246.98141479492188,
+          154.5516357421875
+        ],
+        "reflected_flux": [
+          -46.06100082397461,
+          -73.1575927734375,
+          -110.59001159667969,
+          -159.1110382080078,
+          -217.8785400390625,
+          -283.95465087890625,
+          -352.21514892578125,
+          -415.7970275878906,
+          -467.168212890625,
+          -499.55181884765625,
+          -508.39776611328125,
+          -492.4231872558594,
+          -453.92803955078125,
+          -398.24102783203125,
+          -332.51715087890625,
+          -264.2354736328125,
+          -199.83843994140625,
+          -143.83848571777344,
+          -98.53327941894531,
+          -64.23982238769531,
+          -39.859466552734375
+        ],
+        "transmitted_flux": [
+          97.10890197753906,
+          155.79177856445312,
+          237.91244506835938,
+          345.84063720703125,
+          478.5451965332031,
+          630.3033447265625,
+          790.2388916015625,
+          943.0714721679688,
+          1071.28466796875,
+          1158.34912109375,
+          1192.187255859375,
+          1167.9329833984375,
+          1089.08056640625,
+          966.6417846679688,
+          816.6419067382812,
+          656.6842041015625,
+          502.6218566894531,
+          366.1685791015625,
+          253.90841674804688,
+          167.58367919921875,
+          105.27813720703125
+        ],
+        "reflectance": [
+          0.29854798316955566,
+          0.2966780662536621,
+          0.2947968542575836,
+          0.2928999662399292,
+          0.29098713397979736,
+          0.28905704617500305,
+          0.2871113419532776,
+          0.285144180059433,
+          0.28316083550453186,
+          0.28115683794021606,
+          0.27913475036621094,
+          0.2770921587944031,
+          0.2750309109687805,
+          0.272949755191803,
+          0.27085036039352417,
+          0.26873302459716797,
+          0.26659807562828064,
+          0.26444631814956665,
+          0.26228049397468567,
+          0.2600998282432556,
+          0.2579038739204407
+        ],
+        "transmittance": [
+          0.6294189095497131,
+          0.6317868828773499,
+          0.634196937084198,
+          0.6366416215896606,
+          0.6391198635101318,
+          0.6416292786598206,
+          0.644170343875885,
+          0.6467370390892029,
+          0.6493289470672607,
+          0.6519399285316467,
+          0.6545679569244385,
+          0.6572092175483704,
+          0.6598641276359558,
+          0.6625249981880188,
+          0.6651920080184937,
+          0.6678615808486938,
+          0.6705317497253418,
+          0.6731989979743958,
+          0.6758652925491333,
+          0.6785274744033813,
+          0.6811842322349548
+        ],
+        "uncollected_fraction": [
+          0.0720331072807312,
+          0.07153505086898804,
+          0.07100620865821838,
+          0.07045841217041016,
+          0.0698930025100708,
+          0.06931367516517639,
+          0.0687183141708374,
+          0.06811878085136414,
+          0.0675102174282074,
+          0.06690323352813721,
+          0.06629729270935059,
+          0.06569862365722656,
+          0.06510496139526367,
+          0.06452524662017822,
+          0.06395763158798218,
+          0.06340539455413818,
+          0.06287017464637756,
+          0.0623546838760376,
+          0.06185421347618103,
+          0.06137269735336304,
+          0.06091189384460449
+        ]
+      },
+      "sha256": {
+        "arrays.npz": "f8ab8b376ce63e2739451e53c62cadeb93036e6d99ea29ae753e967f406489e1",
+        "spectra.npz": "cddfb352ed6d3956f190a2d977a6ac60b54c54e09e05ca97003230002bb2255f",
+        "reference-monitors.npz": "a6153ea5da90c56c97a4d021301422b76ac72abbf2dae535f0ebf80aed6c124a",
+        "device-monitors.npz": "88155a1dbd5ed6d866d04a16d51082849b3b33ee7f40446c46c746db17d14f9c"
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "first": "cpu-gap",
+      "second": "gpu-gap",
+      "interpretation": "Execution-target consistency, not a physical accuracy certificate.",
+      "frequency_grid_identical": true,
+      "no_resampling_or_amplitude_fitting": true,
+      "metrics": {
+        "reflectance": {
+          "maximum_absolute_difference": 1.1920928955078125e-07,
+          "relative_l2": 2.0713272399789752e-07
+        },
+        "transmittance": {
+          "maximum_absolute_difference": 1.7881393432617188e-07,
+          "relative_l2": 1.1055915616229998e-07
+        },
+        "incident_flux": {
+          "maximum_absolute_difference": 0.0006103515625,
+          "relative_l2": 2.4420936028946016e-07
+        },
+        "reflected_flux": {
+          "maximum_absolute_difference": 0.000244140625,
+          "relative_l2": 3.324173292185151e-07
+        },
+        "transmitted_flux": {
+          "maximum_absolute_difference": 0.0003662109375,
+          "relative_l2": 2.3499922008340945e-07
+        }
+      }
+    },
+    {
+      "first": "gpu-gap",
+      "second": "gpu-gap-res48",
+      "interpretation": "Grid sensitivity; no tuned parameters or convergence threshold.",
+      "frequency_grid_identical": true,
+      "no_resampling_or_amplitude_fitting": true,
+      "metrics": {
+        "reflectance": {
+          "maximum_absolute_difference": 0.0023315250873565674,
+          "relative_l2": 0.007122336470735984
+        },
+        "transmittance": {
+          "maximum_absolute_difference": 0.0021878480911254883,
+          "relative_l2": 0.0028471346647286964
+        },
+        "incident_flux": {
+          "maximum_absolute_difference": 921.8568115234375,
+          "relative_l2": 0.33605435490608215
+        },
+        "reflected_flux": {
+          "maximum_absolute_difference": 251.95220947265625,
+          "relative_l2": 0.33136484026908875
+        },
+        "transmitted_flux": {
+          "maximum_absolute_difference": 608.5107421875,
+          "relative_l2": 0.3379285931587219
+        }
+      }
+    },
+    {
+      "first": "gpu-gap",
+      "second": "gpu-gap-full-cap-prototype",
+      "interpretation": "Measured early stopping versus earlier full-cap solve with identical source and physical parameters.",
+      "frequency_grid_identical": true,
+      "no_resampling_or_amplitude_fitting": true,
+      "metrics": {
+        "reflectance": {
+          "maximum_absolute_difference": 2.9802322387695312e-08,
+          "relative_l2": 2.3304252041201478e-08
+        },
+        "transmittance": {
+          "maximum_absolute_difference": 5.960464477539063e-08,
+          "relative_l2": 1.9857010723486297e-08
+        },
+        "incident_flux": {
+          "maximum_absolute_difference": 1.52587890625e-05,
+          "relative_l2": 2.96737034943817e-09
+        },
+        "reflected_flux": {
+          "maximum_absolute_difference": 1.52587890625e-05,
+          "relative_l2": 1.0631572955333013e-08
+        },
+        "transmitted_flux": {
+          "maximum_absolute_difference": 0.0,
+          "relative_l2": 0.0
+        }
+      }
+    }
+  ],
+  "cpu_gpu_raw_complex_monitor_consistency": [
+    {
+      "stage": "reference",
+      "array": "reflection_phasors",
+      "relative_l2_without_fitting": 3.219922746211523e-07
+    },
+    {
+      "stage": "reference",
+      "array": "transmission_phasors",
+      "relative_l2_without_fitting": 3.3523974707350135e-07
+    },
+    {
+      "stage": "reference",
+      "array": "mode_e",
+      "relative_l2_without_fitting": 9.37189312821829e-08
+    },
+    {
+      "stage": "reference",
+      "array": "mode_h",
+      "relative_l2_without_fitting": 9.385306043441233e-08
+    },
+    {
+      "stage": "device",
+      "array": "reflection_phasors",
+      "relative_l2_without_fitting": 3.6757808175025275e-07
+    },
+    {
+      "stage": "device",
+      "array": "transmission_phasors",
+      "relative_l2_without_fitting": 3.4514025060161657e-07
+    },
+    {
+      "stage": "device",
+      "array": "mode_e",
+      "relative_l2_without_fitting": 9.37189312821829e-08
+    },
+    {
+      "stage": "device",
+      "array": "mode_h",
+      "relative_l2_without_fitting": 9.385306043441233e-08
+    }
+  ],
+  "gpu_unavailable_negative_check": {
+    "method": "Fresh process; CUDA_VISIBLE_DEVICES empty; _ports_runtime(\"gpu\")",
+    "observed_cuda_error": "CUDA_ERROR_NO_DEVICE",
+    "observed_adapter_error": "Requested gpu initialization failed; CPU fallback is disabled",
+    "simulation_started": false,
+    "cpu_fallback": false
+  },
+  "math_tests": {
+    "command": ".venv/bin/python -m unittest discover -s tests -p test_fdtdx_ports_adapter.py -v",
+    "passed": 5,
+    "scope": "Synthetic E/H flux and coherent subtraction, both transverse polarizations, signed/unclipped ratios, invalid bins, and exclusion of future zero energy-detector slots. These fixtures do not validate solver physics."
+  },
+  "limitations": [
+    "No rigorous numerical error bound: only one FDTDX grid refinement and a longer-time diagnostic are included.",
+    "No FDTDX PML/domain sensitivity suite in this increment.",
+    "Mode profile solved only at centre frequency; pulse source implementations differ between solvers.",
+    "Flux is total through finite apertures, not mode-resolved S-parameters; 1-R-T includes lateral radiation and numerical/monitor effects.",
+    "Float32 JAX fields and complex phasor accumulators; host stability differences calculated in complex128.",
+    "Earlier fixed-cap CPU trial was manually stopped after exceeding200s; it is not included as a completed solve.",
+    "Wall times depend on host/GPU load; they are observed run durations, not performance promises."
+  ]
+}

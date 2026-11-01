@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "target": "meep:cpu",
+  "checks": [
+    "explicit target required",
+    "physical validation",
+    "edited configuration run",
+    "actual field canvas",
+    "responsive layouts",
+    "discretized material view",
+    "ZIP export",
+    "immutable run configuration",
+    "example reset clears target",
+    "partial import uses defaults and clears target"
+  ],
+  "browser_errors": [],
+  "run_id": "ec08234c78dc429dabe32f927f15bd11",
+  "config": {
+    "schema_version": 1,
+    "wavelength_um": 1.55,
+    "core_width_um": 0.65,
+    "core_index": 2.0,
+    "cladding_index": 1.0,
+    "length_um": 10.0,
+    "height_um": 5.0,
+    "resolution": 20,
+    "duration_fs": 80.0,
+    "pml_um": 1.0,
+    "solver": "meep",
+    "device": "cpu"
+  },
+  "checked_at": "2026-11-01T20:38:23.160697+00:00",
+  "scope": "Actual new Meep 2D browser regression after adding the guided-port workspace; real field and export data, no mocked solver responses."
+}

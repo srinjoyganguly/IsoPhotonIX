@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-01T20:34:45.726202+00:00",
+  "application_version": "0.5.0-preview.1",
+  "scope": "Read-only regression of pre-existing completed legacy 2D and finite-height 3D runs through the restarted local API. No solver runs or JobManager/app imports.",
+  "cases": [
+    {
+      "kind": "legacy-2d",
+      "run_id": "02a944f8468b4c7d8895ffefc95cb40a",
+      "solver": "meep",
+      "device": "cpu",
+      "schema_version": 1,
+      "checks": {
+        "completed_job_and_saved_config_match": true,
+        "field_and_material_samples_exact": true,
+        "coordinate_axes_exact": true,
+        "field_shape": [
+          100,
+          200
+        ],
+        "field_component": "Ez",
+        "export_manifest_sha256_matches_all_files": true,
+        "export_matches_original_file_bytes": true,
+        "export_config_matches_immutable_job": true,
+        "standalone_passport_present": true,
+        "manifest_file_count": 3
+      },
+      "original_file_sha256": {
+        "config.json": "d25fc6cd7293ee1446192da795632014815203efa54a03e5d455fbb3c55d64da",
+        "metadata.json": "b4f7d85db24708fc3f176b0f1cfd45a01926d22215139ad1cf10dcf2404d82ff",
+        "arrays.npz": "9d76991cc07fa57b62978732235d59364ae538fcb79ff422bc3410c03a4f4406"
+      },
+      "passed": true
+    },
+    {
+      "kind": "finite-3d",
+      "run_id": "3bc15312c02c46fa82ad2edb214a8453",
+      "solver": "fdtdx",
+      "device": "cpu",
+      "schema_version": 2,
+      "checks": {
+        "completed_job_and_saved_config_match": true,
+        "slice_and_material_samples_exact": true,
+        "coordinate_axes_exact": true,
+        "field_shape": [
+          63,
+          63,
+          127
+        ],
+        "slice_plane": "xz",
+        "slice_component": "Ez",
+        "slice_index": 31,
+        "slice_coordinate_um": -0.03125,
+        "two_dimensional_endpoint_rejects_3d": true,
+        "export_manifest_sha256_matches_all_files": true,
+        "export_matches_original_file_bytes": true,
+        "export_config_matches_immutable_job": true,
+        "standalone_passport_present": true,
+        "manifest_file_count": 3
+      },
+      "original_file_sha256": {
+        "config.json": "dde8dd60aed1cd49f06943eb79a7a0da4e2b50d4e32c010e178586b5ec64f7f3",
+        "metadata.json": "17db529919e7f289e02fdbfc74794757abb5f3e57808360b7ebe8ad516013dc1",
+        "arrays.npz": "a7e0777a3cfc9e44f2f0f7a2357b92fc73c64b3d344be01f0cfd51830ba9748f"
+      },
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limitations": [
+    "Existing numerical runs were reused; no new solver execution or convergence check was performed.",
+    "This checks retrieval, dimensional semantics and export integrity, not mathematical accuracy.",
+    "Read-only HTTP GET requests only; active port jobs were not modified."
+  ]
+}

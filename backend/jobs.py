@@ -41,6 +41,11 @@ class JobManager:
             job = dict(self.jobs[job_id])
             log = self.directory/job_id/"worker.log"
             job["logs"] = clean_log(log.read_text(errors="replace")[-18000:]) if log.exists() else ""
+            if job.get('config',{}).get('study_type') == 'waveguide-ports-2d':
+                stages = [line[11:].strip() for line in job['logs'].splitlines() if line.startswith('PORT_STAGE=')]
+                stage = 'complete' if job['status'] == 'completed' else stages[-1] if stages else 'reference'
+                if stage in ('reference','device','normalization','complete'):
+                    job['port_progress'] = {'stage':stage,'message':{'reference':'Measuring straight-guide incident reference','device':'Simulating the requested device','normalization':'Checking settling and normalizing signed power','complete':'Reference and device outputs recorded'}[stage]}
             return job
 
     def submit(self, config):

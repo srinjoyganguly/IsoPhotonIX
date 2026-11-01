@@ -71,3 +71,23 @@ browser journey was verified with Meep CPU; frame/passport HTTP checks passed
 for Meep CPU, FDTDX CPU, and FDTDX GPU. See
 [the browser upgrade report](verification/browser-upgrades.json) and
 [the backend evidence](verification/run-passport.json).
+
+## Guided-port measurements
+
+The v0.5 port test starts a real reference/device pair, checks each plotted
+sample and its signed power normalization, downloads CSV/JSON/ZIP, inspects
+the passport, and verifies explicit target selection and mobile layout:
+
+```bash
+NODE_PATH="$PWD/.local/browser-qa/node_modules" \
+PHOTONICS_BROWSER_CHANNEL=chrome \
+PHOTONICS_SOLVER=meep PHOTONICS_DEVICE=cpu \
+PHOTONICS_ARTIFACT_DIR=.local/browser-ports \
+node frontend/browser-ports-smoke.cjs
+```
+
+Use `PHOTONICS_SOLVER=fdtdx` and an explicitly available CPU/GPU device to test
+those routes, one job at a time. `PHOTONICS_PORT_RUN_ID` reopens an existing
+completed port run without launching another solve. The masked-bin and failed
+HTTP cases are labelled UI fixtures, separate from the actual solver evidence.
+The test does not invent numerical measurements.
