@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "wavelength_um": 1.55,
+  "core_width_um": 0.6,
+  "core_index": 2.0,
+  "cladding_index": 1.0,
+  "length_um": 10.0,
+  "height_um": 5.0,
+  "resolution": 20,
+  "duration_fs": 80.0,
+  "pml_um": 1.0,
+  "solver": "meep",
+  "device": "cpu"
+}

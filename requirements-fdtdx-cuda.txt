@@ -1,0 +1,5 @@
+# NVIDIA CUDA 12 plugin route; requires compatible host NVIDIA driver.
+-r requirements-fdtdx.txt
+jax[cuda12]==0.10.2
+jax-cuda12-plugin==0.10.2
+jax-cuda12-pjrt==0.10.2

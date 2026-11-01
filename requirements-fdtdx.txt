@@ -1,0 +1,6 @@
+# Tested on Linux / WSL, Python 3.11. CPU solver environment.
+fdtdx==0.6.2
+jax==0.10.2
+jaxlib==0.10.2
+numpy==2.4.6
+pydantic==2.13.4
