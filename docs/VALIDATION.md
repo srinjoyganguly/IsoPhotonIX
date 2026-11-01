@@ -28,6 +28,38 @@ CPU/GPU agreement can reproduce the same modeling or discretization error on
 both devices. A nonzero plausible field, a smooth image, passing software tests,
 or a short runtime also does not establish external numerical correctness.
 
+## Independent public mode benchmarks
+
+The workbench now reproduces four explicit input contracts from three public
+vendor examples using local MPB 1.12.0. These are cross-sectional eigenmode
+calculations, separate from the driven FDTD studies above. At 256 cells/µm:
+
+| Case / reference | Local effective index | Relative discrepancy |
+| --- | ---: | ---: |
+| COMSOL slab / analytic TE0 equation | 1.4029088674 | 0.0001931% |
+| Tidy3D silicon strip / published solver scalar | 2.4486493810 | 0.0126772% |
+| Lumerical slab / article's core index 3.48 | 2.8512137026 | 0.104053% |
+| Lumerical slab / associated script's core index 3.47668 | 2.8479286190 | 0.0112835% |
+
+All four resolutions and enlarged-domain runs are retained in the
+[numerical report](verification/public-mode-benchmarks.json). The closer Tidy3D
+value at the coarser 128-cell grid was not selected over the finer result.
+Lumerical's prose and script specify different material indices; neither input
+was fitted to the printed reference. Its mode mesh/version are unspecified,
+so neither variant establishes an exactly matched commercial solve.
+The [benchmark guide](PUBLIC_BENCHMARKS.md) records source provenance, limitations
+and reproduction commands. No scalar result certifies a whole solver or device.
+
+An additional [six-run propagation check](verification/public-slab-propagation.json)
+uses the unchanged 2D product adapters for COMSOL's slab model. At 45 cells/µm,
+projecting actual late-time phasors onto a fixed analytic transverse TE0 profile
+gives effective-index discrepancies of 0.06324% for Meep CPU and 0.06016% for
+FDTDX NVIDIA GPU. The template uses the analytic transverse reference; the
+longitudinal phase is independently measured from the saved fields. Larger
+centerline discrepancies, all grid points and window sensitivities remain in
+the report. This is a bounded propagation diagnostic, not calibrated modal
+power or a qualification of the finite-height 3D adapters.
+
 The current **Same-study comparison** panel reports differences between saved
 runs from one solver only after matching physical inputs, recorded versions,
 source, sampling, coordinates, material arrays and final time. It permits a
@@ -155,16 +187,10 @@ References below were inspected on 1 November 2026. No matching public driven
 3D dataset for the workbench's default guide was established. No commercial or
 cloud solve was launched.
 
-A local COMSOL installation was also checked without solving a model. Its
-runtime could not start because the license had expired, so usable Wave Optics
-or RF capability and a local numerical reference were not established. Installed
-documentation and example files do not establish licensed execution. Private
-machine and license details are excluded from this repository.
-
 | Official reference | Inspected conditions/data | Use and limitation |
 | --- | --- | --- |
-| [Tidy3D versus Femwell mode benchmark](https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/) | Straight strip: 0.50 × 0.22 µm, core index 3.48, uniform cladding 1.44, wavelength 1.55 µm; cross-section domain 4.3 × 3.02 µm. The public HTML includes numerical effective-index output: 2.438241 at `min_steps_per_wvl=10` and 2.448339 at 100, with intermediate values. | Useful candidate for a future matched cross-sectional mode study. It is not a driven 3D E/H dataset, has different materials/geometry, and supplies no matching source-power normalization for our final-time volumes. |
-| [COMSOL dielectric slab verification](https://doc.comsol.com/6.3/doc/com.comsol.help.models.woptics.dielectric_slab_waveguide/dielectric_slab_waveguide.html) | 1 µm slab, core/cladding indices 1.5/1.0, wavelength 1.55 µm; analytic equations and numerical-port model instructions. | Suitable analytic mode benchmark after matching its invariant slab model. It does not validate a finite-width, finite-height guide on a substrate. |
+| [Tidy3D versus Femwell mode benchmark](https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/) | Straight strip: 0.50 × 0.22 µm, core index 3.48, uniform cladding 1.44, wavelength 1.55 µm; cross-section domain 4.3 × 3.02 µm. The public HTML includes numerical effective-index output: 2.438241 at `min_steps_per_wvl=10` and 2.448339 at 100, with intermediate values. | The cross-sectional mode is now reproduced by the local MPB benchmark. It is not a driven 3D E/H dataset, has different materials/geometry, and supplies no matching source-power normalization for our final-time volumes. |
+| [COMSOL dielectric slab verification](https://doc.comsol.com/6.3/doc/com.comsol.help.models.woptics.dielectric_slab_waveguide/dielectric_slab_waveguide.html) | 1 µm slab, core/cladding indices 1.5/1.0, wavelength 1.55 µm; analytic equations and numerical-port model instructions. | The invariant TE0 slab mode is now checked by the local MPB benchmark. It does not validate a finite-width, finite-height guide on a substrate. |
 | [Ansys FDTD convergence example](https://optics.ansys.com/hc/en-us/articles/360034915833-Convergence-testing-process-for-FDTD-simulations) | A 2D gold-nanowire scattering example with scripts, project and [numeric Mie-theory attachment](https://optics.ansys.com/hc/en-us/article_attachments/360049569393). The text attachment was inspected and contains numeric rows. | Concrete analytic-reference workflow, but unrelated geometry and dispersive metal physics; not evidence of our guide's accuracy. The attachment is theory data, not a matching commercial 3D field export. |
 
 Tidy3D's page links a

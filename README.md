@@ -123,7 +123,23 @@ plane/component indexing, immutable exports and corrupt-volume errors.
 FDTDX CPU/GPU pairs, without resampling or amplitude fitting. Its discrepancy
 metrics have no accuracy pass threshold. [Validation status](docs/VALIDATION.md)
 documents the default grid's measured sensitivity and the unfinished analytical
-and commercial benchmarks; no commercial agreement is claimed.
+and commercial benchmarks for driven 3D fields; general commercial agreement is
+not claimed.
+
+Public-reference **mode benchmarks** are now available in the interface, with
+local MPB calculations, source links, mesh/domain sensitivity and JSON export.
+They reproduce the COMSOL slab model and compare published Tidy3D and Lumerical
+effective-index scalars. Conflicting material indices in Lumerical's article and
+script remain separate cases. See [results and reproduction](docs/PUBLIC_BENCHMARKS.md)
+and the [convergence plot](docs/verification/public-mode-convergence.png).
+These checks establish evidence for the named mode problems; they do not
+qualify the driven 3D FDTD fields or establish general commercial parity.
+The separate [product-adapter propagation check](docs/verification/public-slab-propagation.json)
+records six actual Meep CPU/FDTDX GPU slab runs, including unfavorable centerline
+measurements and the explicitly defined transverse-mode projection. The expanded
+software suite has 61 passing tests and two Meep numerical cases skipped in the
+API environment; real Meep runs are independently recorded. The [benchmark UI test](docs/verification/public-benchmarks-browser.json)
+checks exact numbers, JSON export, mobile layout and missing/error states.
 
 The complete 3D browser journey passed on [Meep CPU](docs/verification/3d-browser-meep-cpu.json),
 [FDTDX CPU](docs/verification/3d-browser-fdtdx-cpu.json), and

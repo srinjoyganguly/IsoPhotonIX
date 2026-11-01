@@ -31,8 +31,9 @@ and [animation reproduction notes](docs/BLENDER.md).
 
 | Component | Version used or selected | Role | Upstream license/source |
 | --- | --- | --- | --- |
-| Meep / PyMeep | 1.35.0, conda-forge serial build | Native 2D CPU FDTD | [GPL-2.0-or-later](https://github.com/NanoComp/meep/blob/master/src/meep.hpp), [license text](https://github.com/NanoComp/meep/blob/master/LICENSE) |
-| FDTDX | 0.6.2 | CPU/CUDA FDTD with thin periodic extrusion | [MIT](https://github.com/ymahlau/fdtdx/blob/main/LICENSE) |
+| Meep / PyMeep | 1.35.0, conda-forge serial build | Native 2D and finite-height 3D CPU FDTD | [GPL-2.0-or-later](https://github.com/NanoComp/meep/blob/master/src/meep.hpp), [license text](https://github.com/NanoComp/meep/blob/master/LICENSE) |
+| MIT Photonic Bands (MPB) | 1.12.0 through `meep.mpb` | Post-event local eigenmode benchmark calculations | [GPL-2.0-or-later](https://github.com/NanoComp/mpb), [retained license](docs/licenses/MPB-GPL-2.0.txt) |
+| FDTDX | 0.6.2 | CPU/CUDA FDTD; invariant slab and finite-height 3D studies | [MIT](https://github.com/ymahlau/fdtdx/blob/main/LICENSE) |
 | JAX / JAXlib | 0.10.2 | Array execution and compilation | [Apache-2.0](https://github.com/jax-ml/jax/blob/main/LICENSE) |
 | JAX CUDA12 plugin / PJRT | 0.10.2 | CUDA execution integration | [JAX source and license](https://github.com/jax-ml/jax) |
 | NumPy | 2.4.6 | Numerical interchange and validation | [BSD-3-Clause and bundled notices](https://github.com/numpy/numpy/blob/main/LICENSE.txt) |
@@ -43,6 +44,11 @@ dependencies, or any other external component. Solver environments and vendor
 binaries are not committed to the source repository.
 The [GPL text supplied with PyMeep 1.35.0](docs/licenses/MEEP-GPL-2.0.txt)
 is retained verbatim; its conda package metadata declares GPL-2.0-or-later.
+The MPB 1.12.0 package declares the same license and its supplied GPL text is
+also retained. Public benchmark parameters and reference values are attributed
+in [PUBLIC_BENCHMARKS.md](docs/PUBLIC_BENCHMARKS.md); their numerical comparison
+code and result visualizations are new project work. Commercial software,
+proprietary example projects and vendor screenshots are not redistributed.
 
 The tested CUDA route also loads NVIDIA libraries, including CUDA runtime
 12.9.79, CUDA NVCC 12.9.86, cuDNN 9.24.0.43, cuBLAS 12.9.2.10, and NCCL 2.30.7.

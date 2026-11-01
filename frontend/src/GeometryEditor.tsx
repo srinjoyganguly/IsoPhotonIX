@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { GeometryViewport } from './GeometryViewport';
 import { Study3DPanel } from './Study3DPanel';
+import { PublicBenchmarks } from './PublicBenchmarks';
 import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument,
   serializeGeometryDocument, validateGeometryDocument, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
 import './geometryEditor.css';
@@ -214,6 +215,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
       </aside>
     </div>
     <Study3DPanel geometry={scene} onOpenGeometry={document => replace(document, 'Runnable 3D waveguide opened. Choose a CPU or GPU target in the study below.')} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/>
+    <PublicBenchmarks/>
     {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}
     {message && <div className="geo-message geo-notice" role="status"><span>{message}</span><button aria-label="Dismiss geometry notice" onClick={() => setMessage('')}>×</button></div>}
   </div>;

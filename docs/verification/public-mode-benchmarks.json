@@ -1,0 +1,545 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-01T19:47:48.058377+00:00",
+  "solver": "MPB",
+  "versions": {
+    "meep": "1.35.0",
+    "mpb": "1.12.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "cases": [
+    {
+      "id": "comsol-slab",
+      "title": "COMSOL dielectric slab: fundamental TE mode",
+      "source_url": "https://doc.comsol.com/6.3/doc/com.comsol.help.models.woptics.dielectric_slab_waveguide/dielectric_slab_waveguide.html",
+      "reference_kind": "analytic_reference",
+      "reference_neff": 1.402911575825797,
+      "computed_neff": 1.4029088673573864,
+      "absolute_error": 2.7084684106615242e-06,
+      "relative_error": 1.9306052194110924e-06,
+      "resolution_cells_per_um": 256,
+      "domain_scale": 1.0,
+      "grid_shape": [
+        1,
+        1792
+      ],
+      "grid_order": "[z,y]; invariant z has one sample",
+      "elapsed_s": 0.01272927800027901,
+      "status": "computed-not-certified",
+      "versions": {
+        "meep": "1.35.0",
+        "mpb": "1.12.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "physics": {
+        "wavelength_um": 1.55,
+        "core_index": 1.5,
+        "cladding_index": 1.0,
+        "thickness_um": 1.0,
+        "width_um": null,
+        "domain_y_um": 7.0,
+        "domain_z_um": 0.0,
+        "propagation_axis": "x",
+        "model": "invariant dielectric slab",
+        "materials": "real isotropic nondispersive lossless",
+        "boundaries": "periodic transverse supercell; no PML; modal tails checked by enlarged domain"
+      },
+      "mode_info": {
+        "band": 1,
+        "dominant_component": "Ez",
+        "component_l2_fractions": {
+          "Ex": 0.0,
+          "Ey": 0.0,
+          "Ez": 1.0
+        },
+        "component_fraction_definition": "sum(abs(E_component)**2)/sum(abs(E)**2); not modal power or energy fractions",
+        "fixed_frequency_relative_residual": 3.4416913763379854e-16,
+        "coordinate_point_check_max_abs_error": 0.0,
+        "eigensolver_tolerance": 1e-11,
+        "find_k_tolerance": 1e-09,
+        "field_normalization": "MPB eigenmode energy normalization; no incident source, power calibration or driven final time",
+        "field_array_order": "[component,z,y], complex Bloch envelopes; fields=E and magnetic_fields=H",
+        "sampling": "Uniform MPB periodic grid from -L/2 to L/2 exclusive; optimized FFT grid sizes recorded explicitly"
+      },
+      "analytic_slab_neff": 1.402911575825797,
+      "analytic_relative_error": 1.9306052194110924e-06,
+      "notes": [
+        "Reference is the analytic TE0 dispersion equation described by COMSOL, not a numerical COMSOL export.",
+        "Invariant slab mode only; no finite-height 3D driven-field or transmission comparison."
+      ],
+      "array_sha256": "35ce830e7df125728755980698200c84906a1f520a9e3d0306ec0613814adf31",
+      "refinements": [
+        {
+          "resolution_cells_per_um": 32,
+          "computed_neff": 1.402740953034408,
+          "relative_error": 0.0001216204886531756,
+          "absolute_error": 0.00017062279138913006,
+          "grid_shape": [
+            1,
+            224
+          ],
+          "elapsed_s": 0.003151606000301399,
+          "array_sha256": "804a6d18daa7636f96a12590b4870aa6f7ed6be1e91ef5794b301b2fdeadb16f",
+          "analytic_relative_error": 0.0001216204886531756
+        },
+        {
+          "resolution_cells_per_um": 64,
+          "computed_neff": 1.4028685304109092,
+          "relative_error": 3.0682913755649754e-05,
+          "absolute_error": 4.304541488786562e-05,
+          "grid_shape": [
+            1,
+            448
+          ],
+          "elapsed_s": 0.004195685000013327,
+          "array_sha256": "841d4742e95961ce4217eaf0ea20eb87123ba41e80ead54d428b5b769c012054",
+          "analytic_relative_error": 3.0682913755649754e-05
+        },
+        {
+          "resolution_cells_per_um": 128,
+          "computed_neff": 1.402900766056371,
+          "relative_error": 7.705239312506523e-06,
+          "absolute_error": 1.0809769426023408e-05,
+          "grid_shape": [
+            1,
+            896
+          ],
+          "elapsed_s": 0.006774968999707198,
+          "array_sha256": "128fe4747b17f6e43bd76ed7b37eb9ac2228b610e640d74f4125cc8f1a82fb4e",
+          "analytic_relative_error": 7.705239312506523e-06
+        },
+        {
+          "resolution_cells_per_um": 256,
+          "computed_neff": 1.4029088673573864,
+          "relative_error": 1.9306052194110924e-06,
+          "absolute_error": 2.7084684106615242e-06,
+          "grid_shape": [
+            1,
+            1792
+          ],
+          "elapsed_s": 0.01272927800027901,
+          "array_sha256": "35ce830e7df125728755980698200c84906a1f520a9e3d0306ec0613814adf31",
+          "analytic_relative_error": 1.9306052194110924e-06
+        }
+      ],
+      "last_refinement_relative_change": 5.7746452416556745e-06,
+      "domain_check": {
+        "domain_scale": 1.5,
+        "computed_neff": 1.4029088673531849,
+        "grid_shape": [
+          1,
+          2688
+        ],
+        "array_sha256": "ea292e3d675182bdc06d37fde83c37ad761287feb636da2bf11e42a9bc1902a7",
+        "relative_change": 2.994868813043946e-12,
+        "note": "Increasing domain also changes optimized FFT grid spacing; this is combined domain/discretization sensitivity, not a pure boundary error bound."
+      },
+      "reproduction_command": ".venv/bin/python scripts/benchmark_waveguide_modes.py --case comsol-slab --resolutions 32 64 128 256 --output .local/comsol-slab-rerun"
+    },
+    {
+      "id": "tidy3d-strip",
+      "title": "Tidy3D straight-strip mode benchmark",
+      "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/",
+      "reference_kind": "published_solver_value",
+      "reference_neff": 2.448339,
+      "computed_neff": 2.4486493809612986,
+      "absolute_error": 0.0003103809612987618,
+      "relative_error": 0.00012677205293007293,
+      "resolution_cells_per_um": 256,
+      "domain_scale": 1.0,
+      "grid_shape": [
+        784,
+        1120
+      ],
+      "grid_order": "[z,y]; invariant z has one sample",
+      "elapsed_s": 10.550886291999632,
+      "status": "computed-not-certified",
+      "versions": {
+        "meep": "1.35.0",
+        "mpb": "1.12.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "physics": {
+        "wavelength_um": 1.55,
+        "core_index": 3.48,
+        "cladding_index": 1.44,
+        "thickness_um": 0.22,
+        "width_um": 0.5,
+        "domain_y_um": 4.3,
+        "domain_z_um": 3.02,
+        "propagation_axis": "x",
+        "model": "invariant straight rectangular strip",
+        "materials": "real isotropic nondispersive lossless",
+        "boundaries": "periodic transverse supercell; no PML; modal tails checked by enlarged domain"
+      },
+      "mode_info": {
+        "band": 1,
+        "dominant_component": "Ey",
+        "component_l2_fractions": {
+          "Ex": 0.23591382339664513,
+          "Ey": 0.7514847106758695,
+          "Ez": 0.012601465927485385
+        },
+        "component_fraction_definition": "sum(abs(E_component)**2)/sum(abs(E)**2); not modal power or energy fractions",
+        "fixed_frequency_relative_residual": 3.957945082788683e-15,
+        "coordinate_point_check_max_abs_error": 1.9515706839121867e-18,
+        "eigensolver_tolerance": 1e-11,
+        "find_k_tolerance": 1e-09,
+        "field_normalization": "MPB eigenmode energy normalization; no incident source, power calibration or driven final time",
+        "field_array_order": "[component,z,y], complex Bloch envelopes; fields=E and magnetic_fields=H",
+        "sampling": "Uniform MPB periodic grid from -L/2 to L/2 exclusive; optimized FFT grid sizes recorded explicitly"
+      },
+      "analytic_slab_neff": null,
+      "analytic_relative_error": null,
+      "notes": [
+        "Reference is the published Tidy3D simple_strip min_steps_per_wvl=100 scalar, printed to six decimals.",
+        "Reference uses an automatic grid and polarized subpixel averaging; MPB uses a Fourier basis and material averaging.",
+        "Reference propagation y and transverse x/z are mapped to workbench propagation x and transverse y/z.",
+        "No downloaded commercial field array or local commercial runtime; this is an effective-index comparison only."
+      ],
+      "array_sha256": "c984aadb15e192601384fd69f051b82a3a90a498bc53a8f169428d1fcc00f287",
+      "refinements": [
+        {
+          "resolution_cells_per_um": 32,
+          "computed_neff": 2.4445102500725837,
+          "relative_error": 0.0015638152753422254,
+          "absolute_error": 0.0038287499274161085,
+          "grid_shape": [
+            98,
+            140
+          ],
+          "elapsed_s": 0.09601931199995306,
+          "array_sha256": "2b2cf37f784fe35582b4b7f220ad114f9891d346d8a2e247d48155216749a578",
+          "analytic_relative_error": null
+        },
+        {
+          "resolution_cells_per_um": 64,
+          "computed_neff": 2.4455666679790187,
+          "relative_error": 0.0011323317649153772,
+          "absolute_error": 0.0027723320209811497,
+          "grid_shape": [
+            196,
+            280
+          ],
+          "elapsed_s": 0.47569523099991784,
+          "array_sha256": "65d64ba7afd1061cc21d674d8f369ed37bcd69de1af3a1e68ba7aacbf441ea5c",
+          "analytic_relative_error": null
+        },
+        {
+          "resolution_cells_per_um": 128,
+          "computed_neff": 2.448430065756692,
+          "relative_error": 3.7194913242151806e-05,
+          "absolute_error": 9.106575669237671e-05,
+          "grid_shape": [
+            392,
+            560
+          ],
+          "elapsed_s": 2.3429814900000565,
+          "array_sha256": "f68ce362407adf2a65c8627a8d882fd692cc103ccd2a99d05c426e7f1b201c14",
+          "analytic_relative_error": null
+        },
+        {
+          "resolution_cells_per_um": 256,
+          "computed_neff": 2.4486493809612986,
+          "relative_error": 0.00012677205293007293,
+          "absolute_error": 0.0003103809612987618,
+          "grid_shape": [
+            784,
+            1120
+          ],
+          "elapsed_s": 10.550886291999632,
+          "array_sha256": "c984aadb15e192601384fd69f051b82a3a90a498bc53a8f169428d1fcc00f287",
+          "analytic_relative_error": null
+        }
+      ],
+      "last_refinement_relative_change": 8.956578524945276e-05,
+      "domain_check": {
+        "domain_scale": 1.5,
+        "computed_neff": 2.4486493805819083,
+        "grid_shape": [
+          1176,
+          1680
+        ],
+        "array_sha256": "ff5c20750ee7ab2224a5c8d2401cc3879f226b8a5283f298cb2ed7a7a88c6008",
+        "relative_change": 1.5493859590762422e-10,
+        "note": "Increasing domain also changes optimized FFT grid spacing; this is combined domain/discretization sensitivity, not a pure boundary error bound."
+      },
+      "reproduction_command": ".venv/bin/python scripts/benchmark_waveguide_modes.py --case tidy3d-strip --resolutions 32 64 128 256 --output .local/tidy3d-strip-rerun"
+    },
+    {
+      "id": "lumerical-slab",
+      "title": "Lumerical MODE silicon slab: 220 nm TE mode",
+      "source_url": "https://optics.ansys.com/hc/en-us/articles/1500007378182-Inverse-design-of-an-efficient-narrow-band-grating-coupler",
+      "reference_kind": "published_solver_value",
+      "reference_neff": 2.84825,
+      "computed_neff": 2.851213702612577,
+      "absolute_error": 0.002963702612576835,
+      "relative_error": 0.0010405345782767788,
+      "resolution_cells_per_um": 256,
+      "domain_scale": 1.0,
+      "grid_shape": [
+        1,
+        1024
+      ],
+      "grid_order": "[z,y]; invariant z has one sample",
+      "elapsed_s": 0.006027293999977701,
+      "status": "computed-not-certified",
+      "versions": {
+        "meep": "1.35.0",
+        "mpb": "1.12.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "physics": {
+        "wavelength_um": 1.55,
+        "core_index": 3.48,
+        "cladding_index": 1.44,
+        "thickness_um": 0.22,
+        "width_um": null,
+        "domain_y_um": 4.0,
+        "domain_z_um": 0.0,
+        "propagation_axis": "x",
+        "model": "invariant dielectric slab",
+        "materials": "real isotropic nondispersive lossless",
+        "boundaries": "periodic transverse supercell; no PML; modal tails checked by enlarged domain"
+      },
+      "mode_info": {
+        "band": 1,
+        "dominant_component": "Ez",
+        "component_l2_fractions": {
+          "Ex": 0.0,
+          "Ey": 0.0,
+          "Ez": 1.0
+        },
+        "component_fraction_definition": "sum(abs(E_component)**2)/sum(abs(E)**2); not modal power or energy fractions",
+        "fixed_frequency_relative_residual": 3.4416913763379854e-16,
+        "coordinate_point_check_max_abs_error": 0.0,
+        "eigensolver_tolerance": 1e-11,
+        "find_k_tolerance": 1e-09,
+        "field_normalization": "MPB eigenmode energy normalization; no incident source, power calibration or driven final time",
+        "field_array_order": "[component,z,y], complex Bloch envelopes; fields=E and magnetic_fields=H",
+        "sampling": "Uniform MPB periodic grid from -L/2 to L/2 exclusive; optimized FFT grid sizes recorded explicitly"
+      },
+      "analytic_slab_neff": 2.851356345104066,
+      "analytic_relative_error": 5.002618902198378e-05,
+      "notes": [
+        "Reference is the published intermediate 1D MODE table at 220 nm, printed to five decimals; its mesh and solver version are unspecified.",
+        "The official associated grating_coupler_2D_apodized.py specifies the 1.55 \u00b5m wavelength; only its slab-mode step is reproduced.",
+        "This does not reproduce or validate the complete grating, optimization or coupling efficiency.",
+        "Published MODE value differs from the analytic slab root; both discrepancies are retained without fitting the geometry."
+      ],
+      "wavelength_source_url": "https://optics.ansys.com/hc/en-us/article_attachments/1500010548101",
+      "array_sha256": "5dd5c98ccbfd6d0b0861a1e64e2b5499d65cfd22100e46f528d0302e6cdc50a4",
+      "refinements": [
+        {
+          "resolution_cells_per_um": 32,
+          "computed_neff": 2.855419734742238,
+          "relative_error": 0.0025172420757440255,
+          "absolute_error": 0.007169734742237921,
+          "grid_shape": [
+            1,
+            128
+          ],
+          "elapsed_s": 0.0025133780000032857,
+          "array_sha256": "bb08eee662566cce0ce64b36b3062161d69935c57f8f95065b6bba1923c3f851",
+          "analytic_relative_error": 0.0014250725431596573
+        },
+        {
+          "resolution_cells_per_um": 64,
+          "computed_neff": 2.848742271161603,
+          "relative_error": 0.00017283284880290924,
+          "absolute_error": 0.0004922711616028863,
+          "grid_shape": [
+            1,
+            256
+          ],
+          "elapsed_s": 0.0029837209999641345,
+          "array_sha256": "e878d9885e99482818c3d115c063877f771b698b292c8e3ca35780e7eb272a79",
+          "analytic_relative_error": 0.0009167826206470702
+        },
+        {
+          "resolution_cells_per_um": 128,
+          "computed_neff": 2.8507128752068733,
+          "relative_error": 0.0008646976939781131,
+          "absolute_error": 0.0024628752068731607,
+          "grid_shape": [
+            1,
+            512
+          ],
+          "elapsed_s": 0.0039186490002975916,
+          "array_sha256": "45c7037030c757dc5b090844abd77eb7bce87458634cd914898e1ae5f79b0930",
+          "analytic_relative_error": 0.00022567151183953418
+        },
+        {
+          "resolution_cells_per_um": 256,
+          "computed_neff": 2.851213702612577,
+          "relative_error": 0.0010405345782767788,
+          "absolute_error": 0.002963702612576835,
+          "grid_shape": [
+            1,
+            1024
+          ],
+          "elapsed_s": 0.006027293999977701,
+          "array_sha256": "5dd5c98ccbfd6d0b0861a1e64e2b5499d65cfd22100e46f528d0302e6cdc50a4",
+          "analytic_relative_error": 5.002618902198378e-05
+        }
+      ],
+      "last_refinement_relative_change": 0.00017565411012326592,
+      "domain_check": {
+        "domain_scale": 1.5,
+        "computed_neff": 2.8512137026126854,
+        "grid_shape": [
+          1,
+          1536
+        ],
+        "array_sha256": "c2ce2228174d51c480d02468ed2ae0646480f3a45dd1c903dfc2ad44e54ed9c6",
+        "relative_change": 3.800408475314449e-14,
+        "note": "Increasing domain also changes optimized FFT grid spacing; this is combined domain/discretization sensitivity, not a pure boundary error bound."
+      },
+      "reproduction_command": ".venv/bin/python scripts/benchmark_waveguide_modes.py --case lumerical-slab --resolutions 32 64 128 256 --output .local/lumerical-slab-rerun"
+    },
+    {
+      "id": "lumerical-slab-script",
+      "title": "Lumerical slab: script-index variant n = 3.47668",
+      "source_url": "https://optics.ansys.com/hc/en-us/articles/1500007378182-Inverse-design-of-an-efficient-narrow-band-grating-coupler",
+      "reference_kind": "published_solver_value",
+      "reference_neff": 2.84825,
+      "computed_neff": 2.847928619049539,
+      "absolute_error": 0.00032138095046096993,
+      "relative_error": 0.00011283453013638898,
+      "resolution_cells_per_um": 256,
+      "domain_scale": 1.0,
+      "grid_shape": [
+        1,
+        1024
+      ],
+      "grid_order": "[z,y]; invariant z has one sample",
+      "elapsed_s": 0.007156861000112258,
+      "status": "computed-not-certified",
+      "versions": {
+        "meep": "1.35.0",
+        "mpb": "1.12.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "physics": {
+        "wavelength_um": 1.55,
+        "core_index": 3.47668,
+        "cladding_index": 1.44,
+        "thickness_um": 0.22,
+        "width_um": null,
+        "domain_y_um": 4.0,
+        "domain_z_um": 0.0,
+        "propagation_axis": "x",
+        "model": "invariant dielectric slab",
+        "materials": "real isotropic nondispersive lossless",
+        "boundaries": "periodic transverse supercell; no PML; modal tails checked by enlarged domain"
+      },
+      "mode_info": {
+        "band": 1,
+        "dominant_component": "Ez",
+        "component_l2_fractions": {
+          "Ex": 0.0,
+          "Ey": 0.0,
+          "Ez": 1.0
+        },
+        "component_fraction_definition": "sum(abs(E_component)**2)/sum(abs(E)**2); not modal power or energy fractions",
+        "fixed_frequency_relative_residual": 0.0,
+        "coordinate_point_check_max_abs_error": 0.0,
+        "eigensolver_tolerance": 1e-11,
+        "find_k_tolerance": 1e-09,
+        "field_normalization": "MPB eigenmode energy normalization; no incident source, power calibration or driven final time",
+        "field_array_order": "[component,z,y], complex Bloch envelopes; fields=E and magnetic_fields=H",
+        "sampling": "Uniform MPB periodic grid from -L/2 to L/2 exclusive; optimized FFT grid sizes recorded explicitly"
+      },
+      "analytic_slab_neff": 2.8480709419082277,
+      "analytic_relative_error": 4.997166910216776e-05,
+      "notes": [
+        "The official article states core index 3.48, but its associated Python script sets eps_in=3.47668**2. This separately named variant preserves that source inconsistency.",
+        "Same published 220 nm MODE table value is shown for context; the article does not establish which exact index generated that table.",
+        "No material fitting: 3.47668 is copied from the official script, and the prose-index case is retained independently.",
+        "Only the invariant slab TE0 mode is computed, not the full grating or its coupling efficiency."
+      ],
+      "wavelength_source_url": "https://optics.ansys.com/hc/en-us/article_attachments/1500010548101",
+      "array_sha256": "81c5f11fb67178cb3eb6c0cac5ca0db32ab58c8bae778e6cf1fca3ec6cfd604a",
+      "refinements": [
+        {
+          "resolution_cells_per_um": 32,
+          "computed_neff": 2.8521252229448892,
+          "relative_error": 0.001360562782371304,
+          "absolute_error": 0.0038752229448890674,
+          "grid_shape": [
+            1,
+            128
+          ],
+          "elapsed_s": 0.002258738999898924,
+          "array_sha256": "d6a3dce23439f8a5b088afe40565bbbf1c9febd8155d393cd9aa68fb047c4df1",
+          "analytic_relative_error": 0.0014235182758281656
+        },
+        {
+          "resolution_cells_per_um": 64,
+          "computed_neff": 2.845462680413233,
+          "relative_error": 0.0009786077720591124,
+          "absolute_error": 0.0027873195867673672,
+          "grid_shape": [
+            1,
+            256
+          ],
+          "elapsed_s": 0.005533654999908322,
+          "array_sha256": "9f85369799120250552a99ea3553b0e06e35d4ca02ee1736d65af73948fdc009",
+          "analytic_relative_error": 0.0009157993421495958
+        },
+        {
+          "resolution_cells_per_um": 128,
+          "computed_neff": 2.847428909915538,
+          "relative_error": 0.00028827879731845686,
+          "absolute_error": 0.0008210900844622948,
+          "grid_shape": [
+            1,
+            512
+          ],
+          "elapsed_s": 0.0041551369999979215,
+          "array_sha256": "b247bac7ba5631b47ce1df7b2d9b0df9047ba0d5a548bf73e6bf1eb4cce74b95",
+          "analytic_relative_error": 0.00022542696645740717
+        },
+        {
+          "resolution_cells_per_um": 256,
+          "computed_neff": 2.847928619049539,
+          "relative_error": 0.00011283453013638898,
+          "absolute_error": 0.00032138095046096993,
+          "grid_shape": [
+            1,
+            1024
+          ],
+          "elapsed_s": 0.007156861000112258,
+          "array_sha256": "81c5f11fb67178cb3eb6c0cac5ca0db32ab58c8bae778e6cf1fca3ec6cfd604a",
+          "analytic_relative_error": 4.997166910216776e-05
+        }
+      ],
+      "last_refinement_relative_change": 0.00017546406558746426,
+      "domain_check": {
+        "domain_scale": 1.5,
+        "computed_neff": 2.847928619049648,
+        "grid_shape": [
+          1,
+          1536
+        ],
+        "array_sha256": "fdf64cf8f81ddf5190f3ee38d83fd0eca69aa5b98fb4c17ae3b02ead115f9d92",
+        "relative_change": 3.8203856545244663e-14,
+        "note": "Increasing domain also changes optimized FFT grid spacing; this is combined domain/discretization sensitivity, not a pure boundary error bound."
+      },
+      "reproduction_command": ".venv/bin/python scripts/benchmark_waveguide_modes.py --case lumerical-slab-script --resolutions 32 64 128 256 --output .local/lumerical-slab-script-rerun"
+    }
+  ],
+  "reproduction_command": ".venv/bin/python scripts/benchmark_waveguide_modes.py --output .local/public-benchmarks-rerun --report docs/verification/public-mode-benchmarks.json",
+  "notes": [
+    "Actual local CPU eigenmode calculations; no commercial runtime, cloud solve or access token.",
+    "Effective-index checks only. These mode studies do not validate the driven Meep/FDTDX 3D adapters.",
+    "Relative error is abs(local-reference)/abs(reference). There is no automatic accuracy pass/fail threshold.",
+    "Commercial references are printed finite-grid scalar values with limited precision, not exact truth.",
+    "Each solve uses a fresh process to keep Meep/MPB global state isolated."
+  ]
+}

@@ -17,6 +17,7 @@ from .runtime import ROOT
 from .study3d import Waveguide3DConfig, example3d
 from .volume import stored_volume, volume_info, volume_slice
 from .compare3d import compare_runs
+from .benchmarks import benchmark_report
 from pydantic import BaseModel, ConfigDict, Field
 
 manager = JobManager()
@@ -46,6 +47,14 @@ async def local_browser_only(request: Request, call_next):
 @app.get("/api/health")
 def health():
     return {"status": "ok", "version": "0.4.0-preview.1", "compute": "local"}
+
+
+@app.get("/api/benchmarks")
+def public_benchmarks():
+    try:
+        return benchmark_report()
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(409, "Recorded benchmark evidence is incomplete or invalid. Rerun the local benchmark command.") from exc
 
 
 @app.get("/api/example")

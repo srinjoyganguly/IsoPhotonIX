@@ -10,7 +10,8 @@
     "test:browser": "node browser-smoke.cjs",
     "test:geometry": "node --test geometry-model.test.mjs",
     "test:geometry:browser": "node browser-geometry-smoke.cjs",
-    "test:3d:browser": "node browser-study3d-smoke.cjs"
+    "test:3d:browser": "node browser-study3d-smoke.cjs",
+    "test:benchmarks:browser": "node browser-benchmarks-smoke.cjs"
   },
   "dependencies": {
     "react": "19.2.0",

@@ -157,7 +157,7 @@ and [FDTDX documentation](https://fdtdx.readthedocs.io/en/latest/).
 | --- | --- | --- | --- |
 | Meep | Time-domain electromagnetics; CPU route | Real 2D slab and finite-height 3D guide on CPU; 3D grid/PML sensitivity recorded | Analytical benchmarks, calibrated sources/monitors, broader geometry and installation qualification |
 | FDTDX / JAX | Time-domain electromagnetics on CPU and NVIDIA GPU; later differentiable studies | Real invariant-z slab and finite-height 3D guide on both targets; explicit device checks and bounded planning memory estimate | Analytical/convergence benchmarks; measured peak memory; clean installation; gradient tests before optimization |
-| MPB | Eigenmodes and photonic band structures | No adapter yet | Analytic slab-mode and standard band reference; eigensolver residual, normalization, degeneracy and mode-tracking conventions |
+| MPB | Eigenmodes and photonic band structures | Local public slab/strip mode benchmark harness with fixed-frequency residuals, mesh/domain checks and inspectable evidence | General interactive mode studies, band reference, mode tracking, degeneracy and calibrated FDTD coupling |
 | BeamZ | Additional FDTD backend for supported photonic studies | No adapter or numerical verification yet | Locked release, isolated installation, minimal real CPU case, GPU placement, field/monitor and export tests |
 | Other engines | Additional numerical methods or coupled physics when justified | None | A specific unmet user study and its validation plan before integration |
 

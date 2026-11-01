@@ -46,7 +46,7 @@ overrides instead.
 | Component | Official distribution / requirement | What is established here |
 | --- | --- | --- |
 | Meep | Conda-forge `pymeep`; latest documentation also describes a PyPI `pymeep` wheel route | Conda PyMeep 1.35.0 passed fresh-prefix and real numerical checks; PyPI `pymeep` availability is unresolved, as detailed below |
-| MPB Python interface | Uses the Meep Python environment through `from meep import mpb` | No workbench MPB run yet; installing a package is not a verified mode-study adapter |
+| MPB Python interface | Uses the Meep Python environment through `from meep import mpb` | Local MPB 1.12.0 public slab/strip benchmark harness verified through isolated workers; general interactive mode studies and clean installation remain unqualified |
 | FDTDX | PyPI `fdtdx`, with a compatible JAX installation | Existing 0.6.2 / JAX 0.10.2 environment passed real CPU/GPU runs; clean FDTDX installation is still unverified |
 | BeamZ | PyPI `beamz`, upstream `beamzorg/beamz` | Identity and official release metadata verified; no local installation or run yet |
 | NVIDIA execution | Compatible host driver plus JAX CUDA dependencies for the JAX route | RTX 3080 Ti Laptop GPU execution verified inside WSL; this does not establish support on other hosts |

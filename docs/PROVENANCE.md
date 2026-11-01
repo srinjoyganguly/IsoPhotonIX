@@ -40,3 +40,12 @@ FDTDX 3D adapters, explicit CPU/GPU routes, actual volume slices, and numerical
 checks. Existing qualified environments were reused. This is new post-event
 application code, not part of the hackathon submission. Neither solver source
 nor earlier research-project code was copied into the adapters.
+
+After that increment, the user requested comparison with public vendor examples.
+The local benchmark harness and evidence panel were added from commit `b36a7f3`.
+Public COMSOL, Tidy3D and Ansys example parameters and scalar references are
+attributed in `PUBLIC_BENCHMARKS.md`; no commercial program or cloud solver is
+used by the benchmarks. MPB 1.12.0 was already present in the qualified Meep
+environment. The mode implementations, numerical reports and convergence plots
+are new post-event work. Reference conflicts, refinement differences and the
+separate qualification scope of mode calculations are retained explicitly.
