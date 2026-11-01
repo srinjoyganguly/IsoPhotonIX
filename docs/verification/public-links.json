@@ -1,0 +1,55 @@
+{
+  "checked_at_utc": "2026-11-01T15:21:16.206Z",
+  "browser_environment": {
+    "automation": "Playwright 1.62.1",
+    "browser": "Google Chrome on Windows, fresh isolated context",
+    "transport_arguments": [
+      "--no-proxy-server",
+      "--disable-quic",
+      "--disable-http2"
+    ],
+    "authentication": "No preloaded cookies or saved session; demo context also had no cookies after playback."
+  },
+  "repository": {
+    "url": "https://github.com/srinjoyganguly/photonics-workbench",
+    "http_status": 200,
+    "checked_in": [
+      "Chrome",
+      "Edge"
+    ],
+    "public_badge_visible": true,
+    "sign_in_link_visible": true,
+    "file_tree_and_readme_visible": true,
+    "initial_cookies": [],
+    "limitation": "DOMContentLoaded timed out while GitHub CDN scripts loaded; repository, file list, Public badge, Sign in link, and README were visible without authentication."
+  },
+  "demo": {
+    "page_url": "https://srinjoyganguly.github.io/photonics-workbench/",
+    "page_status": 200,
+    "video_url": "https://srinjoyganguly.github.io/photonics-workbench/demo.mp4",
+    "media_http_statuses": [
+      206,
+      206
+    ],
+    "duration_seconds": 84.4,
+    "width": 1440,
+    "height": 1000,
+    "playback": {
+      "current_time_seconds": 2.0156,
+      "ready_state": 3,
+      "paused": false,
+      "decoded_frames": 54,
+      "error": null
+    },
+    "endcard_seek": {
+      "current_time_seconds": 78.0136,
+      "ready_state": 3,
+      "decoded_frames": 234,
+      "error": null
+    },
+    "initial_cookies": [],
+    "final_cookies": [],
+    "local_published_file_sha256": "2dd061331832d86c02154cfd3f3e96dbc763f2e642d030414c59754f5ee77d90",
+    "network_note": "One media range request logged net::ERR_ABORTED. Playback before and after seeking decoded frames successfully; video.error remained null."
+  }
+}

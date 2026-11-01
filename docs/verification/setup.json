@@ -1,0 +1,15 @@
+{
+  "api_environment": "Fresh Python3.11 virtual environment; official PyPI wheel SHA256 verified; no inherited site-packages",
+  "pip_check": "No broken requirements found",
+  "focused_tests": {
+    "passed": 15,
+    "skipped": 1,
+    "skip_reason": "Meep lives in a separate interpreter; its dedicated 2-test suite passed"
+  },
+  "hashes": {
+    "requirements-api.txt": "63e81cbe083ec2e5fe9b8851580e22fe94e73d524be1ca0350f6b61aebf2d3a5",
+    "frontend/pnpm-lock.yaml": "84493e654fcb8bb27b1e25c85ca2cd20775a1693ff781ac0251708787fa0adff",
+    "docs/demo.mp4": "2dd061331832d86c02154cfd3f3e96dbc763f2e642d030414c59754f5ee77d90",
+    "docs/application.png": "c95ba78a27895c76998bd61191c149f70d964859b6a63ac7d4246f72762da309"
+  }
+}

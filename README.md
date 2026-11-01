@@ -36,6 +36,11 @@ chatbot, cloud solver, or paid commercial solver license is required.
 
 ## Run locally
 
+The [v0.1.0 release bundle](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.1.0)
+includes source and the built interface. After extracting it, install the API
+and solver environments in the setup guide, then run `bash scripts/start.sh`;
+you can skip the Node build step. Solver binaries and environments are not bundled.
+
 Use Linux or WSL2, Python 3.11, Conda for Meep, and Node 22.12+ for building the
 interface. Follow [the full setup instructions](docs/SETUP.md) to install the
 separate API and solver environments, then:
@@ -95,6 +100,11 @@ the route works.
 [HTTP, browser, cancellation, and demo evidence](docs/verification/) records the
 checks. [Optional browser-test instructions](docs/browser-tests.md) describe the
 separate Playwright setup used for UI verification.
+
+The repository and demo were checked in fresh signed-out browsers. Public video
+playback and seeking worked, with no authentication cookies; the measured
+duration is 84.4 seconds. [Link-check evidence](docs/verification/public-links.json)
+records the observations.
 
 ## Scientific scope and limitations
 

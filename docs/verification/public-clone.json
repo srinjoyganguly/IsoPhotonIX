@@ -1,0 +1,19 @@
+{
+  "clone_url": "https://github.com/srinjoyganguly/photonics-workbench.git",
+  "commit": "edfea1d66b7ea1934506dfc893efbe66cf912dd7",
+  "authentication": "GIT_TERMINAL_PROMPT=0 and empty credential.helper; no credentials supplied",
+  "focused_tests": {
+    "passed": 15,
+    "skipped": 1
+  },
+  "real_cli_run": {
+    "solver": "meep",
+    "device": "cpu",
+    "field_shape": [
+      100,
+      200
+    ],
+    "peak_abs": 0.32329729199409485
+  },
+  "environment_scope": "Fresh public checkout; separately verified existing local API and Meep interpreters selected with documented override."
+}

@@ -2,7 +2,7 @@
 
 Use Linux x86-64 or WSL2. The current development machine is WSL2 on Linux
 6.6.87.2 with an RTX 3080 Ti Laptop GPU (16 GB), NVIDIA driver 617.42, and Python
-3.11. CPU execution does not need an NVIDIA GPU. Native Windows solver
+3.11.15 for the API/FDTDX environment (3.11.18 for Meep). CPU execution does not need an NVIDIA GPU. Native Windows solver
 execution is not supported by this milestone.
 
 The API and numerical solvers use separate interpreters. The backend launches
@@ -115,6 +115,10 @@ paths; that file is ignored by Git and must not be published.
 
 ## 4. Build and serve the interface
 
+If you downloaded the release bundle, `frontend/dist` is already included;
+skip the build commands and run `bash scripts/start.sh` after setting up the
+API and solver environments. A source checkout needs the build below.
+
 Use Node 22.12 or newer and pnpm 11.25.0. A pnpm lockfile records the frontend
 dependencies. If Corepack is not bundled with your Node installation, install
 Corepack according to the [official pnpm instructions](https://pnpm.io/installation).
@@ -190,20 +194,12 @@ configuration. Check the completed metadata against the selected backend and
 device. Editing the current design must not change the saved run metadata.
 
 The optional automated browser check is in `frontend/browser-smoke.cjs` and
-uses Playwright 1.62.1. With the API running and Chromium installed:
-
-```bash
-cd frontend
-corepack pnpm exec playwright install chromium
-PHOTONICS_TEST_TARGET=meep:cpu corepack pnpm test:browser
-PHOTONICS_TEST_TARGET=fdtdx:cpu corepack pnpm test:browser
-PHOTONICS_TEST_TARGET=fdtdx:gpu corepack pnpm test:browser
-```
-
-The event checks used installed Google Chrome via
-`PHOTONICS_BROWSER_CHANNEL=chrome`. Only select installed solver targets;
-these checks start real computations and do not mock field data. Screenshots
-and downloads default to the ignored `frontend/test-results/` directory.
+uses a separate Playwright 1.62.1 installation. Follow
+[the browser-testing instructions](browser-tests.md), including `NODE_PATH`
+and browser setup. Playwright is not part of the application's build/runtime
+dependency set. The event checks used installed Google Chrome on Windows.
+Only select installed solver targets; these checks execute real computations
+and do not mock field data.
 
 ## Reproduce an export
 
