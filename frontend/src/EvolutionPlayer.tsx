@@ -5,7 +5,7 @@ import { request } from './api';
 type FrameInfo = {count:number;times_fs:number[];global_peak_abs:number};
 type Frame = {field:number[][];time_fs:number;index:number};
 
-export function EvolutionPlayer({jobId,data}:{jobId:string;data:Field}) {
+export function EvolutionPlayer({jobId,data,active=true}:{jobId:string;data:Field;active?:boolean}) {
   const [info,setInfo]=useState<FrameInfo|null>(null);
   const [frame,setFrame]=useState<Frame|null>(null);
   const [index,setIndex]=useState(0);
@@ -40,11 +40,12 @@ export function EvolutionPlayer({jobId,data}:{jobId:string;data:Field}) {
   },[jobId,index,info,retry,data.x_um.length,data.y_um.length]);
 
   useEffect(()=>{
+    if(!active){setPlaying(false);return;}
     if(!playing || !info || !frame || loading || error || frame.index!==index)return;
     if(index>=info.count-1){setPlaying(false);return;}
     const timer=setTimeout(()=>setIndex(current=>current+1),300);
     return()=>clearTimeout(timer);
-  },[playing,info,frame,index,loading,error]);
+  },[active,playing,info,frame,index,loading,error]);
 
   function toggle(){
     if(!info)return;

@@ -3,6 +3,7 @@ import { FieldCanvas, type Field } from './FieldCanvas';
 import { request } from './api';
 import { EvolutionPlayer } from './EvolutionPlayer';
 import { RunPassport } from './RunPassport';
+import { GeometryEditor } from './GeometryEditor';
 
 type Solver = 'meep' | 'fdtdx';
 type Device = 'cpu' | 'gpu';
@@ -68,6 +69,7 @@ function Geometry({config}: {config: Config}) {
 
 
 export default function App() {
+  const [workspace,setWorkspace]=useState<'design'|'simulation'>('design');
   const [config,setConfig]=useState<Config>(defaults);
   const [geometryConfig,setGeometryConfig]=useState<Config>(defaults);
   const [loaded,setLoaded]=useState(false);
@@ -155,7 +157,10 @@ export default function App() {
   const executionDevice=resultMetadata.device_name || resultMetadata.actual_device;
   const executionVersions=resultMetadata.versions as Record<string,string>|undefined;
   return <div className="app-shell">
-    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">EXAMPLE / 01</span><strong>Dielectric slab waveguide</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.2 · experimental</span></div></header>
+    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':'EXAMPLE / 01'}</span><strong>{workspace==='design'?'Local geometry workspace':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.3 preview · experimental</span></div></header>
+    <nav className="workspace-navigation" aria-label="Workspace"><button aria-pressed={workspace==='design'} onClick={()=>setWorkspace('design')}>3D design</button><button aria-pressed={workspace==='simulation'} onClick={()=>setWorkspace('simulation')}>2D simulation</button><span>Open geometry. Explicit hardware. Inspectable results.</span></nav>
+    <div hidden={workspace!=='design'}><GeometryEditor slabConfig={geometryConfig} onSimulation={()=>setWorkspace('simulation')}/></div>
+    <div hidden={workspace!=='simulation'}>
     <div className="intro-row"><div><span className="eyebrow">FROM GEOMETRY TO FIELD</span><h1>A small waveguide. Real physics.</h1><p>Real fields on your own hardware. No solver activation fees. Results you can inspect and reproduce.</p></div><button className="button secondary open-example" onClick={openExample} disabled={!loaded || !!busy}><Symbol kind="folder"/>Open bundled example</button></div>
     <main className="workbench">
       <aside className="panel model-panel">
@@ -172,7 +177,7 @@ export default function App() {
         <div className="panel viewport-panel">
           <div className="viewport-top"><div className="view-tabs" role="tablist" aria-label="Viewport"><button role="tab" aria-selected={view==='geometry'} className={view==='geometry'?'active':''} onClick={()=>setView('geometry')}>Geometry</button><button role="tab" aria-selected={view==='field'} disabled={!field} className={view==='field'?'active':''} onClick={()=>setView('field')}>Ez field{field&&<i/>}</button><button role="tab" aria-selected={view==='evolution'} disabled={!field} className={view==='evolution'?'active':''} onClick={()=>setView('evolution')}>Time evolution</button><button role="tab" aria-selected={view==='epsilon'} disabled={!field} className={view==='epsilon'?'active':''} onClick={()=>setView('epsilon')}>Material grid</button></div><span className="dimension-tag">XY PLANE</span></div>
           <div className="viewport-title"><div><h2>{view==='geometry'?'Your simulation domain':view==='field'?'Electric field, Ez':view==='evolution'?'Watch the field propagate':'Discretized material'}</h2><p>{view==='geometry'?(validationError?'Last valid geometry · fix parameters before running':'Geometry preview · no numerical field shown'):view==='field'?'Actual solver output · final time snapshot':view==='evolution'?'Recorded solver frames · one fixed amplitude scale':'Relative permittivity returned by the solver'}</p></div><span className="viewport-badge">{view==='geometry'?'DESIGN':view==='evolution'?'RECORDED':'COMPUTED'}</span></div>
-          <div className="viewport-content">{view==='geometry'?<Geometry config={geometryConfig}/>:field?view==='evolution'&&job?<EvolutionPlayer key={job.id} jobId={job.id} data={field}/>:<FieldCanvas data={field} view={view==='epsilon'?'epsilon':'field'}/>:null}</div>
+          <div className="viewport-content">{view==='geometry'?<Geometry config={geometryConfig}/>:field?view==='evolution'&&job?<EvolutionPlayer key={job.id} jobId={job.id} data={field} active={workspace==='simulation'}/>:<FieldCanvas data={field} view={view==='epsilon'?'epsilon':'field'}/>:null}</div>
           <div className="viewport-footer">{view==='geometry'?<><span><i className="legend-core"/>Dielectric core</span><span><i className="legend-source"/>Finite source</span><span><i className="legend-pml"/>Absorbing PML</span></>:<><span className="computed-dot"/> {name(job?.config.solver || 'meep')} · {job?.config.device.toUpperCase()} · {field?.field[0]?.length} × {field?.field.length} samples</>}</div>
         </div>
         <div className="panel results-panel">
@@ -201,6 +206,7 @@ export default function App() {
         <div className="execution-notes"><Symbol kind="cpu" size={18}/><p>No commercial solver license.<br/>No cloud compute. No silent fallback.</p></div>
       </aside>
     </main>
+    </div>
     {error&&<div className="global-message error-banner" role="alert"><span>{error}</span><button onClick={()=>setError('')} aria-label="Dismiss error">×</button></div>}
     {notice&&<div className="global-message notice" role="status"><span>{notice}</span><button onClick={()=>setNotice('')} aria-label="Dismiss notice">×</button></div>}
     <footer className="app-footer"><span><i/> OPEN SOURCE PHOTONICS</span><span>Meep + FDTDX / JAX<span className="footer-separator">·</span>Built for exploring, learning, and inspecting.</span></footer>

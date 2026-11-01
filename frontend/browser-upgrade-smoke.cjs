@@ -18,7 +18,7 @@ const {chromium}=require('playwright');
     assert.deepEqual(actual,[...expected,255],'Canvas sample must equal the real numerical array using its declared scale.');
   }
   try{
-    await page.goto(base);await page.getByText('Parameters validated',{exact:false}).waitFor();
+    await page.goto(base);await page.getByRole('button',{name:'2D simulation',exact:true}).click();await page.getByText('Parameters validated',{exact:false}).waitFor();
     await page.getByLabel('Core width',{exact:true}).fill('0.65');await page.getByText('Parameters validated',{exact:false}).waitFor();
     const target=process.env.PHOTONICS_TEST_TARGET||'meep:cpu';await page.locator(`input[name="execution-target"][value="${target}"]`).check({force:true});
     await page.getByRole('button',{name:'Run simulation'}).click();await page.locator('.status-tag.completed').waitFor({timeout:180000});await page.locator('.field-canvas').waitFor();
@@ -32,6 +32,20 @@ const {chromium}=require('playwright');
     assert.equal(await page.locator('.frame-time strong').textContent(),`${last.time_fs.toFixed(2)} fs`);
     await page.getByRole('button',{name:'Play recorded frames'}).click();await page.waitForFunction(()=>Number(document.querySelector('.frame-scrubber strong')?.textContent?.split('/')[0])>=3);await page.getByRole('button',{name:'Pause playback'}).click();
     await page.waitForFunction(()=>document.querySelector('.frame-time small')?.textContent==='Simulated time');
+    await page.getByLabel('Recorded frame',{exact:true}).focus();await page.getByLabel('Recorded frame',{exact:true}).press('Home');await waitFrame(0,info.count);
+    await page.getByRole('button',{name:'Play recorded frames'}).click();
+    await page.waitForFunction(()=>Number(document.querySelector('.frame-scrubber strong')?.textContent?.split('/')[0])>=3);
+    await page.getByRole('button',{name:'3D design',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelector('.frame-play')?.getAttribute('aria-label')==='Play recorded frames'&&document.querySelector('.frame-time small')?.textContent==='Simulated time');
+    const hiddenFrame=await page.locator('.frame-scrubber strong').textContent();
+    const hiddenTime=await page.locator('.frame-time strong').textContent();
+    await page.waitForTimeout(1200);
+    assert.equal(await page.locator('.frame-scrubber strong').textContent(),hiddenFrame,'Hidden simulation playback must not advance.');
+    assert.equal(await page.locator('.frame-time strong').textContent(),hiddenTime,'Hidden simulation must retain its displayed time.');
+    await page.getByRole('button',{name:'2D simulation',exact:true}).click();
+    assert.equal(await page.getByRole('button',{name:'Play recorded frames'}).isVisible(),true,'Returning to simulation must leave playback paused.');
+    assert.equal(await page.locator('.frame-scrubber strong').textContent(),hiddenFrame,'Returning to simulation must retain its frame.');
+    assert.equal(await page.locator('.frame-time strong').textContent(),hiddenTime,'Returning to simulation must retain its time.');
     await page.screenshot({path:path.join(output,'time-evolution.png'),fullPage:true});
     await page.getByRole('tab',{name:'Ez field',exact:true}).click();const final=await json(`/api/jobs/${id}/field`);const finalPeak=Math.max(...final.field.flat().map(Math.abs));await comparePixel(final.field,finalPeak);
     await page.locator('.run-passport>summary').click();await page.locator('.passport-file code').first().waitFor();const passport=await json(`/api/jobs/${id}/passport`);
@@ -47,7 +61,7 @@ const {chromium}=require('playwright');
     await page.getByLabel('Recorded frame',{exact:true}).focus();await page.getByLabel('Recorded frame',{exact:true}).press('ArrowRight');await page.getByRole('alert').filter({hasText:'Time evolution unavailable'}).waitFor();
     await page.unroute(failing);await page.getByRole('button',{name:'Retry',exact:true}).click();await waitFrame(1,secondInfo.count);
     assert.deepEqual(errors,[]);
-    const report={passed:true,target,run_id:id,second_run_id:second,frame_count:info.count,global_peak_abs:info.global_peak_abs,checks:['real array-to-canvas equality','fixed amplitude scale','exact fs label','play and pause recorded frames','final snapshot preserved','passport hashes and reproduction command','immutable passport config','new run resets frames','visible injected transport failure and real retry','390px no horizontal overflow'],browser_errors:errors};
+    const report={passed:true,target,run_id:id,second_run_id:second,frame_count:info.count,global_peak_abs:info.global_peak_abs,checks:['real array-to-canvas equality','fixed amplitude scale','exact fs label','play and pause recorded frames','workspace switch pauses playback and preserves frame/time','final snapshot preserved','passport hashes and reproduction command','immutable passport config','new run resets frames','visible injected transport failure and real retry','390px no horizontal overflow'],browser_errors:errors};
     fs.writeFileSync(path.join(output,'upgrade-smoke.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
   }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

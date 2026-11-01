@@ -20,6 +20,7 @@ const { chromium } = require('playwright');
   page.on('pageerror', e => errors.push(e.message));
   try {
     await page.goto(process.env.PHOTONICS_URL || 'http://127.0.0.1:8000');
+    await page.getByRole('button', {name:'2D simulation', exact:true}).click();
     await page.getByText('Parameters validated', {exact:false}).waitFor();
     const run = page.getByRole('button', { name: 'Run simulation' });
     assert.equal(await run.isDisabled(), true, 'Run must require explicit target selection.');
@@ -58,7 +59,7 @@ const { chromium } = require('playwright');
     assert.ok((await page.locator('.run-facts').textContent()).includes('0.65 µm'),'Editing must preserve the run snapshot.');
     await page.getByRole('button',{name:'Open bundled example'}).click();
     assert.equal(await run.isDisabled(),true,'Opening an example must require explicit target confirmation.');
-    await page.locator('input[type="file"]').setInputFiles({name:'partial-config.json',mimeType:'application/json',buffer:Buffer.from('{"wavelength_um":1.6}')});
+    await page.locator('.model-actions input[type="file"]').setInputFiles({name:'partial-config.json',mimeType:'application/json',buffer:Buffer.from('{"wavelength_um":1.6}')});
     await page.getByText('Configuration imported.',{exact:false}).waitFor();
     assert.equal(await page.getByLabel('Wavelength',{exact:true}).inputValue(),'1.6');
     assert.equal(await page.getByLabel('Core width',{exact:true}).inputValue(),'0.6','Partial imports must retain schema defaults.');

@@ -9,6 +9,19 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
+**Post-event development: v0.3 preview.** A new interactive **3D design**
+workspace adds orbit/pan/zoom, selection, editable boxes/cylinders/rings,
+strip/coupler/ring templates, undo/redo, and portable geometry JSON. Open
+**2D simulation** for the tested Meep/FDTDX workflow. The 3D editor produces
+geometry drafts; it does not yet execute finite-height 3D simulations.
+[3D workspace guide](docs/3D_WORKSPACE.md) · [Product roadmap](docs/ROADMAP.md) ·
+[Packaging and desktop design](docs/PACKAGING.md).
+
+The submitted v0.2 releases and recordings below preserve the event build.
+The 3D editor was added after submission and is not part of that entry.
+
+![Interactive 3D geometry workspace with an editable ring and bus](docs/3d-workspace.png)
+
 **[Watch the 70-second submission demo](https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/photonics-workbench/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
 
 The [24-second Blender journey](https://srinjoyganguly.github.io/photonics-workbench/#blender-journey)
@@ -36,7 +49,7 @@ describe the distinction and its limits.
 
 ## The complete journey
 
-1. Open the bundled slab-waveguide example.
+1. Choose **2D simulation** and open the bundled slab-waveguide example.
 2. Edit wavelength, core width, and refractive indices. Numerical settings expose
    domain size, grid resolution, simulation duration, and PML thickness.
 3. Read the capability-based solver recommendation and validation messages.
@@ -91,6 +104,16 @@ are used explicitly. Set `MEEP_PYTHON` or `FDTDX_PYTHON` when the corresponding
 solver lives outside the default project-local environment.
 
 ## Verification status
+
+The post-event [3D editor checks](docs/verification/3d-editor.json) cover actual
+WebGL orbit/pan/zoom, picking, edits, undo/redo, import/export, draft recovery,
+cross-tab conflicts, responsive layouts, and context-loss/unavailable-WebGL
+behavior. All 12 geometry-model tests passed. [Fresh browser regressions](docs/verification/3d-solver-regression.json)
+also passed real Meep CPU and FDTDX NVIDIA GPU runs, numerical ZIP checks,
+and exact recorded-frame playback. These verify a geometry editor alongside
+the existing 2D solver workflow; they do not establish a 3D solver adapter.
+
+The table below also retains evidence from the submitted v0.2 baseline.
 
 | Route or check | Evidence and status |
 | --- | --- |
@@ -154,6 +177,9 @@ alone does not establish working execution. Native Windows solver execution,
 other GPUs, remote compute, multi-GPU jobs, and MPI are not supported by this
 milestone.
 
+The 3D workspace supports bounded parametric draft geometry and requires WebGL 2
+for interactive rendering. It has no 3D sources, monitors, solver translation,
+or computed 3D fields yet. Refractive indices are stored draft properties.
 MPB, BeamZ, generalized CAD/GDS editing, optimization, multiphysics, and broad
 commercial-tool feature parity are future work.
 

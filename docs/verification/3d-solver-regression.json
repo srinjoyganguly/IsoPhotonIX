@@ -1,0 +1,136 @@
+{
+  "checked_at": "2026-11-01T19:07:27.963325+00:00",
+  "scope": "Regression of the existing real 2D simulation journey after introducing the separate 3D design workspace. This is not verification of 3D simulation.",
+  "mock_solver_data": false,
+  "browser": "Installed Google Chrome, headless, Playwright 1.62.1",
+  "routes": [
+    {
+      "passed": true,
+      "target": "meep:cpu",
+      "checks": [
+        "explicit target required",
+        "physical validation",
+        "edited configuration run",
+        "actual field canvas",
+        "responsive layouts",
+        "discretized material view",
+        "ZIP export",
+        "immutable run configuration",
+        "example reset clears target",
+        "partial import uses defaults and clears target"
+      ],
+      "browser_errors": [],
+      "run_id": "fdb0fd1b518d4ccdb641b4bc626beb6b",
+      "configuration": {
+        "core_width_um": 0.65,
+        "wavelength_um": 1.55,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "actual_device": "CPU",
+      "device_name": null,
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "field_shape": [
+        100,
+        200
+      ],
+      "frame_shape": [
+        25,
+        100,
+        200
+      ],
+      "peak_abs": 0.32501402497291565,
+      "export_sha256": "ff178a59fe98124f8a919903fbd15a6e8772c6c1cbf05e16a7ec75bcde944ee1",
+      "export_manifest_verified": true,
+      "all_exported_arrays_finite": true,
+      "exported_config_target_and_edited_width_verified": true
+    },
+    {
+      "passed": true,
+      "target": "fdtdx:gpu",
+      "checks": [
+        "explicit target required",
+        "physical validation",
+        "edited configuration run",
+        "actual field canvas",
+        "responsive layouts",
+        "discretized material view",
+        "ZIP export",
+        "immutable run configuration",
+        "example reset clears target",
+        "partial import uses defaults and clears target"
+      ],
+      "browser_errors": [],
+      "run_id": "ca4bd04977064b4aa333f5dbb1418b49",
+      "configuration": {
+        "core_width_um": 0.65,
+        "wavelength_um": 1.55,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "field_shape": [
+        100,
+        200
+      ],
+      "frame_shape": [
+        25,
+        100,
+        200
+      ],
+      "peak_abs": 1.1554888486862183,
+      "export_sha256": "9e20684586b90f206c80b4ce40e3a380b286f0db2ab4a2d263120bca640181b0",
+      "export_manifest_verified": true,
+      "all_exported_arrays_finite": true,
+      "exported_config_target_and_edited_width_verified": true
+    }
+  ],
+  "recorded_playback_and_passport": {
+    "passed": true,
+    "target": "meep:cpu",
+    "run_id": "cc7503709b834ef79bc90cf02171db56",
+    "second_run_id": "0f451bf6bf664f5b8b822fddf3ec46fc",
+    "frame_count": 25,
+    "global_peak_abs": 0.33543330430984497,
+    "checks": [
+      "real array-to-canvas equality",
+      "fixed amplitude scale",
+      "exact fs label",
+      "play and pause recorded frames",
+      "workspace switch pauses playback and preserves frame/time",
+      "final snapshot preserved",
+      "passport hashes and reproduction command",
+      "immutable passport config",
+      "new run resets frames",
+      "visible injected transport failure and real retry",
+      "390px no horizontal overflow"
+    ],
+    "browser_errors": [],
+    "checked_at": "2026-11-01T19:12:29.361049+00:00",
+    "workspace_switch_check": {
+      "started_playback_from_frame": 0,
+      "advanced_before_switch": true,
+      "hidden_workspace_observation_ms": 1200,
+      "paused_while_hidden": true,
+      "frame_and_time_unchanged_while_hidden": true,
+      "frame_and_time_retained_on_return": true,
+      "resumed_automatically": false
+    }
+  },
+  "limitations": [
+    "Only Meep CPU and FDTDX GPU were rerun in this regression. FDTDX CPU evidence remains the earlier milestone verification.",
+    "Existing qualified solver environments were reused; this does not establish clean installation.",
+    "No claim of scientific convergence or calibrated transmission; the edited waveguide remains the educational 2D model."
+  ]
+}

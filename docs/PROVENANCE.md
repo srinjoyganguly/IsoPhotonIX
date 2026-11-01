@@ -18,3 +18,17 @@ The presentation's Blender scene is original work made during the event.
 Its geometry is a 3D schematic and its field textures come from a recorded 2D
 FDTDX GPU run. The scientific calculation and the presentation rendering are
 separate, and that distinction is displayed in the film.
+
+## Post-event development
+
+The interactive 3D design workspace was started after the successful submission,
+at approximately 18:59 Europe/London on 1 November 2026, from clean commit
+`8fc60bd`. This work is separate from the submitted v0.2 release and its videos.
+The first development branch is `feat/interactive-3d-workspace`.
+
+Its geometry editor, validation, templates, and browser checks are new project
+code. Three.js 0.187.0 supplies rendering and OrbitControls supplies camera
+interaction; their MIT notice is retained. No commercial-tool assets, private
+screenshots, or private submission material were reused. Current solver APIs
+and numerical scope remain the existing 2D slab model. The product and packaging
+plans distinguish implemented features from later qualification work.

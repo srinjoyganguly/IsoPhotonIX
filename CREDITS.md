@@ -63,6 +63,7 @@ solver. Dependency licenses remain with their respective copyright holders.
 | Component | Pinned version | License |
 | --- | --- | --- |
 | React / React DOM | 19.2.0 | [MIT](https://github.com/facebook/react/blob/main/LICENSE) |
+| Three.js / OrbitControls (post-event 3D workspace) | 0.187.0 | [MIT](https://github.com/mrdoob/three.js/blob/dev/LICENSE) |
 | TypeScript | 5.9.3 | [Apache-2.0](https://github.com/microsoft/TypeScript/blob/main/LICENSE.txt) |
 | Vite | 7.2.2 | [MIT](https://github.com/vitejs/vite/blob/main/LICENSE) |
 | FastAPI | 0.120.4 | [MIT](https://github.com/fastapi/fastapi/blob/master/LICENSE) |
@@ -77,6 +78,12 @@ transitive dependencies and their notices. Retain their notices when
 redistributing built bundles or environments.
 The frontend's runtime MIT notices are retained in
 [frontend/THIRD_PARTY_NOTICES.txt](frontend/THIRD_PARTY_NOTICES.txt).
+
+The post-event geometry workspace uses new React editor code and parametric
+templates, rendered through Three.js. Its camera controls use the upstream
+OrbitControls addon. It does not contain code, assets, screenshots, or geometry
+copied from COMSOL or Tidy3D. Type definitions use `@types/three` 0.187.0 in the
+development toolchain; these and their dependency metadata remain in the lockfile.
 
 ## Documentation used
 
