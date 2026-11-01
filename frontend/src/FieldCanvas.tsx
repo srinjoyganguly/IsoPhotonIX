@@ -46,4 +46,3 @@ export function FieldCanvas({data, view, fixedPeak}: {data: Field; view: 'field'
     <div className="sample-readout">{hover}</div>
   </div>;
 }
-
