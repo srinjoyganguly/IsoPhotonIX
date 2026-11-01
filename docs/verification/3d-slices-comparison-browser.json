@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T19:40:57.762Z",
+  "run_id": "d68a7199944a4f3b90b611f9765bcee1",
+  "checks": [
+    "Visible commercial-validation status",
+    "Old samples hidden immediately on component change",
+    "Rapid plane/component changes discard stale delayed responses",
+    "Final canvas sample matches the real saved Ez YZ slice and volume scale",
+    "Same-study CPU/GPU numerical errors match the comparison API",
+    "Comparison export equals the exact API result and retains unvalidated commercial status"
+  ],
+  "comparison": {
+    "reference_run_id": "3bc15312c02c46fa82ad2edb214a8453",
+    "candidate_run_id": "d68a7199944a4f3b90b611f9765bcee1",
+    "overall_relative_l2": 0.0000011541888124667407
+  },
+  "browser_errors": [],
+  "new_solver_run": false,
+  "transport": "Unmodified actual backend responses delayed 500 ms"
+}

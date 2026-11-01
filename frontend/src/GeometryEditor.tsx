@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { GeometryViewport } from './GeometryViewport';
+import { Study3DPanel } from './Study3DPanel';
 import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument,
   serializeGeometryDocument, validateGeometryDocument, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
 import './geometryEditor.css';
@@ -191,11 +192,11 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
           <button className="geo-visibility" aria-label={`${object.visible ? 'Hide' : 'Show'} ${object.name}`} title={`${object.visible ? 'Hide' : 'Show'} in viewport`} onClick={() => apply({ ...scene, objects: scene.objects.map(item => item.id === object.id ? { ...item, visible: !item.visible } : item) })}>{object.visible ? '◉' : '○'}</button>
         </div>)}{!scene.objects.length && <p className="geo-empty">Your scene is empty. Add a shape below.</p>}</div>
         <div className="geo-add"><select aria-label="New shape" value={addKind} onChange={e => setAddKind(e.target.value as GeometryObject['kind'])}><option value="box">Box</option><option value="cylinder">Cylinder</option><option value="ring">Ring</option></select><button className="button secondary compact" onClick={addObject} disabled={scene.objects.length >= 100}>+ Add</button></div>
-        <div className="geo-tree-note">Select a shape in the scene or the viewport. Visibility changes only the preview. Material index is a draft property.</div>
+        <div className="geo-tree-note">Select a shape in the scene or the viewport. Visibility changes only the preview. Material indices enter the solver only after the supported waveguide study validates.</div>
       </aside>
       <div className="geo-stage-column">
         <GeometryViewport document={scene} selectedId={selectedId} onSelect={setSelectedId} resetKey={resetKey}/>
-        <div className="geo-science-boundary"><div><strong>{scene.mode === 'slab-preview' ? 'Extruded view of the 2D slab' : '3D geometry draft'}</strong><p>{scene.mode === 'slab-preview' ? 'The slab solver is invariant along z. The displayed thickness is illustrative and does not change its physics.' : 'These shapes are not connected to a 3D solver yet. Sources, boundaries, and numerical validation come next.'}</p></div><button onClick={onSimulation}>Open tested 2D simulation →</button></div>
+        <div className="geo-science-boundary"><div><strong>{scene.mode === 'slab-preview' ? 'Extruded view of the 2D slab' : '3D geometry'}</strong><p>{scene.mode === 'slab-preview' ? 'The slab solver is invariant along z. The displayed thickness is illustrative and does not change its physics.' : 'The study below validates this exact geometry for the supported finite-height waveguide. Rings, couplers, and other shapes remain editable drafts.'}</p></div><button onClick={onSimulation}>Open tested 2D simulation →</button></div>
         <div className="geo-status" role="status"><span>{saveState}</span><span>X propagation · Y lateral · Z vertical</span></div>
       </div>
       <aside className="panel geo-inspector">
@@ -208,10 +209,11 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
           <NumericInput label="Refractive index" unit="n" step={.05} value={selected.refractive_index} onCommit={refractive_index => editObject({ refractive_index })}/>
           <div className="geo-object-actions"><button onClick={duplicate} disabled={scene.objects.length >= 100}>Duplicate</button><button className="geo-delete" onClick={remove}>Delete object</button></div>
         </div> : <p className="geo-empty">Select a shape to edit its dimensions, position, and material.</p>}
-        <details className="geo-domain"><summary>Design domain</summary>{vectorInputs('Domain', scene.domain, domain => apply({ ...scene, mode: 'draft-3d', domain }))}<p>Objects must fit inside this centred box. Overlaps are allowed as drafts; solver material precedence is not defined.</p></details>
+        <details className="geo-domain"><summary>Design domain</summary>{vectorInputs('Domain', scene.domain, domain => apply({ ...scene, mode: 'draft-3d', domain }))}<p>Objects must fit inside this centred box. Arbitrary overlaps remain drafts. A validated waveguide uses a centred core and optional substrate meeting its lower surface; its adapters define the material placement.</p></details>
         <button className="geo-slab-preview" onClick={() => replace(createSlabPreview(slabConfig), 'Current validated 2D slab opened as an illustrative extrusion.')}>Preview current 2D slab</button>
       </aside>
     </div>
+    <Study3DPanel geometry={scene} onOpenGeometry={document => replace(document, 'Runnable 3D waveguide opened. Choose a CPU or GPU target in the study below.')} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/>
     {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}
     {message && <div className="geo-message geo-notice" role="status"><span>{message}</span><button aria-label="Dismiss geometry notice" onClick={() => setMessage('')}>×</button></div>}
   </div>;

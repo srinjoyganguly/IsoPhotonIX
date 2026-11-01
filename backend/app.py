@@ -14,6 +14,10 @@ from .jobs import JobManager
 from .model import WaveguideConfig
 from .passport import FramesUnavailable, build_passport, passport_html, stored_frames
 from .runtime import ROOT
+from .study3d import Waveguide3DConfig, example3d
+from .volume import stored_volume, volume_info, volume_slice
+from .compare3d import compare_runs
+from pydantic import BaseModel, ConfigDict, Field
 
 manager = JobManager()
 
@@ -24,7 +28,7 @@ async def lifespan(app):
     manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.2.0", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.4.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -41,7 +45,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.2.0", "compute": "local"}
+    return {"status": "ok", "version": "0.4.0-preview.1", "compute": "local"}
 
 
 @app.get("/api/example")
@@ -59,6 +63,42 @@ def validate(config: WaveguideConfig):
     return {"valid": True, "estimate": config.estimate(), "warnings": config.warnings()}
 
 
+@app.get("/api/example3d")
+def get_example3d():
+    return example3d().model_dump()
+
+
+@app.post("/api/validate3d")
+def validate3d(config: Waveguide3DConfig):
+    return {"valid": True, "estimate": config.estimate(), "warnings": config.warnings(),
+            "source": {"component": "Ey", "x_um": -config.geometry.domain.x / 2 + config.pml_um + .5,
+                       "width_um": config.core.size.y, "height_um": config.core.size.z},
+            "boundaries": "PML on all six faces; finite height along Z"}
+
+
+@app.post("/api/jobs3d", status_code=202)
+def create_job3d(config: Waveguide3DConfig):
+    return submit_checked(config)
+
+
+class Compare3DRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    reference_run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,80}$")
+    candidate_run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,80}$")
+
+
+@app.post("/api/compare3d")
+def compare3d(config: Compare3DRequest):
+    reference = get_job(config.reference_run_id)
+    candidate = get_job(config.candidate_run_id)
+    try:
+        return compare_runs(reference, candidate, manager.directory)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    except (OSError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        raise HTTPException(409, "Saved result files are incomplete; comparison is unavailable.") from exc
+
+
 @app.get("/api/jobs")
 def jobs():
     return [manager.get(j) for j in reversed(list(manager.jobs))][:30]
@@ -66,6 +106,10 @@ def jobs():
 
 @app.post("/api/jobs", status_code=202)
 def create_job(config: WaveguideConfig):
+    return submit_checked(config)
+
+
+def submit_checked(config):
     target = next((t for t in capabilities()["targets"] if t["solver"] == config.solver and t["device"] == config.device), None)
     if not target or not target["available"]:
         raise HTTPException(409, (target or {}).get("reason", "Requested execution target is unavailable."))
@@ -98,6 +142,8 @@ def field(job_id: str):
     job = get_job(job_id)
     if job["status"] != "completed":
         raise HTTPException(409, "Results are available only after successful completion.")
+    if job["config"].get("study_type") == "waveguide-3d":
+        raise HTTPException(409, "This is a 3D run. Use the volume and slice endpoints with explicit component and plane.")
     with np.load(manager.directory/job_id/"arrays.npz") as arrays:
         data = {key: arrays[key].tolist() for key in ("field", "epsilon", "x_um", "y_um")}
     return {**data, "metadata": job["result"]}
@@ -108,6 +154,33 @@ def completed_output(job_id):
     if job["status"] != "completed":
         raise HTTPException(409, "Results are available only after successful completion.")
     return job, manager.directory / job_id
+
+
+def load_volume(job_id):
+    job, output = completed_output(job_id)
+    if job["config"].get("study_type") != "waveguide-3d":
+        raise HTTPException(409, "This run is a 2D slab, not a recorded 3D volume.")
+    try:
+        return job, stored_volume(output)
+    except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        raise HTTPException(409, "Saved 3D fields are missing or invalid.") from exc
+
+
+@app.get("/api/jobs/{job_id}/volume")
+def volume(job_id: str):
+    job, data = load_volume(job_id)
+    return {**volume_info(data), "metadata": job["result"]}
+
+
+@app.get("/api/jobs/{job_id}/slice")
+def slice3d(job_id: str, plane: str = "xy", index: int | None = None, component: str = "Ey"):
+    job, data = load_volume(job_id)
+    try:
+        return {**volume_slice(data, plane, index, component), "metadata": job["result"]}
+    except IndexError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @app.get("/api/jobs/{job_id}/passport")
@@ -161,7 +234,10 @@ def export(job_id: str):
         archive.writestr("run-log.txt", job["logs"])
         archive.writestr("passport.html", passport_html(record))
         archive.writestr("manifest.json", json.dumps(manifest, indent=2))
-        archive.writestr("README.txt", "Actual local solver output. Open passport.html for the physical configuration, recorded execution, observed file checks, limitations, and reproduction command. manifest.json contains SHA256 checksums for config.json, metadata.json, and arrays.npz. arrays.npz contains field and epsilon indexed [y,x], x_um and y_um coordinates, plus any actual recorded frames/times_fs. Field is signed Ez in arbitrary source units, not normalized transmission. The final snapshot may be later than the last recorded animation frame. Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (use a new output directory).\n")
+        array_note = ("3D arrays: fields[component,z,y,x] in Ex/Ey/Ez order, field=Ey[z,y,x], epsilon[z,y,x], and x_um/y_um/z_um display coordinates. Final-time snapshots only. Read metadata field_sampling before interpreting interpolated Yee-grid samples. FDTDX also retains raw_fields and their coordinate convention. "
+                      if job["config"].get("study_type") == "waveguide-3d" else
+                      "2D arrays: field and epsilon[y,x], x_um/y_um, plus any frames/times_fs. Field is signed Ez. The final snapshot may be later than the last recorded frame. ")
+        archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json contains SHA256 hashes for config.json, metadata.json, arrays.npz. " + array_note + "Fields use arbitrary source amplitude, not normalized transmission. Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (new output directory).\n")
     stream.seek(0)
     return StreamingResponse(stream, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="waveguide-{job_id[:8]}.zip"'})
 

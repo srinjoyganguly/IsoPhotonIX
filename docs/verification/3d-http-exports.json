@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-11-01T19:32:37.834692+00:00",
+  "passed": true,
+  "mock_numerical_data": false,
+  "scope": "Actual completed 3D runs: API/export sample identity, provenance hashes and finite fields. Not an external accuracy benchmark.",
+  "runs": [
+    {
+      "run_id": "86d9e9749d6f455d8e0adc5d6e72280d",
+      "solver": "meep",
+      "requested_device": "cpu",
+      "actual_device": "CPU",
+      "shape": [
+        64,
+        64,
+        128
+      ],
+      "all_components_nonzero": true,
+      "finite": true,
+      "exact_api_slices_checked": 27,
+      "manifest_verified": true,
+      "saved_config_immutable": true,
+      "field_sampling": "Meep get_array linearly interpolates all three electric components from the Yee lattice onto common cell-center coordinates; exported fields are float32 samples of the final solver state.",
+      "export_sha256": "90af3eb234152b75de1d6e5d1d7405f910ad2d6102399ce8b77bc3c789b627ee"
+    },
+    {
+      "run_id": "d68a7199944a4f3b90b611f9765bcee1",
+      "solver": "fdtdx",
+      "requested_device": "gpu",
+      "actual_device": "cuda:0",
+      "shape": [
+        63,
+        63,
+        127
+      ],
+      "all_components_nonzero": true,
+      "finite": true,
+      "exact_api_slices_checked": 27,
+      "manifest_verified": true,
+      "saved_config_immutable": true,
+      "field_sampling": "Four neighbouring Yee samples averaged spatially to each cell centre; positive outermost x/y/z cell omitted to avoid extrapolation. Raw staggered fields and material grid are preserved in the export. No temporal interpolation.",
+      "export_sha256": "b2fc161fd67197afdbd9268cb63aecadbe464e9c11c0a39bcc7418aedf984c74"
+    },
+    {
+      "run_id": "3bc15312c02c46fa82ad2edb214a8453",
+      "solver": "fdtdx",
+      "requested_device": "cpu",
+      "actual_device": "cpu:0",
+      "shape": [
+        63,
+        63,
+        127
+      ],
+      "all_components_nonzero": true,
+      "finite": true,
+      "exact_api_slices_checked": 27,
+      "manifest_verified": true,
+      "saved_config_immutable": true,
+      "field_sampling": "Four neighbouring Yee samples averaged spatially to each cell centre; positive outermost x/y/z cell omitted to avoid extrapolation. Raw staggered fields and material grid are preserved in the export. No temporal interpolation.",
+      "export_sha256": "1175441684bf57a70b5dc68445c46ae16530c083215acea999da2df1eb15e318"
+    }
+  ]
+}

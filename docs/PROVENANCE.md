@@ -29,6 +29,14 @@ The first development branch is `feat/interactive-3d-workspace`.
 Its geometry editor, validation, templates, and browser checks are new project
 code. Three.js 0.187.0 supplies rendering and OrbitControls supplies camera
 interaction; their MIT notice is retained. No commercial-tool assets, private
-screenshots, or private submission material were reused. Current solver APIs
-and numerical scope remain the existing 2D slab model. The product and packaging
+screenshots, or private submission material were reused. At that stage, solver APIs
+and numerical scope remained the existing 2D slab model. The product and packaging
 plans distinguish implemented features from later qualification work.
+
+The next post-event increment began at approximately 19:15 Europe/London on
+1 November 2026 from commit `8f5c0cf`, on branch `feat/finite-3d-solvers`.
+It adds a bounded schema-version-2 finite-height waveguide study, new Meep and
+FDTDX 3D adapters, explicit CPU/GPU routes, actual volume slices, and numerical
+checks. Existing qualified environments were reused. This is new post-event
+application code, not part of the hackathon submission. Neither solver source
+nor earlier research-project code was copied into the adapters.

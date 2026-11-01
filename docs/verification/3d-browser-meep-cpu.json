@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T19:27:18.962Z",
+  "target": "meep:cpu",
+  "run_id": "86d9e9749d6f455d8e0adc5d6e72280d",
+  "shape": [
+    64,
+    64,
+    128
+  ],
+  "actual_device": "CPU",
+  "device_name": "CPU",
+  "browser": "156.0.8078.74",
+  "checks": [
+    "Unsupported draft rejected; exact edited geometry submitted; explicit execution target; real completed 3D worker",
+    "Actual XY/XZ/YZ slices; per-component scale; exact API-to-canvas samples; physical slice coordinate; Ez selection; material grid",
+    "Immutable run geometry after editor changes; run passport observed checks; actual result ZIP export; responsive 390px; no browser exceptions"
+  ],
+  "browser_errors": []
+}

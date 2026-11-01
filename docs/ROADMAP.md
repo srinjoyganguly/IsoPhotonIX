@@ -18,10 +18,22 @@ feature by feature instead of claiming parity with COMSOL or Tidy3D.
 The [v0.2 evidence](../README.md#verification-status) covers one 2D dielectric
 slab journey using Meep CPU and FDTDX CPU/NVIDIA GPU, validated input, explicit
 target selection, real recorded fields, cancellation, immutable run metadata,
-and export with a run passport and file hashes. FDTDX's current three-cell
+and export with a run passport and file hashes. That route's three-cell
 periodic extrusion is a model invariant along z; it is not a finite-height 3D
 device. The Blender film is a presentation, not a geometry editor or a solved
 3D field.
+
+The post-event v0.4 preview adds a distinct schema-version-2 study for a centred
+finite-height straight guide and optional substrate. It connects the actual
+editor geometry to Meep CPU and FDTDX CPU/NVIDIA GPU, saves full Ex/Ey/Ez
+volumes, and exposes coordinate-aware field/material slices and exports.
+[3D usage and evidence](3D_SIMULATION.md) distinguish exact geometry checks,
+CPU/GPU consistency, and limited resolution/PML sensitivity from scientific
+convergence. This is a bounded first study, not a general CAD-to-solver pipeline.
+A saved-run comparison reports repeatability for identical studies from one
+solver, including CPU/GPU pairs; it does not compare calibrated observables
+across solvers. [Validation status and remaining gates](VALIDATION.md) explicitly
+record that analytical qualification and commercial agreement are unfinished.
 
 Keep these useful properties through every milestone: local computation,
 visible assumptions, reproducible files, actual device verification, and no
@@ -45,7 +57,7 @@ Public packaging support still depends on actual installation tests. A desktop
 shell should reuse the UI and local API; it should not create a second modeling
 application to maintain.
 
-## Milestone 1: implement now
+## Milestone 1: interactive workspace
 
 Status: implemented as the post-event v0.3 preview on
 `feat/interactive-3d-workspace`. See the [workspace guide](3D_WORKSPACE.md),
@@ -77,6 +89,12 @@ appearance, not evidence that geometry manipulation or solver integration works.
 
 ## Milestone 2: establish the shared model
 
+Current increment: a strict v2 finite-waveguide study embeds the existing
+versioned geometry, material indices, domain, numerical settings and explicit
+target, while retaining v1 slab compatibility. Sources and boundaries follow
+one documented fixed model. The generalized project/layer/monitor schema below
+remains future work.
+
 Introduce a versioned `Project` containing stable identifiers and explicit units.
 Separate editable design state, a validated study specification, and an immutable
 run snapshot. Camera positions and object visibility are presentation state;
@@ -96,6 +114,14 @@ a rejection, not substitute a different source, boundary, material, or dimension
 Imported files are data, never executable Python or shell commands.
 
 ## Milestone 3: prove a 3D numerical journey
+
+Current increment: the first full 3D straight-guide journey is implemented.
+See [Meep numerical checks](verification/meep-3d.json),
+[FDTDX CPU/GPU checks](verification/fdtdx-3d.json), and the
+[3D guide](3D_SIMULATION.md). Outputs are final-time volume slices; an automatic
+convergence framework, analytical qualification, calibrated ports and broader
+studies remain open. Implementing the journey does not complete all of this
+milestone's numerical release gates.
 
 Begin with one finite-height straight guide before rings, bends, or arbitrary
 CAD. Establish the coordinate convention and material stack, then run a modest
@@ -129,8 +155,8 @@ and [FDTDX documentation](https://fdtdx.readthedocs.io/en/latest/).
 
 | Solver | Intended role | Workbench baseline | Next evidence required |
 | --- | --- | --- | --- |
-| Meep | Time-domain electromagnetics; CPU reference route | Verified 2D slab on CPU | Finite 3D study, calibrated sources/monitors, installation qualification |
-| FDTDX / JAX | Time-domain electromagnetics on CPU and NVIDIA GPU; later differentiable studies | Verified invariant-z slab on both targets | Finite 3D study and memory estimate; clean installation; gradient tests before optimization |
+| Meep | Time-domain electromagnetics; CPU route | Real 2D slab and finite-height 3D guide on CPU; 3D grid/PML sensitivity recorded | Analytical benchmarks, calibrated sources/monitors, broader geometry and installation qualification |
+| FDTDX / JAX | Time-domain electromagnetics on CPU and NVIDIA GPU; later differentiable studies | Real invariant-z slab and finite-height 3D guide on both targets; explicit device checks and bounded planning memory estimate | Analytical/convergence benchmarks; measured peak memory; clean installation; gradient tests before optimization |
 | MPB | Eigenmodes and photonic band structures | No adapter yet | Analytic slab-mode and standard band reference; eigensolver residual, normalization, degeneracy and mode-tracking conventions |
 | BeamZ | Additional FDTD backend for supported photonic studies | No adapter or numerical verification yet | Locked release, isolated installation, minimal real CPU case, GPU placement, field/monitor and export tests |
 | Other engines | Additional numerical methods or coupled physics when justified | None | A specific unmet user study and its validation plan before integration |
@@ -158,7 +184,9 @@ before broadening geometry indefinitely:
   ports, flux/DFT monitors, overlap integrals, spectra, S-parameters, resonance
   analysis and near-to-far fields where supported.
 - **Study management:** parameter sweeps, local queues, convergence reports,
-  comparison views, optimization, checkpoints, Python scripting and notebooks.
+  calibrated cross-solver comparison views, optimization, checkpoints, Python
+  scripting and notebooks. The present same-study comparison is restricted to
+  repeatability on identical saved grids and numerical conventions.
 - **Product quality:** accessible controls, searchable examples, command history,
   autosave/recovery, large-data loading, documented limits, diagnostics,
   packaging, upgrades, and reproducible bug reports without personal paths.

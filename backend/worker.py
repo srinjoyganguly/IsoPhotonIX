@@ -11,22 +11,30 @@ def main():
     if config["solver"] not in ("meep", "fdtdx"):
         raise ValueError("Unknown solver")
     print(f"Starting {config['solver']} on explicitly requested {config['device']}", flush=True)
-    adapter = importlib.import_module(f"backend.adapters.{config['solver']}_adapter")
+    is3d = config.get("schema_version") == 2 and config.get("study_type") == "waveguide-3d"
+    adapter_name = f"{config['solver']}3d" if is3d else config['solver']
+    adapter = importlib.import_module(f"backend.adapters.{adapter_name}_adapter")
     metadata = adapter.run(config, output)
     import numpy as np
     with np.load(output/"arrays.npz") as data:
         for name in ("field", "epsilon", "x_um", "y_um"):
             if name not in data or not np.isfinite(data[name]).all():
                 raise RuntimeError(f"Invalid or missing numerical array: {name}")
-        if data["field"].ndim != 2 or data["field"].shape != data["epsilon"].shape:
+        if is3d:
+            from .volume import validate_volume
+            validate_volume(data)
+        elif data["field"].ndim != 2 or data["field"].shape != data["epsilon"].shape:
             raise RuntimeError("Field and permittivity must be matching 2D arrays.")
-        if data["field"].shape != (len(data["y_um"]), len(data["x_um"])):
+        if not is3d and data["field"].shape != (len(data["y_um"]), len(data["x_um"])):
             raise RuntimeError("Array shape does not match coordinate axes.")
         if not np.any(data["field"]):
             raise RuntimeError("Simulation returned only zero fields.")
         metadata["field_peak_abs"] = float(np.max(np.abs(data["field"])))
         metadata["field_shape"] = list(data["field"].shape)
     metadata.update(config=config, requested_solver=config["solver"], requested_device=config["device"])
+    if is3d:
+        metadata["commercial_solver_agreement"] = {"status": "not_validated", "reference_runs": [],
+            "note": "Execution and internal numerical checks do not establish agreement with Lumerical, Tidy3D or COMSOL. Matched sources, sampling, converged reference data and justified tolerances are required."}
     (output/"metadata.json").write_text(json.dumps(metadata, indent=2, allow_nan=False))
     print("Simulation complete; synchronized numerical arrays and provenance saved.", flush=True)
 

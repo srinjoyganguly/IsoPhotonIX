@@ -9,11 +9,15 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**Post-event development: v0.3 preview.** A new interactive **3D design**
+**Post-event development: v0.4 preview.** The interactive **3D design**
 workspace adds orbit/pan/zoom, selection, editable boxes/cylinders/rings,
 strip/coupler/ring templates, undo/redo, and portable geometry JSON. Open
-**2D simulation** for the tested Meep/FDTDX workflow. The 3D editor produces
-geometry drafts; it does not yet execute finite-height 3D simulations.
+**Open runnable 3D waveguide** to run a finite-height core with an optional
+substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and
+material slices in XY/XZ/YZ, then export the exact study and numerical volume.
+General rings/couplers remain geometry drafts. **2D simulation** retains the
+earlier slab workflow. [3D simulation guide](docs/3D_SIMULATION.md).
+[Numerical validation and comparison limits](docs/VALIDATION.md).
 [3D workspace guide](docs/3D_WORKSPACE.md) · [Product roadmap](docs/ROADMAP.md) ·
 [Packaging and desktop design](docs/PACKAGING.md).
 
@@ -22,7 +26,7 @@ The 3D editor was added after submission and is not part of that entry.
 
 ![Interactive 3D geometry workspace with an editable ring and bus](docs/3d-workspace.png)
 
-**[Watch the 70-second submission demo](https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/photonics-workbench/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
+**[Watch the submission demo](https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/photonics-workbench/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
 
 The [24-second Blender journey](https://srinjoyganguly.github.io/photonics-workbench/#blender-journey)
 explains the same six steps with an original 3D schematic and actual recorded
@@ -76,6 +80,8 @@ The [v0.2.0 release bundle](https://github.com/srinjoyganguly/photonics-workbenc
 includes source and the built interface. After extracting it, install the API
 and solver environments in the setup guide, then run `bash scripts/start.sh`;
 you can skip the Node build step. Solver binaries and environments are not bundled.
+That release contains the submitted 2D workflow. The post-event 3D preview
+requires the current source checkout and an interface build.
 
 Use Linux or WSL2, Python 3.11, Conda for Meep, and Node 22.12+ for building the
 interface. Follow [the full setup instructions](docs/SETUP.md) to install the
@@ -105,12 +111,37 @@ solver lives outside the default project-local environment.
 
 ## Verification status
 
+The finite-height 3D milestone has separate [Meep numerical evidence](docs/verification/meep-3d.json)
+and [FDTDX CPU/GPU evidence](docs/verification/fdtdx-3d.json): correct material
+placement, finite nonzero Ex/Ey/Ez, downstream propagation, height sensitivity,
+actual GPU placement and explicit unavailable-GPU failure. Meep resolution/PML
+sensitivity is recorded; it is not a convergence certificate. The
+[3D simulation guide](docs/3D_SIMULATION.md) describes sampling, supported
+geometry and limitations. New application tests also verify schema rejection,
+plane/component indexing, immutable exports and corrupt-volume errors.
+**Same-study comparison** checks compatible saved runs from one solver, including
+FDTDX CPU/GPU pairs, without resampling or amplitude fitting. Its discrepancy
+metrics have no accuracy pass threshold. [Validation status](docs/VALIDATION.md)
+documents the default grid's measured sensitivity and the unfinished analytical
+and commercial benchmarks; no commercial agreement is claimed.
+
+The complete 3D browser journey passed on [Meep CPU](docs/verification/3d-browser-meep-cpu.json),
+[FDTDX CPU](docs/verification/3d-browser-fdtdx-cpu.json), and
+[FDTDX NVIDIA GPU](docs/verification/3d-browser-fdtdx-gpu.json).
+[Numerical export checks](docs/verification/3d-http-exports.json) verified 81 API
+slices against the exported arrays. [Viewer/comparison checks](docs/verification/3d-slices-comparison-browser.json)
+cover delayed responses and CPU/GPU metrics; [worker checks](docs/verification/3d-final-worker.json)
+cover real cancellation and GPU repeatability. The API test environment passes
+48 tests with two Meep numerical tests skipped there; real Meep execution is
+separately verified in its solver environment. The [original 2D browser journey](docs/verification/2d-browser-after-3d.json)
+also passes after this increment.
+
 The post-event [3D editor checks](docs/verification/3d-editor.json) cover actual
 WebGL orbit/pan/zoom, picking, edits, undo/redo, import/export, draft recovery,
 cross-tab conflicts, responsive layouts, and context-loss/unavailable-WebGL
 behavior. All 12 geometry-model tests passed. [Fresh browser regressions](docs/verification/3d-solver-regression.json)
 also passed real Meep CPU and FDTDX NVIDIA GPU runs, numerical ZIP checks,
-and exact recorded-frame playback. These verify a geometry editor alongside
+and exact recorded-frame playback. Those earlier v0.3 checks verify a geometry editor alongside
 the existing 2D solver workflow; they do not establish a 3D solver adapter.
 
 The table below also retains evidence from the submitted v0.2 baseline.
@@ -128,7 +159,7 @@ The table below also retains evidence from the submitted v0.2 baseline.
 | Recorded frames and run passports | All three routes checked through HTTP: first/middle/last frames and simulated times exactly matched the saved arrays; fixed global scale and exported SHA256 manifests matched |
 | Responsive interface | Browser checks passed at 1440, 1280, and 390 px with no overflow or browser errors |
 | Meep fresh-environment setup | Documented YAML created a fresh prefix from cached official packages; real worker output matched the first environment exactly |
-| API clean install | Fresh isolated virtual environments installed from SHA256-verified official PyPI wheels; dependency check passed; current regression suite: 23 passed, with the separately tested Meep numerical case skipped |
+| API clean install | Fresh isolated virtual environments installed from SHA256-verified official PyPI wheels; dependency check passed; v0.2 regression suite: 23 passed, with the separately tested Meep numerical case skipped |
 | FDTDX clean install | Not yet established; numerical verification used an existing environment with recorded versions |
 
 [FDTDX verification](docs/FDTDX_VERIFICATION.md) records the exact measured
@@ -155,7 +186,7 @@ records the observations.
 
 ## Scientific scope and limitations
 
-The example is a 2D, lossless, nondispersive dielectric slab with Ez
+The earlier 2D example is a lossless, nondispersive dielectric slab with Ez
 polarization, a finite-width source, and absorbing x/y boundaries. FDTDX uses a
 three-cell periodic z extrusion; Meep uses native 2D. Both sources ramp over four
 optical periods. Meep injects an electric-current line while FDTDX injects a
@@ -170,16 +201,25 @@ performance. Material interfaces and sampled coordinate grids differ between
 solvers. A minimum grid rule prevents obviously coarse inputs but does not
 replace a convergence study.
 
-The application permits one job at a time, caps the x-y grid at 180,000 cells,
-and stops jobs exceeding five minutes. NVIDIA support depends on a compatible
+The application permits one job at a time and stops jobs exceeding five minutes.
+The 2D study caps its x-y grid at 180,000 cells; the 3D study has separate
+[volume and work limits](docs/3D_SIMULATION.md#supported-physical-model).
+NVIDIA support depends on a compatible
 Windows/Linux host driver and a working JAX CUDA environment; GPU visibility
 alone does not establish working execution. Native Windows solver execution,
 other GPUs, remote compute, multi-GPU jobs, and MPI are not supported by this
 milestone.
 
-The 3D workspace supports bounded parametric draft geometry and requires WebGL 2
-for interactive rendering. It has no 3D sources, monitors, solver translation,
-or computed 3D fields yet. Refractive indices are stored draft properties.
+The 3D workspace requires WebGL 2 for interactive geometry. Its executable study
+currently supports only one centred, unrotated rectangular guide spanning the
+domain along x, plus an optional substrate flush with the core bottom. General
+solids, bends, rings and couplers are not yet executable. The source is a fixed
+finite Ey excitation with a four-period startup; no eigenmode normalization,
+S-parameters, flux analysis, or 3D time animation is provided. Material indices
+are real, scalar and nondispersive. FDTDX's displayed components are spatially
+averaged to common cell centres, with raw Yee fields retained in exports; Meep
+samples its fields through its documented array API. Read each run's sampling
+metadata and numerical limitations before comparing results.
 MPB, BeamZ, generalized CAD/GDS editing, optimization, multiphysics, and broad
 commercial-tool feature parity are future work.
 

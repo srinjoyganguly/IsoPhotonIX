@@ -52,23 +52,31 @@ def build_passport(job, output):
     output = Path(output)
     config = json.loads((output / "config.json").read_text())
     metadata = json.loads((output / "metadata.json").read_text())
+    is3d = config.get("study_type") == "waveguide-3d"
+    component = "Ey" if is3d else "Ez"
     with np.load(output / "arrays.npz", allow_pickle=False) as arrays:
         field, epsilon = arrays["field"], arrays["epsilon"]
         x, y = arrays["x_um"], arrays["y_um"]
         finite = bool(all(np.isfinite(a).all() for a in (field, epsilon, x, y)))
         shape_ok = bool(field.ndim == 2 and epsilon.shape == field.shape and x.ndim == y.ndim == 1
                         and field.shape == (len(y), len(x)))
+        if is3d:
+            from .volume import validate_volume
+            validate_volume(arrays)
+            shape_ok = True
+            finite = True
         nonzero = bool(np.any(field)) if np.isfinite(field).all() else False
         frame_count = int(len(arrays["frames"])) if "frames" in arrays else 0
+        coordinate_detail = f"{len(x)} x and {len(y)} y samples" if not is3d else f"{len(x)} x, {len(y)} y and {len(arrays['z_um'])} z samples"
     files = [file_record(output / name) for name in ("config.json", "metadata.json", "arrays.npz")]
     snapshot_ok = metadata.get("config") == config and job["config"] == config
     checks = [
         {"label": "Finite numerical values", "passed": finite,
-         "detail": "Final Ez, permittivity, and coordinate arrays contain no NaN or infinite values."},
+         "detail": f"Final {component}, permittivity, and coordinate arrays contain no NaN or infinite values."},
         {"label": "Nonzero final field", "passed": nonzero,
-         "detail": "At least one final Ez sample is nonzero; this does not establish convergence."},
+         "detail": f"At least one final {component} sample is nonzero; this does not establish convergence."},
         {"label": "Matching field and material grids", "passed": shape_ok,
-         "detail": f"Field shape {list(field.shape)}; coordinates contain {len(x)} x and {len(y)} y samples."},
+         "detail": f"Field shape {list(field.shape)}; coordinates contain {coordinate_detail}."},
         {"label": "Consistent saved configuration", "passed": snapshot_ok,
          "detail": "Config file, saved worker metadata, and run snapshot agree."},
     ]
@@ -78,6 +86,15 @@ def build_passport(job, output):
         "Meep current-line and FDTDX directed-plane source amplitudes are not cross-solver calibrated.",
         "SHA256 identifies these exported file bytes; it is not a signature or an accuracy certificate.",
     ]
+    if is3d:
+        limitations = [
+            "Commercial solver agreement has not been validated. No matched Lumerical, Tidy3D or COMSOL reference run is attached.",
+            "Finite-height lossless, nondispersive straight waveguide. Resolution/PML sensitivity is not a convergence certificate.",
+            "Ex/Ey/Ez are final-time electric fields in arbitrary source units; no normalized transmission, S-parameters or mode-purity result.",
+            "Meep current-sheet and FDTDX directed-plane sources are not cross-solver amplitude calibrated.",
+            str(metadata.get("field_sampling", "Read metadata for component sampling and material-grid conventions.")),
+            "SHA256 identifies exported bytes; it is not a signature or an accuracy certificate.",
+        ]
     assumptions = metadata.get("assumptions", metadata.get("notes", []))
     if isinstance(assumptions, str):
         assumptions = [assumptions]
@@ -105,6 +122,9 @@ def build_passport(job, output):
         "reproduce": {"command": command, "notes": notes}, "reproduce_command": command,
         "reproduction_notes": notes, "limitations": limitations,
     }
+    if is3d:
+        passport["numerical"].update(dimensions="3D", components=["Ex", "Ey", "Ez"],
+                                      array_order="component,z,y,x", field_sampling=metadata.get("field_sampling"))
     manifest = {"schema_version": 1, "algorithm": "sha256", "run_id": job["id"],
                 "files": {record["name"]: {"sha256": record["sha256"], "size_bytes": record["size_bytes"]}
                           for record in files}}

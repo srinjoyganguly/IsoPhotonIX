@@ -1,0 +1,439 @@
+{
+  "checked_at": "2026-11-01T19:21:47.137181+00:00",
+  "scope": "Actual finite-height 3D FDTDX CPU and NVIDIA GPU runs. No mocked numerical data.",
+  "nvidia_smi": {
+    "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "memory_total_mib": 16384,
+    "driver_version": "617.42"
+  },
+  "configuration": {
+    "schema_version": 2,
+    "study_type": "waveguide-3d",
+    "geometry": {
+      "schema": "photonics-workbench-geometry",
+      "schema_version": 1,
+      "units": "um",
+      "name": "Finite guide",
+      "mode": "draft-3d",
+      "domain": {
+        "x": 8,
+        "y": 4,
+        "z": 4
+      },
+      "objects": [
+        {
+          "id": "core",
+          "name": "core",
+          "kind": "box",
+          "visible": true,
+          "size": {
+            "x": 8,
+            "y": 0.75,
+            "z": 0.5
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "radius": 1,
+          "inner_radius": 0.6,
+          "rotation_deg": 0,
+          "refractive_index": 2
+        },
+        {
+          "id": "substrate",
+          "name": "substrate",
+          "kind": "box",
+          "visible": true,
+          "size": {
+            "x": 8,
+            "y": 4,
+            "z": 1.75
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -1.125
+          },
+          "radius": 1,
+          "inner_radius": 0.6,
+          "rotation_deg": 0,
+          "refractive_index": 1.44
+        }
+      ]
+    },
+    "wavelength_um": 1.55,
+    "resolution": 16,
+    "duration_fs": 60,
+    "pml_um": 0.75,
+    "cladding_index": 1,
+    "solver": "fdtdx",
+    "device": "explicit per route"
+  },
+  "routes": [
+    {
+      "solver": "fdtdx",
+      "device": "cpu",
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "grid_shape": [
+        128,
+        64,
+        64
+      ],
+      "field_shape": [
+        63,
+        63,
+        127
+      ],
+      "field_peaks": {
+        "Ex": 0.927885890007019,
+        "Ey": 1.144577980041504,
+        "Ez": 0.289304256439209
+      },
+      "time_steps": 504,
+      "simulated_time_fs": 60.057108390226674,
+      "setup_seconds": 8.798514916000386,
+      "compile_seconds": 0.5596939829997609,
+      "compute_seconds": 5.996805125999799,
+      "total_seconds": 15.805046443000265,
+      "source": {
+        "type": "finite uniform E/H plane directed +x; not an eigenmode",
+        "component": "Ey",
+        "requested_x_um": -2.75,
+        "x_um": -2.75,
+        "grid_start_xyz": [
+          20,
+          26,
+          28
+        ],
+        "grid_shape_xyz": [
+          1,
+          12,
+          8
+        ],
+        "wavelength_um": 1.55,
+        "temporal_profile": "continuous sinusoid, linear turn-on over four periods",
+        "normalization": "unit electric polarization; no energy normalization"
+      },
+      "boundaries": {
+        "x": "PML",
+        "y": "PML",
+        "z": "PML",
+        "pml_cells": 12,
+        "actual_pml_um": 0.75
+      },
+      "geometry_translation": [
+        {
+          "id": "substrate",
+          "requested_size_um": {
+            "x": 8,
+            "y": 4,
+            "z": 1.75
+          },
+          "requested_position_um": {
+            "x": 0,
+            "y": 0,
+            "z": -1.125
+          },
+          "grid_start_xyz": [
+            0,
+            0,
+            0
+          ],
+          "grid_shape_xyz": [
+            128,
+            64,
+            28
+          ],
+          "actual_min_um": [
+            -4.0,
+            -2.0,
+            -2.0
+          ],
+          "actual_max_um": [
+            4.0,
+            2.0,
+            -0.25
+          ],
+          "refractive_index": 1.44,
+          "visibility_ignored_for_physics": true
+        },
+        {
+          "id": "core",
+          "requested_size_um": {
+            "x": 8,
+            "y": 0.75,
+            "z": 0.5
+          },
+          "requested_position_um": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "grid_start_xyz": [
+            0,
+            26,
+            28
+          ],
+          "grid_shape_xyz": [
+            128,
+            12,
+            8
+          ],
+          "actual_min_um": [
+            -4.0,
+            -0.375,
+            -0.25
+          ],
+          "actual_max_um": [
+            4.0,
+            0.375,
+            0.25
+          ],
+          "refractive_index": 2,
+          "visibility_ignored_for_physics": true
+        }
+      ],
+      "material_grid_check": {
+        "passed": true,
+        "maximum_absolute_error": 0.0
+      },
+      "field_sampling": "Four neighbouring Yee samples averaged spatially to each cell centre; positive outermost x/y/z cell omitted to avoid extrapolation. Raw staggered fields and material grid are preserved in the export. No temporal interpolation.",
+      "passed": true,
+      "all_arrays_finite": true,
+      "all_three_components_nonzero": true,
+      "downstream_core_peak_abs_Ey": 0.9713449478149414,
+      "relative_z_variation": 0.8296328186988831,
+      "material_core_substrate_cladding_checked": true,
+      "derived_fields_exactly_match_raw_averaging": true,
+      "array_sha256": "9a50db79ae1765bb6c60e155e9de37beba24432d82693435c4463142f4e09c96",
+      "raw_field_shape": [
+        3,
+        64,
+        64,
+        128
+      ],
+      "epsilon_values": [
+        1.0,
+        2.0736000537872314,
+        4.0
+      ]
+    },
+    {
+      "solver": "fdtdx",
+      "device": "gpu",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "grid_shape": [
+        128,
+        64,
+        64
+      ],
+      "field_shape": [
+        63,
+        63,
+        127
+      ],
+      "field_peaks": {
+        "Ex": 0.9278890490531921,
+        "Ey": 1.1445775032043457,
+        "Ez": 0.28930407762527466
+      },
+      "time_steps": 504,
+      "simulated_time_fs": 60.057108390226674,
+      "setup_seconds": 16.225104187999932,
+      "compile_seconds": 0.7518030969999927,
+      "compute_seconds": 0.8258205750003071,
+      "total_seconds": 18.32718387900013,
+      "source": {
+        "type": "finite uniform E/H plane directed +x; not an eigenmode",
+        "component": "Ey",
+        "requested_x_um": -2.75,
+        "x_um": -2.75,
+        "grid_start_xyz": [
+          20,
+          26,
+          28
+        ],
+        "grid_shape_xyz": [
+          1,
+          12,
+          8
+        ],
+        "wavelength_um": 1.55,
+        "temporal_profile": "continuous sinusoid, linear turn-on over four periods",
+        "normalization": "unit electric polarization; no energy normalization"
+      },
+      "boundaries": {
+        "x": "PML",
+        "y": "PML",
+        "z": "PML",
+        "pml_cells": 12,
+        "actual_pml_um": 0.75
+      },
+      "geometry_translation": [
+        {
+          "id": "substrate",
+          "requested_size_um": {
+            "x": 8,
+            "y": 4,
+            "z": 1.75
+          },
+          "requested_position_um": {
+            "x": 0,
+            "y": 0,
+            "z": -1.125
+          },
+          "grid_start_xyz": [
+            0,
+            0,
+            0
+          ],
+          "grid_shape_xyz": [
+            128,
+            64,
+            28
+          ],
+          "actual_min_um": [
+            -4.0,
+            -2.0,
+            -2.0
+          ],
+          "actual_max_um": [
+            4.0,
+            2.0,
+            -0.25
+          ],
+          "refractive_index": 1.44,
+          "visibility_ignored_for_physics": true
+        },
+        {
+          "id": "core",
+          "requested_size_um": {
+            "x": 8,
+            "y": 0.75,
+            "z": 0.5
+          },
+          "requested_position_um": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "grid_start_xyz": [
+            0,
+            26,
+            28
+          ],
+          "grid_shape_xyz": [
+            128,
+            12,
+            8
+          ],
+          "actual_min_um": [
+            -4.0,
+            -0.375,
+            -0.25
+          ],
+          "actual_max_um": [
+            4.0,
+            0.375,
+            0.25
+          ],
+          "refractive_index": 2,
+          "visibility_ignored_for_physics": true
+        }
+      ],
+      "material_grid_check": {
+        "passed": true,
+        "maximum_absolute_error": 0.0
+      },
+      "field_sampling": "Four neighbouring Yee samples averaged spatially to each cell centre; positive outermost x/y/z cell omitted to avoid extrapolation. Raw staggered fields and material grid are preserved in the export. No temporal interpolation.",
+      "passed": true,
+      "all_arrays_finite": true,
+      "all_three_components_nonzero": true,
+      "downstream_core_peak_abs_Ey": 0.9713453650474548,
+      "relative_z_variation": 0.8296328783035278,
+      "material_core_substrate_cladding_checked": true,
+      "derived_fields_exactly_match_raw_averaging": true,
+      "array_sha256": "224a4a456484edc67a39f30e2841110dfbce5187eb83bfb756bf653afb3c046c",
+      "raw_field_shape": [
+        3,
+        64,
+        64,
+        128
+      ],
+      "epsilon_values": [
+        1.0,
+        2.0736000537872314,
+        4.0
+      ]
+    }
+  ],
+  "cpu_gpu_comparison": {
+    "raw_fields": {
+      "relative_l2": 1.3984088127472205e-06,
+      "max_absolute_error": 5.0067901611328125e-06
+    },
+    "fields": {
+      "relative_l2": 1.1645267932181014e-06,
+      "max_absolute_error": 3.2186508178710938e-06
+    },
+    "field": {
+      "relative_l2": 1.1108173794127651e-06,
+      "max_absolute_error": 2.1457672119140625e-06
+    },
+    "epsilon_identical": true
+  },
+  "comparison_threshold_relative_l2": 0.0001,
+  "unit_tests": {
+    "passed": 5,
+    "command": ".venv/bin/python -m unittest tests.test_fdtdx3d_adapter -v"
+  },
+  "official_sources": [
+    "https://fdtdx.readthedocs.io/en/latest/notebooks/components/01_uniform_plane_source.html",
+    "https://fdtdx.readthedocs.io/en/latest/notebooks/quickstart/03_object_placement_guide.html",
+    "https://fdtdx.readthedocs.io/en/latest/api/fdtdx.BoundaryConfig.html"
+  ],
+  "limitations": [
+    "CPU/GPU agreement is implementation consistency, not scientific convergence.",
+    "Existing qualified FDTDX/JAX environments were reused; no clean-install claim.",
+    "Finite uniform plane excitation is not a calibrated waveguide mode or normalized transmission.",
+    "Six-face PML and grid resolution need separate convergence studies.",
+    "Single-run timings do not establish an overall GPU speedup; setup/import time is included separately.",
+    "Rendered cell-centre fields are spatial averages of actual staggered samples; raw arrays and offsets are exported."
+  ],
+  "gpu_unavailable_guard": {
+    "passed": true,
+    "method": "Fresh solver process with CUDA_VISIBLE_DEVICES empty",
+    "worker_failed": true,
+    "arrays_produced": false,
+    "explicit_no_cpu_fallback_error": true
+  },
+  "edited_height_response": {
+    "passed": true,
+    "device": "cuda:0",
+    "core_height_before_um": 0.5,
+    "core_height_after_um": 0.625,
+    "substrate_adjusted_to_core_bottom": true,
+    "changed_material_samples": 9525,
+    "relative_Ey_l2_change": 0.7180758714675903,
+    "max_abs_Ey": 1.2310471534729004,
+    "all_arrays_finite": true,
+    "raw_derived_sampling_exact": true,
+    "array_sha256": "46c2711a38bfe038d247a05e20eebc000d67b1ae639529b5f829ff4bd7bd7995"
+  }
+}

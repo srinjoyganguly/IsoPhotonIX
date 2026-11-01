@@ -1,0 +1,265 @@
+{
+  "checked_at": "2026-11-01T19:21:13.454287+00:00",
+  "solver": "Meep",
+  "versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "device": "CPU",
+  "source": "Ey electric current sheet at x = -2.75 \u00b5m, width 0.75 \u00b5m, height 0.5 \u00b5m; four-period linear startup; not an eigenmode; source amplitude differs from FDTDX",
+  "boundaries": "PML on all six faces; no periodic/invariant direction",
+  "array_convention": "fields[Ex/Ey/Ez,z,y,x]; Ey field[z,y,x]; Meep get_array interpolates to Yee-cell centers",
+  "material_sampling": "Meep subpixel smoothing; scalar Dielectric is harmonic mean of tensor eigenvalues at interfaces",
+  "cases": [
+    {
+      "case": "canonical",
+      "resolution_cells_per_um": 16,
+      "domain_um": {
+        "x": 8,
+        "y": 4,
+        "z": 4
+      },
+      "core_size_um": {
+        "x": 8,
+        "y": 0.75,
+        "z": 0.5
+      },
+      "pml_um": 0.75,
+      "grid_xyz": [
+        128,
+        64,
+        64
+      ],
+      "field_shape_zyx": [
+        64,
+        64,
+        128
+      ],
+      "components": [
+        "Ex",
+        "Ey",
+        "Ez"
+      ],
+      "component_peaks_abs": [
+        0.17079369723796844,
+        0.2738570272922516,
+        0.055633727461099625
+      ],
+      "downstream_x_positive_peak_Ey": 0.24851061403751373,
+      "max_Ey_variation_along_z": 0.3325597047805786,
+      "finite_all_saved_arrays": true,
+      "primary_field_equals_Ey": true,
+      "epsilon_probe_values": {
+        "core": 4.0,
+        "substrate": 2.0736000537872314,
+        "upper_cladding": 1.0,
+        "lateral_cladding": 1.0
+      },
+      "actual_duration_fs": 60.04153713566737,
+      "time_steps": 576,
+      "timings_s": {
+        "initialization_s": 1.7438710929998251,
+        "compute_s": 7.59659928200017,
+        "export_s": 0.3924960709998686,
+        "total_s": 9.732966445999864
+      },
+      "array_sha256": "7ba0c9c665d20283b5b240486f0103a95be750fedb1b08d991af0a8822e77f89"
+    },
+    {
+      "case": "resolution20",
+      "resolution_cells_per_um": 20,
+      "domain_um": {
+        "x": 8,
+        "y": 4,
+        "z": 4
+      },
+      "core_size_um": {
+        "x": 8,
+        "y": 0.75,
+        "z": 0.5
+      },
+      "pml_um": 0.75,
+      "grid_xyz": [
+        160,
+        80,
+        80
+      ],
+      "field_shape_zyx": [
+        80,
+        80,
+        160
+      ],
+      "components": [
+        "Ex",
+        "Ey",
+        "Ez"
+      ],
+      "component_peaks_abs": [
+        0.2726324498653412,
+        0.29654553532600403,
+        0.0954965353012085
+      ],
+      "downstream_x_positive_peak_Ey": 0.2496129423379898,
+      "max_Ey_variation_along_z": 0.33983686566352844,
+      "finite_all_saved_arrays": true,
+      "primary_field_equals_Ey": true,
+      "epsilon_probe_values": {
+        "core": 4.0,
+        "substrate": 2.0736000537872314,
+        "upper_cladding": 1.0,
+        "lateral_cladding": 1.0
+      },
+      "actual_duration_fs": 60.04153713566737,
+      "time_steps": 720,
+      "timings_s": {
+        "initialization_s": 2.776448731000073,
+        "compute_s": 15.276891611999872,
+        "export_s": 0.7339495410001291,
+        "total_s": 18.787289884000074
+      },
+      "array_sha256": "5e37d849b82a1423ced49310459d1c0d47537ca4f79d718e3ce2f68b3e7fbdc0"
+    },
+    {
+      "case": "resolution24",
+      "resolution_cells_per_um": 24,
+      "domain_um": {
+        "x": 8,
+        "y": 4,
+        "z": 4
+      },
+      "core_size_um": {
+        "x": 8,
+        "y": 0.75,
+        "z": 0.5
+      },
+      "pml_um": 0.75,
+      "grid_xyz": [
+        192,
+        96,
+        96
+      ],
+      "field_shape_zyx": [
+        96,
+        96,
+        192
+      ],
+      "components": [
+        "Ex",
+        "Ey",
+        "Ez"
+      ],
+      "component_peaks_abs": [
+        0.25904613733291626,
+        0.2767583727836609,
+        0.09470600634813309
+      ],
+      "downstream_x_positive_peak_Ey": 0.24667905271053314,
+      "max_Ey_variation_along_z": 0.3352266848087311,
+      "finite_all_saved_arrays": true,
+      "primary_field_equals_Ey": true,
+      "epsilon_probe_values": {
+        "core": 4.0,
+        "substrate": 2.0736000537872314,
+        "upper_cladding": 1.0,
+        "lateral_cladding": 1.0
+      },
+      "actual_duration_fs": 60.04153713566737,
+      "time_steps": 864,
+      "timings_s": {
+        "initialization_s": 3.5607250999996722,
+        "compute_s": 29.873953016000087,
+        "export_s": 1.3195447309999508,
+        "total_s": 34.75422284699971
+      },
+      "array_sha256": "26f95c120cad5f79341ee4c6bd731ca614930db19ad1e8caa3597c9c3550b231"
+    },
+    {
+      "case": "pml1",
+      "resolution_cells_per_um": 16,
+      "domain_um": {
+        "x": 8.5,
+        "y": 4.5,
+        "z": 4.5
+      },
+      "core_size_um": {
+        "x": 8.5,
+        "y": 0.75,
+        "z": 0.5
+      },
+      "pml_um": 1.0,
+      "grid_xyz": [
+        136,
+        72,
+        72
+      ],
+      "field_shape_zyx": [
+        72,
+        72,
+        136
+      ],
+      "components": [
+        "Ex",
+        "Ey",
+        "Ez"
+      ],
+      "component_peaks_abs": [
+        0.17077834904193878,
+        0.2738623321056366,
+        0.055635131895542145
+      ],
+      "downstream_x_positive_peak_Ey": 0.2485172599554062,
+      "max_Ey_variation_along_z": 0.33257007598876953,
+      "finite_all_saved_arrays": true,
+      "primary_field_equals_Ey": true,
+      "epsilon_probe_values": {
+        "core": 4.0,
+        "substrate": 2.0736000537872314,
+        "upper_cladding": 1.0,
+        "lateral_cladding": 1.0
+      },
+      "actual_duration_fs": 60.04153713566737,
+      "time_steps": 576,
+      "timings_s": {
+        "initialization_s": 1.5498190710000017,
+        "compute_s": 10.105962467000154,
+        "export_s": 0.4443767200000366,
+        "total_s": 12.100158258000192
+      },
+      "array_sha256": "08ec70ebaa8fc63f477683bf0a4079d75962cdcea0b913fe39d881a13375397d"
+    }
+  ],
+  "focused_tests": {
+    "command": ".local/meep-conda/bin/python -m unittest tests.test_meep3d_smoke -v",
+    "passed": 2,
+    "checks": [
+      "Meep GPU request rejected before import",
+      "finite full3D component volumes and matching coordinates",
+      "central core/substrate/upper and lateral cladding permittivities",
+      "nonzero downstream signal",
+      "field varies along z",
+      "changing finite core thickness changes both material array and fields"
+    ]
+  },
+  "sensitivity": {
+    "measurement": "Final Ey along centerline y = z = 0, linearly interpolated onto 129 x coordinates spanning [-1.5, 2.5] \u00b5m; relative L2 uses the second case as denominator. This is an illustrative field discrepancy, not an error bound or transmission measurement.",
+    "actual_times_match": true,
+    "resolution16_vs20_relative_l2": 0.08210195723647933,
+    "resolution20_vs24_relative_l2": 0.01640418539921141,
+    "resolution16_vs24_relative_l2": 0.09639897910557908,
+    "pml075_vs100_relative_l2": 8.51984774157507e-05,
+    "pml_comparison": "All domain lengths increased 0.5 \u00b5m when PML grows 0.25 \u00b5m per face, preserving physical PML inner edges, core/substrate interface, and source position. Fields are compared only at common interior locations.",
+    "conclusion": "Three resolutions and one thicker-PML case were measured. This does not establish grid convergence, a rigorous boundary-reflection bound, or accuracy for other geometries."
+  },
+  "limitations": [
+    "No normalized transmission, S-parameters, modal purity, analytical reference benchmark, or cross-solver source-amplitude calibration.",
+    "Single final-time electric volume; no saved magnetic volume or 3D time animation.",
+    "Existing qualified Meep environment reused; not a fresh installation check.",
+    "The resolution-24 direct-adapter qualification case has 1,769,472 cells and intentionally exceeds the interactive study limit of 1,200,000 cells. It is reference evidence, not an available GUI configuration."
+  ],
+  "official_sources": [
+    "https://meep.readthedocs.io/en/latest/Python_User_Interface/#array-slices",
+    "https://meep.readthedocs.io/en/latest/Python_User_Interface/#array-metadata",
+    "https://meep.readthedocs.io/en/latest/Python_User_Interface/#output-functions"
+  ]
+}

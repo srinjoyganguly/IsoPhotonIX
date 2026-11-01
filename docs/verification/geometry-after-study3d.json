@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T19:29:16.913Z",
+  "browser": "156.0.8078.74",
+  "checks": [
+    "WebGL render; pointer orbit/wheel zoom/right-drag pan; camera presets and guide toggles",
+    "Raycast selection; validated dimensions; invalid edit retention; Escape cancel; undo/redo; editable names",
+    "Visibility; duplicate/delete/undo; strip and coupler templates; cylinder and box creation; transform containment",
+    "JSON export/roundtrip; malformed import retention; imported preview treated as draft; browser reload recovery",
+    "Cross-tab draft conflict pauses autosave until explicit save",
+    "Illustrative slab labeling; illustrative extrusion cannot run as 3D; workspace switch retains camera and explicit target requirement",
+    "Responsive layouts 1600/1280/800/390; actual WebGL context loss/recovery; no external application requests",
+    "WebGL unavailable: visible explanation and functional parameter editor"
+  ],
+  "browser_errors": [],
+  "scope": "Regression of the geometry editor alongside the new 3D study panel. Actual numerical journeys are recorded in the separate 3d-browser target reports."
+}

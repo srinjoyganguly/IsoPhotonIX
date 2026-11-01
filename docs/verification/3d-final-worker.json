@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "cancelled_run_id": "4b993c7087684822bf7cbcb62bacf39e",
+  "completed_gpu_run_id": "7478cd3ef39e4eb59b550478419da590",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "checks": [
+    "Real Meep 3D worker cancelled and remained cancelled",
+    "Cancelled result endpoints reject partial output",
+    "Real FDTDX worker uses requested NVIDIA device",
+    "Saved worker metadata explicitly records commercial validation as not validated",
+    "Same-study repeat comparison uses actual saved GPU arrays"
+  ],
+  "gpu_repeat_comparison": {
+    "schema_version": 1,
+    "kind": "same-study-repeatability",
+    "generated_at": "2026-11-01T19:40:25.448970+00:00",
+    "reference_run_id": "d68a7199944a4f3b90b611f9765bcee1",
+    "candidate_run_id": "7478cd3ef39e4eb59b550478419da590",
+    "reference_target": "fdtdx / gpu",
+    "candidate_target": "fdtdx / gpu",
+    "components": {
+      "Ex": {
+        "relative_l2": 0.0,
+        "max_abs_error": 0.0,
+        "reference_peak_abs": 0.894219160079956
+      },
+      "Ey": {
+        "relative_l2": 0.0,
+        "max_abs_error": 0.0,
+        "reference_peak_abs": 1.187453031539917
+      },
+      "Ez": {
+        "relative_l2": 0.0,
+        "max_abs_error": 0.0,
+        "reference_peak_abs": 0.2510680556297302
+      }
+    },
+    "overall_relative_l2": 0.0,
+    "epsilon_identical": true,
+    "coordinate_grids_identical": true,
+    "actual_time_fs": 60.057108390226674,
+    "commercial_agreement": "not_validated",
+    "notes": [
+      "Metrics describe differences between actual saved samples on identical grids at the same physical time.",
+      "Physical inputs, source conventions, numerical versions and material arrays were checked before comparing.",
+      "These are repeatability metrics. A small difference does not establish convergence or agreement with commercial software.",
+      "No arbitrary pass/fail threshold, phase fitting, amplitude normalization or resampling was applied."
+    ]
+  }
+}

@@ -1,8 +1,12 @@
 # Interactive 3D geometry workspace
 
 The **3D design** workspace is a local, interactive geometry editor. It lets you
-inspect and edit finite solids in physical units. It does not yet run a 3D
-simulation. The **2D simulation** workspace retains the existing Meep CPU and
+inspect and edit finite solids in physical units. A bounded **finite-height
+waveguide study** now connects supported geometry to real Meep CPU and FDTDX
+CPU/NVIDIA GPU calculations. Use **Open runnable 3D waveguide** in the study
+panel, then follow the [3D simulation guide](3D_SIMULATION.md). Rings, couplers,
+arbitrary solids and unsupported transforms remain editable drafts.
+The **2D simulation** workspace retains the existing Meep CPU and
 FDTDX CPU/NVIDIA GPU slab workflow, actual field playback and result exports.
 Geometry edits do not modify that solver configuration.
 
@@ -23,7 +27,8 @@ ring-and-bus template. Three templates are available:
 - **Ring & bus:** an annular core beside a straight guide. The annulus has a
   rectangular cross-section; it is not a circular-cross-section torus.
 
-These are geometric starting points, not validated photonic devices. A template
+These general templates are geometric starting points, not executable studies;
+the runnable waveguide has its own validated template. A template
 change can be undone. Coordinates use micrometres: **x** is the nominal
 propagation direction, **y** is lateral and **z** is vertical. The design domain
 is a box centred at the origin. Its outline is a visual guide, not a configured
@@ -82,10 +87,13 @@ that history or the camera position.
 The eye control in the Scene list affects only viewport visibility. A hidden
 solid remains in the document. Visibility must not be interpreted as excluding
 a material from a future simulation. Overlaps are permitted for draft editing;
-solver material precedence has not yet been defined.
+overlapping arbitrary drafts cannot be run. The supported straight-guide study
+requires a touching core/substrate interface and defines material placement
+explicitly, independent of list order.
 
-Refractive index is stored as a real, scalar draft value. No electromagnetic
-calculation uses it in this editor. Dispersion, absorption, anisotropy, material
+Refractive index is stored as a real, scalar value. The validated straight-guide
+study uses it in the actual solver material grid. General unsupported designs
+remain drafts. Dispersion, absorption, anisotropy, material
 libraries and wavelength validity are not represented by this field.
 
 ## Save and recover your work
@@ -191,9 +199,10 @@ feasibility, convergence or numerical accuracy.
 This milestone provides geometric inspection and parameter-based construction.
 It does not yet include transform handles, arbitrary-axis rotation, snapping,
 Boolean operations, polygon drawing, CAD/GDS import, layer-stack semantics,
-sources, monitors, boundary editing, meshing, 3D field results or 3D execution.
-Those require a shared study model and verified solver adapters, as described in
-[the roadmap](ROADMAP.md). Existing 2D results continue to describe only the
+general source/monitor editing, or arbitrary 3D studies. The current 3D study
+has a fixed Ey source and six-face PML, bounded grid settings, and actual final
+field volumes. Broader study models remain in [the roadmap](ROADMAP.md).
+Existing 2D results continue to describe only the
 immutable 2D run configuration that produced them.
 
 ## Reproduce the checks

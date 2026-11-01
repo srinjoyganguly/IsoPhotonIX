@@ -124,13 +124,14 @@ const { chromium } = require('playwright');
     await page.getByText('Extruded view of the 2D slab', { exact: true }).waitFor();
     assert.equal((await saved()).mode, 'slab-preview');
     assert.equal(await page.getByRole('button', { name: 'Run simulation', exact: true }).isVisible(), false);
+    assert.equal(await page.getByRole('button', { name: 'Run 3D simulation', exact: true }).isDisabled(), true, 'An illustrative 2D extrusion must not be executable as a 3D study.');
     const beforeSwitch = await camera();
     await button('2D simulation').click();
     await page.getByText('Parameters validated', { exact: false }).waitFor();
     assert.equal(await button('Run simulation').isDisabled(), true, 'Switching workspaces must not choose an execution target.');
     await button('3D design').click();
     assert.deepEqual(await camera(), beforeSwitch, 'Tab switch must preserve the design camera.');
-    checks.push('Illustrative slab labeling; drafts cannot run; workspace switch retains camera and explicit target requirement');
+    checks.push('Illustrative slab labeling; illustrative extrusion cannot run as 3D; workspace switch retains camera and explicit target requirement');
 
     await page.getByRole('button', { name: 'Ring & bus An annulus beside a straight guide', exact: true }).click();
     await page.screenshot({ path: path.join(output, '3d-workspace.png'), fullPage: true });

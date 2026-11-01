@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "study_type": "waveguide-3d",
+  "geometry": {
+    "schema": "photonics-workbench-geometry",
+    "schema_version": 1,
+    "units": "um",
+    "name": "Runnable finite-height waveguide",
+    "mode": "draft-3d",
+    "domain": {
+      "x": 8.0,
+      "y": 4.0,
+      "z": 4.0
+    },
+    "objects": [
+      {
+        "id": "substrate",
+        "name": "Substrate",
+        "visible": true,
+        "kind": "box",
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": -1.125
+        },
+        "size": {
+          "x": 8.0,
+          "y": 4.0,
+          "z": 1.75
+        },
+        "radius": 1.0,
+        "inner_radius": 0.6,
+        "rotation_deg": 0.0,
+        "refractive_index": 1.44
+      },
+      {
+        "id": "core",
+        "name": "Finite-height core",
+        "visible": true,
+        "kind": "box",
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 8.0,
+          "y": 0.75,
+          "z": 0.5
+        },
+        "radius": 1.0,
+        "inner_radius": 0.6,
+        "rotation_deg": 0.0,
+        "refractive_index": 2.0
+      }
+    ]
+  },
+  "wavelength_um": 1.55,
+  "cladding_index": 1,
+  "resolution": 16,
+  "duration_fs": 60,
+  "pml_um": 0.75,
+  "solver": "meep",
+  "device": "cpu"
+}
