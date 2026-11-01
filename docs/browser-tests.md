@@ -46,3 +46,28 @@ documentation](https://playwright.dev/docs/browsers); the event verification use
 the existing bundled library and Chrome, not a fresh browser installation.
 The test writes original application screenshots, a downloaded ZIP, and a JSON
 report to the selected artifact directory. No solver responses are mocked.
+
+## Time evolution and run passport
+
+The v0.2 upgrade test uses the same separate Playwright setup and a running local
+API. It starts real simulations and checks recorded-frame pixels against the
+actual arrays, a fixed amplitude scale, exact simulated times, play/pause, the
+unchanged final snapshot, passport fingerprints, and configuration provenance.
+
+```bash
+NODE_PATH="$PWD/.local/browser-qa/node_modules" \
+PHOTONICS_BROWSER_CHANNEL=chrome \
+PHOTONICS_TEST_TARGET=meep:cpu \
+PHOTONICS_ARTIFACT_DIR=.local/browser-upgrades \
+node frontend/browser-upgrade-smoke.cjs
+```
+
+The negative test deliberately aborts one frame-fetch request to verify a
+visible error and a successful retry. This is transport-failure injection only:
+numerical fields are never fabricated or replaced. The test also starts a
+second run to ensure playback does not retain the first run's frames.
+It captures two original screenshots and a JSON report. The full upgraded
+browser journey was verified with Meep CPU; frame/passport HTTP checks passed
+for Meep CPU, FDTDX CPU, and FDTDX GPU. See
+[the browser upgrade report](verification/browser-upgrades.json) and
+[the backend evidence](verification/run-passport.json).

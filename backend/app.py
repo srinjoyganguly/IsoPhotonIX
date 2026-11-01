@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from .capabilities import capabilities
 from .jobs import JobManager
 from .model import WaveguideConfig
+from .passport import FramesUnavailable, build_passport, passport_html, stored_frames
 from .runtime import ROOT
 
 manager = JobManager()
@@ -23,7 +24,7 @@ async def lifespan(app):
     manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.2.0", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -40,7 +41,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.1.0", "compute": "local"}
+    return {"status": "ok", "version": "0.2.0", "compute": "local"}
 
 
 @app.get("/api/example")
@@ -102,6 +103,47 @@ def field(job_id: str):
     return {**data, "metadata": job["result"]}
 
 
+def completed_output(job_id):
+    job = get_job(job_id)
+    if job["status"] != "completed":
+        raise HTTPException(409, "Results are available only after successful completion.")
+    return job, manager.directory / job_id
+
+
+@app.get("/api/jobs/{job_id}/passport")
+def passport(job_id: str):
+    job, output = completed_output(job_id)
+    try:
+        result, _ = build_passport(job, output)
+        return result
+    except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        raise HTTPException(409, "Saved result files are missing or invalid; a passport could not be produced.") from exc
+
+
+def frame_data(job_id):
+    _, output = completed_output(job_id)
+    try:
+        return stored_frames(output)
+    except FramesUnavailable as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        raise HTTPException(409, "Saved frame data is missing or invalid.") from exc
+
+
+@app.get("/api/jobs/{job_id}/frames")
+def frames(job_id: str):
+    values, times, peak = frame_data(job_id)
+    return {"count": len(values), "times_fs": times.tolist(), "global_peak_abs": peak}
+
+
+@app.get("/api/jobs/{job_id}/frames/{index}")
+def frame(job_id: str, index: int):
+    values, times, _ = frame_data(job_id)
+    if index < 0 or index >= len(values):
+        raise HTTPException(404, "Frame index is outside this run's recorded range.")
+    return {"field": values[index].tolist(), "time_fs": float(times[index]), "index": index}
+
+
 @app.get("/api/jobs/{job_id}/export")
 def export(job_id: str):
     job = get_job(job_id)
@@ -109,11 +151,17 @@ def export(job_id: str):
         raise HTTPException(409, "Only completed runs can be exported as results.")
     stream = io.BytesIO()
     output = manager.directory/job_id
+    try:
+        record, manifest = build_passport(job, output)
+    except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        raise HTTPException(409, "Saved result files are missing or invalid; export could not be produced.") from exc
     with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
         for name in ("config.json", "metadata.json", "arrays.npz"):
             archive.write(output/name, name)
         archive.writestr("run-log.txt", job["logs"])
-        archive.writestr("README.txt", "Actual local solver output. arrays.npz contains field and epsilon indexed [y,x], x_um and y_um coordinates, plus any recorded frames/times_fs. Field is signed Ez in arbitrary source units, not normalized transmission. Metadata records the immutable input and actual execution target. Reproduce with scripts/run_simulation.py config.json --output <new-directory>.\n")
+        archive.writestr("passport.html", passport_html(record))
+        archive.writestr("manifest.json", json.dumps(manifest, indent=2))
+        archive.writestr("README.txt", "Actual local solver output. Open passport.html for the physical configuration, recorded execution, observed file checks, limitations, and reproduction command. manifest.json contains SHA256 checksums for config.json, metadata.json, and arrays.npz. arrays.npz contains field and epsilon indexed [y,x], x_um and y_um coordinates, plus any actual recorded frames/times_fs. Field is signed Ez in arbitrary source units, not normalized transmission. The final snapshot may be later than the last recorded animation frame. Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (use a new output directory).\n")
     stream.seek(0)
     return StreamingResponse(stream, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="waveguide-{job_id[:8]}.zip"'})
 

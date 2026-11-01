@@ -19,6 +19,14 @@ Chrome and Playwright 1.62.1, encoded with FFmpeg 7.0.2. No browser, recorder, o
 encoder binaries are redistributed. The recording includes actual solver
 execution and output; its end card describes the tested Codex contribution.
 
+The supplementary journey animation uses an original Blender 5.2 scene,
+procedurally created geometry, built-in typography, and textures derived from
+our actual saved FDTDX field arrays. No stock models, music, commercial-tool
+screenshots, or external image assets are used. Blender is a GPL-licensed
+creation tool; its executable is not redistributed. The scene and rendered
+artwork are original project assets. See [Blender's licensing explanation](https://www.blender.org/about/license/)
+and [animation reproduction notes](docs/BLENDER.md).
+
 ## Numerical engines
 
 | Component | Version used or selected | Role | Upstream license/source |

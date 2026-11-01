@@ -1,0 +1,162 @@
+{
+  "verified_at_utc": "2026-11-01T15:48:14.197363+00:00",
+  "method": "Read-only HTTP checks against existing completed real solver runs; no new solve or generated numerical data",
+  "routes": [
+    {
+      "solver": "meep",
+      "device": "cpu",
+      "run_id": "ea00685d8b9f4656ab77c799123bdd9d",
+      "actual_device": "CPU",
+      "frame_count": 25,
+      "global_peak_abs": 0.3421728312969208,
+      "observed_checks": [
+        {
+          "label": "Finite numerical values",
+          "passed": true,
+          "detail": "Final Ez, permittivity, and coordinate arrays contain no NaN or infinite values."
+        },
+        {
+          "label": "Nonzero final field",
+          "passed": true,
+          "detail": "At least one final Ez sample is nonzero; this does not establish convergence."
+        },
+        {
+          "label": "Matching field and material grids",
+          "passed": true,
+          "detail": "Field shape [100, 200]; coordinates contain 200 x and 100 y samples."
+        },
+        {
+          "label": "Consistent saved configuration",
+          "passed": true,
+          "detail": "Config file, saved worker metadata, and run snapshot agree."
+        }
+      ],
+      "file_manifest": {
+        "config.json": {
+          "sha256": "5ccdcb2f516798391de38b0891fa3c81e7e6512f1bf8e2555a0b5e4afbc85e32",
+          "size_bytes": 260
+        },
+        "metadata.json": {
+          "sha256": "dc569523bbcab580d53120f22c45313cd8735352aa3e59f833dacee8f42fb2da",
+          "size_bytes": 2027
+        },
+        "arrays.npz": {
+          "sha256": "628d8e6d6fa9c69d06d688cedf87a09b0fe6c6abfd045e42763a8d43e58c13c1",
+          "size_bytes": 1381103
+        }
+      },
+      "checks_passed": [
+        "immutable configuration matches run",
+        "first middle last stored frames exactly match exported arrays",
+        "recorded times and global peak exactly match export",
+        "final snapshot unchanged",
+        "all three file hashes match exported bytes",
+        "standalone passport HTML has no scripts"
+      ]
+    },
+    {
+      "solver": "fdtdx",
+      "device": "cpu",
+      "run_id": "f3fb189068dc42cb8d5a70527b79293b",
+      "actual_device": "cpu:0",
+      "frame_count": 25,
+      "global_peak_abs": 1.1961336135864258,
+      "observed_checks": [
+        {
+          "label": "Finite numerical values",
+          "passed": true,
+          "detail": "Final Ez, permittivity, and coordinate arrays contain no NaN or infinite values."
+        },
+        {
+          "label": "Nonzero final field",
+          "passed": true,
+          "detail": "At least one final Ez sample is nonzero; this does not establish convergence."
+        },
+        {
+          "label": "Matching field and material grids",
+          "passed": true,
+          "detail": "Field shape [100, 200]; coordinates contain 200 x and 100 y samples."
+        },
+        {
+          "label": "Consistent saved configuration",
+          "passed": true,
+          "detail": "Config file, saved worker metadata, and run snapshot agree."
+        }
+      ],
+      "file_manifest": {
+        "config.json": {
+          "sha256": "d904af5f80e9eb207dea6e89dfc65b2980c3234c41eeea4629f838adb60a1683",
+          "size_bytes": 262
+        },
+        "metadata.json": {
+          "sha256": "efd82f5da83e7b58a8a32b703b4dcf4ddc4ef19a1af9a6d0f1756ddacb6161c6",
+          "size_bytes": 1748
+        },
+        "arrays.npz": {
+          "sha256": "391def1f0b344cbd712f1dc4ecfc3613937b43833af62d1b5d37bd0a593e03f3",
+          "size_bytes": 1676049
+        }
+      },
+      "checks_passed": [
+        "immutable configuration matches run",
+        "first middle last stored frames exactly match exported arrays",
+        "recorded times and global peak exactly match export",
+        "final snapshot unchanged",
+        "all three file hashes match exported bytes",
+        "standalone passport HTML has no scripts"
+      ]
+    },
+    {
+      "solver": "fdtdx",
+      "device": "gpu",
+      "run_id": "6e0c8f05d7dd4d8aab5a25e508a6976f",
+      "actual_device": "cuda:0",
+      "frame_count": 25,
+      "global_peak_abs": 1.1961349248886108,
+      "observed_checks": [
+        {
+          "label": "Finite numerical values",
+          "passed": true,
+          "detail": "Final Ez, permittivity, and coordinate arrays contain no NaN or infinite values."
+        },
+        {
+          "label": "Nonzero final field",
+          "passed": true,
+          "detail": "At least one final Ez sample is nonzero; this does not establish convergence."
+        },
+        {
+          "label": "Matching field and material grids",
+          "passed": true,
+          "detail": "Field shape [100, 200]; coordinates contain 200 x and 100 y samples."
+        },
+        {
+          "label": "Consistent saved configuration",
+          "passed": true,
+          "detail": "Config file, saved worker metadata, and run snapshot agree."
+        }
+      ],
+      "file_manifest": {
+        "config.json": {
+          "sha256": "9b666388624390193f0e629df3ed4ad66e46fbf018e28fe57b3bbd41c996a32d",
+          "size_bytes": 262
+        },
+        "metadata.json": {
+          "sha256": "85efdc34bd4d779cdb8d7b65f223518e7ff08dbf0597b543fcce6fb6600b08d5",
+          "size_bytes": 1788
+        },
+        "arrays.npz": {
+          "sha256": "90809fbe62dca26fcfed7c8df01215f14e0e1e14f90e0dc1f320c34f1ced7bcb",
+          "size_bytes": 1680144
+        }
+      },
+      "checks_passed": [
+        "immutable configuration matches run",
+        "first middle last stored frames exactly match exported arrays",
+        "recorded times and global peak exactly match export",
+        "final snapshot unchanged",
+        "all three file hashes match exported bytes",
+        "standalone passport HTML has no scripts"
+      ]
+    }
+  ]
+}

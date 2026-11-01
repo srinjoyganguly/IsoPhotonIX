@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "target": "meep:cpu",
+  "run_id": "1f68d1b730624d0c9ff39c4ac6176c3e",
+  "second_run_id": "ea00685d8b9f4656ab77c799123bdd9d",
+  "frame_count": 25,
+  "global_peak_abs": 0.33543330430984497,
+  "checks": [
+    "real array-to-canvas equality",
+    "fixed amplitude scale",
+    "exact fs label",
+    "play and pause recorded frames",
+    "final snapshot preserved",
+    "passport hashes and reproduction command",
+    "immutable passport config",
+    "new run resets frames",
+    "visible injected transport failure and real retry",
+    "390px no horizontal overflow"
+  ],
+  "browser_errors": [],
+  "version": "0.2.0",
+  "build_checks": {
+    "typescript_strict": "passed",
+    "vite": "7.2.2 production build passed",
+    "dependency_lock": "offline frozen install passed; no new dependencies"
+  },
+  "coverage": "Full upgraded browser journey tested on Meep CPU. Frame/passport/export HTTP checks for all three solver targets are recorded separately in run-passport.json.",
+  "negative_transport_test": "One on-demand frame HTTP request was deliberately aborted in the test browser. The UI showed the failure, then loaded the real frame after retry. No numerical response was fabricated or replaced.",
+  "export_check": "Downloaded real-result ZIP contains passport.html and manifest.json; all three manifest SHA256 fingerprints match the included files.",
+  "live_probe_regression": {
+    "passed": true,
+    "scope": "Read-only renderer regression using an existing real Meep result; no new solver execution.",
+    "run_id": "1f68d1b730624d0c9ff39c4ac6176c3e",
+    "initial_probe": "x -3.125 \u00b5m \u00b7 y -0.025 \u00b5m \u00b7 Ez 0.0000e+0",
+    "final_probe": "x -3.125 \u00b5m \u00b7 y -0.025 \u00b5m \u00b7 Ez 2.5931e-1",
+    "expected_current_frame_value": "2.5931e-1"
+  }
+}

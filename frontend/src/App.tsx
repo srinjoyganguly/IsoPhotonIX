@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { FieldCanvas, type Field } from './FieldCanvas';
+import { request } from './api';
+import { EvolutionPlayer } from './EvolutionPlayer';
+import { RunPassport } from './RunPassport';
 
 type Solver = 'meep' | 'fdtdx';
 type Device = 'cpu' | 'gpu';
@@ -10,24 +14,13 @@ type Config = {
 type Target = { solver: Solver; device: Device; available: boolean; reason?: string; version?: string; device_name?: string };
 type Capabilities = { targets: Target[]; recommendation?: { solver: Solver; device: Device; reason: string } };
 type Job = { id: string; status: string; config: Config; created_at: string; logs?: string | string[]; error?: string; result?: Record<string, unknown> };
-type Field = { field: number[][]; epsilon: number[][]; x_um: number[]; y_um: number[]; metadata: Record<string, unknown> };
 type Validation = { valid: boolean; estimate?: Record<string, unknown>; warnings?: string[] };
-type View = 'geometry' | 'field' | 'epsilon';
+type View = 'geometry' | 'field' | 'epsilon' | 'evolution';
 
 const defaults: Config = { schema_version: 1, wavelength_um: 1.55, core_width_um: .6, core_index: 2, cladding_index: 1, length_um: 10, height_um: 5, resolution: 20, duration_fs: 80, pml_um: 1, solver: 'meep', device: 'cpu' };
 const labels: Record<string, string> = { wavelength_um: 'Wavelength', core_width_um: 'Core width', core_index: 'Core index', cladding_index: 'Cladding index', length_um: 'Domain length', height_um: 'Domain height', resolution: 'Grid resolution', duration_fs: 'Simulated duration', pml_um: 'PML thickness' };
 const name = (s: string) => s === 'meep' ? 'Meep' : 'FDTDX';
-const readable = (v: unknown): string => typeof v === 'string' ? v : JSON.stringify(v);
-function errorText(value: unknown): string {
-  if (Array.isArray(value)) return value.map(item => typeof item === 'object' && item !== null && 'msg' in item ? `${(item as {loc?: string[]}).loc?.filter(x => x !== 'body').join('.') || 'Configuration'}: ${String((item as {msg: unknown}).msg)}` : readable(item)).join('; ');
-  return readable(value) || 'Request failed';
-}
-async function request<T>(path: string, body?: unknown): Promise<T> {
-  const response = await fetch(path, body === undefined ? undefined : { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  const data = await response.json();
-  if (!response.ok) throw new Error(errorText(data.detail || data.error || data));
-  return data as T;
-}
+
 function downloadJson(config: Config) {
   const url = URL.createObjectURL(new Blob([JSON.stringify(config, null, 2) + '\n'], { type: 'application/json' }));
   const a = document.createElement('a'); a.href = url; a.download = 'waveguide-config.json'; a.click(); URL.revokeObjectURL(url);
@@ -73,49 +66,6 @@ function Geometry({config}: {config: Config}) {
   </svg>;
 }
 
-function FieldCanvas({data, view}: {data: Field; view: 'field'|'epsilon'}) {
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const [hover,setHover] = useState<string>('Move over the field to inspect a sample');
-  const values = view === 'field' ? data.field : data.epsilon;
-  const ny = values.length, nx = values[0]?.length || 0;
-  let min = Infinity, max = -Infinity;
-  values.forEach(row=>row.forEach(v=>{ min=Math.min(min,v); max=Math.max(max,v); }));
-  const limit = Math.max(Math.abs(min),Math.abs(max)) || 1;
-  useEffect(()=>{
-    const el = canvas.current;
-    if(!el || !nx || !ny) return;
-    el.width=nx;el.height=ny;
-    const ctx=el.getContext('2d')!; const image=ctx.createImageData(nx,ny);
-    for(let y=0;y<ny;y++) for(let x=0;x<nx;x++) {
-      const value=values[y][x], i=((ny-y-1)*nx+x)*4;
-      let r,g,b;
-      if(view==='field') {
-        const v=Math.max(-1,Math.min(1,value/limit)); const strength=Math.abs(v);
-        const base=[19,28,41], color=v<0?[73,141,249]:[255,157,104];
-        [r,g,b]=base.map((c,j)=>Math.round(c+(color[j]-c)*strength));
-      } else {
-        const t=(value-min)/(max-min || 1); r=22+t*67;g=37+t*182;b=54+t*143;
-      }
-      image.data[i]=r;image.data[i+1]=g;image.data[i+2]=b;image.data[i+3]=255;
-    }
-    ctx.putImageData(image,0,0);
-  },[values,view,nx,ny,min,max,limit]);
-  const sample=(event:React.MouseEvent<HTMLCanvasElement>)=>{
-    const rect=event.currentTarget.getBoundingClientRect();
-    const x=Math.min(nx-1,Math.max(0,Math.floor((event.clientX-rect.left)/rect.width*nx)));
-    const y=Math.min(ny-1,Math.max(0,ny-1-Math.floor((event.clientY-rect.top)/rect.height*ny)));
-    setHover(`x ${data.x_um[x]?.toFixed(3)} µm · y ${data.y_um[y]?.toFixed(3)} µm · ${view==='field'?'Ez':'εr'} ${values[y][x].toExponential(4)}`);
-  };
-  return <div className="field-display">
-    <div className="field-y-label">y (µm)</div>
-    <div className="field-y-ticks"><span>{data.y_um.at(-1)?.toFixed(1)}</span><span>0</span><span>{data.y_um[0]?.toFixed(1)}</span></div>
-    <canvas ref={canvas} className="field-canvas" onMouseMove={sample} aria-label={`${view==='field'?'Actual Ez electric field':'Actual discretized relative permittivity'}, ${nx} by ${ny} samples`} />
-    <div className="field-x-ticks"><span>{data.x_um[0]?.toFixed(1)}</span><span>0</span><span>{data.x_um.at(-1)?.toFixed(1)}</span></div>
-    <div className="field-x-label">x (µm)</div>
-    <div className="colorbar-row"><span>{view==='field'?'Ez · solver units':'Relative permittivity εr'}</span><div className="colorbar-block"><div className={`colorbar ${view}`} /><div className="colorbar-labels"><span>{(view==='field'?-limit:min).toPrecision(3)}</span><span>{view==='field'?'0':''}</span><span>{(view==='field'?limit:max).toPrecision(3)}</span></div></div></div>
-    <div className="sample-readout">{hover}</div>
-  </div>;
-}
 
 export default function App() {
   const [config,setConfig]=useState<Config>(defaults);
@@ -205,8 +155,8 @@ export default function App() {
   const executionDevice=resultMetadata.device_name || resultMetadata.actual_device;
   const executionVersions=resultMetadata.versions as Record<string,string>|undefined;
   return <div className="app-shell">
-    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">EXAMPLE / 01</span><strong>Dielectric slab waveguide</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.1 · experimental</span></div></header>
-    <div className="intro-row"><div><span className="eyebrow">FROM GEOMETRY TO FIELD</span><h1>A small waveguide. Real physics.</h1><p>Configure the model, choose your hardware, and see what propagates.</p></div><button className="button secondary open-example" onClick={openExample} disabled={!loaded || !!busy}><Symbol kind="folder"/>Open bundled example</button></div>
+    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">EXAMPLE / 01</span><strong>Dielectric slab waveguide</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.2 · experimental</span></div></header>
+    <div className="intro-row"><div><span className="eyebrow">FROM GEOMETRY TO FIELD</span><h1>A small waveguide. Real physics.</h1><p>Real fields on your own hardware. No solver activation fees. Results you can inspect and reproduce.</p></div><button className="button secondary open-example" onClick={openExample} disabled={!loaded || !!busy}><Symbol kind="folder"/>Open bundled example</button></div>
     <main className="workbench">
       <aside className="panel model-panel">
         <div className="panel-heading"><div><span className="step">01</span><h2>Define the model</h2></div><span className="tag">µm · fs</span></div>
@@ -220,9 +170,9 @@ export default function App() {
 
       <section className="center-column">
         <div className="panel viewport-panel">
-          <div className="viewport-top"><div className="view-tabs" role="tablist" aria-label="Viewport"><button role="tab" aria-selected={view==='geometry'} className={view==='geometry'?'active':''} onClick={()=>setView('geometry')}>Geometry</button><button role="tab" aria-selected={view==='field'} disabled={!field} className={view==='field'?'active':''} onClick={()=>setView('field')}>Ez field{field&&<i/>}</button><button role="tab" aria-selected={view==='epsilon'} disabled={!field} className={view==='epsilon'?'active':''} onClick={()=>setView('epsilon')}>Material grid</button></div><span className="dimension-tag">XY PLANE</span></div>
-          <div className="viewport-title"><div><h2>{view==='geometry'?'Your simulation domain':view==='field'?'Electric field, Ez':'Discretized material'}</h2><p>{view==='geometry'?(validationError?'Last valid geometry · fix parameters before running':'Geometry preview · no numerical field shown'):view==='field'?'Actual solver output · final time snapshot':'Relative permittivity returned by the solver'}</p></div><span className="viewport-badge">{view==='geometry'?'DESIGN': 'COMPUTED'}</span></div>
-          <div className="viewport-content">{view==='geometry'?<Geometry config={geometryConfig}/>:field?<FieldCanvas data={field} view={view}/>:null}</div>
+          <div className="viewport-top"><div className="view-tabs" role="tablist" aria-label="Viewport"><button role="tab" aria-selected={view==='geometry'} className={view==='geometry'?'active':''} onClick={()=>setView('geometry')}>Geometry</button><button role="tab" aria-selected={view==='field'} disabled={!field} className={view==='field'?'active':''} onClick={()=>setView('field')}>Ez field{field&&<i/>}</button><button role="tab" aria-selected={view==='evolution'} disabled={!field} className={view==='evolution'?'active':''} onClick={()=>setView('evolution')}>Time evolution</button><button role="tab" aria-selected={view==='epsilon'} disabled={!field} className={view==='epsilon'?'active':''} onClick={()=>setView('epsilon')}>Material grid</button></div><span className="dimension-tag">XY PLANE</span></div>
+          <div className="viewport-title"><div><h2>{view==='geometry'?'Your simulation domain':view==='field'?'Electric field, Ez':view==='evolution'?'Watch the field propagate':'Discretized material'}</h2><p>{view==='geometry'?(validationError?'Last valid geometry · fix parameters before running':'Geometry preview · no numerical field shown'):view==='field'?'Actual solver output · final time snapshot':view==='evolution'?'Recorded solver frames · one fixed amplitude scale':'Relative permittivity returned by the solver'}</p></div><span className="viewport-badge">{view==='geometry'?'DESIGN':view==='evolution'?'RECORDED':'COMPUTED'}</span></div>
+          <div className="viewport-content">{view==='geometry'?<Geometry config={geometryConfig}/>:field?view==='evolution'&&job?<EvolutionPlayer key={job.id} jobId={job.id} data={field}/>:<FieldCanvas data={field} view={view==='epsilon'?'epsilon':'field'}/>:null}</div>
           <div className="viewport-footer">{view==='geometry'?<><span><i className="legend-core"/>Dielectric core</span><span><i className="legend-source"/>Finite source</span><span><i className="legend-pml"/>Absorbing PML</span></>:<><span className="computed-dot"/> {name(job?.config.solver || 'meep')} · {job?.config.device.toUpperCase()} · {field?.field[0]?.length} × {field?.field.length} samples</>}</div>
         </div>
         <div className="panel results-panel">
@@ -230,6 +180,7 @@ export default function App() {
           {job?<><div className="run-facts"><div><span>RUN</span><strong className="mono">{job.id.slice(0,10)}</strong></div><div><span>SOLVER / TARGET</span><strong>{name(job.config.solver)} / {job.config.device.toUpperCase()}</strong></div><div><span>WAVELENGTH</span><strong>{job.config.wavelength_um} µm</strong></div><div><span>CORE WIDTH</span><strong>{job.config.core_width_um} µm</strong></div></div>
             {currentDiffers&&<div className="snapshot-note">The editor has changed. This run retains the configuration shown above.</div>}
             {job.status==='completed'&&<>{!!executionDevice&&<div className="execution-proof"><Symbol kind="check" size={13}/><span>Executed on {String(executionDevice)}{executionVersions?.[job.config.solver]&&` · ${name(job.config.solver)} ${executionVersions[job.config.solver]}`}</span></div>}<div className="result-actions"><a className="button primary compact" href={`/api/jobs/${job.id}/export`}><Symbol kind="download" size={16}/>Export results .zip</a><span>Configuration · numerical arrays · provenance</span></div></>}
+            {job.status==='completed'&&<RunPassport key={job.id} jobId={job.id}/>}
             {job.error&&<div className="error-banner" role="alert">{job.error}</div>}
             {!!Object.keys(resultMetadata).length&&<details className="metadata"><summary>Run metadata & solver versions</summary><pre>{JSON.stringify(resultMetadata,null,2)}</pre></details>}
           </>:<div className="empty-results"><span className="empty-symbol"><Symbol kind="wave" size={30}/></span><div><strong>Your first field starts here.</strong><p>Run the waveguide to inspect real electromagnetic data and export a reproducible result.</p></div></div>}

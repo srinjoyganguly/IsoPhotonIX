@@ -1,5 +1,5 @@
 {
-  "job_id": "b722e5f659854a7786afee1d6d3ca619",
+  "job_id": "a221765aee50460baad5ca533a99220d",
   "config": {
     "schema_version": 1,
     "wavelength_um": 1.55,
@@ -14,10 +14,21 @@
     "solver": "fdtdx",
     "device": "gpu"
   },
-  "solve_completed_video_second": 52.3,
-  "recorded_duration_seconds": 84.01,
+  "solve_completed_video_second": 40.746,
+  "recorded_duration_seconds": 84.005,
   "solver_wait": "uncut real time",
   "source": "actual local application",
-  "video_duration_seconds": 84.4,
-  "video_bytes": 4677435
+  "video_duration_seconds": 86.16,
+  "video_bytes": 4871888,
+  "video_sha256": "9bcc541345944a9383d50dbc8585758772131befd8696b57cd85d9724e768c7b",
+  "actual_device": "cuda:0",
+  "frame_count": 25,
+  "export_manifest_verified": true,
+  "includes": [
+    "actual GPU simulation with uncut wait",
+    "recorded field playback",
+    "run passport",
+    "ZIP export",
+    "concrete Codex contribution"
+  ]
 }

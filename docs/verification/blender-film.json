@@ -1,0 +1,22 @@
+{
+  "frames": 576,
+  "duration_seconds": 24.0,
+  "fps": 24,
+  "resolution": [
+    1280,
+    720
+  ],
+  "renderer": "Blender5.2.0LTS EEVEE",
+  "samples": 16,
+  "mp4_sha256": "fd142f6d424429fced6e40c1f1061670a0e1d18118f05efeca4eaa6530cadd25",
+  "source_arrays_sha256": "3f81aadc42362b683d48830f79480b4da715730ff552941acc1e43e3861e0da5",
+  "source_recorded_frames": 25,
+  "source_last_frame_fs": 77.78825467686504,
+  "privacy_check": "Decompressed scene checked for personal path markers; packed images use relative paths",
+  "source_zip_sha256": "c3ded0a22c2731979627046d7c9b44319ee58d271dc2130079ab396ae8b6074d",
+  "blend_sha256": "2c43d134005bedc1a43681496e533e008a96783a980aa079800100ae97398fc2",
+  "portability": "Packed blend reloaded without external assets; frame430 rendered pixel-identically. Hidden packed-file paths and trailing file-browser buffer bytes scrubbed; decompressed-byte scan passed. PNG source-filename metadata disabled.",
+  "independent_texture_verification": "All25 PNG textures compared pixel-for-pixel to sourceNPZ; alltimestamps andarraysSHA256 matched",
+  "portable_frame_430_max_pixel_difference": 0,
+  "public_poster_metadata": "AllPNGmetadata stripped withoutchangingpixels"
+}

@@ -9,11 +9,30 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**[Watch the 84.4-second working demo](https://srinjoyganguly.github.io/photonics-workbench/)** — recorded from a real local NVIDIA run, with the solver wait shown in real time. The hosted page plays the video; simulations run locally after installation.
+**[Watch the 86.2-second working demo](https://srinjoyganguly.github.io/photonics-workbench/)** — recorded from a real local NVIDIA run, with the solver wait shown in real time. The hosted page plays the video; simulations run locally after installation.
+
+The [24-second Blender journey](https://srinjoyganguly.github.io/photonics-workbench/#blender-journey)
+explains the same six steps with an original 3D schematic and actual recorded
+2D fields. [Source assets and reproduction notes](docs/BLENDER.md) distinguish
+the presentation from the numerical simulation.
 
 ![Actual FDTDX GPU field and execution metadata in the workbench](docs/application.png)
 
 [Public source repository](https://github.com/srinjoyganguly/photonics-workbench)
+
+## Why this exists
+
+A student should be able to move from a waveguide sketch to an inspectable
+electromagnetic result on their own laptop, then hand a collaborator the exact
+configuration and numerical data. This workbench makes that small journey
+explicit: physical validation, an explained solver choice, an actual device
+record, and a portable result that remains useful outside the interface.
+
+The contribution is the learning and reproducibility workflow around two open
+solvers. It requires no paid solver activation or cloud account. Commercial
+packages offer much broader modeling and validation; this project deliberately
+addresses one accessible local experiment. [Product rationale and judging evidence](docs/PROJECT.md)
+describe the distinction and its limits.
 
 ## The complete journey
 
@@ -25,18 +44,22 @@ provide the solvers; [build provenance](docs/PROVENANCE.md) and
    Unavailable targets remain unavailable; no GPU-to-CPU fallback exists.
 5. Run the simulation in an isolated local worker. Inspect status and logs, or
    cancel it.
-6. View the actual final Ez field and discretized permittivity. Hover to inspect
-   values, inspect solver/device metadata, and export the results ZIP.
+6. View the actual final Ez field and discretized permittivity, or replay stored
+   field frames at their recorded simulated times with one fixed amplitude scale.
+   Inspect the run passport and export the results ZIP.
 
 Configuration JSON can be saved and imported. A completed run retains its own
 configuration, so later edits do not relabel an earlier result. The result ZIP
-contains the configuration, numerical NumPy arrays, run metadata, and sanitized
-worker log. Computation stays on the local machine; no OpenAI API key, runtime
+contains the configuration, numerical NumPy arrays, run metadata, sanitized
+worker log, an offline HTML run passport, and a SHA256 file manifest. The passport
+records actual execution, source assumptions, observed array checks, and a
+reproduction command. Checksums identify files; they do not certify scientific
+accuracy. Computation stays on the local machine; no OpenAI API key, runtime
 chatbot, cloud solver, or paid commercial solver license is required.
 
 ## Run locally
 
-The [v0.1.0 release bundle](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.1.0)
+The [v0.2.0 release bundle](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.2.0)
 includes source and the built interface. After extracting it, install the API
 and solver environments in the setup guide, then run `bash scripts/start.sh`;
 you can skip the Node build step. Solver binaries and environments are not bundled.
@@ -79,9 +102,10 @@ solver lives outside the default project-local environment.
 | HTTP journey and export | Meep CPU, FDTDX CPU, and FDTDX GPU passed; exported arrays exactly matched the field API; config and target metadata matched |
 | Browser journey on all three routes | Real edited-width runs, invalid-input feedback, field/material views, ZIP export, explicit selection, JSON import, and immutable run snapshots checked |
 | Failure and cancellation | Unit/API checks passed; a cancelled worker cannot return a completed field or result export |
+| Recorded frames and run passports | All three routes checked through HTTP: first/middle/last frames and simulated times exactly matched the saved arrays; fixed global scale and exported SHA256 manifests matched |
 | Responsive interface | Browser checks passed at 1440, 1280, and 390 px with no overflow or browser errors |
 | Meep fresh-environment setup | Documented YAML created a fresh prefix from cached official packages; real worker output matched the first environment exactly |
-| API clean install | Fresh isolated virtual environments installed from SHA256-verified official PyPI wheels; dependency check passed; 15 application tests passed with the separately tested Meep case skipped |
+| API clean install | Fresh isolated virtual environments installed from SHA256-verified official PyPI wheels; dependency check passed; current regression suite: 23 passed, with the separately tested Meep numerical case skipped |
 | FDTDX clean install | Not yet established; numerical verification used an existing environment with recorded versions |
 
 [FDTDX verification](docs/FDTDX_VERIFICATION.md) records the exact measured
@@ -103,7 +127,7 @@ separate Playwright setup used for UI verification.
 
 The repository and demo were checked in fresh signed-out browsers. Public video
 playback and seeking worked, with no authentication cookies; the measured
-duration is 84.4 seconds. [Link-check evidence](docs/verification/public-links.json)
+duration is 86.16 seconds. [Link-check evidence](docs/verification/public-links.json)
 records the observations.
 
 ## Scientific scope and limitations
@@ -114,8 +138,10 @@ three-cell periodic z extrusion; Meep uses native 2D. Both sources ramp over fou
 optical periods. Meep injects an electric-current line while FDTDX injects a
 directed E/H plane, so absolute amplitudes are not cross-solver calibrated.
 
-The viewer shows a finite-time field snapshot in arbitrary source units,
-including the PML region. It does **not** report normalized transmission,
+The viewer shows a finite-time field snapshot and recorded time frames in arbitrary
+source units, including the PML region. Playback uses only saved numerical samples;
+the final snapshot can be later than the last recorded playback frame. It does
+**not** report normalized transmission,
 S-parameters, mode purity, convergence, or experimentally validated device
 performance. Material interfaces and sampled coordinate grids differ between
 solvers. A minimum grid rule prevents obviously coarse inputs but does not
