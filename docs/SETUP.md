@@ -44,8 +44,10 @@ locally:
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The v0.5 API suite runs 80 checks: 77 pass and three Meep numerical tests are
-skipped in the API interpreter because Meep lives in a separate environment.
+The application suite includes model, API, complex-port, source-archive and
+Python/notebook export contracts. The final v0.6 run had 116 tests: 112 passed
+and four Meep runtime checks were skipped in the
+API interpreter because Meep lives in a separate environment.
 Actual solver checks are recorded separately in the relevant study guides.
 The API wheelhouse is a local cache and is not committed.
 
@@ -205,7 +207,24 @@ dependency set. The event checks used installed Google Chrome on Windows.
 Only select installed solver targets; these checks execute real computations
 and do not mock field data.
 
+The [finite-height modal study](3D_PORTS.md) uses four reference/device solves
+and a twenty-minute worker cap. `frontend/browser-modal-smoke.cjs` verifies its
+complete Meep CPU and FDTDX CPU/NVIDIA journeys, with real complex S arrays,
+field slices and downloads. `frontend/browser-code-export.cjs` separately
+checks geometry and every executable editor's code export. New workers archive
+their first-party numerical source before execution; do not edit that numerical
+source during a solve, because a changed implementation invalidates its
+provenance and causes a visible failure.
+
 ## Reproduce an export
+
+For a bundle independent of this repository, choose **Export run Python +
+notebook**. It includes the immutable configuration, captured numerical source,
+saved arrays, dependency instructions and automatic replay comparisons. Older
+runs without a captured source archive are explicitly labeled export-time
+compatibility checks. Follow [Python/Jupyter instructions](REPRODUCIBLE_EXPORTS.md)
+for the script or notebook. A general geometry draft exports geometry/rendering
+code; only supported executable studies export real solver execution.
 
 Extract a result ZIP to a local directory. Its `config.json` can be imported
 through the UI or passed to the CLI:

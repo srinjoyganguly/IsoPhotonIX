@@ -1,0 +1,51 @@
+{
+  "schema_version": 4,
+  "study_type": "waveguide-ports-3d",
+  "geometry": {
+    "schema": "photonics-workbench-geometry",
+    "schema_version": 1,
+    "units": "um",
+    "name": "Finite-height modal two-port guide",
+    "mode": "draft-3d",
+    "domain": {
+      "x": 8.0,
+      "y": 4.0,
+      "z": 4.0
+    },
+    "objects": [
+      {
+        "id": "core",
+        "name": "Finite-height core",
+        "visible": true,
+        "kind": "box",
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "size": {
+          "x": 8.0,
+          "y": 0.75,
+          "z": 0.5
+        },
+        "radius": 1.0,
+        "inner_radius": 0.6,
+        "rotation_deg": 0.0,
+        "refractive_index": 2.0
+      }
+    ]
+  },
+  "device_kind": "gap",
+  "gap_um": 0.25,
+  "cladding_index": 1.0,
+  "wavelength_min_um": 1.45,
+  "wavelength_max_um": 1.65,
+  "frequency_points": 5,
+  "resolution": 16,
+  "pml_um": 0.75,
+  "max_after_sources_fs": 600.0,
+  "decay_by": 1e-07,
+  "spectrum_tolerance": 0.0001,
+  "solver": "meep",
+  "device": "cpu"
+}

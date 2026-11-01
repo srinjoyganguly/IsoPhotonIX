@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "target": "meep:cpu",
+  "run_id": "961daa4c31b04234a66d0d4b905b08b6",
+  "second_run_id": "6d36e95b093a4deea7664c8eec237e24",
+  "frame_count": 25,
+  "global_peak_abs": 0.33543330430984497,
+  "checks": [
+    "real array-to-canvas equality",
+    "fixed amplitude scale",
+    "exact fs label",
+    "play and pause recorded frames",
+    "workspace switch pauses playback and preserves frame/time",
+    "final snapshot preserved",
+    "passport hashes and reproduction command",
+    "immutable passport config",
+    "new run resets frames",
+    "visible injected transport failure and real retry",
+    "390px no horizontal overflow"
+  ],
+  "browser_errors": []
+}

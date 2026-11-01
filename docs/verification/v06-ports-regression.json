@@ -1,0 +1,288 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T21:37:59.251Z",
+  "browser": "156.0.8078.74",
+  "run_id": "d929eb5b9176444899caad4b64ef8463",
+  "solver": "meep",
+  "requested_device": "cpu",
+  "actual_device": "CPU",
+  "config": {
+    "schema_version": 3,
+    "study_type": "waveguide-ports-2d",
+    "device_kind": "gap",
+    "gap_um": 0.3125,
+    "core_width_um": 0.625,
+    "core_index": 2,
+    "cladding_index": 1,
+    "wavelength_min_um": 1.45,
+    "wavelength_max_um": 1.65,
+    "frequency_points": 21,
+    "length_um": 12,
+    "height_um": 6,
+    "pml_um": 1,
+    "resolution": 32,
+    "max_after_sources_fs": 1000,
+    "decay_by": 1e-8,
+    "spectrum_tolerance": 0.0001,
+    "solver": "meep",
+    "device": "cpu"
+  },
+  "valid_bins": 21,
+  "observed_stages": [
+    "complete"
+  ],
+  "settlement": {
+    "reference": {
+      "settled": true,
+      "peak_energy": 20.91646190446364,
+      "last_energy_ratio": 3.494423435510804e-14,
+      "last_flux_change": 2.424333420669276e-7,
+      "consecutive_checks": 2,
+      "history": [
+        {
+          "time_fs": 16.678204759907604,
+          "energy_ratio": 1,
+          "flux_change": null
+        },
+        {
+          "time_fs": 33.35640951981521,
+          "energy_ratio": 1,
+          "flux_change": 361562690.4800291
+        },
+        {
+          "time_fs": 50.03461427972281,
+          "energy_ratio": 1,
+          "flux_change": 148260153.01156503
+        },
+        {
+          "time_fs": 66.71281903963042,
+          "energy_ratio": 1,
+          "flux_change": 38382920.03980375
+        },
+        {
+          "time_fs": 83.39102379953802,
+          "energy_ratio": 1,
+          "flux_change": 5555029.120855153
+        },
+        {
+          "time_fs": 100.06922855944562,
+          "energy_ratio": 1,
+          "flux_change": 370947.00879529375
+        },
+        {
+          "time_fs": 116.74743331935322,
+          "energy_ratio": 1,
+          "flux_change": 19979.691498356522
+        },
+        {
+          "time_fs": 133.42563807926084,
+          "energy_ratio": 1,
+          "flux_change": 921.5298185322459
+        },
+        {
+          "time_fs": 150.10384283916844,
+          "energy_ratio": 1,
+          "flux_change": 59.34236836189921
+        },
+        {
+          "time_fs": 166.78204759907604,
+          "energy_ratio": 0.9477959052652437,
+          "flux_change": 1.9555335801586666
+        },
+        {
+          "time_fs": 183.46025235898364,
+          "energy_ratio": 0.6328496767247593,
+          "flux_change": 0.7450806751338073
+        },
+        {
+          "time_fs": 200.13845711889124,
+          "energy_ratio": 0.1901668565772823,
+          "flux_change": 0.537572336312906
+        },
+        {
+          "time_fs": 216.81666187879884,
+          "energy_ratio": 0.02036307227494484,
+          "flux_change": 0.74712307045564
+        },
+        {
+          "time_fs": 233.49486663870644,
+          "energy_ratio": 0.0005930462583588732,
+          "flux_change": 0.0579282556749476
+        },
+        {
+          "time_fs": 250.17307139861404,
+          "energy_ratio": 0.000005144931127396655,
+          "flux_change": 0.005794437674879176
+        },
+        {
+          "time_fs": 266.85127615852167,
+          "energy_ratio": 1.0747036594586164e-8,
+          "flux_change": 0.0003955005100024886
+        },
+        {
+          "time_fs": 283.5294809184293,
+          "energy_ratio": 7.19872725550025e-12,
+          "flux_change": 0.000011192485941573119
+        },
+        {
+          "time_fs": 300.2076856783369,
+          "energy_ratio": 3.494423435510804e-14,
+          "flux_change": 2.424333420669276e-7
+        }
+      ],
+      "actual_time_fs": 300.25980506821156,
+      "elapsed_fs": 300.25980506821156,
+      "after_source_fs": 60.84417064995376,
+      "actual_source_end_fs": 239.4156344182578,
+      "time_steps": 5761,
+      "elapsed_s": 2.4735145810000176,
+      "reason": "energy_and_flux_decay",
+      "decay_by": 1e-8,
+      "spectrum_tolerance": 0.0001,
+      "energy_ratio": 3.494423435510804e-14,
+      "spectral_relative_change": 2.424333420669276e-7,
+      "thresholds": {
+        "energy_decay": 1e-8,
+        "spectral_relative_change": 0.0001
+      },
+      "check_interval_fs": 16.678204759907604,
+      "required_consecutive_checks": 2,
+      "definition": "Whole-cell electromagnetic energy relative to sampled peak and maximum per-bin flux change relative to incident power; both must pass twice after source turn-off."
+    },
+    "device": {
+      "settled": true,
+      "peak_energy": 20.36365253070202,
+      "last_energy_ratio": 1.779454945859605e-14,
+      "last_flux_change": 4.096575038049031e-7,
+      "consecutive_checks": 2,
+      "history": [
+        {
+          "time_fs": 16.678204759907604,
+          "energy_ratio": 1,
+          "flux_change": null
+        },
+        {
+          "time_fs": 33.35640951981521,
+          "energy_ratio": 1,
+          "flux_change": 0.000012136106516377399
+        },
+        {
+          "time_fs": 50.03461427972281,
+          "energy_ratio": 1,
+          "flux_change": 0.0004872922115800021
+        },
+        {
+          "time_fs": 66.71281903963042,
+          "energy_ratio": 1,
+          "flux_change": 0.005664220428009369
+        },
+        {
+          "time_fs": 83.39102379953802,
+          "energy_ratio": 1,
+          "flux_change": 0.055868550870668
+        },
+        {
+          "time_fs": 100.06922855944562,
+          "energy_ratio": 1,
+          "flux_change": 0.40877296650334527
+        },
+        {
+          "time_fs": 116.74743331935322,
+          "energy_ratio": 1,
+          "flux_change": 0.7883871139170554
+        },
+        {
+          "time_fs": 133.42563807926084,
+          "energy_ratio": 1,
+          "flux_change": 0.974214837407029
+        },
+        {
+          "time_fs": 150.10384283916844,
+          "energy_ratio": 1,
+          "flux_change": 1.153811725259562
+        },
+        {
+          "time_fs": 166.78204759907604,
+          "energy_ratio": 0.8954962887884714,
+          "flux_change": 0.5365297580182888
+        },
+        {
+          "time_fs": 183.46025235898364,
+          "energy_ratio": 0.5498608196192216,
+          "flux_change": 0.5845222592663836
+        },
+        {
+          "time_fs": 200.13845711889124,
+          "energy_ratio": 0.15453023710429087,
+          "flux_change": 0.24618836042506237
+        },
+        {
+          "time_fs": 216.81666187879884,
+          "energy_ratio": 0.014629254730353865,
+          "flux_change": 0.3478658877044962
+        },
+        {
+          "time_fs": 233.49486663870644,
+          "energy_ratio": 0.00039915668751985286,
+          "flux_change": 0.05231724590573187
+        },
+        {
+          "time_fs": 250.17307139861404,
+          "energy_ratio": 0.0000030318214086165062,
+          "flux_change": 0.0039959359623374345
+        },
+        {
+          "time_fs": 266.85127615852167,
+          "energy_ratio": 5.959711092600898e-9,
+          "flux_change": 0.00023528660972526292
+        },
+        {
+          "time_fs": 283.5294809184293,
+          "energy_ratio": 4.911709050697009e-12,
+          "flux_change": 0.000006077874058138022
+        },
+        {
+          "time_fs": 300.2076856783369,
+          "energy_ratio": 1.779454945859605e-14,
+          "flux_change": 4.096575038049031e-7
+        }
+      ],
+      "actual_time_fs": 300.25980506821156,
+      "elapsed_fs": 300.25980506821156,
+      "after_source_fs": 60.84417064995376,
+      "actual_source_end_fs": 239.4156344182578,
+      "time_steps": 5761,
+      "elapsed_s": 5.997695564999958,
+      "reason": "energy_and_flux_decay",
+      "decay_by": 1e-8,
+      "spectrum_tolerance": 0.0001,
+      "energy_ratio": 1.779454945859605e-14,
+      "spectral_relative_change": 4.096575038049031e-7,
+      "thresholds": {
+        "energy_decay": 1e-8,
+        "spectral_relative_change": 0.0001
+      },
+      "check_interval_fs": 16.678204759907604,
+      "required_consecutive_checks": 2,
+      "definition": "Whole-cell electromagnetic energy relative to sampled peak and maximum per-bin flux change relative to incident power; both must pass twice after source turn-off."
+    }
+  },
+  "checks": [
+    "No automatic target selection; invalid parameters cannot submit",
+    "Real matched-reference and device study completed with recorded settlement",
+    "Every plotted spectral sample equals its actual saved value; signed coordinates retained",
+    "R/T and uncollected residual match the signed incident normalization",
+    "Keyboard sample inspection and full numerical table",
+    "CSV and JSON exports equal the actual API data; result ZIP downloaded; spectrum hashes visible in passport",
+    "Masked-bin UI fixture produces gaps and no fabricated zeros",
+    "HTTP-error UI fixture hides unavailable spectrum; retry restores actual data",
+    "390px layout has no horizontal page overflow",
+    "No browser exceptions"
+  ],
+  "new_solver_jobs": 0,
+  "ui_state_fixtures": [
+    "One masked bin based on an actual spectrum, explicitly not physical evidence",
+    "HTTP 503 spectrum response"
+  ],
+  "browser_errors": []
+}

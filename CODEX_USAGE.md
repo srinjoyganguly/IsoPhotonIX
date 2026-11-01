@@ -25,6 +25,23 @@ The [initial implementation commit](https://github.com/srinjoyganguly/photonics-
 
 An independent Codex agent noticed that the recommendation could call FDTDX an “available alternative” even when its probes failed. The implementation now derives that sentence from the readiness results. `tests/test_capabilities.py` verifies the missing-backend case and the no-ready-target case.
 
+## Post-event example: real simulations exposed directional errors
+
+While adding finite-height complex ports, Codex ran both incidence directions
+through a symmetric gap. The first implementation failed reflection symmetry.
+Inspection of native modal data identified Meep's backward-mode normalization;
+separate signed-k projections corrected it without modifying measured outputs.
+FDTDX checks separately exposed a backward source gauge problem and tangential
+permittivity sampled at the wrong x positions. The adapter fixes travel with
+the exported source, and fresh four-direction simulations checked them.
+
+[Meep](docs/verification/meep-ports3d.json) and
+[FDTDX](docs/verification/fdtdx-ports3d.json) retain the failed prototype findings,
+corrected matrices and sensitivity checks. Meep mesh refinement still changes
+modal power by 0.02066, so neither the interface nor documentation claims
+converged commercial accuracy. Standalone replay also reports any numerical
+differences instead of silently substituting saved GUI results.
+
 Run focused checks with `python -m unittest discover -s tests -v`. Run real solver checks separately using the setup instructions; passing unit tests alone does not establish solver or GPU availability.
 
 The application has no runtime chatbot, OpenAI API dependency, or API key. Official [Codex documentation](https://developers.openai.com/codex) and the [scoped-work Cookbook example](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex) informed the outcome/constraint/verification workflow; no example code was copied. Raw chat logs and private handoff material are excluded.

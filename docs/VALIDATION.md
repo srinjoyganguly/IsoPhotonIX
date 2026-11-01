@@ -1,6 +1,6 @@
 # Numerical validation and commercial comparisons
 
-**Status: experimental real 3D simulation; not commercially validated.**
+**Status: experimental real 3D fields and modal S-parameters; not commercially validated.**
 Meep CPU and FDTDX CPU/NVIDIA GPU produce and export actual electromagnetic
 fields. The present evidence establishes that the implementation runs, represents
 the supported geometry, and responds to physical changes. It does not establish
@@ -22,11 +22,47 @@ material fitting and monitor sampling. [Ansys convergence guidance](https://opti
 | Meep spatial refinement | Three resolutions and one thicker-PML experiment below | Measured sensitivity of one final-time field diagnostic |
 | Analytical accuracy | Not completed for this 3D workflow | No passed analytical benchmark claimed |
 | Independent commercial comparison | Not completed | No passed Lumerical/Tidy3D/COMSOL comparison claimed |
-| Normalized flux, modal power or S-parameters | Not implemented for this 3D workflow | No transmission, loss or modal-purity claim |
+| Finite-height complex modal S-parameters | Separate [four-solve 3D modal study](3D_PORTS.md), [Meep evidence](verification/meep-ports3d.json), [FDTDX evidence](verification/fdtdx-ports3d.json) | Incident-normalized fundamental-channel amplitudes and physical-plane phase; does not qualify the older unnormalized field study |
+| Standalone code replay | [Python/notebook evidence](verification/reproducible-exports.json) | Comparison with saved GUI arrays for the same implementation; distinct from independent numerical accuracy |
 
 CPU/GPU agreement can reproduce the same modeling or discretization error on
 both devices. A nonzero plausible field, a smooth image, passing software tests,
 or a short runtime also does not establish external numerical correctness.
+
+## Finite-height 3D modal measurements
+
+The v0.6 modal study uses four real reference/device simulations, independent
+forward/reverse incidence, guided-mode E/H projection and complex-spectrum
+settling. It reports S11, S21, S12 and S22 at the actual monitor planes. The
+older driven-field workflow remains a separate experiment with an uncalibrated
+source. Its limitations and field-refinement measurements below still apply
+to that workflow, not to the newly calibrated port measurements.
+
+The corrected Meep canonical gap has maximum `abs(S21-S12)` of 1.30e-6 and
+`abs(S11-S22)` of 4.98e-6. Its straight-guide modal transmission power ranges
+from 0.999224 to 1.000774; values above one remain visible. Changing resolution
+from 16 to 20 cells/µm changes power by as much as **0.02066** and complex S by
+**0.04976**. Tightening the stopping criteria changes complex S by 5.36e-7.
+These results distinguish temporal settling from substantial spatial error;
+the example is not spatially converged.
+
+FDTDX's corrected canonical gap gives maximum reciprocity discrepancy 2.27e-4
+and reflection-symmetry discrepancy 2.05e-4. The same final case on CPU and
+NVIDIA GPU differs in complex S by at most 7.05e-8. CPU/GPU agreement is a
+repeatability check, not an independent reference. The evidence also retains
+straight, mesh/domain/PML/plane, substrate, timeout and unavailable-GPU checks.
+FDTDX mesh 16→24 changes modal power by 0.001932 and complex S by 0.09979,
+including up to 0.12348 radians of phase change. That finer diagnostic exceeds
+the GUI volume bound. Neither engine's default phase is spatially converged.
+
+Qualification exposed two implementation errors: Meep backward-mode
+normalization required its own signed-k projection, and FDTDX required source
+gauge handling plus tangential permittivity sampling at x-normal gap interfaces.
+The [modal guide](3D_PORTS.md#solver-implementations) explains the bounded fixes.
+Failed prototypes and unfavorable refinement results remain in the records.
+No output is fitted to a vendor curve, forced to unit transmission or phase
+corrected after measurement. No matched external finite-height S-matrix has
+yet been established.
 
 ## Two-dimensional port measurements
 
@@ -88,7 +124,7 @@ substrate below z = −0.25 µm; index-1 background; 1.55 µm free-space wavelen
 0.6.2/JAX 0.10.2. Full versions, geometry translations and checksums are in the
 linked evidence.
 
-## What the Meep refinement actually shows
+## What the earlier driven-field Meep refinement actually shows
 
 The recorded diagnostic compares final Ey on the centreline y = z = 0. Samples
 are interpolated to 129 common x coordinates from −1.5 to 2.5 µm. All compared
@@ -116,7 +152,7 @@ not an available GUI setting. Longer-duration and independent domain-clearance
 studies remain necessary. Meep recommends checking resolution, runtime and PML
 thickness when assessing convergence. [Meep FAQ](https://meep.readthedocs.io/en/latest/FAQ/).
 
-## Why the present solver images cannot be compared as absolute fields
+## Why the earlier driven-field images cannot be compared as absolute fields
 
 Meep injects an electric-current sheet. FDTDX injects a directed +x electric and
 magnetic plane. Both span the core cross-section and use a four-period startup,
@@ -148,12 +184,13 @@ independent open-source reference as well as a commercial export.
    and units. Save the exact input for every solver. Initially use lossless,
    nondispersive, straight dielectric guides so material databases do not add
    an uncontrolled difference.
-2. **Add measured quantities.** Implement complex frequency-domain E/H monitors
-   and incident-power normalization before comparing power. Use either the same
+2. **Match measured quantities.** The modal study now provides complex E/H
+   projections and incident-power normalization for its bounded geometry. An
+   external reference must match these definitions. Use either the same
    specified current distribution, or matched eigenmode ports normalized to the
    same incident power. Record the normalization/reference run and its source
    and monitor positions. Require a measured steady-state or decay criterion;
-   the current 60 fs duration is not such a criterion.
+   the older field study's 60 fs duration is not such a criterion.
 3. **Establish independent elementary checks.** Verify homogeneous propagation
    and a planar dielectric interface against analytic results, then a slab mode
    against its dispersion equation. These require dedicated benchmark studies;

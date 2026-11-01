@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { request } from './api';
 import { RunPassport } from './RunPassport';
+import { CodeExport } from './CodeExport';
 import { validateGeometryDocument, type GeometryDocument } from './geometryModel';
 import './study3d.css';
 
@@ -117,7 +118,7 @@ function SliceCanvas({ slice, material, peak }: { slice: Slice; material: boolea
   </div>;
 }
 
-function VolumeSlices({ job }: { job: Job }) {
+export function VolumeSlices({ job }: { job: { id: string; result?: Record<string, unknown> } }) {
   const [volume, setVolume] = useState<Volume | null>(null);
   const [slice, setSlice] = useState<Slice | null>(null);
   const [plane, setPlane] = useState<Plane>('xy');
@@ -245,6 +246,7 @@ export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geo
         <div className="study3d-targets" role="radiogroup" aria-label="3D execution target">{targets.map(item => { const key = `${item.solver}:${item.device}`; return <label className={`study3d-target ${target === key ? 'selected' : ''} ${!item.available ? 'unavailable' : ''}`} key={key}><input type="radio" name="study3d-target" value={key} checked={target === key} disabled={!item.available || !!busy} onChange={() => setTarget(key)}/><strong>{solverName(item.solver)} · {item.device === 'gpu' ? 'NVIDIA GPU' : 'CPU'}</strong><span>{item.available ? item.device_name ?? 'Ready' : item.reason ?? 'Unavailable'}</span></label>; })}{checkingTargets && !targets.length && <p>Checking installed solvers and devices…</p>}</div>
         <div className="study3d-run-buttons"><button className="button primary" onClick={run} disabled={!valid || !selected?.available || !!busy}>{busy ? '3D simulation running…' : 'Run 3D simulation'}</button>{busy ? <button className="button secondary" onClick={cancel} disabled={submitting || !job}>Cancel 3D run</button> : <button className="button secondary" onClick={() => saveStudy(config)} disabled={!valid || !selected?.available}>Export study JSON</button>}</div>
         <p className="study3d-explicit">{selected ? `${solverName(selected.solver)} / ${selected.device.toUpperCase()} · local process · no CPU fallback` : 'Choose an available target to enable Run.'}</p>
+        <CodeExport value={config} disabled={!valid||!selected?.available||!!busy}/>
       </div>
       <div className="study3d-output">
         <div className="study3d-output-heading"><h3>INSPECT & EXPORT</h3>{job && <span className={`status-tag ${job.status}`}><i/>{job.status}</span>}</div>

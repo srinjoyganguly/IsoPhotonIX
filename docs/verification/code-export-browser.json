@@ -1,0 +1,287 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T21:30:37.764Z",
+  "new_solver_jobs": 0,
+  "exports": [
+    {
+      "kind": "geometry",
+      "file": "design.zip",
+      "config": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 1,
+        "units": "um",
+        "name": "Ring and bus waveguide",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 2.5
+        },
+        "objects": [
+          {
+            "id": "substrate",
+            "name": "Substrate",
+            "visible": true,
+            "kind": "box",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": -0.56
+            },
+            "size": {
+              "x": 12,
+              "y": 8,
+              "z": 0.9
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 1.44
+          },
+          {
+            "id": "ring",
+            "name": "Ring core",
+            "visible": true,
+            "kind": "ring",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 1,
+              "y": 0.5,
+              "z": 0.22
+            },
+            "radius": 1.6,
+            "inner_radius": 1.1,
+            "rotation_deg": 0,
+            "refractive_index": 3.45
+          },
+          {
+            "id": "bus",
+            "name": "Bus waveguide",
+            "visible": true,
+            "kind": "box",
+            "position": {
+              "x": 0,
+              "y": -2.05,
+              "z": 0
+            },
+            "size": {
+              "x": 10,
+              "y": 0.5,
+              "z": 0.22
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 3.45
+          }
+        ]
+      }
+    },
+    {
+      "kind": "study",
+      "file": "field3d.zip",
+      "config": {
+        "schema_version": 2,
+        "study_type": "waveguide-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Runnable finite-height waveguide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8,
+            "y": 4,
+            "z": 4
+          },
+          "objects": [
+            {
+              "id": "substrate",
+              "name": "Substrate",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1.125
+              },
+              "size": {
+                "x": 8,
+                "y": 4,
+                "z": 1.75
+              },
+              "radius": 1,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 1.44
+            },
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 8,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2
+            }
+          ]
+        },
+        "wavelength_um": 1.55,
+        "resolution": 16,
+        "duration_fs": 60,
+        "pml_um": 0.75,
+        "cladding_index": 1,
+        "solver": "meep",
+        "device": "cpu"
+      }
+    },
+    {
+      "kind": "study",
+      "file": "modal3d.zip",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8,
+            "y": 4,
+            "z": 4
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 8,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.375,
+        "cladding_index": 1,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      }
+    },
+    {
+      "kind": "study",
+      "file": "slab2d.zip",
+      "config": {
+        "schema_version": 1,
+        "wavelength_um": 1.55,
+        "core_width_um": 0.6,
+        "core_index": 2,
+        "cladding_index": 1,
+        "length_um": 10,
+        "height_um": 5,
+        "resolution": 20,
+        "duration_fs": 80,
+        "pml_um": 1,
+        "solver": "meep",
+        "device": "cpu"
+      }
+    },
+    {
+      "kind": "study",
+      "file": "ports2d.zip",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "straight",
+        "gap_um": 0,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 32,
+        "max_after_sources_fs": 1000,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      }
+    },
+    {
+      "kind": "study",
+      "file": "ports2d-retry.zip",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "straight",
+        "gap_um": 0,
+        "core_width_um": 0.625,
+        "core_index": 2,
+        "cladding_index": 1,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12,
+        "height_um": 6,
+        "pml_um": 1,
+        "resolution": 32,
+        "max_after_sources_fs": 1000,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      }
+    }
+  ],
+  "checks": [
+    "Complete geometry draft and four executable schema exports",
+    "Explicit target and physical validation gates",
+    "Edited modal settings and GPU target preserved",
+    "Real gap-preview WebGL zoom and orbit",
+    "Visible transport failure and successful retry",
+    "No solver submission or browser exception"
+  ],
+  "browser_errors": [],
+  "archive_verification": "Every downloaded ZIP configuration exactly equals the actual editor POST payload; notebooks present."
+}

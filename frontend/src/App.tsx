@@ -5,6 +5,7 @@ import { EvolutionPlayer } from './EvolutionPlayer';
 import { RunPassport } from './RunPassport';
 import { GeometryEditor } from './GeometryEditor';
 import { PortStudyWorkspace } from './PortStudyPanel';
+import { CodeExport } from './CodeExport';
 
 type Solver = 'meep' | 'fdtdx';
 type Device = 'cpu' | 'gpu';
@@ -158,7 +159,7 @@ export default function App() {
   const executionDevice=resultMetadata.device_name || resultMetadata.actual_device;
   const executionVersions=resultMetadata.versions as Record<string,string>|undefined;
   return <div className="app-shell">
-    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':workspace==='ports'?'ENGINEERING STUDIES':'EXAMPLE / 01'}</span><strong>{workspace==='design'?'Local geometry workspace':workspace==='ports'?'Reference-normalized port measurements':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.5 preview · experimental</span></div></header>
+    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':workspace==='ports'?'ENGINEERING STUDIES':'EXAMPLE / 01'}</span><strong>{workspace==='design'?'Local geometry workspace':workspace==='ports'?'Reference-normalized port measurements':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.6 preview · experimental</span></div></header>
     <nav className="workspace-navigation" aria-label="Workspace"><button aria-pressed={workspace==='design'} onClick={()=>setWorkspace('design')}>3D design</button><button aria-pressed={workspace==='simulation'} onClick={()=>setWorkspace('simulation')}>2D simulation</button><button aria-pressed={workspace==='ports'} onClick={()=>setWorkspace('ports')}>Ports · 2D</button><span>Open geometry. Explicit hardware. Inspectable results.</span></nav>
     <div hidden={workspace!=='design'}><GeometryEditor slabConfig={geometryConfig} onSimulation={()=>setWorkspace('simulation')}/></div>
     <div hidden={workspace!=='ports'}><PortStudyWorkspace active={workspace==='ports'}/></div>
@@ -206,6 +207,7 @@ export default function App() {
         })}{!capabilities.targets.length&&<div className="target-placeholder">{capLoading?<span className="spinner"/>:'No execution targets reported. Check the local API connection.'}</div>}</div>
         <div className="run-control"><button className="button primary run-button" onClick={startRun} disabled={!loaded || !selected?.available || !validation?.valid || !!validationError || !!busy}>{busy?<><span className="spinner"/>Simulation {job?.status || 'starting'}…</>:<><Symbol kind="play" size={17}/>Run simulation<Symbol kind="arrow" size={17}/></>}</button>{busy?<button className="cancel-button" onClick={cancel} disabled={!job || submitting}>Cancel run</button>:<p>{selected?`${name(selected.solver)} on ${selected.device.toUpperCase()} · stays on this machine`:'Select a ready CPU or GPU target above.'}</p>}</div>
         <div className="execution-notes"><Symbol kind="cpu" size={18}/><p>No commercial solver license.<br/>No cloud compute. No silent fallback.</p></div>
+        <CodeExport value={runConfig} disabled={!loaded||!selected?.available||!validation?.valid||!!validationError||!!busy}/>
       </aside>
     </main>
     </div>

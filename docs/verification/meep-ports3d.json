@@ -1,0 +1,5581 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-01T21:20:37.678817+00:00",
+  "solver": "Meep / MPB",
+  "scope": "Actual full-vector finite-height 3D guided-mode 2x2 complex S-matrix. This is not a spatial-convergence or commercial-agreement certificate.",
+  "implementation": "Independent signed-k native unit-power mode projections for each propagation direction, each anchored to positive-real center Ey. Four measured reference/device stages, physical port planes and propagation phase retained.",
+  "official_sources": [
+    "https://meep.readthedocs.io/en/latest/Mode_Decomposition/",
+    "https://meep.readthedocs.io/en/latest/Python_Tutorials/Mode_Decomposition/",
+    "https://meep.readthedocs.io/en/latest/Python_User_Interface/#mode-decomposition",
+    "https://raw.githubusercontent.com/NanoComp/meep/v1.35.0/src/mpb.cpp"
+  ],
+  "cases": [
+    {
+      "case": "straight-final",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "straight",
+        "gap_um": 0.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": true,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 155.3312359470001,
+      "sparameters_valid": true,
+      "valid_bin": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            1.5283896503045318e-16,
+            -0.029445064403977126
+          ],
+          [
+            -0.029445222227493326,
+            -3.09787975053623e-18
+          ]
+        ],
+        [
+          [
+            -6.579103634071904e-18,
+            -0.8923253442974008
+          ],
+          [
+            -0.8923256433936403,
+            -1.1589914179651803e-17
+          ]
+        ],
+        [
+          [
+            -3.2559063068514953e-16,
+            -0.8222932171625906
+          ],
+          [
+            -0.8222932932904073,
+            -4.751908995380248e-16
+          ]
+        ],
+        [
+          [
+            1.987060987478032e-16,
+            0.10992898399687906
+          ],
+          [
+            0.109928961207332,
+            -3.698024072557632e-17
+          ]
+        ],
+        [
+          [
+            3.530921002426165e-16,
+            0.9264763705860029
+          ],
+          [
+            0.926476417033852,
+            -1.5978768750468574e-16
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            4.190949604733871e-18,
+            -0.999953402396137
+          ],
+          [
+            -0.999953383906972,
+            -1.1874884223722197e-16
+          ]
+        ],
+        [
+          [
+            7.434997085762565e-17,
+            -0.45195516293556576
+          ],
+          [
+            -0.4519554205133824,
+            6.513881822017507e-17
+          ]
+        ],
+        [
+          [
+            -4.059054522874634e-17,
+            0.5691857988334613
+          ],
+          [
+            0.5691858272710891,
+            -7.921610317793832e-17
+          ]
+        ],
+        [
+          [
+            7.932593490736308e-17,
+            0.9938050289872128
+          ],
+          [
+            0.9938050818919294,
+            -2.3771506064604938e-17
+          ]
+        ],
+        [
+          [
+            2.059510869553781e-16,
+            0.3753203236660856
+          ],
+          [
+            0.37532031500411617,
+            -1.367924925775834e-16
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            2.3377313290169504e-32,
+            1.0007738187813653
+          ],
+          [
+            1.0007737910990304,
+            1.4110884391629418e-32
+          ]
+        ],
+        [
+          [
+            5.571202771157642e-33,
+            1.0005079893795887
+          ],
+          [
+            1.0005087559893024,
+            4.377391749812705e-33
+          ]
+        ],
+        [
+          [
+            1.0765685115192035e-31,
+            1.0001386085852888
+          ],
+          [
+            1.000138766156658,
+            2.3208158200645493e-31
+          ]
+        ],
+        [
+          [
+            4.5776717628498924e-32,
+            0.9997328171628611
+          ],
+          [
+            0.9997329173063474,
+            1.9326227047011228e-33
+          ]
+        ],
+        [
+          [
+            1.6708988147184367e-31,
+            0.9992238106110274
+          ],
+          [
+            0.9992238901746728,
+            4.4244291103683324e-32
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.533254990822727,
+        1.5097838275861035,
+        1.484583392267375,
+        1.4575409431013437,
+        1.4285667664627029
+      ],
+      "reference_through_real": [
+        [
+          -0.029445222227493326,
+          -0.029445064403977126
+        ],
+        [
+          -0.8923256433936403,
+          -0.8923253442974008
+        ],
+        [
+          -0.8222932932904073,
+          -0.8222932171625906
+        ],
+        [
+          0.109928961207332,
+          0.10992898399687906
+        ],
+        [
+          0.926476417033852,
+          0.9264763705860029
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          -0.999953383906972,
+          -0.999953402396137
+        ],
+        [
+          -0.4519554205133824,
+          -0.45195516293556576
+        ],
+        [
+          0.5691858272710891,
+          0.5691857988334613
+        ],
+        [
+          0.9938050818919294,
+          0.9938050289872128
+        ],
+        [
+          0.37532031500411617,
+          0.3753203236660856
+        ]
+      ],
+      "reciprocity_max_abs": 3.947212840335334e-07,
+      "reflection_mirror_difference_max_abs": 6.168620899283608e-16,
+      "largest_singular_value_squared": [
+        1.0007738187813644,
+        1.0005087559893024,
+        1.000138766156658,
+        0.9997329173063476,
+        0.9992238901746731
+      ],
+      "ports": {
+        "port_1_x_um": -1.75,
+        "port_2_x_um": 1.75,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": true,
+          "energy_ratio": 6.430556786545793e-14,
+          "spectral_relative_change": 2.1734480970912202e-07,
+          "sampled_energy_peak": 19.034648835433277,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946714393045645
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032182103968
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9800556689961816
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693183372891
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.954582980224101
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167603117761
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785113854954
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485624941834
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241539926096,
+              "spectral_relative_change": 0.5345556418970132
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685426286263,
+              "spectral_relative_change": 0.29575833497815013
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.01306150331025393,
+              "spectral_relative_change": 0.09164328866544792
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575246890037456,
+              "spectral_relative_change": 0.015818849707518554
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.19848621142322e-06,
+              "spectral_relative_change": 0.0013487222278707105
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621922240841695e-09,
+              "spectral_relative_change": 6.067891137072452e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650912942252722e-11,
+              "spectral_relative_change": 2.5697990066360107e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430556786545793e-14,
+              "spectral_relative_change": 2.1734480970912202e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 35.894513314000505,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": true,
+          "energy_ratio": 6.430556786545793e-14,
+          "spectral_relative_change": 2.1735035232842168e-07,
+          "sampled_energy_peak": 19.034648835433277,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.9866899855574154e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.890445091908224e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017370600105931547
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018125156546797656
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10638375410629547
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.29838306175443996
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.47266189389171565
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.3898504830286816
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241539926096,
+              "spectral_relative_change": 0.45139395808941246
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685426286263,
+              "spectral_relative_change": 0.29078672679643874
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.01306150331025393,
+              "spectral_relative_change": 0.0916373434519882
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575246890037456,
+              "spectral_relative_change": 0.01581870148128404
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.19848621142322e-06,
+              "spectral_relative_change": 0.0013487198465589824
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621922240841695e-09,
+              "spectral_relative_change": 6.0678911874315685e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650912942252722e-11,
+              "spectral_relative_change": 2.569864539914524e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430556786545793e-14,
+              "spectral_relative_change": 2.1735035232842168e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 38.682793383999524,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": true,
+          "energy_ratio": 6.430561373621694e-14,
+          "spectral_relative_change": 2.1734512077620498e-07,
+          "sampled_energy_peak": 19.03464852129487,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946715182936178
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032257439748
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.980055906536342
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693527407039
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9545830355154771
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167213365602
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785076260578
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485271356747
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241558780036,
+              "spectral_relative_change": 0.5345556237156219
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685545417537,
+              "spectral_relative_change": 0.29575833491805614
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.013061504725815866,
+              "spectral_relative_change": 0.09164328430662244
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575248202807546,
+              "spectral_relative_change": 0.015818852432277257
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.1984867931148408e-06,
+              "spectral_relative_change": 0.0013487222304955024
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621926600787695e-09,
+              "spectral_relative_change": 6.0678942436495045e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650915633159217e-11,
+              "spectral_relative_change": 2.5698019201133484e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430561373621694e-14,
+              "spectral_relative_change": 2.1734512077620498e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 45.13038168700041,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": true,
+          "energy_ratio": 6.430561373621694e-14,
+          "spectral_relative_change": 2.1735066334682475e-07,
+          "sampled_energy_peak": 19.03464852129487,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.986688630775058e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.890437372058157e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.001737059480620631
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018125147969963406
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10638374115294777
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.29838301303090875
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.47266190238642547
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.389850482131302
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241558780036,
+              "spectral_relative_change": 0.45139394640427816
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685545417537,
+              "spectral_relative_change": 0.2907867269689564
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.013061504725815866,
+              "spectral_relative_change": 0.09163733907626356
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575248202807546,
+              "spectral_relative_change": 0.015818704206084132
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.1984867931148408e-06,
+              "spectral_relative_change": 0.0013487198491832651
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621926600787695e-09,
+              "spectral_relative_change": 6.067894294008659e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650915633159217e-11,
+              "spectral_relative_change": 2.5698674535923536e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430561373621694e-14,
+              "spectral_relative_change": 2.1735066334682475e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 24.673345589000746,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "8a3cbfbca15b06465e17f1596426ccb466be1d677bd46cc13919dcbb346660e6",
+        "device-forward-monitors.npz": "443bf21380b0122cb11ac85ec6b100c1a53b81c73743323d2bcaf1d9adb502d8",
+        "device-reverse-monitors.npz": "fb04e0feaf91b9f985aed19b6d01a51ab0058cf79f422a18426e3334bf913d41",
+        "reference-forward-monitors.npz": "b28ba348056bce9d3a432f00d92c66dba3e61ea0948bfb20afa6496b5e48a1f7",
+        "reference-reverse-monitors.npz": "e2eb7baf15ee610d67f82bc90ab45a371d24a331963fa4641aff136269e08c7f",
+        "sparameters.npz": "48da00f65bd79019e2fa561097e49b76d2d591435cb73d60592fcd987b67b45d"
+      }
+    },
+    {
+      "case": "gap-final",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": true,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 299.73736335300055,
+      "sparameters_valid": true,
+      "valid_bin": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            0.22142252733342863,
+            -0.6696922475278678
+          ],
+          [
+            -0.6696928781877071,
+            0.22141940524591916
+          ]
+        ],
+        [
+          [
+            -0.06310808306095651,
+            -0.7461380146229837
+          ],
+          [
+            -0.7461372759787933,
+            -0.0631106298885377
+          ]
+        ],
+        [
+          [
+            -0.2664151251181089,
+            -0.09779196306246223
+          ],
+          [
+            -0.09779175369282327,
+            -0.26641543432865794
+          ]
+        ],
+        [
+          [
+            -0.20928485816831516,
+            0.6576759857027094
+          ],
+          [
+            0.6576761564103557,
+            -0.209284858972247
+          ]
+        ],
+        [
+          [
+            0.029323803681265605,
+            0.7862680022408416
+          ],
+          [
+            0.7862680256700192,
+            0.029324814679291145
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.2160250696577782,
+            -0.4599406064460261
+          ],
+          [
+            -0.4599411352247426,
+            -0.21602894782026255
+          ]
+        ],
+        [
+          [
+            -0.2895638767923856,
+            0.33653605424681843
+          ],
+          [
+            0.33653498850418034,
+            -0.289564044105379
+          ]
+        ],
+        [
+          [
+            -0.09474521802237137,
+            0.8189959703376828
+          ],
+          [
+            0.8189952908364554,
+            -0.09474507617880197
+          ]
+        ],
+        [
+          [
+            0.16694888880020822,
+            0.5106320636491315
+          ],
+          [
+            0.5106326518201133,
+            0.16694912168780568
+          ]
+        ],
+        [
+          [
+            0.2501703884378043,
+            -0.3036325695049925
+          ],
+          [
+            -0.30363253550237185,
+            0.25017033791283244
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.09569476633137088,
+            0.6600330678568652
+          ],
+          [
+            0.6600343989671599,
+            0.0956950593157863
+          ]
+        ],
+        [
+          [
+            0.08782986889066445,
+            0.6699784526735453
+          ],
+          [
+            0.6699766330925627,
+            0.08783028724358986
+          ]
+        ],
+        [
+          [
+            0.07995367522980429,
+            0.6803176674689727
+          ],
+          [
+            0.6803165135026081,
+            0.07995381310865446
+          ]
+        ],
+        [
+          [
+            0.07167208333015607,
+            0.6932828065966009
+          ],
+          [
+            0.6932836318155395,
+            0.07167216142736305
+          ]
+        ],
+        [
+          [
+            0.0634451087134593,
+            0.7104101086120083
+          ],
+          [
+            0.710410124806629,
+            0.06344514272739554
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.533254990822727,
+        1.5097838275861035,
+        1.484583392267375,
+        1.4575409431013437,
+        1.4285667664627029
+      ],
+      "reference_through_real": [
+        [
+          -0.029445222227493326,
+          -0.029445064403977126
+        ],
+        [
+          -0.8923256433936403,
+          -0.8923253442974008
+        ],
+        [
+          -0.8222932932904073,
+          -0.8222932171625906
+        ],
+        [
+          0.109928961207332,
+          0.10992898399687906
+        ],
+        [
+          0.926476417033852,
+          0.9264763705860029
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          -0.999953383906972,
+          -0.999953402396137
+        ],
+        [
+          -0.4519554205133824,
+          -0.45195516293556576
+        ],
+        [
+          0.5691858272710891,
+          0.5691857988334613
+        ],
+        [
+          0.9938050818919294,
+          0.9938050289872128
+        ],
+        [
+          0.37532031500411617,
+          0.3753203236660856
+        ]
+      ],
+      "reciprocity_max_abs": 1.2966890955797307e-06,
+      "reflection_mirror_difference_max_abs": 4.9787121499178815e-06,
+      "largest_singular_value_squared": [
+        0.853577293968365,
+        0.8585282044890798,
+        0.8633560670378517,
+        0.8697395002797268,
+        0.8796614416138906
+      ],
+      "ports": {
+        "port_1_x_um": -1.75,
+        "port_2_x_um": 1.75,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056132942,
+          "maximum_edge_intensity_relative_peak": 0.0006600286947615468,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": true,
+          "energy_ratio": 6.430556786545793e-14,
+          "spectral_relative_change": 2.1734480970912202e-07,
+          "sampled_energy_peak": 19.034648835433277,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946714393045645
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032182103968
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9800556689961816
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693183372891
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.954582980224101
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167603117761
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785113854954
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485624941834
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241539926096,
+              "spectral_relative_change": 0.5345556418970132
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685426286263,
+              "spectral_relative_change": 0.29575833497815013
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.01306150331025393,
+              "spectral_relative_change": 0.09164328866544792
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575246890037456,
+              "spectral_relative_change": 0.015818849707518554
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.19848621142322e-06,
+              "spectral_relative_change": 0.0013487222278707105
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621922240841695e-09,
+              "spectral_relative_change": 6.067891137072452e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650912942252722e-11,
+              "spectral_relative_change": 2.5697990066360107e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430556786545793e-14,
+              "spectral_relative_change": 2.1734480970912202e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 39.918527699999686,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": true,
+          "energy_ratio": 1.7712965483995622e-14,
+          "spectral_relative_change": 9.664585816679174e-08,
+          "sampled_energy_peak": 17.181801979801982,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.9864856215874574e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.887440527384093e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017345115261056944
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018069407790182495
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10521096901597138
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.29054118059454975
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.43277156105514536
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9593808655057262,
+              "spectral_relative_change": 0.3549076380250137
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.511743709294029,
+              "spectral_relative_change": 0.3768181905429994
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11990968533271344,
+              "spectral_relative_change": 0.23866150688165594
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009007288510267709,
+              "spectral_relative_change": 0.0674978085695418
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0002167293606069203,
+              "spectral_relative_change": 0.011885993449396984
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.206037507435939e-06,
+              "spectral_relative_change": 0.0008623417241021582
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 2.2148441043134506e-09,
+              "spectral_relative_change": 4.068491199173446e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 3.367169518826031e-12,
+              "spectral_relative_change": 1.2907455999084106e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 1.7712965483995622e-14,
+              "spectral_relative_change": 9.664585816679174e-08
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 83.876568013,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": true,
+          "energy_ratio": 6.430561373621694e-14,
+          "spectral_relative_change": 2.1734512077620498e-07,
+          "sampled_energy_peak": 19.03464852129487,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946715182936178
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032257439748
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.980055906536342
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693527407039
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9545830355154771
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167213365602
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785076260578
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485271356747
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241558780036,
+              "spectral_relative_change": 0.5345556237156219
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685545417537,
+              "spectral_relative_change": 0.29575833491805614
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.013061504725815866,
+              "spectral_relative_change": 0.09164328430662244
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575248202807546,
+              "spectral_relative_change": 0.015818852432277257
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.1984867931148408e-06,
+              "spectral_relative_change": 0.0013487222304955024
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621926600787695e-09,
+              "spectral_relative_change": 6.0678942436495045e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650915633159217e-11,
+              "spectral_relative_change": 2.5698019201133484e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430561373621694e-14,
+              "spectral_relative_change": 2.1734512077620498e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 83.6197879070005,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": true,
+          "energy_ratio": 1.7712976853438503e-14,
+          "spectral_relative_change": 9.664596116875414e-08,
+          "sampled_energy_peak": 17.18179780524783,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.986484269943921e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.887432816682111e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017345109895565377
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018069399070690582
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10521095220437143
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.290541108934362
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.432771460654154
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.95938080081129,
+              "spectral_relative_change": 0.3549074256535028
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5117436705587655,
+              "spectral_relative_change": 0.376818035477685
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11990968583637149,
+              "spectral_relative_change": 0.23866143895962952
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009007290732041075,
+              "spectral_relative_change": 0.06749780044668538
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.00021672942828503445,
+              "spectral_relative_change": 0.0118859928323596
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.2060384375953203e-06,
+              "spectral_relative_change": 0.0008623418648211753
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 2.2148459564745263e-09,
+              "spectral_relative_change": 4.068492420419028e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 3.3671725573089375e-12,
+              "spectral_relative_change": 1.2907470805294298e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 1.7712976853438503e-14,
+              "spectral_relative_change": 9.664596116875414e-08
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 75.21566842600078,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "3c6242c9348aaede393a79d8d30a843280a78e50a47a1a0e248f33f7af4bc648",
+        "device-forward-monitors.npz": "2e16193b30c3cf716a8326e016c83670c15898754d46c578ee5c4bf3cd06f506",
+        "device-reverse-monitors.npz": "effe54206d9b628f279e41617c69336480e60f44bed634e13c8cc11802c3d7cc",
+        "reference-forward-monitors.npz": "b28ba348056bce9d3a432f00d92c66dba3e61ea0948bfb20afa6496b5e48a1f7",
+        "reference-reverse-monitors.npz": "e2eb7baf15ee610d67f82bc90ab45a371d24a331963fa4641aff136269e08c7f",
+        "sparameters.npz": "c6bca4cca8814bbb17af03c8d21c1f50599155211c093330301fca4752faa6cf"
+      }
+    },
+    {
+      "case": "gap-res20-final",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 20,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 150.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": true,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 182.69129762900047,
+      "sparameters_valid": true,
+      "valid_bin": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            0.21998699731302201,
+            -0.6849470945200985
+          ],
+          [
+            -0.684947263365617,
+            0.21998340090929136
+          ]
+        ],
+        [
+          [
+            -0.061077738410212676,
+            -0.7160295907615122
+          ],
+          [
+            -0.7160301077145318,
+            -0.06108193466601924
+          ]
+        ],
+        [
+          [
+            -0.26181250930564925,
+            -0.05661382076933998
+          ],
+          [
+            -0.05661372160211112,
+            -0.26181352758943516
+          ]
+        ],
+        [
+          [
+            -0.20923390917620704,
+            0.671337383218862
+          ],
+          [
+            0.6713373845470944,
+            -0.20923075890762483
+          ]
+        ],
+        [
+          [
+            0.02244016460051789,
+            0.7643230423232018
+          ],
+          [
+            0.7643219545316521,
+            0.022446939598885773
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.2154931732201651,
+            -0.4125755675782662
+          ],
+          [
+            -0.4125755242564597,
+            -0.21549676545863092
+          ]
+        ],
+        [
+          [
+            -0.28747709255503584,
+            0.37082036944215513
+          ],
+          [
+            0.37082083806853633,
+            -0.2874760424723703
+          ]
+        ],
+        [
+          [
+            -0.09697149435638594,
+            0.8114671540884468
+          ],
+          [
+            0.811466984060182,
+            -0.09696876837869786
+          ]
+        ],
+        [
+          [
+            0.1600793320224644,
+            0.4745292005500557
+          ],
+          [
+            0.4745291546915591,
+            0.16008345344143443
+          ]
+        ],
+        [
+          [
+            0.24583265480262093,
+            -0.3317409414766432
+          ],
+          [
+            -0.33174139932355,
+            0.24583205452571041
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.09483158669129563,
+            0.6393711212540533
+          ],
+          [
+            0.6393713168075402,
+            0.0948315525987502
+          ]
+        ],
+        [
+          [
+            0.086373568873203,
+            0.650206121239315
+          ],
+          [
+            0.6502072090995357,
+            0.08637347773811989
+          ]
+        ],
+        [
+          [
+            0.07794926074663125,
+            0.661684066866506
+          ],
+          [
+            0.6616837796933691,
+            0.07794926526970548
+          ]
+        ],
+        [
+          [
+            0.06940422128991565,
+            0.6758718442818241
+          ],
+          [
+            0.675871802542819,
+            0.06940422253879651
+          ]
+        ],
+        [
+          [
+            0.060937255154602916,
+            0.6942417652780046
+          ],
+          [
+            0.6942404062042319,
+            0.06093726412968789
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.5347968508147256,
+        1.5113031928117382,
+        1.4860696559743432,
+        1.4589812704374492,
+        1.429945675569866
+      ],
+      "reference_through_real": [
+        [
+          -0.09688737744347534,
+          -0.09688737512111371
+        ],
+        [
+          -0.9181227769800857,
+          -0.9181228652247108
+        ],
+        [
+          -0.7897629485470975,
+          -0.7897629440906458
+        ],
+        [
+          0.15911332135876535,
+          0.1591133176750966
+        ],
+        [
+          0.9424524669856215,
+          0.9424524602131609
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          -0.9955775915732819,
+          -0.9955776619205368
+        ],
+        [
+          -0.39675224735891135,
+          -0.3967523507062811
+        ],
+        [
+          0.6134854518940552,
+          0.6134854524892571
+        ],
+        [
+          0.9871398035449555,
+          0.9871398051666794
+        ],
+        [
+          0.3333413029523571,
+          0.33334149114126993
+        ]
+      ],
+      "reciprocity_max_abs": 1.1802178806259908e-06,
+      "reflection_mirror_difference_max_abs": 6.801539182722086e-06,
+      "largest_singular_value_squared": [
+        0.8577433625251678,
+        0.8623146848451196,
+        0.8673648782274401,
+        0.8742804375608383,
+        0.8839755478858778
+      ],
+      "ports": {
+        "port_1_x_um": -1.75,
+        "port_2_x_um": 1.75,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4299456755698643,
+          "minimum_ey_l2_fraction": 0.7417646533346297,
+          "maximum_edge_intensity_relative_peak": 0.0007376917175936259,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4299456755698643,
+          "minimum_ey_l2_fraction": 0.7417646533346297,
+          "maximum_edge_intensity_relative_peak": 0.0007376917175936259,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4299456755698643,
+          "minimum_ey_l2_fraction": 0.7417646533346297,
+          "maximum_edge_intensity_relative_peak": 0.0007376917175936259,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4299456755698643,
+          "minimum_ey_l2_fraction": 0.7417646533346297,
+          "maximum_edge_intensity_relative_peak": 0.0007376917175936259,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": true,
+          "energy_ratio": 9.10097354030399e-15,
+          "spectral_relative_change": 8.198068582796906e-08,
+          "sampled_energy_peak": 18.884504716419457,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946898505010991
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911227146127257
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9799091098303911
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9788410955003327
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9536048873895374
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.931106188172811
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8467362481329208
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7466951202941272
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5930707249947682,
+              "spectral_relative_change": 0.5298948952287378
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.16005610663640787,
+              "spectral_relative_change": 0.2945118721625505
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.012465307250906364,
+              "spectral_relative_change": 0.08968902175199844
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003395670001667938,
+              "spectral_relative_change": 0.01556771822955589
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.0073560531967935e-06,
+              "spectral_relative_change": 0.001298409976012289
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.010390101845517e-09,
+              "spectral_relative_change": 5.886253865112211e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 2.85994832298453e-12,
+              "spectral_relative_change": 1.33474751750031e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 9.10097354030399e-15,
+              "spectral_relative_change": 8.198068582796906e-08
+            }
+          ],
+          "elapsed_fs": 283.6128719422288,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 3401,
+          "total_seconds": 35.82302838099895,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": true,
+          "energy_ratio": 2.1908791239551435e-15,
+          "spectral_relative_change": 3.546366449674858e-08,
+          "sampled_energy_peak": 17.02911999878448,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 2.0013877505323215e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.929228924227568e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017430897229054015
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018124688320314927
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10548188343678049
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.2907451901646075
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.4327256479207328
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9480676918071692,
+              "spectral_relative_change": 0.3514811349038463
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.49853536568185264,
+              "spectral_relative_change": 0.37234029528970314
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11389882405875112,
+              "spectral_relative_change": 0.23358546049100298
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.008493769995802002,
+              "spectral_relative_change": 0.06581933897631606
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.00019829756564168914,
+              "spectral_relative_change": 0.01150026643444045
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.098528800484437e-06,
+              "spectral_relative_change": 0.0008308437293571301
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 1.9661930541455575e-09,
+              "spectral_relative_change": 3.983250784263369e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 9.743094510552155e-13,
+              "spectral_relative_change": 6.338355526255495e-07
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 2.1908791239551435e-15,
+              "spectral_relative_change": 3.546366449674858e-08
+            }
+          ],
+          "elapsed_fs": 283.6128719422288,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 3401,
+          "total_seconds": 44.161053551000805,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": true,
+          "energy_ratio": 9.100973425390304e-15,
+          "spectral_relative_change": 8.198068412847416e-08,
+          "sampled_energy_peak": 18.884504677833494,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.994689848647164
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911227144242786
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9799090994272738
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9788410912336172
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9536048825203233
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9311061876078881
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8467362468184185
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.746695120170256
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5930707245861845,
+              "spectral_relative_change": 0.5298948946264828
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.16005610634329073,
+              "spectral_relative_change": 0.29451187167626885
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.012465307204880285,
+              "spectral_relative_change": 0.08968902152282174
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003395669976457249,
+              "spectral_relative_change": 0.015567718146463207
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.0073560349441283e-06,
+              "spectral_relative_change": 0.0012984099692207101
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.010390035243418e-09,
+              "spectral_relative_change": 5.886253804169702e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 2.8599482895071105e-12,
+              "spectral_relative_change": 1.3347475062026747e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 9.100973425390304e-15,
+              "spectral_relative_change": 8.198068412847416e-08
+            }
+          ],
+          "elapsed_fs": 283.6128719422288,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 3401,
+          "total_seconds": 47.60310412099898,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": true,
+          "energy_ratio": 2.190879094266333e-15,
+          "spectral_relative_change": 3.546366394731807e-08,
+          "sampled_energy_peak": 17.02912008123631,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 2.0013878396341817e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.929229182513202e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017430897655453946
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018124688609782624
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10548188459610824
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.29074519111622055
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.43272564799908775
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9480676954531846,
+              "spectral_relative_change": 0.3514811421138022
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.4985353673077308,
+              "spectral_relative_change": 0.3723402992094736
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11389882420677461,
+              "spectral_relative_change": 0.233585462001705
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.008493769953023476,
+              "spectral_relative_change": 0.06581933907625556
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.00019829756421592369,
+              "spectral_relative_change": 0.011500266427584251
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.0985287835863963e-06,
+              "spectral_relative_change": 0.0008308437254266446
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 1.9661930176949248e-09,
+              "spectral_relative_change": 3.983250756390953e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 9.743094264526214e-13,
+              "spectral_relative_change": 6.338355427150754e-07
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 2.190879094266333e-15,
+              "spectral_relative_change": 3.546366394731807e-08
+            }
+          ],
+          "elapsed_fs": 283.6128719422288,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 3401,
+          "total_seconds": 39.86489999100013,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "64732cbb438350c771ad366e3dd611ee1c9ad0543d10f2ffefe804595dc1c582",
+        "device-forward-monitors.npz": "6045eeb124abde73998558deb747155c52e76dbbdbc3e304362a7379dc55317c",
+        "device-reverse-monitors.npz": "95bf28d027d155151fdbf16a8fc3ea924967d4e6bff9fd181ea858893f988128",
+        "reference-forward-monitors.npz": "63044f240cf81bfb68b50062153b0216020b01fb023887eeb8b7bb43bae7517a",
+        "reference-reverse-monitors.npz": "88434125d0cfdbacac406401ef97409b2944a4c4c0f5069b2cc124e6a3d5222a",
+        "sparameters.npz": "d5dd94365cb5a5c2020110061f89f04467c5c34bc82687d8d32fe38948e8abbf"
+      }
+    },
+    {
+      "case": "gap-shifted-ports-final",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.5,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.5,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": true,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 164.44469203300105,
+      "sparameters_valid": true,
+      "valid_bin": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            -0.26442286426267037,
+            0.5538233010273027
+          ],
+          [
+            0.5538240930052212,
+            -0.26442022058656506
+          ]
+        ],
+        [
+          [
+            0.043658722555413254,
+            0.7665484573257367
+          ],
+          [
+            0.7665485702337377,
+            0.043661800594412076
+          ]
+        ],
+        [
+          [
+            0.2733402225698455,
+            0.027029362180330207
+          ],
+          [
+            0.027029668555760583,
+            0.27334064105939343
+          ]
+        ],
+        [
+          [
+            0.16356927999365817,
+            -0.759895324212014
+          ],
+          [
+            -0.7598957938468501,
+            0.16356912831050444
+          ]
+        ],
+        [
+          [
+            -0.12435165205123357,
+            -0.6099705649709809
+          ],
+          [
+            -0.6099706061539423,
+            -0.12435314266052548
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            0.16171416956540607,
+            0.5927236415893997
+          ],
+          [
+            0.5927238436464727,
+            0.1617185353983308
+          ]
+        ],
+        [
+          [
+            0.29335895204491513,
+            -0.2868840691753197
+          ],
+          [
+            -0.2868828035115727,
+            0.29335904560239157
+          ]
+        ],
+        [
+          [
+            0.0711195343820759,
+            -0.8249141898746596
+          ],
+          [
+            -0.8249135953264485,
+            0.07111915282142041
+          ]
+        ],
+        [
+          [
+            -0.2124632932583988,
+            -0.3406923215659575
+          ],
+          [
+            -0.34069260513422417,
+            -0.21246347814790764
+          ]
+        ],
+        [
+          [
+            -0.21985670919270187,
+            0.5802464597352505
+          ],
+          [
+            0.5802464481081094,
+            -0.21985598435590356
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.09607092378310349,
+            0.6580415640597775
+          ],
+          [
+            0.6580426808201041,
+            0.09607093774642893
+          ]
+        ],
+        [
+          [
+            0.08796555880006136,
+            0.6698990065750565
+          ],
+          [
+            0.6698984534780469,
+            0.08796588246789223
+          ]
+        ],
+        [
+          [
+            0.07977286544525594,
+            0.6812140070764412
+          ],
+          [
+            0.6812130427366418,
+            0.07977303995279672
+          ]
+        ],
+        [
+          [
+            0.07189556033984813,
+            0.6935121617332838
+          ],
+          [
+            0.693513068699279,
+            0.0718955892829647
+          ]
+        ],
+        [
+          [
+            0.06380030594491534,
+            0.708750044166309
+          ],
+          [
+            0.7087500809138847,
+            0.06380035794665233
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.533254990822727,
+        1.5097838275861035,
+        1.484583392267375,
+        1.4575409431013437,
+        1.4285667664627029
+      ],
+      "reference_through_real": [
+        [
+          -0.18961745915360775,
+          -0.1896175532489102
+        ],
+        [
+          0.8600919684619062,
+          0.8600916418312188
+        ],
+        [
+          0.7700431446850404,
+          0.7700430732197148
+        ],
+        [
+          -0.34311356409725974,
+          -0.3431135707685731
+        ],
+        [
+          -0.9995077148001169,
+          -0.9995076759065684
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          0.9821778235918319,
+          0.9821778293069836
+        ],
+        [
+          0.510616513821714,
+          0.5106163099656377
+        ],
+        [
+          -0.6381011006773954,
+          -0.638101050462906
+        ],
+        [
+          -0.939118994337683,
+          -0.9391189262356704
+        ],
+        [
+          0.00890579331464492,
+          0.008905754963165587
+        ]
+      ],
+      "reciprocity_max_abs": 1.2706899453540577e-06,
+      "reflection_mirror_difference_max_abs": 5.103873085851154e-06,
+      "largest_singular_value_squared": [
+        0.8552926422315282,
+        0.8592487087521709,
+        0.863544627941928,
+        0.8692298651932944,
+        0.8759895164001559
+      ],
+      "ports": {
+        "port_1_x_um": -2.0,
+        "port_2_x_um": 2.0,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": true,
+          "energy_ratio": 7.35808353577984e-13,
+          "spectral_relative_change": 7.38168651956685e-07,
+          "sampled_energy_peak": 19.875733124365937,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.0000384483468745
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9893858182611637
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9780483190444573
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9801048622247374
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9607224348525589
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9428228536596994
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8685590626404995
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7828163340261765
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.6890694819651476,
+              "spectral_relative_change": 0.5844482667946856
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.23477407944615655,
+              "spectral_relative_change": 0.3574948309129602
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.024708650895326686,
+              "spectral_relative_change": 0.12568070594510797
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0009159146077850768,
+              "spectral_relative_change": 0.025661354012998027
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 7.539668262915985e-06,
+              "spectral_relative_change": 0.0025091276303559015
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 2.1891734156494075e-08,
+              "spectral_relative_change": 0.000135092121706982
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 6.428052586794479e-11,
+              "spectral_relative_change": 6.214084083563608e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 7.35808353577984e-13,
+              "spectral_relative_change": 7.38168651956685e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 61.447838306999984,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": true,
+          "energy_ratio": 2.367284584983354e-13,
+          "spectral_relative_change": 3.211776169522279e-07,
+          "sampled_energy_peak": 17.45135193264619,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.986757360189421e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.891715557655995e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017381949136629233
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018154393965710124
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10709183249815533
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.30398859792047345
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.5063824134703073
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.4368655016278581
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.6133481441992978,
+              "spectral_relative_change": 0.38085508439165466
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1791597046799877,
+              "spectral_relative_change": 0.27905661701444745
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.018025001544144055,
+              "spectral_relative_change": 0.09327582800014267
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0005738548111201204,
+              "spectral_relative_change": 0.019004806879621552
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 4.457669829583589e-06,
+              "spectral_relative_change": 0.0016456471561040703
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 1.2535097247293514e-08,
+              "spectral_relative_change": 9.850472545498103e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 2.8396066387468047e-11,
+              "spectral_relative_change": 3.640724484108161e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 2.367284584983354e-13,
+              "spectral_relative_change": 3.211776169522279e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 51.63637576600013,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": true,
+          "energy_ratio": 7.358087800803266e-13,
+          "spectral_relative_change": 7.381696667594035e-07,
+          "sampled_energy_peak": 19.875732690933546,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.000038451821956
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.989385958906026
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9780482789346657
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9801050693973533
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9607224116482296
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9428227857966639
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.868559017340177
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7828162802197959
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.6890694996332831,
+              "spectral_relative_change": 0.584448235796591
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.23477409223843787,
+              "spectral_relative_change": 0.35749482112694664
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.024708653445675233,
+              "spectral_relative_change": 0.12568069784425467
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0009159148882905995,
+              "spectral_relative_change": 0.025661357146564392
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 7.5396702529526055e-06,
+              "spectral_relative_change": 0.0025091275792264596
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 2.1891752789512087e-08,
+              "spectral_relative_change": 0.00013509218122650124
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 6.428054084450979e-11,
+              "spectral_relative_change": 6.214090959295939e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 7.358087800803266e-13,
+              "spectral_relative_change": 7.381696667594035e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 20.97541826899942,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": true,
+          "energy_ratio": 2.367286113201653e-13,
+          "spectral_relative_change": 3.211779742398721e-07,
+          "sampled_energy_peak": 17.451347306610053,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.986756005134336e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.891707844007065e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017381943914907816
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018154385569252335
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.1070918229412777
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.3039885717061912
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.5063825227107791
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.4368657197741689
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.6133481531969667,
+              "spectral_relative_change": 0.38085495895900073
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1791597253561694,
+              "spectral_relative_change": 0.27905655778396293
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.018025007161879433,
+              "spectral_relative_change": 0.09327582088431885
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0005738550261542652,
+              "spectral_relative_change": 0.019004806136244168
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 4.457673289798943e-06,
+              "spectral_relative_change": 0.0016456474117625764
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 1.2535106086531038e-08,
+              "spectral_relative_change": 9.85047388026604e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 2.8396080715130183e-11,
+              "spectral_relative_change": 3.640723999353104e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 2.367286113201653e-13,
+              "spectral_relative_change": 3.211779742398721e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 19.339930934000222,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "ef958a8bb0fd534e1675c03b762d3130c348ba06f4d13abf7113d72447722b8f",
+        "device-forward-monitors.npz": "d9e2b75bddbe7471518125e59bf5b3e8d389510582ab009d2fc99b36e3f19bed",
+        "device-reverse-monitors.npz": "324fe6ec01b5d14efe464bfae1831b65256e4fc1da54b414f71b258761a47b4f",
+        "reference-forward-monitors.npz": "bd00099b62b808e53b9ff47d44ba289ef7042da3d3f999248e93bcacee4ff368",
+        "reference-reverse-monitors.npz": "df7268320eab603b1ff5d55066d2c5e84138c09ec8e1f57999b5960674146fe9",
+        "sparameters.npz": "73236ae1235249f3551cc600ddfa5747884cbb6430a0251731d96559e56fcd68"
+      }
+    },
+    {
+      "case": "gap-strict-final",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-09,
+        "spectrum_tolerance": 1e-06,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": true,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 220.99516536299961,
+      "sparameters_valid": true,
+      "valid_bin": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            0.22142250115556264,
+            -0.6696922410120649
+          ],
+          [
+            -0.6696928716727563,
+            0.22141937906816558
+          ]
+        ],
+        [
+          [
+            -0.06310809386531109,
+            -0.7461380119399963
+          ],
+          [
+            -0.7461372732958113,
+            -0.06311064069284963
+          ]
+        ],
+        [
+          [
+            -0.266415133223706,
+            -0.09779196117390426
+          ],
+          [
+            -0.09779175180426257,
+            -0.26641544243424603
+          ]
+        ],
+        [
+          [
+            -0.20928486925727363,
+            0.6576759881235821
+          ],
+          [
+            0.6576761588312333,
+            -0.20928487006120491
+          ]
+        ],
+        [
+          [
+            0.0293237760677361,
+            0.7862680082583436
+          ],
+          [
+            0.7862680316875229,
+            0.029325347937199975
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.21602506291120188,
+            -0.4599406094254432
+          ],
+          [
+            -0.45994113820423316,
+            -0.21602894107327048
+          ]
+        ],
+        [
+          [
+            -0.2895638737430476,
+            0.3365360527405819
+          ],
+          [
+            0.3365349869979564,
+            -0.2895640410559327
+          ]
+        ],
+        [
+          [
+            -0.09474521556451161,
+            0.8189959690797709
+          ],
+          [
+            0.81899528957855,
+            -0.094745073720921
+          ]
+        ],
+        [
+          [
+            0.16694889236042235,
+            0.5106320619466235
+          ],
+          [
+            0.5106326501176093,
+            0.16694912524803848
+          ]
+        ],
+        [
+          [
+            0.25017039773403477,
+            -0.3036325734899448
+          ],
+          [
+            -0.30363253948731195,
+            0.2501702814636526
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.09569475182377385,
+            0.6600330618704097
+          ],
+          [
+            0.6600343929819082,
+            0.09569504480817058
+          ]
+        ],
+        [
+          [
+            0.08782986848839253,
+            0.6699784476559816
+          ],
+          [
+            0.6699766280750228,
+            0.08783028684130383
+          ]
+        ],
+        [
+          [
+            0.07995367908297081,
+            0.6803176650391516
+          ],
+          [
+            0.6803165110727993,
+            0.07995381696181783
+          ]
+        ],
+        [
+          [
+            0.071672089160406,
+            0.6932828080421904
+          ],
+          [
+            0.6932836332611384,
+            0.07167216725762066
+          ]
+        ],
+        [
+          [
+            0.06344511174527588,
+            0.7104101204946696
+          ],
+          [
+            0.7104101366892854,
+            0.06344514575924101
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.533254990822727,
+        1.5097838275861035,
+        1.484583392267375,
+        1.4575409431013437,
+        1.4285667664627029
+      ],
+      "reference_through_real": [
+        [
+          -0.029445226757801844,
+          -0.029445068934279565
+        ],
+        [
+          -0.8923256451801161,
+          -0.8923253460838619
+        ],
+        [
+          -0.8222932947148376,
+          -0.8222932185870214
+        ],
+        [
+          0.10992895904319709,
+          0.10992898183274233
+        ],
+        [
+          0.9264764114712825,
+          0.9264763650234312
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          -0.9999533838461595,
+          -0.9999534023353082
+        ],
+        [
+          -0.4519554204646846,
+          -0.4519551628868642
+        ],
+        [
+          0.5691858273015448,
+          0.5691857988639171
+        ],
+        [
+          0.9938050821182971,
+          0.9938050292135805
+        ],
+        [
+          0.3753203165288296,
+          0.3753203251908017
+        ]
+      ],
+      "reciprocity_max_abs": 1.2966890821873582e-06,
+      "reflection_mirror_difference_max_abs": 4.978711755578329e-06,
+      "largest_singular_value_squared": [
+        0.8535772404464134,
+        0.8585281803600953,
+        0.8633560636178306,
+        0.8697395200872974,
+        0.8796610462804841
+      ],
+      "ports": {
+        "port_1_x_um": -1.75,
+        "port_2_x_um": 1.75,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": true,
+          "energy_ratio": 1.5050567091141722e-16,
+          "spectral_relative_change": 1.1165911241128504e-08,
+          "sampled_energy_peak": 19.034648835433277,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946714393045645
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032182103968
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9800556689961816
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693183372891
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.954582980224101
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167603117761
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785113854954
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485624941834
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241539926096,
+              "spectral_relative_change": 0.5345556418970132
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685426286263,
+              "spectral_relative_change": 0.29575833497815013
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.01306150331025393,
+              "spectral_relative_change": 0.09164328866544792
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575246890037456,
+              "spectral_relative_change": 0.015818849707518554
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.19848621142322e-06,
+              "spectral_relative_change": 0.0013487222278707105
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621922240841695e-09,
+              "spectral_relative_change": 6.067891137072452e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650912942252722e-11,
+              "spectral_relative_change": 2.5697990066360107e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430556786545793e-14,
+              "spectral_relative_change": 2.1734480970912202e-07
+            },
+            {
+              "time_fs": 300.2076856783369,
+              "energy_ratio": 1.5050567091141722e-16,
+              "spectral_relative_change": 1.1165911241128504e-08
+            }
+          ],
+          "elapsed_fs": 300.3119244580863,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2881,
+          "total_seconds": 47.6882048919997,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-09,
+            "spectral_relative_change": 1e-06
+          },
+          "decay_by": 1e-09,
+          "spectrum_tolerance": 1e-06,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": true,
+          "energy_ratio": 4.154063388424512e-17,
+          "spectral_relative_change": 3.79428218538738e-09,
+          "sampled_energy_peak": 17.181801979801982,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.9864856060864046e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.887440465836387e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.00173451151257086
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018069407649182315
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10521096819498342
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.29054117832738297
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.4327715576781188
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9593808655057262,
+              "spectral_relative_change": 0.3549076376557667
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.511743709294029,
+              "spectral_relative_change": 0.37681819015095663
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11990968533271344,
+              "spectral_relative_change": 0.2386615066333518
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009007288510267709,
+              "spectral_relative_change": 0.06749780849931687
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0002167293606069203,
+              "spectral_relative_change": 0.011885993437030761
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.206037507435939e-06,
+              "spectral_relative_change": 0.0008623417232049753
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 2.2148441043134506e-09,
+              "spectral_relative_change": 4.068491194940575e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 3.367169518826031e-12,
+              "spectral_relative_change": 1.2907455898363943e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 1.7712965483995622e-14,
+              "spectral_relative_change": 9.664585741263951e-08
+            },
+            {
+              "time_fs": 300.2076856783369,
+              "energy_ratio": 4.154063388424512e-17,
+              "spectral_relative_change": 3.79428218538738e-09
+            }
+          ],
+          "elapsed_fs": 300.3119244580863,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2881,
+          "total_seconds": 29.931469913999535,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-09,
+            "spectral_relative_change": 1e-06
+          },
+          "decay_by": 1e-09,
+          "spectrum_tolerance": 1e-06,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": true,
+          "energy_ratio": 1.505057728773846e-16,
+          "spectral_relative_change": 1.1165924983439202e-08,
+          "sampled_energy_peak": 19.03464852129487,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946715182936178
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032257439748
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.980055906536342
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693527407039
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9545830355154771
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167213365602
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785076260578
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485271356747
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241558780036,
+              "spectral_relative_change": 0.5345556237156219
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685545417537,
+              "spectral_relative_change": 0.29575833491805614
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.013061504725815866,
+              "spectral_relative_change": 0.09164328430662244
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575248202807546,
+              "spectral_relative_change": 0.015818852432277257
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.1984867931148408e-06,
+              "spectral_relative_change": 0.0013487222304955024
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 4.621926600787695e-09,
+              "spectral_relative_change": 6.0678942436495045e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.0650915633159217e-11,
+              "spectral_relative_change": 2.5698019201133484e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 6.430561373621694e-14,
+              "spectral_relative_change": 2.1734512077620498e-07
+            },
+            {
+              "time_fs": 300.2076856783369,
+              "energy_ratio": 1.505057728773846e-16,
+              "spectral_relative_change": 1.1165924983439202e-08
+            }
+          ],
+          "elapsed_fs": 300.3119244580863,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2881,
+          "total_seconds": 41.107629262000046,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-09,
+            "spectral_relative_change": 1e-06
+          },
+          "decay_by": 1e-09,
+          "spectrum_tolerance": 1e-06,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": true,
+          "energy_ratio": 4.1540722937218834e-17,
+          "spectral_relative_change": 3.7942889074601966e-09,
+          "sampled_energy_peak": 17.18179780524783,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.9864842544428778e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.887432755134461e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017345109760217063
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.01806939892969045
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10521095138338354
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.2905411066671957
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.43277145727712796
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.95938080081129,
+              "spectral_relative_change": 0.35490742528425573
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5117436705587655,
+              "spectral_relative_change": 0.3768180350856421
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11990968583637149,
+              "spectral_relative_change": 0.23866143871132522
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009007290732041075,
+              "spectral_relative_change": 0.06749780037646042
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.00021672942828503445,
+              "spectral_relative_change": 0.011885992819993366
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.2060384375953203e-06,
+              "spectral_relative_change": 0.0008623418639239915
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 2.2148459564745263e-09,
+              "spectral_relative_change": 4.0684924161861525e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 3.3671725573089375e-12,
+              "spectral_relative_change": 1.2907470704574012e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 1.7712976853438503e-14,
+              "spectral_relative_change": 9.664596041460106e-08
+            },
+            {
+              "time_fs": 300.2076856783369,
+              "energy_ratio": 4.1540722937218834e-17,
+              "spectral_relative_change": 3.7942889074601966e-09
+            }
+          ],
+          "elapsed_fs": 300.3119244580863,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2881,
+          "total_seconds": 90.13578504299949,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-09,
+            "spectral_relative_change": 1e-06
+          },
+          "decay_by": 1e-09,
+          "spectrum_tolerance": 1e-06,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "7f0b9531d3a7df045675118e42c2269a987ddecb7dd2a75a0f30b2ba3ebe4c73",
+        "device-forward-monitors.npz": "f5961953d8c350ce5984c2d8db015a517b8255eae10f2b1c88ff18fb5317f733",
+        "device-reverse-monitors.npz": "883decd2aff3941c7b88820a43ce48218e1957bb8dcd15928a31d63f6ddaed9f",
+        "reference-forward-monitors.npz": "14eaab94f3953a5f82f57d82bb3811d49a8eca8596b8b54c0e0074dd1640d197",
+        "reference-reverse-monitors.npz": "37138e34318e461864bbd22610026ee99cf679a5e9f63a5c0b12160ace3dbb8e",
+        "sparameters.npz": "8df4a97040c63735fe12e42b2034c601db78f4fb57ed16dec76b7269b220f7d6"
+      }
+    },
+    {
+      "case": "gap-substrate-final",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "substrate",
+              "name": "Substrate",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.125
+              },
+              "size": {
+                "x": 8.0,
+                "y": 4.0,
+                "z": 1.75
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 1.44
+            },
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": true,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 101.70182246699915,
+      "sparameters_valid": true,
+      "valid_bin": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            0.2960268528677694,
+            -0.15136931115931862
+          ],
+          [
+            -0.1513692435138796,
+            0.29602710112411035
+          ]
+        ],
+        [
+          [
+            0.12035665617656661,
+            -0.7384091974839335
+          ],
+          [
+            -0.738408966238855,
+            0.1203565159389843
+          ]
+        ],
+        [
+          [
+            -0.1339118266170243,
+            -0.6997621763367634
+          ],
+          [
+            -0.6997622843457301,
+            -0.13391309373339935
+          ]
+        ],
+        [
+          [
+            -0.24720831688057945,
+            -0.06805841273038345
+          ],
+          [
+            -0.06805843573995304,
+            -0.24720844373043016
+          ]
+        ],
+        [
+          [
+            -0.1452873910291474,
+            0.6225811361284694
+          ],
+          [
+            0.6225845367917314,
+            -0.14528720654646599
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.04961424039284332,
+            -0.7814431820789045
+          ],
+          [
+            -0.7814434099592502,
+            -0.049613399064288924
+          ]
+        ],
+        [
+          [
+            -0.2570220446143837,
+            -0.32592586431863535
+          ],
+          [
+            -0.32592588812934625,
+            -0.25702213129980817
+          ]
+        ],
+        [
+          [
+            -0.23048494115287196,
+            0.42008317100330106
+          ],
+          [
+            0.4200832300884335,
+            -0.23048414802418413
+          ]
+        ],
+        [
+          [
+            -0.019997459117361296,
+            0.8196723653359627
+          ],
+          [
+            0.8196724429160668,
+            -0.01999503510930077
+          ]
+        ],
+        [
+          [
+            0.1757767321625299,
+            0.5427243657635273
+          ],
+          [
+            0.5427216954527746,
+            0.17577856687444346
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.09009347046855486,
+            0.6335661151784506
+          ],
+          [
+            0.633566450850705,
+            0.09009353396665665
+          ]
+        ],
+        [
+          [
+            0.08054605610376253,
+            0.6514758119607164
+          ],
+          [
+            0.6514754859748376,
+            0.08054606690686685
+          ]
+        ],
+        [
+          [
+            0.07105568540615081,
+            0.6661369739917523
+          ],
+          [
+            0.6661371747942861,
+            0.0710556591636842
+          ]
+        ],
+        [
+          [
+            0.06151185030607952,
+            0.6764947340388311
+          ],
+          [
+            0.6764948643513619,
+            0.06151181608064345
+          ]
+        ],
+        [
+          [
+            0.052005885561794155,
+            0.6821570082564388
+          ],
+          [
+            0.6821583441673089,
+            0.05200647695850866
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.5762527342512545,
+        1.5576364964912999,
+        1.5381819621677684,
+        1.5180028209080196,
+        1.4972985126652216
+      ],
+      "reference_through_real": [
+        [
+          0.5870325829839912,
+          0.5870322801597619
+        ],
+        [
+          -0.38616772685093587,
+          -0.3861677192364945
+        ],
+        [
+          -0.9875849551694832,
+          -0.9875849487092924
+        ],
+        [
+          -0.6580538405521347,
+          -0.6580538324891304
+        ],
+        [
+          0.2737801791237716,
+          0.27377909586610183
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          -0.8110347264524136,
+          -0.8110348515466765
+        ],
+        [
+          -0.9234437999105305,
+          -0.923443809554184
+        ],
+        [
+          -0.15738520905170342,
+          -0.15738519984339158
+        ],
+        [
+          0.7503919865504259,
+          0.7503919372146522
+        ],
+        [
+          0.9559018308231537,
+          0.955902682739476
+        ]
+      ],
+      "reciprocity_max_abs": 4.323779612518112e-06,
+      "reflection_mirror_difference_max_abs": 2.427324857145444e-06,
+      "largest_singular_value_squared": [
+        0.7357377907601985,
+        0.7422262044356838,
+        0.7434243534077188,
+        0.7388751141463127,
+        0.7440542577139537
+      ],
+      "ports": {
+        "port_1_x_um": -1.75,
+        "port_2_x_um": 1.75,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4972985126652216,
+          "minimum_ey_l2_fraction": 0.8067488981843801,
+          "maximum_edge_intensity_relative_peak": 0.004519904004391254,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4972985126652216,
+          "minimum_ey_l2_fraction": 0.8067488981843801,
+          "maximum_edge_intensity_relative_peak": 0.004519904004391254,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4972985126652216,
+          "minimum_ey_l2_fraction": 0.8067488981843801,
+          "maximum_edge_intensity_relative_peak": 0.004519904004391254,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4972985126652216,
+          "minimum_ey_l2_fraction": 0.8067488981843801,
+          "maximum_edge_intensity_relative_peak": 0.004519904004391254,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": true,
+          "energy_ratio": 1.5092632470212563e-14,
+          "spectral_relative_change": 1.2379973414187466e-07,
+          "sampled_energy_peak": 17.95727575510406,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9976244219526401
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9924007183131104
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.987478275814257
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9735980639946624
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9618269850909189
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9074392141863019
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8587025864596348
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.6976317436911681
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5578955535510607,
+              "spectral_relative_change": 0.5303448194966466
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1172665527582579,
+              "spectral_relative_change": 0.2517615660253881
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009195685718316,
+              "spectral_relative_change": 0.08253109965018862
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.00017086647697691642,
+              "spectral_relative_change": 0.011739639777948133
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.1575999337572767e-06,
+              "spectral_relative_change": 0.0010903072989316826
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 1.6488155777689587e-09,
+              "spectral_relative_change": 4.009063784420959e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 3.2030512483859223e-12,
+              "spectral_relative_change": 1.4049527260488858e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 1.5092632470212563e-14,
+              "spectral_relative_change": 1.2379973414187466e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 24.603010258999348,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": true,
+          "energy_ratio": 3.172173125044135e-15,
+          "spectral_relative_change": 3.9033808122792324e-08,
+          "sampled_energy_peak": 17.060000004287524,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 2.244077699337198e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 8.34628340794244e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0018902493889775757
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.01866063369141326
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.11098302557672698
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.2968182705352106
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.46110845719779975
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9142361081487567,
+              "spectral_relative_change": 0.3491552632585872
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.42619135537900776,
+              "spectral_relative_change": 0.36418628898775546
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.08043972861260446,
+              "spectral_relative_change": 0.19537818430564305
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.005201591653831941,
+              "spectral_relative_change": 0.056859195526595005
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 9.367663862813597e-05,
+              "spectral_relative_change": 0.008261497213660861
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 5.286501641819352e-07,
+              "spectral_relative_change": 0.0006748214265556827
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 7.84367661776656e-10,
+              "spectral_relative_change": 2.8369513927315047e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.065075486111559e-12,
+              "spectral_relative_change": 9.189952151316455e-07
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 3.172173125044135e-15,
+              "spectral_relative_change": 3.9033808122792324e-08
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 23.64247235699986,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": true,
+          "energy_ratio": 1.509263127890513e-14,
+          "spectral_relative_change": 1.2379973569284892e-07,
+          "sampled_energy_peak": 17.957275600588034,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9976244072297151
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9924007074914799
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9874782530443135
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9735980533361803
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9618269762928574
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9074392111426546
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8587025860764945
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.6976317438165419
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5578955604164968,
+              "spectral_relative_change": 0.5303448185995779
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.117266553898156,
+              "spectral_relative_change": 0.25176156400805766
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009195685620633076,
+              "spectral_relative_change": 0.0825310978284381
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0001708664709623697,
+              "spectral_relative_change": 0.011739639346436726
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.1575998553165794e-06,
+              "spectral_relative_change": 0.001090307238951747
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 1.6488154396124382e-09,
+              "spectral_relative_change": 4.009063507748627e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 3.20305103407031e-12,
+              "spectral_relative_change": 1.4049527642461311e-06
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 1.509263127890513e-14,
+              "spectral_relative_change": 1.2379973569284892e-07
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 23.48228464100066,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": true,
+          "energy_ratio": 3.1721728592976297e-15,
+          "spectral_relative_change": 3.9033810476350514e-08,
+          "sampled_energy_peak": 17.060000400251752,
+          "consecutive_checks": 2,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 2.2440778585993336e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 8.346283680169916e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.001890249442726411
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.01866063396225413
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.1109830265252805
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.29681827457431875
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.4611084656197896
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9142361511824596,
+              "spectral_relative_change": 0.34915532911147174
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.42619139923220883,
+              "spectral_relative_change": 0.36418633373015386
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.08043973804424676,
+              "spectral_relative_change": 0.19537820179308843
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.005201592057108963,
+              "spectral_relative_change": 0.05685919801269997
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 9.367664098851872e-05,
+              "spectral_relative_change": 0.008261497306959093
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 5.28650141395791e-07,
+              "spectral_relative_change": 0.0006748214093439911
+            },
+            {
+              "time_fs": 250.17307139861404,
+              "energy_ratio": 7.843676012644964e-10,
+              "spectral_relative_change": 2.8369512535422163e-05
+            },
+            {
+              "time_fs": 266.85127615852167,
+              "energy_ratio": 1.065075464871605e-12,
+              "spectral_relative_change": 9.18995171812819e-07
+            },
+            {
+              "time_fs": 283.5294809184293,
+              "energy_ratio": 3.1721728592976297e-15,
+              "spectral_relative_change": 3.9033810476350514e-08
+            }
+          ],
+          "elapsed_fs": 283.63371969817865,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2721,
+          "total_seconds": 22.528213053999934,
+          "reason": "energy_and_complex_dft_settled",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "d9f24d23fe3d1a385b1c04c2501134e694a9ad08eb007c34d4e6e484e66bd59f",
+        "device-forward-monitors.npz": "a79177c002ad22f64cd15f900b8ce8d28d82275d769cb5d87618325511d56e7b",
+        "device-reverse-monitors.npz": "d6a211a9fa3a655098902788807c4b0e8d65ea2fb45c56b12ac1bb2eeec3dcd3",
+        "reference-forward-monitors.npz": "368e4b38cf29ce37d5510de659e605a2f0f30348f71ff20dd163e21b8f27625c",
+        "reference-reverse-monitors.npz": "d4e85981e2fe9682fb9f743c6793f75c16de272b4ebf09ecaf007e9453c01e1f",
+        "sparameters.npz": "70b5d7120753a52b26c94d8c37b8cc4f42cc54c453a417d494cad153c0bed955"
+      }
+    },
+    {
+      "case": "gap-timeout",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.25,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 5.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "within_gui_bounds": false,
+      "actual_device": "CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "total_seconds": 143.5629301530007,
+      "sparameters_valid": false,
+      "valid_bin": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.5950000000000002,
+        1.6500000000000004
+      ],
+      "s_real": [
+        [
+          [
+            0.22140834637390147,
+            -0.6696898009057758
+          ],
+          [
+            -0.6696904315800583,
+            0.22140522424723413
+          ]
+        ],
+        [
+          [
+            -0.06310778507076656,
+            -0.7461403607267804
+          ],
+          [
+            -0.7461396220856555,
+            -0.06311033196465243
+          ]
+        ],
+        [
+          [
+            -0.26641008695278157,
+            -0.09779285704358544
+          ],
+          [
+            -0.09779264767016822,
+            -0.26641039616571816
+          ]
+        ],
+        [
+          [
+            -0.2092830298575488,
+            0.6576779439776832
+          ],
+          [
+            0.657678114685623,
+            -0.20928303065180634
+          ]
+        ],
+        [
+          [
+            0.029308439490071638,
+            0.7862706439529792
+          ],
+          [
+            0.7862706673690781,
+            0.029310011396967886
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.2160277690311401,
+            -0.4599342606555432
+          ],
+          [
+            -0.4599347894330654,
+            -0.2160316469688691
+          ]
+        ],
+        [
+          [
+            -0.28957033959282447,
+            0.336537230666998
+          ],
+          [
+            0.33653616491437593,
+            -0.28957050690332053
+          ]
+        ],
+        [
+          [
+            -0.0947457886153894,
+            0.8189944109487842
+          ],
+          [
+            0.8189937314471758,
+            -0.09474564678471485
+          ]
+        ],
+        [
+          [
+            0.16695557761324267,
+            0.5106309190646832
+          ],
+          [
+            0.5106315072398553,
+            0.1669558105017722
+          ]
+        ],
+        [
+          [
+            0.2501767916255751,
+            -0.3036278885979844
+          ],
+          [
+            -0.30362785459703096,
+            0.250176675478553
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.09568965283659715,
+            0.6600239535619788
+          ],
+          [
+            0.6600252846807231,
+            0.09568994581605011
+          ]
+        ],
+        [
+          [
+            0.08783357410844173,
+            0.6699827455305022
+          ],
+          [
+            0.669980925941401,
+            0.08783399246893464
+          ]
+        ],
+        [
+          [
+            0.0799510988905407,
+            0.6803152880540932
+          ],
+          [
+            0.6803141340881105,
+            0.07995123676982883
+          ]
+        ],
+        [
+          [
+            0.07167355148252715,
+            0.6932842134995557
+          ],
+          [
+            0.6932850387224817,
+            0.07167362957910856
+          ]
+        ],
+        [
+          [
+            0.0634474116934096,
+            0.7104114202767028
+          ],
+          [
+            0.7104114364522115,
+            0.0634474457215916
+          ]
+        ]
+      ],
+      "mode_neff": [
+        1.533254990822727,
+        1.5097838275861035,
+        1.484583392267375,
+        1.4575409431013437,
+        1.4285667664627029
+      ],
+      "reference_through_real": [
+        [
+          -0.029454868653222083,
+          -0.029454710818065756
+        ],
+        [
+          -0.8923290017424839,
+          -0.8923287026569979
+        ],
+        [
+          -0.8222903420747308,
+          -0.8222902659499655
+        ],
+        [
+          0.10993280764397985,
+          0.10993283044092235
+        ],
+        [
+          0.926466545609443,
+          0.9264664991660111
+        ]
+      ],
+      "reference_through_imag": [
+        [
+          -0.9999456465554739,
+          -0.9999456650257614
+        ],
+        [
+          -0.4519593595375701,
+          -0.45195910194804817
+        ],
+        [
+          0.5691831785177441,
+          0.5691831500737632
+        ],
+        [
+          0.9938091102621247,
+          0.9938090573551973
+        ],
+        [
+          0.37533044970354923,
+          0.37533045838892515
+        ]
+      ],
+      "reciprocity_max_abs": 1.296695555119237e-06,
+      "reflection_mirror_difference_max_abs": 4.978561635335307e-06,
+      "largest_singular_value_squared": [
+        0.8535432477515912,
+        0.8585413823095439,
+        0.8633522594825996,
+        0.8697343412652564,
+        0.8796901475231372
+      ],
+      "ports": {
+        "port_1_x_um": -1.75,
+        "port_2_x_um": 1.75,
+        "aperture_yz_um": [
+          2.5,
+          2.5
+        ],
+        "basis": "One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power",
+        "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+        "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+        "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients",
+        "matrix_order": "s[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]",
+        "reference_planes": "Physical monitor planes; propagation phase retained; no reference-through division or de-embedding"
+      },
+      "modal_checks": [
+        {
+          "stage": "reference_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_forward",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "reference_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        },
+        {
+          "stage": "device_reverse",
+          "minimum_neff": 1.4285667664627029,
+          "minimum_ey_l2_fraction": 0.7444218056878884,
+          "maximum_edge_intensity_relative_peak": 0.0006598748200265666,
+          "guided": true,
+          "group_velocity_matches_direction": true,
+          "gauge": "Center Ey real and positive; independently solved +k and -k bases"
+        }
+      ],
+      "settlement": {
+        "reference_forward": {
+          "settled": false,
+          "energy_ratio": 2.19848621142322e-06,
+          "spectral_relative_change": 0.0013487222278707105,
+          "sampled_energy_peak": 19.034648835433277,
+          "consecutive_checks": 0,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946714393045645
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032182103968
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9800556689961816
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693183372891
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.954582980224101
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167603117761
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785113854954
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485624941834
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241539926096,
+              "spectral_relative_change": 0.5345556418970132
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685426286263,
+              "spectral_relative_change": 0.29575833497815013
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.01306150331025393,
+              "spectral_relative_change": 0.09164328866544792
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575246890037456,
+              "spectral_relative_change": 0.015818849707518554
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.19848621142322e-06,
+              "spectral_relative_change": 0.0013487222278707105
+            }
+          ],
+          "elapsed_fs": 244.4399385123958,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2345,
+          "total_seconds": 23.511926908000532,
+          "reason": "maximum_time_reached",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_forward": {
+          "settled": false,
+          "energy_ratio": 1.206037507435939e-06,
+          "spectral_relative_change": 0.000862341760400198,
+          "sampled_energy_peak": 17.181801979801982,
+          "consecutive_checks": 0,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.9864876615399792e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.887448627117622e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.0017345133073021568
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018069426345934215
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10521107705872751
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.2905414789557398
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.43277200547489236
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.9593808655057262,
+              "spectral_relative_change": 0.35490765296393084
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.511743709294029,
+              "spectral_relative_change": 0.37681820640418445
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11990968533271344,
+              "spectral_relative_change": 0.2386615169274935
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009007288510267709,
+              "spectral_relative_change": 0.0674978114106871
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0002167293606069203,
+              "spectral_relative_change": 0.011885993949707071
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.206037507435939e-06,
+              "spectral_relative_change": 0.000862341760400198
+            }
+          ],
+          "elapsed_fs": 244.4399385123958,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2345,
+          "total_seconds": 34.02289859699886,
+          "reason": "maximum_time_reached",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "reference_reverse": {
+          "settled": false,
+          "energy_ratio": 2.1984867931148408e-06,
+          "spectral_relative_change": 0.0013487222304955024,
+          "sampled_energy_peak": 19.03464852129487,
+          "consecutive_checks": 0,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9946715182936178
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9911032257439748
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.980055906536342
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9787693527407039
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9545830355154771
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.9307167213365602
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.8493785076260578
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.7463485271356747
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.599241558780036,
+              "spectral_relative_change": 0.5345556237156219
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.1635685545417537,
+              "spectral_relative_change": 0.29575833491805614
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.013061504725815866,
+              "spectral_relative_change": 0.09164328430662244
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.0003575248202807546,
+              "spectral_relative_change": 0.015818852432277257
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 2.1984867931148408e-06,
+              "spectral_relative_change": 0.0013487222304955024
+            }
+          ],
+          "elapsed_fs": 244.4399385123958,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2345,
+          "total_seconds": 36.40873260900116,
+          "reason": "maximum_time_reached",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        },
+        "device_reverse": {
+          "settled": false,
+          "energy_ratio": 1.2060384375953203e-06,
+          "spectral_relative_change": 0.0008623419011192466,
+          "sampled_energy_peak": 17.18179780524783,
+          "consecutive_checks": 0,
+          "history": [
+            {
+              "time_fs": 16.678204759907604,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": null
+            },
+            {
+              "time_fs": 33.35640951981521,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 1.9864863098942133e-06
+            },
+            {
+              "time_fs": 50.03461427972281,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 7.88744091640438e-05
+            },
+            {
+              "time_fs": 66.71281903963042,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.001734512770751714
+            },
+            {
+              "time_fs": 83.39102379953802,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.018069417626425686
+            },
+            {
+              "time_fs": 100.06922855944562,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.10521106024706571
+            },
+            {
+              "time_fs": 116.74743331935322,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.2905414072953554
+            },
+            {
+              "time_fs": 133.42563807926084,
+              "energy_ratio": 1.0,
+              "spectral_relative_change": 0.4327719050736145
+            },
+            {
+              "time_fs": 150.10384283916844,
+              "energy_ratio": 0.95938080081129,
+              "spectral_relative_change": 0.3549074405924215
+            },
+            {
+              "time_fs": 166.78204759907604,
+              "energy_ratio": 0.5117436705587655,
+              "spectral_relative_change": 0.37681805133887475
+            },
+            {
+              "time_fs": 183.46025235898364,
+              "energy_ratio": 0.11990968583637149,
+              "spectral_relative_change": 0.2386614490054713
+            },
+            {
+              "time_fs": 200.13845711889124,
+              "energy_ratio": 0.009007290732041075,
+              "spectral_relative_change": 0.06749780328783235
+            },
+            {
+              "time_fs": 216.81666187879884,
+              "energy_ratio": 0.00021672942828503445,
+              "spectral_relative_change": 0.011885993332670012
+            },
+            {
+              "time_fs": 233.49486663870644,
+              "energy_ratio": 1.2060384375953203e-06,
+              "spectral_relative_change": 0.0008623419011192466
+            }
+          ],
+          "elapsed_fs": 244.4399385123958,
+          "actual_source_end_fs": 239.4156344182578,
+          "time_steps": 2345,
+          "total_seconds": 37.20768776800105,
+          "reason": "maximum_time_reached",
+          "thresholds": {
+            "energy_decay": 1e-07,
+            "spectral_relative_change": 0.0001
+          },
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "check_interval_fs": 16.678204759907604,
+          "required_consecutive_checks": 2,
+          "definition": "Whole-cell energy/sample peak and L2 change of complex E/H DFT streams/reference norm, or largest sampled norm for reference stages; both pass twice after pulse turn-off."
+        }
+      },
+      "original_numerical_sha256": {
+        "arrays.npz": "94a24ade2476aff648fc640dbca3361a602b2ca61dff067df9ae91675f66da50",
+        "device-forward-monitors.npz": "30a9a81a709e3624484255fa6618ff15f623ef61e6b9b70ee1d5e7155bc597ab",
+        "device-reverse-monitors.npz": "4abad43e62fd9db30103881280649c28cd8711744ac6c4db9cde61bc0ce8aff8",
+        "reference-forward-monitors.npz": "d1bb313a1454615fe21a9a09678eaee68a25470f2241cc41fd14a3262299d466",
+        "reference-reverse-monitors.npz": "c0df5a15496a7bea51326fc6ca85cef03bd6d6be7d27fbac33d903bf86176857",
+        "sparameters.npz": "dd3693b18ee717922b023717cc2c1e2d192284d5e1edfbd8548b6ebf1b86a0f2"
+      }
+    }
+  ],
+  "comparisons": {
+    "gap-res20-final": {
+      "max_complex_s_difference": 0.04976140441702543,
+      "max_power_difference": 0.02066308215961965,
+      "max_transmission_phase_difference_rad": 0.05966485320811654
+    },
+    "gap-strict-final": {
+      "max_complex_s_difference": 5.362373609079098e-07,
+      "max_power_difference": 1.4507615719860922e-08,
+      "max_transmission_phase_difference_rad": 7.562995964765423e-09
+    },
+    "shifted_physical_planes": {
+      "added_distance_um": 0.5,
+      "observation": "Both port planes move outward by 0.25 \u00b5m; S keeps the measured propagation phase. Comparison against MPB beta is a diagnostic of finite-grid FDTD dispersion, not a calibrated correction.",
+      "observed_transmission_phase_shift_rad": [
+        -2.9240876531756514,
+        -3.075992546190897,
+        3.0555057259073624,
+        2.902869922271793,
+        2.7496897846472974
+      ],
+      "mpb_beta_distance_wrapped_rad": [
+        -2.961211089766783,
+        -3.1111889644397372,
+        3.021580870270566,
+        2.8708463442968775,
+        2.7199847628374254
+      ],
+      "max_wrapped_transmission_phase_residual_rad": 0.03712343659113121,
+      "max_power_difference": 0.0019917181470557876
+    },
+    "straight_phase_against_mpb": {
+      "monitor_distance_um": 3.5,
+      "wrapped_phase_residual_rad": [
+        0.2786872917625289,
+        0.2560015485561587,
+        0.234615219549182,
+        0.2142614879579948,
+        0.1945621389898403
+      ],
+      "interpretation": "MPB solves a continuum modal eigenproblem for the sampled material cross-section; FDTD has finite spatial/time dispersion. Nonzero discrepancy is retained and prevents a convergence claim."
+    }
+  },
+  "numerical_regression_tests": {
+    "command": "PHOTONICS_MEEP_PORTS3D_EVIDENCE_DIR=.local/ports3d-meep .local/meep-conda/bin/python -m unittest tests.test_meep_ports3d_adapter -v",
+    "result": "2 tests passed against retained actual runs; the numerical runtime was Meep 1.35.0.",
+    "checks": [
+      "Explicit target and schema rejection before Meep import",
+      "Complex S equals saved outgoing divided by measured reference incident amplitude",
+      "Straight near-zero reflection and near-unity transmitted power",
+      "Mirror-symmetric gap reflection and reciprocal transmission within 2e-4 complex amplitude",
+      "Actual finite-height material and Ex/Ey/Ez volume coordinates",
+      "Native raw complex monitor fields and independent signed-k modal evidence",
+      "Forced early stop retains raw coefficients while invalidating all spectral bins"
+    ]
+  },
+  "corrected_diagnostic": {
+    "problem": "Using the opposite-going coefficient from a single +k sampled mode gave unequal modal reflections for an x-mirror-symmetric device, despite matched total reflected flux.",
+    "initial_gap_reflection_power_ranges": {
+      "port1": [
+        0.05632713,
+        0.07995576
+      ],
+      "port2": [
+        0.07146998,
+        0.11454966
+      ]
+    },
+    "independent_raw_flux_audit": "Native saved Meep E/H were reloaded into matching monitors. Reflected total-flux ratios from both directions agreed to approximately 1e-7; the normalization/gauge problem was isolated to mode projection.",
+    "correction": "Solve the actual +k and -k MPB modes separately; select the matching propagation-direction coefficient and canonicalize each with its own center-Ey phase anchor. No fitted amplitude, matrix symmetrization or phase offset.",
+    "fresh_run_validation": "All reported final cases execute the corrected adapter from a fresh numerical process. Earlier raw fields and prototype records remain local, clearly separate from final qualification."
+  },
+  "reproduction": {
+    "supported_cases": "Save a case config as JSON and run .venv/bin/python scripts/run_simulation.py CONFIG.json --output NEW_DIRECTORY with the recorded Meep environment.",
+    "negative_case": "gap-timeout deliberately uses 5 fs after source turn-off, below the GUI minimum; call backend.adapters.meep_ports3d_adapter.run directly in a fresh Meep interpreter.",
+    "numerical_tests": "PHOTONICS_MEEP_PORTS3D_EVIDENCE_DIR=.local/ports3d-meep .local/meep-conda/bin/python -m unittest tests.test_meep_ports3d_adapter -v validates these retained actual runs; omitting the variable runs the numerical cases anew."
+  }
+}

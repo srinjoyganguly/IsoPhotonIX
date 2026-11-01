@@ -52,10 +52,11 @@ def build_passport(job, output):
     output = Path(output)
     config = json.loads((output / "config.json").read_text())
     metadata = json.loads((output / "metadata.json").read_text())
-    is3d = config.get("study_type") == "waveguide-3d"
+    ismodal = config.get('study_type') == 'waveguide-ports-3d'
+    is3d = ismodal or config.get("study_type") == "waveguide-3d"
     isports = config.get("study_type") == "waveguide-ports-2d"
     snapshot_ok = metadata.get("config") == config and job["config"] == config
-    if (isports or job["config"].get("study_type") == "waveguide-ports-2d") and not snapshot_ok:
+    if (isports or ismodal or job["config"].get("study_type") in ("waveguide-ports-2d","waveguide-ports-3d")) and not snapshot_ok:
         raise ValueError("Port result configuration differs between saved files and the run snapshot.")
     component = "Ey" if is3d else "Ez"
     with np.load(output / "arrays.npz", allow_pickle=False) as arrays:
@@ -66,13 +67,20 @@ def build_passport(job, output):
                         and field.shape == (len(y), len(x)))
         if is3d:
             from .volume import validate_volume
-            validate_volume(arrays)
+            validate_volume(arrays,allow_zero=ismodal)
             shape_ok = True
             finite = True
         nonzero = bool(np.any(field)) if np.isfinite(field).all() else False
         frame_count = int(len(arrays["frames"])) if "frames" in arrays else 0
         coordinate_detail = f"{len(x)} x and {len(y)} y samples" if not is3d else f"{len(x)} x, {len(y)} y and {len(arrays['z_um'])} z samples"
     files = [file_record(output / name) for name in ("config.json", "metadata.json", "arrays.npz")]
+    implementation = metadata.get('implementation_snapshot')
+    if implementation is not None:
+        from .source_snapshot import FORMAT, FILENAME, read_implementation
+        if not isinstance(implementation, dict) or implementation.get('format') != FORMAT or implementation.get('filename') != FILENAME:
+            raise ValueError('Unknown saved numerical implementation record.')
+        read_implementation(output/FILENAME, implementation.get('sha256'))
+        files.append(file_record(output/FILENAME))
     if isports:
         from .spectra import stored_spectrum, spectrum_csv
         spectra = stored_spectrum(output,metadata)
@@ -80,6 +88,15 @@ def build_passport(job, output):
             raise ValueError('Saved CSV differs from the recorded spectrum.')
         files.extend(file_record(output/name) for name in ('spectra.npz','spectrum.csv'))
         files.extend(file_record(output/name) for name in ('reference-monitors.npz','device-monitors.npz') if (output/name).exists())
+    if ismodal:
+        from .sparameters import stored_sparameters, sparameters_csv, STAGES
+        modal = stored_sparameters(output,metadata)
+        if (output/'sparameters.csv').read_bytes() != sparameters_csv(modal).encode():
+            raise ValueError('Saved complex CSV differs from the recorded S-matrix.')
+        names = ['sparameters.npz','sparameters.csv'] + [f"{stage.replace('_','-')}-monitors.npz" for stage in STAGES]
+        if (output/'port-modes.npz').exists():
+            names.append('port-modes.npz')
+        files.extend(file_record(output/name) for name in names)
     checks = [
         {"label": "Finite numerical values", "passed": finite,
          "detail": f"Final {component}, permittivity, and coordinate arrays contain no NaN or infinite values."},
@@ -90,6 +107,9 @@ def build_passport(job, output):
         {"label": "Consistent saved configuration", "passed": snapshot_ok,
          "detail": "Config file, saved worker metadata, and run snapshot agree."},
     ]
+    if implementation is not None:
+        checks.append({'label':'Original numerical implementation retained','passed':True,
+                       'detail':'First-party solver source was captured before execution, checked unchanged at completion and hash-verified for this export.'})
     limitations = [
         "Educational lossless, nondispersive slab; grid and PML convergence have not been established.",
         "Ez uses arbitrary source units. No normalized transmission, S-parameters, or mode-purity claim.",
@@ -119,6 +139,22 @@ def build_passport(job, output):
                        'The CSV retains raw ratios with valid_bin flags; unqualified bins must not be treated as settled measurements.',
                        'CPU source-mode preparation may accompany GPU FDTD; execution metadata identifies both.',
                        'SHA256 identifies exported bytes, not accuracy. Grid, boundary and source sensitivity require independent checks.']
+    if ismodal:
+        checks[1] = {'label':'Measured incident modes from both directions','passed':bool(np.all(np.max(abs(modal['incident_amplitude'])**2,axis=0)>0)),
+                     'detail':'Both references contain actual incident modal power. A decayed final volume can be zero.'}
+        checks.extend([
+            {'label':'Four directional settling checks','passed':all(metadata['settlement'][s]['settled'] for s in STAGES),
+             'detail':'Every reference/device excitation must meet the requested energy and complex-spectrum stability criteria.'},
+            {'label':'Guided channel and qualified S-matrix samples','passed':bool(np.all(modal['valid_bin'])),
+             'detail':f"{int(np.sum(modal['valid_bin']))} of {len(modal['valid_bin'])} bins qualified; invalid samples stay flagged, not forced to zero."}])
+        limitations = ['One Ey-like fundamental guided channel at each finite-height port; higher modes and radiation are not included in this 2×2 matrix.',
+                       'Complex S is measured at the recorded physical reference planes with the recorded unit-power mode gauge. No fitted phase, amplitude calibration or automatic de-embedding.',
+                       'The materials are lossless and nondispersive. Residual modal power includes radiation, other modes and numerical error; it is not absorption.',
+                       'Settling and reciprocity are diagnostics, not mesh/PML convergence or commercial-solver agreement.',
+                       'Phase becomes undefined near zero amplitude; the raw complex samples are retained.',
+                       'Source mode preparation is local on CPU; FDTD follows the explicitly selected CPU or NVIDIA target.',
+                       'The displayed final-time volume is captured from the forward device run after pulse decay; it is not a reconstructed steady-state field.',
+                       'SHA256 identifies exported file bytes, not mathematical accuracy.']
     assumptions = metadata.get("assumptions", metadata.get("notes", metadata.get('limitations',[])))
     if isinstance(assumptions, str):
         assumptions = [assumptions]
@@ -155,6 +191,13 @@ def build_passport(job, output):
             valid_frequency_bins=int(np.sum(spectra['valid_bin'])), settlement=metadata['settlement'],
             normalization=metadata.get('normalization',metadata.get('monitor',{})),
             array_order='Final field[y,x]; spectra indexed by increasing wavelength; native complex monitor streams are solver-specific.')
+    if ismodal:
+        passport['title'] = 'Finite-height modal S-parameter run passport'
+        passport['numerical'].update(study_type='waveguide-ports-3d', frequency_bins=len(modal['valid_bin']),
+            valid_frequency_bins=int(np.sum(modal['valid_bin'])), settlement=metadata['settlement'],
+            ports=metadata['ports'], maximum_after_source_fs=config['max_after_sources_fs'],
+            field_capture_stage=metadata.get('field_capture_stage'), field_time_fs=metadata.get('field_time_fs'),
+            s_matrix_order='s[frequency,outgoing port,incoming port]; increasing wavelength')
     manifest = {"schema_version": 1, "algorithm": "sha256", "run_id": job["id"],
                 "files": {record["name"]: {"sha256": record["sha256"], "size_bytes": record["size_bytes"]}
                           for record in files}}

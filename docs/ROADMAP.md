@@ -44,6 +44,15 @@ settling, actual execution, raw monitors, CSV and file hashes. See
 mode-resolved complex S-parameters, automated convergence and sweeps remain
 future work. Packaging and the BeamZ adapter have not been implemented.
 
+The v0.6 preview adds [finite-height 3D modal ports](3D_PORTS.md): four
+directional reference/device solves, a complex fundamental-channel 2×2 S-matrix,
+explicit physical reference planes and measured numerical sensitivities. It
+also adds [standalone Python/Jupyter source bundles](REPRODUCIBLE_EXPORTS.md)
+for all executable study formats and geometry-only code for arbitrary drafts.
+This is source-based reproducibility, not the planned pip-installed desktop
+application. General multimode ports, arbitrary device geometries, automated
+convergence/sweeps, BeamZ, and clean-machine application packaging remain open.
+
 Keep these useful properties through every milestone: local computation,
 visible assumptions, reproducible files, actual device verification, and no
 silent fallback or simulated results presented as computed data.

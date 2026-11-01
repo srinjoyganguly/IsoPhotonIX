@@ -9,7 +9,7 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**Post-event development: v0.5 preview.** The interactive **3D design**
+**Post-event development: v0.6 preview.** The interactive **3D design**
 workspace adds orbit/pan/zoom, selection, editable boxes/cylinders/rings,
 strip/coupler/ring templates, undo/redo, and portable geometry JSON. Open
 **Open runnable 3D waveguide** to run a finite-height core with an optional
@@ -27,6 +27,18 @@ Choose Meep CPU or FDTDX CPU/NVIDIA GPU, inspect the measured settling criteria,
 and export the raw monitor data, exact CSV and run passport.
 These are finite-aperture power ratios, not complex modal S-parameters or 3D
 port measurements. [Port measurement guide and evidence](docs/PORT_MEASUREMENTS.md).
+
+**3D ports & S-matrix** now measures complex S11/S21/S12/S22 for a finite-height
+straight guide or cladding gap, using forward/reverse reference and device
+solves. Inspect real/imaginary amplitudes, power, phase and actual 3D fields.
+[3D modal guide and numerical limits](docs/3D_PORTS.md).
+
+**Python + Jupyter exports** preserve editable settings and the exact numerical
+source used by the GUI. Saved-run bundles include reference arrays and a replay
+comparison; no running API is needed. All implemented study formats are covered.
+Arbitrary design drafts export complete geometry code and notebook rendering;
+unsupported electromagnetic geometries remain drafts.
+[Standalone setup and reproduction evidence](docs/REPRODUCIBLE_EXPORTS.md).
 
 The submitted v0.2 releases and recordings below preserve the event build.
 The 3D editor, public benchmarks and port measurements were added after
@@ -119,6 +131,29 @@ solver lives outside the default project-local environment.
 
 ## Verification status
 
+The v0.6 [3D modal study](docs/3D_PORTS.md) has four-direction real simulations
+on Meep CPU and FDTDX CPU/NVIDIA GPU, with straight/gap, settling and numerical
+sensitivity checks. [Meep evidence](docs/verification/meep-ports3d.json) and
+[FDTDX evidence](docs/verification/fdtdx-ports3d.json) retain raw-array hashes,
+complex matrices, measured discrepancies and implementation corrections.
+The default mesh remains exploratory: Meep 16→20 cells/µm changes modal power
+by up to 0.02066. [Standalone export evidence](docs/verification/reproducible-exports.json)
+compares actual Python/notebook reruns with their saved GUI results; this is
+implementation repeatability, not a commercial-accuracy certificate.
+The complete modal browser journey is recorded for
+[Meep CPU](docs/verification/ports3d-browser-meep-cpu.json),
+[FDTDX CPU](docs/verification/ports3d-browser-fdtdx-cpu.json) and
+[FDTDX NVIDIA](docs/verification/ports3d-browser-fdtdx-gpu.json).
+[Editor export checks](docs/verification/code-export-browser.json) cover general
+geometry and all four study formats without launching a solver.
+The final application suite passes 112 tests with four Meep runtime checks
+skipped in the API environment; real solver evidence is recorded separately.
+All 12 geometry-model tests, TypeScript and the production build pass.
+The [v0.6 verification summary](docs/verification/v06-checks.json) indexes the
+tested routes and limits, including 24 real Python/notebook solver replays.
+The existing [2D field/playback](docs/verification/v06-2d-regression.json) and
+[2D port](docs/verification/v06-ports-regression.json) browser regressions pass.
+
 The finite-height 3D milestone has separate [Meep numerical evidence](docs/verification/meep-3d.json)
 and [FDTDX CPU/GPU evidence](docs/verification/fdtdx-3d.json): correct material
 placement, finite nonzero Ex/Ey/Ez, downstream propagation, height sensitivity,
@@ -145,7 +180,7 @@ qualify the driven 3D FDTD fields or establish general commercial parity.
 The separate [product-adapter propagation check](docs/verification/public-slab-propagation.json)
 records six actual Meep CPU/FDTDX GPU slab runs, including unfavorable centerline
 measurements and the explicitly defined transverse-mode projection. The expanded
-software suite has 61 passing tests and two Meep numerical cases skipped in the
+v0.4 benchmark suite had 61 passing tests and two Meep numerical cases skipped in the
 API environment; real Meep runs are independently recorded. The [benchmark UI test](docs/verification/public-benchmarks-browser.json)
 checks exact numbers, JSON export, mobile layout and missing/error states.
 
@@ -155,7 +190,7 @@ The complete 3D browser journey passed on [Meep CPU](docs/verification/3d-browse
 [Numerical export checks](docs/verification/3d-http-exports.json) verified 81 API
 slices against the exported arrays. [Viewer/comparison checks](docs/verification/3d-slices-comparison-browser.json)
 cover delayed responses and CPU/GPU metrics; [worker checks](docs/verification/3d-final-worker.json)
-cover real cancellation and GPU repeatability. The API test environment passes
+cover real cancellation and GPU repeatability. That milestone's API environment passed
 48 tests with two Meep numerical tests skipped there; real Meep execution is
 separately verified in its solver environment. The [original 2D browser journey](docs/verification/2d-browser-after-3d.json)
 also passes after this increment.
@@ -233,7 +268,8 @@ and numerical error; it is not absorption. Meep and FDTDX use distinct mode and
 grid implementations. Device agreement, settling and the reported refinement
 checks do not establish general commercial-solver accuracy.
 
-The application permits one job at a time and stops jobs exceeding five minutes.
+The application permits one job at a time. Older field and 2D port studies have
+a five-minute limit; four-stage 3D modal studies have a twenty-minute limit.
 The 2D study caps its x-y grid at 180,000 cells; the 3D study has separate
 [volume and work limits](docs/3D_SIMULATION.md#supported-physical-model).
 NVIDIA support depends on a compatible
@@ -245,13 +281,17 @@ milestone.
 The 3D workspace requires WebGL 2 for interactive geometry. Its executable study
 currently supports only one centred, unrotated rectangular guide spanning the
 domain along x, plus an optional substrate flush with the core bottom. General
-solids, bends, rings and couplers are not yet executable. The source is a fixed
+solids, bends, rings and couplers are not yet executable. In the original 3D
+field study, the source is a fixed
 finite Ey excitation with a four-period startup; no eigenmode normalization,
 S-parameters, flux analysis, or 3D time animation is provided. Material indices
 are real, scalar and nondispersive. FDTDX's displayed components are spatially
 averaged to common cell centres, with raw Yee fields retained in exports; Meep
 samples its fields through its documented array API. Read each run's sampling
 metadata and numerical limitations before comparing results.
+The separate 3D modal study adds a centred gap, guided-mode excitation and a
+two-port complex S-matrix. It has its own phase/gauge, material-sampling and
+settling contract; it does not generalize the solver to arbitrary CAD.
 MPB already supplies the separate public mode benchmarks and Meep port-source
 profiles; a general mode/band-study interface remains future work. BeamZ,
 generalized CAD/GDS editing, optimization, multiphysics, installable desktop

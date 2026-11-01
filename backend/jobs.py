@@ -46,6 +46,14 @@ class JobManager:
                 stage = 'complete' if job['status'] == 'completed' else stages[-1] if stages else 'reference'
                 if stage in ('reference','device','normalization','complete'):
                     job['port_progress'] = {'stage':stage,'message':{'reference':'Measuring straight-guide incident reference','device':'Simulating the requested device','normalization':'Checking settling and normalizing signed power','complete':'Reference and device outputs recorded'}[stage]}
+            if job.get('config',{}).get('study_type') == 'waveguide-ports-3d':
+                stages = [line[11:].strip() for line in job['logs'].splitlines() if line.startswith('PORT_STAGE=')]
+                stage = 'complete' if job['status'] == 'completed' else stages[-1] if stages else 'reference_forward'
+                labels = {'reference_forward':'Reference excitation from port 1', 'device_forward':'Device excitation from port 1',
+                          'reference_reverse':'Reference excitation from port 2', 'device_reverse':'Device excitation from port 2',
+                          'normalization':'Auditing complex modal amplitudes', 'complete':'Four directional runs recorded'}
+                if stage in labels:
+                    job['port_progress'] = {'stage':stage,'message':labels[stage]}
             return job
 
     def submit(self, config):
@@ -87,11 +95,12 @@ class JobManager:
                 job["status"] = "running"
                 self._save(job)
             try:
-                code = process.wait(timeout=300)
+                limit = 1200 if config.get('study_type') == 'waveguide-ports-3d' else 300
+                code = process.wait(timeout=limit)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid, signal.SIGKILL)
                 process.wait()
-                raise RuntimeError("Simulation exceeded the five-minute demo limit and was stopped.")
+                raise RuntimeError(f"Simulation exceeded its {limit//60}-minute local worker limit and was stopped.")
             with self.lock:
                 if job["status"] == "cancelled":
                     return

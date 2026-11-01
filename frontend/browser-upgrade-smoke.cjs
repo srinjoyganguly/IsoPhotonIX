@@ -49,7 +49,7 @@ const {chromium}=require('playwright');
     await page.screenshot({path:path.join(output,'time-evolution.png'),fullPage:true});
     await page.getByRole('tab',{name:'Ez field',exact:true}).click();const final=await json(`/api/jobs/${id}/field`);const finalPeak=Math.max(...final.field.flat().map(Math.abs));await comparePixel(final.field,finalPeak);
     await page.locator('.run-passport>summary').click();await page.locator('.passport-file code').first().waitFor();const passport=await json(`/api/jobs/${id}/passport`);
-    const expectedHashes=passport.files.filter(file=>['config.json','arrays.npz'].includes(file.name)).map(file=>file.sha256);assert.deepEqual(await page.locator('.passport-file code').allTextContents(),expectedHashes);
+    const expectedHashes=passport.files.filter(file=>['config.json','arrays.npz','implementation.zip'].includes(file.name)).map(file=>file.sha256);assert.deepEqual(await page.locator('.passport-file code').allTextContents(),expectedHashes);
     assert.equal(await page.locator('.reproduce-command').textContent(),passport.reproduce_command);assert.equal(passport.config.core_width_um,0.65);
     await page.locator('.run-passport').screenshot({path:path.join(output,'run-passport.png')});
     await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.setViewportSize({width:1280,height:900});

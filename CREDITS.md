@@ -96,6 +96,18 @@ development toolchain; these and their dependency metadata remain in the lockfil
 
 ## Documentation used
 
+Standalone Python/notebook exports optionally use Matplotlib 3.10.8
+(Matplotlib's PSF-based license), nbformat 5.10.4, nbclient 0.10.2, ipykernel
+7.1.0 and JupyterLab 4.4.10 (BSD-family licenses). These packages supply plotting,
+notebook serialization/execution and the notebook interface. The bundles
+contain first-party source and dependency instructions, not third-party
+libraries or binaries; installed packages retain their own license notices.
+
+The finite-height modal adapter's local source-mode gauge handling and bounded
+x-interface Yee permittivity placement are first-party implementation work,
+tested against real runs. They do not modify installed Meep/FDTDX code or claim
+to implement a general commercial conformal-meshing system.
+
 The adapters use the current documented APIs, checked against installed
 versions. They do not copy an upstream tutorial file wholesale.
 
@@ -105,6 +117,10 @@ versions. They do not copy an upstream tutorial file wholesale.
 - [FDTDX 2D tutorial](https://fdtdx.readthedocs.io/en/latest/notebooks/advanced/01_2d_simulation.html)
   and installed 0.6.2 source. Online latest documentation describes 0.6.3;
   runtime compatibility was checked rather than assumed.
+- [Meep mode decomposition](https://meep.readthedocs.io/en/latest/Mode_Decomposition/),
+  [interface averaging](https://meep.readthedocs.io/en/latest/Subpixel_Smoothing/),
+  and installed FDTDX 0.6.2 mode-source/phasor implementations informed the
+  finite-height modal adapters and their sampling conventions.
 - [JAX platform configuration](https://docs.jax.dev/en/latest/config_options.html#platforms)
   and [installation](https://docs.jax.dev/en/latest/installation.html).
 - [Official Codex documentation](https://developers.openai.com/codex)

@@ -1,0 +1,1622 @@
+{
+  "schema_version": 2,
+  "checked_at": "2026-11-01T21:46:09.192372+00:00",
+  "scope": "Actual standalone Python and Jupyter executions outside the repository, compared with original GUI numerical files; geometry-only designs retain exact JSON.",
+  "all_final_cases_passed": true,
+  "all_attempts_passed": false,
+  "modal_gui_routes_completed": [
+    "fdtdx-cpu-modal3d-captured",
+    "fdtdx-gpu-modal3d-captured",
+    "meep-cpu-modal3d-captured"
+  ],
+  "reproduction_tolerances": {
+    "rtol": 1e-06,
+    "atol": 1e-12,
+    "exact": [
+      "coordinate/time axes",
+      "integer/boolean masks",
+      "shape",
+      "dtype",
+      "NPZ key sets"
+    ],
+    "excluded": [
+      "wall-clock timings",
+      "compression bytes",
+      "text labels"
+    ],
+    "no_adjustments": [
+      "no fitted scaling",
+      "no phase alignment",
+      "no clipped numerical values"
+    ],
+    "meep_unused_incoming_residual_supplement": "Only device-run port1_alpha[:,0], port2_alpha[:,1] and corresponding raw-alpha. Preserve original pointwise result. Maximum and L2 residual use the same rtol/atol against original complete-array peak and L2 norm; outgoing amplitudes, raw E/H, fields and S remain strict."
+  },
+  "controller_and_notebook_versions": {
+    "numpy": "2.4.6",
+    "pydantic": "2.13.4",
+    "nbclient": "0.10.2",
+    "nbformat": "5.10.4",
+    "ipykernel": "7.1.0",
+    "matplotlib": "3.10.8",
+    "jupyterlab": "4.4.10"
+  },
+  "software_checks": {
+    "export_unit_tests": 9,
+    "api_contract_tests": 4,
+    "fresh_controller_notebook_install": "Passed on existing WSL machine using official PyPI packages",
+    "pip_check": "No broken requirements"
+  },
+  "debugging_evidence": {
+    "observed": "Initial Jupyter execution inherited matplotlib_inline backend into the separate Meep environment, causing import failure.",
+    "fix": "Only the numerical subprocess uses MPLBACKEND=Agg; notebook plotting remains inline.",
+    "verification": "Regression test plus successful complete notebook replays; failed prototype is not counted as a passed run."
+  },
+  "cases": [
+    {
+      "name": "meep-2d",
+      "gui_run_id": "ec08234c78dc429dabe32f927f15bd11",
+      "config": {
+        "schema_version": 1,
+        "wavelength_um": 1.55,
+        "core_width_um": 0.65,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "length_um": 10.0,
+        "height_um": 5.0,
+        "resolution": 20,
+        "duration_fs": 80.0,
+        "pml_um": 1.0,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "8e2b03bbfcb88cc35bd37bde43e6a8beca85296372b3293bfb6259e9f23c1c5f"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 3.2833763739999995,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 6.877752415000032
+    },
+    {
+      "name": "meep-3d",
+      "gui_run_id": "b03bfcd165de418cbaccc6fb33ac5e2e",
+      "config": {
+        "schema_version": 2,
+        "study_type": "waveguide-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Runnable finite-height waveguide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "substrate",
+              "name": "Substrate",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.125
+              },
+              "size": {
+                "x": 8.0,
+                "y": 4.0,
+                "z": 1.75
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 1.44
+            },
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.875,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "wavelength_um": 1.55,
+        "cladding_index": 1.0,
+        "resolution": 16,
+        "duration_fs": 60.0,
+        "pml_um": 0.75,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "da90b3c699bc833f04a104b7d4820a8a6ff2380b6c206684f1b0a09a53ce884e"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 14.267277500000091,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 28.159043581998958
+    },
+    {
+      "name": "meep-ports2d",
+      "gui_run_id": "d929eb5b9176444899caad4b64ef8463",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.3125,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "ad7df71e6d9035a6b8fe5ed5a9827a214e0dbe7bb4825e422755459fe731a260",
+        "reference/spectra.npz": "cb3eabf0703dc75fead49b332dcb037aab7a1647b8b383a9a6846c941ae01d00"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 20,
+        "nonexact_arrays": [],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 20,
+        "nonexact_arrays": [],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 6.9744774749997305,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 13.308950262999133
+    },
+    {
+      "name": "fdtdx-cpu-2d",
+      "gui_run_id": "b4639205ffe54252b38ea6ceab9c756f",
+      "config": {
+        "schema_version": 1,
+        "wavelength_um": 1.55,
+        "core_width_um": 0.6,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "length_um": 10.0,
+        "height_um": 5.0,
+        "resolution": 20,
+        "duration_fs": 80.0,
+        "pml_um": 1.0,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "1cf86455d8e48f05e044141cf721b734dbbba48b171c64515dbdd0e791b9b146"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 14.626366603999486,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 29.000979362999715
+    },
+    {
+      "name": "fdtdx-gpu-2d",
+      "gui_run_id": "b722e5f659854a7786afee1d6d3ca619",
+      "config": {
+        "schema_version": 1,
+        "wavelength_um": 1.55,
+        "core_width_um": 0.8,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "length_um": 10.0,
+        "height_um": 5.0,
+        "resolution": 20,
+        "duration_fs": 80.0,
+        "pml_um": 1.0,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "3f81aadc42362b683d48830f79480b4da715730ff552941acc1e43e3861e0da5"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 6,
+        "nonexact_arrays": [],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 18.54612174199974,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 35.77136633900045
+    },
+    {
+      "name": "fdtdx-cpu-3d",
+      "gui_run_id": "3bc15312c02c46fa82ad2edb214a8453",
+      "config": {
+        "schema_version": 2,
+        "study_type": "waveguide-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Runnable finite-height waveguide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "substrate",
+              "name": "Substrate",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.125
+              },
+              "size": {
+                "x": 8.0,
+                "y": 4.0,
+                "z": 1.75
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 1.44
+            },
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.875,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "wavelength_um": 1.55,
+        "cladding_index": 1.0,
+        "resolution": 16,
+        "duration_fs": 60.0,
+        "pml_um": 0.75,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "a7e0777a3cfc9e44f2f0f7a2357b92fc73c64b3d344be01f0cfd51830ba9748f"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 11,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 11,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 24.439556363999145,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 48.14414066899917
+    },
+    {
+      "name": "fdtdx-gpu-3d",
+      "gui_run_id": "d68a7199944a4f3b90b611f9765bcee1",
+      "config": {
+        "schema_version": 2,
+        "study_type": "waveguide-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Runnable finite-height waveguide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "substrate",
+              "name": "Substrate",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -1.125
+              },
+              "size": {
+                "x": 8.0,
+                "y": 4.0,
+                "z": 1.75
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 1.44
+            },
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.875,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "wavelength_um": 1.55,
+        "cladding_index": 1.0,
+        "resolution": 16,
+        "duration_fs": 60.0,
+        "pml_um": 0.75,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "e0b155109c135c51e185864d40862d691e63eb29b90a5645fa789cf6881875fa"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 11,
+        "nonexact_arrays": [],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 11,
+        "nonexact_arrays": [],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 19.461682694000046,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 40.18740400800016
+    },
+    {
+      "name": "fdtdx-cpu-ports2d",
+      "gui_run_id": "8df9fcdaefd449ccae713aea5785807d",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.3125,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "40a899eb3beba5b3c7cf128fba0d6c2af99c8f3744fe0244431631877b45eb4a",
+        "reference/device-monitors.npz": "973221693cc6ff99769e57d96c1fed6d7eee75d6a0d5b0a25eef38816d7cd109",
+        "reference/reference-monitors.npz": "e224c1a631f05ff3ac199fd33ab712bd7997af6f1097ffa35349cd60bf157caa",
+        "reference/spectra.npz": "84f56445f28ede025eb4f4620c81d6685c1414f342b20ff019853034c47bf02f"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 34,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 34,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 306.82782277499973,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 459.43387843799974
+    },
+    {
+      "name": "fdtdx-gpu-ports2d",
+      "gui_run_id": "7896525ca7214084a7ba1118d4786030",
+      "config": {
+        "schema_version": 3,
+        "study_type": "waveguide-ports-2d",
+        "device_kind": "gap",
+        "gap_um": 0.3125,
+        "core_width_um": 0.625,
+        "core_index": 2.0,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 21,
+        "length_um": 12.0,
+        "height_um": 6.0,
+        "pml_um": 1.0,
+        "resolution": 32,
+        "max_after_sources_fs": 1000.0,
+        "decay_by": 1e-08,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "passed": true,
+      "export_origin": "Generated from original completed GUI output through the same study_bundle exporter",
+      "snapshot_origin": "export_time_compatibility",
+      "implementation_snapshot": null,
+      "source_snapshot_digest": "7ee6db81c71b4e5383992a17ca291179ec693e5bdfd7cbd4ea0f18d519f7fd06",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "40adf9fab9adcbea16bb2abb820492aa89bc741106ae032f235ad13a389a45d5",
+        "reference/device-monitors.npz": "35dbac81dd6df6f6ce27654ee714e3d03b0320b3553b83c2b8e8a891ac6ebf3a",
+        "reference/reference-monitors.npz": "7cde249a18f70f8cd220dc7dcd4b752b87cf788ac4f87ca427bdbe7264247bfa",
+        "reference/spectra.npz": "0889a69dbce119b3d6b8cab42ffcac46f0ae17e46fbdcf762d7276392fdbcc61"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": false,
+        "array_count": 34,
+        "nonexact_arrays": [
+          {
+            "file": "device-monitors.npz",
+            "array": "energy",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.0517578125e-05,
+            "relative_l2": 5.730828436744345e-08
+          },
+          {
+            "file": "reference-monitors.npz",
+            "array": "energy",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.0517578125e-05,
+            "relative_l2": 5.5164206647681456e-08
+          }
+        ],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 34,
+        "nonexact_arrays": [],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "snapshot_origin": "export_time_compatibility"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 37.91494931899979,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 153.8283869650004
+    },
+    {
+      "name": "geometry",
+      "passed": true,
+      "script_exact_geometry": true,
+      "notebook_exact_geometry": true,
+      "objects": [
+        "box",
+        "rotated ring",
+        "hidden cylinder"
+      ],
+      "execution": "Python script and real Jupyter notebook outside checkout; exact JSON round-trip and original 3D rendering"
+    },
+    {
+      "name": "fdtdx-cpu-modal3d-captured",
+      "gui_run_id": "5706dbc37cab4c4d9f350d66760c57df",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.375,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "/api/jobs/{id}/reproduce",
+      "snapshot_origin": "run_time",
+      "implementation_snapshot": {
+        "format": "photonics-workbench-numerical-source-v1",
+        "filename": "implementation.zip",
+        "sha256": "201e41442aff3145e5d545597fa75a473649ab76bce40b0b31b06333afa5418c",
+        "file_count": 18,
+        "capture": "before_solver_import",
+        "verification": "Numerical source bytes must still match at successful completion."
+      },
+      "source_snapshot_digest": "c29b75f0ca65322cba5ada55576158a7d5811433386fc26ad351e5ee86128bcd",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "352bf44671f7e2cbaab44886238d9a41f45bf235e907a79bafb37c74a18a4f96",
+        "reference/device-forward-monitors.npz": "7cd7df722d52286d38ec15b607f1973e923c4f1eafff60ec5d37218c1b0a5bcc",
+        "reference/device-reverse-monitors.npz": "0f594add92b3413a3b1c0d2c8166f8209c13ef0e5e12c1c1d3ea24dc364a83e4",
+        "reference/port-modes.npz": "9545cd470e8195c97481f169aaafc8d42796a82079ed7f6e68a2d3171a82eda8",
+        "reference/reference-forward-monitors.npz": "aaaed1f89130ea062a3532a74374d8d304f1ab6180ca4512333502fb83514bb9",
+        "reference/reference-reverse-monitors.npz": "2caf8471697479fc93a939a564fe837fc90028c15fbb6554911e4aa03ea0f94a",
+        "reference/sparameters.npz": "30ec034a53c5b63329566e6163d355be8f82944e76c4ffce436be0a6f23b2205"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 65,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "actual_target_preserved": true,
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "physical_results_passed": true,
+        "all_arrays_pointwise_passed": true,
+        "diagnostic_variations": [],
+        "recorded_implementation_preserved": true,
+        "snapshot_origin": "run_time"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 65,
+        "nonexact_arrays": [],
+        "actual_device": "cpu:0",
+        "reference_actual_device": "cpu:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "actual_target_preserved": true,
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "physical_results_passed": true,
+        "all_arrays_pointwise_passed": true,
+        "diagnostic_variations": [],
+        "recorded_implementation_preserved": true,
+        "snapshot_origin": "run_time"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 208.12526883699866,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 420.75560651699925,
+      "downloaded_bundle_sha256": "b37722ffc5c7026e004c0a8e91c4ffa01f828b042c864d69f950e16159f0c633"
+    },
+    {
+      "name": "fdtdx-gpu-modal3d-captured",
+      "gui_run_id": "8c27feb4ea9b4f2e8901dbea075eedff",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.375,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "passed": true,
+      "export_origin": "/api/jobs/{id}/reproduce",
+      "snapshot_origin": "run_time",
+      "implementation_snapshot": {
+        "format": "photonics-workbench-numerical-source-v1",
+        "filename": "implementation.zip",
+        "sha256": "201e41442aff3145e5d545597fa75a473649ab76bce40b0b31b06333afa5418c",
+        "file_count": 18,
+        "capture": "before_solver_import",
+        "verification": "Numerical source bytes must still match at successful completion."
+      },
+      "source_snapshot_digest": "c29b75f0ca65322cba5ada55576158a7d5811433386fc26ad351e5ee86128bcd",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "6195c19befdef5435b3b5209eb88fd68d8ecef235f0b6309ca40526cb503b380",
+        "reference/device-forward-monitors.npz": "2b010c81cb3149f417598b1a17e6f84f4df6b655102dd12f030b4002e4908ff9",
+        "reference/device-reverse-monitors.npz": "28542c1f4e761de9fe4b3d6a399270de03607c478e9943919d4d62a0c035117b",
+        "reference/port-modes.npz": "062ab98efde3d50b8e052204ba11ae8fd5e6682670363f24ffe2d242e2e7def8",
+        "reference/reference-forward-monitors.npz": "083173a3fa76c2d425d08ff369184634217ffc6731094ed14605de16de7bd2fe",
+        "reference/reference-reverse-monitors.npz": "f835dd1875fba6d900eb668e297d524ab7d85c5f554f9010f55daea7d586d3f3",
+        "reference/sparameters.npz": "59460dbfe00a60431b509ac63f91965277469bf2bb961e1877ab73c40a906bbf"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "array_count": 65,
+        "nonexact_arrays": [],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "actual_target_preserved": true,
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "physical_results_passed": true,
+        "all_arrays_pointwise_passed": true,
+        "diagnostic_variations": [],
+        "recorded_implementation_preserved": true,
+        "snapshot_origin": "run_time"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": false,
+        "array_count": 65,
+        "nonexact_arrays": [
+          {
+            "file": "device-forward-monitors.npz",
+            "array": "energy",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 5.0342068704401364e-08
+          },
+          {
+            "file": "device-reverse-monitors.npz",
+            "array": "energy",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 4.223052426067456e-08
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "energy",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 6.39142144655247e-08
+          },
+          {
+            "file": "reference-reverse-monitors.npz",
+            "array": "energy",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 5.5731748121310297e-08
+          }
+        ],
+        "actual_device": "cuda:0",
+        "reference_actual_device": "cuda:0",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "actual_target_preserved": true,
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "physical_results_passed": true,
+        "all_arrays_pointwise_passed": true,
+        "diagnostic_variations": [],
+        "recorded_implementation_preserved": true,
+        "snapshot_origin": "run_time"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 80.1914304439997,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 118.19685319100063,
+      "downloaded_bundle_sha256": "9f8a8f4585e3e69806542fdf94101ae93db33b9aeb9898ed9b2f5fb91082bfe4"
+    },
+    {
+      "name": "meep-cpu-modal3d-captured",
+      "gui_run_id": "23e7365615d54fe7905376c290c9e180",
+      "config": {
+        "schema_version": 4,
+        "study_type": "waveguide-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 1,
+          "units": "um",
+          "name": "Finite-height modal two-port guide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 8.0,
+            "y": 4.0,
+            "z": 4.0
+          },
+          "objects": [
+            {
+              "id": "core",
+              "name": "Finite-height core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "size": {
+                "x": 8.0,
+                "y": 0.75,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0.0,
+              "refractive_index": 2.0
+            }
+          ]
+        },
+        "device_kind": "gap",
+        "gap_um": 0.375,
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "meep",
+        "device": "cpu"
+      },
+      "passed": true,
+      "export_origin": "/api/jobs/{id}/reproduce",
+      "snapshot_origin": "run_time",
+      "implementation_snapshot": {
+        "format": "photonics-workbench-numerical-source-v1",
+        "filename": "implementation.zip",
+        "sha256": "201e41442aff3145e5d545597fa75a473649ab76bce40b0b31b06333afa5418c",
+        "file_count": 18,
+        "capture": "before_solver_import",
+        "verification": "Numerical source bytes must still match at successful completion."
+      },
+      "source_snapshot_digest": "c29b75f0ca65322cba5ada55576158a7d5811433386fc26ad351e5ee86128bcd",
+      "reference_array_hashes": {
+        "reference/arrays.npz": "1eeb81af8f9544910abfeeb3f958116b9b1e7c9dd828fff507db8b4c11095738",
+        "reference/device-forward-monitors.npz": "0abb1e935fde319464f1e8855c3aa06b9ebed318a134f2e7a7a0f1d33368423f",
+        "reference/device-reverse-monitors.npz": "04f584750a20121bc27aeca1fb0fe2556a8d16cad1443ea8a5ad780d936116f9",
+        "reference/reference-forward-monitors.npz": "5549bebb74ce68348763e75588c54400079bcb1273147743041599624a233f43",
+        "reference/reference-reverse-monitors.npz": "e2eb7baf15ee610d67f82bc90ab45a371d24a331963fa4641aff136269e08c7f",
+        "reference/sparameters.npz": "8849134d8a32cb14ba481bc92aa5903449101348e6a26170ef2ac87932728f98"
+      },
+      "script": {
+        "passed": true,
+        "all_arrays_exact": false,
+        "array_count": 111,
+        "nonexact_arrays": [
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_alpha",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.327790864672865e-10,
+            "relative_l2": 3.7023369712007394e-11
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_gauge",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 2.0428692324763018e-10,
+            "relative_l2": 6.460119736505132e-11
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_ey_anchor",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.6224413415130161e-09,
+            "relative_l2": 1.5855411423219523e-10
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_electric_l2_fraction",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.14369329179609e-10,
+            "relative_l2": 1.5323468129200089e-10
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_edge_intensity_relative_peak",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 9.195227045066812e-13,
+            "relative_l2": 8.272474434970081e-10
+          },
+          {
+            "file": "sparameters.npz",
+            "array": "s",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.5482506542536888e-10,
+            "relative_l2": 6.546633006974154e-11
+          },
+          {
+            "file": "sparameters.npz",
+            "array": "incident_amplitude",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.327790864672865e-10,
+            "relative_l2": 2.618086255684067e-11
+          },
+          {
+            "file": "sparameters.npz",
+            "array": "reference_through",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 2.0420757563611056e-10,
+            "relative_l2": 6.457366730368268e-11
+          }
+        ],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "actual_target_preserved": true,
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          }
+        },
+        "physical_results_passed": true,
+        "all_arrays_pointwise_passed": true,
+        "diagnostic_variations": [],
+        "recorded_implementation_preserved": true,
+        "snapshot_origin": "run_time"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": false,
+        "array_count": 111,
+        "nonexact_arrays": [
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_alpha",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.327790864672865e-10,
+            "relative_l2": 3.7023369712007394e-11
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_gauge",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 2.0428692324763018e-10,
+            "relative_l2": 6.460119736505132e-11
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_ey_anchor",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.6224413415130161e-09,
+            "relative_l2": 1.5855411423219523e-10
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_electric_l2_fraction",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.14369329179609e-10,
+            "relative_l2": 1.5323468129200089e-10
+          },
+          {
+            "file": "reference-forward-monitors.npz",
+            "array": "port1_edge_intensity_relative_peak",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 9.195227045066812e-13,
+            "relative_l2": 8.272474434970081e-10
+          },
+          {
+            "file": "sparameters.npz",
+            "array": "s",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 1.5482506542536888e-10,
+            "relative_l2": 6.546633006974154e-11
+          },
+          {
+            "file": "sparameters.npz",
+            "array": "incident_amplitude",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 3.327790864672865e-10,
+            "relative_l2": 2.618086255684067e-11
+          },
+          {
+            "file": "sparameters.npz",
+            "array": "reference_through",
+            "pointwise_passed": true,
+            "reproduction_criteria_passed": true,
+            "max_abs_error": 2.0420757563611056e-10,
+            "relative_l2": 6.457366730368268e-11
+          }
+        ],
+        "actual_device": "CPU",
+        "reference_actual_device": "CPU",
+        "versions_match": true,
+        "requested_target_preserved": true,
+        "actual_target_preserved": true,
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          }
+        },
+        "physical_results_passed": true,
+        "all_arrays_pointwise_passed": true,
+        "diagnostic_variations": [],
+        "recorded_implementation_preserved": true,
+        "snapshot_origin": "run_time"
+      },
+      "notebook_execution": {
+        "passed": true,
+        "wall_seconds": 72.26748327200039,
+        "notebook_cells": 9,
+        "errors": []
+      },
+      "wall_seconds_under_concurrent_load": 227.4779217159994,
+      "downloaded_bundle_sha256": "73d069a2aa3d895e7c9baa60e749df629406c4cfb700f7cdf5b0055d02954813"
+    }
+  ],
+  "retained_initial_pointwise_failure": {
+    "explanation": "Original strict Meep replay failed only two unused incoming modal diagnostic arrays, with maximum coefficient difference 3.4003e-8. Actual fields, raw E/H, published S and outgoing amplitudes were exactly equal. This original failed attempt is retained; later reports separately expose physical results, strict pointwise results, and the declared diagnostic bound.",
+    "cases": [
+      {
+        "name": "meep-cpu-modal3d",
+        "gui_run_id": "5ae23c7a729c4d098a42bc7df850908f",
+        "config": {
+          "schema_version": 4,
+          "study_type": "waveguide-ports-3d",
+          "geometry": {
+            "schema": "photonics-workbench-geometry",
+            "schema_version": 1,
+            "units": "um",
+            "name": "Finite-height modal two-port guide",
+            "mode": "draft-3d",
+            "domain": {
+              "x": 8.0,
+              "y": 4.0,
+              "z": 4.0
+            },
+            "objects": [
+              {
+                "id": "core",
+                "name": "Finite-height core",
+                "visible": true,
+                "kind": "box",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "size": {
+                  "x": 8.0,
+                  "y": 0.75,
+                  "z": 0.5
+                },
+                "radius": 1.0,
+                "inner_radius": 0.6,
+                "rotation_deg": 0.0,
+                "refractive_index": 2.0
+              }
+            ]
+          },
+          "device_kind": "gap",
+          "gap_um": 0.375,
+          "cladding_index": 1.0,
+          "wavelength_min_um": 1.45,
+          "wavelength_max_um": 1.65,
+          "frequency_points": 5,
+          "resolution": 16,
+          "pml_um": 0.75,
+          "max_after_sources_fs": 600.0,
+          "decay_by": 1e-07,
+          "spectrum_tolerance": 0.0001,
+          "solver": "meep",
+          "device": "cpu"
+        },
+        "passed": false,
+        "export_origin": "/api/jobs/{id}/reproduce",
+        "snapshot_origin": "export_time_compatibility",
+        "implementation_snapshot": null,
+        "source_snapshot_digest": "a02bf15224b2ed8b344b4d1a0706cb785b153d55c8acefddb5ceccc85e89e0d2",
+        "reference_array_hashes": {
+          "reference/arrays.npz": "1eeb81af8f9544910abfeeb3f958116b9b1e7c9dd828fff507db8b4c11095738",
+          "reference/device-forward-monitors.npz": "0abb1e935fde319464f1e8855c3aa06b9ebed318a134f2e7a7a0f1d33368423f",
+          "reference/device-reverse-monitors.npz": "b10d426cb712c96c248027172056aba9876b17d3d5ef285db649069700f668d0",
+          "reference/reference-forward-monitors.npz": "d08e0dc6525471c9cb20145707e2962b9ff9ba5603f566c8f5566659ff52e9ce",
+          "reference/reference-reverse-monitors.npz": "e2eb7baf15ee610d67f82bc90ab45a371d24a331963fa4641aff136269e08c7f",
+          "reference/sparameters.npz": "0438ad99150a55e9a2bb488c80e8bdf5599035f4d2db538c2c64c639d56ece1f"
+        },
+        "script": {
+          "passed": false,
+          "all_arrays_exact": false,
+          "array_count": 111,
+          "nonexact_arrays": [
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_alpha",
+              "pointwise_passed": false,
+              "reproduction_criteria_passed": false,
+              "max_abs_error": 3.400311244917958e-08,
+              "relative_l2": 1.0480840309436806e-08
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_raw_alpha",
+              "pointwise_passed": false,
+              "reproduction_criteria_passed": false,
+              "max_abs_error": 3.400259322761454e-08,
+              "relative_l2": 1.0480680268842979e-08
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_gauge",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 2.8198983922824907e-11,
+              "relative_l2": 8.91730168985965e-12
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_ey_anchor",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.4651912036698856e-10,
+              "relative_l2": 1.431867442744956e-11
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_group_velocity",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 2.8649315142459386e-09,
+              "relative_l2": 2.075951382108557e-09
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_electric_l2_fraction",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 2.8715488320507632e-11,
+              "relative_l2": 1.5564968338382732e-11
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_edge_intensity_relative_peak",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 2.4984632689562664e-13,
+              "relative_l2": 2.2477393334778672e-10
+            },
+            {
+              "file": "device-reverse-monitors.npz",
+              "array": "port2_signed_mode_neff",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 2.0927481969579276e-11,
+              "relative_l2": 4.461848550712562e-12
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_alpha",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.293635270250651e-11,
+              "relative_l2": 1.4392351812556153e-12
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_raw_alpha",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.2593267692698349e-11,
+              "relative_l2": 1.4010652250374567e-12
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_gauge",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 2.9305218062808534e-11,
+              "relative_l2": 9.26712364063823e-12
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_ey_anchor",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.029834893493067e-10,
+              "relative_l2": 1.0064127137167173e-11
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_group_velocity",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 4.1897041391791845e-12,
+              "relative_l2": 3.0358918003434667e-12
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_electric_l2_fraction",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.5389098849405425e-11,
+              "relative_l2": 8.110303858026023e-12
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_edge_intensity_relative_peak",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.5162593132011376e-13,
+              "relative_l2": 1.364100781601096e-10
+            },
+            {
+              "file": "reference-forward-monitors.npz",
+              "array": "port1_signed_mode_neff",
+              "pointwise_passed": true,
+              "reproduction_criteria_passed": true,
+              "max_abs_error": 1.0658141036401503e-14,
+              "relative_l2": 2.272371382555893e-15
+            }
+          ],
+          "actual_device": "CPU",
+          "reference_actual_device": "CPU",
+          "versions_match": true,
+          "requested_target_preserved": true,
+          "actual_target_preserved": true,
+          "recorded_physical_times": {
+            "field_time_fs": {
+              "reference": 283.63371969817865,
+              "reproduced": 283.63371969817865,
+              "exact": true
+            },
+            "actual_duration_fs": {
+              "reference": 283.63371969817865,
+              "reproduced": 283.63371969817865,
+              "exact": true
+            }
+          },
+          "snapshot_origin": "export_time_compatibility"
+        },
+        "notebook": null,
+        "notebook_execution": null,
+        "wall_seconds_under_concurrent_load": 96.37973135999891,
+        "downloaded_bundle_sha256": "f3e969c184a6f7341ec12af1bc2d5bc855b09a2ea550ae396219a5b222b840f4",
+        "error": "Replay failed; private local diagnostic log retained. No successful reproduction claimed."
+      }
+    ],
+    "separate_diagnostic_reanalysis": {
+      "scope": "Post-hoc comparison of the original saved real arrays using the separately documented incoming-residual criterion. No solver rerun; original strict failed report unchanged.",
+      "original_strict_report_sha256": "7e3fe4dd2a0aab9a967ffc8be4ee26269921c3a79c9ef5b2f48381a41babc847",
+      "comparison_controller_sha256": "e3fdd930a43d3cc62262310f5d5037fbe09f93e3ba0ac3f7e9115c380cddc2a9",
+      "passed": true,
+      "physical_results_passed": true,
+      "all_arrays_pointwise_passed": false,
+      "diagnostic_variations": [
+        {
+          "file": "device-reverse-monitors.npz",
+          "array": "port2_alpha",
+          "column": 1,
+          "role": "Unused incoming residual; excluded from published S, outgoing amplitudes, incident reference and reference-through.",
+          "pointwise_passed": false,
+          "amplitude_scaled_passed": true,
+          "max_abs_error": 3.400311244917958e-08,
+          "residual_l2": 3.400311244917958e-08,
+          "reference_array_peak": 2.1632868633677087,
+          "reference_array_l2": 3.2443116625451913,
+          "max_abs_bound": 2.1632878633677082e-06,
+          "l2_bound": 3.2443138986131687e-06,
+          "rule": "Same declared rtol/atol; maximum residual and L2 error bounded using the original full two-direction coefficient array. No fit or phase alignment."
+        },
+        {
+          "file": "device-reverse-monitors.npz",
+          "array": "port2_raw_alpha",
+          "column": 1,
+          "role": "Unused incoming residual; excluded from published S, outgoing amplitudes, incident reference and reference-through.",
+          "pointwise_passed": false,
+          "amplitude_scaled_passed": true,
+          "max_abs_error": 3.400259322761454e-08,
+          "residual_l2": 3.400259322761454e-08,
+          "reference_array_peak": 2.1632868633677083,
+          "reference_array_l2": 3.2443116625451904,
+          "max_abs_bound": 2.163287863367708e-06,
+          "l2_bound": 3.244313898613168e-06,
+          "rule": "Same declared rtol/atol; maximum residual and L2 error bounded using the original full two-direction coefficient array. No fit or phase alignment."
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Numerical solvers reused qualified existing environments; no universal native/CUDA installation guarantee.",
+    "Replay agreement checks the same implementation, not external physical accuracy or convergence.",
+    "Legacy results use export-time compatibility snapshots; no original numerical source capture is claimed for those runs.",
+    "FDTDX GPU float32 energy reductions can differ in last bits; differences remain visible and are checked against predeclared tolerances.",
+    "Timings include concurrent solver qualification and are not performance benchmarks.",
+    "Arbitrary draft geometry exports code and rendering, not an unsupported EM simulation."
+  ]
+}

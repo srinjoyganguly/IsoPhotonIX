@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { request } from './api';
 import { RunPassport } from './RunPassport';
+import { CodeExport } from './CodeExport';
 import { PortSpectrum } from './PortSpectrum';
 import './portStudy.css';
 
@@ -339,7 +340,7 @@ export function PortStudyWorkspace({ active = true }: { active?: boolean }) {
   return <PortStudyPanel templates={templates} templateId={config?.device_kind} parameters={parameters} targets={targets} selectedTargetId={targetId} targetLoading={targetLoading} validation={panelValidation} validationPending={validationPending} recommendation={capabilities.recommendation?.reason} stages={jobStages(job)} busy={busy}
     immutableRunNote={currentDiffers ? 'The editor differs from this saved run. Its spectrum and exports retain the original configuration; changing these inputs does not alter the recorded result.' : undefined}
     error={error} onTemplateChange={kind => { if (kind === 'straight' || kind === 'gap') void loadExample(kind); }} onParameterChange={(key, value) => setConfig(previous => previous ? { ...previous, [key]: value === '' ? NaN : value } : previous)} onTargetChange={setTargetId} onRun={() => void run()} onCancel={job && ['queued', 'running'].includes(job.status) ? () => void cancel() : undefined} onRefreshTargets={() => void checkTargets(true)} onOpenExample={() => void loadExample('straight')} onDismissError={() => setError('')} results={output}
-    configurationActions={<div className="port-config-actions"><button onClick={() => currentConfig && saveConfig(currentConfig)} disabled={!currentValidation?.valid || !selectedTarget?.available || busy}>Export study JSON</button><button onClick={() => fileInput.current?.click()} disabled={busy}>Import study JSON</button><input ref={fileInput} type="file" aria-label="Import port configuration" accept=".json,application/json" hidden onChange={event => void importConfig(event.target.files?.[0])}/></div>}
+    configurationActions={<div className="port-config-actions"><button onClick={() => currentConfig && saveConfig(currentConfig)} disabled={!currentValidation?.valid || !selectedTarget?.available || busy}>Export study JSON</button><button onClick={() => fileInput.current?.click()} disabled={busy}>Import study JSON</button><CodeExport value={currentConfig} disabled={!currentValidation?.valid||!selectedTarget?.available||busy}/><input ref={fileInput} type="file" aria-label="Import port configuration" accept=".json,application/json" hidden onChange={event => void importConfig(event.target.files?.[0])}/></div>}
     outputNavigation={<div className="port-recent"><label>Saved measurement<select aria-label="Recent port run" value={job?.id || ''} disabled={busy} onChange={event => void openRun(event.target.value)}><option value="">Choose a recorded port study…</option>{[...(job && !recent.some(item => item.id === job.id) ? [job] : []), ...recent].map(item => <option key={item.id} value={item.id}>{item.id.slice(0, 8)} · {item.config.device_kind} · {solverName(item.config.solver)} {item.config.device.toUpperCase()} · {item.status}</option>)}</select></label><button onClick={() => void loadRecent()}>Refresh runs</button>{recentError && <p role="alert">Saved runs unavailable: {recentError}</p>}</div>}/>
   ;
 }

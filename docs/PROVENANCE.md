@@ -60,3 +60,19 @@ computes the local CPU source mode, with FDTD evolving on the explicitly chosen
 CPU or NVIDIA device. No hosted solver, commercial project assets, private
 handoff, screenshots or raw chats were used. Existing environments and all
 earlier 2D/3D work were preserved.
+
+The finite-height modal-port and reproducible-code increment began at 20:48
+Europe/London on 1 November 2026 from clean commit `7ba7fa7`, on branch
+`feat/3d-modal-ports-reproduction`. It introduces four-directional reference/device
+studies, complex modal projection, phase-aware inspection, and standalone Python
+and Jupyter bundles. New source and tests are first-party post-event work; the
+existing qualified solver environments were reused. Exported bundles identify
+their actual source bytes with SHA256 and do not include runtime paths, raw
+worker logs, secrets or private planning files.
+
+Real symmetric-device checks exposed and corrected a signed-mode projection
+issue in the Meep adapter and staggered interface placement in the FDTDX
+adapter. Both corrections live in exported application source; installed solver
+packages were not patched. Failed prototype evidence is distinguished from the
+corrected qualification runs. Original screenshots show this application and
+its actual numerical results.

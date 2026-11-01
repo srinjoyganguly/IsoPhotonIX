@@ -91,3 +91,30 @@ those routes, one job at a time. `PHOTONICS_PORT_RUN_ID` reopens an existing
 completed port run without launching another solve. The masked-bin and failed
 HTTP cases are labelled UI fixtures, separate from the actual solver evidence.
 The test does not invent numerical measurements.
+
+## Finite-height modal S-parameters
+
+```bash
+NODE_PATH="$PWD/.local/browser-qa/node_modules" \
+PHOTONICS_BROWSER_CHANNEL=chrome \
+PHOTONICS_TEST_TARGET=meep:cpu \
+PHOTONICS_ARTIFACT_DIR=.local/browser-modal \
+node frontend/browser-modal-smoke.cjs
+```
+
+Use `fdtdx:cpu` or `fdtdx:gpu` for the other explicit targets. This starts a real
+four-stage solve, with a twenty-minute worker cap. `PHOTONICS_MODAL_RUN_ID`
+reopens a completed modal job without another solve. The test checks every
+plotted power/amplitude/phase/real/imaginary sample against the saved API,
+actual 3D slice pixels, immutable settings, CSV/JSON/results/code downloads,
+passport hashes and the 390 px layout. No numerical responses are fabricated.
+Python/notebook replay checks run the downloaded bundles separately, outside
+the repository, and compare their original arrays.
+
+`frontend/browser-code-export.cjs` checks code downloads from the general
+geometry editor and all four executable study editors without starting a
+solver. It checks explicit target selection, unsupported geometry rejection,
+edited modal settings, interactive gap-preview orbit/zoom, and visible export
+failure/retry. Use the same `NODE_PATH`, browser and artifact-directory settings.
+The downloaded ZIP configuration must match the recorded POST payload exactly;
+standalone numerical replay is a separate check.

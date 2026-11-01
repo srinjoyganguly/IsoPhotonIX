@@ -78,6 +78,25 @@ class PassportAndFrameTests(unittest.TestCase):
         check = next(item for item in passport["checks"] if item["label"] == "Consistent saved configuration")
         self.assertFalse(check["passed"])
 
+    def test_execution_source_archive_is_exported_and_tampering_rejected(self):
+        from backend.source_snapshot import capture_implementation
+        record = capture_implementation(self.output)
+        self.metadata['implementation_snapshot'] = record
+        (self.output/'metadata.json').write_text(json.dumps(self.metadata))
+        response = self.client.get('/api/jobs/fixture/export')
+        self.assertEqual(response.status_code, 200)
+        with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+            self.assertEqual(archive.read('implementation.zip'), (self.output/'implementation.zip').read_bytes())
+            manifest = json.loads(archive.read('manifest.json'))
+            self.assertEqual(manifest['files']['implementation.zip']['sha256'], record['sha256'])
+        (self.output/'implementation.zip').write_bytes(b'changed source archive')
+        for endpoint in ('passport', 'export', 'reproduce'):
+            self.assertEqual(self.client.get(f'/api/jobs/fixture/{endpoint}').status_code, 409)
+        self.metadata['implementation_snapshot'] = []
+        (self.output/'metadata.json').write_text(json.dumps(self.metadata))
+        for endpoint in ('passport', 'export', 'reproduce'):
+            self.assertEqual(self.client.get(f'/api/jobs/fixture/{endpoint}').status_code, 409)
+
     def test_frame_values_and_times_are_exact_and_final_snapshot_is_unchanged(self):
         summary = self.client.get("/api/jobs/fixture/frames").json()
         self.assertEqual(summary, {"count": 3, "times_fs": [0., 5., 10.], "global_peak_abs": 10.})

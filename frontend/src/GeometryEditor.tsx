@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { GeometryViewport } from './GeometryViewport';
 import { Study3DPanel } from './Study3DPanel';
 import { PublicBenchmarks } from './PublicBenchmarks';
+import { ModalPorts } from './ModalPorts';
+import { CodeExport } from './CodeExport';
 import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument,
   serializeGeometryDocument, validateGeometryDocument, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
 import './geometryEditor.css';
@@ -56,6 +58,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   const [saveState, setSaveState] = useState('Browser draft · export JSON to keep a portable copy');
   const [autosavePaused, setAutosavePaused] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [studyMode,setStudyMode] = useState<'fields'|'modal'>('fields');
   const [addKind, setAddKind] = useState<GeometryObject['kind']>('box');
   const importRef = useRef<HTMLInputElement>(null);
   const changed = useRef(false);
@@ -177,7 +180,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
     <div className="geo-intro"><div><span className="eyebrow">YOUR LOCAL PHOTONICS STUDIO</span><h1>Design in three dimensions.</h1><p>Build, inspect, and keep your geometry. Every dimension is in micrometres.</p></div><span className="geo-stage">GEOMETRY WORKSPACE · PREVIEW</span></div>
     <div className="geo-document-bar">
       <label className="geo-document-name"><span>DESIGN</span><TextInput label="Design name" value={scene.name} onCommit={name => apply({ ...scene, name })}/></label>
-      <div className="geo-file-actions"><button className="button secondary compact" onClick={undo} disabled={!history.past.length}>Undo</button><button className="button secondary compact" onClick={redo} disabled={!history.future.length}>Redo</button><span className="geo-divider"/><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
+      <div className="geo-file-actions"><button className="button secondary compact" onClick={undo} disabled={!history.past.length}>Undo</button><button className="button secondary compact" onClick={redo} disabled={!history.future.length}>Redo</button><span className="geo-divider"/><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><CodeExport value={scene} kind="geometry"/><button className="button secondary compact" onClick={()=>{setStudyMode('modal');setTimeout(()=>document.getElementById('geometry-studies')?.scrollIntoView({behavior:'smooth'}),0);}}>3D ports &amp; S-matrix</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
     </div>
     {autosavePaused && <div className="geo-message error-banner" role="alert"><span>Another tab changed the saved draft. Your current design is still open. Export it or choose Save this draft to resume saving.</span><button className="button secondary compact" onClick={resumeSaving}>Save this draft</button></div>}
     <div className="geo-workspace">
@@ -214,7 +217,9 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
         <button className="geo-slab-preview" onClick={() => replace(createSlabPreview(slabConfig), 'Current validated 2D slab opened as an illustrative extrusion.')}>Preview current 2D slab</button>
       </aside>
     </div>
-    <Study3DPanel geometry={scene} onOpenGeometry={document => replace(document, 'Runnable 3D waveguide opened. Choose a CPU or GPU target in the study below.')} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/>
+    <nav className="geo-study-tabs" id="geometry-studies" aria-label="3D study type"><button aria-pressed={studyMode==='fields'} onClick={()=>setStudyMode('fields')}>3D field study</button><button aria-pressed={studyMode==='modal'} onClick={()=>setStudyMode('modal')}>3D modal S-parameters</button></nav>
+    <div hidden={studyMode!=='fields'}><Study3DPanel geometry={scene} onOpenGeometry={document => replace(document, 'Runnable 3D waveguide opened. Choose a CPU or GPU target in the study below.')} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/></div>
+    <div hidden={studyMode!=='modal'}><ModalPorts geometry={scene} active={studyMode==='modal'} onOpenGeometry={document=>replace(document,'Finite-height modal study opened. Inspect the geometry and explicitly select its execution target.')}/></div>
     <PublicBenchmarks/>
     {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}
     {message && <div className="geo-message geo-notice" role="status"><span>{message}</span><button aria-label="Dismiss geometry notice" onClick={() => setMessage('')}>×</button></div>}

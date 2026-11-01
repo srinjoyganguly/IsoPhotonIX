@@ -14,14 +14,16 @@ from .jobs import JobManager
 from .model import WaveguideConfig
 from .passport import FramesUnavailable, build_passport, passport_html, stored_frames
 from .runtime import ROOT
-from .study3d import Waveguide3DConfig, example3d
+from .study3d import Waveguide3DConfig, example3d, parse_study
 from .volume import stored_volume, volume_info, volume_slice
 from .compare3d import compare_runs
 from .benchmarks import benchmark_report
 from .ports import PortStudy, example_ports
 from .ports_capabilities import port_capabilities
 from .spectra import stored_spectrum, spectrum_response, spectrum_csv
-from pydantic import BaseModel, ConfigDict, Field
+from .ports3d import ModalPortStudy, example_ports3d
+from .sparameters import stored_sparameters, sparameters_response, sparameters_csv
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 manager = JobManager()
 
@@ -32,7 +34,7 @@ async def lifespan(app):
     manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.5.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.6.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -49,7 +51,64 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.5.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.6.0-preview.1", "compute": "local"}
+
+
+@app.get('/api/ports3d/example')
+def modal_example(kind: str = 'gap'):
+    if kind not in ('straight','gap'):
+        raise HTTPException(422,'Choose straight or gap.')
+    return example_ports3d(kind).model_dump()
+
+
+@app.get('/api/ports3d/capabilities')
+def modal_targets(refresh: bool = False):
+    capability = port_capabilities(refresh)
+    recommendation = capability.get('recommendation')
+    if recommendation:
+        recommendation = {**recommendation,'reason':'Meep provides an independent CPU modal-decomposition baseline. FDTDX can evolve the finite-height fields on CPU or NVIDIA GPU; its local mode preparation uses CPU. Review four-stage cost and measured numerical sensitivities.'}
+    return {**capability,'recommendation':recommendation,'note':'Local mode preparation and device execution are probed. Each 3D S-matrix requires four measured directional solves; readiness alone is not numerical qualification.'}
+
+
+@app.post('/api/ports3d/validate')
+def validate_modal(config: ModalPortStudy):
+    return {'valid':True,'config':config.model_dump(),'estimate':config.estimate(),'layout':config.layout(),'warnings':config.warnings()}
+
+
+@app.post('/api/ports3d/jobs',status_code=202)
+def submit_modal(config: ModalPortStudy):
+    target = next((t for t in port_capabilities()['targets'] if t['solver']==config.solver and t['device']==config.device),None)
+    if not target or not target['available']:
+        raise HTTPException(409,(target or {}).get('reason','Requested modal-study target is unavailable.'))
+    try:
+        return manager.submit(config.model_dump())
+    except RuntimeError as exc:
+        raise HTTPException(409,str(exc)) from exc
+
+
+def code_archive(data,filename):
+    return Response(data,media_type='application/zip',headers={'Content-Disposition':f'attachment; filename="{filename}"'})
+
+
+@app.post('/api/reproduce/study')
+def reproduce_study(config: dict):
+    from .reproduce import study_bundle
+    try:
+        study = parse_study(config)
+        return code_archive(study_bundle(study.model_dump()),'photonics-study-python-notebook.zip')
+    except ValidationError as exc:
+        raise HTTPException(422,json.loads(exc.json())) from exc
+    except (ValueError,TypeError,KeyError) as exc:
+        raise HTTPException(422,str(exc)) from exc
+
+
+@app.post('/api/reproduce/geometry')
+def reproduce_geometry(geometry: dict):
+    from .reproduce import geometry_bundle
+    try:
+        return code_archive(geometry_bundle(geometry),'photonics-design-python-notebook.zip')
+    except (ValueError,TypeError,KeyError) as exc:
+        raise HTTPException(422,str(exc)) from exc
 
 
 @app.get('/api/ports/example')
@@ -182,7 +241,7 @@ def field(job_id: str):
     job = get_job(job_id)
     if job["status"] != "completed":
         raise HTTPException(409, "Results are available only after successful completion.")
-    if job["config"].get("study_type") == "waveguide-3d":
+    if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d"):
         raise HTTPException(409, "This is a 3D run. Use the volume and slice endpoints with explicit component and plane.")
     with np.load(manager.directory/job_id/"arrays.npz") as arrays:
         data = {key: arrays[key].tolist() for key in ("field", "epsilon", "x_um", "y_um")}
@@ -198,10 +257,10 @@ def completed_output(job_id):
 
 def load_volume(job_id):
     job, output = completed_output(job_id)
-    if job["config"].get("study_type") != "waveguide-3d":
+    if job["config"].get("study_type") not in ("waveguide-3d","waveguide-ports-3d"):
         raise HTTPException(409, "This run is a 2D slab, not a recorded 3D volume.")
     try:
-        return job, stored_volume(output)
+        return job, stored_volume(output,allow_zero=job['config'].get('study_type')=='waveguide-ports-3d')
     except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
         raise HTTPException(409, "Saved 3D fields are missing or invalid.") from exc
 
@@ -259,6 +318,47 @@ def spectrum_download(job_id: str):
     return Response(spectrum_csv(data),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="ports-{job_id[:8]}-spectrum.csv"'})
 
 
+def modal_output(job_id):
+    job,output = completed_output(job_id)
+    if job['config'].get('study_type') != 'waveguide-ports-3d':
+        raise HTTPException(409,'This run did not measure a finite-height modal S-matrix.')
+    try:
+        metadata = json.loads((output/'metadata.json').read_text())
+        config = json.loads((output/'config.json').read_text())
+        if metadata.get('config') != config or config != job['config']:
+            raise ValueError('Saved configuration mismatch.')
+        return stored_sparameters(output,metadata),metadata
+    except (OSError,ValueError,KeyError,TypeError,zipfile.BadZipFile) as exc:
+        raise HTTPException(409,'Saved complex S-parameters are missing, inconsistent or invalid.') from exc
+
+
+@app.get('/api/jobs/{job_id}/sparameters')
+def modal_spectrum(job_id: str):
+    values,metadata = modal_output(job_id)
+    return sparameters_response(values,metadata)
+
+
+@app.get('/api/jobs/{job_id}/sparameters.csv')
+def modal_csv(job_id: str):
+    values,_ = modal_output(job_id)
+    return Response(sparameters_csv(values),media_type='text/csv',headers={'Content-Disposition':f'attachment; filename="sparameters-{job_id[:8]}.csv"'})
+
+
+@app.get('/api/jobs/{job_id}/reproduce')
+def reproduce_run(job_id: str):
+    from .reproduce import study_bundle
+    job,output = completed_output(job_id)
+    try:
+        build_passport(job,output)
+        config = json.loads((output/'config.json').read_text())
+        if config != job['config'] or json.loads((output/'metadata.json').read_text()).get('config') != config:
+            raise ValueError('Saved configuration differs from the immutable run.')
+        data = study_bundle(config,output)
+        return code_archive(data,f'photonics-{job_id[:8]}-python-notebook.zip')
+    except (OSError,ValueError,KeyError,TypeError,zipfile.BadZipFile) as exc:
+        raise HTTPException(409,'Saved result files are inconsistent; reproducible code export is unavailable.') from exc
+
+
 def frame_data(job_id):
     _, output = completed_output(job_id)
     try:
@@ -301,12 +401,14 @@ def export(job_id: str):
         archive.writestr("passport.html", passport_html(record))
         archive.writestr("manifest.json", json.dumps(manifest, indent=2))
         array_note = ("3D arrays: fields[component,z,y,x] in Ex/Ey/Ez order, field=Ey[z,y,x], epsilon[z,y,x], and x_um/y_um/z_um display coordinates. Final-time snapshots only. Read metadata field_sampling before interpreting interpolated Yee-grid samples. FDTDX also retains raw_fields and their coordinate convention. "
-                      if job["config"].get("study_type") == "waveguide-3d" else
+                      if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d") else
                       "2D arrays: field and epsilon[y,x], x_um/y_um, plus any frames/times_fs. Field is signed Ez. The final snapshot may be later than the last recorded frame. ")
         measurement_note = 'Fields use arbitrary source amplitude, not normalized transmission. '
         if job['config'].get('study_type') == 'waveguide-ports-2d':
             array_note = 'arrays.npz contains actual final-time Ez and material samples after the pulse. spectra.npz preserves signed measured powers and unclipped ratios. spectrum.csv retains raw values and valid_bin flags; ignore unqualified bins as measurements. Supplemental monitor files retain solver-specific provenance. '
             measurement_note = 'R=-reflected_flux/incident_flux and T=transmitted_flux/incident_flux use the measured straight reference. 1-R-T is uncollected flux, not absorption. These are finite-aperture powers, not complex modal S-parameters. '
+        if job['config'].get('study_type') == 'waveguide-ports-3d':
+            measurement_note = 'sparameters.npz preserves complex unit-power modal amplitudes and the 2x2 S-matrix in [frequency,outgoing,incoming] order. Read physical reference planes, phase gauge and four-stage settlement in metadata.json. CSV retains raw complex values and validity flags. Residual fundamental-channel power includes radiation/other modes/error, not absorption. arrays.npz is the actual forward-device late-time volume, not a monochromatic field synthesized from S. '
         archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json identifies all original result files with SHA256. " + array_note + measurement_note + "Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (new output directory).\n")
     stream.seek(0)
     return StreamingResponse(stream, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="waveguide-{job_id[:8]}.zip"'})

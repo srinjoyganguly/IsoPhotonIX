@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-01T21:46:52.331171+00:00",
+  "release": "0.6.0-preview.1",
+  "scope": "Finite-height fundamental modal two-port studies and standalone Python/Jupyter exports. Local Linux/WSL verification; not a commercial accuracy certificate.",
+  "software": {
+    "application_tests": {
+      "run": 116,
+      "passed": 112,
+      "skipped": 4,
+      "failed": 0,
+      "skip_reason": "Native Meep checks run separately from the API interpreter."
+    },
+    "geometry_model_tests": {
+      "passed": 12,
+      "failed": 0
+    },
+    "typescript": "passed",
+    "production_build": "passed; Vite reports its existing large-chunk advisory",
+    "export_integrity_tests_after_privacy_cleanup": {
+      "passed": 9
+    }
+  },
+  "physical_qualification": {
+    "meep_cases": 7,
+    "fdtdx_cases": 10,
+    "includes": "Straight/gap/substrate, mesh and boundary/plane sensitivities, temporal settling and deliberately invalid cases; unavailable GPU fails explicitly.",
+    "records": [
+      "meep-ports3d.json",
+      "fdtdx-ports3d.json"
+    ]
+  },
+  "gui_routes": {
+    "meep-cpu": {
+      "run_id": "23e7365615d54fe7905376c290c9e180",
+      "actual_device": "CPU",
+      "valid_bins": 5,
+      "record": "ports3d-browser-meep-cpu.json"
+    },
+    "fdtdx-cpu": {
+      "run_id": "5706dbc37cab4c4d9f350d66760c57df",
+      "actual_device": "cpu:0",
+      "valid_bins": 5,
+      "record": "ports3d-browser-fdtdx-cpu.json"
+    },
+    "fdtdx-gpu": {
+      "run_id": "8c27feb4ea9b4f2e8901dbea075eedff",
+      "actual_device": "cuda:0",
+      "valid_bins": 5,
+      "record": "ports3d-browser-fdtdx-gpu.json"
+    }
+  },
+  "source_snapshot_sha256": "201e41442aff3145e5d545597fa75a473649ab76bce40b0b31b06333afa5418c",
+  "exports": {
+    "executable_cases": 12,
+    "real_python_and_notebook_replays": 24,
+    "geometry_script_and_notebook_replays": 2,
+    "all_final_cases_passed": true,
+    "original_strict_pointwise_failure_retained": true,
+    "record": "reproducible-exports.json"
+  },
+  "browser_regressions": [
+    "code-export-browser.json",
+    "ports3d-source-passport-browser.json",
+    "v06-2d-regression.json",
+    "v06-ports-regression.json"
+  ],
+  "limits": [
+    "Default modal meshes are not spatially converged.",
+    "One Ey-like fundamental channel per port, rectangular straight/gap guide with optional continuous substrate.",
+    "General geometry drafts export design code; unsupported shapes do not become executable studies.",
+    "Pinned existing solver environments and a fresh notebook/controller environment were tested on this WSL machine; arbitrary-platform native solver installation is not certified.",
+    "Reproduction and CPU/GPU consistency are distinct from agreement with external commercial solvers."
+  ]
+}
