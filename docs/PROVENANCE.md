@@ -76,3 +76,18 @@ adapter. Both corrections live in exported application source; installed solver
 packages were not patched. Failed prototype evidence is distinguished from the
 corrected qualification runs. Original screenshots show this application and
 its actual numerical results.
+
+The component-library increment began at approximately 21:56 Europe/London
+on 1 November 2026 from clean commit `9900bf8`, on branch
+`feat/photonic-component-library`. Twenty parametric geometry families,
+polygon contours/holes, material records, layout composition and standalone
+design generators are new first-party code. Official Tidy3D and Ansys examples
+informed the component coverage and staged roadmap; their code, project files,
+material databases and assets were not copied. Existing application work and
+qualified solver environments were preserved.
+
+This increment qualifies design editing and reproduction. It does not turn
+new library geometries, sampled materials or passive cavities into supported
+electromagnetic or laser models. Original browser screenshots and recorded
+Python/notebook executions document the actual design features; separate
+real Meep/FDTDX checks exercise the previously supported finite-height guide.

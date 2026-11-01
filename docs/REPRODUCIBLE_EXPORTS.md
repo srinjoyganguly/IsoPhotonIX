@@ -3,8 +3,10 @@
 The workbench exports both editable Python and a Jupyter notebook for every
 supported executable study, including the original 2D fields, finite-height 3D
 fields, 2D port measurements and the finite-height 3D modal study. A separate
-geometry export preserves all editor boxes, cylinders and rings, including
-rotations, material indices and hidden-state flags.
+geometry export preserves editor boxes, cylinders, rings and polygon prisms
+with holes, including rotations, material records, component recipes, geometric
+ports and hidden-state flags. The v0.7 component library is design-only;
+exporting its geometry does not qualify it for electromagnetic simulation.
 
 The export is a ZIP containing source code, configuration and setup files. It
 does not call the workbench API when executed. A completed-run export also
@@ -26,9 +28,24 @@ actual GUI result. Solver binaries and environments remain separate.
 
 Geometry-only exports replace the study entry points with `geometry.py`,
 `geometry.ipynb` and `geometry.json`. Their scripts reproduce the exact validated
-design and draw a 3D view. Curves are tessellated for display, while their radii
-and dimensions remain exact in JSON. A geometry draft is not converted into an
-unsupported electromagnetic simulation.
+design and draw a 3D view. Primitive ring/cylinder radii remain exact in JSON;
+polygon contours, including sampled curved paths, are preserved as explicit
+coordinates. Their geometry approximation is documented in the
+[component guide](COMPONENT_LIBRARY.md). A geometry draft is not converted
+into an unsupported electromagnetic simulation.
+
+Design bundles contain `geometry_contract.py` and a `design_source/` snapshot
+of the component generators, layout operations and geometry validator. Source
+hashes are checked before use. This preserves the generating implementation
+without requiring the application checkout, server or solvers. Material
+records retain their reference wavelength, source notes and tabulated n/k data;
+interpolation stays within the table range and does not create a causal
+time-domain material fit.
+
+The notebook includes an optional `regenerate_component` example for editing
+one instance through the bundled generator while preserving its neighbors.
+Parameter edits create a new design. Leaving that example commented preserves
+the exact exported geometry; neither path produces electromagnetic results.
 
 Local runtime paths, environment contents, credentials, worker logs, private
 handoffs and conversations are excluded. Notebooks are exported without stale
@@ -50,6 +67,20 @@ those exact code bytes produced the historical run. Unrun editor exports use
 source-file hashes identify actual bytes, including uncommitted development.
 
 ## Run outside the repository
+
+For a **design-only** export, install its notebook requirements, then run:
+
+```bash
+python -m pip install -r requirements-notebook.txt
+python geometry.py
+# Or: jupyter lab geometry.ipynb
+```
+
+The script writes `geometry.recreated.json` and `geometry.png`. No solver
+installation is needed for this design/rendering route. Use a fresh extraction
+folder when retaining several versions of the design.
+
+For an **executable study** export:
 
 Extract the bundle anywhere on the local machine. Use Python 3.11 and install
 the controller requirements. Install Meep in its official Conda environment or
@@ -133,6 +164,26 @@ apply to reproduced output.
 
 ## Verification
 
+The v0.7 design-export checks execute Python and notebooks outside the checkout
+for all 20 component defaults and a custom-material design: **42 replays** with
+exact geometry preservation. Software tests also exercise bundled parametric
+regeneration and reject changed source hashes. The library's geometric ports
+and material records survive these checks; they are not numerical field or
+S-parameter measurements.
+
+The [all-family execution record](verification/component-library-exports.json)
+includes archive and geometry hashes. The actual browser-downloaded design
+bundle also passed both executions with exact JSON reproduction
+([GUI export record](verification/component-library-gui-export.json)). Re-run
+the all-family checks with the notebook dependencies installed:
+
+```bash
+python scripts/verify_design_exports.py --output /tmp/photonics-design-replay
+```
+
+Choose a new output directory outside the checkout. Each script and notebook
+runs in an isolated directory; no solver is invoked by this design check.
+
 Structural tests validate complete source snapshots, safe configuration
 embedding, exact geometry preservation, source/reference hashes, target
 rejection, changed-configuration handling, complex numerical comparison and
@@ -147,7 +198,7 @@ isolated QA environment uses nbformat 5.10.4, NBClient 0.10.2, ipykernel 7.1.0,
 Matplotlib 3.10.8 and JupyterLab 4.4.10. Numerical replay evidence is recorded in
 [`verification/reproducible-exports.json`](verification/reproducible-exports.json).
 
-The verified matrix contains all three execution routes—Meep CPU, FDTDX CPU
+The v0.6 numerical replay matrix contains all three execution routes—Meep CPU, FDTDX CPU
 and FDTDX NVIDIA GPU—for each of the four executable schemas. Every one of
 these 12 saved studies was replayed as both standalone Python and an executed
 notebook outside the checkout: 24 real solver replays. A mixed geometry draft

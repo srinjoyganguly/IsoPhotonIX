@@ -1,0 +1,3497 @@
+{
+  "scope": "Synthetic geometry/material software contract fixtures, not electromagnetic evidence.",
+  "valid": [
+    {
+      "name": "legacy unchanged",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 1,
+        "units": "um",
+        "name": "Legacy primitive",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "box",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2
+          }
+        ]
+      },
+      "expected": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 1,
+        "units": "um",
+        "name": "Legacy primitive",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "box",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2
+          }
+        ]
+      }
+    },
+    {
+      "name": "concave polygon and true hole",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      },
+      "expected": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "negative rotation normalization",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": -90,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      },
+      "expected": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 270,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "normalize contour winding",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": 1
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": -2,
+                "y": -1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1,
+                  "y": -0.5
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      },
+      "expected": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "component membership and world layout port",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material",
+            "component_id": "instance-1"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": [
+          {
+            "id": "instance-1",
+            "family": "fixture",
+            "generator_version": 1,
+            "parameters": {
+              "width": 1
+            },
+            "object_ids": [
+              "core"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "core-material",
+            "ports": [
+              {
+                "name": "in",
+                "x": -2,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180,
+                "width_um": 0.5
+              }
+            ]
+          }
+        ]
+      },
+      "expected": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material",
+            "component_id": "instance-1"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": [
+          {
+            "id": "instance-1",
+            "family": "fixture",
+            "generator_version": 1,
+            "parameters": {
+              "width": 1
+            },
+            "object_ids": [
+              "core"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "core-material",
+            "ports": [
+              {
+                "name": "in",
+                "x": -2,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180,
+                "width_um": 0.5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "linked positive low index",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 0.005,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Low index",
+            "model": "constant-nk",
+            "reference_wavelength_um": 1.55,
+            "n": 0.005,
+            "k": 0,
+            "source": "Illustrative",
+            "notes": ""
+          }
+        ],
+        "components": []
+      },
+      "expected": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 0.005,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Low index",
+            "model": "constant-nk",
+            "reference_wavelength_um": 1.55,
+            "n": 0.005,
+            "k": 0,
+            "source": "Illustrative",
+            "notes": ""
+          }
+        ],
+        "components": []
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "name": "v1 rejects polygon extension",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 1,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "bow-tie self intersection",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -1,
+                "y": -1
+              },
+              {
+                "x": 1,
+                "y": 1
+              },
+              {
+                "x": -1,
+                "y": 1
+              },
+              {
+                "x": 1,
+                "y": -1
+              }
+            ],
+            "holes": [],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "degenerate closing edge",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": -1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "collinear zero area",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 0
+              },
+              {
+                "x": 2,
+                "y": 0
+              }
+            ],
+            "holes": [],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "hole crossing concavity",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1,
+                  "y": 0.1
+                },
+                {
+                  "x": -1,
+                  "y": 0.8
+                },
+                {
+                  "x": 1,
+                  "y": 0.8
+                },
+                {
+                  "x": 1,
+                  "y": 0.1
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "hole touching outline",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -1
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "overlapping holes",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ],
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "out of domain rotated actual polygon",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 5,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "missing material reference",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "missing"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "incorrect preview index",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "duplicate material id",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          },
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "unsorted material wavelengths",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              2,
+              1
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "material outside reference range",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 3,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "unsupported negative gain",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              -0.1
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "boolean wavelength",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": true,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "orphan component link",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material",
+            "component_id": "missing"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": []
+      }
+    },
+    {
+      "name": "component member missing",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material",
+            "component_id": "instance-1"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": [
+          {
+            "id": "instance-1",
+            "family": "fixture",
+            "generator_version": 1,
+            "parameters": {
+              "width": 1
+            },
+            "object_ids": [
+              "missing"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "core-material",
+            "ports": [
+              {
+                "name": "in",
+                "x": -2,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180,
+                "width_um": 0.5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "component world port outside domain",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material",
+            "component_id": "instance-1"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": [
+          {
+            "id": "instance-1",
+            "family": "fixture",
+            "generator_version": 1,
+            "parameters": {
+              "width": 1
+            },
+            "object_ids": [
+              "core"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "core-material",
+            "ports": [
+              {
+                "name": "in",
+                "x": 20,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180,
+                "width_um": 0.5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "boolean component parameter",
+      "input": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Concave polygon with a hole",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 12,
+          "y": 8,
+          "z": 4
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Core",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 2,
+              "y": 1,
+              "z": 0.5
+            },
+            "radius": 1,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.5,
+            "vertices": [
+              {
+                "x": -2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": -1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 1
+              },
+              {
+                "x": 0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 0.25
+              },
+              {
+                "x": -0.5,
+                "y": 1
+              },
+              {
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "holes": [
+              [
+                {
+                  "x": -1.5,
+                  "y": -0.5
+                },
+                {
+                  "x": -1.5,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": 0
+                },
+                {
+                  "x": -1,
+                  "y": -0.5
+                }
+              ]
+            ],
+            "material_id": "core-material",
+            "component_id": "instance-1"
+          }
+        ],
+        "materials": [
+          {
+            "id": "core-material",
+            "name": "Custom passive table",
+            "model": "tabulated-nk",
+            "reference_wavelength_um": 1.5,
+            "wavelength_um": [
+              1,
+              2
+            ],
+            "n": [
+              2,
+              3
+            ],
+            "k": [
+              0,
+              0.2
+            ],
+            "source": "User-supplied illustrative data; not a material accuracy reference.",
+            "notes": "Software contract fixture only."
+          }
+        ],
+        "components": [
+          {
+            "id": "instance-1",
+            "family": "fixture",
+            "generator_version": 1,
+            "parameters": {
+              "width": true
+            },
+            "object_ids": [
+              "core"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "core-material",
+            "ports": [
+              {
+                "name": "in",
+                "x": -2,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180,
+                "width_um": 0.5
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

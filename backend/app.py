@@ -34,7 +34,7 @@ async def lifespan(app):
     manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.6.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.7.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -51,7 +51,66 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.6.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.7.0-preview.1", "compute": "local"}
+
+
+class LibraryPlacement(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True, allow_inf_nan=False)
+    x: float = Field(0, ge=-500, le=500)
+    y: float = Field(0, ge=-500, le=500)
+    z: float = Field(0, ge=-500, le=500)
+    rotation_deg: float = Field(0, ge=-360, le=360)
+
+
+class LibraryBuild(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True, allow_inf_nan=False)
+    component_id: str = Field(min_length=1, max_length=80)
+    parameters: dict[str, float] = Field(default_factory=dict, max_length=64)
+    placement: LibraryPlacement = Field(default_factory=LibraryPlacement)
+    material_id: str = Field('generic-core', min_length=1, max_length=80)
+    material: dict | None = None
+
+
+class LibraryPlace(LibraryBuild):
+    geometry: dict
+    replace_component_id: str | None = Field(None, min_length=1, max_length=80)
+    fit_domain: bool = False
+
+
+@app.get('/api/library')
+def library_catalog():
+    from .component_library import get_catalog
+    return get_catalog()
+
+
+@app.post('/api/library/build')
+def library_build(request: LibraryBuild):
+    from .library_layout import build_design
+    try:
+        return build_design(**request.model_dump())
+    except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+@app.post('/api/library/place')
+def library_place(request: LibraryPlace):
+    from .library_layout import place_component
+    if request.material is not None:
+        raise HTTPException(422, 'Save a custom material in the design before placing a component with it.')
+    try:
+        return place_component(**request.model_dump(exclude={'material'}, exclude_unset=True))
+    except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+@app.post('/api/geometry/validate')
+def validate_draft(geometry: dict):
+    from .geometry_draft import validate_geometry
+    try:
+        return {'valid': True, 'geometry': validate_geometry(geometry),
+                'simulation_support': 'Design validation does not qualify an electromagnetic study; use an explicitly supported study.'}
+    except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @app.get('/api/ports3d/example')

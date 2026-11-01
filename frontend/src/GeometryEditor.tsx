@@ -4,7 +4,10 @@ import { Study3DPanel } from './Study3DPanel';
 import { PublicBenchmarks } from './PublicBenchmarks';
 import { ModalPorts } from './ModalPorts';
 import { CodeExport } from './CodeExport';
-import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument,
+import { ComponentLibrary } from './ComponentLibrary';
+import { MaterialEditor } from './MaterialEditor';
+import { PolygonEditor } from './PolygonEditor';
+import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument, detachComponent, upgradeToV2, GEOMETRY_LIMITS,
   serializeGeometryDocument, validateGeometryDocument, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
 import './geometryEditor.css';
 
@@ -59,6 +62,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   const [autosavePaused, setAutosavePaused] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [studyMode,setStudyMode] = useState<'fields'|'modal'>('fields');
+  const [libraryEdit,setLibraryEdit] = useState(0);
   const [addKind, setAddKind] = useState<GeometryObject['kind']>('box');
   const importRef = useRef<HTMLInputElement>(null);
   const changed = useRef(false);
@@ -130,8 +134,15 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
     } catch (reason) { setError((reason as Error).message); return false; }
   }
   function editObject(patch: Partial<GeometryObject>) {
-    if (!selected) return;
-    apply({ ...scene, mode: 'draft-3d', objects: scene.objects.map(object => object.id === selectedId ? { ...object, ...patch } : object) });
+    if (!selected) return false;
+    const detached = detachComponent(scene, selected.id);
+    return apply({ ...detached, mode: 'draft-3d', objects: detached.objects.map(object => {
+      if(object.id !== selectedId)return object;
+      const next = { ...object, ...patch };
+      // Direct scalar editing explicitly leaves the shared material model.
+      if('refractive_index' in patch)delete next.material_id;
+      return next;
+    }) }, selected.component_id ? 'Component converted to editable solids before the manual change. Undo restores its recipe.' : '');
   }
   function undo() {
     changed.current = true;
@@ -148,16 +159,19 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   }
   function addObject() {
     const object = createGeometryObject(addKind);
-    if (apply({ ...scene, mode: 'draft-3d', objects: [...scene.objects, object] }, `${object.name} added at the origin.`)) setSelectedId(object.id);
+    const target = addKind === 'polygon' ? upgradeToV2(scene) : scene;
+    if (apply({ ...target, mode: 'draft-3d', objects: [...target.objects, object] }, `${object.name} added at the origin.`)) setSelectedId(object.id);
   }
   function duplicate() {
     if (!selected) return;
-    const object = { ...selected, id: createGeometryObject(selected.kind).id, name: `${selected.name.slice(0, 70)} copy` };
-    if (apply({ ...scene, mode: 'draft-3d', objects: [...scene.objects, object] }, 'Duplicated in place. Change its position to separate the objects.')) setSelectedId(object.id);
+    const detached = detachComponent(scene,selected.id);
+    const object = { ...detached.objects.find(item=>item.id===selected.id)!, id: createGeometryObject(selected.kind).id, name: `${selected.name.slice(0, 70)} copy` };
+    if (apply({ ...detached, mode: 'draft-3d', objects: [...detached.objects, object] }, 'Solid duplicated in place. Change its position to separate it; component recipes are detached before manual duplication.')) setSelectedId(object.id);
   }
   function remove() {
     if (!selected) return;
-    if (apply({ ...scene, mode: 'draft-3d', objects: scene.objects.filter(object => object.id !== selectedId) }, 'Object deleted. Undo restores it.')) setSelectedId(null);
+    const detached = detachComponent(scene,selected.id);
+    if (apply({ ...detached, mode: 'draft-3d', objects: detached.objects.filter(object => object.id !== selectedId) }, 'Object deleted. Undo restores it.')) setSelectedId(null);
   }
   function exportDesign() {
     const url = URL.createObjectURL(new Blob([serializeGeometryDocument(scene)], { type: 'application/json' }));
@@ -168,7 +182,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   async function importDesign(file?: File) {
     if (!file) return;
     try {
-      if (file.size > 250_000) throw new Error('Geometry files must be smaller than 250 KB.');
+      if (file.size > GEOMETRY_LIMITS.maxJsonBytes) throw new Error('Geometry files must be smaller than 1 MB.');
       replace({ ...parseGeometryDocument(await file.text()), mode: 'draft-3d' }, 'Geometry imported as a design draft. Undo restores your previous design.');
     } catch (reason) { setError(`Import failed: ${(reason as Error).message}`); }
     if (importRef.current) importRef.current.value = '';
@@ -178,6 +192,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   }
   return <div className="geometry-editor">
     <div className="geo-intro"><div><span className="eyebrow">YOUR LOCAL PHOTONICS STUDIO</span><h1>Design in three dimensions.</h1><p>Build, inspect, and keep your geometry. Every dimension is in micrometres.</p></div><span className="geo-stage">GEOMETRY WORKSPACE · PREVIEW</span></div>
+    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onApply={(document,text,selection,fit)=>{if(!apply(document,text))return false;setSelectedId(selection);if(fit)setResetKey(key=>key+1);return true;}}/>
     <div className="geo-document-bar">
       <label className="geo-document-name"><span>DESIGN</span><TextInput label="Design name" value={scene.name} onCommit={name => apply({ ...scene, name })}/></label>
       <div className="geo-file-actions"><button className="button secondary compact" onClick={undo} disabled={!history.past.length}>Undo</button><button className="button secondary compact" onClick={redo} disabled={!history.future.length}>Redo</button><span className="geo-divider"/><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><CodeExport value={scene} kind="geometry"/><button className="button secondary compact" onClick={()=>{setStudyMode('modal');setTimeout(()=>document.getElementById('geometry-studies')?.scrollIntoView({behavior:'smooth'}),0);}}>3D ports &amp; S-matrix</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
@@ -192,10 +207,10 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
           <button onClick={() => replace(createGeometryTemplate('ring'), 'Ring template opened. Undo restores your previous design.')}><span aria-hidden="true">◎</span><div>Ring & bus<small>An annulus beside a straight guide</small></div></button>
         </div>
         <div className="geo-object-list" role="list" aria-label="Geometry objects">{scene.objects.map(object => <div role="listitem" className={`geo-object-row ${selectedId === object.id ? 'selected' : ''}`} key={object.id}>
-          <button className="geo-object-select" aria-pressed={selectedId === object.id} onClick={() => setSelectedId(object.id)}><span className="geo-shape-symbol">{object.kind === 'box' ? '▱' : object.kind === 'ring' ? '◎' : '◉'}</span><span>{object.name}<small>{object.kind} · n = {object.refractive_index}</small></span></button>
+          <button className="geo-object-select" aria-pressed={selectedId === object.id} onClick={() => setSelectedId(object.id)}><span className="geo-shape-symbol">{object.kind === 'box' ? '▱' : object.kind === 'ring' ? '◎' : object.kind === 'polygon' ? '⬡' : '◉'}</span><span>{object.name}<small>{object.kind} · n = {object.refractive_index}{object.component_id?' · component':''}</small></span></button>
           <button className="geo-visibility" aria-label={`${object.visible ? 'Hide' : 'Show'} ${object.name}`} title={`${object.visible ? 'Hide' : 'Show'} in viewport`} onClick={() => apply({ ...scene, objects: scene.objects.map(item => item.id === object.id ? { ...item, visible: !item.visible } : item) })}>{object.visible ? '◉' : '○'}</button>
         </div>)}{!scene.objects.length && <p className="geo-empty">Your scene is empty. Add a shape below.</p>}</div>
-        <div className="geo-add"><select aria-label="New shape" value={addKind} onChange={e => setAddKind(e.target.value as GeometryObject['kind'])}><option value="box">Box</option><option value="cylinder">Cylinder</option><option value="ring">Ring</option></select><button className="button secondary compact" onClick={addObject} disabled={scene.objects.length >= 100}>+ Add</button></div>
+        <div className="geo-add"><select aria-label="New shape" value={addKind} onChange={e => setAddKind(e.target.value as GeometryObject['kind'])}><option value="box">Box</option><option value="cylinder">Cylinder</option><option value="ring">Ring</option><option value="polygon">Polygon prism</option></select><button className="button secondary compact" onClick={addObject} disabled={scene.objects.length >= (scene.schema_version===2?GEOMETRY_LIMITS.maxV2Objects:GEOMETRY_LIMITS.maxObjects)}>+ Add</button></div>
         <div className="geo-tree-note">Select a shape in the scene or the viewport. Visibility changes only the preview. Material indices enter the solver only after the supported waveguide study validates.</div>
       </aside>
       <div className="geo-stage-column">
@@ -208,10 +223,13 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
         {selected ? <div className="geo-properties" key={selected.id}>
           <label className="parameter"><span>Object name</span><TextInput label="Object name" value={selected.name} onCommit={name => editObject({ name })}/></label>
           <h3>POSITION</h3>{vectorInputs('Position', selected.position, position => editObject({ position }))}
-          <h3>DIMENSIONS</h3>{selected.kind === 'box' ? vectorInputs('Size', selected.size, size => editObject({ size })) : <><NumericInput label="Outer radius" value={selected.radius} onCommit={radius => editObject({ radius })}/>{selected.kind === 'ring' && <NumericInput label="Inner radius" value={selected.inner_radius} onCommit={inner_radius => editObject({ inner_radius })}/>}<NumericInput label="Thickness Z" value={selected.size.z} onCommit={z => editObject({ size: { ...selected.size, z } })}/></>}
+          {selected.component_id&&<div className="geo-component-membership"><strong>Parametric component</strong><button onClick={()=>setLibraryEdit(value=>value+1)}>Edit component parameters</button><p>Use Edit selected component in the library to regenerate its full recipe. Manual solid edits detach that recipe.</p><button onClick={()=>apply(detachComponent(scene,selected.id),'Component recipe detached. Its exact solids remain editable.')}>Convert component to editable solids</button></div>}
+          <h3>DIMENSIONS</h3>{selected.kind === 'box' ? vectorInputs('Size', selected.size, size => editObject({ size })) : selected.kind === 'polygon' ? <NumericInput label="Thickness Z" value={selected.size.z} onCommit={z => editObject({ size: { ...selected.size, z } })}/> : <><NumericInput label="Outer radius" value={selected.radius} onCommit={radius => editObject({ radius })}/>{selected.kind === 'ring' && <NumericInput label="Inner radius" value={selected.inner_radius} onCommit={inner_radius => editObject({ inner_radius })}/>}<NumericInput label="Thickness Z" value={selected.size.z} onCommit={z => editObject({ size: { ...selected.size, z } })}/></>}
           <NumericInput label="Rotation Z" unit="deg" step={5} value={selected.rotation_deg} onCommit={rotation_deg => editObject({ rotation_deg })}/>
           <NumericInput label="Refractive index" unit="n" step={.05} value={selected.refractive_index} onCommit={refractive_index => editObject({ refractive_index })}/>
-          <div className="geo-object-actions"><button onClick={duplicate} disabled={scene.objects.length >= 100}>Duplicate</button><button className="geo-delete" onClick={remove}>Delete object</button></div>
+          <MaterialEditor document={scene} object={selected} onApply={apply}/>
+          {selected.kind==='polygon'&&<PolygonEditor object={selected} onCommit={editObject}/>}
+          <div className="geo-object-actions"><button onClick={duplicate} disabled={scene.objects.length >= (scene.schema_version===2?GEOMETRY_LIMITS.maxV2Objects:GEOMETRY_LIMITS.maxObjects)}>Duplicate</button><button className="geo-delete" onClick={remove}>Delete object</button></div>
         </div> : <p className="geo-empty">Select a shape to edit its dimensions, position, and material.</p>}
         <details className="geo-domain"><summary>Design domain</summary>{vectorInputs('Domain', scene.domain, domain => apply({ ...scene, mode: 'draft-3d', domain }))}<p>Objects must fit inside this centred box. Arbitrary overlaps remain drafts. A validated waveguide uses a centred core and optional substrate meeting its lower surface; its adapters define the material placement.</p></details>
         <button className="geo-slab-preview" onClick={() => replace(createSlabPreview(slabConfig), 'Current validated 2D slab opened as an illustrative extrusion.')}>Preview current 2D slab</button>

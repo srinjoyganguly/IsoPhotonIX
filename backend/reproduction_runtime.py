@@ -32,7 +32,7 @@ def check_bundle():
     """Detect changed solver code or comparison data; edited CONFIG is allowed."""
     manifest = json.loads((BUNDLE / 'bundle-manifest.json').read_text())
     for name, record in manifest['files'].items():
-        if name.startswith(('source/', 'reference/')) or name == 'workbench_runtime.py':
+        if name.startswith(('source/', 'reference/', 'design_source/')) or name in ('workbench_runtime.py', 'geometry_contract.py'):
             if _hash(BUNDLE / name) != record['sha256']:
                 raise ValueError(f'Bundled source or reference file changed: {name}. Keep an original bundle for GUI reproduction.')
     return manifest
@@ -272,57 +272,68 @@ def plot_results(output):
     return fig
 
 
+def _geometry_contract():
+    # Repository and standalone bundles use the same first-party validator.
+    if __package__:
+        from . import geometry_draft
+        return geometry_draft
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('export_geometry_contract', BUNDLE / 'geometry_contract.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def validate_geometry(value):
-    """Match the editor's draft contract without reducing it to runnable solids."""
-    keys = {'schema', 'schema_version', 'units', 'name', 'mode', 'domain', 'objects'}
-    object_keys = {'id', 'name', 'visible', 'kind', 'position', 'size', 'radius', 'inner_radius', 'rotation_deg', 'refractive_index'}
-    def record(item, expected):
-        if not isinstance(item, dict) or set(item) != expected:
-            raise ValueError('Geometry fields do not match the versioned editor format.')
-    def number(item, low, high):
-        if type(item) not in (int, float) or not math.isfinite(item) or not low <= item <= high:
-            raise ValueError('Geometry contains an invalid finite dimension, index or angle.')
-    def name(item):
-        if not isinstance(item, str) or not 1 <= len(item.strip()) <= 80 or any(ord(c) < 32 or ord(c) == 127 for c in item):
-            raise ValueError('Geometry names must contain 1–80 printable characters.')
-    def vector(item, low, high):
-        record(item, set('xyz'))
-        for coordinate in item.values(): number(coordinate, low, high)
-    record(value, keys)
-    if value['schema'] != 'photonics-workbench-geometry' or type(value['schema_version']) is not int or value['schema_version'] != 1 or value['units'] != 'um' or value['mode'] not in ('draft-3d', 'slab-preview'):
-        raise ValueError('Expected a version-1 micrometre geometry draft.')
-    name(value['name']); vector(value['domain'], .1, 1000)
-    if not isinstance(value['objects'], list) or len(value['objects']) > 100:
-        raise ValueError('A geometry draft may contain at most 100 objects.')
-    import re
-    ids = set()
-    for item in value['objects']:
-        record(item, object_keys)
-        if not isinstance(item['id'], str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,79}', item['id']) or item['id'] in ids:
-            raise ValueError('Geometry ids must be unique and use the editor identifier format.')
-        ids.add(item['id']); name(item['name'])
-        if type(item['visible']) is not bool or item['kind'] not in ('box', 'cylinder', 'ring'):
-            raise ValueError('Unsupported geometry shape or visibility value.')
-        vector(item['position'], -500, 500); vector(item['size'], .001, 1000)
-        number(item['radius'], .001, 500); number(item['inner_radius'], 0, 500)
-        number(item['rotation_deg'], -360, 360); number(item['refractive_index'], 1, 5)
-        if item['kind'] == 'ring' and (item['inner_radius'] < .001 or item['radius'] - item['inner_radius'] < .001 - 1e-12):
-            raise ValueError('Ring inner radius and wall thickness must each be at least .001 µm.')
-        half = {'x': item['radius'], 'y': item['radius'], 'z': item['size']['z'] / 2}
-        if item['kind'] == 'box':
-            angle = math.radians(item['rotation_deg']); c, s = abs(math.cos(angle)), abs(math.sin(angle))
-            half.update(x=(item['size']['x'] * c + item['size']['y'] * s) / 2,
-                        y=(item['size']['x'] * s + item['size']['y'] * c) / 2)
-        if any(abs(item['position'][axis]) + half[axis] > value['domain'][axis] / 2 + 1e-9 for axis in 'xyz'):
-            raise ValueError('A geometry object extends outside the domain.')
-    return json.loads(json.dumps(value, allow_nan=False))
+    """Validate the full versioned draft, including materials and component recipes."""
+    return _geometry_contract().validate_geometry(value)
+
+
+def evaluate_material(record, wavelength_um):
+    """Evaluate the saved optical record; tabulated values never extrapolate."""
+    return _geometry_contract().evaluate_material(record, wavelength_um)
+
+
+def _design_module(name):
+    import importlib
+    if __package__:
+        return importlib.import_module('.' + name, __package__)
+    import importlib.util
+    folder = BUNDLE / 'design_source'
+    identity = hashlib.sha256(b''.join((folder / (part + '.py')).read_bytes()
+        for part in ('component_library', 'geometry_draft', 'library_layout'))).hexdigest()[:16]
+    package = 'photonics_design_' + identity
+    if package not in sys.modules:
+        spec = importlib.util.spec_from_file_location(package, folder / '__init__.py', submodule_search_locations=[str(folder)])
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[package] = module
+        spec.loader.exec_module(module)
+    return importlib.import_module('.' + name, package)
+
+
+def regenerate_component(geometry, component_id, *, parameters=None, placement=None, fit_domain=False):
+    """Regenerate one instance using the bundled generator, preserving its neighbors.
+
+    This creates a new design, not a reproduced electromagnetic result. All
+    dimensions/topology/material references pass the same editor validation.
+    """
+    check_bundle()
+    geometry = validate_geometry(geometry)
+    instance = next((item for item in geometry.get('components', []) if item['id'] == component_id), None)
+    if instance is None:
+        raise ValueError('Choose a parametric component instance from this geometry.')
+    settings = {**instance['parameters'], **(parameters or {})}
+    return _design_module('library_layout').place_component(geometry, instance['family'], settings,
+        placement or instance['placement'], instance['material_id'], component_id, fit_domain)['geometry']
 
 
 def plot_geometry(geometry, *, show_hidden=False):
     """Render the exact draft solids; curved surfaces are visualization meshes."""
     import numpy as np
     import matplotlib.pyplot as plt
-    from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+    from mpl_toolkits.mplot3d.art3d import Poly3DCollection, pathpatch_2d_to_3d
+    from matplotlib.path import Path as PlotPath
+    from matplotlib.patches import PathPatch
     geometry = validate_geometry(geometry)
     fig = plt.figure(figsize=(10, 6)); ax = fig.add_subplot(111, projection='3d')
     for index, item in enumerate(geometry['objects']):
@@ -330,7 +341,25 @@ def plot_geometry(geometry, *, show_hidden=False):
         color = plt.cm.viridis(index / max(1, len(geometry['objects']) - 1))
         p = np.array([item['position'][a] for a in 'xyz'])
         h = item['size']['z'] / 2
-        if item['kind'] == 'box':
+        if item['kind'] == 'polygon':
+            angle = math.radians(item['rotation_deg']); c, s = math.cos(angle), math.sin(angle)
+            contours = []
+            for contour in [item['vertices'], *item['holes']]:
+                local = np.array([[point['x'], point['y']] for point in contour])
+                contours.append(local @ np.array([[c, -s], [s, c]]).T + p[:2])
+            vertices, codes, faces = [], [], []
+            for contour in contours:
+                vertices.extend([*contour, contour[0]])
+                codes.extend([PlotPath.MOVETO, *([PlotPath.LINETO] * (len(contour)-1)), PlotPath.CLOSEPOLY])
+                for a, b in zip(contour, np.roll(contour, -1, axis=0)):
+                    faces.append([[*a, p[2]-h], [*b, p[2]-h], [*b, p[2]+h], [*a, p[2]+h]])
+            # Compound paths retain actual holes and concave outlines. An
+            # unconstrained point-cloud triangulation would bridge voids.
+            for z in (p[2]-h, p[2]+h):
+                patch = PathPatch(PlotPath(vertices, codes), facecolor=color, edgecolor=color, alpha=.35, linewidth=.25)
+                ax.add_patch(patch)
+                pathpatch_2d_to_3d(patch, z=z, zdir='z')
+        elif item['kind'] == 'box':
             half = np.array([item['size'][a] for a in 'xyz']) / 2
             corners = np.array([[x, y, z] for z in (-1, 1) for y in (-1, 1) for x in (-1, 1)]) * half
             angle = math.radians(item['rotation_deg']); c, s = math.cos(angle), math.sin(angle)
@@ -346,6 +375,16 @@ def plot_geometry(geometry, *, show_hidden=False):
                     faces.append([rings[a][j], rings[a][j + 1], rings[b][j + 1], rings[b][j]])
         ax.add_collection3d(Poly3DCollection(faces, facecolors=color, alpha=.35, linewidths=.25, edgecolors=color))
         ax.text(*p, item['name'], fontsize=8, parse_math=False)
+    visible_ids = {item['id'] for item in geometry['objects'] if show_hidden or item['visible']}
+    for component in geometry.get('components', []):
+        if not visible_ids.intersection(component['object_ids']):
+            continue
+        for port in component['ports']:
+            angle = math.radians(port['angle_deg'])
+            length = max(.15, min(port['width_um'], .7))
+            ax.quiver(port['x'], port['y'], port['z'], math.cos(angle)*length,
+                      math.sin(angle)*length, 0, color='#149b86', arrow_length_ratio=.3)
+            ax.text(port['x'], port['y'], port['z'], port['name'], fontsize=7, parse_math=False)
     for axis in 'xyz': getattr(ax, f'set_{axis}lim')(-geometry['domain'][axis] / 2, geometry['domain'][axis] / 2)
     ax.set_box_aspect([geometry['domain'][a] for a in 'xyz'])
     ax.set(xlabel='x (µm)', ylabel='y (µm)', zlabel='z (µm)')

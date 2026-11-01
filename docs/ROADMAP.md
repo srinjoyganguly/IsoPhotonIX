@@ -36,13 +36,13 @@ across solvers. [Validation status and remaining gates](VALIDATION.md) explicitl
 record the limited public mode benchmarks separately from unfinished driven-3D
 analytical qualification and commercial agreement.
 
-The v0.5 preview begins milestone 6 with a separate bounded 2D guided-port
+The v0.5 preview began milestone 6 with a separate bounded 2D guided-port
 study: a straight guide or cladding gap, mode-profile pulse, incident reference,
 coherent reflection subtraction and finite-aperture R/T spectra. It records
 settling, actual execution, raw monitors, CSV and file hashes. See
-[port measurement scope and evidence](PORT_MEASUREMENTS.md). General 3D ports,
-mode-resolved complex S-parameters, automated convergence and sweeps remain
-future work. Packaging and the BeamZ adapter have not been implemented.
+[port measurement scope and evidence](PORT_MEASUREMENTS.md). The subsequent
+v0.6 modal study below extends this measurement work. Packaging and the BeamZ
+adapter have not been implemented.
 
 The v0.6 preview adds [finite-height 3D modal ports](3D_PORTS.md): four
 directional reference/device solves, a complex fundamental-channel 2×2 S-matrix,
@@ -52,6 +52,17 @@ for all executable study formats and geometry-only code for arbitrary drafts.
 This is source-based reproducibility, not the planned pip-installed desktop
 application. General multimode ports, arbitrary device geometries, automated
 convergence/sweeps, BeamZ, and clean-machine application packaging remain open.
+
+The v0.7 preview expands the **design** model with 20 searchable parametric
+families, component placement/regeneration, polygon extrusions with holes and
+reusable constant/tabulated n/k material records. Standalone design bundles
+carry the original generators, validator, exact contours, materials and
+geometric ports. [Implemented catalog and limits](COMPONENT_LIBRARY.md) ·
+[Export contract](REPRODUCIBLE_EXPORTS.md). These additions do not broaden the
+existing executable study schemas: library components remain design-only.
+The [component/material/laser roadmap](COMPONENT_ROADMAP.md) defines separate
+gates for general passive studies, quantitative measurements, physical material
+models, layout/process support and active devices.
 
 Keep these useful properties through every milestone: local computation,
 visible assumptions, reproducible files, actual device verification, and no
@@ -82,8 +93,8 @@ Status: implemented as the post-event v0.3 preview on
 [editor verification](verification/3d-editor.json), and
 [real 2D solver regression](verification/3d-solver-regression.json).
 
-The first increment introduces a separate **3D design** workspace alongside the
-tested **2D simulation** workspace. Its implemented scope is:
+The first increment introduced a separate **3D design** workspace alongside the
+tested **2D simulation** workspace. Its original implemented scope was:
 
 - Orbit, pan, zoom, fit-to-scene, and isometric/XY/XZ/YZ camera views.
 - A visible coordinate system, simulation-domain outline, and grid controls.
@@ -93,6 +104,11 @@ tested **2D simulation** workspace. Its implemented scope is:
 - Straight-strip, directional-coupler, and ring templates as editable geometry.
 - Versioned, validated JSON import/export, local draft recovery, and undo/redo.
 - An explicitly labeled extrusion preview of the current slab configuration.
+
+The v0.7 increment adds the [20-family library](COMPONENT_LIBRARY.md), editable
+polygon contours and holes, referenced material records and reusable component
+instances. Their geometry validation and standalone replays qualify design
+editing and preservation; they do not satisfy solver qualification gates.
 
 Three.js is the rendering layer; it does not solve Maxwell's equations.
 [OrbitControls](https://threejs.org/docs/pages/OrbitControls.html) provides the
@@ -107,11 +123,13 @@ appearance, not evidence that geometry manipulation or solver integration works.
 
 ## Milestone 2: establish the shared model
 
-Current increment: a strict v2 finite-waveguide study embeds the existing
-versioned geometry, material indices, domain, numerical settings and explicit
-target, while retaining v1 slab compatibility. Sources and boundaries follow
-one documented fixed model. The generalized project/layer/monitor schema below
-remains future work.
+Current increment: the strict finite-waveguide study embeds its bounded legacy
+geometry, material indices, domain, numerical settings and explicit target,
+while retaining slab compatibility. The separate version-2 **design geometry**
+schema adds polygons/holes, materials and component instances; this does not
+make that design schema executable by the legacy study adapters. Sources and
+boundaries follow each study's documented fixed model. A generalized
+project/layer/monitor schema remains future work.
 
 Introduce a versioned `Project` containing stable identifiers and explicit units.
 Separate editable design state, a validated study specification, and an immutable
@@ -119,11 +137,12 @@ run snapshot. Camera positions and object visibility are presentation state;
 they must not change the material geometry sent to a solver. For overlapping
 objects, define material precedence rather than letting rendering order decide.
 
-Start with a deliberately small common geometry vocabulary: boxes, cylinders,
-polygon extrusions, and supported transforms. Add layer stacks and bounded
-material definitions. Keep the exact parametric source representation alongside
-any tessellated preview. Solvers may rasterize differently; record that fact and
-export the actual material grid used in the calculation.
+The design vocabulary now includes boxes, cylinders, rings, polygon extrusions
+with holes, in-plane rotations and bounded material records. Component recipes
+and explicit contours are preserved together. Layer stacks, general Boolean
+operations, 3D rotations and solver-specific material fits remain open.
+Solvers may rasterize differently; record that fact and export the actual
+material grid used in the calculation.
 
 Each study declares its dimensionality, materials, sources, monitors, boundary
 conditions, frequency/time settings, and numerical settings. A solver capability
@@ -137,8 +156,9 @@ Current increment: the first full 3D straight-guide journey is implemented.
 See [Meep numerical checks](verification/meep-3d.json),
 [FDTDX CPU/GPU checks](verification/fdtdx-3d.json), and the
 [3D guide](3D_SIMULATION.md). Outputs are final-time volume slices; an automatic
-convergence framework, analytical qualification, calibrated ports and broader
-studies remain open. Implementing the journey does not complete all of this
+convergence framework, analytical qualification and broader studies remain open.
+The later [bounded 3D modal study](3D_PORTS.md) supplies its own guided-port
+normalization and phase contract. Implementing these journeys does not complete all of this
 milestone's numerical release gates.
 
 Begin with one finite-height straight guide before rings, bends, or arbitrary
@@ -189,21 +209,26 @@ and verifies them.
 
 ## Professional feature backlog
 
-After the first validated 3D study, prioritize measurements and reproducibility
-before broadening geometry indefinitely:
+The design library now provides a broader set of geometry candidates. The next
+increment should qualify a small passive device with explicit sources and
+ports through real Meep and FDTDX CPU/NVIDIA simulations before expanding
+simulation claims. Keep the existing studies available throughout that work.
+The remaining backlog is:
 
-- **Geometry:** tapers, bends, couplers, rings, gratings, polygon editing,
-  parametric dependencies, alignment/snapping, groups, Boolean operations,
+- **Geometry:** qualify selected library geometries for simulation; add routing
+  connectivity, parametric dependencies, alignment/snapping, groups, Boolean operations,
   fabrication layers, GDS import/export, and qualified mesh/CAD import.
-- **Materials and boundaries:** wavelength-dependent data with provenance,
-  loss, dispersion fits with validity ranges, anisotropy where supported,
+- **Materials and boundaries:** turn preserved wavelength-dependent design data
+  into validated solver models; loss, causal dispersion fits with validity
+  ranges, anisotropy where supported,
   symmetry and periodic/Bloch studies, and boundary diagnostics.
 - **Sources and measurements:** eigenmode and Gaussian excitation, calibrated
   ports, flux/DFT monitors, overlap integrals, spectra, S-parameters, resonance
   analysis and near-to-far fields where supported.
 - **Study management:** parameter sweeps, local queues, convergence reports,
   calibrated cross-solver comparison views, optimization, checkpoints, Python
-  scripting and notebooks. The present same-study comparison is restricted to
+  APIs and richer notebook workflows. Standalone study/design exports are
+  already implemented. The present same-study comparison is restricted to
   repeatability on identical saved grids and numerical conventions.
 - **Product quality:** accessible controls, searchable examples, command history,
   autosave/recovery, large-data loading, documented limits, diagnostics,
@@ -212,6 +237,15 @@ before broadening geometry indefinitely:
   choosing the responsible engine and verifying the transfer of units, meshes,
   boundaries and conserved quantities. Installing the four requested solvers
   does not itself provide general multiphysics or a general FEM solver.
+
+On-chip laser work starts with validated passive cavity modes, resonance and
+loss. It then needs an independently checked gain model, semiconductor carrier
+and rate-equation parameters, and an appropriate travelling-wave/circuit or
+coupled-field formulation before making threshold or light–current claims.
+Electrical injection and thermal effects require additional engines and
+validated coupling. A DBR or nanobeam template and a nominal III–V index are
+only geometry foundations; the [staged laser plan](COMPONENT_ROADMAP.md)
+defines the evidence required at each step.
 
 The first supported installation target remains Linux/WSL2 x86-64. Broader
 platform claims follow clean installation and numerical checks, not merely

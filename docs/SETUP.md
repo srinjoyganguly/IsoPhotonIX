@@ -10,6 +10,14 @@ workers in those interpreters, so Meep's native dependencies and JAX's CUDA
 runtime do not need to share one environment. No environment files or secrets
 need to be uploaded anywhere.
 
+The **v0.7 design library** needs the API and built interface, but no solver
+installation: complete sections 1 and 4 to edit components, polygon contours
+and material records locally. Install the relevant solver environment to run
+the existing supported studies. The new 20-family library is design-only;
+its geometric ports and tabulated n/k records do not extend solver coverage.
+See the [component guide](COMPONENT_LIBRARY.md). A pip-installed application,
+managed solver installation and a desktop shell remain roadmap work.
+
 **Verification note:** The API was installed and tested in fresh isolated
 virtual environments using official PyPI wheels with verified SHA256 hashes.
 Meep was installed into a fresh Conda prefix from official cached packages and
@@ -45,7 +53,7 @@ locally:
 ```
 
 The application suite includes model, API, complex-port, source-archive and
-Python/notebook export contracts. The final v0.6 run had 116 tests: 112 passed
+Python/notebook export contracts. The v0.7 run had 136 tests: 132 passed
 and four Meep runtime checks were skipped in the
 API interpreter because Meep lives in a separate environment.
 Actual solver checks are recorded separately in the relevant study guides.
@@ -164,6 +172,21 @@ lives in a different interpreter. Run its dedicated test explicitly:
 .local/meep-conda/bin/python -m unittest discover -s tests -p test_meep_smoke.py -v
 ```
 
+Focused v0.7 design checks need no numerical solver:
+
+```bash
+.venv/bin/python -m unittest tests.test_component_library tests.test_geometry_draft tests.test_library_layout -v
+cd frontend
+corepack pnpm test:geometry
+cd ..
+```
+
+These cover generated geometry, polygon topology, materials, component
+membership, placement, API rejection and standalone design source bundles.
+They do not measure electromagnetic performance. The separate
+`frontend/browser-library-smoke.cjs` exercises the built local interface with
+the optional Playwright setup described below.
+
 FDTDX numerical checks, using a fresh worker process for each device:
 
 ```bash
@@ -224,7 +247,10 @@ saved arrays, dependency instructions and automatic replay comparisons. Older
 runs without a captured source archive are explicitly labeled export-time
 compatibility checks. Follow [Python/Jupyter instructions](REPRODUCIBLE_EXPORTS.md)
 for the script or notebook. A general geometry draft exports geometry/rendering
-code; only supported executable studies export real solver execution.
+code, complete polygon holes, material records and component parameters/ports.
+Its bundled validator and generators support standalone parametric edits;
+no solver is required to recreate the design. Only supported executable
+studies export real solver execution.
 
 Extract a result ZIP to a local directory. Its `config.json` can be imported
 through the UI or passed to the CLI:

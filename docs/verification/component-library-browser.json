@@ -1,0 +1,308 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-01T22:19:07.858Z",
+  "browser": "156.0.8078.74",
+  "opened": [
+    {
+      "family": "strip",
+      "objects": 1,
+      "ports": 2
+    },
+    {
+      "family": "slot",
+      "objects": 2,
+      "ports": 2
+    },
+    {
+      "family": "rib",
+      "objects": 2,
+      "ports": 2
+    },
+    {
+      "family": "taper",
+      "objects": 1,
+      "ports": 2
+    },
+    {
+      "family": "bend",
+      "objects": 1,
+      "ports": 2
+    },
+    {
+      "family": "s_bend",
+      "objects": 1,
+      "ports": 2
+    },
+    {
+      "family": "directional_coupler",
+      "objects": 2,
+      "ports": 4
+    },
+    {
+      "family": "y_branch",
+      "objects": 3,
+      "ports": 3
+    },
+    {
+      "family": "mmi_1x2",
+      "objects": 4,
+      "ports": 3
+    },
+    {
+      "family": "mmi_2x2",
+      "objects": 5,
+      "ports": 4
+    },
+    {
+      "family": "crossing",
+      "objects": 2,
+      "ports": 4
+    },
+    {
+      "family": "ring_bus",
+      "objects": 2,
+      "ports": 2
+    },
+    {
+      "family": "ring_add_drop",
+      "objects": 3,
+      "ports": 4
+    },
+    {
+      "family": "racetrack",
+      "objects": 2,
+      "ports": 2
+    },
+    {
+      "family": "mzi",
+      "objects": 4,
+      "ports": 2
+    },
+    {
+      "family": "bragg",
+      "objects": 17,
+      "ports": 2
+    },
+    {
+      "family": "grating_coupler",
+      "objects": 19,
+      "ports": 1
+    },
+    {
+      "family": "nanobeam_cavity",
+      "objects": 1,
+      "ports": 2
+    },
+    {
+      "family": "dbr_cavity",
+      "objects": 25,
+      "ports": 2
+    },
+    {
+      "family": "serpentine",
+      "objects": 1,
+      "ports": 2
+    }
+  ],
+  "checks": [
+    "Search and category filtering cover all 20 current component families.",
+    "Every catalog family generated through the actual API, persisted exact v2 geometry and rendered actual solids/layout-port markers.",
+    "Component regeneration preserves instance identity; invalid parameters/domain placement retain the scene; explicit domain fit and atomic manual detach/undo work.",
+    "Real polygon hole editing, invalid-hole retention, keyboard vertex movement and pointer dragging update validated geometry.",
+    "Local CSV n/k samples, reference index and provenance preserved; no extrapolation; current solvers reject unqualified geometry/materials before execution.",
+    "Geometry JSON import/export/reload is exact; actual Python/notebook design bundle downloaded."
+  ],
+  "new_solver_jobs": 0,
+  "browser_errors": [],
+  "material_sample_scope": "Synthetic user input tests material storage/interpolation only; no optical material or electromagnetic accuracy claim.",
+  "geometry": {
+    "schema": "photonics-workbench-geometry",
+    "schema_version": 2,
+    "units": "um",
+    "name": "Linear taper",
+    "mode": "draft-3d",
+    "domain": {
+      "x": 8.5,
+      "y": 17.7,
+      "z": 2.22
+    },
+    "objects": [
+      {
+        "id": "component-7debd0e1778f4c7c-1",
+        "name": "Linear width transition",
+        "visible": true,
+        "kind": "polygon",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "size": {
+          "x": 1,
+          "y": 0.5,
+          "z": 0.22
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 2,
+        "vertices": [
+          {
+            "x": -4,
+            "y": -0.2
+          },
+          {
+            "x": 4,
+            "y": -0.6
+          },
+          {
+            "x": 4,
+            "y": 0.6
+          },
+          {
+            "x": -4,
+            "y": 0.2
+          }
+        ],
+        "holes": [],
+        "material_id": "generic-core",
+        "component_id": "component-03827ef37cab4ed2"
+      },
+      {
+        "id": "component-37287781448d4a6e-1",
+        "name": "Linear width transition",
+        "visible": true,
+        "kind": "polygon",
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": 0
+        },
+        "size": {
+          "x": 1,
+          "y": 0.5,
+          "z": 0.22
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 2.1,
+        "vertices": [
+          {
+            "x": -4.01,
+            "y": -0.2
+          },
+          {
+            "x": 3.8,
+            "y": -0.76
+          },
+          {
+            "x": 4,
+            "y": 0.6
+          },
+          {
+            "x": -4,
+            "y": 0.2
+          }
+        ],
+        "holes": [
+          [
+            {
+              "x": -0.15,
+              "y": 0.15
+            },
+            {
+              "x": 0.15,
+              "y": 0.15
+            },
+            {
+              "x": 0.15,
+              "y": -0.15
+            },
+            {
+              "x": -0.15,
+              "y": -0.15
+            }
+          ]
+        ],
+        "material_id": "material-a0390b9f-7731-4111-8af6-7df3ad38e54f"
+      }
+    ],
+    "materials": [
+      {
+        "id": "generic-core",
+        "name": "Generic dielectric · n = 2",
+        "reference_wavelength_um": 1.55,
+        "source": "Original workbench design preset.",
+        "notes": "Illustrative lossless constant index, not a measured material dataset.",
+        "model": "constant-nk",
+        "n": 2,
+        "k": 0
+      },
+      {
+        "id": "material-a0390b9f-7731-4111-8af6-7df3ad38e54f",
+        "name": "Browser tabulated material",
+        "reference_wavelength_um": 1.55,
+        "source": "User-supplied browser test samples; not measured material evidence",
+        "notes": "",
+        "model": "tabulated-nk",
+        "wavelength_um": [
+          1.45,
+          1.55,
+          1.65
+        ],
+        "n": [
+          2,
+          2.1,
+          2.2
+        ],
+        "k": [
+          0.01,
+          0.02,
+          0.03
+        ]
+      }
+    ],
+    "components": [
+      {
+        "id": "component-03827ef37cab4ed2",
+        "family": "taper",
+        "generator_version": 1,
+        "parameters": {
+          "length_um": 8,
+          "input_width_um": 0.4,
+          "output_width_um": 1.2,
+          "height_um": 0.22
+        },
+        "object_ids": [
+          "component-7debd0e1778f4c7c-1"
+        ],
+        "placement": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "rotation_deg": 0
+        },
+        "material_id": "generic-core",
+        "ports": [
+          {
+            "name": "in",
+            "x": -4,
+            "y": 0,
+            "z": 0,
+            "angle_deg": 180,
+            "width_um": 0.4
+          },
+          {
+            "name": "out",
+            "x": 4,
+            "y": 0,
+            "z": 0,
+            "angle_deg": 0,
+            "width_um": 1.2
+          }
+        ]
+      }
+    ]
+  }
+}

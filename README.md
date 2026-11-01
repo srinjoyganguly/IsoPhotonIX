@@ -9,13 +9,23 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**Post-event development: v0.6 preview.** The interactive **3D design**
-workspace adds orbit/pan/zoom, selection, editable boxes/cylinders/rings,
-strip/coupler/ring templates, undo/redo, and portable geometry JSON. Open
+**Post-event development: v0.7 preview.** The interactive **3D design**
+workspace now includes a searchable **20-family photonic component library**,
+parametric placement and editing, custom polygon extrusions with holes, and
+reusable constant or tabulated n/k material records. Orbit/pan/zoom, selection,
+undo/redo and portable geometry JSON support inspecting and composing layouts.
+The new library is **design-only**: named ports describe geometry, and stored
+material data does not imply a qualified solver model. See the
+[component guide](docs/COMPONENT_LIBRARY.md) for every family and its limits,
+and the [component/material/laser plan](docs/COMPONENT_ROADMAP.md) for the next
+validation gates.
+
+Open
 **Open runnable 3D waveguide** to run a finite-height core with an optional
 substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and
 material slices in XY/XZ/YZ, then export the exact study and numerical volume.
-General rings/couplers remain geometry drafts. **2D simulation** retains the
+Those verified studies retain their existing bounded geometry contracts;
+new library documents are not automatically executable. **2D simulation** retains the
 earlier slab workflow. [3D simulation guide](docs/3D_SIMULATION.md).
 [Numerical validation and comparison limits](docs/VALIDATION.md).
 [3D workspace guide](docs/3D_WORKSPACE.md) · [Product roadmap](docs/ROADMAP.md) ·
@@ -36,7 +46,9 @@ solves. Inspect real/imaginary amplitudes, power, phase and actual 3D fields.
 **Python + Jupyter exports** preserve editable settings and the exact numerical
 source used by the GUI. Saved-run bundles include reference arrays and a replay
 comparison; no running API is needed. All implemented study formats are covered.
-Arbitrary design drafts export complete geometry code and notebook rendering;
+Design exports also preserve polygon contours/holes, material tables, recipe
+parameters and geometric ports. Bundled generators and the geometry validator
+permit standalone parametric edits without the repository or a running API;
 unsupported electromagnetic geometries remain drafts.
 [Standalone setup and reproduction evidence](docs/REPRODUCIBLE_EXPORTS.md).
 
@@ -44,7 +56,7 @@ The submitted v0.2 releases and recordings below preserve the event build.
 The 3D editor, public benchmarks and port measurements were added after
 submission and are not part of that entry.
 
-![Interactive 3D geometry workspace with an editable ring and bus](docs/3d-workspace.png)
+![Interactive photonic component library and 3D design workspace](docs/verification/component-library-ui.png)
 
 **[Watch the submission demo](https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/photonics-workbench/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
 
@@ -65,10 +77,10 @@ configuration and numerical data. This workbench makes that small journey
 explicit: physical validation, an explained solver choice, an actual device
 record, and a portable result that remains useful outside the interface.
 
-The contribution is the learning and reproducibility workflow around two open
-solvers. It requires no paid solver activation or cloud account. Commercial
-packages offer much broader modeling and validation; this project deliberately
-addresses one accessible local experiment. [Product rationale and judging evidence](docs/PROJECT.md)
+The contribution is a local design, learning and reproducibility workflow around
+two open solvers. It requires no paid solver activation or cloud account.
+Commercial packages offer much broader modeling and validation; each workbench
+study has an explicit supported scope. [Product rationale and judging evidence](docs/PROJECT.md)
 describe the distinction and its limits.
 
 ## The complete journey
@@ -131,6 +143,28 @@ solver lives outside the default project-local environment.
 
 ## Verification status
 
+The v0.7 library's 20 generators pass dimension/topology checks, transformed
+port-aperture checks and JSON round trips. [Browser checks](docs/verification/component-library-browser.json) cover component
+selection, placement, regeneration, custom shapes/materials and design exports.
+Standalone Python and executed notebooks reproduce all 20 default families
+plus a custom-material design: **42 design replays**
+([execution record](docs/verification/component-library-exports.json)).
+The actual GUI-downloaded bundle also passes both Python and notebook replay
+([download/replay record](docs/verification/component-library-gui-export.json)). These checks establish
+geometry preservation and local editing, not electromagnetic performance for
+the new components. [Library scope and checks](docs/COMPONENT_LIBRARY.md) ·
+[Export contracts](docs/REPRODUCIBLE_EXPORTS.md). The v0.7 application suite has
+132 passing tests and four native-Meep checks skipped in the API interpreter;
+all 18 geometry-model tests pass. Real numerical checks remain separate from
+those application/design tests.
+
+The existing finite-height guide also completed fresh real browser runs on
+[Meep CPU](docs/verification/v07-3d-browser-meep-cpu.json),
+[FDTDX CPU](docs/verification/v07-3d-browser-fdtdx-cpu.json) and
+[FDTDX NVIDIA GPU](docs/verification/v07-3d-browser-fdtdx-gpu.json).
+Those checks compare rendered field samples with saved solver arrays and
+exercise actual result exports. [v0.7 verification summary](docs/verification/v07-checks.json).
+
 The v0.6 [3D modal study](docs/3D_PORTS.md) has four-direction real simulations
 on Meep CPU and FDTDX CPU/NVIDIA GPU, with straight/gap, settling and numerical
 sensitivity checks. [Meep evidence](docs/verification/meep-ports3d.json) and
@@ -146,9 +180,9 @@ The complete modal browser journey is recorded for
 [FDTDX NVIDIA](docs/verification/ports3d-browser-fdtdx-gpu.json).
 [Editor export checks](docs/verification/code-export-browser.json) cover general
 geometry and all four study formats without launching a solver.
-The final application suite passes 112 tests with four Meep runtime checks
+The v0.6 application suite passed 112 tests with four Meep runtime checks
 skipped in the API environment; real solver evidence is recorded separately.
-All 12 geometry-model tests, TypeScript and the production build pass.
+That milestone's 12 geometry-model tests, TypeScript and production build passed.
 The [v0.6 verification summary](docs/verification/v06-checks.json) indexes the
 tested routes and limits, including 24 real Python/notebook solver replays.
 The existing [2D field/playback](docs/verification/v06-2d-regression.json) and
@@ -278,7 +312,15 @@ alone does not establish working execution. Native Windows solver execution,
 other GPUs, remote compute, multi-GPU jobs, and MPI are not supported by this
 milestone.
 
-The 3D workspace requires WebGL 2 for interactive geometry. Its executable study
+The 3D workspace requires WebGL 2 for interactive geometry. Library component
+ports are connection metadata, not solved modes. Constant and tabulated n/k
+records preserve design data; dispersion fitting, anisotropy and active
+materials are not qualified simulation features. Passive DBR and nanobeam
+cavity layouts contain no pumping, gain, carrier dynamics or laser prediction.
+The [laser roadmap](docs/COMPONENT_ROADMAP.md) separates cold-cavity validation,
+gain benchmarks and semiconductor/electrical/thermal modeling.
+
+The executable 3D field study
 currently supports only one centred, unrotated rectangular guide spanning the
 domain along x, plus an optional substrate flush with the core bottom. General
 solids, bends, rings and couplers are not yet executable. In the original 3D

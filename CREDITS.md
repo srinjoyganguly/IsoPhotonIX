@@ -94,6 +94,23 @@ OrbitControls addon. It does not contain code, assets, screenshots, or geometry
 copied from COMSOL or Tidy3D. Type definitions use `@types/three` 0.187.0 in the
 development toolchain; these and their dependency metadata remain in the lockfile.
 
+The post-event v0.7 library adds 20 original parametric geometry recipes,
+polygon/material validation, component placement and standalone design source
+bundles. Public [Tidy3D component examples](https://www.flexcompute.com/tidy3d/examples/notebooks/PICComponents/)
+and the [Ansys FDTD reference](https://optics.ansys.com/hc/en-us/articles/360033154434-FDTD-product-reference-manual)
+informed family coverage and terminology. No vendor generator code, project
+files, PDK, material database or performance dataset was copied. These are
+design-only components, not licensed or fabrication-qualified vendor models.
+
+The nominal silicon/silica constant indices are attributed to the public
+[Tidy3D/Femwell benchmark](https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/).
+Other catalog values are explicitly illustrative approximations, with source
+notes stored in each record. The III–V preset is a passive placeholder, not
+semiconductor gain data. Users remain responsible for the provenance and
+redistribution rights of material tables they add. The
+[component/material/laser roadmap](docs/COMPONENT_ROADMAP.md) cites the official
+references used to plan subsequent physics and validation.
+
 ## Documentation used
 
 Standalone Python/notebook exports optionally use Matplotlib 3.10.8

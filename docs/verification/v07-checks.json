@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "release": "0.7.0-preview.1",
+  "checked_at": "2026-11-01T22:20:38.879910+00:00",
+  "scope": "Parametric component design, polygon editing, material records and standalone geometric reproduction. New library documents remain design-only.",
+  "software": {
+    "application_tests": {
+      "run": 136,
+      "passed": 132,
+      "skipped": 4,
+      "failed": 0,
+      "skip_reason": "Native Meep runtime tests use a separate interpreter; existing route regression simulations recorded separately."
+    },
+    "geometry_model_tests": {
+      "passed": 18,
+      "failed": 0
+    },
+    "typescript": "passed",
+    "production_build": "passed; existing Vite large-chunk advisory"
+  },
+  "designs": {
+    "families": 20,
+    "nominal_material_presets": 6,
+    "browser_record": "component-library-browser.json",
+    "shared_validation_fixtures": {
+      "valid": 6,
+      "invalid": 19
+    },
+    "generator_checks": "All family defaults, transformed port apertures, topology and parameter correlations."
+  },
+  "exports": {
+    "all_family_and_custom_layout_executions": 42,
+    "gui_download_executions": 2,
+    "all_passed": true,
+    "all_exact_geometry": true,
+    "records": [
+      "component-library-exports.json",
+      "component-library-gui-export.json"
+    ],
+    "bundled_source_sha256": {
+      "backend/component_library.py": "cafee8787f4ef9a31553b53390355b9650ed86a4d3d5f9c4d0758348b5d86ff9",
+      "backend/geometry_draft.py": "00aec5e4f68d7f087cf09384892dec8879c261c58155b00c4babadd7121cd961",
+      "backend/library_layout.py": "83d826ab73c7640b1e745e9691c9462cde3d75698202af39d884bd8eb3029a6f",
+      "backend/reproduction_runtime.py": "a5105d45d1b1625c13838c8b6a486b0224ac3217a0dc8c514461148289a7c6be"
+    }
+  },
+  "existing_simulation_route_regressions": {
+    "meep-cpu": {
+      "passed": true,
+      "checked_at": "2026-11-01T22:16:05.288Z",
+      "target": "meep:cpu",
+      "run_id": "ee3d3d4980614b8f832634a2893bd4de",
+      "shape": [
+        64,
+        64,
+        128
+      ],
+      "actual_device": "CPU",
+      "device_name": "CPU",
+      "browser": "156.0.8078.74",
+      "checks": [
+        "Unsupported draft rejected; exact edited geometry submitted; explicit execution target; real completed 3D worker",
+        "Actual XY/XZ/YZ slices; per-component scale; exact API-to-canvas samples; physical slice coordinate; Ez selection; material grid",
+        "Immutable run geometry after editor changes; run passport observed checks; actual result ZIP export; responsive 390px; no browser exceptions"
+      ],
+      "browser_errors": []
+    },
+    "fdtdx-cpu": {
+      "passed": true,
+      "checked_at": "2026-11-01T22:18:09.367Z",
+      "target": "fdtdx:cpu",
+      "run_id": "dfe811a8b9a9431b8244d2674d4d4f76",
+      "shape": [
+        63,
+        63,
+        127
+      ],
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "browser": "156.0.8078.74",
+      "checks": [
+        "Unsupported draft rejected; exact edited geometry submitted; explicit execution target; real completed 3D worker",
+        "Actual XY/XZ/YZ slices; per-component scale; exact API-to-canvas samples; physical slice coordinate; Ez selection; material grid",
+        "Immutable run geometry after editor changes; run passport observed checks; actual result ZIP export; responsive 390px; no browser exceptions"
+      ],
+      "browser_errors": []
+    },
+    "fdtdx-gpu": {
+      "passed": true,
+      "checked_at": "2026-11-01T22:16:59.106Z",
+      "target": "fdtdx:gpu",
+      "run_id": "24b259754e204f839ceee170dc64f2ff",
+      "shape": [
+        63,
+        63,
+        127
+      ],
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "browser": "156.0.8078.74",
+      "checks": [
+        "Unsupported draft rejected; exact edited geometry submitted; explicit execution target; real completed 3D worker",
+        "Actual XY/XZ/YZ slices; per-component scale; exact API-to-canvas samples; physical slice coordinate; Ez selection; material grid",
+        "Immutable run geometry after editor changes; run passport observed checks; actual result ZIP export; responsive 390px; no browser exceptions"
+      ],
+      "browser_errors": []
+    }
+  },
+  "existing_complex_modal_inspection": {
+    "record": "v07-modal-inspection-browser.json",
+    "read_only": true,
+    "new_solver_jobs": 0,
+    "note": "Reopened actual previous NVIDIA modal result; inspected exact chart, matrix, CSV and field data and downloaded source/result bundles."
+  },
+  "limits": [
+    "No new library component is qualified for electromagnetic simulation in this release.",
+    "Material tables and constant n/k are design records; no dispersive fit, anisotropic or active solver model added.",
+    "Named library ports are geometric intent, not solved modes.",
+    "Passive cavity layouts do not simulate gain, carrier injection, threshold or lasing.",
+    "No general Boolean CAD, full 3D solid rotations, foundry PDK/DRC, GDS hierarchy or all-platform installer claimed."
+  ]
+}

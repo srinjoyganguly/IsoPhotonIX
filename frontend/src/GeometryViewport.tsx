@@ -53,6 +53,13 @@ function disposeGroup(group: THREE.Group) {
 
 function makeGeometry(object: GeometryObject): THREE.BufferGeometry {
   if (object.kind === 'box') return new THREE.BoxGeometry(object.size.x, object.size.y, object.size.z);
+  if (object.kind === 'polygon') {
+    const shape = new THREE.Shape(object.vertices!.map(p => new THREE.Vector2(p.x, p.y)));
+    for (const contour of object.holes!) shape.holes.push(new THREE.Path(contour.map(p => new THREE.Vector2(p.x, p.y))));
+    const prism = new THREE.ExtrudeGeometry(shape, { depth: object.size.z, bevelEnabled: false, steps: 1 });
+    prism.translate(0, 0, -object.size.z / 2);
+    return prism;
+  }
   if (object.kind === 'cylinder') {
     const cylinder = new THREE.CylinderGeometry(object.radius, object.radius, object.size.z, 64);
     cylinder.rotateX(Math.PI / 2);
@@ -93,6 +100,7 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
   const [attempt, setAttempt] = useState(0);
   const [gridVisible, setGridVisible] = useState(true);
   const [domainVisible, setDomainVisible] = useState(true);
+  const [portsVisible, setPortsVisible] = useState(true);
   const [cameraView, setCameraView] = useState<CameraView | 'free'>('iso');
   const [distance, setDistance] = useState('');
   documentRef.current = document;
@@ -146,6 +154,8 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
         renderer.render(scene, camera);
         canvas.dataset.camera = [...camera.position.toArray(), ...controls.target.toArray()].map(v => v.toFixed(4)).join(',');
         canvas.dataset.visibleObjects = String(model.children.filter(node => node.visible).length);
+        const layoutPorts = guides.getObjectByName('component-layout-ports');
+        canvas.dataset.layoutPorts = String(layoutPorts?.visible ? layoutPorts.children.length : 0);
         setDistance(`${camera.position.distanceTo(controls.target).toFixed(2)} µm`);
       } catch {
         setError('The 3D view could not render. Your geometry is still saved in the editor. Try reopening the viewport.');
@@ -257,6 +267,19 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
       const outline = new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 25), new THREE.LineBasicMaterial({ color: colors.edge, transparent: true, opacity: .7 }));
       mesh.add(outline); engine.model.add(mesh); engine.meshes.push(mesh);
     }
+    const portGuides = new THREE.Group();
+    portGuides.name = 'component-layout-ports'; portGuides.visible = portsVisible;
+    const arrowLength = Math.max(.15, Math.min(.8, Math.max(document.domain.x, document.domain.y) * .025));
+    for (const component of document.components ?? []) {
+      if (!document.objects.some(o => component.object_ids.includes(o.id) && o.visible)) continue;
+      for (const port of component.ports) {
+        const angle = THREE.MathUtils.degToRad(port.angle_deg);
+        const arrow = new THREE.ArrowHelper(new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0), new THREE.Vector3(port.x, port.y, port.z), arrowLength, 0xf2b969, arrowLength * .3, arrowLength * .2);
+        arrow.name = `${component.id}.${port.name}`;
+        portGuides.add(arrow);
+      }
+    }
+    engine.guides.add(portGuides);
     const domainGeometry = new THREE.BoxGeometry(document.domain.x, document.domain.y, document.domain.z);
     const border = new THREE.LineSegments(new THREE.EdgesGeometry(domainGeometry), new THREE.LineDashedMaterial({ color: 0x647d96, transparent: true, opacity: .65, dashSize: .12, gapSize: .08 }));
     domainGeometry.dispose(); border.computeLineDistances(); border.visible = domainVisible;
@@ -296,8 +319,10 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
     if (!engine) return;
     if (engine.grid) engine.grid.visible = gridVisible;
     if (engine.domain) engine.domain.visible = domainVisible;
+    const ports = engine.guides.getObjectByName('component-layout-ports');
+    if (ports) ports.visible = portsVisible;
     engine.render();
-  }, [gridVisible, domainVisible, attempt]);
+  }, [gridVisible, domainVisible, portsVisible, attempt]);
 
   useEffect(() => { engineRef.current?.fit('iso'); }, [resetKey, attempt]);
 
@@ -320,6 +345,7 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
       <div className="geometry-guide-buttons" role="group" aria-label="Viewport guides">
         <button type="button" aria-pressed={gridVisible} onClick={() => setGridVisible(value => !value)}>Grid</button>
         <button type="button" aria-pressed={domainVisible} onClick={() => setDomainVisible(value => !value)}>Domain</button>
+        {document.schema_version === 2 && <button type="button" aria-pressed={portsVisible} title="Component layout-port directions; these are not configured simulation sources" onClick={() => setPortsVisible(value => !value)}>Layout ports</button>}
       </div>
     </div>
     <div className="geometry-3d-stage">

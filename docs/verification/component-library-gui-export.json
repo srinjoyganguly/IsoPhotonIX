@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "source": "Actual final GUI Python/notebook ZIP download",
+  "script_exact_geometry": true,
+  "notebook_exact_geometry": true,
+  "script_png": true,
+  "notebook_png": true,
+  "export_sha256": "50f1375bf08a98b9cf70c7753ba0ac8916ea7f3a70fd1a3967d6bb02657dbdea",
+  "object_count": 2,
+  "material_count": 2,
+  "scope": "Design reproduction; no electromagnetic claim."
+}

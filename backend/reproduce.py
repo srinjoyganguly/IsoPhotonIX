@@ -52,6 +52,7 @@ def _configuration_code(config, variable='CONFIG'):
 
 def _base_files():
     return {'workbench_runtime.py': RUNTIME.read_bytes(),
+            'geometry_contract.py': (ROOT / 'backend/geometry_draft.py').read_bytes(),
             'requirements-controller.txt': CONTROLLER_REQUIREMENTS.encode(),
             'requirements-notebook.txt': NOTEBOOK_REQUIREMENTS.encode(),
             'LICENSE': (ROOT / 'LICENSE').read_bytes(), 'CREDITS.md': (ROOT / 'CREDITS.md').read_bytes()}
@@ -273,6 +274,9 @@ def geometry_bundle(geometry):
     """Export all supported editor solids as code without implying a solver."""
     geometry = validate_geometry(geometry)
     files = _base_files()
+    for module in ('component_library', 'geometry_draft', 'library_layout'):
+        files[f'design_source/{module}.py'] = (ROOT / 'backend' / f'{module}.py').read_bytes()
+    files['design_source/__init__.py'] = b'\"\"\"First-party parametric design generators from this export.\"\"\"\n'
     files['geometry.json'] = _json(geometry)
     code = _configuration_code(geometry, 'GEOMETRY')
     files['geometry.py'] = ('"""Exact editable geometry draft; this is not an executable electromagnetic study."""\n'
@@ -282,13 +286,16 @@ def geometry_bundle(geometry):
                             '    plot_geometry(geometry).savefig("geometry.png", dpi=160)\n'
                             '    print("Saved exact geometry.recreated.json and geometry.png; no simulation was run.")\n').encode()
     files['geometry.ipynb'] = _notebook([
-        _cell('markdown', '# Exact local geometry draft\n\nThis notebook preserves every box, cylinder, ring, position, dimension, material index, '
-              'rotation and visibility flag from the editor. Curved surfaces are tessellated only for display; JSON retains their exact radii. '
+        _cell('markdown', '# Exact local geometry draft\n\nThis notebook preserves boxes, cylinders, rings, polygon contours and holes, positions, dimensions, material definitions, component recipes and ports, '
+              'rotations and visibility flags from the editor. Curved surfaces are tessellated only for display; JSON retains their exact radii. '
               'It is a design export, not a solver result. Unsupported CAD is never silently reduced to a straight guide. '
               'Choose a supported executable study in the workbench to obtain a solver notebook. Install `requirements-notebook.txt` before Run All.', 'introduction'),
-        _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, plot_geometry\ncheck_bundle()\n', 'imports'),
+        _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, evaluate_material, regenerate_component, plot_geometry\ncheck_bundle()\n', 'imports'),
         _cell('code', code, 'geometry'),
+        _cell('markdown', '## Optional parametric editing\n\nThe original contours remain authoritative. To regenerate a component from changed parameters, use the bundled generator below. This creates a new design and preserves unrelated objects. Leave it commented to reproduce the exact exported geometry.', 'parametric-help'),
+        _cell('code', "# Example for a selected component with a width_um parameter:\n# GEOMETRY = regenerate_component(GEOMETRY, GEOMETRY['components'][0]['id'],\n#     parameters={'width_um': 0.6}, fit_domain=True)\n", 'parametric-edit'),
         _cell('code', 'geometry = validate_geometry(GEOMETRY)\nPath("geometry.recreated.json").write_text(json.dumps(geometry, indent=2) + "\\n")\ngeometry\n', 'validate-exact-design'),
+        _cell('code', "{material['name']: evaluate_material(material, material['reference_wavelength_um']) for material in geometry.get('materials', [])}\n", 'material-reference-values'),
         _cell('code', 'plot_geometry(geometry)\nplt.show()\n', 'inspect-solids'),
     ])
     files['README.md'] = b'''# Exact geometry Python and notebook export
@@ -304,7 +311,7 @@ rotated solids or every draft can be simulated. Unsupported geometry is not
 replaced by a simpler physical model. The original geometric radii and sizes
 remain exact in JSON; curved display surfaces use a 64-segment mesh.
 
-No server, cloud account, solver license or API key is used. Source hashes,
+Polygon contours and holes are explicit physical coordinates, not a bounding-box approximation.\nMaterial tables, reference wavelengths, citations and component parameters/ports\nare retained. A passive cavity design does not include gain or laser dynamics.\n\nNo server, cloud account, solver license or API key is used. Source hashes,
 application MIT license and dependency credits are included. No local runtime
 paths, private files or credentials are embedded.
 '''

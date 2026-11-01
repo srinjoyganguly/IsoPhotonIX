@@ -1,9 +1,11 @@
 // Node 24 executes TypeScript via native type stripping; no browser or solver required.
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   createGeometryObject, createGeometryTemplate, createSlabPreview,
   parseGeometryDocument, serializeGeometryDocument, validateGeometryDocument,
+  evaluateMaterial, geometryBounds, upgradeToV2, detachComponent,
 } from './src/geometryModel.ts';
 
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -16,6 +18,65 @@ test('every bundled 3D draft round-trips as a distinct format from solver config
     assert.deepEqual(parseGeometryDocument(serializeGeometryDocument(document)), document);
   }
   assert.throws(() => parseGeometryDocument('{"schema_version":1,"core_width_um":0.6}'), /unsupported field|required|different format/);
+});
+
+const shared = JSON.parse(readFileSync(new URL('./geometry-fixtures.json', import.meta.url), 'utf8'));
+
+test('shared v1/v2 fixtures preserve exactly normalized data and independent copies', () => {
+  for (const fixture of shared.valid) {
+    const input = clone(fixture.input);
+    const result = validateGeometryDocument(input);
+    assert.deepEqual(result, fixture.expected, fixture.name);
+    assert.deepEqual(input, fixture.input, 'Validation must not mutate the caller.');
+    assert.deepEqual(parseGeometryDocument(serializeGeometryDocument(result)), result);
+    result.objects[0].position.x = 99;
+    assert.deepEqual(input, fixture.input);
+  }
+});
+
+test('shared invalid topology, material and component records are rejected', () => {
+  for (const fixture of shared.invalid) assert.throws(() => validateGeometryDocument(fixture.input), undefined, fixture.name);
+});
+
+test('tabulated material interpolation is explicit and never extrapolates', () => {
+  const material = shared.valid[1].input.materials[0];
+  assert.deepEqual(evaluateMaterial(material, 1), { n: 2, k: 0 });
+  assert.deepEqual(evaluateMaterial(material, 1.5), { n: 2.5, k: .1 });
+  assert.deepEqual(evaluateMaterial(material, 2), { n: 3, k: .2 });
+  for (const wavelength of [.5, 2.1, 0, NaN, Infinity, true, '1.5']) assert.throws(() => evaluateMaterial(material, wavelength));
+  const constant = shared.valid[5].input.materials[0];
+  assert.deepEqual(evaluateMaterial(constant, 10), { n: .005, k: 0 });
+});
+
+test('off-centre polygon bounds use actual vertices, position and z rotation', () => {
+  const item = clone(shared.valid[1].input.objects[0]);
+  Object.assign(item, { vertices: [{x:1,y:1},{x:3,y:1},{x:3,y:2},{x:1,y:2}], holes: [], position:{x:.5,y:-1,z:.3}, rotation_deg:90, size:{x:999,y:999,z:.4} });
+  const actual = geometryBounds(item);
+  for (const [bound, expected] of [['min',{x:-1.5,y:0,z:.1}],['max',{x:-.5,y:2,z:.5}]]) for (const axis of ['x','y','z']) assert.ok(Math.abs(actual[bound][axis]-expected[axis])<1e-12);
+  const document = clone(shared.valid[1].input); document.objects=[item];
+  assert.equal(validateGeometryDocument(document).objects[0].size.x,999,'Polygon XY comes from vertices, not legacy box dimensions.');
+});
+
+test('v1 upgrading is explicit and manual edits detach all component members', () => {
+  const legacy = createGeometryTemplate('strip'), before = clone(legacy);
+  const upgraded = upgradeToV2(legacy);
+  assert.equal(upgraded.schema_version,2);assert.deepEqual(upgraded.objects,legacy.objects);
+  assert.deepEqual(upgraded.materials,[]);assert.deepEqual(upgraded.components,[]);assert.deepEqual(legacy,before);
+  const component = clone(shared.valid[4].input);
+  const member = clone(component.objects[0]);member.id='second';member.position.x=.2;component.objects.push(member);component.components[0].object_ids.push('second');
+  const detached = detachComponent(component,'core');
+  assert.deepEqual(detached.components,[]);assert.ok(detached.objects.every(o=>o.component_id===undefined));
+  assert.ok(detached.objects.every(o=>o.material_id==='core-material'));
+  assert.equal(component.components.length,1);assert.ok(component.objects.every(o=>o.component_id==='instance-1'));
+  assert.deepEqual(validateGeometryDocument(detached),detached);
+});
+
+test('v2 accepts bounded larger layouts while v1 limits remain unchanged', () => {
+  const document=upgradeToV2(createGeometryTemplate('strip'));
+  document.objects=Array.from({length:512},(_,i)=>createGeometryObject('box',`box-${i}`));
+  assert.equal(validateGeometryDocument(document).objects.length,512);
+  document.objects.push(createGeometryObject('box','too-many'));
+  assert.throws(()=>validateGeometryDocument(document),/512/);
 });
 
 test('slab preview follows validated XY dimensions and identifies its illustrative extrusion', () => {
