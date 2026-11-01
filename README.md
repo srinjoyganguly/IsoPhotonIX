@@ -125,9 +125,9 @@ the route works.
 checks. [Optional browser-test instructions](docs/browser-tests.md) describe the
 separate Playwright setup used for UI verification.
 
-The repository and demo were checked in fresh signed-out browsers. Public video
-playback and seeking worked, with no authentication cookies; the measured
-duration is 86.16 seconds. [Link-check evidence](docs/verification/public-links.json)
+The repository and both videos were checked in fresh signed-out browser contexts.
+Public playback worked without authentication; playback and late seeking were
+verified for the 86.16-second working demo. The Blender film is 24 seconds. [Link-check evidence](docs/verification/public-links-v0.2.json)
 records the observations.
 
 ## Scientific scope and limitations

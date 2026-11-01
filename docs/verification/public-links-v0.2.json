@@ -1,0 +1,154 @@
+{
+  "version": "0.2.0",
+  "published_source_commit": "47c2cfd6b90d9d016361b07ad573a8bc8ae356ee",
+  "checked_at_utc": "2026-11-01T16:23:19.959982+00:00",
+  "browser_environment": {
+    "automation": "Playwright 1.62.1",
+    "browser": "Google Chrome on Windows",
+    "contexts": "Separate fresh isolated contexts, no stored sessions or HTTP credentials; initial cookies empty.",
+    "transport_arguments": [
+      "--no-proxy-server",
+      "--disable-quic",
+      "--disable-http2"
+    ]
+  },
+  "repository": {
+    "url": "https://github.com/srinjoyganguly/photonics-workbench",
+    "http_status": 200,
+    "javascript_enabled": false,
+    "domcontentloaded": true,
+    "public_badge_visible": true,
+    "sign_in_link_visible": true,
+    "readme_visible": true,
+    "file_tree_visible": true,
+    "initial_cookies": [],
+    "screenshot_visually_reviewed": true,
+    "navigation_note": "The first JavaScript-enabled navigation returned HTTP 200 but its body was incomplete after 45 seconds. A separate fresh JavaScript-disabled context loaded the server-rendered public repository and README successfully.",
+    "finished_at_utc": "2026-11-01T16:15:10.825Z",
+    "passed": true
+  },
+  "primary_demo": {
+    "page_url": "https://srinjoyganguly.github.io/photonics-workbench/",
+    "page_status": 200,
+    "video_url": "https://srinjoyganguly.github.io/photonics-workbench/demo.mp4",
+    "media_http_statuses": [
+      206,
+      206
+    ],
+    "duration_seconds": 86.16,
+    "width": 1440,
+    "height": 1000,
+    "opening_playback": {
+      "current_time_seconds": 2.0095,
+      "ready_state": 3,
+      "total_video_frames": 58,
+      "error": null
+    },
+    "late_seek_playback": {
+      "current_time_seconds": 80.0142,
+      "ready_state": 3,
+      "total_video_frames": 294,
+      "error": null
+    },
+    "initial_cookies": [],
+    "final_cookies": [],
+    "published_source_file_sha256": "9bcc541345944a9383d50dbc8585758772131befd8696b57cd85d9724e768c7b",
+    "seek_screenshot_visually_reviewed": true,
+    "network_note": "Media range requests aborted during reload or seeking; subsequent real playback advanced and video.error remained null.",
+    "finished_at_utc": "2026-11-01T16:15:11.056Z",
+    "passed": true
+  },
+  "blender_journey": {
+    "page_url": "https://srinjoyganguly.github.io/photonics-workbench/",
+    "page_status": 200,
+    "video_url": "https://srinjoyganguly.github.io/photonics-workbench/journey-blender.mp4",
+    "direct_url_status": 200,
+    "media_http_responses": [
+      {
+        "status": 200,
+        "range_requested": null,
+        "content_range": null,
+        "content_length": "2318341"
+      },
+      {
+        "status": 206,
+        "range_requested": "bytes=0-",
+        "content_range": "bytes 0-2318340/2318341",
+        "content_length": "2318341"
+      },
+      {
+        "status": 206,
+        "range_requested": "bytes=1015808-",
+        "content_range": "bytes 1015808-2318340/2318341",
+        "content_length": "1302533"
+      }
+    ],
+    "duration_seconds": 24,
+    "width": 1280,
+    "height": 720,
+    "opening_playback_on_page": {
+      "current_time_seconds": 2.0104,
+      "ready_state": 3,
+      "total_video_frames": 4,
+      "error": null
+    },
+    "opening_playback_direct_url": {
+      "current_time_seconds": 2.0185,
+      "ready_state": 3,
+      "seeking": false,
+      "network_state": 2,
+      "paused": false,
+      "total_video_frames": 57,
+      "buffered": [
+        [
+          0,
+          3.553
+        ]
+      ],
+      "error": null
+    },
+    "opening_playback_passed": true,
+    "initial_cookies": [],
+    "published_source_file_sha256": "fd142f6d424429fced6e40c1f1061670a0e1d18118f05efeca4eaa6530cadd25",
+    "late_seek": {
+      "outcome": "inconclusive_on_this_network",
+      "target_seconds": 20,
+      "direct_url_timeout_seconds": 90,
+      "page_timeout_seconds": 120,
+      "last_observed_buffered_ranges": [
+        [
+          0,
+          3.553
+        ],
+        [
+          10.416667,
+          19.492
+        ]
+      ],
+      "last_observed_current_time_seconds": 20,
+      "last_observed_ready_state": 1,
+      "last_observed_seeking": true,
+      "last_observed_media_error": null,
+      "note": "Correct HTTP 206 range response received; buffering progressed toward the requested time but the bounded wait expired. Opening playback was successful. This does not claim successful late seeking or complete playback."
+    },
+    "finished_at_utc": "2026-11-01T16:22:45.349Z"
+  },
+  "editable_blender_assets": {
+    "page_url": "https://srinjoyganguly.github.io/photonics-workbench/",
+    "page_status": 200,
+    "link_url": "https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.2.0/photonics-journey-assets.zip",
+    "link_visible": true,
+    "click_started_download": true,
+    "filename": "photonics-journey-assets.zip",
+    "size_bytes": 820745,
+    "sha256": "c3ded0a22c2731979627046d7c9b44319ee58d271dc2130079ab396ae8b6074d",
+    "matches_local_release_asset": true,
+    "download_failure": null,
+    "authentication_used": false,
+    "initial_cookies": [],
+    "finished_at_utc": "2026-11-01T16:15:23.053Z",
+    "passed": true
+  },
+  "public_access_and_opening_playback_passed": true,
+  "all_supplemental_seek_checks_passed": false
+}

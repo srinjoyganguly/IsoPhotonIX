@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "source_commit": "47c2cfd6b90d9d016361b07ad573a8bc8ae356ee",
+  "release_url": "https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.2.0",
+  "verified_at_utc": "2026-11-01T16:13:01.607741+00:00",
+  "assets": {
+    "photonics-workbench-v0.2.0.zip": {
+      "bytes": 8170915,
+      "sha256": "3b4d633648b13159fcbb894556ee0a7e2747fe35d98d8416f5201677076c289e"
+    },
+    "photonics-journey-assets.zip": {
+      "bytes": 820745,
+      "sha256": "c3ded0a22c2731979627046d7c9b44319ee58d271dc2130079ab396ae8b6074d"
+    }
+  },
+  "extracted_bundle_check": {
+    "production_frontend_present": true,
+    "archive_integrity": "passed",
+    "private_paths_or_handoff_in_filelist": false,
+    "actual_solver_from_extracted_source": "Meep CPU",
+    "actual_device": "CPU",
+    "field_shape": [
+      100,
+      200
+    ],
+    "max_abs_field": 0.32329729199409485,
+    "environment_note": "Separate previously verified API and Meep environments used; no solver binaries bundled."
+  }
+}
