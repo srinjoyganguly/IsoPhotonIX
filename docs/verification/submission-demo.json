@@ -1,0 +1,30 @@
+{
+  "checked_at_utc": "2026-11-01T16:40:44.404294+00:00",
+  "file": "docs/submission-demo.mp4",
+  "public_url": "https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4",
+  "duration_seconds": 70.0,
+  "frames": 1750,
+  "frame_rate": 25,
+  "width": 1440,
+  "height": 1000,
+  "codec": "H264 High yuv420p",
+  "full_decode": "passed",
+  "original_recording": "docs/demo.mp4",
+  "edit": "Retained original recording from 0 to 70 seconds; removed the later Codex endcard. No simulation time cuts or synthetic results.",
+  "visually_checked_source_seconds": [
+    69,
+    70,
+    72,
+    73
+  ],
+  "visually_checked_output_seconds": [
+    0.2,
+    69.96
+  ],
+  "output_first_and_last_frames": "working application; no slide",
+  "export_retained": true,
+  "source_recording_preserved": true,
+  "sha256": "f2b5eb257b7c4429744fabf1d775c3c32a7c5aa5257bacc50478b5912b203fe0",
+  "size_bytes": 3834353,
+  "anonymous_public_check": "pending deployment"
+}

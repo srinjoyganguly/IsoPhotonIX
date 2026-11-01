@@ -9,7 +9,7 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**[Watch the 86.2-second working demo](https://srinjoyganguly.github.io/photonics-workbench/)** — recorded from a real local NVIDIA run, with the solver wait shown in real time. The hosted page plays the video; simulations run locally after installation.
+**[Watch the 70-second submission demo](https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/photonics-workbench/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
 
 The [24-second Blender journey](https://srinjoyganguly.github.io/photonics-workbench/#blender-journey)
 explains the same six steps with an original 3D schematic and actual recorded
