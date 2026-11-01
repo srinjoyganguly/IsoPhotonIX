@@ -26,5 +26,27 @@
   "source_recording_preserved": true,
   "sha256": "f2b5eb257b7c4429744fabf1d775c3c32a7c5aa5257bacc50478b5912b203fe0",
   "size_bytes": 3834353,
-  "anonymous_public_check": "pending deployment"
+  "anonymous_public_check": {
+    "url": "https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4",
+    "checked_at_utc": "2026-11-01T16:42:06.152Z",
+    "initial_cookies": [],
+    "http_status": 200,
+    "metadata": {
+      "duration_seconds": 70,
+      "width": 1440,
+      "height": 1000,
+      "source": "https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4",
+      "error": null
+    },
+    "playback": {
+      "current_time_seconds": 2.0139,
+      "ready_state": 3,
+      "total_video_frames": 58,
+      "error": null
+    },
+    "final_cookies": [],
+    "passed": true,
+    "finished_at_utc": "2026-11-01T16:42:44.373Z",
+    "browser": "Playwright 1.62.1 / Chrome, fresh isolated context"
+  }
 }
