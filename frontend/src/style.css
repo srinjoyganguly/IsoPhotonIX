@@ -7,3 +7,5 @@
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 .assumptions{margin:0 17px 14px}.assumptions summary{color:#9baebd;font-size:10px;cursor:pointer}.assumptions .warning-note{margin:10px 0 0}
+.execution-proof{display:flex;align-items:center;gap:7px;margin:0 18px 14px;font-size:9px;color:#80baa9;line-height:1.5}
+@media(min-width:1001px){.topbar{height:70px}.intro-row{padding:21px 0 20px}.field-canvas{height:230px;aspect-ratio:auto}.viewport-content{padding-top:10px;padding-bottom:6px;min-height:260px}.viewport-title{padding-top:18px}.recommendation{margin:14px 16px;padding:12px}.recommendation p{line-height:1.55}.target-reason{line-height:1.4}.run-control{padding-top:15px}.execution-notes{padding-top:13px;padding-bottom:13px}}

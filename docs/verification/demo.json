@@ -1,0 +1,23 @@
+{
+  "job_id": "b722e5f659854a7786afee1d6d3ca619",
+  "config": {
+    "schema_version": 1,
+    "wavelength_um": 1.55,
+    "core_width_um": 0.8,
+    "core_index": 2,
+    "cladding_index": 1,
+    "length_um": 10,
+    "height_um": 5,
+    "resolution": 20,
+    "duration_fs": 80,
+    "pml_um": 1,
+    "solver": "fdtdx",
+    "device": "gpu"
+  },
+  "solve_completed_video_second": 52.3,
+  "recorded_duration_seconds": 84.01,
+  "solver_wait": "uncut real time",
+  "source": "actual local application",
+  "video_duration_seconds": 84.4,
+  "video_bytes": 4677435
+}

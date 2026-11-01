@@ -1,0 +1,75 @@
+{
+  "job_id": "b4639205ffe54252b38ea6ceab9c756f",
+  "status": "completed",
+  "shape": [
+    100,
+    200
+  ],
+  "max_abs": 1.14091157913208,
+  "export_bytes": 1674887,
+  "metadata": {
+    "solver": "fdtdx",
+    "device": "cpu",
+    "actual_device": "cpu:0",
+    "device_name": "cpu",
+    "versions": {
+      "fdtdx": "0.6.2",
+      "jax": "0.10.2",
+      "jaxlib": "0.10.2",
+      "numpy": "2.4.6"
+    },
+    "field_component": "Ez",
+    "field_units": "arbitrary source units",
+    "grid_shape": [
+      200,
+      100,
+      3
+    ],
+    "field_shape": [
+      100,
+      200
+    ],
+    "precision": "float32",
+    "time_steps": 839,
+    "time_step_fs": 0.09532874347655028,
+    "simulated_time_fs": 79.9808157768257,
+    "setup_seconds": 16.74614226699987,
+    "compile_seconds": 1.284728960000166,
+    "compute_seconds": 1.6783563279998361,
+    "total_seconds": 20.173948955000014,
+    "source": {
+      "type": "finite uniform plane, directed +x, not an eigenmode",
+      "x_um": -3.5,
+      "width_um": 0.6000000000000001,
+      "temporal_profile": "continuous sinusoid, linear turn-on over four periods",
+      "normalization": "unit electric polarization; no energy normalization"
+    },
+    "boundaries": "PML on x/y; three-cell periodic extrusion on z",
+    "assumptions": [
+      "2D invariant dielectric slab via periodic-z extrusion",
+      "Lossless nondispersive isotropic indices",
+      "No flux normalization or transmission claim",
+      "FDTDX plane-source injection differs from Meep electric-current line",
+      "Grid and PML convergence have not been established"
+    ],
+    "max_abs_field": 1.14091157913208,
+    "field_peak_abs": 1.14091157913208,
+    "config": {
+      "schema_version": 1,
+      "wavelength_um": 1.55,
+      "core_width_um": 0.6,
+      "core_index": 2.0,
+      "cladding_index": 1.0,
+      "length_um": 10.0,
+      "height_um": 5.0,
+      "resolution": 20,
+      "duration_fs": 80.0,
+      "pml_um": 1.0,
+      "solver": "fdtdx",
+      "device": "cpu"
+    },
+    "requested_solver": "fdtdx",
+    "requested_device": "cpu"
+  },
+  "verification": "Real HTTP job; finite nonzero fields; exact array equality between field response and exported NPZ; immutable config equality."
+}

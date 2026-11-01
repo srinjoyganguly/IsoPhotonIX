@@ -19,6 +19,8 @@ Evidence in this repository:
 
 The actual API GPU run completed with a 100 × 200 field array, maximum absolute Ez 1.1409116983, and a 1,678,207-byte result ZIP. The archive held the immutable configuration, actual device metadata, numerical arrays, and sanitized run log. Those values describe one measured run, not a general performance promise.
 
+The [initial implementation commit](https://github.com/srinjoyganguly/photonics-workbench/commit/e4d02d9) records the application and verified FDTDX path at 14:54 London time during the event. Subsequent commits record integration and verification work.
+
 ## A review correction that prevented a misleading claim
 
 An independent Codex agent noticed that the recommendation could call FDTDX an “available alternative” even when its probes failed. The implementation now derives that sentence from the readiness results. `tests/test_capabilities.py` verifies the missing-backend case and the no-ready-target case.

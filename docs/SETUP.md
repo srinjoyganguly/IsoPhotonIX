@@ -10,27 +10,43 @@ workers in those interpreters, so Meep's native dependencies and JAX's CUDA
 runtime do not need to share one environment. No environment files or secrets
 need to be uploaded anywhere.
 
-**Verification note:** Initial FDTDX CPU/GPU runs used an existing environment.
-The API environment was assembled from available installed packages plus
-isolated dependencies while package-index access was being diagnosed. The
-standard installation commands below are being checked; installation from a
-completely clean machine has not yet been established. Do not interpret the
-version pins alone as proof of clean installation.
+**Verification note:** The API was installed and tested in fresh isolated
+virtual environments using official PyPI wheels with verified SHA256 hashes.
+Meep was installed into a fresh Conda prefix from official cached packages and
+reproduced the numerical output. FDTDX CPU/GPU verification reused an existing
+environment with recorded versions; a full fresh FDTDX/CUDA installation and
+installation on a different machine have not been established.
 
 ## 1. API environment
 
 From the repository root, using Python 3.11:
 
 ```bash
+git clone https://github.com/srinjoyganguly/photonics-workbench.git
+cd photonics-workbench
 python3.11 -m venv .venv
-.venv/bin/python -m pip install --no-cache-dir -r requirements-api.txt
+.venv/bin/python -m pip install --no-cache-dir --timeout 120 -r requirements-api.txt
 ```
 
 The pinned core packages are FastAPI 0.120.4, Uvicorn 0.38.0, Pydantic 2.13.4,
 Starlette 0.49.3, and NumPy 2.4.6. The requirements file also pins the installed
 test/HTTP dependencies. If pip reports no versions for a known package, check
 the configured package index and network access; do not install a similarly
-named substitute package.
+named substitute package. The ordinary index-based pip command above timed out
+on the event network. The tested fallback fetches the exact interpreter-compatible
+wheels from official PyPI release metadata, verifies their hashes, and installs
+locally:
+
+```bash
+.venv/bin/python scripts/fetch_api_wheels.py
+.venv/bin/python -m pip install --no-index --find-links .local/api-wheelhouse --no-deps -r requirements-api.txt
+.venv/bin/python -m pip check
+.venv/bin/python -m unittest discover -s tests -v
+```
+
+The isolated API suite passed 15 tests with one Meep numerical test skipped
+because Meep lives in a separate interpreter. Its dedicated two-test suite
+passed separately. The API wheelhouse is a local cache and is not committed.
 
 ## 2. Meep CPU environment
 
@@ -40,12 +56,21 @@ package. The unrelated package named `meep` on PyPI is not the solver.
 ```bash
 conda env create -p .local/meep-conda -f environment-meep.yml
 .local/meep-conda/bin/python -c 'import meep; print(meep.__version__)'
-.local/meep-conda/bin/python -m unittest tests.test_meep_smoke -v
+.local/meep-conda/bin/python -m unittest discover -s tests -p test_meep_smoke.py -v
 ```
 
-The selected versions are PyMeep 1.35.0, Python 3.11.18, and NumPy 2.4.6.
+The tested versions are PyMeep 1.35.0, Python 3.11.18, and NumPy 2.4.6.
 The environment location above is detected automatically. To use another
 installation, set `MEEP_PYTHON` to its Python executable before starting the API.
+An exact Linux x86-64 package export is retained in
+[`environment-meep-linux-64.lock`](../environment-meep-linux-64.lock); it records
+all packages and artifact checksums from the tested environment.
+
+The YAML setup was verified in a second, fresh environment prefix using the
+already-downloaded official conda package cache (`--offline`). The shared
+worker ran successfully there and reproduced every exported field, material,
+frame, coordinate, and time array exactly. This establishes fresh-prefix
+installation on the tested WSL machine; it is not a test on another machine.
 
 ## 3. FDTDX CPU or NVIDIA environment
 
@@ -97,7 +122,7 @@ Corepack according to the [official pnpm instructions](https://pnpm.io/installat
 ```bash
 corepack prepare pnpm@11.25.0 --activate
 cd frontend
-corepack pnpm install --frozen-lockfile
+corepack pnpm install --frozen-lockfile --fetch-timeout=600000
 corepack pnpm build
 cd ..
 bash scripts/start.sh
@@ -106,6 +131,12 @@ bash scripts/start.sh
 Open [http://127.0.0.1:8000](http://127.0.0.1:8000). The same process serves the
 built interface and local API. Use `PORT=8001 bash scripts/start.sh` for another
 port. Keep the service local; it is not a multi-user hosted compute service.
+
+The TypeScript check and Vite production build passed with Node 24.22.1 and
+pnpm 11.25.0 on the Windows side of the development machine. The resulting
+static build is served by the WSL Python API. A native Linux Node build remains
+a separate setup check. The longer fetch timeout accommodates slow package
+downloads; it does not alter application runtime behavior.
 
 ## 5. Tests and genuine solver checks
 
@@ -120,7 +151,7 @@ The application environment may skip the real Meep test because that solver
 lives in a different interpreter. Run its dedicated test explicitly:
 
 ```bash
-.local/meep-conda/bin/python -m unittest tests.test_meep_smoke -v
+.local/meep-conda/bin/python -m unittest discover -s tests -p test_meep_smoke.py -v
 ```
 
 FDTDX numerical checks, using a fresh worker process for each device:
@@ -136,10 +167,43 @@ failure is reported as a failure. The checks validate actual finite nonzero
 fields, material arrays, coordinates, recorded frames, and device placement.
 See [FDTDX evidence](FDTDX_VERIFICATION.md) and [Meep details](meep.md).
 
+With the local app running, the HTTP smoke test submits a genuine solver job,
+checks the returned field, and verifies that the exported NumPy data and
+configuration match exactly:
+
+```bash
+.venv/bin/python scripts/smoke_api.py --solver fdtdx --device cpu
+.venv/bin/python scripts/smoke_api.py --solver fdtdx --device gpu
+.venv/bin/python scripts/smoke_api.py --solver meep --device cpu
+```
+
+All three HTTP checks have passed on the development machine. Browser checks
+also passed for Meep CPU, FDTDX CPU, and FDTDX GPU, with an edited 0.65 µm core
+width, invalid-physics feedback, actual field/material views, ZIP export,
+explicit target selection, JSON import, and the saved run retaining its
+original configuration after later edits. Checks at 1440, 1280, and 390 px
+found no horizontal overflow or browser errors.
+
 For the browser check, open the example, change core width, select a ready
 target, run, inspect Ez and material views, export a ZIP, and import its
 configuration. Check the completed metadata against the selected backend and
 device. Editing the current design must not change the saved run metadata.
+
+The optional automated browser check is in `frontend/browser-smoke.cjs` and
+uses Playwright 1.62.1. With the API running and Chromium installed:
+
+```bash
+cd frontend
+corepack pnpm exec playwright install chromium
+PHOTONICS_TEST_TARGET=meep:cpu corepack pnpm test:browser
+PHOTONICS_TEST_TARGET=fdtdx:cpu corepack pnpm test:browser
+PHOTONICS_TEST_TARGET=fdtdx:gpu corepack pnpm test:browser
+```
+
+The event checks used installed Google Chrome via
+`PHOTONICS_BROWSER_CHANNEL=chrome`. Only select installed solver targets;
+these checks start real computations and do not mock field data. Screenshots
+and downloads default to the ignored `frontend/test-results/` directory.
 
 ## Reproduce an export
 

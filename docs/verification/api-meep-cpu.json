@@ -1,0 +1,86 @@
+{
+  "job_id": "0c03d5c6593e4d398f3778b98aba3b7c",
+  "status": "completed",
+  "shape": [
+    100,
+    200
+  ],
+  "max_abs": 0.32329729199409485,
+  "export_bytes": 1368410,
+  "metadata": {
+    "solver": "meep",
+    "device": "cpu",
+    "actual_device": "CPU",
+    "versions": {
+      "meep": "1.35.0",
+      "numpy": "2.4.6",
+      "python": "3.11.18"
+    },
+    "timings": {
+      "initialization_s": 1.2188884839997627,
+      "compute_s": 0.2764910939999936,
+      "export_s": 0.09521205400005783,
+      "total_s": 1.5905916319998141
+    },
+    "field_component": "Ez",
+    "field_units": "arbitrary source amplitude",
+    "field_shape": [
+      100,
+      200
+    ],
+    "field_min": -0.32329729199409485,
+    "field_max": 0.3005189895629883,
+    "field_max_abs": 0.32329729199409485,
+    "frame_count": 25,
+    "actual_duration_fs": 80.0553828475565,
+    "time_steps": 960,
+    "time_step_fs": 0.08339102379953803,
+    "courant_factor": 0.5,
+    "grid_spacing_um": 0.05,
+    "precision": "Meep float64; exported field snapshots float32",
+    "dimensions": "2D (invariant z)",
+    "source": {
+      "type": "uniform electric current line; continuous sinusoid",
+      "component": "Ez",
+      "x_um": -3.5,
+      "y_um": 0,
+      "width_um": 0.6,
+      "wavelength_um": 1.55,
+      "amplitude": 1,
+      "eigenmode": false,
+      "startup_periods": 4,
+      "temporal_profile": "-cos(2*pi*t/T) * clip(t/(4*T), 0, 1)"
+    },
+    "boundaries": {
+      "x": "PML",
+      "y": "PML",
+      "z": "invariant",
+      "pml_um": 1.0
+    },
+    "notes": [
+      "Nondispersive, lossless isotropic dielectric slab.",
+      "Finite-time field snapshot; no convergence or transmission claim.",
+      "Meep injects an electric current line, unlike FDTDX's directed E/H plane source.",
+      "Absolute field amplitudes across the two solvers are not directly comparable.",
+      "The field map includes the absorbing PML region."
+    ],
+    "field_peak_abs": 0.32329729199409485,
+    "config": {
+      "schema_version": 1,
+      "wavelength_um": 1.55,
+      "core_width_um": 0.6,
+      "core_index": 2.0,
+      "cladding_index": 1.0,
+      "length_um": 10.0,
+      "height_um": 5.0,
+      "resolution": 20,
+      "duration_fs": 80.0,
+      "pml_um": 1.0,
+      "solver": "meep",
+      "device": "cpu"
+    },
+    "requested_solver": "meep",
+    "requested_device": "cpu"
+  },
+  "verification": "Real HTTP job; finite nonzero fields; exact array equality between field response and exported NPZ; immutable config equality."
+}

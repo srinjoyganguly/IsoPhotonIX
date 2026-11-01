@@ -38,6 +38,12 @@ const { chromium } = require('playwright');
     assert.equal(await page.getByRole('tab', {name:'Ez field'}).getAttribute('aria-selected'), 'true');
     await page.locator('.field-canvas').hover();
     await page.screenshot({path:path.join(output,'02-real-fields.png'),fullPage:true});
+    for(const [width,height] of [[1280,900],[390,844]]) {
+      await page.setViewportSize({width,height});
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'Layout must not overflow horizontally.');
+      await page.screenshot({path:path.join(output,`layout-${width}.png`),fullPage:true});
+    }
+    await page.setViewportSize({width:1440,height:1000});
     await page.getByRole('tab', {name:'Material grid'}).click();
     await page.screenshot({path:path.join(output,'03-material-grid.png'),fullPage:true});
     await page.getByRole('tab', {name:'Ez field'}).click();
@@ -52,8 +58,13 @@ const { chromium } = require('playwright');
     assert.ok((await page.locator('.run-facts').textContent()).includes('0.65 µm'),'Editing must preserve the run snapshot.');
     await page.getByRole('button',{name:'Open bundled example'}).click();
     assert.equal(await run.isDisabled(),true,'Opening an example must require explicit target confirmation.');
+    await page.locator('input[type="file"]').setInputFiles({name:'partial-config.json',mimeType:'application/json',buffer:Buffer.from('{"wavelength_um":1.6}')});
+    await page.getByText('Configuration imported.',{exact:false}).waitFor();
+    assert.equal(await page.getByLabel('Wavelength',{exact:true}).inputValue(),'1.6');
+    assert.equal(await page.getByLabel('Core width',{exact:true}).inputValue(),'0.6','Partial imports must retain schema defaults.');
+    assert.equal(await run.isDisabled(),true,'Imports must require explicit execution target confirmation.');
     assert.deepEqual(errors,[],'Browser must not produce uncaught exceptions.');
-    const report={passed:true,target,checks:['explicit target required','physical validation','edited configuration run','actual field canvas','discretized material view','ZIP export','immutable run configuration','example reset clears target'],browser_errors:errors};
+    const report={passed:true,target,checks:['explicit target required','physical validation','edited configuration run','actual field canvas','responsive layouts','discretized material view','ZIP export','immutable run configuration','example reset clears target','partial import uses defaults and clears target'],browser_errors:errors};
     fs.writeFileSync(path.join(output,'browser-smoke.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report));
   } finally { await browser.close(); }

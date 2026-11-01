@@ -191,7 +191,8 @@ export default function App() {
       if(!parsed || typeof parsed!=='object' || Array.isArray(parsed))throw new Error('Expected a configuration JSON object.');
       const value={...defaults,...parsed} as Config;
       await request<Validation>('/api/validate',value);
-      setConfig(value);setTarget('');setView('geometry');setNotice('Configuration imported. Explicitly select the execution target.');setError('');
+      const normalized=Object.fromEntries(Object.entries(value).map(([key,item])=>[key,typeof defaults[key as keyof Config]==='number'?Number(item):item])) as Config;
+      setConfig(normalized);setTarget('');setView('geometry');setNotice('Configuration imported. Explicitly select the execution target.');setError('');
     }catch(e){setError(`Import failed: ${(e as Error).message}`);}
     if(fileRef.current)fileRef.current.value='';
   }
@@ -201,6 +202,8 @@ export default function App() {
   const rec=capabilities.recommendation;
   const logs=Array.isArray(job?.logs)?job.logs.join('\n'):job?.logs || '';
   const resultMetadata=field?.metadata || job?.result || {};
+  const executionDevice=resultMetadata.device_name || resultMetadata.actual_device;
+  const executionVersions=resultMetadata.versions as Record<string,string>|undefined;
   return <div className="app-shell">
     <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">EXAMPLE / 01</span><strong>Dielectric slab waveguide</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.1 · experimental</span></div></header>
     <div className="intro-row"><div><span className="eyebrow">FROM GEOMETRY TO FIELD</span><h1>A small waveguide. Real physics.</h1><p>Configure the model, choose your hardware, and see what propagates.</p></div><button className="button secondary open-example" onClick={openExample} disabled={!loaded || !!busy}><Symbol kind="folder"/>Open bundled example</button></div>
@@ -226,7 +229,7 @@ export default function App() {
           <div className="panel-heading"><div><span className="step">03</span><h2>Inspect & export</h2></div>{job&&<span className={`status-tag ${job.status}`}><i/>{job.status}</span>}</div>
           {job?<><div className="run-facts"><div><span>RUN</span><strong className="mono">{job.id.slice(0,10)}</strong></div><div><span>SOLVER / TARGET</span><strong>{name(job.config.solver)} / {job.config.device.toUpperCase()}</strong></div><div><span>WAVELENGTH</span><strong>{job.config.wavelength_um} µm</strong></div><div><span>CORE WIDTH</span><strong>{job.config.core_width_um} µm</strong></div></div>
             {currentDiffers&&<div className="snapshot-note">The editor has changed. This run retains the configuration shown above.</div>}
-            {job.status==='completed'&&<div className="result-actions"><a className="button primary compact" href={`/api/jobs/${job.id}/export`}><Symbol kind="download" size={16}/>Export results .zip</a><span>Configuration · numerical arrays · provenance</span></div>}
+            {job.status==='completed'&&<>{!!executionDevice&&<div className="execution-proof"><Symbol kind="check" size={13}/><span>Executed on {String(executionDevice)}{executionVersions?.[job.config.solver]&&` · ${name(job.config.solver)} ${executionVersions[job.config.solver]}`}</span></div>}<div className="result-actions"><a className="button primary compact" href={`/api/jobs/${job.id}/export`}><Symbol kind="download" size={16}/>Export results .zip</a><span>Configuration · numerical arrays · provenance</span></div></>}
             {job.error&&<div className="error-banner" role="alert">{job.error}</div>}
             {!!Object.keys(resultMetadata).length&&<details className="metadata"><summary>Run metadata & solver versions</summary><pre>{JSON.stringify(resultMetadata,null,2)}</pre></details>}
           </>:<div className="empty-results"><span className="empty-symbol"><Symbol kind="wave" size={30}/></span><div><strong>Your first field starts here.</strong><p>Run the waveguide to inspect real electromagnetic data and export a reproducible result.</p></div></div>}

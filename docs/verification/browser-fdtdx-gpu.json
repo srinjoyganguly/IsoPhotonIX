@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "target": "fdtdx:gpu",
+  "checks": [
+    "explicit target required",
+    "physical validation",
+    "edited configuration run",
+    "actual field canvas",
+    "responsive layouts",
+    "discretized material view",
+    "ZIP export",
+    "immutable run configuration",
+    "example reset clears target",
+    "partial import uses defaults and clears target"
+  ],
+  "browser_errors": []
+}

@@ -14,11 +14,16 @@ template was copied. The interface uses original CSS, SVG icons, and canvas
 drawings with system fonts. Commercial photonics tools informed the broad
 workflow idea; their branding, screenshots, and assets are not included.
 
+The demonstration is an original recording of this application using Google
+Chrome and Playwright 1.62.1, encoded with FFmpeg 7.0.2. No browser, recorder, or
+encoder binaries are redistributed. The recording includes actual solver
+execution and output; its end card describes the tested Codex contribution.
+
 ## Numerical engines
 
 | Component | Version used or selected | Role | Upstream license/source |
 | --- | --- | --- | --- |
-| Meep / PyMeep | 1.35.0 selected from conda-forge; verification pending | Native 2D CPU FDTD | [GPL-2.0-or-later](https://github.com/NanoComp/meep/blob/master/src/meep.hpp), [license text](https://github.com/NanoComp/meep/blob/master/LICENSE) |
+| Meep / PyMeep | 1.35.0, conda-forge serial build | Native 2D CPU FDTD | [GPL-2.0-or-later](https://github.com/NanoComp/meep/blob/master/src/meep.hpp), [license text](https://github.com/NanoComp/meep/blob/master/LICENSE) |
 | FDTDX | 0.6.2 | CPU/CUDA FDTD with thin periodic extrusion | [MIT](https://github.com/ymahlau/fdtdx/blob/main/LICENSE) |
 | JAX / JAXlib | 0.10.2 | Array execution and compilation | [Apache-2.0](https://github.com/jax-ml/jax/blob/main/LICENSE) |
 | JAX CUDA12 plugin / PJRT | 0.10.2 | CUDA execution integration | [JAX source and license](https://github.com/jax-ml/jax) |
@@ -28,6 +33,8 @@ Meep's source header explicitly permits GPL version 2 or later. The MIT license
 for this application's own code does not replace the licenses of Meep, its
 dependencies, or any other external component. Solver environments and vendor
 binaries are not committed to the source repository.
+The [GPL text supplied with PyMeep 1.35.0](docs/licenses/MEEP-GPL-2.0.txt)
+is retained verbatim; its conda package metadata declares GPL-2.0-or-later.
 
 The tested CUDA route also loads NVIDIA libraries, including CUDA runtime
 12.9.79, CUDA NVCC 12.9.86, cuDNN 9.24.0.43, cuBLAS 12.9.2.10, and NCCL 2.30.7.
@@ -55,10 +62,13 @@ solver. Dependency licenses remain with their respective copyright holders.
 | Uvicorn | 0.38.0 | [BSD-3-Clause](https://github.com/encode/uvicorn/blob/main/LICENSE.md) |
 | Starlette | 0.49.3 | [BSD-3-Clause](https://github.com/encode/starlette/blob/main/LICENSE.md) |
 | HTTPX | 0.28.1 | [BSD-3-Clause](https://github.com/encode/httpx/blob/master/LICENSE.md) |
+| Playwright (browser tests) | 1.62.1 | [Apache-2.0](https://github.com/microsoft/playwright/blob/main/LICENSE) |
 
 Package metadata, lockfiles, and upstream repositories identify additional
 transitive dependencies and their notices. Retain their notices when
 redistributing built bundles or environments.
+The frontend's runtime MIT notices are retained in
+[frontend/THIRD_PARTY_NOTICES.txt](frontend/THIRD_PARTY_NOTICES.txt).
 
 ## Documentation used
 

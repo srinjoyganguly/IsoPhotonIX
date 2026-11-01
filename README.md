@@ -9,6 +9,12 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
+**[Watch the 84.4-second working demo](https://srinjoyganguly.github.io/photonics-workbench/)** — recorded from a real local NVIDIA run, with the solver wait shown in real time. The hosted page plays the video; simulations run locally after installation.
+
+![Actual FDTDX GPU field and execution metadata in the workbench](docs/application.png)
+
+[Public source repository](https://github.com/srinjoyganguly/photonics-workbench)
+
 ## The complete journey
 
 1. Open the bundled slab-waveguide example.
@@ -36,7 +42,7 @@ separate API and solver environments, then:
 
 ```bash
 cd frontend
-corepack pnpm install --frozen-lockfile
+corepack pnpm install --frozen-lockfile --fetch-timeout=600000
 corepack pnpm build
 cd ..
 bash scripts/start.sh
@@ -63,20 +69,32 @@ solver lives outside the default project-local environment.
 | FDTDX 0.6.2 / JAX 0.10.2 on CPU | Real default and edited-width waveguides passed; finite nonzero fields and correct material arrays |
 | FDTDX 0.6.2 / JAX 0.10.2 on NVIDIA | Real default waveguide passed on RTX 3080 Ti Laptop GPU, 16 GB; actual CUDA placement checked |
 | GPU unavailable/fallback guard | GPU-blocked execution failed explicitly; no CPU retry |
-| Meep CPU | Adapter implemented; official conda-forge environment installation and real-run verification in progress |
-| Browser journey and export | Integration verification in progress |
-| Installation from a clean environment | In progress; initial FDTDX verification reused an existing environment |
+| Meep 1.35.0 on CPU | Real shared-worker default and edited-width waveguides passed; finite nonzero propagated fields, material/coordinate checks, and explicit GPU rejection |
+| Frontend build | TypeScript check and Vite production build passed using Node 24.22.1 / pnpm 11.25.0 |
+| HTTP journey and export | Meep CPU, FDTDX CPU, and FDTDX GPU passed; exported arrays exactly matched the field API; config and target metadata matched |
+| Browser journey on all three routes | Real edited-width runs, invalid-input feedback, field/material views, ZIP export, explicit selection, JSON import, and immutable run snapshots checked |
+| Failure and cancellation | Unit/API checks passed; a cancelled worker cannot return a completed field or result export |
+| Responsive interface | Browser checks passed at 1440, 1280, and 390 px with no overflow or browser errors |
+| Meep fresh-environment setup | Documented YAML created a fresh prefix from cached official packages; real worker output matched the first environment exactly |
+| API clean install | Fresh isolated virtual environments installed from SHA256-verified official PyPI wheels; dependency check passed; 15 application tests passed with the separately tested Meep case skipped |
+| FDTDX clean install | Not yet established; numerical verification used an existing environment with recorded versions |
 
 [FDTDX verification](docs/FDTDX_VERIFICATION.md) records the exact measured
-times, devices, and numerical checks. The first default FDTDX runs took about
+times, devices, and numerical checks. The first default Meep run took about
+1.8 seconds inside the adapter; the first default FDTDX runs took about
 16.4 seconds on CPU and 17.9 seconds on GPU including imports, setup, main-loop
 compilation, execution, and export. These are single-run observations on one
 machine, not a GPU speedup claim. Small jobs can spend more time compiling than
-solving. The [Meep adapter notes](docs/meep.md) describe its model and real tests.
+solving. The [Meep adapter notes](docs/meep.md) and
+[recorded metadata](docs/verification/meep-cpu.json) describe its model and tests.
 
 Run the focused application tests and dedicated numerical checks as described
 in [setup and testing](docs/SETUP.md). A skipped solver test is not evidence that
 the route works.
+
+[HTTP, browser, cancellation, and demo evidence](docs/verification/) records the
+checks. [Optional browser-test instructions](docs/browser-tests.md) describe the
+separate Playwright setup used for UI verification.
 
 ## Scientific scope and limitations
 

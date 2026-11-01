@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Photonics Workbench: a real local waveguide simulation journey using Meep and FDTDX, with explicit CPU and NVIDIA GPU execution.">
+  <title>Photonics Workbench — local simulation, visible physics</title>
+  <style>
+    :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#0b1119;color:#e8edf3}*{box-sizing:border-box}body{margin:0}main{max-width:1080px;margin:auto;padding:52px 24px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:64px}.brand{font-weight:750;letter-spacing:-.5px}.tag{font:11px ui-monospace,monospace;color:#65d7bd;border:1px solid #29453f;padding:8px 12px;border-radius:30px}h1{max-width:800px;font-size:clamp(34px,6vw,62px);letter-spacing:-2px;line-height:1.08;margin:16px 0 24px}p{color:#aab8c7;line-height:1.7;max-width:780px}.eyebrow{font-size:11px;letter-spacing:2px;color:#65d7bd}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 38px}a{color:#76dec8}a.button{display:inline-block;padding:12px 18px;border:1px solid #304355;border-radius:7px;text-decoration:none;font-weight:600}.primary{background:#72dfc8;color:#09261e!important;border-color:#72dfc8!important}video{width:100%;background:#101a26;border:1px solid #344657;border-radius:12px;display:block}.caption{font-size:13px;color:#8e9ead;margin:12px 0 34px}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0}.fact{border-top:1px solid #2a3948;padding-top:18px}.fact strong{display:block;font-size:17px}.fact p{font-size:13px;margin-top:8px}footer{border-top:1px solid #263542;margin-top:42px;padding-top:20px;font-size:12px;color:#8e9ead}@media(max-width:620px){header{margin-bottom:40px}.facts{grid-template-columns:1fr}main{padding-top:28px}.tag{font-size:9px}h1{letter-spacing:-1px}}
+  </style>
+</head>
+<body><main>
+  <header><div class="brand">photonics / workbench</div><span class="tag">LOCAL COMPUTE · OPEN SOURCE</span></header>
+  <div class="eyebrow">DEVDAY EXCHANGE LONDON · 1 NOVEMBER 2026</div>
+  <h1>A small waveguide.<br>Real physics.</h1>
+  <p>For photonics students, researchers, and engineers: edit a dielectric slab, understand the solver recommendation, explicitly choose CPU or NVIDIA GPU, and inspect the electromagnetic fields computed on your own machine.</p>
+  <div class="actions"><a class="button primary" href="https://github.com/srinjoyganguly/photonics-workbench">Source & setup ↗</a><a class="button" href="https://github.com/srinjoyganguly/photonics-workbench/blob/main/CODEX_USAGE.md">How Codex helped ↗</a></div>
+  <video controls playsinline preload="metadata" poster="application.png" aria-label="Recorded demonstration of the working local photonics application"><source src="demo.mp4" type="video/mp4">Your browser cannot play this video. <a href="demo.mp4">Download the demonstration.</a></video>
+  <p class="caption">A recording of the local application and its actual solver output. This page hosts the video; install the repository to run simulations on your own CPU or GPU.</p>
+  <div class="facts"><div class="fact"><strong>One complete journey</strong><p>Bundled example → validated parameters → explained solver choice → explicit device → real fields → reproducible export.</p></div><div class="fact"><strong>Inspectable execution</strong><p>Every run retains its configuration, solver versions, actual execution target, numerical arrays, and logs. Unavailable GPU requests fail visibly.</p></div><div class="fact"><strong>Honest scientific scope</strong><p>A lossless 2D slab demonstration. No claims of converged accuracy, normalized transmission, or commercial-tool parity.</p></div></div>
+  <footer>New application code built during the event. <a href="https://github.com/srinjoyganguly/photonics-workbench/blob/main/CREDITS.md">Libraries, notices & credits</a> · <a href="https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/PROVENANCE.md">Build provenance</a></footer>
+</main></body>
+</html>

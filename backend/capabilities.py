@@ -21,6 +21,8 @@ def _probe(target):
         if run.returncode or not lines:
             return {**base, "reason": clean_log((run.stderr or run.stdout)[-1800:]) or "Solver probe failed."}
         return {**base, **json.loads(lines[-1])}
+    except FileNotFoundError:
+        return {**base, "reason": f"{solver.title()} interpreter not found. Install its documented environment or set {solver.upper()}_PYTHON to its Python executable."}
     except Exception as exc:
         return {**base, "reason": clean_log(str(exc))}
 

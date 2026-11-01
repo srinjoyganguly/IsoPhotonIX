@@ -29,5 +29,8 @@ if __name__ == "__main__":
     try:
         result = {"available": True, **probe(*sys.argv[1:3])}
     except Exception as exc:
-        result = {"available": False, "reason": f"{type(exc).__name__}: {exc}"}
+        detail = str(exc).strip() or type(exc).__name__
+        if sys.argv[1:3] == ["fdtdx", "gpu"]:
+            detail = "CUDA could not initialize. Check JAX/CUDA packages, the NVIDIA driver, and WSL GPU access. No CPU fallback was attempted. " + detail
+        result = {"available": False, "reason": detail}
     print("PROBE_JSON="+json.dumps(result))

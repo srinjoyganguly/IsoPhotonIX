@@ -1,0 +1,75 @@
+{
+  "job_id": "8ef75b15f2874b8f82b38633ef6b982a",
+  "status": "completed",
+  "shape": [
+    100,
+    200
+  ],
+  "max_abs": 1.1409116983413696,
+  "export_bytes": 1678207,
+  "metadata": {
+    "solver": "fdtdx",
+    "device": "gpu",
+    "actual_device": "cuda:0",
+    "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "versions": {
+      "fdtdx": "0.6.2",
+      "jax": "0.10.2",
+      "jaxlib": "0.10.2",
+      "numpy": "2.4.6"
+    },
+    "field_component": "Ez",
+    "field_units": "arbitrary source units",
+    "grid_shape": [
+      200,
+      100,
+      3
+    ],
+    "field_shape": [
+      100,
+      200
+    ],
+    "precision": "float32",
+    "time_steps": 839,
+    "time_step_fs": 0.09532874347655028,
+    "simulated_time_fs": 79.9808157768257,
+    "setup_seconds": 21.23924269200006,
+    "compile_seconds": 1.2755243670001164,
+    "compute_seconds": 0.6534405259999403,
+    "total_seconds": 23.69891900499988,
+    "source": {
+      "type": "finite uniform plane, directed +x, not an eigenmode",
+      "x_um": -3.5,
+      "width_um": 0.6000000000000001,
+      "temporal_profile": "continuous sinusoid, linear turn-on over four periods",
+      "normalization": "unit electric polarization; no energy normalization"
+    },
+    "boundaries": "PML on x/y; three-cell periodic extrusion on z",
+    "assumptions": [
+      "2D invariant dielectric slab via periodic-z extrusion",
+      "Lossless nondispersive isotropic indices",
+      "No flux normalization or transmission claim",
+      "FDTDX plane-source injection differs from Meep electric-current line",
+      "Grid and PML convergence have not been established"
+    ],
+    "max_abs_field": 1.1409116983413696,
+    "field_peak_abs": 1.1409116983413696,
+    "config": {
+      "schema_version": 1,
+      "wavelength_um": 1.55,
+      "core_width_um": 0.6,
+      "core_index": 2.0,
+      "cladding_index": 1.0,
+      "length_um": 10.0,
+      "height_um": 5.0,
+      "resolution": 20,
+      "duration_fs": 80.0,
+      "pml_um": 1.0,
+      "solver": "fdtdx",
+      "device": "gpu"
+    },
+    "requested_solver": "fdtdx",
+    "requested_device": "gpu"
+  },
+  "verification": "Real HTTP job; finite nonzero fields; exact array equality between field response and exported NPZ; immutable config equality."
+}
