@@ -16,3 +16,5 @@ and NVIDIA. [Field runs](LAYOUT_FIELDS.md#verification).
 An item is qualified only for the dimensionality, geometry, target and observables
 identified in its measurement record. Versioned Python/notebook exports and
 the local package are part of the delivery checks.
+
+[Matched Lumerical and local Tidy3D port-mode measurements](CALIBRATED_VENDOR_CHECKS.md).

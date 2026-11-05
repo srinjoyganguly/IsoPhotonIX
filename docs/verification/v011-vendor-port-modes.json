@@ -1,0 +1,219 @@
+{
+  "solver": "Tidy3D installed local CPU mode solver",
+  "version": "2.11.2",
+  "wavelength_um": 1.55,
+  "references": {
+    "lumerical_coupler": "https://optics.ansys.com/hc/en-us/articles/360042304694-Evanescent-waveguide-couplers",
+    "lumerical_slab": "https://optics.ansys.com/hc/en-us/articles/1500007378182-Inverse-design-of-an-efficient-narrow-band-grating-coupler",
+    "tidy3d": "https://www.flexcompute.com/tidy3d/examples/notebooks/ModalSourcesMonitors/"
+  },
+  "cases": {
+    "lumerical-slab": [
+      {
+        "mesh_um": 0.0125,
+        "modes": {
+          "even": {
+            "neff": 2.827416261649846,
+            "polarization_fraction": 1.0,
+            "parity_overlap": 1.0000000000000002
+          }
+        }
+      },
+      {
+        "mesh_um": 0.00625,
+        "modes": {
+          "even": {
+            "neff": 2.8475911633530373,
+            "polarization_fraction": 1.0,
+            "parity_overlap": 0.9999999999999997
+          }
+        }
+      },
+      {
+        "mesh_um": 0.003125,
+        "modes": {
+          "even": {
+            "neff": 2.8576361645656374,
+            "polarization_fraction": 1.0,
+            "parity_overlap": 0.9999999999999998
+          }
+        }
+      }
+    ],
+    "multimode": [
+      {
+        "mesh_um": 0.0125,
+        "modes": {
+          "even": {
+            "neff": 3.181314142894027,
+            "polarization_fraction": 1.0,
+            "parity_overlap": 0.9999999999999996
+          },
+          "odd": {
+            "neff": 2.197615065252373,
+            "polarization_fraction": 1.0,
+            "parity_overlap": -1.0
+          }
+        }
+      },
+      {
+        "mesh_um": 0.00625,
+        "modes": {
+          "even": {
+            "neff": 3.1737759719394374,
+            "polarization_fraction": 1.0,
+            "parity_overlap": 1.0000000000000002
+          },
+          "odd": {
+            "neff": 2.1648073449238234,
+            "polarization_fraction": 1.0,
+            "parity_overlap": -1.0000000000000002
+          }
+        }
+      },
+      {
+        "mesh_um": 0.003125,
+        "modes": {
+          "even": {
+            "neff": 3.170017527450429,
+            "polarization_fraction": 1.0,
+            "parity_overlap": 0.9999999999999998
+          },
+          "odd": {
+            "neff": 2.14854836810846,
+            "polarization_fraction": 1.0,
+            "parity_overlap": -0.9999999999999998
+          }
+        }
+      }
+    ],
+    "lumerical-coupler": [
+      {
+        "mesh_um": 0.025,
+        "modes": {
+          "even": {
+            "neff": 2.4087277486396736,
+            "polarization_fraction": 0.8154601389071405,
+            "parity_overlap": 0.979950996980052
+          },
+          "odd": {
+            "neff": 2.343617783392185,
+            "polarization_fraction": 0.7102572140664066,
+            "parity_overlap": -0.9705943829437478
+          }
+        },
+        "transfer_length_um": 11.902939850361724
+      },
+      {
+        "mesh_um": 0.0125,
+        "modes": {
+          "even": {
+            "neff": 2.3897475313222687,
+            "polarization_fraction": 0.8168901941890511,
+            "parity_overlap": 0.991523520724757
+          },
+          "odd": {
+            "neff": 2.3298843954728334,
+            "polarization_fraction": 0.6996827473419526,
+            "parity_overlap": -0.9840685259383392
+          }
+        },
+        "transfer_length_um": 12.946197839505786
+      }
+    ],
+    "workbench-coupler": [
+      {
+        "mesh_um": 0.025,
+        "modes": {
+          "even": {
+            "neff": 2.644767346361834,
+            "polarization_fraction": 0.8124517212117404,
+            "parity_overlap": 0.9900397127178466
+          },
+          "odd": {
+            "neff": 2.6130580307628897,
+            "polarization_fraction": 0.7408484656716551,
+            "parity_overlap": -0.9952710621650958
+          }
+        },
+        "transfer_length_um": 24.440767180285555
+      },
+      {
+        "mesh_um": 0.0125,
+        "modes": {
+          "even": {
+            "neff": 2.6218444260916187,
+            "polarization_fraction": 0.8216319331220695,
+            "parity_overlap": 0.9999999999999993
+          },
+          "odd": {
+            "neff": 2.5913403244056226,
+            "polarization_fraction": 0.7515447141925121,
+            "parity_overlap": -1.000000000000001
+          }
+        },
+        "transfer_length_um": 25.40641937198195
+      }
+    ],
+    "multimode-3d": [
+      {
+        "mesh_um": 0.025,
+        "modes": {
+          "even": {
+            "neff": 2.8799035299296043,
+            "polarization_fraction": 0.9146194056531536,
+            "parity_overlap": 0.9988311181434633
+          },
+          "odd": {
+            "neff": 2.472638424296654,
+            "polarization_fraction": 0.6858944674826342,
+            "parity_overlap": -0.9937617940514512
+          }
+        }
+      },
+      {
+        "mesh_um": 0.0125,
+        "modes": {
+          "even": {
+            "neff": 2.848861266793435,
+            "polarization_fraction": 0.9164430617148175,
+            "parity_overlap": 1.0000000000000004
+          },
+          "odd": {
+            "neff": 2.4453678729787485,
+            "polarization_fraction": 0.6917449690622216,
+            "parity_overlap": -0.9999999999999988
+          }
+        }
+      }
+    ]
+  },
+  "direct_published_comparisons": {
+    "lumerical-slab": {
+      "even": {
+        "published_Lumerical": 2.84825,
+        "measured_Tidy3D_local": 2.8576361645656374,
+        "relative_difference": 0.0032954145758403346
+      }
+    },
+    "lumerical-coupler": {
+      "even": {
+        "published_Lumerical": 2.378022,
+        "measured_Tidy3D_local": 2.3897475313222687,
+        "relative_difference": 0.004930791776639834
+      },
+      "odd": {
+        "published_Lumerical": 2.317864,
+        "measured_Tidy3D_local": 2.3298843954728334,
+        "relative_difference": 0.005185979622977573
+      },
+      "transfer_length_um": {
+        "published_Lumerical": 12.8827,
+        "measured_Tidy3D_local": 12.946197839505786,
+        "relative_difference": 0.004928923246352526
+      }
+    }
+  },
+  "qualification": "Local Tidy3D 2.11.2 CPU mode solver, double precision, unsmoothed uniform grids. Each reported parity uses both sides of a mode on mirrored physical coordinates. These are cross-section results, not a vendor FDTD scattering matrix.",
+  "source_sha256": "5b02f2ab65c2b3cfab65ec2a8a1882fb4a2d6d6f2c5e5937e06aa66a6e699e48"
+}
