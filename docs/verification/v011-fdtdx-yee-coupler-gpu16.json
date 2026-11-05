@@ -487,7 +487,7 @@
   "mirror_symmetry_max_guided_power_delta": 6.936910881494285e-06,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T23:04:04.856030+00:00",
+  "checked_at": "2026-11-05T23:44:45.946653+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -684,5 +684,24 @@
     "source": "v011-meep-multiport-coupler-electric.json",
     "source_sha256": "eba899e783e5b20a4750fdbfe753304f813172a1cd70df081b09c9b0e28616ac",
     "phase_convention_version": 2
+  },
+  "mesh_control": {
+    "complex_s_relative_l2": 0.9385581623226746,
+    "max_complex_s_difference": 0.9687998880942923,
+    "max_modal_power_difference": 0.07205623221714208,
+    "center_input0_guided_power_first": [
+      0.011013033046424635,
+      0.0011429565449616779,
+      0.7917707889355374,
+      0.07670412186653465
+    ],
+    "center_input0_guided_power_second": [
+      0.0008281237397294939,
+      6.40203553562594e-05,
+      0.769602479636342,
+      0.026591594635544717
+    ],
+    "other_resolution": 12,
+    "other_array_sha256": "f1a3f621a33d1e96114337a8ae6270e778d5b0631d9bfebdba952dbeef798d7a"
   }
 }

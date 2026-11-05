@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "wheel_content_equal_after_sdist_rebuild": true,
+  "equal_archive_entries": 104,
+  "wheel_sha256": "5e4d2b37f891ce3befd150cb9aa1ada8b17de346de4890d6e06f9ac51d801bdb",
+  "source_sha256": "ad2b6999dbb459329d56e3ec603af2983afb41b888c4347d5afbe802daeb6f44",
+  "release": "https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a1",
+  "anonymous_download_sha256": "5e4d2b37f891ce3befd150cb9aa1ada8b17de346de4890d6e06f9ac51d801bdb",
+  "source_commit": "518ccfecfc1169f063ca303beac2e59ded60fe3f"
+}

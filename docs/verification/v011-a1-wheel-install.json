@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-11-05T23:49:04.569478+00:00",
+  "passed": true,
+  "wheel": "photonics_workbench-0.11.0a1-py3-none-any.whl",
+  "wheel_sha256": "5e4d2b37f891ce3befd150cb9aa1ada8b17de346de4890d6e06f9ac51d801bdb",
+  "wheel_bytes": 650249,
+  "installed_from_offline_wheelhouse": true,
+  "calibrated_program_exports": 6,
+  "installed_grating_coupling": 0.5823413107152661,
+  "recorded_same_mesh_coupling": 0.5823413109784932,
+  "calibrated_cli_result_bundle_verified": true,
+  "export_found_registered_interpreter": true,
+  "cavity_four_modes_equal_to_packaged_reference": true,
+  "installed_port_alignment": true,
+  "pip_check": true,
+  "doctor_meep_ready": true,
+  "served_frontend_assets": [
+    "/assets/index-fnXjcqw4.js",
+    "/assets/index-DWgLevR9.css"
+  ],
+  "catalog_families": 27,
+  "benchmark_data": true,
+  "job_id": "7facfefbf8304b93a7d7b2fcdc82be44",
+  "actual_device": "CPU",
+  "field_shape_zyx": [
+    42,
+    72,
+    118
+  ],
+  "state_separate_from_package": true,
+  "exclusive_store": true,
+  "saved_run_after_restart": true,
+  "cli_run_all_arrays_exact": true,
+  "standalone_python_all_arrays_exact": true,
+  "solver_versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "state": "Fresh disposable user state and virtual environment."
+}
