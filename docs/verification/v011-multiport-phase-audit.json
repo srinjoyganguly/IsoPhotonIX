@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T22:42:13.678320+00:00",
+  "geometry": "The central launch straight guide of the shared three-port splitter, silicon .5 x .25 \u00b5m in homogeneous cladding; +x propagation. The time-domain fields were simulated independently with the two numerical engines.",
+  "resolution_cells_per_um": 16,
+  "forward_x_um": [
+    -4.75,
+    4.75
+  ],
+  "shortened_x_um": [
+    -4.6875,
+    4.6875
+  ],
+  "distance_um": 9.5,
+  "shorten_each_side_um": 0.0625,
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "convention": "Fields use exp(-i\u03c9t), native DFT accumulation uses exp(+i\u03c9t). Forward propagation advances phase; a one-cell shift checks its sign without fitting to device S.",
+  "meep": {
+    "reference_through_power": [
+      0.9998716749062789,
+      0.9999949742235589,
+      0.9998761086622479
+    ],
+    "through_phase_rad": [
+      0.08562679566851107,
+      -1.1269765875058146,
+      -2.3416476647505515
+    ],
+    "shifted_through_phase_rad": [
+      -1.1555773667866616,
+      -2.434923091527862,
+      2.5669123517510477
+    ],
+    "eigenmode_beta_per_um": [
+      9.607414793606958,
+      10.112625202900995,
+      10.615138854232603
+    ],
+    "positive_eigenmode_beta_L_rad": [
+      91.2704405392661,
+      96.06993942755945,
+      100.84381911520973
+    ],
+    "through_minus_positive_beta_L_rad": [
+      3.0629658640962036,
+      -2.9491364073714648,
+      -2.654501865086894
+    ],
+    "through_minus_negative_beta_L_rad": [
+      -2.8917122727591815,
+      0.6951832323598354,
+      -2.0287934644142087
+    ],
+    "short_phase_dx_near_rad": [
+      0.6206000124521207,
+      0.653963239014984,
+      0.6872882286574405
+    ],
+    "short_phase_dx_far_rad": [
+      0.6206041500030522,
+      0.6539832650070632,
+      0.6873370620205468
+    ],
+    "modal_short_interval_beta_per_um": [
+      9.929633299641383,
+      10.463572032176378,
+      10.9970023254239
+    ],
+    "point_Ey_short_interval_beta_per_um": [
+      9.93466160325828,
+      10.461546690943958,
+      10.99448230505983
+    ],
+    "point_Ey_minus_modal_through_rad": [
+      -0.0009435172269753445,
+      0.0005687347905091425,
+      0.0031721011743794623
+    ],
+    "measured_unwrapped_through_phase_rad": [
+      94.3334064033623,
+      99.40398832736757,
+      104.47250255730242
+    ],
+    "through_minus_short_interval_beta_L_rad": [
+      0.001890056769174762,
+      5.402169197785132e-05,
+      0.0009804657753695403
+    ],
+    "direct_measured_far_over_near": [
+      [
+        0.9962723357554122,
+        0.08551671131851372
+      ],
+      [
+        0.4293911858093181,
+        -0.9031158196891619
+      ],
+      [
+        -0.696703009139711,
+        -0.7172733270643205
+      ]
+    ],
+    "direct_measured_shorter_far_over_near": [
+      [
+        0.4033729626341886,
+        -0.9149887012338482
+      ],
+      [
+        -0.7604954127154383,
+        -0.649276185511638
+      ],
+      [
+        -0.8392713131674364,
+        0.543505076920725
+      ]
+    ],
+    "local_phase_index": [
+      2.4458768935417554,
+      2.49468514744993,
+      2.5399130178465894
+    ],
+    "native_field_sampling": "Native Meep point-DFT metadata returns exact requested x at y=z=0 for all four probes. The independently solved MPB mode uses a positive-real center-Ey gauge for +x.",
+    "run": {
+      "solver": "Meep CPU",
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6"
+      },
+      "settling": {
+        "settled": true,
+        "steps": 3841,
+        "elapsed_fs": 400.3811530175319,
+        "source_end_fs": 250.17307139861404
+      },
+      "point_grid_coordinates_um": {
+        "near": [
+          [
+            -4.75
+          ],
+          [
+            0.0
+          ],
+          [
+            0.0
+          ]
+        ],
+        "near_dx": [
+          [
+            -4.6875
+          ],
+          [
+            0.0
+          ],
+          [
+            0.0
+          ]
+        ],
+        "far_dx": [
+          [
+            4.6875
+          ],
+          [
+            0.0
+          ],
+          [
+            0.0
+          ]
+        ],
+        "far": [
+          [
+            4.75
+          ],
+          [
+            0.0
+          ],
+          [
+            0.0
+          ]
+        ]
+      },
+      "native_arrays_sha256": "90c3c11790bb581d22bbb91039f7d5cdb67cdf84e703ff6670d52f9e0c50fb3a"
+    },
+    "direct_minus_eigenmode_unwrapped_rad": [
+      3.062965864096199,
+      3.334048899808124,
+      3.6286834420926937
+    ]
+  },
+  "fdtdx": {
+    "reference_through_power": [
+      0.9998074836626759,
+      0.9999986806631198,
+      0.9999321027189111
+    ],
+    "through_phase_rad": [
+      2.1797900424168857,
+      1.0756072401147516,
+      -0.03410994919240311
+    ],
+    "shifted_through_phase_rad": [
+      0.9110228232798296,
+      -0.26132113464222056,
+      -1.4390859359154833
+    ],
+    "eigenmode_beta_per_um": [
+      9.994210659021915,
+      10.51194451280826,
+      11.026152078968492
+    ],
+    "positive_eigenmode_beta_L_rad": [
+      94.9450012607082,
+      99.86347287167847,
+      104.74844475020068
+    ],
+    "through_minus_positive_beta_L_rad": [
+      1.482568389402487,
+      1.7430992833096675,
+      2.031595522659891
+    ],
+    "through_minus_negative_beta_L_rad": [
+      2.8770116954312845,
+      0.40811519691983583,
+      -2.0998154210446973
+    ],
+    "short_phase_dx_near_rad": [
+      0.6343807076122981,
+      0.6684643926176748,
+      0.7024703742947765
+    ],
+    "short_phase_dx_far_rad": [
+      0.6343865115247578,
+      0.6684639821392974,
+      0.7025056124283038
+    ],
+    "modal_short_interval_beta_per_um": [
+      10.150137753096448,
+      10.695426998055776,
+      11.239807893784642
+    ],
+    "point_Ey_short_interval_beta_per_um": [
+      10.151416778564453,
+      10.695544242858887,
+      11.242323875427246
+    ],
+    "point_Ey_minus_modal_through_rad": [
+      -0.0018189976474524228,
+      1.192661072786043e-05,
+      0.001497596577965451
+    ],
+    "measured_unwrapped_through_phase_rad": [
+      96.42756965011067,
+      101.60657215498813,
+      106.78004027286057
+    ],
+    "through_minus_short_interval_beta_L_rad": [
+      0.0012609956944224325,
+      1.5673458256694748e-05,
+      0.0018652819064678523
+    ],
+    "direct_measured_far_over_near": [
+      [
+        -0.5719873047972504,
+        0.820145113265606
+      ],
+      [
+        0.4751977196665983,
+        0.8798782915192219
+      ],
+      [
+        0.9993843826162969,
+        -0.03410217737263193
+      ]
+    ],
+    "direct_measured_shorter_far_over_near": [
+      [
+        0.6129326664684484,
+        0.7901243261031149
+      ],
+      [
+        0.9660508807816266,
+        -0.2583574285608096
+      ],
+      [
+        0.13131352688063108,
+        -0.9912150465697409
+      ]
+    ],
+    "local_phase_index": [
+      2.5443482398986816,
+      2.593193292617798,
+      2.6382572650909424
+    ],
+    "native_field_sampling": "Native FDTDX interpolates detector components to the Ez Yee position. At the center array index in both monitors, x is the requested x plane, y=0 and z=+dx/2. Both monitors sample the same transverse offset.",
+    "run": {
+      "solver": "FDTDX CUDA",
+      "actual_device": "cuda:0",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "material_model": "legacy-x",
+      "native_time_steps_both": 3444,
+      "source_profile_identical": true,
+      "source_profile_sha256": "f8cc8b1a9113961fb7d684aa7a648d65f347d103cda7ec2c58cab0767174b1b7",
+      "native_array_sha256": {
+        "unshifted": "8132846049444877e6820f2ea7606be5cdbfefad5f4ce1fd6eccc8433b4c3d73",
+        "shifted": "64fbc86cc057428b0002af0c3d6fcc2bcdd66ce4eda27e9f973438bf84b1ed5e"
+      }
+    },
+    "direct_minus_eigenmode_unwrapped_rad": [
+      1.4825683894024735,
+      1.743099283309661,
+      2.0315955226598987
+    ]
+  },
+  "fdtdx_minus_meep_measured_unwrapped_through_rad": [
+    2.0941632467483657,
+    2.2025838276205576,
+    2.307537715558155
+  ],
+  "measured_short_interval_beta_difference_times_distance_rad": [
+    2.0947923078231225,
+    2.202622175854281,
+    2.3066528994270508
+  ],
+  "interpretation": "One-cell modal and direct point Ey measurements account for the straight-through inter-solver phase difference on this sampled grid. Local transverse mode indices do not exactly equal the phase index of numerically propagated fields. The axial planes have the same x in both engines; this analysis does not de-embed the device S or alter reflection signs.",
+  "driver": "scripts/verify_multiport_phase.py",
+  "driver_sha256": "3153251f39ab107b26369fa4952797801315874c01d02e853c5cf34b5ca42d15",
+  "shared_model_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9"
+}

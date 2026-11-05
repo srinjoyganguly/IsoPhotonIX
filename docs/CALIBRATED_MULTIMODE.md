@@ -21,3 +21,7 @@ Meep returns signed flux overlaps when each direction is solved with its own wav
 ## Commercial comparisons
 
 The installed local Tidy3D mode solver was run on the same straight cross sections. Its solutions compare propagation constants and mode parity. For the offset step, the independent calculation above supplies the full complex-matrix comparison. The published Lumerical and Tidy3D eigenmode-expansion examples use different devices and provide a method comparison. No full commercial matrix for this exact joint was available in the examined examples. [Matched port measurements](CALIBRATED_VENDOR_CHECKS.md) · [Lumerical EME](https://optics.ansys.com/hc/en-us/articles/360034396614-MODE-EigenMode-Expansion-EME-solver-introduction) · [Tidy3D EME](https://www.flexcompute.com/tidy3d/examples/notebooks/EMESolver/).
+
+## Finite-height silicon joint
+
+The strip cross section is 0.875 × 0.25 µm in oxide, with the same 0.125 µm offset. A full-vector Meep run at 16 cells/µm launched both quasi-TE modes from both sides. At 1.55 µm the left fundamental input delivered 11.14% into the first higher-order transmitted mode. The maximum reciprocity residual across the measured power fractions was 0.000786. The collected guided output never exceeded 0.9854 of the incident power. Mesh and monitor controls are tracked independently. [Measured 3D matrices and native modal arrays](verification/v011-multimode-finite.json).

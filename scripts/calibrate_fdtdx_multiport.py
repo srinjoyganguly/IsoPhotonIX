@@ -86,7 +86,28 @@ def raster(model, resolution, launch=None):
     return footprint[:,:,None] & zmask[None,None,:]
 
 
-def stage(runtime, model, resolution, after_time, launch, reference, output, basis_cache):
+def yee_material(epsilon, material_model):
+    """Map scalar cell-center samples to the three component locations on the Yee grid."""
+    if material_model == 'legacy-x':
+        return longitudinal_yee_permittivity(epsilon)
+    if material_model != 'yee-aligned':
+        raise ValueError('Choose legacy-x or yee-aligned material sampling.')
+    # Ex lies at (i+1/2,j,k), Ey at (i,j+1/2,k), Ez at (i,j,k+1/2).
+    # Each tangential half-cell displacement averages adjacent scalar samples.
+    # Extend the exterior by its nearest value rather than wrapping across PML.
+    def average_to_face(values, axis):
+        first = [slice(None)] * 3
+        first[axis] = slice(0,1)
+        previous = [slice(None)] * 3
+        previous[axis] = slice(0,-1)
+        adjacent = np.concatenate([values[tuple(first)], values[tuple(previous)]], axis=axis)
+        return .5*(values+adjacent)
+    return np.stack([average_to_face(average_to_face(epsilon,1),2),
+                     average_to_face(average_to_face(epsilon,0),2),
+                     average_to_face(average_to_face(epsilon,0),1)])
+
+
+def stage(runtime, model, resolution, after_time, launch, reference, output, basis_cache, material_model='legacy-x'):
     jax, jnp, fdtdx, target = runtime
     from fdtdx.core.jax.pytrees import autoinit, field
     from fdtdx.materials import compute_ordered_names
@@ -163,7 +184,7 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
     objects, arrays, params, sim, _ = fdtdx.place_objects(object_list=items,config=sim,constraints=constraints,key=key)
     if not np.allclose(np.asarray(1/arrays.inv_permittivities[0]),epsilon,rtol=1e-6,atol=1e-6):
         raise RuntimeError('FDTDX material initialization differs from the requested circuit.')
-    staggered = longitudinal_yee_permittivity(epsilon)
+    staggered = yee_material(epsilon,material_model)
     arrays = arrays.aset('inv_permittivities',jax.device_put(1/staggered,target))
     arrays,objects,_ = fdtdx.apply_params(arrays,objects,params,key)
     if arrays.fields.E.device!=target or not np.allclose(np.asarray(1/arrays.inv_permittivities),staggered,rtol=1e-6,atol=1e-6):
@@ -223,7 +244,8 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
               'mode_neff': {m['name']:bases[m['name']][1]['neff_real'] for m in monitors},
               'mode_edge_fractions':{m['name']:bases[m['name']][1]['edge_electric_l2_fraction'] for m in monitors},
               'time_steps':step,'history':history,'settled':consecutive>=2,'material_grid_sha256':digest(epsilon),
-              'field_device':str(final.fields.E.device),'source_profile_sha256':digest(np.stack([e,h]))}
+              'field_device':str(final.fields.E.device),'material_model':material_model,
+              'yee_component_grid_sha256':digest(staggered),'source_profile_sha256':digest(np.stack([e,h]))}
     np.savez_compressed(output,amplitudes=amplitudes,frequency_per_um=frequencies,
                         source_e=e,source_h=h,energy=energies,energy_time_fs=times,
                         **{'phasors_'+name:value for name,value in phasors.items()})
@@ -262,7 +284,7 @@ def numerical_digest():
     import backend.calibrated_geometry as geometry
     import backend.adapters.fdtdx_ports3d_adapter as projection
     import backend.adapters.fdtdx_ports_adapter as runtime
-    code = [inspect.getsource(f) for f in (geometry,projection,runtime,grid,raster,stage)]
+    code = [inspect.getsource(f) for f in (geometry,projection,runtime,grid,raster,yee_material,stage)]
     constants = [C_UM_PER_FS, ENERGY_LIMIT, DFT_LIMIT]
     return hashlib.sha256(('\n'.join(code)+repr(constants)).encode()).hexdigest()
 
@@ -319,17 +341,18 @@ def assemble(model, device, resolution, after_time, output, stages):
             'scope':'The named straight-guide fundamental modes are observed at finite apertures. Radiation and other modes are not included.'}
 
 
-def build_plan(model,device,resolution,after_time,target):
+def build_plan(model,device,resolution,after_time,target,material_model):
     return {'schema_version':1,'model':model,'device':device,'actual_device':str(target),'device_name':target.device_kind,
             'versions':{p:importlib.metadata.version(p) for p in ('fdtdx','jax','jaxlib','numpy','tidy3d')},
-            'resolution':resolution,'after_source_cap_um_over_c':after_time,'numerical_sha256':numerical_digest()}
+            'resolution':resolution,'after_source_cap_um_over_c':after_time,'numerical_sha256':numerical_digest(),
+            'material_model':material_model}
 
 
 def reference_cache_key(plan,launch):
     """Identical reference only: include the actual material, native grids, source, monitors and target."""
     model,resolution=plan['model'],plan['resolution']
     shape,pml,_,ports=grid(model,resolution)
-    ref={'shape':shape,'pml_cells':pml,'port':ports[launch],'occupancy_u8_sha256':digest(raster(model,resolution,launch)),
+    ref={'shape':shape,'pml_cells':pml,'port':ports[launch], 'material_model':plan.get('material_model','legacy-x'),'occupancy_u8_sha256':digest(raster(model,resolution,launch)),
          **{key:model[key] for key in ('core_index','cladding_index','frequency_per_um','pulse_fwidth','pulse_cutoff')},
          **{key:plan[key] for key in ('device','actual_device','device_name','resolution','after_source_cap_um_over_c',
                                        'numerical_sha256','versions')}}
@@ -351,7 +374,7 @@ def save_record(path,record):
 
 def compute_stage(runtime,plan,launch,reference,archive,bases):
     start=time.perf_counter()
-    _,details=stage(runtime,plan['model'],plan['resolution'],plan['after_source_cap_um_over_c'],launch,reference,archive,bases)
+    _,details=stage(runtime,plan['model'],plan['resolution'],plan['after_source_cap_um_over_c'],launch,reference,archive,bases,plan['material_model'])
     return {**details,'seconds':time.perf_counter()-start,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest()}
 
 
@@ -377,17 +400,19 @@ def measured_stage(runtime,plan,launch,reference,archive,bases,cache):
         return details
 
 
-def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=False,reference_cache=None):
+def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=False,reference_cache=None,material_model='legacy-x'):
     import fcntl
     if resolution not in (12,16,20,24) or not 24<=after_time<=160:
         raise ValueError('Use a supported resolution (12/16/20/24) and an after-source time between 24 and 160 µm/c.')
+    if material_model not in ('legacy-x','yee-aligned'):
+        raise ValueError('Choose legacy-x or yee-aligned material sampling.')
     model=multiport_model(case,pml,aperture)
     runtime=_ports_runtime(device)
     jax,_,_,target=runtime
     if resume and not output.is_dir():
         raise ValueError('Resume requires an existing study folder.')
     output.mkdir(parents=True,exist_ok=resume)
-    plan=build_plan(model,device,resolution,after_time,target)
+    plan=build_plan(model,device,resolution,after_time,target,material_model)
     encoded=json.dumps(plan,sort_keys=True,separators=(',',':'),allow_nan=False)
     stages,bases={},{}
     with (output/'.run.lock').open('a') as lock:
@@ -412,7 +437,10 @@ def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=
                     jax.clear_caches()
                 stages[key]=details
         report=assemble(model,device,resolution,after_time,output,stages)
-        report.update(device_name=target.device_kind,versions=plan['versions'],numerical_sha256=plan['numerical_sha256'],
+        report.update(material_model=material_model,
+                      material_sampling=('Adjacent-cell tangential averaging on both transverse axes at each electric component.'
+                          if material_model=='yee-aligned' else 'Legacy adjacent-x averaging of tangential components only.'),
+                      device_name=target.device_kind,versions=plan['versions'],numerical_sha256=plan['numerical_sha256'],
                       stage_seconds=sum(s['seconds'] for s in stages.values()))
         save_record(output/'report.json',report)
     return report
@@ -429,8 +457,10 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--resume',action='store_true',help='verify and reuse completed stages from this exact study folder')
     parser.add_argument('--reference-cache',type=Path,help='optional cache of exactly matching measured straight references')
+    parser.add_argument('--material-model',choices=('legacy-x','yee-aligned'),default='legacy-x',
+                        help='explicit material translation onto the E-component locations')
     args=parser.parse_args()
-    report=run(args.case,args.device,args.resolution,args.output,args.pml,args.aperture,args.after_time,args.resume,args.reference_cache)
+    report=run(args.case,args.device,args.resolution,args.output,args.pml,args.aperture,args.after_time,args.resume,args.reference_cache,args.material_model)
     if not report['sampled_setup_checks_passed']:
         raise SystemExit('The sampled setup missed a numerical check; inspect report.json before using the matrix.')
 

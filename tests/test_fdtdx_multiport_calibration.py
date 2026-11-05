@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 
 from backend.calibrated_geometry import multiport_model
-from scripts.calibrate_fdtdx_multiport import grid, normalize, raster, reference_cache_key
+from scripts.calibrate_fdtdx_multiport import grid, normalize, raster, reference_cache_key, yee_material
 
 
 class MultiportCalibrationTests(unittest.TestCase):
@@ -71,6 +71,41 @@ class MultiportCalibrationTests(unittest.TestCase):
         self.assertNotEqual(reference_cache_key(coupler,0), reference_cache_key(coupler,1))
         self.assertNotEqual(reference_cache_key(coupler,2), reference_cache_key(plan('splitter',20),1))
         self.assertNotEqual(reference_cache_key(coupler,2), reference_cache_key(dict(splitter,device='cpu'),1))
+        self.assertNotEqual(reference_cache_key(coupler,2), reference_cache_key(dict(splitter,material_model='yee-aligned'),1))
+
+    def test_yee_translation_centers_each_component_and_keeps_mirror_symmetry(self):
+        model=multiport_model('coupler')
+        epsilon=np.where(raster(model,16),model['core_index']**2,model['cladding_index']**2).astype(np.float32)
+        aligned=yee_material(epsilon,'yee-aligned')
+        for dim in (1,2):
+            for component,samples in enumerate(aligned):
+                # The normal E component sits at cell centres on this axis;
+                # the other two sit on integer coordinates (compare interior).
+                sub=[slice(None)]*3
+                if component != dim:
+                    sub[dim]=slice(1,None)
+                transverse=samples[tuple(sub)]
+                np.testing.assert_array_equal(transverse,np.flip(transverse,axis=dim))
+        toy=np.ones((4,4,4),np.float32)
+        toy[0,0,0]=9
+        mapped=yee_material(toy,'yee-aligned')
+        self.assertEqual(mapped[0,0,1,1],3)
+        self.assertEqual(mapped[1,1,0,1],3)
+        self.assertEqual(mapped[2,1,1,0],3)
+        self.assertEqual(mapped[0,0,0,0],9)
+        self.assertEqual(mapped[0,0,-1,-1],1)
+        with self.assertRaises(ValueError):
+            yee_material(epsilon,'unknown')
+
+    def test_short_translation_distinguishes_positive_and_negative_phase_without_fitting(self):
+        from scripts.verify_multiport_phase import evaluate
+        f=np.array([.63,.65,.67]);n=np.array([2.51,2.56,2.61]);beta=2*np.pi*f*n;dx=1/16
+        x={'near':-4.75,'far':4.75,'near_shifted':-4.75+dx,'far_shifted':4.75-dx}
+        modes={k:np.exp(1j*(beta*loc+.37)) for k,loc in x.items()}
+        metrics=evaluate(f,n,**modes,points=modes,length=9.5,dx=dx)
+        np.testing.assert_allclose(metrics['modal_short_interval_beta_per_um'],beta,rtol=1e-12)
+        np.testing.assert_allclose(metrics['measured_unwrapped_through_phase_rad'],beta*9.5)
+        self.assertLess(max(abs(np.asarray(metrics['through_minus_positive_beta_L_rad']))),1e-12)
 
     def test_port_sampling_rejects_invalid_aperture(self):
         with self.assertRaises(ValueError):

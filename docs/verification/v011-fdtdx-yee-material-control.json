@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T22:42:13.530078+00:00",
+  "case": "splitter",
+  "scope": "A measured center-input column and local straight guide mode-index refinement. The raw snapshots include six native field components. Both original and repeated corrected runs used the full 3D domain without mirror reduction; the output arms were sampled independently.",
+  "solver": "FDTDX",
+  "versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "actual_device": "cuda:0",
+  "resolution": 16,
+  "material_model": "yee-aligned",
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "port_order": [
+    "left_center",
+    "right_lower",
+    "right_upper"
+  ],
+  "detected_s_center_column": [
+    [
+      [
+        0.13036965741498552,
+        -0.022562647857275374
+      ],
+      [
+        -0.4819578701769336,
+        0.37878541226618345
+      ],
+      [
+        -0.48195511457573836,
+        0.3787931326178003
+      ]
+    ],
+    [
+      [
+        -0.10974951554740431,
+        -0.039653605345531404
+      ],
+      [
+        0.11847892049896641,
+        0.5932235028058304
+      ],
+      [
+        0.11848043640343446,
+        0.5932181516597285
+      ]
+    ],
+    [
+      [
+        -0.008230495344673188,
+        0.132832159692815
+      ],
+      [
+        0.5841884346716792,
+        0.14664809932439538
+      ],
+      [
+        0.5841863021529935,
+        0.14665024113831135
+      ]
+    ]
+  ],
+  "center_input_guided_power": [
+    [
+      0.017505320652832102,
+      0.37576177717114845,
+      0.3757649697841194
+    ],
+    [
+      0.013617364579789099,
+      0.3659513788838194,
+      0.365945389268933
+    ],
+    [
+      0.017712123702276195,
+      0.3627817922396046,
+      0.3627799288491135
+    ]
+  ],
+  "reference_through_power": [
+    0.9996624319278157,
+    0.9999966776056306,
+    1.0000505570245295
+  ],
+  "legacy_x_center_input_guided_power": [
+    [
+      0.011910153657284398,
+      0.4035216225661114,
+      0.35103076968178726
+    ],
+    [
+      0.024624319839520178,
+      0.3807384223343633,
+      0.33390304649575314
+    ],
+    [
+      0.014605657157646121,
+      0.37239786342637354,
+      0.33922856213517616
+    ]
+  ],
+  "legacy_x_abs_arm_power_difference": [
+    0.052490852884324146,
+    0.04683537583861014,
+    0.033169301291197384
+  ],
+  "yee_aligned_abs_arm_power_difference": [
+    3.192612970936981e-06,
+    5.989614886403594e-06,
+    1.8633904911302679e-06
+  ],
+  "stages": {
+    "reference": {
+      "field_device": "cuda:0",
+      "time_steps": 3444,
+      "settled": true,
+      "yee_component_grid_sha256": "c87583d8631b2ae76e4718777457bea3be499863209ad5453bbf8ec14f84d696",
+      "material_grid_sha256": "a9b828e2303853f0fb860087874483ec3bf7bd174dfaa38a9af30767c3929633",
+      "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+      "archive_sha256": "1b12ff24fd1e7806e047ea0873c16039e39b216bf9906fc72a3bf289afa09993",
+      "independent_experimental_repeat_arrays_equal": true,
+      "final_settling_checks": [
+        {
+          "time_fs": 383.6981924931148,
+          "energy_ratio": 2.543093160056742e-06,
+          "amplitude_change": 1.4444928929746805e-05
+        },
+        {
+          "time_fs": 410.3902406665489,
+          "energy_ratio": 1.7677521668701957e-09,
+          "amplitude_change": 1.3205502664919975e-06
+        }
+      ]
+    },
+    "device": {
+      "field_device": "cuda:0",
+      "time_steps": 3444,
+      "settled": true,
+      "yee_component_grid_sha256": "449345e67af54af89654227d8b955cc66da84b4d7243bf1519896e3bd9d2843f",
+      "material_grid_sha256": "84c0285588a96c06d0f0eadd1296459024f16fd3264e0a5259a2f88f1ae73a78",
+      "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+      "archive_sha256": "a677dbfee3b77b4d1886d4f2755a84cf4a6c2ba5f2f0c1054b7f1248022888ba",
+      "independent_experimental_repeat_arrays_equal": true,
+      "final_settling_checks": [
+        {
+          "time_fs": 383.6981924931148,
+          "energy_ratio": 8.634009282104671e-05,
+          "amplitude_change": 0.0009442973994245662
+        },
+        {
+          "time_fs": 410.3902406665489,
+          "energy_ratio": 4.594137863023207e-06,
+          "amplitude_change": 0.00029620306195573745
+        }
+      ]
+    }
+  },
+  "local_straight_mode": {
+    "actual_device": "cpu:0",
+    "wavelength_um": 1.55,
+    "width_um": 0.5,
+    "height_um": 0.25,
+    "core_index": 3.48,
+    "cladding_index": 1.45,
+    "aperture_um": [
+      2.0,
+      2.5
+    ],
+    "rows": [
+      {
+        "resolution": 12,
+        "legacy-x": 2.623342990875244,
+        "yee-aligned": 2.5289883613586426
+      },
+      {
+        "resolution": 16,
+        "legacy-x": 2.593193292617798,
+        "yee-aligned": 2.5382046699523926
+      },
+      {
+        "resolution": 20,
+        "legacy-x": 2.578483819961548,
+        "yee-aligned": 2.5427358150482178
+      },
+      {
+        "resolution": 24,
+        "legacy-x": 2.5702805519104004,
+        "yee-aligned": 2.5452656745910645
+      },
+      {
+        "resolution": 32,
+        "legacy-x": 2.5619680881500244,
+        "yee-aligned": 2.547818660736084
+      }
+    ],
+    "scope": "FDTDX local straight-guide mode basis. A source-independent time-domain phase measurement is a separate check."
+  },
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "source_files": {
+    "scripts/calibrate_fdtdx_multiport.py": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+    "scripts/inspect_multiport_materials.py": "0dc09adf5ec2a2b27b381626cc5edb142cc4b657730c57496d131b42c70d2c26",
+    "backend/calibrated_geometry.py": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9"
+  },
+  "legacy_x_full_matrix": "v011-fdtdx-splitter-gpu.json"
+}

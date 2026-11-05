@@ -29,6 +29,46 @@ Changing mesh, PML or aperture changes the study identity. GPU requests verify
 JAX's actual device on initialization and at the end of every simulation.
 The local mode preparation uses the pinned CPU eigensolver.
 
+## Choosing the Yee material grid
+
+`--material-model legacy-x` reproduces the original adjacent-x tangential
+averaging. `--material-model yee-aligned` translates the same cell-center
+permittivities to the physical Ex, Ey and Ez locations. Ex averages its four
+neighboring scalar-centre samples in y/z, Ey in x/z, and Ez in x/y. At the
+outer boundary the nearest value is extended. Each field computation uses
+its recorded component permittivity grid and explicit model name; the two
+models have independent reference caches. These are staircase models for the
+specified physical polygons, without a general conformal boundary fit.
+
+A direct, all-3D native CUDA test of the splitter's central launch at 16
+cells/µm measured arm powers of 0.380738 and 0.333903 at 1.55 µm with the
+legacy placement. With Yee-aligned placement the independently sampled powers
+were 0.365951 and 0.365945. The simulation used no y-mirror reduction.
+[Measured material comparison](verification/v011-fdtdx-yee-material-control.json).
+Use `scripts/inspect_multiport_materials.py --output PORT_REPORT.json` in the
+FDTDX CPU environment to compare the local mode indices separately.
+
+## Straight-guide phase control
+
+A straight guide places the near and far monitors 9.5 µm apart. Moving both
+planes inward by one grid cell provides two short phase increments that
+resolve the direction of propagation. The modal projection and a point sample
+of the native electric field independently measure each increment. At
+1.55 µm and 16 cells/µm, Meep measured +0.6540 radians per cell and FDTDX
+with `legacy-x` measured +0.6685. Their measured 9.5 µm phases were
++99.4040 and +101.6066 radians, respectively. The independent short spacing
+accounts for the 2.2026-radian difference within 0.001 radians at this
+wavelength. It does not establish agreement on a device or correct its
+phases. [Measured near/far phase and sampling positions](verification/v011-multiport-phase-audit.json).
+
+Repeat both controls in the respective solver environments:
+
+```bash
+"$MEEP_PYTHON" scripts/verify_multiport_phase.py --solver meep --device cpu --output meep-phase
+"$FDTDX_PYTHON" scripts/verify_multiport_phase.py --solver fdtdx --device gpu \
+  --material-model legacy-x --output fdtdx-phase
+```
+
 ## What the matrix measures
 
 The SOI-like test circuit here is a silicon core in *homogeneous cladding*,
