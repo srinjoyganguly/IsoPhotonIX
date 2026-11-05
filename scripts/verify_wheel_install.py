@@ -41,10 +41,10 @@ def main():
     python = target / 'venv/bin/python'
     cli = target / 'venv/bin/photonics-workbench'
 
-    def command(argv, log, **kw):
+    def command(argv, log, timeout=300, **kw):
         with (target / log).open('w') as stream:
             subprocess.run(argv, cwd=target, env=env, stdout=stream, stderr=subprocess.STDOUT,
-                           check=True, timeout=300, **kw)
+                           check=True, timeout=timeout, **kw)
 
     command([python, '-m', 'pip', 'install', '--no-index', '--find-links', args.wheelhouse.resolve(), wheel], 'install.log')
     command([python, '-m', 'pip', 'check'], 'dependency-check.log')
@@ -171,9 +171,24 @@ def main():
     command([python, '-c', 'import sys,numpy as n; a=n.load(sys.argv[1]); b=n.load(sys.argv[2]); '
              'assert set(a.files)==set(b.files) and all(n.array_equal(a[k],b[k]) for k in a.files)',
              result_store / 'arrays.npz', target / 'cli-run/arrays.npz'], 'cli-comparison.log')
+    command([cli,'calibrate','grating','--solver','meep','--device','cpu','--grating-scope','tidy3d-compact',
+             '--resolution','40','--output',target/'calibrated-grating'], 'calibrated-grating.log', timeout=7200)
+    run_folder=target/'calibrated-grating'
+    beam=json.loads((run_folder/'calculation/report.json').read_text())
+    assert beam['passed'] and beam['vendor']=='tidy3d'
+    observed=beam['result']['center_beam_to_guide']
+    grating=next(p for p in presets if p['case']=='grating')
+    reference=next(row['report']['compact_tidy_domain'] for row in grating['evidence']['recorded']
+                   if 'compact_tidy_domain' in row['report'])
+    idx=min(range(len(reference['wavelength_um'])),key=lambda i:abs(reference['wavelength_um'][i]-1.55))
+    assert abs(observed-reference['beam_to_guide'][idx])<1e-6
+    with zipfile.ZipFile(run_folder/'python-notebook-results.zip') as archive:
+        assert {'run.py','calibration.ipynb','reference/arrays.npz','reference/report.json'}<=set(archive.namelist())
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
-              'installed_from_offline_wheelhouse': True, 'export_found_registered_interpreter': True,
+              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),
+              'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],
+              'calibrated_cli_result_bundle_verified':True, 'export_found_registered_interpreter': True,
               'cavity_four_modes_equal_to_packaged_reference': True, 'installed_port_alignment': True, 'pip_check': True, 'doctor_meep_ready': True,
               'served_frontend_assets': assets, 'catalog_families': 27, 'benchmark_data': True,
               'job_id': jid, 'actual_device': job['result']['actual_device'], 'field_shape_zyx': volume['shape'],

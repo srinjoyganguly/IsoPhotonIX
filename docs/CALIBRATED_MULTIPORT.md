@@ -41,13 +41,23 @@ OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python scripts/calibrate_multiport.py \
     --case splitter --resolution 16 --jobs 2 --output splitter-results
 ```
 
-The output directory must be new. `--launch-port left_lower` (coupler) and
+The output directory must be new. On the shared WSL test host the full 16-cell/µm Meep splitter took about 26 minutes with three simultaneous columns; the four-column coupler took about 41 minutes. Host load and mesh determine actual runtime. `--launch-port left_lower` (coupler) and
 `--launch-port left_center` (splitter) give individually excited columns for
 controlled studies. Inspect `input_ports` before interpreting a partial matrix.
 The `--resolution`, `--pml-um`, `--aperture-um` and `--minimum-ringdown`
 controls permit independent sensitivity tests. Thickening the PML changes the
 outer domain while the device, access lengths and input/output planes keep the
 same physical coordinates.
+
+For a long run, keep the result directory. Each input's straight-reference E/H
+Fourier data, measured incident amplitude, mode indices and settling history
+are checkpointed before evolving its device. Each finished device column is
+also checkpointed. To continue an interrupted run, repeat its original
+command with `--resume` and the same directory. The solver verifies the
+original simulation settings, implementation and native archive hashes. For
+explicitly separate jobs, first run `--stage reference`, then repeat the same
+command with `--resume --stage device`. A reference-only job produces no S
+matrix. An interrupted individual stage is rerun from its beginning.
 
 MPB solves both signed propagation directions on the local cross section. The
 centre Ey phase fixes each mode basis. The local guide must be bound, have the
@@ -188,5 +198,16 @@ With Yee-aligned FDTDX materials the raw device differences were 0.07283
 and 0.07794 radians and the straight difference was −0.03350 radians. The
 corresponding excess-phase differences were 0.10633 and 0.11144 radians.
 These measured excess phases are distinct from the physical power and phase.
+
+For the coupler, the matched Meep straight guide was measured in the lower
+input lane (y = −1.25 µm). Its modal through phase and directly sampled central
+Ey through phase agreed within 0.00318 rad across the three bins. At 1.55 µm
+the Yee-aligned CUDA and Meep physical phases differed by 0.16941 rad (bar)
+and 0.13355 rad (cross). After accounting for the independently measured
+straight-phase difference of −0.03350 rad, their excess-phase differences were
+0.20291 and 0.16705 rad. CUDA delivered 0.79177 bar and 0.07670 cross power,
+compared with Meep's 0.87387 and 0.07320. These powers and phases quantify the
+remaining device-level disagreement at 16 cells/µm.
+[Native coupler straight reference and sampled electric fields](verification/v011-meep-coupler-straight-phase.json).
 For example, the lower-port power remained 0.40414 for Meep versus 0.36595
 for the corrected FDTDX run.

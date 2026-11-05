@@ -54,10 +54,11 @@ The installed command uses the same code:
 
 ```bash
 photonics-workbench calibrate multimode --solver meep --device cpu --resolution 48 --offset-um 0.125 --output joint-results
-photonics-workbench calibrate splitter --solver fdtdx --device gpu --export-only --output splitter-program
+photonics-workbench calibrate splitter --solver fdtdx --device gpu --material-model yee-aligned --export-only --output splitter-program
+photonics-workbench calibrate grating --solver meep --device cpu --grating-scope tidy3d-compact --resolution 40 --output beam-results
 ```
 
-The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. A replay of a result export checks its numerical arrays and recorded observables. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
+The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
 
 ## Set up the numerical runtimes
 

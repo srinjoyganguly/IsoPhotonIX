@@ -14,19 +14,24 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [catalog,setCatalog]=useState<Preset[]>([]), [key,setKey]=useState('coupler'), [target,setTarget]=useState('');
   const [record,setRecord]=useState(0);
   const [materialGrid,setMaterialGrid]=useState('legacy-x');
+  const [gratingScope,setGratingScope]=useState('tidy3d-compact');
+  const [ringScope,setRingScope]=useState('lumerical');
   const [mesh,setMesh]=useState(''),[offset,setOffset]=useState('.125');
   const [targets,setTargets]=useState<Target[]>([]),[jobs,setJobs]=useState<Job[]>([]),[jobId,setJobId]=useState('');
+  const [log,setLog]=useState('');
   const [error,setError]=useState(''),[pending,setPending]=useState(false),[report,setReport]=useState<unknown>(null);
   const selected=catalog.find(p=>p.case===key), evidence=selected?.evidence;
   const job=jobs.find(j=>j.id===jobId), busy=jobs.some(j=>j.status==='running'||j.status==='queued');
   const history=jobs.filter(j=>j.config.case===key);
-  const meshes = target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
+  const meshes = key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   const offsetValid = !key.startsWith('multimode') || (offset.trim()!=='' && Number.isFinite(Number(offset)) && +offset>=0 && +offset<=.25);
   useEffect(()=>{
     if(!active)return;
     let live=true;
-    Promise.all([request<Preset[]>('/api/calibrations'),request<{targets:Target[]}>('/api/capabilities')])
-      .then(([c,t])=>{if(live){setCatalog(c);setTargets(t.targets);}}).catch(e=>{if(live)setError(e.message);});
+    request<Preset[]>('/api/calibrations').then(c=>{if(live)setCatalog(c);})
+      .catch(e=>{if(live)setError(e.message);});
+    request<{targets:Target[]}>('/api/capabilities').then(t=>{if(live)setTargets(t.targets);})
+      .catch(e=>{if(live)setError(e.message);});
     return ()=>{live=false;};
   },[active]);
   useEffect(()=>{
@@ -45,10 +50,21 @@ export function CalibratedComponents({active}:{active:boolean}) {
     }
     return ()=>{live=false;};
   },[job?.id,job?.status]);
+  useEffect(()=>{
+    setLog('');
+    if(!active || !job || job.status!=='running')return;
+    let live=true;
+    const update=()=>request<{logs:string}>('/api/jobs/'+job.id)
+      .then(result=>{if(live)setLog(result.logs);}).catch(()=>{});
+    void update();
+    const timer=setInterval(update,5000);
+    return ()=>{live=false;clearInterval(timer);};
+  },[active,job?.id,job?.status]);
   const [solver,device]=target.split(':');
   const available=targets.some(t=>t.solver===solver && t.device===device && t.available);
   const configuration={case:key,solver,device,resolution:mesh?Number(mesh):null,
-    offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'?materialGrid:null};
+    offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'?materialGrid:null,
+    grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
   async function run(){
     if(!selected||!target)return;
     setPending(true);setError('');
@@ -64,7 +80,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
       setJobs(rows=>rows.map(j=>j.id===updated.id?updated:j));
     }catch(e){setError((e as Error).message);}
   }
-  function choose(next:string){setKey(next);setRecord(0);setMesh('');setOffset('.125');setTarget('');setMaterialGrid('legacy-x');setJobId('');setError('');setReport(null);}
+  function choose(next:string){setKey(next);setRecord(0);setMesh('');setOffset('.125');setTarget('');setMaterialGrid('legacy-x');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);}
   return <section className="cal-lab" aria-label="Calibrated components">
     <header><h1>Calibrated components</h1><p>Inspect measured reference results or run the same physical study on this machine.</p></header>
     <div className="cal-columns"><aside aria-label="Calibrated presets">{catalog.map(p=><button key={p.case} aria-pressed={key===p.case} onClick={()=>choose(p.case)}>{p.name}</button>)}</aside>
@@ -80,15 +96,30 @@ export function CalibratedComponents({active}:{active:boolean}) {
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
         <p>{evidence.limits}</p></section>}
-      <section><h3>Run locally</h3>{meshes.length>0 && <label>Mesh resolution<select value={mesh} onChange={e=>setMesh(e.target.value)}>
+      <section><h3>Run locally</h3>{key==='ring' && <label>Measurement<select aria-label="Measurement" value={ringScope} onChange={e=>setRingScope(e.target.value)}>
+        <option value="lumerical">Lumerical loaded ring spectrum</option><option value="tidy3d">Tidy3D loaded ring spectrum</option>
+        <option value="full">Both loaded rings, finite-height poles and all controls</option></select></label>}
+      {key==='grating'  && <label>Measurement<select aria-label="Measurement" value={gratingScope}
+        onChange={e=>{setGratingScope(e.target.value);setMesh('');}}>
+        <option value="tidy3d-compact">Tidy3D compact beam coupling</option>
+        <option value="lumerical-article">Lumerical article beam coupling</option>
+        <option value="lumerical-project">Lumerical project source</option>
+        <option value="lumerical-output">Lumerical project output aperture</option>
+        <option value="full">Both gratings and all sensitivity controls</option>
+      </select></label>}{meshes.length>0 && <label>Mesh resolution<select value={mesh} onChange={e=>setMesh(e.target.value)}>
         <option value="">Preset mesh</option>{meshes.map(v=><option value={v} key={v}>{v} cells/µm</option>)}</select></label>}
+      {key==='multimode' && mesh==='32' && Number(offset)===.125 && <p>The recorded 32-cell mesh exceeded the complex-amplitude limit at this offset. Select 48 or 64 cells/µm for the qualified reference study.</p>}
+      {key==='coupler' && target.startsWith('fdtdx:') && mesh==='12' && <p>The 125 nm rail gap spans 1.5 cells at this mesh. Cross-port power is sensitive to its sampled width.</p>}
       {key.startsWith('multimode') && <label className="cal-offset">Lateral offset (µm)<input aria-label="Lateral offset (µm)" type="number" min="0" max="0.25" step=".025" value={offset} onChange={e=>setOffset(e.target.value)}/></label>}
-      <fieldset disabled={pending}><legend>Execution target</legend>{selected.routes.map(route=>{
+      <fieldset disabled={pending}><legend>Execution target</legend>{!targets.length && <small>Checking local solver availability…</small>}{selected.routes.map(route=>{
         const info=targets.find(t=>t.solver+':'+t.device===route);
         return <label key={route}><input type="radio" name="cal-target" value={route} checked={target===route}
           onChange={()=>{setTarget(route);if(mesh==='12' && !route.startsWith('fdtdx:'))setMesh('');}}/>{route.replace(':',' · ').toUpperCase()}
           {info && !info.available && <small>{info.reason}</small>}</label>;
       })}</fieldset>
+      {solver==='fdtdx' && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
+        <option value="legacy-x">Original grid</option><option value="yee-aligned">Electric-field-aligned grid</option>
+      </select></label>}
       <button className="button primary compact" disabled={!available||pending||busy||!offsetValid} onClick={()=>void run()}>Run calibrated study</button>
       <CodeExport kind="calibration" value={configuration} disabled={!target||!offsetValid}/>
       {busy&&<p role="status">A local calibration is running.</p>}</section>
@@ -96,6 +127,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         <option value="">Select a run</option>{history.map(j=><option key={j.id} value={j.id}>{j.id.slice(0,8)} · {j.config.solver}/{j.config.device} · {j.status}</option>)}</select></label>:<p>No saved runs for this preset.</p>}
       {job && <><p role="status">Run {job.id.slice(0,8)} · {job.status}</p>
         {(job.status==='queued'||job.status==='running')&&<button className="button secondary compact" onClick={()=>void cancel()}>Cancel run</button>}
+        {log && <details><summary>Solver progress</summary><pre>{log}</pre></details>}
         {job.error && <p role="alert">{job.error}</p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
         {report!=null&&<CalibrationMeasurement key={job.id} value={report}/>}

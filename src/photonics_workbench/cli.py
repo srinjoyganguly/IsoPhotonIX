@@ -36,7 +36,10 @@ def main(argv=None):
     calibration.add_argument('--device',choices=['cpu','gpu'],required=True)
     calibration.add_argument('--resolution',type=int,help='cells per µm on supported matrix presets')
     calibration.add_argument('--offset-um',type=float,help='lateral offset for a multimode joint, in µm')
+    calibration.add_argument('--ring-scope',choices=['full','lumerical','tidy3d'])
+    calibration.add_argument('--grating-scope',choices=['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output'])
     calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned'],help='FDTDX permittivity placement')
+    calibration.add_argument('--checkpoint',type=Path,help='reuse matching measured native stages from this directory')
     calibration.add_argument('--export-only', action='store_true', help='write a runnable Python and notebook ZIP without executing the solver')
     calibration.add_argument('--output',type=Path,required=True,help='new local study directory')
     mesh = commands.add_parser('compare-taper-mesh', help='measure changes between two saved taper-port meshes')
@@ -81,13 +84,13 @@ def main(argv=None):
     if args.command == 'calibrate':
         from backend.calibrations import Calibration, design_archive, run_config
         try:
-            model=Calibration(case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model)
+            model=Calibration(case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope)
             if args.export_only:
                 archive = design_archive(model)
                 args.output.mkdir(parents=True, exist_ok=False)
                 (args.output/'python-notebook.zip').write_bytes(archive)
                 return 0
-            return run_config(model.model_dump(),args.output)
+            return run_config(model.model_dump(),args.output,args.checkpoint)
         except (OSError,ValueError,RuntimeError) as error:
             parser.exit(1,f'Calibration failed: {error}\n')
     if args.command == 'desktop':

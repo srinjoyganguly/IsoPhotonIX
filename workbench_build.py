@@ -19,7 +19,7 @@ FILES = ('LICENSE', 'CREDITS.md', 'frontend/THIRD_PARTY_NOTICES.txt', 'frontend/
          'environment-meep.yml', 'environment-meep-linux-64.lock',
          'environment-fdtdx-cpu-linux-64.lock', 'environment-fdtdx-cuda12-linux-64.lock', 'environment-beamz-cpu-linux-64.lock', 'requirements-api.txt', 'scripts/run_simulation.py', 'scripts/benchmark_component_references.py', 'scripts/benchmark_passive_cavity.py', 'scripts/benchmark_beamz_reference.py',
          'docs/verification/v011-calibrated-index.json', 'scripts/calibrate_multiport.py', 'scripts/calibrate_fdtdx_multiport.py',
-         'scripts/calibrate_multimode.py', 'scripts/calibrate_ring.py', 'scripts/calibrate_grating.py',
+         'scripts/calibrate_multimode.py', 'scripts/calibrate_ring.py', 'scripts/calibrate_grating.py', 'scripts/calibration_checkpoint.py',
          'docs/verification/v010-passive-cavity.json', 'docs/verification/v010-beamz-cpu.json', 'docs/verification/v010-beamz-gpu.json',
          'requirements-fdtdx.txt', 'requirements-fdtdx-cuda.txt', 'docs/verification/public-mode-benchmarks.json',
          'docs/verification/public-component-comparisons.json', 'docs/verification/v09-family-fields.json', 'examples/finite-waveguide-3d.json', 'examples/ports-gap.json', 'examples/ports-straight.json',

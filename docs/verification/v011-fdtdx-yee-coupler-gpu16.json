@@ -1,0 +1,688 @@
+{
+  "solver": "fdtdx",
+  "case": "coupler",
+  "requested_device": "gpu",
+  "actual_device": "cuda:0",
+  "port_order": [
+    "left_lower",
+    "left_upper",
+    "right_lower",
+    "right_upper"
+  ],
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port",
+    "incoming_port"
+  ],
+  "complex_encoding": [
+    "real",
+    "imag"
+  ],
+  "s": [
+    [
+      [
+        [
+          -0.03663094259101399,
+          -0.04964842442611653
+        ],
+        [
+          0.02055283987398668,
+          -0.022833573940511276
+        ],
+        [
+          -0.6898212982524919,
+          0.5427656678451211
+        ],
+        [
+          -0.23033870879064258,
+          -0.26425538152487726
+        ]
+      ],
+      [
+        [
+          0.02055384474676372,
+          -0.022834234977673753
+        ],
+        [
+          -0.03663116580259179,
+          -0.049649908684012145
+        ],
+        [
+          -0.23033684269162735,
+          -0.264258447094905
+        ],
+        [
+          -0.6898255502524492,
+          0.5427605708274018
+        ]
+      ],
+      [
+        [
+          -0.6898215645891882,
+          0.5427953410230779
+        ],
+        [
+          -0.23031023112108062,
+          -0.26426050257425915
+        ],
+        [
+          -0.03661540018850735,
+          -0.04958756211929998
+        ],
+        [
+          0.020519999825818123,
+          -0.022819987738296896
+        ]
+      ],
+      [
+        [
+          -0.23030832371649235,
+          -0.2642635617646643
+        ],
+        [
+          -0.6898258832709846,
+          0.5427903475127386
+        ],
+        [
+          0.020521022653941238,
+          -0.022820661725874457
+        ],
+        [
+          -0.03661560577813573,
+          -0.04958895719182115
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          0.10391355202485221,
+          -0.014663108538197701
+        ],
+        [
+          -0.01616661558780292,
+          0.029690826159016585
+        ],
+        [
+          0.08357991025236756,
+          0.8858814847489916
+        ],
+        [
+          -0.2736988098569879,
+          0.04233850317519357
+        ]
+      ],
+      [
+        [
+          -0.016166683450715754,
+          0.02969166366450407
+        ],
+        [
+          0.10391397134586323,
+          -0.01466302528918257
+        ],
+        [
+          -0.27369918134882437,
+          0.042337076308592334
+        ],
+        [
+          0.08357760516139438,
+          0.885885581982146
+        ]
+      ],
+      [
+        [
+          0.08358225170689522,
+          0.8858808024419214
+        ],
+        [
+          -0.2736993596768971,
+          0.042340242916683146
+        ],
+        [
+          0.10395378921482874,
+          -0.014631240249246022
+        ],
+        [
+          -0.01618920481371218,
+          0.02972168357119054
+        ]
+      ],
+      [
+        [
+          -0.27369974105723566,
+          0.0423387955867524
+        ],
+        [
+          0.08357997429023889,
+          0.8858849325640785
+        ],
+        [
+          -0.01618926544210414,
+          0.029722520207164968
+        ],
+        [
+          0.10395410782447838,
+          -0.014631131247138923
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.008364862192768737,
+          0.01952560231749227
+        ],
+        [
+          0.005625292740314649,
+          -0.014334355770098534
+        ],
+        [
+          0.8155854898052559,
+          0.4218002000390721
+        ],
+        [
+          -0.10673195843052424,
+          0.2084941217696867
+        ]
+      ],
+      [
+        [
+          0.0056250124073553105,
+          -0.01433410464543084
+        ],
+        [
+          -0.008364334168674534,
+          0.019525869772204735
+        ],
+        [
+          -0.10673387390377888,
+          0.208493775183118
+        ],
+        [
+          0.8155861220573322,
+          0.421800594963489
+        ]
+      ],
+      [
+        [
+          0.8155999548756743,
+          0.42180536634981836
+        ],
+        [
+          -0.10681469628004212,
+          0.20849344840538817
+        ],
+        [
+          -0.008300059590045997,
+          0.019540536034287476
+        ],
+        [
+          0.00562215761434598,
+          -0.014295006633529275
+        ]
+      ],
+      [
+        [
+          -0.10681662443285743,
+          0.2084930761648443
+        ],
+        [
+          0.8156007037562256,
+          0.4218057943953724
+        ],
+        [
+          0.005621865506251904,
+          -0.01429475351173055
+        ],
+        [
+          -0.008299395251102114,
+          0.01954081997987077
+        ]
+      ]
+    ]
+  ],
+  "modal_power": [
+    [
+      [
+        0.003806792003101967,
+        0.0009437913257825325,
+        0.770447993714114,
+        0.12288682743219892
+      ],
+      [
+        0.0009438628208896862,
+        0.0038069557403877146,
+        0.12288758796215818,
+        0.7704483270259812
+      ],
+      [
+        0.7704805732086351,
+        0.1228764157798456,
+        0.0037996138478999784,
+        0.0009418222332275965
+      ],
+      [
+        0.12287715404964715,
+        0.7704811105835934,
+        0.0009418949723703607,
+        0.003799767261872117
+      ]
+    ],
+    [
+      [
+        0.011013033046424635,
+        0.0011429046175687359,
+        0.7917716064188717,
+        0.0767035873682475
+      ],
+      [
+        0.0011429565449616779,
+        0.011013117751500094,
+        0.07670366990137624,
+        0.7917784804483592
+      ],
+      [
+        0.7917707889355374,
+        0.07670403565778723,
+        0.011020463483352201,
+        0.0011454688268062994
+      ],
+      [
+        0.07670412186653465,
+        0.7917777258464189,
+        0.0011455205230202373,
+        0.011020526535154283
+      ]
+    ],
+    [
+      [
+        0.00045122006536487135,
+        0.0002371176737579938,
+        0.8430950999338802,
+        0.05486150976292809
+      ],
+      [
+        0.00023710732056906312,
+        0.000451221676446355,
+        0.05486177412861633,
+        0.8430964644040707
+      ],
+      [
+        0.8431230534747063,
+        0.05487889736936791,
+        0.00045072353770560177,
+        0.00023595587089319443
+      ],
+      [
+        0.05487915406390968,
+        0.8431246361531615,
+        0.0002359453497315179,
+        0.00045072360701973297
+      ]
+    ]
+  ],
+  "reference_through_power": [
+    [
+      0.9996624083262802,
+      0.999662503019576,
+      0.9996413184479463,
+      0.9996412781878077
+    ],
+    [
+      0.9999967674374941,
+      0.9999967986554013,
+      0.9999955253593021,
+      0.9999955659633954
+    ],
+    [
+      1.0000506037377632,
+      1.0000507055978338,
+      1.0000783573364405,
+      1.0000783188553923
+    ]
+  ],
+  "sum_observed_power": [
+    [
+      0.8981083820822738,
+      0.8981082734296092,
+      0.8980770904965425,
+      0.8980767439532799
+    ],
+    [
+      0.8806309003934584,
+      0.880637783873275,
+      0.8806412603266203,
+      0.8806480631785674
+    ],
+    [
+      0.8986905349245499,
+      0.8986918728727338,
+      0.8986435429499336,
+      0.8986446536449118
+    ]
+  ],
+  "max_reciprocity_complex_difference": 8.467245857166055e-05,
+  "max_modal_power_excess": 0.0,
+  "maximum_singular_value": [
+    0.9697948298200316,
+    0.9545051760029054,
+    0.9533665892550857
+  ],
+  "sampled_setup_checks": {
+    "complete_settling": true,
+    "straight_reference_power_within_0_03": true,
+    "max_complex_reciprocity_difference_below_0_05": true,
+    "max_singular_value_squared_at_most_1_05": true
+  },
+  "sampled_setup_checks_passed": true,
+  "valid_column": [
+    true,
+    true,
+    true,
+    true
+  ],
+  "settled": true,
+  "resolution": 16,
+  "grid_shape": [
+    224,
+    112,
+    64
+  ],
+  "after_source_cap_um_over_c": 80.0,
+  "sampled_ports": [
+    {
+      "name": "left_lower",
+      "x": -4.75,
+      "y": -1.25,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        36,
+        20,
+        12
+      ],
+      "source_ix": 24,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": -4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "left_upper",
+      "x": -4.75,
+      "y": 1.25,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        36,
+        60,
+        12
+      ],
+      "source_ix": 24,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": -4.75,
+      "actual_y": 1.25
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        188,
+        20,
+        12
+      ],
+      "source_ix": 200,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        188,
+        60,
+        12
+      ],
+      "source_ix": 200,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "phase": "exp(-i omega t), common forward Ey-positive power basis, matched reference backwave subtracted only at launched port",
+  "scope": "The named straight-guide fundamental modes are observed at finite apertures. Radiation and other modes are not included.",
+  "mirror_symmetry_max_guided_power_delta": 6.936910881494285e-06,
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "schema_version": 1,
+  "checked_at": "2026-11-05T23:04:04.856030+00:00",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "material_model": "yee-aligned",
+  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
+  "array_payload_sha256": "8eaea3d5192ddd662c4feac7147f415b5a1ffb838e77060a15d10106c9deb78c",
+  "array_fields": [
+    "s",
+    "incident",
+    "reference_through",
+    "valid_column",
+    "frequency_per_um",
+    "wavelength_um"
+  ],
+  "stages": [
+    {
+      "name": "left_lower-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 154.4759696709989,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.7677487251788193e-09,
+        "amplitude_change": 1.3181597188631146e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "50b9d7a8b7ac2af7405c1fb6e99bdff0e7375203daad2cc68b43b3832cbaa54f",
+      "yee_component_grid_sha256": "1977ed08fd7afba13cd6b9b6ec2f4d6f815b1d11237a311cd6e1d64c93656d6e",
+      "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "f772616c1eab995f886706ce3f8a485e94c8af1e25fb2ed3c852b7a4271dfdf3",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "left_lower-device",
+      "settled": true,
+      "step_count": 4116,
+      "seconds": 134.33926647200133,
+      "final_sample": {
+        "time_fs": 490.4663851868511,
+        "energy_ratio": 1.6864102008185e-06,
+        "amplitude_change": 0.00040938718265310286
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "a1220fcd3db825359a3336047f60770d0e7e2b0218dc2dc924fee91be9f500c1",
+      "yee_component_grid_sha256": "2cd88c515837a2d52cd552314a46cf1590d735ac4c26bfc88c856983b994ae74",
+      "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "071c7c7aeca510be83b36b63860127538c9ef7f51d04150732059a2066808009",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "left_upper-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 149.6104278720013,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.7683068342932984e-09,
+        "amplitude_change": 1.3250451541349636e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "181d9fbf89514293b6c98a1693aabf030a7f5ac1c99cab021cf2095003edc7a0",
+      "yee_component_grid_sha256": "5a80ee24c7413e905d937090e58182e0b511fc64c3f9c906dc7448179bdbee42",
+      "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "a09afa985dd5a2ebe78858b1fc946bcf840428d060223a3988ceabbc4428e86c",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "left_upper-device",
+      "settled": true,
+      "step_count": 4116,
+      "seconds": 151.6778730099977,
+      "final_sample": {
+        "time_fs": 490.4663851868511,
+        "energy_ratio": 1.688731003923749e-06,
+        "amplitude_change": 0.0004093862205213427
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "a1220fcd3db825359a3336047f60770d0e7e2b0218dc2dc924fee91be9f500c1",
+      "yee_component_grid_sha256": "2cd88c515837a2d52cd552314a46cf1590d735ac4c26bfc88c856983b994ae74",
+      "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "ba139cc546660d4d7059418db877c2252a760981ca30c4b56a9bbcf5e4524326",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_lower-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 169.7728466180015,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.796523929620264e-09,
+        "amplitude_change": 1.0385659029872398e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "50b9d7a8b7ac2af7405c1fb6e99bdff0e7375203daad2cc68b43b3832cbaa54f",
+      "yee_component_grid_sha256": "1977ed08fd7afba13cd6b9b6ec2f4d6f815b1d11237a311cd6e1d64c93656d6e",
+      "source_profile_sha256": "952e09164ace24e9b3efd62147c054d6faf6e7d75db55a8b95fc370e72114d5f",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "0ba2bc97c3afde42f5c43f9be481baf97a6eebef621f1633787329e96eb0ac5b",
+      "reference_reused_from_verified_cache": true
+    },
+    {
+      "name": "right_lower-device",
+      "settled": true,
+      "step_count": 4116,
+      "seconds": 153.18220134399962,
+      "final_sample": {
+        "time_fs": 490.4663851868511,
+        "energy_ratio": 1.7237025531358086e-06,
+        "amplitude_change": 0.00040969019149115
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "a1220fcd3db825359a3336047f60770d0e7e2b0218dc2dc924fee91be9f500c1",
+      "yee_component_grid_sha256": "2cd88c515837a2d52cd552314a46cf1590d735ac4c26bfc88c856983b994ae74",
+      "source_profile_sha256": "952e09164ace24e9b3efd62147c054d6faf6e7d75db55a8b95fc370e72114d5f",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "6b20120aa742191c115fe4c18e60c0bfc3c53560c6a022044ea6a5b14ad45292",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_upper-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 161.76975131499785,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.7960974929565054e-09,
+        "amplitude_change": 1.0321826522844002e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "181d9fbf89514293b6c98a1693aabf030a7f5ac1c99cab021cf2095003edc7a0",
+      "yee_component_grid_sha256": "5a80ee24c7413e905d937090e58182e0b511fc64c3f9c906dc7448179bdbee42",
+      "source_profile_sha256": "952e09164ace24e9b3efd62147c054d6faf6e7d75db55a8b95fc370e72114d5f",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "c1a7837091d0c732631ca681a1269c956cb5899d2ab9be5af2b98228965a261e",
+      "reference_reused_from_verified_cache": true
+    },
+    {
+      "name": "right_upper-device",
+      "settled": true,
+      "step_count": 4116,
+      "seconds": 139.14477724799872,
+      "final_sample": {
+        "time_fs": 490.4663851868511,
+        "energy_ratio": 1.7271145225095097e-06,
+        "amplitude_change": 0.0004096883982824276
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "a1220fcd3db825359a3336047f60770d0e7e2b0218dc2dc924fee91be9f500c1",
+      "yee_component_grid_sha256": "2cd88c515837a2d52cd552314a46cf1590d735ac4c26bfc88c856983b994ae74",
+      "source_profile_sha256": "952e09164ace24e9b3efd62147c054d6faf6e7d75db55a8b95fc370e72114d5f",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "d212f62a470491715f1c376213217943ca2a1fabfc4db4b6b1d402d5321264df",
+      "reference_reused_from_verified_cache": false
+    }
+  ],
+  "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
+  "source_note": "worker_source_sha256 identifies the driver available at receipt generation. numerical_sha256 identifies the physical implementation recorded by the native run.",
+  "meep_comparison": {
+    "complex_s_relative_l2": 0.20163147691888095,
+    "max_complex_s_difference": 0.16406995534745375,
+    "max_modal_power_difference": 0.0821066601239826,
+    "center_input0_guided_power_first": [
+      0.011013033046424635,
+      0.0011429565449616779,
+      0.7917707889355374,
+      0.07670412186653465
+    ],
+    "center_input0_guided_power_second": [
+      0.0016732243714665338,
+      0.00014676310720103318,
+      0.8738740069291424,
+      0.07320362123871298
+    ],
+    "source": "v011-meep-multiport-coupler-electric.json",
+    "source_sha256": "eba899e783e5b20a4750fdbfe753304f813172a1cd70df081b09c9b0e28616ac",
+    "phase_convention_version": 2
+  }
+}

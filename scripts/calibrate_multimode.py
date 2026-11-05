@@ -1,5 +1,7 @@
 """Measure all four guided channels of a transversely offset planar slab joint."""
 import argparse
+import fcntl
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -151,18 +153,52 @@ def measure_stage(mp, resolution, side, band, offset, reference, aperture, pml, 
         sim.reset_meep()
 
 
-def measure(resolution, offset, aperture, pml, after, dest, finite=False):
+def checkpointed_stage(mp, settings, side, band, reference, checkpoint_dir):
+    resolution, offset, aperture, pml, after, finite = settings
+    def calculate():
+        return measure_stage(mp,resolution,side,band,offset,reference,aperture,pml,after,finite)
+    if checkpoint_dir is None:
+        return calculate()
+    folder=Path(checkpoint_dir)
+    folder.mkdir(parents=True,exist_ok=True)
+    identity={'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+              'meep':mp.__version__,'settings':list(settings),'side':side,'band':band,'reference':reference}
+    label=f'port{side+1}-mode{band}-'+('reference' if reference else 'device')
+    receipt=folder/(label+'.json')
+    raw=folder/(label+'.npz')
+    with (folder/(label+'.lock')).open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        if receipt.exists():
+            saved=json.loads(receipt.read_text())
+            if saved['identity']!=identity or saved['arrays_sha256']!=hashlib.sha256(raw.read_bytes()).hexdigest():
+                raise ValueError(f'Checkpoint settings or numerical samples changed for {label}.')
+            with np.load(raw,allow_pickle=False) as data:
+                return data['coeff'],data['neff'],data['field'],[data[k] for k in ('x','y','z')]
+        values=calculate()
+        coeff,neff,field,axes=values
+        with tempfile.TemporaryDirectory(dir=folder) as tmp:
+            tmp=Path(tmp)
+            np.savez_compressed(tmp/'stage.npz',coeff=coeff,neff=neff,field=field,x=axes[0],y=axes[1],z=axes[2])
+            saved={'identity':identity,'arrays_sha256':hashlib.sha256((tmp/'stage.npz').read_bytes()).hexdigest()}
+            (tmp/'meta.json').write_text(json.dumps(saved,indent=2)+'\n')
+            (tmp/'stage.npz').replace(raw)
+            (tmp/'meta.json').replace(receipt)
+        return values
+
+
+def measure(resolution, offset, aperture, pml, after, dest, finite=False, checkpoint_dir=None):
     import meep as mp
     mp.verbosity(0)
     output = {}
+    settings=(resolution,offset,aperture,pml,after,finite)
     matrix = np.empty((len(FREQUENCIES),4,4), complex)
     for side in range(2):
         incoming, reflected = (0,1) if side==0 else (1,0)
         for mode in range(2):
             col=side*2+mode
             print(f'Mesh {resolution}: {CHANNELS[col]} reference and device',flush=True)
-            ref, ref_index, _, _ = measure_stage(mp,resolution,side,mode+1,offset,True,aperture,pml,after,finite)
-            dev, dev_index, field, axes = measure_stage(mp,resolution,side,mode+1,offset,False,aperture,pml,after,finite)
+            ref, ref_index, _, _ = checkpointed_stage(mp,settings,side,mode+1,True,checkpoint_dir)
+            dev, dev_index, field, axes = checkpointed_stage(mp,settings,side,mode+1,False,checkpoint_dir)
             incident=ref[side,mode,incoming]
             require(np.min(abs(incident)) > 1e-6*np.max(abs(incident)) > 0, 'Weak incident reference.')
             matrix[:,side*2:side*2+2,col] = ((dev[side,:,reflected]-ref[side,:,reflected])/incident).T
@@ -187,7 +223,7 @@ def run(args,dest):
     refined = np.stack([interface_reference(f,args.offset,1/96,8)[0] for f in FREQUENCIES])
     wider = np.stack([interface_reference(f,args.offset,1/64,10)[0] for f in FREQUENCIES])
     reference = np.stack(reference)
-    matrix = measure(args.resolution,args.offset,args.aperture,args.pml,args.after,dest)
+    matrix = measure(args.resolution,args.offset,args.aperture,args.pml,args.after,dest,checkpoint_dir=args.checkpoint_dir)
     ref_power, power = abs(refined)**2, abs(matrix)**2
     differences = {'power_vs_independent_reference_max':float(np.max(abs(power-ref_power))),
                    'complex_vs_independent_reference_max':float(np.max(abs(matrix-refined))),
@@ -218,7 +254,7 @@ def run(args,dest):
 
 def finite_height(args,dest):
     import meep as mp
-    matrix = measure(args.resolution,args.offset,args.aperture,args.pml,args.after,dest,True)
+    matrix = measure(args.resolution,args.offset,args.aperture,args.pml,args.after,dest,True,args.checkpoint_dir)
     power = abs(matrix)**2
     with np.load(dest/'arrays.npz') as raw:
         indices = raw['device_neff_0'][0,:,0,:]
@@ -251,7 +287,9 @@ def main():
     parser.add_argument('--aperture',type=float,default=None)
     parser.add_argument('--pml',type=float,default=1.)
     parser.add_argument('--after',type=float,default=80.)
-    parser.add_argument('--output',required=True,type=Path)
+    parser.add_argument('--checkpoint-dir',type=Path,help='reuse verified reference/device stages, with identical source and settings')
+    parser.add_argument('--stage',choices=['left-TE0','left-TE1','right-TE0','right-TE1'],help='measure just one independently launched pair into the checkpoint directory')
+    parser.add_argument('--output',type=Path)
     args=parser.parse_args()
     if args.aperture is None: args.aperture = 3. if args.finite else 4.
     if args.resolution is None: args.resolution = 20 if args.finite else 48
@@ -259,6 +297,19 @@ def main():
         parser.error('Finite-height example requires aperture ≤3.5 µm and resolution ≤32.')
     if not (0 <= args.offset <= .25 and 3 <= args.aperture <= 5 and .75 <= args.pml <= 1.5 and 50 <= args.after <= 180):
         parser.error('Offset, aperture, PML or post-source time outside the qualified study range.')
+    if args.stage:
+        if args.checkpoint_dir is None or args.output is not None:
+            parser.error('--stage requires --checkpoint-dir and produces a pair of checkpoints there.')
+        import meep as mp
+        mp.verbosity(0)
+        side=int(args.stage.startswith('right'))
+        band=1+int(args.stage.endswith('TE1'))
+        settings=(args.resolution,args.offset,args.aperture,args.pml,args.after,args.finite)
+        for ref in (True,False):
+            print(args.stage,'reference' if ref else 'device',flush=True)
+            checkpointed_stage(mp,settings,side,band,ref,args.checkpoint_dir)
+        return
+    if args.output is None:parser.error('Choose --output for the complete study.')
     if args.output.exists():parser.error('Choose a fresh output directory.')
     args.output.parent.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(dir=args.output.parent) as tmp:

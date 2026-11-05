@@ -25,3 +25,5 @@ The installed local Tidy3D mode solver was run on the same straight cross sectio
 ## Finite-height silicon joint
 
 The strip cross section is 0.875 × 0.25 µm in oxide, with the same 0.125 µm offset. A full-vector Meep run at 16 cells/µm launched both quasi-TE modes from both sides. At 1.55 µm the left fundamental input delivered 11.14% into the first higher-order transmitted mode. The maximum reciprocity residual across the measured power fractions was 0.000786. The collected guided output never exceeded 0.9854 of the incident power. Mesh and monitor controls are tracked independently. [Measured 3D matrices and native modal arrays](verification/v011-multimode-finite.json).
+
+For a long native study, `--checkpoint-dir DIR` preserves each measured reference/device pair as separate hashed stages. `--stage left-TE0` (also left-TE1, right-TE0 or right-TE1) computes one pair. Run the full program with the same settings and checkpoint directory to assemble all four independently measured columns. A source, mesh, version or array mismatch stops reuse. The standalone exported controller accepts `--checkpoint DIR` for all six calibrated presets.

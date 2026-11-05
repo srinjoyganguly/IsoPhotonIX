@@ -84,8 +84,11 @@ def make_comparison(case, meep_dir, fdtdx_dir, meep_reference):
            'x_planes_um':[straight['monitor_x_um'][k] for k in ('near','far')],
            'complex_far_over_near':pairs(unpack(straight['amplitudes']['far'])/unpack(straight['amplitudes']['near']))}
     model=multiport_model(case)
-    if m['case']!=case or d['case']!=case or straight['case']!=case or m['ports']!=d['port_order']:
+    ports=[p['name'] for p in model['ports']]
+    if m['case']!=case or d['case']!=case or straight['case']!=case or m['ports']!=ports or d['port_order']!=ports:
         raise ValueError('Case, straight incident lane and measured port names must agree.')
+    if not m['full_matrix'] or m['input_ports']!=ports or d['matrix_axes']!=['frequency','outgoing_port','incoming_port']:
+        raise ValueError('Both matrices must contain all independent inputs in the declared order.')
     if d['resolution']!=m['resolution'] or d['physical_model']!=m['model']:
         raise ValueError('Measured geometry, mesh, material settings or monitors differ.')
     if not all(m['valid_bins']) or not np.all(d['valid_column']):
@@ -97,7 +100,15 @@ def make_comparison(case, meep_dir, fdtdx_dir, meep_reference):
     fd_archive=fdtdx_dir/'arrays.npz'
     if not fd_archive.exists():
         fd_archive=fdtdx_dir/'sparameters.npz'  # earlier native FDTDX receipt
-    with np.load(meep_dir/'arrays.npz',allow_pickle=False) as am,np.load(fd_archive,allow_pickle=False) as af:
+    meep_archive=meep_dir/'arrays.npz'
+    meep_sha=hashlib.sha256(meep_archive.read_bytes()).hexdigest()
+    if meep_sha!=m['arrays_sha256']:
+        raise ValueError('Meep matrix archive differs from its recorded digest.')
+    with np.load(meep_archive,allow_pickle=False) as am,np.load(fd_archive,allow_pickle=False) as af:
+        if not np.array_equal(am['s'],unpack(m['s'])) or not np.array_equal(af['s'],unpack(d['s'])):
+            raise ValueError('Archived coefficients differ from the native reports.')
+        if not np.array_equal(af['valid_column'],d['valid_column']) or not np.array_equal(abs(af['reference_through'])**2,d['reference_through_power']):
+            raise ValueError('FDTDX reference powers or qualified bins differ from the native report.')
         if not np.array_equal(am['frequency_per_um'],af['frequency_per_um']) or not np.array_equal(am['frequency_per_um'],straight['frequency_per_um']):
             raise ValueError('Measured frequency bins must agree exactly.')
         t_meep=unpack(straight['complex_far_over_near']);t_fd=af['reference_through'][:,0]
@@ -118,7 +129,7 @@ def make_comparison(case, meep_dir, fdtdx_dir, meep_reference):
           'x_planes_um':straight['x_planes_um'],'straight_guide_y_um':straight['guide_y_um'],
           'meep_reference_far_over_near':pairs(t_meep),'fdtdx_reference_far_over_near':pairs(t_fd),
           'straight_fdtdx_minus_meep_phase_rad':np.angle(t_fd*t_meep.conj()).tolist(),
-          'meep_device_archive_sha256':hashlib.sha256((meep_dir/'arrays.npz').read_bytes()).hexdigest(),
+          'meep_device_archive_sha256':meep_sha,
           'fdtdx_device_archive_sha256':hashlib.sha256(fd_archive.read_bytes()).hexdigest(),
           'meep_straight_receipt_sha256':hashlib.sha256(meep_reference.read_bytes()).hexdigest(),
           'description':'Excess = principal arg(S_device / T_straight) at the named physical x planes. Straight reference uses an uninterrupted guide in the incident lane. Off-lane device outputs therefore compare to a straight path of the same longitudinal length. This diagnostic changes no physical S coefficient and measures neither loss nor an independently optimized phase correction.',

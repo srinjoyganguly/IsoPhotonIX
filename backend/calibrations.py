@@ -34,6 +34,8 @@ class Calibration(BaseModel):
     resolution: int | None = None
     offset_um: float | None = None
     material_model: Literal['legacy-x','yee-aligned'] | None = None
+    ring_scope: Literal['full','lumerical','tidy3d'] | None = None
+    grating_scope: Literal['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output'] | None = None
 
     @model_validator(mode='after')
     def available_route(self):
@@ -43,7 +45,13 @@ class Calibration(BaseModel):
             raise ValueError('This calibrated preset supports Meep CPU.')
         if self.material_model is not None and self.solver != 'fdtdx':
             raise ValueError('Only FDTDX offers a selectable material grid.')
+        if self.ring_scope is not None and self.case != 'ring':
+            raise ValueError('Choose a ring preset for a loaded spectrum.')
+        if self.grating_scope is not None and self.case != 'grating':
+            raise ValueError('Choose a grating preset for beam comparison.')
         meshes = {'coupler':(16,20,24),'splitter':(16,20,24),'multimode':(32,48,64),'multimode-3d':(16,20,24)}
+        if self.case=='grating' and self.grating_scope not in (None,'full'):
+            meshes['grating']=(28,40,60)
         if self.solver=='fdtdx':
             meshes[self.case]=(12,16,20,24)
         if self.resolution is not None and self.resolution not in meshes.get(self.case,()):
@@ -66,7 +74,14 @@ def specification(config):
     else:
         name='calibrate_multimode' if config.case.startswith('multimode') else 'calibrate_'+config.case
         args=['--finite'] if config.case=='multimode-3d' else []
-        helpers=[]
+        helpers=['scripts/calibration_checkpoint.py'] if config.case in ('ring','grating') else []
+    if config.ring_scope in ('lumerical','tidy3d'):
+        args+=['--loaded-case',config.ring_scope,'--profile','fine']
+    beam_arguments={'tidy3d-compact':['--beam-only','tidy3d','--vendor-box'],
+                    'lumerical-article':['--beam-only','lumerical'],
+                    'lumerical-project':['--beam-only','lumerical','--project-source'],
+                    'lumerical-output':['--beam-only','lumerical','--project-output']}
+    args.extend(beam_arguments.get(config.grating_scope, []))
     if config.resolution is not None:
         args+=['--resolution',str(config.resolution)]
     if config.offset_um is not None:
@@ -134,19 +149,22 @@ def design_archive(config):
         return buffer.getvalue()
 
 
-def run_config(config, output):
+def run_config(config, output, checkpoint=None):
     output=Path(output)
     output.mkdir(parents=True,exist_ok=False)
-    status = run_job(config, output)
+    status = run_job(config, output, checkpoint)
     if status == 0:
         result_zip(output, output/'python-notebook-results.zip')
     return status
 
 
-def run_job(config, directory):
+def run_job(config, directory, checkpoint=None):
     bundle=create_bundle(config,directory/'replay')
     env = {**os.environ,config['solver'].upper()+'_PYTHON':interpreter(config['solver'],config['device'])}
-    return subprocess.call([sys.executable,str(bundle/'run.py'),'--output',str(directory.resolve()/'calculation')],env=env)
+    command=[sys.executable,str(bundle/'run.py'),'--output',str(directory.resolve()/'calculation')]
+    if checkpoint is not None:
+        command+=['--checkpoint',str(Path(checkpoint).resolve())]
+    return subprocess.call(command,env=env)
 
 
 def result_zip(directory, target):

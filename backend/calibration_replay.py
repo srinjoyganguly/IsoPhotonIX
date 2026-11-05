@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import shutil
 import sys
 import tempfile
 
@@ -21,12 +22,18 @@ def measured_observables(report):
     """Numerical fields which the GUI renders; wall times and run dates vary."""
     result = {key: report[key] for key in ('wavelength_um','s','s_real','s_imag','power','modal_power')
               if key in report}
+    if report.get('case_id')=='grating-gaussian-profile':
+        beam=report['result']
+        for key in ('wavelength_um','beam_to_guide','valid_beam_bins'):
+            if key in beam:
+                result['beam/'+key]=beam[key]
     for name, data in report.get('series', {}).items():
-        for key in ('wavelength_um','through','drop','reflection','add_side'):
-            result[f'{name}/{key}'] = data[key]
+        for key in ('wavelength_um','through','drop','reflection','add_side','valid_bins'):
+            if key in data:
+                result[f'{name}/{key}'] = data[key]
     for name, meshes in report.get('studies', {}).items():
         for mesh, data in meshes.items():
-            for key in ('wavelength_um','beam_to_guide','guide_radiation_up','guide_radiation_down','power_sum'):
+            for key in ('wavelength_um','beam_to_guide','guide_radiation_up','guide_radiation_down','power_sum','valid_beam_bins','valid_energy_bins'):
                 if key in data:
                     result[f'{name}/{mesh}/{key}'] = data[key]
     for key in ('wavelength_um', 'beam_to_guide', 'guide_radiation_up'):
@@ -74,7 +81,7 @@ def compare(original, output):
     if not first or first.keys()!=fresh.keys():
         raise ValueError('The replay has different reported observables.')
     for key,value in first.items():
-        a,b=np.asarray(value),np.asarray(fresh[key])
+        a,b=np.asarray(value,dtype=float),np.asarray(fresh[key],dtype=float)
         if a.shape!=b.shape or not within_precision(a, b):
             raise ValueError(f'Displayed observable changed in {key}.')
     return {'passed':True, 'all_array_bytes_equal': not differences, 'within_tolerance':differences,
@@ -82,7 +89,7 @@ def compare(original, output):
             'reported_observables_checked':list(first)}
 
 
-def run(root, output):
+def run(root, output, checkpoint=None):
     root,output = Path(root).resolve(),Path(output).resolve()
     manifest=verify_source(root)
     config=json.loads((root/'config.json').read_text())
@@ -98,13 +105,32 @@ def run(root, output):
     env.pop('PYTHONPATH',None)
     env.pop('PYTHONHOME',None)
     with tempfile.TemporaryDirectory(dir=output.parent) as tmp:
-        work=Path(tmp)/'result'
-        command=[solver,'-m',manifest['worker'], *manifest['arguments'],'--output',str(work)]
+        staged=Path(tmp)/'result'
+        work=staged
+        arguments=list(manifest['arguments'])
+        if checkpoint is not None:
+            cache=Path(checkpoint).resolve()
+            if cache==output or output in cache.parents:
+                raise ValueError('Choose a checkpoint folder outside the result directory.')
+            option={'scripts.calibrate_ring':'--checkpoint','scripts.calibrate_grating':'--checkpoint',
+                    'scripts.calibrate_multimode':'--checkpoint-dir'}.get(manifest['worker'])
+            if option:
+                arguments += [option,str(cache)]
+            elif manifest['worker'] in ('scripts.calibrate_multiport','scripts.calibrate_fdtdx_multiport'):
+                cache.mkdir(parents=True,exist_ok=True)
+                work=cache/'native-multiport'
+                if work.exists():
+                    arguments.append('--resume')
+            else:
+                raise ValueError('No checkpoint format is defined for this worker.')
+        command=[solver,'-m',manifest['worker'],*arguments,'--output',str(work)]
         process=subprocess.run(command,cwd=root/'source',env=env)
         # A solver may emit a useful partial/unqualified result with exit code 1.
         # Preserve its diagnostics; require a successful worker exit for a qualified job.
         if (work/'report.json').is_file():
-            work.rename(output)
+            if work!=staged:
+                shutil.copytree(work,staged)
+            staged.rename(output)
         process.check_returncode()
     report=json.loads((output/'report.json').read_text())
     if not (output/'arrays.npz').is_file():
@@ -128,5 +154,6 @@ def run(root, output):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--checkpoint',type=Path,help='persistent, settings-verified native stage cache')
     args=parser.parse_args()
-    run(Path(__file__).resolve().parent,args.output)
+    run(Path(__file__).resolve().parent,args.output,args.checkpoint)

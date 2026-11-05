@@ -5,7 +5,7 @@ from pathlib import Path
 
 import numpy as np
 
-from calibrate_multimode import FREQUENCIES, OFFSET, PHASE_VERSION, measure_stage
+from calibrate_multimode import FREQUENCIES, OFFSET, PHASE_VERSION, checkpointed_stage
 
 
 def main():
@@ -16,7 +16,9 @@ def main():
     parser.add_argument('--control',choices=['straight','aperture','pml','time','mesh'],required=True)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
-    args.output.mkdir(parents=True,exist_ok=False)
+    args.output.mkdir(parents=True,exist_ok=True)
+    if (args.output/'report.json').exists():
+        parser.error('The finished control already exists.')
     aperture=3. if args.finite else 4.
     mesh=16 if args.finite else 48
     if args.control=='mesh':mesh=20 if args.finite else 64
@@ -26,7 +28,7 @@ def main():
     after=110. if args.control=='time' else 80.
     stages=[]
     for ref in (True,False):
-        stages.append(measure_stage(mp,mesh,0,1,offset,ref,aperture,pml,after,args.finite))
+        stages.append(checkpointed_stage(mp,(mesh,offset,aperture,pml,after,args.finite),0,1,ref,args.output/'stages'))
     ref,dev=stages[0][0],stages[1][0]
     incident=ref[0,0,0]
     s=np.vstack([(dev[0,:,1]-ref[0,:,1])/incident,dev[1,:,0]/incident]).T

@@ -1,6 +1,10 @@
 import importlib.util
 from pathlib import Path
+import sys
+import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
@@ -87,3 +91,37 @@ class ResonatorAndGrating(unittest.TestCase):
         self.assertAlmostEqual(measured['difference_percentage_points'][i],-5.61)
         with self.assertRaisesRegex(ValueError,'cover the published'):
             grating.compare_ansys_spectrum([1.30,1.32],[.4,.5])
+
+    def test_weak_band_edges_are_masked_and_power_gain_fails(self):
+        grating=load('grating')
+        incident=np.ones(21)
+        incident[[0,-1]]=.005
+        response=np.full(21,.5)
+        self.assertEqual(np.count_nonzero(grating.valid_beam_bins(incident,response)),19)
+        self.assertTrue(grating.beam_band_passes(incident,response))
+        response[10]=1.1
+        self.assertFalse(grating.beam_band_passes(incident,response))
+
+    def test_checkpoint_reuse_settings_isolation_and_integrity(self):
+        spec=importlib.util.spec_from_file_location('calibration_checkpoint',ROOT/'scripts/calibration_checkpoint.py')
+        module=importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as dirname:
+            folder=Path(dirname)
+            with patch.dict(sys.modules,{'meep':SimpleNamespace(__version__='test'),
+                                         'scipy':SimpleNamespace(__version__='test')}):
+                cache=module.MeasurementCheckpoints(folder,__file__)
+            calls=[]
+            def measure():
+                calls.append(True)
+                return {'power':.25},{'mode':np.array([.5+0j])}
+            first=cache.acquire('port',{'mesh':20},measure)
+            second=cache.acquire('port',{'mesh':20},measure)
+            np.testing.assert_array_equal(first[1]['mode'],second[1]['mode'])
+            cache.acquire('port',{'mesh':28},measure)
+            self.assertEqual(len(calls),2)
+            for path in folder.glob('*/arrays.npz'):
+                with path.open('ab') as stream:
+                    stream.write(b'damaged')
+            with self.assertRaisesRegex(ValueError,'integrity'):
+                cache.acquire('port',{'mesh':20},measure)

@@ -74,6 +74,45 @@ class CalibratedComponents(unittest.TestCase):
                         self.assertIn('calibration.ipynb',archive.namelist())
                         self.assertFalse(any(name.startswith('reference/') for name in archive.namelist()))
 
+    def test_replay_preserves_unqualified_wavelengths(self):
+        from backend.calibration_replay import compare
+        import numpy as np
+        with tempfile.TemporaryDirectory() as tmp:
+            dirs=[Path(tmp)/name for name in ('reference','fresh')]
+            for directory in dirs:
+                directory.mkdir()
+                np.savez(directory/'arrays.npz',samples=[.2,np.nan,.4])
+                (directory/'report.json').write_text(json.dumps({'power':[.2,None,.4]}))
+            self.assertTrue(compare(*dirs)['passed'])
+            (dirs[1]/'report.json').write_text(json.dumps({'power':[.2,0,.4]}))
+            with self.assertRaisesRegex(ValueError,'Displayed observable changed'):
+                compare(*dirs)
+
+    def test_grating_single_beam_snapshot_selects_the_vendor_source(self):
+        from backend.calibrations import specification
+        config=Calibration(case='grating',solver='meep',device='cpu',grating_scope='lumerical-project',resolution=40)
+        self.assertEqual(specification(config)[1],['--beam-only','lumerical','--project-source','--resolution','40'])
+        with self.assertRaises(ValueError):
+            Calibration(case='ring',solver='meep',device='cpu',grating_scope='tidy3d-compact')
+
+    def test_multimode_resume_rejects_other_mesh_and_corrupt_samples(self):
+        from types import SimpleNamespace
+        import numpy as np
+        from scripts.calibrate_multimode import checkpointed_stage
+        mp=SimpleNamespace(__version__='test')
+        data=(np.ones((2,2,2,3),complex),np.ones((2,2,2,3)),np.ones((4,4)),(np.arange(4),np.arange(4),np.array([0])))
+        settings=(48,.125,4.,1.,80.,False)
+        with tempfile.TemporaryDirectory() as tmp,patch('scripts.calibrate_multimode.measure_stage',return_value=data) as evolve:
+            first=checkpointed_stage(mp,settings,0,1,True,Path(tmp))
+            second=checkpointed_stage(mp,settings,0,1,True,Path(tmp))
+            np.testing.assert_array_equal(first[0],second[0])
+            evolve.assert_called_once()
+            with self.assertRaisesRegex(ValueError,'Checkpoint'):
+                checkpointed_stage(mp,(32,*settings[1:]),0,1,True,Path(tmp))
+            next(Path(tmp).glob('*.npz')).write_bytes(b'corrupt')
+            with self.assertRaisesRegex(ValueError,'Checkpoint'):
+                checkpointed_stage(mp,settings,0,1,True,Path(tmp))
+
     def test_catalog(self):
         props=TestClient(app).get('/api/calibrations').json()
         self.assertEqual(len(props),6)

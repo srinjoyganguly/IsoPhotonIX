@@ -4,7 +4,9 @@ from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timezone
 from functools import partial
 import hashlib
+import inspect
 import json
+import os
 from multiprocessing import get_context
 from pathlib import Path
 import sys
@@ -120,21 +122,71 @@ def project(mp, sim, monitor, port, model, sign, resolution):
     return alpha*gauge*np.sign(values.vgrp), neff, fractions, edge_ratios
 
 
-def measure_column(launch, model, resolution, after_time, directory, minimum_ringdown=0.):
+def atomic_json(path, value):
+    temporary=path.with_suffix('.pending-json')
+    temporary.write_text(json.dumps(value,indent=2,allow_nan=False)+'\n')
+    os.replace(temporary,path)
+
+
+def atomic_archive(path, **values):
+    temporary=path.with_suffix('.pending-npz')
+    with temporary.open('wb') as stream:
+        np.savez_compressed(stream,**values)
+    os.replace(temporary,path)
+
+
+def read_checkpoint(metadata, archive, key):
+    if not metadata.exists():
+        return None
+    receipt=json.loads(metadata.read_text())
+    if receipt['checkpoint_key']!=key or receipt['archive_sha256']!=hashlib.sha256(archive.read_bytes()).hexdigest():
+        raise ValueError(f'Cannot resume {metadata.name}: measured archive or simulation configuration changed.')
+    return receipt
+
+
+def measure_column(launch, model, resolution, after_time, directory, minimum_ringdown=0., stage='all', checkpoint_key=''):
     import meep as mp
+    from meep.simulation import FluxData
     mp.verbosity(0)
     start = time.monotonic()
     out = Path(directory)
     port = model['ports'][launch]
     name = port['name']
-    print(f'{name}: exciting the isolated incident reference', flush=True)
-    ref, ref_mon = build_simulation(mp, model, launch, resolution, reference=True)
-    reference = run_until_settled(mp, ref, ref_mon, model, after_time, minimum_ringdown)
-    incident, neff_in, frac, edge = project(mp, ref, ref_mon[launch], port, model, port['inward_sign'], resolution)
-    print(f'{name}: reference measured after {time.monotonic()-start:.1f}s, settled={reference["settled"]}',flush=True)
-    ref_data = ref.get_flux_data(ref_mon[launch])
-    native = {'reference_E':np.asarray(ref_data.E), 'reference_H':np.asarray(ref_data.H)}
-    ref.reset_meep()
+    ref_file=out/f'{name}-reference.npz'
+    ref_receipt=out/f'{name}-reference.json'
+    column_file=out/f'{name}-monitors.npz'
+    column_receipt=out/f'{name}.json'
+    key=f'{checkpoint_key}/{name}'
+    saved=read_checkpoint(ref_receipt,ref_file,key)
+    if saved is None:
+        if stage=='device':
+            raise ValueError(f'{name} requires its completed native reference first.')
+        print(f'{name}: exciting the isolated incident reference',flush=True)
+        ref,ref_mon=build_simulation(mp,model,launch,resolution,reference=True)
+        try:
+            reference=run_until_settled(mp,ref,ref_mon,model,after_time,minimum_ringdown)
+            incident,neff_in,frac,edge=project(mp,ref,ref_mon[launch],port,model,port['inward_sign'],resolution)
+            ref_data=ref.get_flux_data(ref_mon[launch])
+            atomic_archive(ref_file,E=ref_data.E,H=ref_data.H,incident=incident,neff=neff_in,
+                           ey_fraction=frac,edge_fraction=edge)
+        finally:
+            ref.reset_meep()
+        saved={'checkpoint_key':key,'archive_sha256':hashlib.sha256(ref_file.read_bytes()).hexdigest(),
+               'seconds':time.monotonic()-start,'reference':reference}
+        atomic_json(ref_receipt,saved)
+        print(f'{name}: reference checkpoint after {saved["seconds"]:.1f}s, settled={reference["settled"]}',flush=True)
+    if stage=='reference':
+        return saved
+    completed=read_checkpoint(column_receipt,column_file,key)
+    if completed is not None:
+        return completed
+    # Reload even on the initial run so the resume path uses the same native bytes.
+    with np.load(ref_file,allow_pickle=False) as arrays:
+        ref_data=FluxData(E=arrays['E'],H=arrays['H'])
+        incident,neff_in,frac,edge=(arrays[k] for k in ('incident','neff','ey_fraction','edge_fraction'))
+    native={'reference_E':ref_data.E,'reference_H':ref_data.H}
+    reference=saved['reference']
+    device_start=time.monotonic()
     dev, mon = build_simulation(mp, model, launch, resolution, reference=False)
     dev.load_minus_flux_data(mon[launch], ref_data)
     device = run_until_settled(mp, dev, mon, model, after_time, minimum_ringdown)
@@ -156,13 +208,14 @@ def measure_column(launch, model, resolution, after_time, directory, minimum_rin
     if not np.isfinite(incident).all() or (np.abs(incident)**2 < np.max(np.abs(incident)**2)*1e-6).any():
         raise RuntimeError('An incident spectral bin is insufficient for normalization.')
     column = outgoing/incident[:,None]
-    np.savez_compressed(out/f'{name}-monitors.npz', **native, incident=incident, outgoing=outgoing, s=column,
+    atomic_archive(column_file, **native, incident=incident, outgoing=outgoing, s=column,
                         neff_reference=neff_in, neff_device_outward=np.array(neff).T)
-    receipt = {'launch':name, 'reference':reference, 'device':device, 'seconds':time.monotonic()-start,
+    receipt = {'launch':name, 'reference':reference, 'device':device, 'seconds':saved['seconds']+time.monotonic()-device_start,
+               'checkpoint_key':key,'archive_sha256':hashlib.sha256(column_file.read_bytes()).hexdigest(),
                'phase_convention_version':2, 'minimum_Ey_fraction':float(np.min(all_fractions)), 'maximum_edge_intensity_fraction':float(np.max(all_edges)),
                'incident':as_pairs(incident), 'outgoing':as_pairs(outgoing), 's':as_pairs(column),
                'min_incident_relative_power':float(np.min(abs(incident)**2)/np.max(abs(incident)**2))}
-    (out/f'{name}.json').write_text(json.dumps(receipt,indent=2)+'\n')
+    atomic_json(column_receipt,receipt)
     print(f'{name}: {receipt["seconds"]:.1f}s, settled {reference["settled"]}/{device["settled"]}', flush=True)
     return receipt
 
@@ -180,31 +233,54 @@ def matrix_diagnostics(s, complete):
     return power, singular, reciprocity
 
 
-def measure(case, output, resolution=16, pml_um=.75, aperture_um=2., after_time=80., jobs=1, launch_port=None, minimum_ringdown=0.):
+def measure(case, output, resolution=16, pml_um=.75, aperture_um=2., after_time=80., jobs=1, launch_port=None, minimum_ringdown=0., resume=False, stage='all'):
     import meep as mp
-    if resolution not in (16,20,24) or jobs not in (1,2,3,4) or not 40 <= after_time <= 140 or not 0 <= minimum_ringdown <= after_time:
+    import fcntl
+    if resolution not in (16,20,24) or jobs not in (1,2,3,4) or not 40 <= after_time <= 140 or not 0 <= minimum_ringdown <= after_time or stage not in ('all','reference','device'):
         raise ValueError('Unsupported mesh, worker count or ringdown window.')
     model = multiport_model(case,pml_um,aperture_um)
-    out = Path(output)
-    out.mkdir(parents=True, exist_ok=False)
-    (out/'config.json').write_text(json.dumps(dict(model=model, resolution=resolution, max_after_source_time=after_time, minimum_ringdown=minimum_ringdown),indent=2)+'\n')
-    fn = partial(measure_column, model=model, resolution=resolution, after_time=after_time, directory=out, minimum_ringdown=minimum_ringdown)
     names = [p['name'] for p in model['ports']]
     if launch_port is not None and launch_port not in names:
         raise ValueError(f'Choose a launch port from {names}.')
     ids = list(range(len(names))) if launch_port is None else [names.index(launch_port)]
+    numerical_code='\n'.join(inspect.getsource(f) for f in (build_simulation,run_until_settled,project,measure_column,matrix_diagnostics))
+    config=dict(model=model,resolution=resolution,max_after_source_time=after_time,minimum_ringdown=minimum_ringdown,
+                version=mp.__version__,numpy_version=np.__version__,input_ports=[names[i] for i in ids],phase_convention_version=2,
+                numerical_sha256=hashlib.sha256(numerical_code.encode()).hexdigest())
+    config=json.loads(json.dumps(config))
+    out=Path(output)
+    if not resume:
+        out.mkdir(parents=True,exist_ok=False)
+    elif not (out/'config.json').is_file():
+        raise ValueError('Resume requires an existing study with its saved configuration.')
+    with (out/'.measurement.lock').open('a') as lock:
+        fcntl.flock(lock.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
+        if resume:
+            if json.loads((out/'config.json').read_text())!=config:
+                raise ValueError('Resume refused: physical model, solver, numerical code or inputs differ.')
+        else:
+            atomic_json(out/'config.json',config)
+        key=hashlib.sha256(json.dumps(config,sort_keys=True,separators=(',',':')).encode()).hexdigest()
+        return measure_locked(mp,model,resolution,after_time,minimum_ringdown,out,jobs,names,ids,launch_port,stage,key)
+
+
+def measure_locked(mp,model,resolution,after_time,minimum_ringdown,out,jobs,names,ids,launch_port,stage,key):
+    fn = partial(measure_column, model=model, resolution=resolution, after_time=after_time, directory=out,
+                 minimum_ringdown=minimum_ringdown,stage=stage,checkpoint_key=key)
     if jobs == 1:
         columns = list(map(fn,ids))
     else:
         with ProcessPoolExecutor(max_workers=jobs, mp_context=get_context('spawn')) as pool:
             columns = list(pool.map(fn,ids))
+    if stage=='reference':
+        return {'case':model['case'],'stage':stage,'all_stages_settled':all(c['reference']['settled'] for c in columns)}
     s = np.stack([np.array(c['s'])[...,0]+1j*np.array(c['s'])[...,1] for c in columns],axis=-1)
     valid = all(c[k]['settled'] for c in columns for k in ('reference','device'))
     power, singular, reciprocity = matrix_diagnostics(s, launch_port is None)
-    np.savez_compressed(out/'arrays.npz', frequency_per_um=model['frequency_per_um'], s=s,
+    atomic_archive(out/'arrays.npz', frequency_per_um=model['frequency_per_um'], s=s,
                         incident=np.array([np.asarray(c['incident'])[:,0]+1j*np.asarray(c['incident'])[:,1] for c in columns]).T,
                         mode_power_sum=power, largest_singular_value=singular)
-    report = {'schema_version':1,'case':case,'checked_at':datetime.now(timezone.utc).isoformat(),
+    report = {'schema_version':1,'case':model['case'],'checked_at':datetime.now(timezone.utc).isoformat(),
         'solver':'Meep', 'version':mp.__version__, 'numpy_version':np.__version__, 'python_version':sys.version.split()[0], 'actual_device':'CPU', 'resolution':resolution, 'model':model,
         'ports':names, 'input_ports':[names[i] for i in ids], 'full_matrix':launch_port is None, 'matrix_order':'[frequency, outgoing port, incident port]; [real,imag] pairs',
         'wavelength_um':(1/np.asarray(model['frequency_per_um'])).tolist(), 's':as_pairs(s),
@@ -220,7 +296,8 @@ def measure(case, output, resolution=16, pml_um=.75, aperture_um=2., after_time=
         'arrays_sha256':hashlib.sha256((out/'arrays.npz').read_bytes()).hexdigest()}
     report['native_monitor_sha256'] = {f.name:hashlib.sha256(f.read_bytes()).hexdigest()
                                       for f in sorted(out.glob('*-monitors.npz'))}
-    (out/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+    report['passed']=valid
+    atomic_json(out/'report.json',report)
     return report
 
 
@@ -235,8 +312,11 @@ if __name__ == '__main__':
     parser.add_argument('--jobs',type=int,choices=(1,2,3,4),default=1)
     parser.add_argument('--launch-port', help='Measure only this column for a numerical control; omit to measure every port.')
     parser.add_argument('--minimum-ringdown',type=float,default=0.,help='continue DFT accumulation for at least this many µm/c after the pulse')
+    parser.add_argument('--resume',action='store_true',help='reuse validated native checkpoints in this exact study directory')
+    parser.add_argument('--stage',choices=('all','reference','device'),default='all',
+                        help='optionally run the straight references and device columns in separate processes')
     args=parser.parse_args()
     if not 40. <= args.after_time <= 140.: parser.error('after-time must be between 40 and 140 µm/c.')
-    result=measure(args.case,args.output,args.resolution,args.pml_um,args.aperture_um,args.after_time,args.jobs,args.launch_port,args.minimum_ringdown)
-    print(json.dumps({k:result[k] for k in ('case','power_sums','maximum_reciprocity_error','all_stages_settled')},indent=2))
+    result=measure(args.case,args.output,args.resolution,args.pml_um,args.aperture_um,args.after_time,args.jobs,args.launch_port,args.minimum_ringdown,args.resume,args.stage)
+    print(json.dumps({k:result[k] for k in ('case','stage','power_sums','maximum_reciprocity_error','all_stages_settled') if k in result},indent=2))
     if not result['all_stages_settled']: sys.exit(2)

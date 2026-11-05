@@ -48,6 +48,20 @@ were 0.365951 and 0.365945. The simulation used no y-mirror reduction.
 Use `scripts/inspect_multiport_materials.py --output PORT_REPORT.json` in the
 FDTDX CPU environment to compare the local mode indices separately.
 
+The complete Yee-aligned splitter on CUDA passed the sampled checks at
+16 cells/µm. All three launch ports were simulated independently. The largest
+mirror-related guided-power difference across the three frequencies was
+0.00000867, and the largest reciprocity difference in complex S was 0.000797.
+Against Meep's signed-electric-phase result at the same resolution, the
+largest guided-power difference was 0.03846 and the complex relative L2
+difference was 0.15235. [CUDA splitter matrix and matched Meep comparison](verification/v011-fdtdx-yee-splitter-gpu16.json).
+
+All four corrected-grid coupler launches also passed at 16 cells/µm on CUDA.
+At 1.55 µm, the first launch delivered 0.79177 guided power to the through
+port and 0.07670 to the cross port. The corresponding Meep values were
+0.87387 and 0.07320. Across the band, the largest difference in guided power
+was 0.08211. [CUDA coupler matrix and matched Meep comparison](verification/v011-fdtdx-yee-coupler-gpu16.json).
+
 ## Straight-guide phase control
 
 A straight guide places the near and far monitors 9.5 µm apart. Moving both
@@ -60,6 +74,20 @@ with `legacy-x` measured +0.6685. Their measured 9.5 µm phases were
 accounts for the 2.2026-radian difference within 0.001 radians at this
 wavelength. It does not establish agreement on a device or correct its
 phases. [Measured near/far phase and sampling positions](verification/v011-multiport-phase-audit.json).
+
+Repeating that control with `yee-aligned` gave +0.65375 radians per cell
+and +99.37049 radians over 9.5 µm. Against the same Meep reference the
+measured difference falls to −0.03350 radians at 1.55 µm and stays within
+0.03683 radians across the band. [Corrected-grid phase control](verification/v011-fdtdx-yee-straight-phase.json).
+
+An independent normal-incidence reflection test uses a material step with
+indices 1 and 2. Both launch directions have a known complex electric-field
+reflection at a port 1 µm from the interface. At 64 cells/µm the absolute
+complex error against Fresnel theory was 0.00074 from the left and 0.00339
+from the right. The projected reflection agreed with direct native Ey
+subtraction within 0.000003 across both directions and both meshes.
+Run `scripts/check_fdtdx_port_phase.py --output fresnel.json` in the FDTDX
+CPU environment. [Signed reflected fields and analytic control](verification/v011-fdtdx-fresnel-phase.json).
 
 Repeat both controls in the respective solver environments:
 

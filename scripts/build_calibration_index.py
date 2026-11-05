@@ -66,6 +66,18 @@ def build():
         if entry:index[key]=entry
     for key,file in [('ring','v011-ring.json'),('grating','v011-grating.json')]:
         report=read(file)
+        if key=='grating' and (report is None or not report.get('passed')):
+            compact=read('v011-grating-compact-tidy3d.json')
+            if compact and compact.get('passed'):
+                view={'compact_tidy_domain':{n:compact['result'][n] for n in ('wavelength_um','beam_to_guide','valid_beam_bins') if n in compact['result']}}
+                index[key]={'dimension':'Planar grating with finite collection aperture','routes':['Meep CPU'],
+                            'series':[],'wavelengths_um':[],'summary':'Downward Gaussian illumination is calibrated to the incident beam power.',
+                            'limits':'The solved domain, finite source aperture and outgoing guided mode define this efficiency.',
+                            'comparisons':[vendor('Tidy3D',compact['source_url'],'Measured 58.23% against 56.23% at 1.55 µm for this compact setup.'),
+                                           vendor('Lumerical','https://optics.ansys.com/hc/en-us/articles/360042304774-Broadband-grating-coupler-2D',
+                                                  'The 1.31 µm Lumerical grating has a 30 nm etched groove. At 40 cells/µm Meep measured 49.42% at the nominal wavelength; Lumerical reports 55.7%.')],
+                            'recorded':[{'label':'Meep CPU','receipt':'v011-grating-compact-tidy3d.json','report':view}]}
+            continue
         if report is None or not report.get('passed'):continue
         comparisons=[]
         for row in report['comparisons']:
@@ -75,13 +87,13 @@ def build():
                 desc=f"Measured Gaussian-to-guide power {100*row['measured_fraction']:.2f}%; vendor example {100*row['reference_fraction']:.2f}%. {row['scope']}"
             comparisons.append(vendor(row['vendor'],row['source_url'],desc))
         if key=='ring':
-            view={'series':{k:{n:r[n] for n in ('wavelength_um','through','reflection','drop','add_side')} for k,r in report['series'].items()}}
+            view={'series':{k:{n:r[n] for n in ('wavelength_um','through','reflection','drop','add_side','valid_bins')} for k,r in report['series'].items()}}
             view['isolated_finite_height_ring']={k:{n:r[n] for n in ('measured_bare_ring_fsr_nm','published_loaded_ring_fsr_nm')} for k,r in report.get('isolated_finite_height_ring',{}).items()}
         else:
-            view={'studies':{k:{'fine':{n:r['fine'][n] for n in ('wavelength_um','beam_to_guide','guide_radiation_up','guide_radiation_down') if n in r['fine']}} for k,r in report['studies'].items()}}
+            view={'studies':{k:{'fine':{n:r['fine'][n] for n in ('wavelength_um','beam_to_guide','guide_radiation_up','guide_radiation_down','valid_beam_bins','valid_energy_bins') if n in r['fine']}} for k,r in report['studies'].items()}}
             compact=report.get('compact_tidy_domain')
             if compact:
-                view['compact_tidy_domain']={n:compact[n] for n in ('wavelength_um','beam_to_guide')}
+                view['compact_tidy_domain']={n:compact[n] for n in ('wavelength_um','beam_to_guide','valid_beam_bins') if n in compact}
                 comparisons.append(vendor('Tidy3D compact aperture','https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/',
                     f"Matching the compact collection domain gives {compact['center_beam_to_guide']*100:.2f}% at 1.55 µm. Tidy3D reports 56.23%."))
         index[key]={'dimension':report.get('dimensionality','Planar effective-index add/drop model'),
@@ -90,6 +102,14 @@ def build():
                    'limits':('A finite-height isolated ring check excludes the bus waveguides. A full loaded 3D spectrum requires a separate calculation.' if key=='ring'
                             else 'Upward radiated power and power coupled to a particular Gaussian mode have different collection and normalization.'),
                    'recorded':[{'label':'Meep CPU','receipt':file,'report':view}]}
+    if 'grating' in index:
+        for label,name in [('Lumerical article · 28 cells/µm','v011-grating-ansys-article-r28.json'),
+                           ('Lumerical article · 40 cells/µm','v011-grating-ansys-article-r40.json')]:
+            beam=read(name)
+            if beam and beam.get('passed'):
+                panel={'case_id':beam['case_id'],'vendor':beam['vendor'],
+                       'result':{k:beam['result'][k] for k in ('wavelength_um','beam_to_guide','valid_beam_bins')}}
+                index['grating']['recorded'].append({'label':label,'receipt':name,'report':panel})
     return index
 
 

@@ -14,13 +14,19 @@ _lock = threading.Lock()
 def _probe(target):
     solver, device = target
     base = {"solver": solver, "device": device, "available": False}
+    # JAX and FDTDX can take more than a minute to initialize when the CPU is
+    # simultaneously running simulations. This probe executes one scalar op.
+    timeout = 180 if solver == "fdtdx" else 50
+    env = {**worker_env(solver, device), "OMP_NUM_THREADS":"1", "OPENBLAS_NUM_THREADS":"1"}
     try:
         run = subprocess.run([interpreter(solver, device), "-m", "backend.probe", solver, device],
-                             cwd=ROOT, env=worker_env(solver, device), capture_output=True, text=True, timeout=50)
+                             cwd=ROOT, env=env, capture_output=True, text=True, timeout=timeout)
         lines = [s[11:] for s in run.stdout.splitlines() if s.startswith("PROBE_JSON=")]
         if run.returncode or not lines:
             return {**base, "reason": clean_log((run.stderr or run.stdout)[-1800:]) or "Solver probe failed."}
         return {**base, **json.loads(lines[-1])}
+    except subprocess.TimeoutExpired:
+        return {**base, "reason": f"The local {solver}/{device} probe did not finish within {timeout} seconds. Retry when the workers are less busy."}
     except FileNotFoundError:
         return {**base, "reason": f"{solver.title()} interpreter not found. Install its documented environment or set {solver.upper()}_PYTHON to its Python executable."}
     except Exception as exc:

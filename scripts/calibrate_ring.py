@@ -104,6 +104,11 @@ def record(case, resolution, pml, pad, aperture, duration, with_ring):
     return ts, np.array(fields), axes, np.array(probe)
 
 
+def electric_directional_components(e_term,h_term):
+    """Positive transverse electric-field anchor for both propagation directions."""
+    return e_term+h_term,e_term-h_term
+
+
 def project(ts, fields, axes, width, film):
     """Paired tangential Ey/Hz overlap with analytic left- and right-going modes."""
     dy = np.diff(axes,axis=1)
@@ -126,8 +131,9 @@ def project(ts, fields, axes, width, film):
             # All four guides use the same width and stack. Normalize before
             # forming port ratios to allow for a different sub-grid y offset.
             normal = 2*np.sqrt(np.trapezoid(e*h,axes,axis=-1))
-            projection[first+j,:,0] = np.trapezoid(dft[j,:,0]*h+dft[j,:,1]*e,axes,axis=-1)/normal
-            projection[first+j,:,1] = np.trapezoid(-dft[j,:,0]*h+dft[j,:,1]*e,axes,axis=-1)/normal
+            e_term=np.trapezoid(dft[j,:,0]*h,axes,axis=-1)/normal
+            h_term=np.trapezoid(dft[j,:,1]*e,axes,axis=-1)/normal
+            projection[first+j,:,0],projection[first+j,:,1]=electric_directional_components(e_term,h_term)
     return projection
 
 
@@ -179,12 +185,34 @@ def run_case(name,setting,arrays):
     report=dict(resolution_cells_per_um=res,pml_um=pml,cladding_padding_um=pad,port_aperture_um=aperture,
             duration_um_c=duration,early_duration_um_c=duration*.8,array_prefix=prefix,
             post_source_record_um_c=post_source_record,
+            phase_convention='Positive-real Ey at the guide center for both propagation directions.',
             peaks=peaks,straight_reference_power_range=[float(straight.min()),float(straight.max())],
             port_power_sum_range=[float(power.sum(axis=1).min()),float(power.sum(axis=1).max())],
             valid_bins=((np.max(abs(power-prev),axis=1)<=.05) & (power.sum(axis=1)<=1.03)).tolist(),
             max_power_change_early_to_final=float(np.max(abs(power-prev))),
             final_window_ring_Hz_peak_ratio=float(np.max(abs(probe[ts>.95*duration]))/np.max(abs(probe))))
     return report,power
+
+
+def planar_settings(name):
+    settings={'coarse':(20,.8,.8,2.,1000.),'fine':(28,.8,.8,2.,1000.)}
+    if name=='lumerical':
+        settings.update(pml=(20,1.2,.8,2.,1000.),padding=(20,.8,1.3,2.,1000.),
+                        aperture=(20,.8,.8,2.4,1000.))
+    return settings
+
+
+def measured_planar_case(name,settings,arrays,checkpoint):
+    if checkpoint is None:
+        return run_case(name,settings,arrays)
+    def acquire():
+        samples={}
+        row,_=run_case(name,settings,samples)
+        return row,samples
+    spec={'physical_model':CASES[name],'settings':settings,'wavelength_um':WAVELENGTHS.tolist()}
+    row,samples=checkpoint.acquire(name+'-loaded',spec,acquire)
+    arrays.update(samples)
+    return row,abs(samples[row['array_prefix']+'_s'])**2
 
 
 def isolated_pole(case, order, resolution, radial_padding, pml, traces, key, oxide_top):
@@ -241,6 +269,20 @@ def pole_wavelength(row):
     return row['second_post_source_window']['wavelength_um']
 
 
+def measured_pole(name,order,resolution,padding,pml,traces,label,checkpoint=None):
+    def acquire():
+        samples={}
+        row=isolated_pole(CASES[name],order,resolution,padding,pml,samples,label,name=='tidy3d')
+        return row,samples
+    if checkpoint is None:
+        row,samples=acquire()
+    else:
+        spec={'case':name,'model':CASES[name],'order':order,'resolution':resolution,'padding':padding,'pml':pml}
+        row,samples=checkpoint.acquire(label,spec,acquire)
+    traces.update(samples)
+    return row
+
+
 def bracketed_pole_pair(rows):
     ordered=sorted(rows,key=pole_wavelength)
     for left,right in zip(ordered,ordered[1:]):
@@ -251,12 +293,12 @@ def bracketed_pole_pair(rows):
     raise RuntimeError('The measured poles do not bracket 1.55 µm.')
 
 
-def cover_band_center(name, resolution, orders, samples, traces):
+def cover_band_center(name, resolution, orders, samples, traces, checkpoint=None):
     """Retain each measured order and extend along one physical azimuthal branch."""
     def acquire(order):
         if order not in samples:
-            sample=isolated_pole(CASES[name],order,resolution,.80,.75,traces,
-                                 f'{name}_r{resolution}_m{order}',name=='tidy3d')
+            sample=measured_pole(name,order,resolution,.80,.75,traces,
+                                 f'{name}_r{resolution}_m{order}',checkpoint)
             samples[order]=sample
             print(name,'isolated pole',order,resolution,pole_wavelength(sample),flush=True)
     for order in sorted(orders):
@@ -269,7 +311,7 @@ def cover_band_center(name, resolution, orders, samples, traces):
     raise RuntimeError(f'{name} isolated poles do not bracket the band center at mesh {resolution}.')
 
 
-def summarize_bare_ring(name, m0, straight, runs, boundary, traces):
+def summarize_bare_ring(name, m0, straight, runs, boundary, traces, checkpoint=None):
     pair=bracketed_pole_pair(runs['r48'])
     finest=np.array([pole_wavelength(row) for row in pair])
     fsr=float((finest[1]-finest[0])*1000)
@@ -277,8 +319,7 @@ def summarize_bare_ring(name, m0, straight, runs, boundary, traces):
     for row in pair:
         order=row['angular_order']
         if order not in r36:
-            r36[order]=isolated_pole(CASES[name],order,36,.80,.75,traces,
-                                     f'{name}_r36_m{order}',name=='tidy3d')
+            r36[order]=measured_pole(name,order,36,.80,.75,traces,f'{name}_r36_m{order}',checkpoint)
     runs['r36']=[r36[m] for m in sorted(r36)]
     same_order=np.sort([pole_wavelength(r36[row['angular_order']]) for row in pair])
     vendor=np.array(CASES[name]['reference_peaks_um'])
@@ -300,7 +341,7 @@ def summarize_bare_ring(name, m0, straight, runs, boundary, traces):
                       and boundary['pole_repeat_passed'])
 
 
-def finite_ring_sweep(traces):
+def finite_ring_sweep(traces,checkpoint=None):
     """Measure neighboring full-vector cylindrical poles bracketing 1.55 µm at each mesh."""
     studies={}
     for name,case in CASES.items():
@@ -310,20 +351,20 @@ def finite_ring_sweep(traces):
         runs={}
         orders=set(range(m0-1,m0+2))
         for resolution in (24,36,48):
-            rows=cover_band_center(name,resolution,orders,{},traces)
+            rows=cover_band_center(name,resolution,orders,{},traces,checkpoint)
             runs[f'r{resolution}']=rows
             seed=bracketed_pole_pair(rows) if resolution>=36 else rows
             orders={row['angular_order'] for row in seed}
-        boundary=isolated_pole(case,m0,24,1.10,1.,traces,f'{name}_boundary_m{m0}',name=='tidy3d')
-        studies[name]=summarize_bare_ring(name,m0,straight,runs,boundary,traces)
+        boundary=measured_pole(name,m0,24,1.10,1.,traces,f'{name}_boundary_m{m0}',checkpoint)
+        studies[name]=summarize_bare_ring(name,m0,straight,runs,boundary,traces,checkpoint)
     return studies
 
 
-def run(out, isolated_only=False):
+def run(out, isolated_only=False, checkpoint=None):
     import meep as mp
     mp.verbosity(0)
     arrays={'wavelength_um':WAVELENGTHS}; series={}; sensitivity={}; comparisons=[]; checks={}
-    isolated=finite_ring_sweep(arrays)
+    isolated=finite_ring_sweep(arrays,checkpoint)
     if isolated_only:
         np.savez_compressed(out/'arrays.npz',**arrays)
         report=dict(schema_version=1,case_id='isolated-ring-poles',solver='Meep CPU',
@@ -331,14 +372,11 @@ def run(out, isolated_only=False):
         (out/'report.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
         return report
     for name,case in CASES.items():
-        settings={'coarse':(20,.8,.8,2.,1000.),'fine':(28,.8,.8,2.,1000.)}
-        if name=='lumerical':
-            settings.update(pml=(20,1.2,.8,2.,1000.),padding=(20,.8,1.3,2.,1000.),
-                            aperture=(20,.8,.8,2.4,1000.))
+        settings=planar_settings(name)
         rows={}; powers={}
         for tag,setting in settings.items():
             print(f'{name}: starting {tag}',flush=True)
-            rows[tag],powers[tag]=run_case(name,setting,arrays)
+            rows[tag],powers[tag]=measured_planar_case(name,setting,arrays,checkpoint)
             print(tag,rows[tag]['peaks'],rows[tag]['max_power_change_early_to_final'],flush=True)
         primary=rows['fine']
         if len(primary['peaks']) < 3:
@@ -394,18 +432,63 @@ def run(out, isolated_only=False):
     return report
 
 
+def run_loaded(out,name,profile,checkpoint):
+    """A single published lateral geometry, with its independently driven reference."""
+    import meep as mp
+    mp.verbosity(0)
+    arrays={'wavelength_um':WAVELENGTHS}
+    row,power=measured_planar_case(name,planar_settings(name)[profile],arrays,checkpoint)
+    low,high=row['straight_reference_power_range']
+    checks={'straight_control':low>.97 and high<1.03, 'distinct_resonances':len(row['peaks'])>=3,
+            'passivity':row['port_power_sum_range'][1]<=1.03,
+            'finite_window':row['max_power_change_early_to_final']<=.05}
+    series={name:dict(wavelength_um=WAVELENGTHS.tolist(),reflection=power[:,0].tolist(),
+                      through=power[:,1].tolist(),drop=power[:,2].tolist(),add_side=power[:,3].tolist(),
+                      valid_bins=row['valid_bins'],best_peaks=row['peaks'],cases={profile:row})}
+    archive=out/'arrays.npz'
+    np.savez_compressed(archive,**arrays)
+    report=dict(schema_version=1,case_id='ring-loaded',solver='Meep CPU',vendor=name,profile=profile,
+                physical_model=CASES[name],series=series,checks=checks,passed=all(checks.values()),
+                versions={'meep':mp.__version__,'numpy':np.__version__},
+                dimensionality='Planar 2D bus-loaded Hz model. Vertical slab effective index fixed at 1.55 µm.',
+                arrays_file='arrays.npz',arrays_sha256=hashlib.sha256(archive.read_bytes()).hexdigest())
+    (out/'report.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
+    return report
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--isolated-only',action='store_true',help='run only the finite-height cylindrical bare-ring pole studies')
+    parser.add_argument('--loaded-case',choices=tuple(CASES),help='measure one vendor planar loaded-ring spectrum')
+    parser.add_argument('--profile',choices=('coarse','fine','pml','padding','aperture'),help='single-case settings (default fine)')
+    parser.add_argument('--checkpoint',type=Path,help='retain verified finished spectra and poles for resuming longer studies')
     args=parser.parse_args()
+    if args.isolated_only and args.loaded_case:
+        parser.error('choose either the isolated ring or the loaded case')
+    if args.profile and (not args.loaded_case or args.profile not in planar_settings(args.loaded_case)):
+        parser.error('--profile must be a supported setting for the selected --loaded-case')
     destination=args.output.resolve()
     if destination.exists():
         parser.error('choose a fresh result directory')
+    checkpoint=None
+    if args.checkpoint:
+        checkpoint_path=args.checkpoint.resolve()
+        if checkpoint_path==destination or checkpoint_path in destination.parents or destination in checkpoint_path.parents:
+            parser.error('use separate output and checkpoint directories without nesting them')
+        if __package__:
+            from .calibration_checkpoint import MeasurementCheckpoints
+        else:
+            from calibration_checkpoint import MeasurementCheckpoints
+        checkpoint=MeasurementCheckpoints(args.checkpoint,__file__)
     destination.parent.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(dir=destination.parent) as tmp:
         stage=Path(tmp)/'study';stage.mkdir()
-        result=run(stage,args.isolated_only);stage.rename(destination)
+        if args.loaded_case:
+            result=run_loaded(stage,args.loaded_case,args.profile or 'fine',checkpoint)
+        else:
+            result=run(stage,args.isolated_only,checkpoint)
+        stage.rename(destination)
     return 0 if result['passed'] else 1
 
 

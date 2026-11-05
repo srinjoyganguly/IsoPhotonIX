@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "solver": "FDTDX",
+  "version": "0.6.2",
+  "source_sha256": "ca280368a907d71c3674cde841913361928b8dedaf9b75b718d956762ddcfe6f",
+  "physical_model": "A plane wave normally incident on a step between n=1 and n=2 at x=0, in both directions; uniform periodic transverse cells and axial PML. Each port is one micrometre from the interface.",
+  "measurement": "Subtract each matched straight-reference backwave, divide by its measured incident wave, then compare with direct Ey subtraction and the complex electric Fresnel coefficient propagated back to the physical plane.",
+  "rows": [
+    {
+      "resolution": 32,
+      "side": "left",
+      "physical_distance_um": 1.0,
+      "analytic": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "direct_Ey": [
+        0.08404166996479034,
+        -0.31976762413978577
+      ],
+      "reciprocal_EH": [
+        0.08404247661343185,
+        -0.3197686790386399
+      ],
+      "projection_minus_direct_abs": 1.3279659722109303e-06,
+      "projection_minus_analytic_abs": 0.0029647409095401034,
+      "opposite_sign_minus_direct_abs": 0.6612555961306161,
+      "actual_device": "cpu:0",
+      "native_time_steps": 7558,
+      "energy_tails": [
+        5.678424852724462e-13,
+        5.201033831045421e-13
+      ]
+    },
+    {
+      "resolution": 32,
+      "side": "right",
+      "physical_distance_um": 1.0,
+      "analytic": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "direct_Ey": [
+        -0.28241556882858276,
+        -0.17192013561725616
+      ],
+      "reciprocal_EH": [
+        -0.2824182283347637,
+        -0.17191965280084354
+      ],
+      "projection_minus_direct_abs": 2.70297702816643e-06,
+      "projection_minus_analytic_abs": 0.013587581464229725,
+      "opposite_sign_minus_direct_abs": 0.6612586623382471,
+      "actual_device": "cpu:0",
+      "native_time_steps": 7558,
+      "energy_tails": [
+        6.323383114868741e-13,
+        5.299075522997854e-13
+      ]
+    },
+    {
+      "resolution": 64,
+      "side": "left",
+      "physical_distance_um": 1.0,
+      "analytic": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "direct_Ey": [
+        0.08367873728275299,
+        -0.3219662308692932
+      ],
+      "reciprocal_EH": [
+        0.08367656836190998,
+        -0.3219650319803502
+      ],
+      "projection_minus_direct_abs": 2.4782155517458058e-06,
+      "projection_minus_analytic_abs": 0.0007381270131088962,
+      "opposite_sign_minus_direct_abs": 0.66532343232638,
+      "actual_device": "cpu:0",
+      "native_time_steps": 15116,
+      "energy_tails": [
+        7.162966644521165e-14,
+        5.705276474778781e-14
+      ]
+    },
+    {
+      "resolution": 64,
+      "side": "right",
+      "physical_distance_um": 1.0,
+      "analytic": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "direct_Ey": [
+        -0.289235383272171,
+        -0.16433627903461456
+      ],
+      "reciprocal_EH": [
+        -0.2892365942616799,
+        -0.16433592076892906
+      ],
+      "projection_minus_direct_abs": 1.2628736643310067e-06,
+      "projection_minus_analytic_abs": 0.0033899673421172623,
+      "opposite_sign_minus_direct_abs": 0.6653234128719842,
+      "actual_device": "cpu:0",
+      "native_time_steps": 15116,
+      "energy_tails": [
+        2.463413215005473e-14,
+        4.377422225696967e-14
+      ]
+    }
+  ],
+  "checked_at": "2026-11-05T23:05:34.161975+00:00",
+  "measured_stage_source_ast_sha256": "fd773eb92a963e7a78df0aa4d2de45c1f34fdf7d93d15b8fe5102d12a9fe9a72",
+  "maximum_projection_minus_direct_abs": 2.70297702816643e-06
+}

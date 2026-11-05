@@ -32,6 +32,9 @@ CASES = {
 
 ANSYS_FILED = dict(CASES['lumerical'], oxide_n=1.44, beam_x=14.8, beam_z=3.3,
                    waist_radius=17.288, focus_distance=3.2, exit_trench=.250)
+ANSYS_OUTPUT = dict(ANSYS_FILED, output_x=-40., output_aperture=1.,
+                    beam_left=-42., beam_right=62., beam_span=104.,
+                    post_source_duration=300)
 
 
 def phase_matching_estimate(case):
@@ -71,6 +74,12 @@ def valid_beam_bins(incident, coupling):
     return (incident>=.01*np.max(incident)) & np.isfinite(coupling) & (coupling>=0) & (coupling<=1.02)
 
 
+def beam_band_passes(incident, coupling):
+    inside=incident>=.01*np.max(incident)
+    valid=valid_beam_bins(incident,coupling)
+    return bool(valid[len(valid)//2] and np.all(valid[inside]) and np.mean(valid)>=.8)
+
+
 def compare_ansys_spectrum(wavelengths, coupling):
     """Independent readout from the labeled broadband-direct curve in Figure 6."""
     reference_nm=np.array([1298.,1303.,1308.,1310.,1313.,1318.,1323.])
@@ -89,7 +98,7 @@ def compare_ansys_spectrum(wavelengths, coupling):
                 scope='Local spectrum linearly interpolated to seven published plot coordinates; single-frequency Meep Gaussian profile compared with vendor broadband direct curve. Nominal 55.7% is reported separately by the vendor.')
 
 
-def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
+def measure(case, stage, resolution, pml, margin, end, aperture, compact=False, direct_flux=None):
     import meep as mp
 
     period, teeth = case['period'], case['teeth']
@@ -98,8 +107,10 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     height, etch = case['height'], case['etch']
     beam_z = case.get('beam_z', top + .5)
     beam = stage.startswith('beam')
-    xmin = min(-6., case['beam_x'] - case['beam_span']/2) - pml - margin
-    xmax = max(length + 2., case['beam_x'] + case['beam_span']/2) + pml + margin
+    beam_left=case.get('beam_left',case['beam_x']-case['beam_span']/2)
+    beam_right=case.get('beam_right',case['beam_x']+case['beam_span']/2)
+    xmin = min(-6., beam_left) - pml - margin
+    xmax = max(length + 2., beam_right) + pml + margin
     zmin, zmax = -bottom - .65 - pml - margin, beam_z + pml + margin
     if compact:
         if not beam:
@@ -107,8 +118,8 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
         buffer=.6*case['wavelength']
         xmin,xmax=-buffer,length+buffer
         zmin,zmax=-bottom-buffer,height+top+buffer
-    source_start=max(xmin+pml,case['beam_x']-case['beam_span']/2)
-    source_end=min(xmax-pml,case['beam_x']+case['beam_span']/2)
+    source_start=max(xmin+pml,beam_left)
+    source_end=min(xmax-pml,beam_right)
     source_midpoint=(source_start+source_end)/2
     source_span=source_end-source_start
     # Meep's y is physical vertical z; all structures are invariant out of plane.
@@ -160,8 +171,12 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     if stage == 'beam_reference':
         monitors = [flux(source_midpoint, top+.23, source_span, 0)]
     elif stage == 'beam_device':
+        output_x=case.get('output_x',-.3*case['wavelength'] if compact else -1.)
+        output_aperture=case.get('output_aperture',aperture)
         mode = sim.add_mode_monitor(frequency, bandwidth, bins,
-                       mp.ModeRegion(center=point(-.3*case['wavelength'] if compact else -1., height/2), size=(0, aperture)))
+                       mp.ModeRegion(center=point(output_x,height/2), size=(0,output_aperture)))
+        if direct_flux is not None:
+            total_output=flux(output_x,height/2,0,output_aperture)
     else:
         left, right, low, high = -1.5, length + 1.35, -bottom - .45, top + .25
         monitors = [flux(left, (low+high)/2, 0, high-low), flux(right, (low+high)/2, 0, high-low),
@@ -170,6 +185,8 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     if stage == 'beam_device':
         result = sim.get_eigenmode_coefficients(mode, [1], eig_parity=mp.ODD_Z).alpha[0].copy()
         freqs = np.array(mp.get_flux_freqs(mode))
+        if direct_flux is not None:
+            direct_flux.extend(mp.get_fluxes(total_output))
     else:
         result = np.array([mp.get_fluxes(monitor) for monitor in monitors])
         freqs = np.array(mp.get_flux_freqs(monitors[0]))
@@ -177,11 +194,26 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     return freqs, result
 
 
-def spectrum(case, label, settings, arrays):
+def measured_stage(case, stage, settings, compact=False, direct=False, checkpoint=None):
+    def acquire():
+        output=[] if direct else None
+        frequencies,values=measure(case,stage,*settings,compact,output)
+        samples={'frequencies':frequencies,'values':values}
+        if direct:
+            samples['direct_flux']=np.array(output)
+        return {},samples
+    if checkpoint is None:
+        return acquire()[1]
+    spec={'physical_model':case,'settings':settings,'compact':compact,'direct_flux':direct}
+    return checkpoint.acquire(stage,spec,acquire)[1]
+
+
+def spectrum(case, label, settings, arrays, checkpoint=None):
     resolution, pml, margin, end, aperture = settings
     data = {}
     for stage in ('beam_reference','beam_device','guide_reference','guide_device'):
-        freq, values = measure(case, stage, *settings)
+        captured=measured_stage(case,stage,settings,checkpoint=checkpoint)
+        freq,values=captured['frequencies'],captured['values']
         arrays[f'{label}_{stage}'] = values
         data[stage] = values
     arrays[f'{label}_frequency_per_um'] = freq
@@ -207,6 +239,7 @@ def spectrum(case, label, settings, arrays):
                               power_sum=float(balance[zero])),
                   valid_energy_bins=(abs(balance-1) < .04).tolist(),
                   valid_beam_bins=valid_beam_bins(incident_beam,coupled).tolist(),
+                  qualified_beam_band=beam_band_passes(incident_beam,coupled),
                   max_abs_balance_error=float(np.max(abs(balance-1))))
     if case['url']==ANSYS_URL:
         result['published_spectral_comparison']=compare_ansys_spectrum(1/freq,coupled)
@@ -214,12 +247,15 @@ def spectrum(case, label, settings, arrays):
     return result
 
 
-def gaussian_only(case, resolution, compact, arrays, prefix):
+def gaussian_only(case, resolution, compact, arrays, prefix, checkpoint=None):
     """Matched empty/reference and device runs on the same explicit source aperture."""
     pml=.4 if compact else .8
-    duration=100 if case['wavelength']>1.5 else 150
-    f,ref=measure(case,'beam_reference',resolution,pml,1.,duration,1.56,compact)
-    _,device=measure(case,'beam_device',resolution,pml,1.,duration,1.56,compact)
+    duration=case.get('post_source_duration',100 if case['wavelength']>1.5 else 150)
+    settings=(resolution,pml,1.,duration,1.56)
+    reference=measured_stage(case,'beam_reference',settings,compact,checkpoint=checkpoint)
+    measured=measured_stage(case,'beam_device',settings,compact,'output_x' in case,checkpoint)
+    f,ref,device=reference['frequencies'],reference['values'],measured['values']
+    direct=measured.get('direct_flux')
     incident=-ref[0]
     if np.min(incident)<=0: raise RuntimeError('Nonpositive measured Gaussian input.')
     coupled=abs(device[:,1])**2/incident
@@ -228,13 +264,23 @@ def gaussian_only(case, resolution, compact, arrays, prefix):
     result=dict(resolution=resolution,pml_um=pml,physical_cell='vendor box with finite source clipping' if compact else 'extended aperture',
                 sampled_peak=sampled_peak(1/f,coupled),
                 valid_beam_bins=valid_beam_bins(incident,coupled).tolist(),
+                qualified_beam_band=beam_band_passes(incident,coupled),
                 wavelength_um=(1/f).tolist(),beam_to_guide=coupled.tolist(),center_beam_to_guide=float(coupled[len(coupled)//2]))
     if case['url']==ANSYS_URL:
         result['published_spectral_comparison']=compare_ansys_spectrum(1/f,coupled)
+    if direct is not None:
+        measured=-np.array(direct)/incident
+        arrays[prefix+'_output_flux']=np.array(direct)
+        result.update(output_x_um=case['output_x'],output_aperture_um=case['output_aperture'],
+                      post_source_duration_um_c=duration,direct_output_fraction=measured.tolist(),
+                      center_direct_output_fraction=float(measured[len(measured)//2]),
+                      valid_direct_bins=valid_beam_bins(incident,measured).tolist(),
+                      qualified_direct_band=beam_band_passes(incident,measured),
+                      direct_output_spectral_comparison=compare_ansys_spectrum(1/f,measured))
     return result
 
 
-def run(out):
+def run(out, checkpoint=None):
     import meep as mp
     mp.verbosity(0)
     arrays, studies = {}, {}
@@ -247,7 +293,7 @@ def run(out):
         'lumerical': {'coarse':(28,.8,1.,150,1.56), 'fine':(40,.8,1.,150,1.56)},
     }
     for name, runs in sweeps.items():
-        studies[name] = {key:spectrum(CASES[name],name+'_'+key,settings,arrays)
+        studies[name] = {key:spectrum(CASES[name],name+'_'+key,settings,arrays,checkpoint)
                          for key,settings in runs.items()}
     comparisons = []
     checks = {}
@@ -267,12 +313,12 @@ def run(out):
             np.isfinite(row['beam_to_guide']).all() and .01 < row['center']['beam_to_guide'] < 1
             and row['center']['upper_flux_fraction'] > .01 for row in results.values())
         checks[name+'_center_energy_balance_within_0_04'] = abs(central['power_sum']-1) < .04
-        checks[name+'_beam_spectrum_within_source_band_and_passivity'] = all(all(row['valid_beam_bins']) for row in results.values())
+        checks[name+'_beam_spectrum_within_source_band_and_passivity'] = all(row['qualified_beam_band'] for row in results.values())
     sensitivity = {name:{key:dict(
         max_beam_efficiency_change=float(np.max(np.abs(np.subtract(row['beam_to_guide'],results['fine']['beam_to_guide'])))),
         max_upper_fraction_change=float(np.max(np.abs(np.subtract(row['guide_radiation_up'],results['fine']['guide_radiation_up'])))))
         for key,row in results.items() if key!='fine'} for name,results in studies.items()}
-    compact=gaussian_only(CASES['tidy3d'],40,True,arrays,'tidy_compact')
+    compact=gaussian_only(CASES['tidy3d'],40,True,arrays,'tidy_compact',checkpoint)
     np.savez_compressed(out/'arrays.npz', **arrays)
     report = dict(schema_version=1,case_id='grating',solver='Meep CPU',versions={'meep':mp.__version__, 'numpy':np.__version__},
         dimensionality='2D x-z cross section, invariant lateral width; TE electric field perpendicular to the cross section',
@@ -294,7 +340,7 @@ def beam_receipt(vendor, result, arrays_path, case=None):
     return dict(schema_version=1,case_id='grating-gaussian-profile',vendor=vendor,solver='Meep CPU',
       physical_model=case,result=result,reference_coupling=case['published'],
       delta_percentage_points=100*(measured-case['published']),source_url=case['url'],
-      passed=bool(all(result['valid_beam_bins']) and 0<measured<1),
+      passed=bool(result['qualified_beam_band'] and 0<measured<1),
       arrays_file='arrays.npz',arrays_sha256=hashlib.sha256(arrays_path.read_bytes()).hexdigest(),
       scope='Actual downward Gaussian power in air and a separate excited device measured on the same source aperture; outgoing TE0 power referenced to that source.')
 
@@ -302,20 +348,32 @@ def beam_receipt(vendor, result, arrays_path, case=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--checkpoint',type=Path,help='retain and reuse verified, completed solver stages in this directory')
     parser.add_argument('--beam-only',choices=tuple(CASES),help='repeat only one measured Gaussian-to-guide case')
     parser.add_argument('--vendor-box',action='store_true',help='use Tidy3D notebook box and monitor with an explicitly clipped beam')
     parser.add_argument('--project-source',action='store_true',help='use the published Ansys project oxide index, beam position and waist')
+    parser.add_argument('--project-output',action='store_true',help='measure Ansys total output flux and TE0 at the filed far-port coordinates')
     parser.add_argument('--resolution',type=int,choices=(28,40,60),help='mesh for an individual Gaussian comparison (default 40)')
     args = parser.parse_args()
     if args.vendor_box and args.beam_only!='tidy3d':
         parser.error('--vendor-box requires --beam-only tidy3d')
-    if args.project_source and args.beam_only!='lumerical':
-        parser.error('--project-source requires --beam-only lumerical')
+    if (args.project_source or args.project_output) and args.beam_only!='lumerical':
+        parser.error('--project-source and --project-output apply to --beam-only lumerical')
     if args.resolution is not None and not args.beam_only:
         parser.error('--resolution applies to --beam-only')
     destination = args.output.resolve()
     if destination.exists():
         parser.error('choose a new output directory')
+    checkpoint=None
+    if args.checkpoint:
+        checkpoint_path=args.checkpoint.resolve()
+        if checkpoint_path==destination or checkpoint_path in destination.parents or destination in checkpoint_path.parents:
+            parser.error('use separate output and checkpoint directories without nesting them')
+        if __package__:
+            from .calibration_checkpoint import MeasurementCheckpoints
+        else:
+            from calibration_checkpoint import MeasurementCheckpoints
+        checkpoint=MeasurementCheckpoints(args.checkpoint,__file__)
     destination.parent.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(dir=destination.parent) as temp:
         stage = Path(temp)/'study'; stage.mkdir()
@@ -323,18 +381,22 @@ def main():
             import meep as mp
             mp.verbosity(0)
             arrays={}
-            case=ANSYS_FILED if args.project_source else CASES[args.beam_only]
+            case=ANSYS_OUTPUT if args.project_output else ANSYS_FILED if args.project_source else CASES[args.beam_only]
             row=gaussian_only(case,args.resolution or 40,args.vendor_box,arrays,
-                              'tidy_compact' if args.vendor_box else args.beam_only)
+                              'tidy_compact' if args.vendor_box else args.beam_only,checkpoint)
             arrays_path=stage/'arrays.npz'
             np.savez_compressed(arrays_path,**arrays)
             result=beam_receipt(args.beam_only,row,arrays_path,case)
-            if args.project_source:
+            if args.project_source or args.project_output:
                 result.update(ansys_project_url=ANSYS_PROJECT, ansys_project_sha256=ANSYS_SHA,
                               beam_profile='2D Gaussian with downstream waist; vendor uses a vectorial thin-lens source')
+            if args.project_output:
+                direct=row['center_direct_output_fraction']
+                result['direct_delta_percentage_points']=100*(direct-case['published'])
+                result['passed'] = result['passed'] and row['qualified_direct_band'] and bool(0<direct<=1.02)
             (stage/'report.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
         else:
-            result = run(stage)
+            result = run(stage,checkpoint)
         stage.rename(destination)
     return 0 if result['passed'] else 1
 

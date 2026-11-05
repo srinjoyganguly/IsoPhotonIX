@@ -1,0 +1,150 @@
+{
+  "reference_through_power": [
+    0.9996624319278157,
+    0.9999966776056306,
+    1.0000505570245295
+  ],
+  "through_phase_rad": [
+    0.05523204581791376,
+    -1.1604770903014971,
+    -2.3784702788777414
+  ],
+  "shifted_through_phase_rad": [
+    -1.1855718885367188,
+    -2.467984059972887,
+    2.5305703505351196
+  ],
+  "eigenmode_beta_per_um": [
+    9.781226929921049,
+    10.289038896038377,
+    10.793842323006066
+  ],
+  "positive_eigenmode_beta_L_rad": [
+    92.92165583424996,
+    97.74586951236458,
+    102.54150206855763
+  ],
+  "through_minus_positive_beta_L_rad": [
+    1.3813558192617499,
+    1.6246183122073083,
+    1.894177874617595
+  ],
+  "through_minus_negative_beta_L_rad": [
+    -1.2708917276259224,
+    2.337612814369284,
+    -0.3679331251934913
+  ],
+  "short_phase_dx_near_rad": [
+    0.6203888378422225,
+    0.6537534153657846,
+    0.6870645985863822
+  ],
+  "short_phase_dx_far_rad": [
+    0.62041509651241,
+    0.6537535543056053,
+    0.6870800791803435
+  ],
+  "modal_short_interval_beta_per_um": [
+    9.926431474837061,
+    10.46005575737112,
+    10.993157422133805
+  ],
+  "point_Ey_short_interval_beta_per_um": [
+    9.927087783813477,
+    10.459909439086914,
+    10.994698524475098
+  ],
+  "point_Ey_minus_modal_through_rad": [
+    -0.0023747873171653484,
+    -2.4331800621563934e-05,
+    0.002143720621373418
+  ],
+  "measured_unwrapped_through_phase_rad": [
+    94.3030116535117,
+    99.37048782457188,
+    104.43567994317523
+  ],
+  "through_minus_short_interval_beta_L_rad": [
+    0.0019126425596247803,
+    -4.187045375170096e-05,
+    0.0006844329040781816
+  ],
+  "direct_measured_far_over_near": [
+    [
+      0.9983065573875421,
+      0.05519465014700077
+    ],
+    [
+      0.3989014234478523,
+      -0.9169920021335561
+    ],
+    [
+      -0.7226996781259191,
+      -0.6911987646554517
+    ]
+  ],
+  "direct_measured_shorter_far_over_near": [
+    [
+      0.3757355273512241,
+      -0.9266361657067971
+    ],
+    [
+      -0.781575958359642,
+      -0.6238106527217548
+    ],
+    [
+      -0.8190123808921753,
+      0.5736703721698178
+    ]
+  ],
+  "schema_version": 1,
+  "checked_at": "2026-11-05T22:52:32.823972+00:00",
+  "solver": "FDTDX",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "material_model": "yee-aligned",
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "resolution": 16,
+  "forward_x_um": [
+    -4.75,
+    4.75
+  ],
+  "shortened_x_um": [
+    -4.6875,
+    4.6875
+  ],
+  "native_field_sampling": "Six-component phasors interpolated to Ez Yee locations, center Ey occurs at y=0, z=+dx/2 and stated x.",
+  "native_time_steps_both": 3444,
+  "source_profile_sha256": "413331447d6268efa4ff2d318a688862fa80da6637399136cc583cc2ab410e86",
+  "unshifted_native_arrays_sha256": "1b12ff24fd1e7806e047ea0873c16039e39b216bf9906fc72a3bf289afa09993",
+  "shifted_native_arrays_sha256": "5f768115e15b21fbe46a7b5ca2d0447adaf5f8e8894072a2de04f96b8d722a65",
+  "mode_neff": [
+    2.490126371383667,
+    2.5382046699523926,
+    2.582671880722046
+  ],
+  "meep_source": "v011-multiport-phase-audit.json",
+  "direct_measured_phase_minus_meep_rad": [
+    -0.030394749850600533,
+    -0.03350050279568961,
+    -0.03682261412718901
+  ],
+  "short_interval_beta_minus_meep_times_distance_rad": [
+    -0.03041733564105442,
+    -0.03340461064995903,
+    -0.03652658125589525
+  ],
+  "analysis": "Physical-plane straight-through phase, with the same material model and identical emitted mode for each of the two FDTDX runs. The Meep comparison uses the separately measured positive-x straight guide. Both reference translations occur at their requested axial Yee locations. No arbitrary phase rotation is applied."
+}

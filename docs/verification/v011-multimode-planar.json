@@ -80,7 +80,8 @@
           2.1226059246345326,
           2.1844852351502237
         ]
-      ]
+      ],
+      "straight_reference_offmode_input_power_max": null
     },
     {
       "mesh": 48,
@@ -98,7 +99,8 @@
           2.1279181088726706,
           2.1901277437357956
         ]
-      ]
+      ],
+      "straight_reference_offmode_input_power_max": null
     },
     {
       "mesh": 64,
@@ -116,7 +118,8 @@
           2.1298409454560643,
           2.192167557697832
         ]
-      ]
+      ],
+      "straight_reference_offmode_input_power_max": null
     }
   ],
   "controls": [
@@ -143,6 +146,30 @@
       "scope": "One separately measured left TE0 input column.",
       "max_power_fraction_change": 6.162782352625573e-05,
       "max_complex_through_change": 9.796767217074093e-05
+    },
+    {
+      "control": "pml",
+      "resolution": 48,
+      "pml_um": 1.25,
+      "aperture_um": 4.0,
+      "after_source_um_over_c": 80.0,
+      "original_sha256": "31405b87b868b9968c9d4ae2494870671fd81ce3328b88dcbf9cbeed41dac956",
+      "native_phase_version": 1,
+      "scope": "One separately measured left TE0 input column.",
+      "max_power_fraction_change": 1.7934462648305782e-07,
+      "max_complex_through_change": 1.31067830983525e-07
+    },
+    {
+      "control": "time",
+      "resolution": 48,
+      "pml_um": 1.0,
+      "aperture_um": 4.0,
+      "after_source_um_over_c": 110.0,
+      "original_sha256": "27c04f99fd0c5c15d77d2e2029d8348b55392d646351a45888050b2199ded2b6",
+      "native_phase_version": 2,
+      "scope": "One separately measured left TE0 input column.",
+      "max_power_fraction_change": 1.912943992099514e-08,
+      "max_complex_through_change": 6.597722693777123e-07
     }
   ],
   "s_real": [
@@ -387,7 +414,7 @@
   ],
   "source_arrays": {
     "file": "v011-multimode-planar.npz",
-    "sha256": "79c1092e55e2a6540959d5d636e4e2b6985125143d09865ab7affc32bd5a687b",
+    "sha256": "9f2277baeeb575ed943e05bed6c0a698c7a5a28925ce7d66b36fa4ba4509f628",
     "contents": "Original measured modal arrays, corrected electric-basis S, available single-launch controls and independent matrices. All four input columns are independently simulated."
   },
   "vendor_sources": {
