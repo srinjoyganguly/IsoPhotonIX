@@ -173,6 +173,18 @@ async function main() {
       await panel.locator('.volume3d-results').screenshot({path:path.join(output,'taper-field.png')});
       checks.push('Real worker on chosen target; actual nine component/plane slices agree with rendered samples; material grid widens between taper faces; immutable result and replay exports.');
     }
+    // Lock the access-guide model before adding an incompatible extra solid.
+    await panel.getByLabel('3D excitation model',{exact:true}).selectOption('auto');
+    await button('Choose component Strip waveguide',library).click();
+    await library.getByLabel('Component Length',{exact:true}).fill('1.5');
+    await library.getByLabel('Component Finite core height',{exact:true}).fill('0.3');
+    const translated=page.waitForResponse(r=>r.url().endsWith('/api/layout/validate')&&r.request().method()==='POST'&&r.request().postDataJSON().geometry.components?.length===2);
+    await button('Add to layout',library).click();
+    const transition=await translated;assert.equal(transition.status(),200,await transition.text());
+    assert.equal(transition.request().postDataJSON().study_type,'layout-3d');
+    assert.ok(await run.isDisabled(),'Target must be selected again for the new physical model.');
+    checks.push('Adding a strip to a taper switches auto selection to the finite dipole layout and requires an explicit target for that model.');
+    await panel.getByLabel('3D excitation model').selectOption('taper-3d');
     await page.getByLabel('New shape',{exact:true}).selectOption('box');
     await button('+ Add').click();
     await panel.getByText('Study needs attention',{exact:true}).waitFor();

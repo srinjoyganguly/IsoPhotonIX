@@ -1,0 +1,836 @@
+{
+  "checked_at": "2026-11-05T19:23:38.932701+00:00",
+  "passed": true,
+  "solver": "Meep CPU",
+  "scope": "Native finite point-current field/material tests of one stated configuration per catalog family. No measured port efficiencies or calibrated device performance.",
+  "cases": [
+    {
+      "family": "strip",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 329658,
+      "field_peak_ey_outside_0_6_um": 0.9204323291778564,
+      "field_shape_zyx": [
+        42,
+        47,
+        167
+      ],
+      "field_sha256": "312e474d4d1f840e9aa6e21411b6323e47f7408e02ff16e12f6048b1616e7ccc",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "40699f6efd11b125df2c5889932ae5677e00c480c48d1c85fce5fc797517b612",
+      "native_material_check": {
+        "bulk_voxels": 322790,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "slot",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 364728,
+      "field_peak_ey_outside_0_6_um": 1.237527847290039,
+      "field_shape_zyx": [
+        42,
+        52,
+        167
+      ],
+      "field_sha256": "5a9562f872ebc5ce77630de1e5d48d6ba3d29e5aff1265e6a682dbcd6328c9e7",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "38aa7fd1954749666683bf86eb57a93e30e52a6d8d08662ea08e33ee9e79ebc7",
+      "native_material_check": {
+        "bulk_voxels": 356312,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "rib",
+      "overrides": {
+        "slab_height_um": 0.15,
+        "height_um": 0.32,
+        "length_um": 4.0
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -1.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 358028,
+      "field_peak_ey_outside_0_6_um": 0.7652254104614258,
+      "field_shape_zyx": [
+        44,
+        79,
+        103
+      ],
+      "field_sha256": "ef7bf6a915502c4d5e2825e8f20b7b3458ba609af64cc962f00c91b99ed600c9",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "897c32a98f920a20f5c72311b81019740fe3df6d821a389e0a8fed95aa4953da",
+      "native_material_check": {
+        "bulk_voxels": 345192,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "taper",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 328860,
+      "field_peak_ey_outside_0_6_um": 0.7226933836936951,
+      "field_shape_zyx": [
+        42,
+        58,
+        135
+      ],
+      "field_sha256": "10209ddbd20ec218e68bbd35900ee57f618d09835826216f114ca50b8dc45e44",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "a4050018365be9acb676a92e0bf6329fec44f13eaea1a55b3a3643118e11ce57",
+      "native_material_check": {
+        "bulk_voxels": 322012,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "bend",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.2,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 810810,
+      "field_peak_ey_outside_0_6_um": 0.9164741635322571,
+      "field_shape_zyx": [
+        42,
+        135,
+        143
+      ],
+      "field_sha256": "e0455f92853286c2a9260f7fe8844793f00123ec4d851fcb33927ec6443f064c",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "a47a9c4e5926420bd7b864843e84838ac8bfc6b195558f7ab1efcddb508c38cb",
+      "native_material_check": {
+        "bulk_voxels": 806650,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "s_bend",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.8,
+        "y": -1.0,
+        "z": 0
+      },
+      "cells": 554106,
+      "field_peak_ey_outside_0_6_um": 0.9408420920372009,
+      "field_shape_zyx": [
+        42,
+        79,
+        167
+      ],
+      "field_sha256": "b7cc17b214a4268a777e657238db0af97f367d756525592fd267a55384846697",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "c22510f0c23c732b08f81db0280caff68ef9e15773fbd444ecbc603edd098e62",
+      "native_material_check": {
+        "bulk_voxels": 547074,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "directional_coupler",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.8,
+        "y": -0.35,
+        "z": 0
+      },
+      "cells": 406812,
+      "field_peak_ey_outside_0_6_um": 0.8951661586761475,
+      "field_shape_zyx": [
+        42,
+        58,
+        167
+      ],
+      "field_sha256": "0f3b7cddd1a3dff35883176360d8408c9e21f416d83916cd958f03d233b54b13",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "a885fdcfebb1c94e8ff810fdad78a890c8b93bcef039f169e1058fdfb784712d",
+      "native_material_check": {
+        "bulk_voxels": 394140,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "y_branch",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 4.8,
+        "y": -1.0,
+        "z": 0
+      },
+      "cells": 660282,
+      "field_peak_ey_outside_0_6_um": 0.9051024913787842,
+      "field_shape_zyx": [
+        42,
+        79,
+        199
+      ],
+      "field_sha256": "8dd7bfc1f65e3fbf15e109d10a06fa13f11f1f7bddc3378f5779da53fc0e021b",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "af4615014830ebc0bd02c1382515122d2366e17f17e9563242812c6e3d86b7fa",
+      "native_material_check": {
+        "bulk_voxels": 647336,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "mmi_1x2",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 727146,
+      "field_peak_ey_outside_0_6_um": 0.873184859752655,
+      "field_shape_zyx": [
+        42,
+        87,
+        199
+      ],
+      "field_sha256": "dae2e0841b733593bcb9cee146abf0b3036419f5838627691386e29cc466df0f",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "0056743b7d3accf671ed6d0132a777e0534bce71577183f840e07931f38f2326",
+      "native_material_check": {
+        "bulk_voxels": 700406,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "mmi_2x2",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -0.75,
+        "z": 0
+      },
+      "cells": 727146,
+      "field_peak_ey_outside_0_6_um": 0.8730065822601318,
+      "field_shape_zyx": [
+        42,
+        87,
+        199
+      ],
+      "field_sha256": "b910501c1297c00faa7cdb6d82b93b52906bfcb05473202c3d59775eb62f3a81",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "e3f2eeea9bcb9909e6b7e947035f8be265df9f285b9426354901b9478d1ee241",
+      "native_material_check": {
+        "bulk_voxels": 698614,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "crossing",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 1171338,
+      "field_peak_ey_outside_0_6_um": 0.9701786041259766,
+      "field_shape_zyx": [
+        42,
+        167,
+        167
+      ],
+      "field_sha256": "a4be9d034826a2b10812f9c95bd8f6a909f81716a0116292b0f09366b8021efb",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "c8ec0af49e882be1e88818076b99f12cfa1769430fc0fc9c37aed86998ce4f7f",
+      "native_material_check": {
+        "bulk_voxels": 1152870,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "ring_bus",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -2.7,
+        "z": 0
+      },
+      "cells": 1111614,
+      "field_peak_ey_outside_0_6_um": 0.853347897529602,
+      "field_shape_zyx": [
+        42,
+        133,
+        199
+      ],
+      "field_sha256": "4b71ac9f191f8e746a802f37f0f5b72a4eaac0ddfa65437bf71f034da9f735cf",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "417a47a2c77f4048ea6388ce34dc3f1eae217ad2a879b612dd1ae2bbe98b3bd8",
+      "native_material_check": {
+        "bulk_voxels": 1093238,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "ring_add_drop",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -2.7,
+        "z": 0
+      },
+      "cells": 1111614,
+      "field_peak_ey_outside_0_6_um": 0.853347897529602,
+      "field_shape_zyx": [
+        42,
+        133,
+        199
+      ],
+      "field_sha256": "de2736448d335611b50db08babc1920964cd22fde8baeea73223e85ef7828f21",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "6db3ef70467eae2aaf6df83a0ce16d2d8522cf97db397ddc48db9df0f250fa22",
+      "native_material_check": {
+        "bulk_voxels": 1085366,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "racetrack",
+      "overrides": {},
+      "resolution": 14,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -5.8,
+        "y": -2.7,
+        "z": 0
+      },
+      "cells": 874458,
+      "field_peak_ey_outside_0_6_um": 0.8000438213348389,
+      "field_shape_zyx": [
+        37,
+        117,
+        202
+      ],
+      "field_sha256": "db068b61111320db12ea2ff90e759218559565fb86b60c67d7c5efc1694c62ab",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "5481f3a6fddb9b35150717ece4c498b52036a300033637edbf39082b756f1dd5",
+      "native_material_check": {
+        "bulk_voxels": 855586,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "mzi",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -7.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 1177050,
+      "field_peak_ey_outside_0_6_um": 1.0328037738800049,
+      "field_shape_zyx": [
+        42,
+        95,
+        295
+      ],
+      "field_sha256": "4286b8b3c2a726426629d3d5402ef0b803a3996ea63f62eeaec05892c01d92db",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "be5b2842ca5bf6d5913ca441bc2bdb109db3c9639e706d781d67dfb5ea52f960",
+      "native_material_check": {
+        "bulk_voxels": 1152214,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "bragg",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.0,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 377832,
+      "field_peak_ey_outside_0_6_um": 0.7958791851997375,
+      "field_shape_zyx": [
+        42,
+        52,
+        173
+      ],
+      "field_sha256": "69255c025468b62aa365ad5bb261cef8b98436650a3125f87318907abb9ab510",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "176c0c1d21f1d7865690acc32497127c816fbecafd3f69c805116a6441f30e6b",
+      "native_material_check": {
+        "bulk_voxels": 369320,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "grating_coupler",
+      "overrides": {
+        "periods": 6,
+        "taper_um": 1.0,
+        "aperture_um": 2.0,
+        "slab_height_um": 0.14,
+        "height_um": 0.28
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -1.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 470162,
+      "field_peak_ey_outside_0_6_um": 0.8967644572257996,
+      "field_shape_zyx": [
+        43,
+        71,
+        154
+      ],
+      "field_sha256": "8117f420a887f426b00aa975e1938e622707f05db862eb4f2bbfdd5fedd02b8a",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "7e170e3b6666e7658419ce0b0c309eaa1ecadd2fafeca86be6c3d333a150bdfd",
+      "native_material_check": {
+        "bulk_voxels": 456842,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "nanobeam_cavity",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -6.1,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 554400,
+      "field_peak_ey_outside_0_6_um": 1.0329056978225708,
+      "field_shape_zyx": [
+        42,
+        55,
+        240
+      ],
+      "field_sha256": "d3b3f8dbcefb060235cbeb3e584a17b06807ffc5e2e24aafc250aa223360b69e",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "ec61f99d0fb6871f1699f407b1ce3735a1e866a719d6d27ced656e34ce28213e",
+      "native_material_check": {
+        "bulk_voxels": 536260,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "dbr_cavity",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -6.6000000000000005,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 559104,
+      "field_peak_ey_outside_0_6_um": 0.7953112721443176,
+      "field_shape_zyx": [
+        42,
+        52,
+        256
+      ],
+      "field_sha256": "0ff9972ad779a3fb42b648ba003a43e15fe5e7c6dcf17f4e446487a897ab7cc9",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "421cdea51618477494d5c7dfc9300aa17577b2bf8f3c385eaebb052594a6602f",
+      "native_material_check": {
+        "bulk_voxels": 545744,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "serpentine",
+      "overrides": {},
+      "resolution": 14,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.8,
+        "y": -3.0,
+        "z": 0
+      },
+      "cells": 837125,
+      "field_peak_ey_outside_0_6_um": 0.8186008930206299,
+      "field_shape_zyx": [
+        37,
+        125,
+        181
+      ],
+      "field_sha256": "d1369bde05834411c721f36f3a4e32cad6bc623b3f5dc0586dee90a93a6c69b4",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "f0cd326294c387a0ce1e84102d14cd1f1e0fbddd79240f43eac7683c5db36171",
+      "native_material_check": {
+        "bulk_voxels": 813449,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "euler_bend",
+      "overrides": {
+        "min_radius_um": 1.2
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.2,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 554778,
+      "field_peak_ey_outside_0_6_um": 0.935260534286499,
+      "field_shape_zyx": [
+        42,
+        111,
+        119
+      ],
+      "field_sha256": "02c01681343007c5a90b44fd32c4e709cff449c7b6309c223640c5fe8a9823b6",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "d5084a58a7f12ba6a414bc32f6e1db71188826e51684209d0ba199106f82b849",
+      "native_material_check": {
+        "bulk_voxels": 551544,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "strip_slot_converter",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.3,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 259896,
+      "field_peak_ey_outside_0_6_um": 0.810782790184021,
+      "field_shape_zyx": [
+        42,
+        52,
+        119
+      ],
+      "field_sha256": "9b606632bf9318dfe7c8a210942d93e262810b76025b25c8c7e25d48870109e0",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "ec2468f49e77575a76a43641429487954c59020e312d6dfadd5cc78f5fd5c16a",
+      "native_material_check": {
+        "bulk_voxels": 254760,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "mmi_1x4",
+      "overrides": {},
+      "resolution": 14,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -5.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 881932,
+      "field_peak_ey_outside_0_6_um": 0.772065281867981,
+      "field_shape_zyx": [
+        37,
+        118,
+        202
+      ],
+      "field_sha256": "6c50288d232b7dba6f9fb873aaa572090648a2b682cb1c12261c878c3263006c",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "af30b0731080e0dc951cba6d640ba98e3b34c319c29a776dad84c87d575481c4",
+      "native_material_check": {
+        "bulk_voxels": 835348,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "fan_grating",
+      "overrides": {
+        "periods": 4,
+        "focus_um": 2.0,
+        "fan_deg": 30.0,
+        "slab_height_um": 0.14,
+        "height_um": 0.28
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.13301270189221942,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 594776,
+      "field_peak_ey_outside_0_6_um": 0.7944797873497009,
+      "field_shape_zyx": [
+        43,
+        76,
+        182
+      ],
+      "field_sha256": "d58ce119625635b383ed89857666e1bf8cc03072479ef101ce0fbd5fa64253e1",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "417424a6ebfab1eb2370c39618298bfd9a937378ff61ed60d0036fda4361bcf4",
+      "native_material_check": {
+        "bulk_voxels": 586236,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "tapered_coupler",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -0.5,
+        "z": 0
+      },
+      "cells": 568344,
+      "field_peak_ey_outside_0_6_um": 1.0058335065841675,
+      "field_shape_zyx": [
+        42,
+        68,
+        199
+      ],
+      "field_sha256": "74a0c2dd35c1bed7b3255e162ab1fa325118800b4076445aa086dceced5740ea",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "af03a97e07c68581790f501061b1e3cfe3b0386989f575f334c6191c1ca15260",
+      "native_material_check": {
+        "bulk_voxels": 552056,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "phc_line_defect",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.2625,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 356832,
+      "field_peak_ey_outside_0_6_um": 0.7182811498641968,
+      "field_shape_zyx": [
+        42,
+        72,
+        118
+      ],
+      "field_sha256": "f2adfd337fbad0d23b034461629a316f39c394b969d3f660c238a7f4e3a63594",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "033771142b99ca08f86e3744b986f543f5228fe820ab3fe172ecf8c99b485b22",
+      "native_material_check": {
+        "bulk_voxels": 346488,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    },
+    {
+      "family": "pulley_ring",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.58236708331028,
+        "y": -1.9779461773301623,
+        "z": 0
+      },
+      "cells": 1122744,
+      "field_peak_ey_outside_0_6_um": 0.778106689453125,
+      "field_shape_zyx": [
+        42,
+        164,
+        163
+      ],
+      "field_sha256": "f3bae4e6289bef63da7dc6f847d86cca54547d3116a69ab6ad6fa7da10d737d4",
+      "actual_device": "CPU",
+      "compiled_material_sha256": "227499735547c6c40fb8e090bcb94845c94606dcf3cf2c3162b0013b335a2585",
+      "native_material_check": {
+        "bulk_voxels": 1100100,
+        "maximum_bulk_error": 0.0,
+        "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+      },
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "pml_um": 0.8,
+      "wavelength_um": 1.55,
+      "cladding_index": 1.0
+    }
+  ]
+}

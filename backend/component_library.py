@@ -66,7 +66,8 @@ def _recipe(identifier, name, category, summary, parameters, limitations=()):
                 parameters=parameters, defaults={p['key']:p['default'] for p in parameters},
                 limitations=['Editable design geometry. No electromagnetic performance is supplied.',
                              'Named ports are geometric intent, not measured or solved eigenmodes.', *limitations],
-                simulation_support='bounded-taper-fields' if identifier == 'taper' else 'design-only')
+                simulation_support='bounded-taper-fields' if identifier == 'taper' else 'bounded-layout-fields',
+                eligible_studies=['layout-3d', 'taper-3d', 'taper-ports-3d'] if identifier == 'taper' else ['layout-3d'])
 
 
 _RECIPES = [
@@ -90,6 +91,40 @@ _RECIPES = [
     _recipe('nanobeam_cavity', 'Photonic-crystal nanobeam cavity', 'laser-foundations', 'Two hole arrays surround an unperforated defect region.', [_p('period_um','Hole centre spacing',.6,.15,2.,.02), _p('mirror_periods','Holes per mirror',8,2,12,1,''), _p('hole_radius_um','Hole radius',.18,.02,.7,.01), _p('defect_um','Central defect length',1.,.1,8.,.1), _width(1.,'Nanobeam width'), _height()], ['Through holes are actual polygon holes with 20 vertices each. A passive cavity, not a simulated laser.']),
     _recipe('dbr_cavity', 'Passive DBR cavity', 'laser-foundations', 'Two corrugated reflector sections flank a plain guide spacer.', [_p('period_um','Mirror period',.4,.1,2.,.02), _p('mirror_periods','Periods per reflector',12,2,48,1,''), _p('duty','Duty cycle',.5,.1,.9,.05,''), _p('corrugation_um','Side corrugation',.15,.01,1.,.02), _p('spacer_um','Plain cavity spacer',2.,.1,12.,.1), _width(), _height()], ['Passive geometry only: no pumping, gain, threshold or light–current prediction.']),
     _recipe('serpentine', 'Serpentine delay layout', 'routing', 'Parallel straight segments are joined by alternating semicircular turns.', [_length(8.,1.,40.,'Straight segment length'), _p('rows','Number of straight rows',4,2,8,1,''), _p('pitch_um','Row centre spacing',2.,.2,10.,.2), _width(), _height()], ['A geometric delay path; delay, dispersion and bend loss require a qualified simulation.']),
+    _recipe('euler_bend', 'Euler bend', 'routing', 'Two clothoids join a straight input to a turned output.',
+            [_p('min_radius_um', 'Minimum curvature radius', 3., .3, 30., .1),
+             _p('angle_deg', 'Turn angle', 90., 10., 150., 5., '°'), _width(), _height()],
+            ['The radius sets the tightest curvature at the midpoint. Both ends have zero curvature.']),
+    _recipe('strip_slot_converter', 'Strip-to-slot transition', 'routing', 'A widening through-slot divides a strip into two finite rails.',
+            [_length(5.), _width(.5, 'Input strip width'), _p('rail_um', 'Output rail width', .3, .08, 2., .02),
+             _gap(), _p('slot_start', 'Slot onset along transition', .3, .05, .85, .05, 'fraction'), _height()],
+            ['The drawn slot begins at a sharp tip. Fabrication bias and modal conversion require separate analysis.']),
+    _recipe('mmi_1x4', '1×4 MMI splitter', 'coupling', 'Four spaced access tapers connect one multimode body to output guides.',
+            [_length(8., 2., 40., 'MMI body length'), _p('body_width_um', 'MMI body width', 6., 1., 15., .25),
+             _p('pitch_um', 'Output centre spacing', 1.4, .2, 5., .1),
+             _p('access_um', 'Access taper length', 2., .2, 8.), _width(), _height()],
+            ['The four output ports are separated physically. Their powers and phases require a multimode study.']),
+    _recipe('fan_grating', 'Apodized fan grating', 'periodic', 'Concentric shallow-etch teeth vary in duty cycle across a circular fan.',
+            [_p('focus_um', 'First tooth region radius', 6., 1., 30., .25),
+             _p('fan_deg', 'Full fan angle', 40., 10., 90., 2., '°'),
+             _p('period_um', 'Radial period', .62, .2, 2., .02), _p('periods', 'Number of teeth', 12, 3, 40, 1, ''),
+             _p('first_duty', 'First tooth duty cycle', .35, .1, .9, .05, ''), _p('last_duty', 'Last tooth duty cycle', .7, .1, .9, .05, ''),
+             _p('slab_height_um', 'Residual slab thickness', .08, .01, 1., .01), _width(), _height()],
+            ['Teeth are circular sectors. A fibre tilt, fibre mode, elliptical phase fronts and coupling efficiency require a dedicated optical design.']),
+    _recipe('tapered_coupler', 'Tapered two-guide coupler', 'coupling', 'Two guides exchange widths along a coupling region with fixed edge separation.',
+            [_length(8.), _p('narrow_um', 'Narrow guide width', .3, .08, 2., .02),
+             _p('wide_um', 'Wide guide width', .8, .1, 4., .05), _gap(), _height()],
+            ['The four access leads have constant width. Adiabaticity and transfer efficiency require mode-resolved measurements.']),
+    _recipe('phc_line_defect', 'Photonic-crystal line defect', 'periodic', 'A missing row through a triangular lattice forms a line defect between strip leads.',
+            [_p('period_um', 'Lattice constant', .45, .15, 2., .02), _p('columns', 'Holes per row', 6, 2, 16, 1, ''),
+             _p('row_pairs', 'Pairs of hole rows', 2, 1, 4, 1, ''),
+             _p('hole_radius_um', 'Hole radius', .12, .02, .8, .01), _width(.45, 'Strip lead width'), _height()],
+            ['The slab has a finite lattice with through holes. Bloch bands and transmission require separate studies.']),
+    _recipe('pulley_ring', 'Pulley-coupled ring', 'resonators', 'A bus follows the ring over a user-selected wrap angle before leaving tangentially.',
+            [_radius(3.), _width(.5, 'Ring width'), _p('bus_width_um', 'Bus width', .45, .05, 2., .05),
+             _p('wrap_deg', 'Bus wrap angle', 70., 10., 150., 5., '°'),
+             _p('lead_um', 'Straight lead length', 2., .3, 12., .1), _gap(), _height()],
+            ['The coupling arc has constant nominal radial clearance. No coupling coefficient or resonance is inferred.']),
 ]
 _BY_ID = {item['id']:item for item in _RECIPES}
 
@@ -104,7 +139,7 @@ def get_materials():
 
 
 def _number(value, low, high, label):
-    if type(value) not in (int,float) or not math.isfinite(value) or not low <= value <= high:
+    if type(value) not in (int,float) or not low <= value <= high:
         raise ValueError(f'{label} must be a finite number from {low} to {high}.')
     return float(value)
 
@@ -117,7 +152,7 @@ def _parameters(recipe, supplied):
     result = dict(recipe['defaults'])
     for item in recipe['parameters']:
         value = _number(supplied.get(item['key'],item['default']),item['min'],item['max'],item['label'])
-        if item['key'] in ('periods','mirror_periods','rows'):
+        if item['key'] in ('periods','mirror_periods','rows','columns','row_pairs'):
             if not value.is_integer():
                 raise ValueError(f"{item['label']} must be an integer.")
             value = int(value)
@@ -186,7 +221,180 @@ def _taper(x0,x1,y,w0,w1):
     return [(x0,y-w0/2),(x1,y-w1/2),(x1,y+w1/2),(x0,y+w0/2)]
 
 
+def _euler_bend(b):
+    p = b.p
+    radius, width = p['min_radius_um'], p['width_um']
+    if radius <= width / 2 + .02:
+        raise ValueError('Minimum radius must leave a positive inside bend radius.')
+    angle = math.radians(p['angle_deg'])
+    length = 2 * radius * angle
+
+    # Integrating the triangular curvature law gives a piecewise quadratic
+    # tangent angle. Simpson quadrature integrates the unit tangent over s.
+    def heading(s):
+        if s <= length / 2:
+            return s * s / (length * radius)
+        return angle - (length - s) ** 2 / (length * radius)
+
+    steps = 96
+    ds = length / steps
+    points = [(0., 0.)]
+    tangents = [0.]
+    for i in range(steps):
+        a, mid, end = tangents[-1], heading((i + .5) * ds), heading((i + 1) * ds)
+        x, y = points[-1]
+        x += ds * (math.cos(a) + 4 * math.cos(mid) + math.cos(end)) / 6
+        y += ds * (math.sin(a) + 4 * math.sin(mid) + math.sin(end)) / 6
+        points.append((x, y))
+        tangents.append(end)
+    b.polygon('Euler curve', _path_outline(points, tangents, width))
+    b.port('in', 0., 0., 180.)
+    b.port('out', *points[-1], p['angle_deg'])
+
+
+def _strip_slot_converter(b):
+    p = b.p
+    length, input_width = p['length_um'], p['width_um']
+    rail, gap = p['rail_um'], p['gap_um']
+    left, right = -length / 2, length / 2
+    outer = gap / 2 + rail
+    tip = left + p['slot_start'] * length
+    b.polygon('Strip and slotted transition', [
+        (left, -input_width / 2), (right, -outer),
+        (right, -gap / 2), (tip, 0.), (right, gap / 2), (right, outer), (left, input_width / 2),
+    ])
+    b.port('strip', left, 0., 180., input_width)
+    b.port('slot', right, 0., 0., 2 * outer)
+
+
+def _mmi_1x4(b):
+    p = b.p
+    width, length, pitch = p['width_um'], p['length_um'], p['pitch_um']
+    body_width, access = p['body_width_um'], p['access_um']
+    join = 1.5 * width
+    if pitch <= join + .05 or body_width < 3 * pitch + join + .05:
+        raise ValueError('The MMI body must contain all four access tapers with positive gaps.')
+    left, right = -length / 2, length / 2
+    b.solid('Multimode body', sx=length, sy=body_width)
+    b.polygon('Input access taper', _taper(left - access, left, 0., width, join))
+    b.port('in', left - access, 0., 180.)
+    for i in range(4):
+        y = (i - 1.5) * pitch
+        b.polygon(f'Output {i + 1} taper', _taper(right, right + access, y, join, width))
+        b.port(f'out_{i + 1}', right + access, y, 0.)
+
+
+def _fan_grating(b):
+    p = b.p
+    radius, width = p['focus_um'], p['width_um']
+    half_angle = math.radians(p['fan_deg'] / 2)
+    period, count = p['period_um'], p['periods']
+    height, slab_height = p['height_um'], p['slab_height_um']
+    throat_x = width / (2 * math.tan(half_angle))
+    if throat_x >= radius * math.cos(half_angle) or slab_height >= height:
+        raise ValueError('The fan must expand from its input and its residual slab must be thinner than the core.')
+
+    def arc(r):
+        return _arc(0., 0., r, -half_angle, half_angle, 36)
+
+    def annular_sector(r0, r1):
+        return arc(r1) + list(reversed(arc(r0)))
+
+    b.solid('Input lead', x=throat_x - .5, sx=1., sy=width)
+    b.polygon('Full-height fan', [(throat_x, -width / 2), *arc(radius), (throat_x, width / 2)])
+    b.polygon('Grating residual slab', annular_sector(radius, radius + count * period),
+              sz=slab_height, z=(slab_height - height) / 2)
+    for i in range(count):
+        duty = p['first_duty'] + (p['last_duty'] - p['first_duty']) * i / (count - 1)
+        centre = radius + (i + .5) * period
+        half_tooth = duty * period / 2
+        b.polygon(f'Curved tooth {i + 1}', annular_sector(centre - half_tooth, centre + half_tooth),
+                  sz=height - slab_height, z=slab_height / 2)
+    b.port('in', throat_x - 1., 0., 180.)
+
+
+def _tapered_coupler(b):
+    p = b.p
+    narrow, wide, gap = p['narrow_um'], p['wide_um'], p['gap_um']
+    if narrow >= wide:
+        raise ValueError('The narrow guide width must be smaller than the wide guide width.')
+    left, right = -p['length_um'] / 2, p['length_um'] / 2
+    for sign, name, w0, w1 in ((-1, 'lower', wide, narrow), (1, 'upper', narrow, wide)):
+        inner = sign * gap / 2
+        b.polygon(f'{name.title()} width transition', [
+            (left, inner), (right, inner), (right, inner + sign * w1), (left, inner + sign * w0)])
+        for side, port, edge, w in ((-1, 'in', left, w0), (1, 'out', right, w1)):
+            y = inner + sign * w / 2
+            b.solid(f'{name.title()} {port} lead', x=edge + side / 2, y=y, sx=1., sy=w)
+            b.port(f'{name}_{port}', edge + side, y, 180. if side < 0 else 0., w)
+
+
+def _phc_line_defect(b):
+    p = b.p
+    period, radius = p['period_um'], p['hole_radius_um']
+    columns, pairs = p['columns'], p['row_pairs']
+    row_pitch = math.sqrt(3) * period / 2
+    if 2 * pairs * columns > 32:
+        raise ValueError('Use at most 32 holes in a single perforated slab.')
+    if 2 * radius >= period - .01 or p['width_um'] > 2 * (row_pitch - radius):
+        raise ValueError('Holes must be separated and the strip must fit inside the missing-row channel.')
+    # Adjacent retained rows are staggered by half a lattice constant.
+    # The omitted row is row zero of the same triangular lattice.
+    holes = []
+    for row in range(-pairs, pairs + 1):
+        if row == 0:
+            continue
+        for i in range(columns):
+            x = (i - (columns - 1) / 2 + ((abs(row) % 2) - .5) / 2) * period
+            holes.append(_arc(x, row * row_pitch, radius, 0., 2 * math.pi, 20)[:-1])
+    half_length = (columns + .5) * period / 2
+    slab_width = 2 * (pairs + .65) * row_pitch
+    b.polygon('Missing-row crystal slab', _taper(-half_length, half_length, 0., slab_width, slab_width), holes)
+    for side, name in ((-1, 'in'), (1, 'out')):
+        b.solid(f'{name.title()} strip', x=side * (half_length + .5), sx=1., sy=p['width_um'])
+        b.port(name, side * (half_length + 1.), 0., 180. if side < 0 else 0.)
+
+
+def _pulley_ring(b):
+    p = b.p
+    radius, width, bus_width = p['radius_um'], p['width_um'], p['bus_width_um']
+    if radius <= width / 2 + .02:
+        raise ValueError('The ring width must leave a positive inner radius.')
+    bus_radius = radius + (width + bus_width) / 2 + p['gap_um']
+    half_angle = math.radians(p['wrap_deg'] / 2)
+    steps = 48
+    # The inner boundary of each polygon facet is a chord of the ideal arc.
+    if (bus_radius - bus_width / 2) * math.cos(half_angle / steps) <= radius + width / 2:
+        raise ValueError('The tessellated pulley bus would touch the ring. Increase the gap.')
+    headings = [-half_angle + 2 * half_angle * i / steps for i in range(steps + 1)]
+    points = [(bus_radius * math.sin(a), -bus_radius * math.cos(a)) for a in headings]
+    for side, index in ((-1, 0), (1, -1)):
+        x, y = points[index]
+        a = headings[index]
+        point = (x + side * p['lead_um'] * math.cos(a), y + side * p['lead_um'] * math.sin(a))
+        if side < 0:
+            points.insert(0, point)
+            headings.insert(0, a)
+        else:
+            points.append(point)
+            headings.append(a)
+    b.solid('Ring core', kind='ring', radius=radius + width / 2, inner=radius - width / 2)
+    b.polygon('Wrapped bus and tangent leads', _path_outline(points, headings, bus_width))
+    b.port('in', *points[0], 180. + math.degrees(headings[0]), bus_width)
+    b.port('out', *points[-1], math.degrees(headings[-1]), bus_width)
+
+
+_ADDITIONAL_GENERATORS = {
+    'euler_bend': _euler_bend, 'strip_slot_converter': _strip_slot_converter,
+    'mmi_1x4': _mmi_1x4, 'fan_grating': _fan_grating, 'tapered_coupler': _tapered_coupler,
+    'phc_line_defect': _phc_line_defect, 'pulley_ring': _pulley_ring,
+}
+
+
 def _generate(b):
+    if b.family in _ADDITIONAL_GENERATORS:
+        _ADDITIONAL_GENERATORS[b.family](b)
+        return
     p=b.p;f=b.family;w=p.get('width_um',.5);h=p['height_um'];length=p.get('length_um',8.)
     if f=='strip':
         b.solid('Strip core',sx=length,sy=w);b.two_ports(length)
@@ -344,7 +552,7 @@ def _bounds(item):
 
 
 def build_component(component_id, parameters=None, placement=None, material_id='generic-core'):
-    """Build one deterministic instance and a containing design-only document."""
+    """Build one deterministic instance and its containing geometry document."""
     if not isinstance(component_id,str) or component_id not in _BY_ID:
         raise ValueError('Unknown photonic component family.')
     recipe=_BY_ID[component_id];params=_parameters(recipe,parameters)

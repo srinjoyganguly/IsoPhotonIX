@@ -52,12 +52,13 @@ def build_passport(job, output):
     output = Path(output)
     config = json.loads((output / "config.json").read_text())
     metadata = json.loads((output / "metadata.json").read_text())
-    ismodal = config.get('study_type') == 'waveguide-ports-3d'
+    ismodal = config.get('study_type') in ('waveguide-ports-3d','taper-ports-3d')
     istaper = config.get("study_type") == "taper-3d"
-    is3d = ismodal or istaper or config.get("study_type") == "waveguide-3d"
+    islayout = config.get("study_type") == "layout-3d"
+    is3d = islayout or ismodal or istaper or config.get("study_type") == "waveguide-3d"
     isports = config.get("study_type") == "waveguide-ports-2d"
     snapshot_ok = metadata.get("config") == config and job["config"] == config
-    if (isports or ismodal or istaper or job["config"].get("study_type") in ("waveguide-ports-2d","waveguide-ports-3d","taper-3d")) and not snapshot_ok:
+    if (islayout or isports or ismodal or istaper or job["config"].get("study_type") in ("waveguide-ports-2d","waveguide-ports-3d","taper-3d","layout-3d","taper-ports-3d")) and not snapshot_ok:
         raise ValueError("Result configuration differs between saved files and the run snapshot.")
     component = "Ey" if is3d else "Ez"
     with np.load(output / "arrays.npz", allow_pickle=False) as arrays:
@@ -190,6 +191,13 @@ def build_passport(job, output):
     if is3d:
         passport["numerical"].update(dimensions="3D", components=["Ex", "Ey", "Ez"],
                                       array_order="component,z,y,x", field_sampling=metadata.get("field_sampling"))
+    if islayout:
+        passport['title'] = 'Finite-layout electric field passport'
+        passport['numerical'].update(study_type='layout-3d', physical_layout=metadata['geometry_translation'])
+        passport['limitations'] = ['Finite structures driven by a point Ey current at the recorded position.',
+            'Field amplitudes use solver-specific source units. Near-source samples are especially mesh-sensitive.',
+            'Staircase geometry and PML need refinement for quantitative comparisons.',
+            'These field snapshots do not supply guided-port transmission, cavity Q or lasing threshold.']
     if istaper:
         from .taper_geometry import taper_geometry
         passport['title'] = 'Finite-height taper field passport'
@@ -203,11 +211,15 @@ def build_passport(job, output):
             array_order='Final field[y,x]; spectra indexed by increasing wavelength; native complex monitor streams are solver-specific.')
     if ismodal:
         passport['title'] = 'Finite-height modal S-parameter run passport'
-        passport['numerical'].update(study_type='waveguide-ports-3d', frequency_bins=len(modal['valid_bin']),
+        passport['numerical'].update(study_type=config['study_type'], frequency_bins=len(modal['valid_bin']),
             valid_frequency_bins=int(np.sum(modal['valid_bin'])), settlement=metadata['settlement'],
             ports=metadata['ports'], maximum_after_source_fs=config['max_after_sources_fs'],
             field_capture_stage=metadata.get('field_capture_stage'), field_time_fs=metadata.get('field_time_fs'),
             s_matrix_order='s[frequency,outgoing port,incoming port]; increasing wavelength')
+    if config.get('study_type') == 'taper-ports-3d':
+        passport['title'] = 'Finite-height taper modal S-parameter passport'
+        passport['limitations'][2] = 'Two uniform incident references match their respective taper ends. Each output mode is normalized at its own port.'
+        passport['numerical']['port_neff_real'] = modal['mode_neff_ports'].real.tolist()
     manifest = {"schema_version": 1, "algorithm": "sha256", "run_id": job["id"],
                 "files": {record["name"]: {"sha256": record["sha256"], "size_bytes": record["size_bytes"]}
                           for record in files}}

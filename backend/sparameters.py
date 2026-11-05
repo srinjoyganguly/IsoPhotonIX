@@ -16,6 +16,8 @@ def validate_sparameters(arrays, metadata=None):
     keys = ('wavelength_um','frequency_per_um','s','incident_amplitude','outgoing_amplitude',
             'reference_through','valid_bin','mode_neff','mode_valid')
     a = {name:np.asarray(arrays[name]) for name in keys}
+    if 'mode_neff_ports' in arrays:
+        a['mode_neff_ports'] = np.asarray(arrays['mode_neff_ports'])
     w = a['wavelength_um']
     if w.ndim != 1 or not 3 <= len(w) <= 9:
         raise ValueError('Modal spectra require three to nine one-dimensional wavelength samples.')
@@ -33,6 +35,11 @@ def validate_sparameters(arrays, metadata=None):
     for key in ('valid_bin','mode_valid'):
         if a[key].dtype.kind != 'b':
             raise ValueError('Mode and spectral validity must be recorded as boolean arrays.')
+    if 'mode_neff_ports' in a:
+        modes = a['mode_neff_ports']
+        if (modes.shape != (n,2) or modes.dtype.kind != 'c' or not np.isfinite(modes).all()
+                or not np.array_equal(modes[:,0],a['mode_neff'])):
+            raise ValueError('Supply both finite complex port indices and the matching left-port index.')
     valid = a['valid_bin']
     for key in ('s','incident_amplitude','outgoing_amplitude','reference_through','mode_neff'):
         if a[key].dtype.kind != 'c':
@@ -57,7 +64,7 @@ def validate_sparameters(arrays, metadata=None):
         raise ValueError('S does not equal the saved outgoing modal amplitude divided by its incident reference.')
     if metadata is not None:
         config = metadata.get('config',{})
-        if config.get('study_type') != 'waveguide-ports-3d' or config.get('frequency_points') != n:
+        if config.get('study_type') not in ('waveguide-ports-3d','taper-ports-3d') or config.get('frequency_points') != n:
             raise ValueError('The modal spectrum does not match its saved study type or sample count.')
         expected_f = np.linspace(1/config['wavelength_max_um'],1/config['wavelength_min_um'],n)[::-1]
         if not np.allclose(a['frequency_per_um'],expected_f,rtol=1e-7,atol=0):
@@ -88,13 +95,21 @@ def validate_sparameters(arrays, metadata=None):
         ports = metadata.get('ports',{})
         if any(not isinstance(ports.get(key),str) or not ports[key].strip() for key in ('phase_convention','mode_gauge','normalization')):
             raise ValueError('Complex S-parameters require recorded phase, mode gauge and normalization conventions.')
-        requested_port = config['geometry']['domain']['x']/2-config['pml_um']-1.5
+        is_taper = config['study_type'] == 'taper-ports-3d'
+        if is_taper:
+            from .taper_port_geometry import port_layout
+            requested_port = port_layout(config)['port_2_x_um']
+            if 'mode_neff_ports' not in a:
+                raise ValueError('The taper requires both port-specific mode indices.')
+        else:
+            requested_port = config['geometry']['domain']['x']/2-config['pml_um']-1.5
         for key,sign in (('port_1_x_um',-1),('port_2_x_um',1)):
             value = ports.get(key)
             if type(value) not in (float,int) or not math.isfinite(value) or abs(value-sign*requested_port) > .51/config['resolution']:
                 raise ValueError('The recorded physical reference plane differs from the requested port placement.')
         cladding = max([config['cladding_index']] + [o['refractive_index'] for o in config['geometry']['objects'] if o['id']=='substrate'])
-        guided = (a['mode_neff'].real>cladding)&(abs(a['mode_neff'].imag)<1e-5)
+        modes = a['mode_neff_ports'] if is_taper else a['mode_neff'][:,None]
+        guided = np.all((modes.real > cladding) & (abs(modes.imag) < 1e-5),axis=1)
         if np.any(a['mode_valid'] & ~guided):
             raise ValueError('A qualified mode must be guided above the cladding light line in this lossless study.')
     for value in a.values():
@@ -136,7 +151,9 @@ def sparameters_response(a,metadata):
             'phase_rad':_masked(np.angle(value),phase_valid),
             'phase_unwrapped_rad':_masked(unwrapped,phase_valid), 'phase_valid':phase_valid.tolist()}
     column_power = np.sum(abs(a['s'])**2,axis=1)
-    return {'wavelength_um':a['wavelength_um'].tolist(), 'frequency_per_um':a['frequency_per_um'].tolist(),
+    per_port = {'mode_neff_ports_real':a['mode_neff_ports'].real.tolist(),
+                'mode_neff_ports_imag':a['mode_neff_ports'].imag.tolist()} if 'mode_neff_ports' in a else {}
+    return {**per_port,'wavelength_um':a['wavelength_um'].tolist(), 'frequency_per_um':a['frequency_per_um'].tolist(),
             'valid_bin':valid.tolist(), 'mode_valid':a['mode_valid'].tolist(),
             'mode_neff_real':a['mode_neff'].real.tolist(), 'mode_neff_imag':a['mode_neff'].imag.tolist(),
             'parameters':parameters,

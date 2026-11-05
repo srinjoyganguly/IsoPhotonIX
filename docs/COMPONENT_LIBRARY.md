@@ -1,16 +1,17 @@
 # Parametric photonic component library
 
-The library adds **20 editable component families** to the local 3D design
+The library adds **27 editable component families** to the local 3D design
 editor. Each instance retains its recipe, dimensions, placement, material,
 member solids and named geometric ports. These are original geometry
 generators, not imported vendor component files or measured performance data.
 
-**Linear taper supports a bounded finite-height field study** on Meep CPU
-and FDTDX CPU/NVIDIA. Open one centered taper with a constant lossless core.
-Its saved end widths and height define the matched access guides. The other
-19 families support design editing and geometric export. Named layout ports
-retain their position and direction. Quantitative modal measurements require
-a separately qualified study. [Taper fields](TAPER_FIELDS.md) · [Roadmap](COMPONENT_ROADMAP.md).
+The [finite-height taper](TAPER_FIELDS.md) has a dedicated study with straight
+access leads. The [finite-layout field study](LAYOUT_FIELDS.md) validates the
+actual saved solids, materials, grid and local source independently of recipe
+family. An eligible layout yields instantaneous electric fields and sampled
+permittivity. Each catalog port describes geometric connection intent. Power
+splitting, loss, resonance and modal S measurements need calibrated sources
+and monitors for the particular device.
 
 ## Using an instance
 
@@ -22,7 +23,9 @@ direction after a rotation; they describe connection intent, not computed
 eigenmodes.
 
 All lengths are in **micrometres**. Every recipe has a finite positive core
-height. Input bounds are available in the catalog and checked on the backend.
+height. The [exported catalog](verification/v09-component-catalog.json) records the exact names,
+units, defaults, minima and maxima of every physical parameter. The backend checks
+these bounds when it builds a component.
 Related dimensions also have constraints: for example, a slab must be thinner
 than its ridge, a ring bus must extend beyond the ring, and a hole must leave
 material between itself and the next hole. A parameter's individual maximum
@@ -57,6 +60,13 @@ or simulation padding recommendation.
 | Nanobeam cavity / `nanobeam_cavity` | Two arrays of through holes around a defect; hole radius, period, mirror count and defect length | 2 |
 | Passive DBR cavity / `dbr_cavity` | Two width-corrugated reflector sections around a plain spacer | 2 |
 | Serpentine / `serpentine` | Alternating straight rows joined by semicircular turns; row count, pitch and straight length | 2 |
+| Euler bend / `euler_bend` | Two symmetric clothoids; minimum curvature radius, turn angle, width and height | 2 |
+| Strip-to-slot transition / `strip_slot_converter` | Single notched polygon; strip width, rail width, slot width, notch onset and length | 1 strip, 1 across both rails |
+| 1×4 MMI / `mmi_1x4` | Rectangular multimode region, input taper and four output tapers; body dimensions, output pitch and access length | 5 |
+| Apodized fan grating / `fan_grating` | Circular fan taper, residual slab and concentric elevated teeth; radius, opening angle, radial pitch, tooth count and endpoint duty cycles | 1 guided input |
+| Tapered two-guide coupler / `tapered_coupler` | Two truncated tapers exchange widths while keeping a fixed edge gap; narrow/wide widths, interaction length and gap | 4 on straight access leads |
+| Photonic-crystal line defect / `phc_line_defect` | Triangular array of through holes on either side of an omitted row; lattice constant, radius, columns, row pairs and strip width | 2 on strip leads |
+| Pulley-coupled ring / `pulley_ring` | Annular core with a wrapped bus and tangent leads; core/bus widths, gap, radius, wrap angle and lead length | 2 on the bus |
 
 Port counts describe named endpoints. A grating's radiated field is not
 represented as a guided output port. The MZI is balanced passive geometry,
@@ -80,6 +90,23 @@ vertices. The saved polygon is the design geometry; the library does not
 claim a user-selected chord-error tolerance or solver convergence. A mesh
 study must distinguish this geometry approximation from electromagnetic
 discretization error.
+
+The Euler bend has triangular curvature over arclength. Its minimum radius
+occurs at the midpoint and curvature vanishes at both ends. Its centerline
+length is twice the minimum radius times the turn angle (radians). The
+generator samples 96 equal arclength intervals, integrates analytic tangent
+angles by Simpson quadrature and offsets the centerline by half the guide width.
+The pulley bus uses 48 angular intervals with tangent extensions. Gap
+validation accounts for the chord sag on the inner bus edge.
+
+The input fan and adjoining annular teeth use matching 36-segment angular
+samples at their shared radial boundaries. Radial tooth fill varies linearly between the first and last duty
+cycles; the residual slab occupies the lower part of the etch. The circular
+fan is a design primitive. The published focusing workflow derives elliptical phase fronts and
+uses concentric-circle approximations with a varying radial pitch. The line-defect slab uses at most 32 through holes
+with 20 vertices per hole. Adjacent triangular-lattice rows are offset by half
+a period, with row spacing √3/2 times the period. These approximations are
+part of the exported geometry.
 
 The Y junction, MZI junctions, crossing and width gratings deliberately overlap
 same-material solids. Slab/ridge combinations meet at a shared horizontal
@@ -152,11 +179,27 @@ Run focused generator checks with:
 .venv/bin/python -m unittest tests.test_component_library -v
 ```
 
-The tests validate all 20 defaults through the shared geometry validator,
+The tests validate all 27 defaults through the shared geometry validator,
 JSON round trips, rigid transforms, material assignment, independently sampled
 inward/outward port apertures, empty slots/cavity holes, and rejection of
 nonfinite or physically inconsistent parameters. These are geometry tests;
-the roadmap specifies the real-solver evidence needed for each future study.
+the physical qualification records for each executable study have separate scope.
+
+The historical compatibility check requires a checkout containing the v0.7
+commit. Reproduce it with `python scripts/audit_component_compatibility.py
+--output /tmp/library-audit.json`. All 20 v0.7 designs were compared against
+the original generator source at
+commit `175a198`. For each family, the full geometry matched in three cases:
+defaults, edited dimensions, and edited dimensions with translation, rotation
+and a silicon material. All 27 defaults and one multi-component layout also
+reproduced exactly in standalone Python and executed notebooks.
+[60 archived-geometry comparisons](verification/v09-legacy-library-audit.json) ·
+[56 script/notebook executions](verification/v09-library-exports.json) ·
+[Vendor coverage and comparison requirements](VENDOR_COMPONENT_COVERAGE.md).
+Each of the 27 families also passed a finite-layout Meep field calculation
+with the specific settings and source listed in its [numerical record](verification/v09-family-fields.json).
+All seven additional families also have real [FDTDX CPU](verification/v09-new-family-fields-fdtdx-cpu.json)
+and [FDTDX NVIDIA](verification/v09-new-family-fields-fdtdx-gpu.json) field records.
 
 The family taxonomy was informed by the public
 [Tidy3D component tutorial](https://www.flexcompute.com/tidy3d/examples/notebooks/PICComponents/)

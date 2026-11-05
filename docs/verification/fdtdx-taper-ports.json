@@ -1,0 +1,1960 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-05T19:41:44.760009+00:00",
+  "scope": "Four real Maxwell solves per case with independently calibrated input ends, separately measured left/right mode profiles, raw phasors, modal amplitudes and four measured temporal settlement checks.",
+  "adapter_sha256": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+  "docs": [
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.ModePlaneSource.html",
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.PhasorDetector.html"
+  ],
+  "cases": [
+    {
+      "case": "straight-cpu-r16",
+      "config": {
+        "schema_version": 7,
+        "study_type": "taper-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Linear taper",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 4.0,
+            "y": 2.75,
+            "z": 2.5
+          },
+          "objects": [
+            {
+              "id": "component-taper-1",
+              "name": "Linear width transition",
+              "visible": true,
+              "kind": "polygon",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 1.0,
+                "y": 0.5,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "vertices": [
+                {
+                  "x": -1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.375
+                },
+                {
+                  "x": -1.0,
+                  "y": 0.375
+                }
+              ],
+              "holes": [],
+              "material_id": "generic-core",
+              "component_id": "component-taper"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-taper",
+              "family": "taper",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "input_width_um": 0.75,
+                "output_width_um": 0.75,
+                "height_um": 0.5
+              },
+              "object_ids": [
+                "component-taper-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.75
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 0.75
+                }
+              ]
+            }
+          ]
+        },
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "run_time_s": 455.8830797740011,
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.595,
+        1.65
+      ],
+      "n_eff_ports": [
+        [
+          1.549141764640808,
+          1.549141764640808
+        ],
+        [
+          1.5256184339523315,
+          1.5256184339523315
+        ],
+        [
+          1.5003044605255127,
+          1.5003044605255127
+        ],
+        [
+          1.4730638265609741,
+          1.4730638265609741
+        ],
+        [
+          1.443771481513977,
+          1.443771481513977
+        ]
+      ],
+      "power": {
+        "S11": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "S21": [
+          1.0006805518326218,
+          1.000373736186639,
+          1.0000319253029935,
+          0.9996735770525775,
+          0.99928798281682
+        ],
+        "S12": [
+          1.0006733948039264,
+          1.000369994777139,
+          1.0000295144468008,
+          0.9996760434092685,
+          0.9993016174134028
+        ],
+        "S22": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "complex_s": {
+        "real": [
+          [
+            [
+              -0.0,
+              0.07285161096858132
+            ],
+            [
+              0.0728435689493687,
+              -0.0
+            ]
+          ],
+          [
+            [
+              -0.0,
+              -0.8442239846618226
+            ],
+            [
+              -0.8442281258517669,
+              -0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              -0.8708878870890043
+            ],
+            [
+              -0.8708894055844716,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.02432401631277875
+            ],
+            [
+              0.024313892442570515,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.8937088847639664
+            ],
+            [
+              0.8936923627483787,
+              0.0
+            ]
+          ]
+        ],
+        "imag": [
+          [
+            [
+              -0.0,
+              -0.9976803283533301
+            ],
+            [
+              -0.9976845023830633,
+              -0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              -0.5363355838454632
+            ],
+            [
+              -0.5363325532796349,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.4915117522180423
+            ],
+            [
+              0.491511514151723,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.9995420879781323
+            ],
+            [
+              0.9995411005490814,
+              0.0
+            ]
+          ],
+          [
+            [
+              -0.0,
+              0.44786833635271717
+            ],
+            [
+              0.4478860832645285,
+              -0.0
+            ]
+          ]
+        ]
+      },
+      "max_abs_reciprocity_difference": 2.4247265369896362e-05,
+      "column_modal_power": [
+        [
+          1.0006805518326218,
+          1.0006733948039264
+        ],
+        [
+          1.000373736186639,
+          1.000369994777139
+        ],
+        [
+          1.0000319253029935,
+          1.0000295144468008
+        ],
+        [
+          0.9996735770525775,
+          0.9996760434092685
+        ],
+        [
+          0.99928798281682,
+          0.9993016174134028
+        ]
+      ],
+      "measured_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "stage_actual_device": {
+        "reference_forward": "cpu:0",
+        "device_forward": "cpu:0",
+        "reference_reverse": "cpu:0",
+        "device_reverse": "cpu:0"
+      },
+      "stage_settled_fs": {
+        "reference_forward": 319.47045157578907,
+        "device_forward": 319.47045157578907,
+        "reference_reverse": 319.47045157578907,
+        "device_reverse": 319.47045157578907
+      },
+      "energy_ratio": {
+        "reference_forward": 8.356647838991815e-12,
+        "device_forward": 8.356647838991815e-12,
+        "reference_reverse": 1.058749355548061e-11,
+        "device_reverse": 1.058749355548061e-11
+      },
+      "spectral_change": {
+        "reference_forward": 3.747422047334994e-09,
+        "device_forward": 3.747422047334994e-09,
+        "reference_reverse": 7.598890666952207e-10,
+        "device_reverse": 7.598890666952207e-10
+      },
+      "maximum_stored_amplitude_reprojection_error": 0.0,
+      "maximum_s_reconstruction_error": 0.0,
+      "array_sha256": {
+        "arrays.npz": "85761b178ba3606be7f1fa8a579ad9603ce77357b658140523cd5b1f19decd9b",
+        "device-forward-monitors.npz": "aaaed1f89130ea062a3532a74374d8d304f1ab6180ca4512333502fb83514bb9",
+        "device-reverse-monitors.npz": "2caf8471697479fc93a939a564fe837fc90028c15fbb6554911e4aa03ea0f94a",
+        "port-modes.npz": "23dfcbd1c9d54d64a27e45cfa208ade7f744b1f45b8ba8745233431edca0a24f",
+        "reference-forward-monitors.npz": "aaaed1f89130ea062a3532a74374d8d304f1ab6180ca4512333502fb83514bb9",
+        "reference-reverse-monitors.npz": "2caf8471697479fc93a939a564fe837fc90028c15fbb6554911e4aa03ea0f94a",
+        "sparameters.npz": "73d660e4ca56f6acc542d141b63bbf6af4e6821b4b17e1d070794e232c031d95"
+      },
+      "late_time_field_shape_zyx": [
+        63,
+        63,
+        127
+      ],
+      "material_grid_verified": true
+    },
+    {
+      "case": "straight-gpu-r16",
+      "config": {
+        "schema_version": 7,
+        "study_type": "taper-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Linear taper",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 4.0,
+            "y": 2.75,
+            "z": 2.5
+          },
+          "objects": [
+            {
+              "id": "component-taper-1",
+              "name": "Linear width transition",
+              "visible": true,
+              "kind": "polygon",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 1.0,
+                "y": 0.5,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "vertices": [
+                {
+                  "x": -1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.375
+                },
+                {
+                  "x": -1.0,
+                  "y": 0.375
+                }
+              ],
+              "holes": [],
+              "material_id": "generic-core",
+              "component_id": "component-taper"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-taper",
+              "family": "taper",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "input_width_um": 0.75,
+                "output_width_um": 0.75,
+                "height_um": 0.5
+              },
+              "object_ids": [
+                "component-taper-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.75
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 0.75
+                }
+              ]
+            }
+          ]
+        },
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "run_time_s": 133.40261218900014,
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.595,
+        1.65
+      ],
+      "n_eff_ports": [
+        [
+          1.549141764640808,
+          1.549141764640808
+        ],
+        [
+          1.5256184339523315,
+          1.5256184339523315
+        ],
+        [
+          1.5003044605255127,
+          1.5003044605255127
+        ],
+        [
+          1.4730638265609741,
+          1.4730638265609741
+        ],
+        [
+          1.443771481513977,
+          1.443771481513977
+        ]
+      ],
+      "power": {
+        "S11": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "S21": [
+          1.0006805206588463,
+          1.0003736997763424,
+          1.0000318865325215,
+          0.9996735817328664,
+          0.9992880318497959
+        ],
+        "S12": [
+          1.000673347277814,
+          1.000370098112586,
+          1.0000295661534808,
+          0.9996760790259746,
+          0.9993015400355255
+        ],
+        "S22": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "complex_s": {
+        "real": [
+          [
+            [
+              -0.0,
+              0.07285162791117214
+            ],
+            [
+              0.07284358643123609,
+              -0.0
+            ]
+          ],
+          [
+            [
+              -0.0,
+              -0.8442240421955817
+            ],
+            [
+              -0.8442281086816615,
+              -0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              -0.8708879056588374
+            ],
+            [
+              -0.8708893955922097,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.024324033601890775
+            ],
+            [
+              0.024313890053031587,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.8937088426661652
+            ],
+            [
+              0.8936923722107019,
+              0.0
+            ]
+          ]
+        ],
+        "imag": [
+          [
+            [
+              -0.0,
+              -0.9976803032978581
+            ],
+            [
+              -0.9976844854836029,
+              -0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              -0.5363355896186071
+            ],
+            [
+              -0.536332546362914,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.4915117719146151
+            ],
+            [
+              0.49151149241656295,
+              0.0
+            ]
+          ],
+          [
+            [
+              0.0,
+              0.9995421053739099
+            ],
+            [
+              0.9995411029484258,
+              0.0
+            ]
+          ],
+          [
+            [
+              -0.0,
+              0.44786833397308745
+            ],
+            [
+              0.447886119122042,
+              -0.0
+            ]
+          ]
+        ]
+      },
+      "max_abs_reciprocity_difference": 2.4240202691132435e-05,
+      "column_modal_power": [
+        [
+          1.0006805206588463,
+          1.000673347277814
+        ],
+        [
+          1.0003736997763424,
+          1.000370098112586
+        ],
+        [
+          1.0000318865325215,
+          1.0000295661534808
+        ],
+        [
+          0.9996735817328664,
+          0.9996760790259746
+        ],
+        [
+          0.9992880318497959,
+          0.9993015400355255
+        ]
+      ],
+      "measured_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "stage_actual_device": {
+        "reference_forward": "cuda:0",
+        "device_forward": "cuda:0",
+        "reference_reverse": "cuda:0",
+        "device_reverse": "cuda:0"
+      },
+      "stage_settled_fs": {
+        "reference_forward": 319.47045157578907,
+        "device_forward": 319.47045157578907,
+        "reference_reverse": 319.47045157578907,
+        "device_reverse": 319.47045157578907
+      },
+      "energy_ratio": {
+        "reference_forward": 8.408312240915095e-12,
+        "device_forward": 8.408312240915095e-12,
+        "reference_reverse": 1.0601330577286738e-11,
+        "device_reverse": 1.0601330577286738e-11
+      },
+      "spectral_change": {
+        "reference_forward": 4.528452895827259e-09,
+        "device_forward": 4.528452895827259e-09,
+        "reference_reverse": 6.127701000772831e-10,
+        "device_reverse": 6.127701000772831e-10
+      },
+      "maximum_stored_amplitude_reprojection_error": 0.0,
+      "maximum_s_reconstruction_error": 0.0,
+      "array_sha256": {
+        "arrays.npz": "a52700b3b3ef080d3617000ebf405c9ed715d46050b5b7f9f5915856bf4fb5c4",
+        "device-forward-monitors.npz": "083173a3fa76c2d425d08ff369184634217ffc6731094ed14605de16de7bd2fe",
+        "device-reverse-monitors.npz": "f835dd1875fba6d900eb668e297d524ab7d85c5f554f9010f55daea7d586d3f3",
+        "port-modes.npz": "8032fd9f8f100f04e0697f6cce38d58388bfd3b7db0d44f842d92fba7997a07c",
+        "reference-forward-monitors.npz": "083173a3fa76c2d425d08ff369184634217ffc6731094ed14605de16de7bd2fe",
+        "reference-reverse-monitors.npz": "f835dd1875fba6d900eb668e297d524ab7d85c5f554f9010f55daea7d586d3f3",
+        "sparameters.npz": "508ab238e4227c9ed128f7666a8ec4ff0c5582e8ed775f96427fc2f8d62117a4"
+      },
+      "late_time_field_shape_zyx": [
+        63,
+        63,
+        127
+      ],
+      "material_grid_verified": true
+    },
+    {
+      "case": "taper-cpu-r16",
+      "config": {
+        "schema_version": 7,
+        "study_type": "taper-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Linear taper",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 4.0,
+            "y": 3.0,
+            "z": 2.5
+          },
+          "objects": [
+            {
+              "id": "component-taper-1",
+              "name": "Linear width transition",
+              "visible": true,
+              "kind": "polygon",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 1.0,
+                "y": 0.5,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "vertices": [
+                {
+                  "x": -1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": -0.5
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.5
+                },
+                {
+                  "x": -1.0,
+                  "y": 0.375
+                }
+              ],
+              "holes": [],
+              "material_id": "generic-core",
+              "component_id": "component-taper"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-taper",
+              "family": "taper",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "input_width_um": 0.75,
+                "output_width_um": 1.0,
+                "height_um": 0.5
+              },
+              "object_ids": [
+                "component-taper-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.75
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 1.0
+                }
+              ]
+            }
+          ]
+        },
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "cpu"
+      },
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "run_time_s": 351.0894274940001,
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.595,
+        1.65
+      ],
+      "n_eff_ports": [
+        [
+          1.549141764640808,
+          1.6435495615005493
+        ],
+        [
+          1.5256184339523315,
+          1.6255905628204346
+        ],
+        [
+          1.5003044605255127,
+          1.6062244176864624
+        ],
+        [
+          1.4730638265609741,
+          1.5853064060211182
+        ],
+        [
+          1.443771481513977,
+          1.5626766681671143
+        ]
+      ],
+      "power": {
+        "S11": [
+          9.515349145843489e-05,
+          0.0001526741339606771,
+          0.00019418160478399256,
+          0.00020622171565664156,
+          0.00017938828438234262
+        ],
+        "S21": [
+          1.0003707085162297,
+          1.0000411337060957,
+          0.9995297000232601,
+          0.9988448801862664,
+          0.9978823589846031
+        ],
+        "S12": [
+          0.9969896601333235,
+          0.9974672281757153,
+          0.9977537006523358,
+          0.9977352236179793,
+          0.9971040581319481
+        ],
+        "S22": [
+          9.303830335382051e-05,
+          0.0001544339568862435,
+          0.00020377760952112943,
+          0.00022410673010603903,
+          0.00020166922725849324
+        ]
+      },
+      "complex_s": {
+        "real": [
+          [
+            [
+              0.009198345360532482,
+              0.7471283416299559
+            ],
+            [
+              0.748266835533329,
+              -0.004651579357549342
+            ]
+          ],
+          [
+            [
+              0.0024857466519104055,
+              -0.21216790010401493
+            ],
+            [
+              -0.21252334045973098,
+              0.007316154892534627
+            ]
+          ],
+          [
+            [
+              -0.010472486667390618,
+              -0.9556209196821419
+            ],
+            [
+              -0.9564706394629461,
+              0.014107333213588034
+            ]
+          ],
+          [
+            [
+              -0.013592123268582402,
+              -0.7187429497598176
+            ],
+            [
+              -0.7191978183768158,
+              0.004937463723955703
+            ]
+          ],
+          [
+            [
+              -0.002645260457184058,
+              0.2577132861531998
+            ],
+            [
+              0.25754709036685064,
+              -0.009785222161091255
+            ]
+          ]
+        ],
+        "imag": [
+          [
+            [
+              -0.0032471424494169353,
+              -0.6624114289975643
+            ],
+            [
+              -0.6636772192543358,
+              0.008449917918787221
+            ]
+          ],
+          [
+            [
+              -0.012103520047622232,
+              -0.975936478640474
+            ],
+            [
+              -0.9771770379342389,
+              0.01004528916829601
+            ]
+          ],
+          [
+            [
+              -0.00919285743310089,
+              -0.29076168681274583
+            ],
+            [
+              -0.291021675942881,
+              -0.002181916387473466
+            ]
+          ],
+          [
+            [
+              0.004634209825666338,
+              0.6936452953697125
+            ],
+            [
+              0.6939736149366884,
+              -0.014132522141523801
+            ]
+          ],
+          [
+            [
+              0.013129770808966965,
+              0.9647216802125197
+            ],
+            [
+              0.9651693401824224,
+              -0.010291678896884699
+            ]
+          ]
+        ]
+      },
+      "max_abs_reciprocity_difference": 0.0017024668402512582,
+      "column_modal_power": [
+        [
+          1.000465862007688,
+          0.9970826984366773
+        ],
+        [
+          1.0001938078400563,
+          0.9976216621326015
+        ],
+        [
+          0.9997238816280442,
+          0.997957478261857
+        ],
+        [
+          0.999051101901923,
+          0.9979593303480854
+        ],
+        [
+          0.9980617472689854,
+          0.9973057273592066
+        ]
+      ],
+      "measured_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "stage_actual_device": {
+        "reference_forward": "cpu:0",
+        "device_forward": "cpu:0",
+        "reference_reverse": "cpu:0",
+        "device_reverse": "cpu:0"
+      },
+      "stage_settled_fs": {
+        "reference_forward": 319.47045157578907,
+        "device_forward": 319.47045157578907,
+        "reference_reverse": 319.47045157578907,
+        "device_reverse": 319.47045157578907
+      },
+      "energy_ratio": {
+        "reference_forward": 8.356647838991815e-12,
+        "device_forward": 8.425275234424934e-12,
+        "reference_reverse": 9.516618396099297e-12,
+        "device_reverse": 9.461623325102142e-12
+      },
+      "spectral_change": {
+        "reference_forward": 3.747422047334994e-09,
+        "device_forward": 1.952588842108672e-09,
+        "reference_reverse": 3.9049588615839e-09,
+        "device_reverse": 3.0200005580729843e-09
+      },
+      "maximum_stored_amplitude_reprojection_error": 0.0,
+      "maximum_s_reconstruction_error": 0.0,
+      "array_sha256": {
+        "arrays.npz": "df0f96afe0ec287e041edd243d66cdc1c0ed4fea058b6fb4255a53280d04dbd0",
+        "device-forward-monitors.npz": "f8cfe7882f8a7531b2416218bf42e1b9301a195c866bcca426ee4a732b5db02c",
+        "device-reverse-monitors.npz": "9185192b30bf0636e0aa7eebff31d66ea3513c29b38de46dc1a1f72152de2fa5",
+        "port-modes.npz": "9a38f03e93f24117f9d2de568cf98644156b20e65b03d831f8c2813f61135098",
+        "reference-forward-monitors.npz": "aaaed1f89130ea062a3532a74374d8d304f1ab6180ca4512333502fb83514bb9",
+        "reference-reverse-monitors.npz": "41f093feafe808bd18a93714647ce51032cc090b541b196a1cbbaef1b0e75c3b",
+        "sparameters.npz": "ab1a1633d9e77a7ae7d0e590949fdd22be6231984ec5d06e27221d0d2b301e52"
+      },
+      "late_time_field_shape_zyx": [
+        63,
+        63,
+        127
+      ],
+      "material_grid_verified": true
+    },
+    {
+      "case": "taper-gpu-r16",
+      "config": {
+        "schema_version": 7,
+        "study_type": "taper-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Linear taper",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 4.0,
+            "y": 3.0,
+            "z": 2.5
+          },
+          "objects": [
+            {
+              "id": "component-taper-1",
+              "name": "Linear width transition",
+              "visible": true,
+              "kind": "polygon",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 1.0,
+                "y": 0.5,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "vertices": [
+                {
+                  "x": -1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": -0.5
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.5
+                },
+                {
+                  "x": -1.0,
+                  "y": 0.375
+                }
+              ],
+              "holes": [],
+              "material_id": "generic-core",
+              "component_id": "component-taper"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-taper",
+              "family": "taper",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "input_width_um": 0.75,
+                "output_width_um": 1.0,
+                "height_um": 0.5
+              },
+              "object_ids": [
+                "component-taper-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.75
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 1.0
+                }
+              ]
+            }
+          ]
+        },
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 16,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "run_time_s": 65.72830071099997,
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.595,
+        1.65
+      ],
+      "n_eff_ports": [
+        [
+          1.549141764640808,
+          1.6435495615005493
+        ],
+        [
+          1.5256184339523315,
+          1.6255905628204346
+        ],
+        [
+          1.5003044605255127,
+          1.6062244176864624
+        ],
+        [
+          1.4730638265609741,
+          1.5853064060211182
+        ],
+        [
+          1.443771481513977,
+          1.5626766681671143
+        ]
+      ],
+      "power": {
+        "S11": [
+          9.515379467064465e-05,
+          0.00015267402015151066,
+          0.00019418162505319402,
+          0.0002062221164847222,
+          0.00017938637692949615
+        ],
+        "S21": [
+          1.0003706521343234,
+          1.0000410811120404,
+          0.9995296772883435,
+          0.9988449181151471,
+          0.9978824214359421
+        ],
+        "S12": [
+          0.9969895730539148,
+          0.9974672237064399,
+          0.9977537379302369,
+          0.9977352268599166,
+          0.9971040913861685
+        ],
+        "S22": [
+          9.303886118577678e-05,
+          0.00015443301140648913,
+          0.00020377767490943778,
+          0.0002241068002785794,
+          0.00020166868183897673
+        ]
+      },
+      "complex_s": {
+        "real": [
+          [
+            [
+              0.009198353050417836,
+              0.7471283021439672
+            ],
+            [
+              0.7482668071446761,
+              -0.004651603580348583
+            ]
+          ],
+          [
+            [
+              0.0024857243121653894,
+              -0.21216789229254876
+            ],
+            [
+              -0.21252333368903942,
+              0.007316119720161391
+            ]
+          ],
+          [
+            [
+              -0.010472484627398576,
+              -0.9556209409559782
+            ],
+            [
+              -0.9564706291511051,
+              0.014107338710563862
+            ]
+          ],
+          [
+            [
+              -0.0135921353374765,
+              -0.7187429582757693
+            ],
+            [
+              -0.7191978263597502,
+              0.004937449346393646
+            ]
+          ],
+          [
+            [
+              -0.002645272718236622,
+              0.2577132866037196
+            ],
+            [
+              0.2575470716408598,
+              -0.009785208900524329
+            ]
+          ]
+        ],
+        "imag": [
+          [
+            [
+              -0.0032471673548669392,
+              -0.6624114078043852
+            ],
+            [
+              -0.6636772087843873,
+              0.008449937592495287
+            ]
+          ],
+          [
+            [
+              -0.012103519934110928,
+              -0.9759364780489442
+            ],
+            [
+              -0.9771770124955547,
+              0.010045267723995948
+            ]
+          ],
+          [
+            [
+              -0.00919286085949823,
+              -0.29076168099776845
+            ],
+            [
+              -0.2910216707732137,
+              -0.002181895830433737
+            ]
+          ],
+          [
+            [
+              0.004634217674262264,
+              0.6936452888825183
+            ],
+            [
+              0.6939736339909158,
+              -0.014132529647249157
+            ]
+          ],
+          [
+            [
+              0.01312969570004001,
+              0.9647216973273056
+            ],
+            [
+              0.9651693775318195,
+              -0.010291665006794392
+            ]
+          ]
+        ]
+      },
+      "max_abs_reciprocity_difference": 0.0017024822341549796,
+      "column_modal_power": [
+        [
+          1.0004658059289941,
+          0.9970826119151005
+        ],
+        [
+          1.0001937551321918,
+          0.9976216567178464
+        ],
+        [
+          0.9997238589133968,
+          0.9979575156051463
+        ],
+        [
+          0.9990511402316318,
+          0.9979593336601952
+        ],
+        [
+          0.9980618078128716,
+          0.9973057600680075
+        ]
+      ],
+      "measured_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "stage_actual_device": {
+        "reference_forward": "cuda:0",
+        "device_forward": "cuda:0",
+        "reference_reverse": "cuda:0",
+        "device_reverse": "cuda:0"
+      },
+      "stage_settled_fs": {
+        "reference_forward": 319.47045157578907,
+        "device_forward": 319.47045157578907,
+        "reference_reverse": 319.47045157578907,
+        "device_reverse": 319.47045157578907
+      },
+      "energy_ratio": {
+        "reference_forward": 8.408312240915095e-12,
+        "device_forward": 8.49525744889279e-12,
+        "reference_reverse": 9.50503998425889e-12,
+        "device_reverse": 9.44122471174813e-12
+      },
+      "spectral_change": {
+        "reference_forward": 4.528452895827259e-09,
+        "device_forward": 2.0736510525536717e-09,
+        "reference_reverse": 2.673654633153622e-09,
+        "device_reverse": 2.9575829530197537e-09
+      },
+      "maximum_stored_amplitude_reprojection_error": 0.0,
+      "maximum_s_reconstruction_error": 0.0,
+      "array_sha256": {
+        "arrays.npz": "895894d34c161c679f473494b9a236d50c525f225ec35e09203a047577115a42",
+        "device-forward-monitors.npz": "98a6686ccc4c5158344e38d494243d29141c3e603945737d931264b35e712c26",
+        "device-reverse-monitors.npz": "6f5e07669d970023f39c77f43ad5d30b60e7dca26e446c394885d1cdf1399bd5",
+        "port-modes.npz": "f99516f3cd1e71b7482daf848128c59f777b633860fc374037a926123644ab0a",
+        "reference-forward-monitors.npz": "083173a3fa76c2d425d08ff369184634217ffc6731094ed14605de16de7bd2fe",
+        "reference-reverse-monitors.npz": "e9ffa392a83d591ba97600bf912350dc3ed9bf6a5aa62a8842516a9dd1c4fa1d",
+        "sparameters.npz": "195db13038de7839c3968b265c6c08576bc0a7fd34b673b66b124a45af86f0c1"
+      },
+      "late_time_field_shape_zyx": [
+        63,
+        63,
+        127
+      ],
+      "material_grid_verified": true
+    },
+    {
+      "case": "taper-gpu-r20",
+      "config": {
+        "schema_version": 7,
+        "study_type": "taper-ports-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Linear taper",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 4.0,
+            "y": 3.0,
+            "z": 2.5
+          },
+          "objects": [
+            {
+              "id": "component-taper-1",
+              "name": "Linear width transition",
+              "visible": true,
+              "kind": "polygon",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 1.0,
+                "y": 0.5,
+                "z": 0.5
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "vertices": [
+                {
+                  "x": -1.0,
+                  "y": -0.375
+                },
+                {
+                  "x": 1.0,
+                  "y": -0.5
+                },
+                {
+                  "x": 1.0,
+                  "y": 0.5
+                },
+                {
+                  "x": -1.0,
+                  "y": 0.375
+                }
+              ],
+              "holes": [],
+              "material_id": "generic-core",
+              "component_id": "component-taper"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-taper",
+              "family": "taper",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "input_width_um": 0.75,
+                "output_width_um": 1.0,
+                "height_um": 0.5
+              },
+              "object_ids": [
+                "component-taper-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.75
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 1.0
+                }
+              ]
+            }
+          ]
+        },
+        "cladding_index": 1.0,
+        "wavelength_min_um": 1.45,
+        "wavelength_max_um": 1.65,
+        "frequency_points": 5,
+        "resolution": 20,
+        "pml_um": 0.75,
+        "max_after_sources_fs": 600.0,
+        "decay_by": 1e-07,
+        "spectrum_tolerance": 0.0001,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "run_time_s": 211.22787240900107,
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "wavelength_um": [
+        1.45,
+        1.4953125,
+        1.5435483870967743,
+        1.595,
+        1.65
+      ],
+      "n_eff_ports": [
+        [
+          1.5723903179168701,
+          1.64162015914917
+        ],
+        [
+          1.5502887964248657,
+          1.6236579418182373
+        ],
+        [
+          1.5264763832092285,
+          1.6042910814285278
+        ],
+        [
+          1.5008056163787842,
+          1.5833754539489746
+        ],
+        [
+          1.4731284379959106,
+          1.5607517957687378
+        ]
+      ],
+      "power": {
+        "S11": [
+          5.428356952876467e-05,
+          3.70619598387323e-05,
+          1.9475862750024436e-05,
+          5.982759711259884e-06,
+          1.671476487603823e-06
+        ],
+        "S21": [
+          1.0002015540681903,
+          1.0000070505022283,
+          0.9996683759150234,
+          0.9992828384626253,
+          0.9989533182513755
+        ],
+        "S12": [
+          0.9985602932468287,
+          0.9986479066176328,
+          0.9986461382927733,
+          0.9984477682116032,
+          0.9978709496918174
+        ],
+        "S22": [
+          5.8920075351967536e-05,
+          4.158395317855569e-05,
+          2.2292078965613544e-05,
+          6.958819592065275e-06,
+          3.4779910966886283e-06
+        ]
+      },
+      "complex_s": {
+        "real": [
+          [
+            [
+              -0.006835129261290414,
+              0.7633860385662695
+            ],
+            [
+              0.7639253218089169,
+              0.003925932552087697
+            ]
+          ],
+          [
+            [
+              -0.0002091832538639155,
+              -0.177717425179789
+            ],
+            [
+              -0.17789122223456455,
+              -0.002581433282952191
+            ]
+          ],
+          [
+            [
+              0.0038902734442635353,
+              -0.941700098183701
+            ],
+            [
+              -0.9421883611361016,
+              -0.004668137103585667
+            ]
+          ],
+          [
+            [
+              0.0021915723180262175,
+              -0.7564915079456297
+            ],
+            [
+              -0.7567748644950119,
+              -0.0012194015179481474
+            ]
+          ],
+          [
+            [
+              0.0012431170663599802,
+              0.19511718387212157
+            ],
+            [
+              0.19526505081375595,
+              0.001835410859957657
+            ]
+          ]
+        ],
+        "imag": [
+          [
+            [
+              0.0027503777031920944,
+              -0.6448271468920386
+            ],
+            [
+              -0.6454608096293167,
+              -0.006595993401181183
+            ]
+          ],
+          [
+            [
+              0.0060842585583647905,
+              -0.9833943376922091
+            ],
+            [
+              -0.9840537401758712,
+              -0.005909327828460896
+            ]
+          ],
+          [
+            [
+              0.0020836591081274235,
+              -0.33443543976914436
+            ],
+            [
+              -0.33458850556271413,
+              -0.0007075132138273938
+            ]
+          ],
+          [
+            [
+              -0.0010861724016568797,
+              0.6528157217911886
+            ],
+            [
+              0.6531268199447806,
+              0.0023392048927126986
+            ]
+          ],
+          [
+            [
+              -0.0003551569328175638,
+              0.9796939492768292
+            ],
+            [
+              0.980216750612882,
+              -0.00033054208784680207
+            ]
+          ]
+        ]
+      },
+      "max_abs_reciprocity_difference": 0.000832078650378167,
+      "column_modal_power": [
+        [
+          1.000255837637719,
+          0.9986192133221807
+        ],
+        [
+          1.000044112462067,
+          0.9986894905708114
+        ],
+        [
+          0.9996878517777734,
+          0.9986684303717389
+        ],
+        [
+          0.9992888212223366,
+          0.9984547270311953
+        ],
+        [
+          0.998954989727863,
+          0.9978744276829141
+        ]
+      ],
+      "measured_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "stage_actual_device": {
+        "reference_forward": "cuda:0",
+        "device_forward": "cuda:0",
+        "reference_reverse": "cuda:0",
+        "device_reverse": "cuda:0"
+      },
+      "stage_settled_fs": {
+        "reference_forward": 319.54194813339655,
+        "device_forward": 319.54194813339655,
+        "reference_reverse": 319.54194813339655,
+        "device_reverse": 319.54194813339655
+      },
+      "energy_ratio": {
+        "reference_forward": 1.5179414799768032e-12,
+        "device_forward": 1.5245541374470095e-12,
+        "reference_reverse": 5.738656620214722e-13,
+        "device_reverse": 5.730579856130791e-13
+      },
+      "spectral_change": {
+        "reference_forward": 1.632197184551696e-08,
+        "device_forward": 2.3530965701121705e-09,
+        "reference_reverse": 1.1428635067971211e-09,
+        "device_reverse": 3.0214923488921564e-10
+      },
+      "maximum_stored_amplitude_reprojection_error": 3.66205343881779e-15,
+      "maximum_s_reconstruction_error": 3.433175098891678e-16,
+      "array_sha256": {
+        "arrays.npz": "646204d96f50988079d7da05c899d89fba366f0dfe75087973afcc2913d8fb2f",
+        "device-forward-monitors.npz": "a5de12c5ffd7b920de8521bc78be8f3b2c770ab0a64e7a5c65555e574bce4d79",
+        "device-reverse-monitors.npz": "872db09d33e94fdbf4df545677060d2223241d7e086068b33961716029c0c074",
+        "port-modes.npz": "be5ebe4c3456275d556373e062f2f4c693d52315c261128b09bcda0045593959",
+        "reference-forward-monitors.npz": "460a6cd91d77a261ae11794b38e400240fa523d9937b615fdc534599df67ed37",
+        "reference-reverse-monitors.npz": "3bddf68c69e9c5ed18309c2426b7b9a8ac0d1bb397e513c98d94d7dfc854139a",
+        "sparameters.npz": "cc6dc6c7396c3e005a2ef77024c619ffebde5ed8129e22778f665450dc48dcd3"
+      },
+      "late_time_field_shape_zyx": [
+        79,
+        79,
+        159
+      ],
+      "material_grid_verified": true
+    }
+  ],
+  "cpu_gpu_checks": [
+    {
+      "reference": "straight-cpu-r16",
+      "candidate": "straight-gpu-r16",
+      "s_max_absolute_difference": 5.782268261666286e-08,
+      "s_relative_l2": 3.203636132934593e-08,
+      "maximum_S21_power_change": 4.903297590175271e-08,
+      "maximum_end_neff_change": 0.0
+    },
+    {
+      "reference": "taper-cpu-r16",
+      "candidate": "taper-gpu-r16",
+      "s_max_absolute_difference": 7.610311635050185e-08,
+      "s_relative_l2": 4.2252244233516024e-08,
+      "maximum_S21_power_change": 6.245133898907795e-08,
+      "maximum_end_neff_change": 0.0
+    }
+  ],
+  "straight_limit": {
+    "previous_schema4_uniform_guide_array_equality": {
+      "s": true,
+      "incident_amplitude": true,
+      "outgoing_amplitude": true,
+      "reference_through": true,
+      "mode_neff": true
+    },
+    "previous_results_sha256": "796bc38a854cd3d6e73f088ec078362a5911f28f117e227c4356ef45ebdd17de",
+    "conditions": "Same uniform cross-section, source, grid and physical planes. Compare the archived v0.6 GPU straight-guide matrix directly against the constant-width catalog taper."
+  },
+  "qualification": "Raw S contains all measured complex coefficients. All five bins must pass actual energy and spectral settling flags to enter this check. Reconstruction uses saved native monitors and the corresponding end-specific profiles.",
+  "limitations": [
+    "Fundamental Ey-like mode at each end. Higher-order conversion and radiation contribute to the residual channel power.",
+    "A narrow monitor-range band centred near 1.55 \u00b5m was checked on this WSL CPU/RTX setup. These taper S values have no matched published commercial reference.",
+    "CPU/GPU agreement checks numerical repeatability, not convergence. Reference-plane phases include propagation in access guides.",
+    "Grid approximation, finite aperture and approximate modal injection can introduce reciprocity error and small column-power excesses. Reported values are unclipped."
+  ],
+  "mesh_sensitivity": {
+    "reference": "taper-gpu-r16",
+    "candidate": "taper-gpu-r20",
+    "s_max_absolute_difference": 0.06436179305787547,
+    "s_relative_l2": 0.05029334300439493,
+    "maximum_S21_power_change": 0.0010708968154333753,
+    "maximum_end_neff_change": 0.029356956481933594,
+    "actual_cross_sections": {
+      "16": {
+        "sampled_port_widths_um": [
+          0.75,
+          1.0
+        ],
+        "sampled_port_heights_um": [
+          0.5,
+          0.5
+        ]
+      },
+      "20": {
+        "sampled_port_widths_um": [
+          0.8,
+          1.0
+        ],
+        "sampled_port_heights_um": [
+          0.5,
+          0.5
+        ]
+      }
+    },
+    "maximum_S21_phase_change_rad": 0.06413346884032183,
+    "interpretation": "The staircase sample widens the left core from .75 to .80 \u00b5m at the finer density. Complex phase remains sensitive even when through-power changes little. This two-mesh check is not a converged S uncertainty bound."
+  }
+}

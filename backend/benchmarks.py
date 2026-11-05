@@ -52,3 +52,28 @@ def benchmark_report(path=None):
             'report_sha256': hashlib.sha256(raw).hexdigest(),
             'notes': [*NOTES, *report.get('notes', [])],
             'reproduction_command': ('From the source checkout: ' if ROOT.name == '_app' else '') + report.get('reproduction_command', '.venv/bin/python scripts/benchmark_waveguide_modes.py')}
+
+
+def component_benchmark_report(path=None):
+    """Check that the served comparison rows agree with their recorded numbers."""
+    file = Path(path) if path else ROOT/'docs/verification/public-component-comparisons.json'
+    raw = file.read_bytes()
+    report = json.loads(raw)
+    if report.get('schema_version') != 1 or not report.get('cases'):
+        raise ValueError('Unsupported component comparison record.')
+    identifiers = set()
+    for case in report['cases']:
+        identifier = case['id']
+        url = urlsplit(case['source_url'])
+        if identifier in identifiers or url.scheme != 'https' or not url.hostname or not case['metrics']:
+            raise ValueError('A distinct case and public reference are required.')
+        identifiers.add(identifier)
+        for metric in case['metrics']:
+            reference,computed = metric['reference'],metric['computed']
+            if not all(_finite(x) for x in (reference,computed,metric['absolute_error'],metric['relative_error'])) or reference == 0:
+                raise ValueError('Comparison metrics require finite values and a nonzero reference.')
+            delta = abs(computed-reference)
+            if not (math.isclose(delta,metric['absolute_error'],rel_tol=1e-8,abs_tol=1e-12)
+                    and math.isclose(delta/abs(reference),metric['relative_error'],rel_tol=1e-8,abs_tol=1e-12)):
+                raise ValueError('Displayed differences disagree with the source measurement and local result.')
+    return {**report,'report_sha256':hashlib.sha256(raw).hexdigest()}

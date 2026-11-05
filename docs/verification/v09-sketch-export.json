@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T19:32:19.044871+00:00",
+  "source": "Actual Draw in XY geometry and Python/Jupyter downloads from the local browser. Both entries ran outside the checkout.",
+  "archive_sha256": "487e62bb0b85f23cfc93902d3e78167388cf3a0328cbf479256577ac071514ce",
+  "script_exact_geometry": true,
+  "notebook_exact_geometry": true,
+  "script_rendered_png": true,
+  "notebook_rendered_png": true,
+  "shapes": [
+    {
+      "name": "Substrate",
+      "vertices": 0,
+      "height_um": 0.9
+    },
+    {
+      "name": "Ring core",
+      "vertices": 0,
+      "height_um": 0.22
+    },
+    {
+      "name": "Bus waveguide",
+      "vertices": 0,
+      "height_um": 0.22
+    },
+    {
+      "name": "Routed guide",
+      "vertices": 8,
+      "height_um": 0.3
+    },
+    {
+      "name": "Tapered island",
+      "vertices": 4,
+      "height_um": 0.3
+    },
+    {
+      "name": "Circular bend",
+      "vertices": 42,
+      "height_um": 0.3
+    }
+  ]
+}

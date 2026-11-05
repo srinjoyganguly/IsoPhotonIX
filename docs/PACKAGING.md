@@ -1,10 +1,16 @@
 # Install Photonics Workbench locally
 
-The **0.8.0a1 wheel** contains the local service, the compiled React interface,
-20 component families, solver adapters, examples and dependency notices. The
+The **0.9.0a1 wheel** contains the local service, the compiled React interface,
+27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
 separate environments. The wheel is available as a local build artifact.
+
+The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
+offline installation, an installed CLI run of the Lumerical comparison, and
+real simulations of the photonic-crystal line-defect layout on CPU and NVIDIA.
+The installed NVIDIA field bytes and material digest matched the corresponding
+recorded family case.
 
 ## Install and launch
 
@@ -14,7 +20,7 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.8.0a1-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.9.0a1-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
@@ -53,7 +59,7 @@ The output directory must be new. Saved-run Python/notebook exports also
 contain their numerical source and can be replayed independently. [Standalone
 exports](REPRODUCIBLE_EXPORTS.md).
 
-The [final wheel verification](verification/v08-checks.json) records the
+The [v0.8 baseline verification](verification/v08-checks.json) records the
 tested artifact's SHA-256. A fresh offline installation provisioned all 90
 locked Conda packages and checked the expected MPB homogeneous-mode frequency
 of 0.125. Repeating setup reused the same interpreter. The installed CLI

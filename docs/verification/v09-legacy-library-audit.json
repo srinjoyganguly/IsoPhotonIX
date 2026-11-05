@@ -1,0 +1,491 @@
+{
+  "passed": true,
+  "baseline_commit": "175a1986d90a3ecce2d221bacad697344c014e54",
+  "checked_at": "2026-11-05T19:19:10.750013+00:00",
+  "legacy_families": 20,
+  "new_catalog_families": 27,
+  "geometry_comparisons": 60,
+  "scope": "Complete validated geometry documents, including generated solids, ports, contours, materials and recipes. Catalogue capability labels are outside this geometry comparison.",
+  "families": [
+    {
+      "id": "strip",
+      "cases": {
+        "default": {
+          "geometry_sha256": "7b8628cc66ceb7f14cc1acd980083b1090c61f3ff1eb397002e492a149f294f1",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "29cdea14afa3a271136df21f313edc6f8adcbdd2e2dbc3fd577789ebcfbf2387",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "132c284da601d385aadc8045cd3257840dbba0486360d5fcf79c7efe937556c6",
+          "objects": 1,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    },
+    {
+      "id": "slot",
+      "cases": {
+        "default": {
+          "geometry_sha256": "ee9e402f238914d77aaca7cf0acc89d5d4e5c6d280b8334d5bc2592b322f919d",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "11c8b4e6ab7f3b53ade5c6dd9edabb39e14ce8c781f28b2be5878f41a30c594f",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "4777baa2587d075b20e72f7a4e4b56f589ff701af00d94e88057a9375e98bf2b",
+          "objects": 2,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    },
+    {
+      "id": "rib",
+      "cases": {
+        "default": {
+          "geometry_sha256": "a0fa3a3fbfca6a3054ea1e49d3ef45e2d21e5d7f6d9dd6325709e187256b3160",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "e69a444c6745b1b301b2e9e02615cc9210df87b4f0f88867a2bbe333d98db0f0",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "13ef605007c83ed4c40db9fd907a6b4348663f137dd7cdb8e938949d780fb522",
+          "objects": 2,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    },
+    {
+      "id": "taper",
+      "cases": {
+        "default": {
+          "geometry_sha256": "040d706c4e20871663d9092e5c0f0ab2bfa5197f6f30a3832e461fd13d285469",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "69aec5c104b03379c39714b2a971e6b31b1be04b7418e811cf7b8b5d6f96c1e6",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "933cfb7fe8aba73ca75c731288a4263260eae5032d3e40380898ad28f41e1b9b",
+          "objects": 1,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 6.75
+      }
+    },
+    {
+      "id": "bend",
+      "cases": {
+        "default": {
+          "geometry_sha256": "906f44cb14c961196dd6e5eca13198f1ba33cf03d2a1940c17fc95c00faf5474",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "37269c076e9875ed10ed7779bebb2f8f9dd0ca31f95958f4871a7971321a4709",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "b23b37717b13f311ebfc3e9ab2db9c4a82af4c4e549110e8afd16633ed82bdf2",
+          "objects": 1,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "radius_um": 3.375
+      }
+    },
+    {
+      "id": "s_bend",
+      "cases": {
+        "default": {
+          "geometry_sha256": "7dda32a9692644e3b8e70aceee1e4a3914629f32f15471ebeb5d951b436e9f44",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "529739ca87bb4c75d4f2fc2b5ef9f5956f35d9297cc9cb6f2d0907d348f05229",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "74099aa2b321c0d50607e3968b4e2fdbc16b7337f8277a02af57f40f3140561a",
+          "objects": 1,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    },
+    {
+      "id": "directional_coupler",
+      "cases": {
+        "default": {
+          "geometry_sha256": "d964327cf211a0db79f0646a26e7ba9e8b2527770f0a6529834ba0648f5cc05b",
+          "objects": 2,
+          "ports": 4
+        },
+        "edited": {
+          "geometry_sha256": "d0b4773cf7c4d60cee7b2bc2c0a5a2c88c11c116e8ac7121714cddbae1fd56e1",
+          "objects": 2,
+          "ports": 4
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "3578529178bcc508e3fc48528ec9731e1680ce5e45f1671a5ac11c6cd3cb32a9",
+          "objects": 2,
+          "ports": 4
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    },
+    {
+      "id": "y_branch",
+      "cases": {
+        "default": {
+          "geometry_sha256": "7814df4157a1783e48a76cd6297649a53a4aaf8688ee9b4cb4c8299f229d5729",
+          "objects": 3,
+          "ports": 3
+        },
+        "edited": {
+          "geometry_sha256": "91a8b175de1962ab3b3269aa06f12ecf5761d6c98de9300ba272a3b84380a931",
+          "objects": 3,
+          "ports": 3
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "890e84ed05d311fde50813f9905db8144715ffaa0b9c61b6c960f89ea08f7744",
+          "objects": 3,
+          "ports": 3
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 11.25
+      }
+    },
+    {
+      "id": "mmi_1x2",
+      "cases": {
+        "default": {
+          "geometry_sha256": "598b50ea26fe14f25a672297484b6a732bfbe4aecc47ac6d9fe4c990dae9f486",
+          "objects": 4,
+          "ports": 3
+        },
+        "edited": {
+          "geometry_sha256": "03867cf41f2bd1716993ded0c7e86b4e91b1ba9ce3a2d56f8c5b534acee02681",
+          "objects": 4,
+          "ports": 3
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "a62f464313ea019cec2867a16ea891200e5687c91a73b587440629fee0f93746",
+          "objects": 4,
+          "ports": 3
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 6.75
+      }
+    },
+    {
+      "id": "mmi_2x2",
+      "cases": {
+        "default": {
+          "geometry_sha256": "a139bf097925ac0274fdc774f1ea8d8ff608fec87f518079dc3155c263756f4a",
+          "objects": 5,
+          "ports": 4
+        },
+        "edited": {
+          "geometry_sha256": "21cbeee9217da31e5f902c7eeb5e4e9d0632f2f15f8e4d189dc8ff2f1c1caadf",
+          "objects": 5,
+          "ports": 4
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "e80e326ece97f2682f71dd6a07002eec768ab6d5f4dbe90992873ace86a903f2",
+          "objects": 5,
+          "ports": 4
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 6.75
+      }
+    },
+    {
+      "id": "crossing",
+      "cases": {
+        "default": {
+          "geometry_sha256": "9238df168468512a8653b610ad401a5c3c066a6792a66e71be64ad6c114e72d7",
+          "objects": 2,
+          "ports": 4
+        },
+        "edited": {
+          "geometry_sha256": "a9cda3ed3a179c1c1456f929cde2c2631526ff8ac5f5d9854359ab3319b5d399",
+          "objects": 2,
+          "ports": 4
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "c6679cbfaf16de2a5902eaf4f23c8ffe7793946a6954938f0e8566c08623a247",
+          "objects": 2,
+          "ports": 4
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    },
+    {
+      "id": "ring_bus",
+      "cases": {
+        "default": {
+          "geometry_sha256": "9e5ed0c54935c17c6e2c91e1d4633b10be31c30298cf75ba6cfd89662b842175",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "f29edd562567b27e23b36202a78ea8364bc9e5814c397973ebd216b6881e739e",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "57321a9723f67b1ac8b30606099fd6086ec7305156838841cbf3e24753b7acc2",
+          "objects": 2,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 11.25
+      }
+    },
+    {
+      "id": "ring_add_drop",
+      "cases": {
+        "default": {
+          "geometry_sha256": "fb535a9d8e3de754c69b9356f7bcc5f0d845d785906b22da95c7f8a123c31648",
+          "objects": 3,
+          "ports": 4
+        },
+        "edited": {
+          "geometry_sha256": "18be3dcffab0f2f53745e2cc3919f2635ed1481fd42ca60e7c2c188068e65697",
+          "objects": 3,
+          "ports": 4
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "c204928c7485354bab584144311655a03c3fd1ca7232e750d1125a30cdf7666d",
+          "objects": 3,
+          "ports": 4
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 11.25
+      }
+    },
+    {
+      "id": "racetrack",
+      "cases": {
+        "default": {
+          "geometry_sha256": "541f30c1355d043776a3a719bea3acb032298f2312067bcf0c115d3d7c12a21a",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "cad6260d4450b75038c0f9f841d8d694dc75d6fd7a5cadb273216589dbb49f11",
+          "objects": 2,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "7c65b15db92f74112969e6d6cd36eaf47f8cc01d04697a728f982635afc6f2fc",
+          "objects": 2,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 13.5
+      }
+    },
+    {
+      "id": "mzi",
+      "cases": {
+        "default": {
+          "geometry_sha256": "ea4028ade5858b2ec6aa5e1ea43077770d338319772dbe54f64dc9d6f06eedc1",
+          "objects": 4,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "7d33d6437038f60c112b52ef98ce6ce3ef3f2149ae5a685fafb6d07f0786fa6f",
+          "objects": 4,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "6979fec4a95f08c861fb6cbdc3dd072851fbc8a51e90135ee8b55f9019f97f48",
+          "objects": 4,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 18.0
+      }
+    },
+    {
+      "id": "bragg",
+      "cases": {
+        "default": {
+          "geometry_sha256": "fa272dc86b80b48d150085028276a5d03ecc3c9d44c79d46652feff12ab09699",
+          "objects": 17,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "5b5c96d5fd28699c01bb63e9b24313911d3bd792683a942ec00a75efe91bccd6",
+          "objects": 17,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "7f02f90e2a4daab617f0c032911e79cc31fd4eaf802bebb9287da712fce43af5",
+          "objects": 17,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "period_um": 0.45
+      }
+    },
+    {
+      "id": "grating_coupler",
+      "cases": {
+        "default": {
+          "geometry_sha256": "a7f1521d4acce7606deac186643fce1b09e75585cfa83b35bef7cb00bb2b7bb1",
+          "objects": 19,
+          "ports": 1
+        },
+        "edited": {
+          "geometry_sha256": "48e8e2cc1340eb3f9e7e68a02608a666261c84dab8504111f0edd2f9a2b217eb",
+          "objects": 19,
+          "ports": 1
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "de90bf79fb9710529f0fc094877c9a25102212d23159925f700b9ccf2d658441",
+          "objects": 19,
+          "ports": 1
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "period_um": 0.675
+      }
+    },
+    {
+      "id": "nanobeam_cavity",
+      "cases": {
+        "default": {
+          "geometry_sha256": "2c34edfe05dcda33d76b366f317791468acb157d691253dbedac95f990d59ffa",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "7fef07e3ed3b57930a11a1c96780a7fdb274eb87c2948c5cf5cb5bea3d5cc95f",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "bc2d386f73e8ed6c05555458a7360d7f8ceac2a598d587a15648dda682f22c42",
+          "objects": 1,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "period_um": 0.675
+      }
+    },
+    {
+      "id": "dbr_cavity",
+      "cases": {
+        "default": {
+          "geometry_sha256": "c875e31b2027663023b611fbc305c28ad678f50b859e9855b80134835dfa5678",
+          "objects": 25,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "73f0e2c846a23e75991ef62d2382b83e5efe5627d49f6ebd3703360ac2c90e7f",
+          "objects": 25,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "299005a19a58d1ad5e2c3e0edec150575c63b42675fc8de544e22ae9cedbec58",
+          "objects": 25,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "period_um": 0.45
+      }
+    },
+    {
+      "id": "serpentine",
+      "cases": {
+        "default": {
+          "geometry_sha256": "9766eb1499c92520dbc4e34eb7c398a7152b73a983496429bbabbb1e21f992e1",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited": {
+          "geometry_sha256": "d52cd342bb2368e62193597934d2bdfa9c6fce4dfd604d6ea8d814a2c7232fd3",
+          "objects": 1,
+          "ports": 2
+        },
+        "edited_transformed_material": {
+          "geometry_sha256": "8d0d579aabab6c1e94f7033a51df11de77fd147073f324569f994e348a9a6ff9",
+          "objects": 1,
+          "ports": 2
+        }
+      },
+      "edited_parameters": {
+        "height_um": 0.36,
+        "length_um": 9.0
+      }
+    }
+  ]
+}

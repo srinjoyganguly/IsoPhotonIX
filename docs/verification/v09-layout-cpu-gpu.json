@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "same-study-repeatability",
+  "generated_at": "2026-11-05T19:29:53.695678+00:00",
+  "reference_run_id": "9190e27164ab4ac891c67b6262176717",
+  "candidate_run_id": "e64c81d4cd5d4825aa6d532b928a016b",
+  "reference_target": "fdtdx / cpu",
+  "candidate_target": "fdtdx / gpu",
+  "components": {
+    "Ex": {
+      "relative_l2": 1.714575926412886e-06,
+      "max_abs_error": 4.470348358154297e-08,
+      "reference_peak_abs": 0.049769800156354904
+    },
+    "Ey": {
+      "relative_l2": 1.7934278356220884e-06,
+      "max_abs_error": 1.341104507446289e-07,
+      "reference_peak_abs": 0.10318031907081604
+    },
+    "Ez": {
+      "relative_l2": 2.352155603254114e-06,
+      "max_abs_error": 3.725290298461914e-08,
+      "reference_peak_abs": 0.05015396699309349
+    }
+  },
+  "overall_relative_l2": 1.8631605441324531e-06,
+  "epsilon_identical": true,
+  "coordinate_grids_identical": true,
+  "actual_time_fs": 35.03331322763222,
+  "commercial_agreement": "not_validated",
+  "notes": [
+    "Metrics describe differences between actual saved samples on identical grids at the same physical time.",
+    "Physical inputs, source conventions, numerical versions and material arrays were checked before comparing.",
+    "These are repeatability metrics. A small difference does not establish convergence or agreement with commercial software.",
+    "No arbitrary pass/fail threshold, phase fitting, amplitude normalization or resampling was applied."
+  ]
+}

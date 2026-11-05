@@ -1,0 +1,2013 @@
+{
+  "components": [
+    {
+      "id": "strip",
+      "name": "Strip waveguide",
+      "category": "routing",
+      "summary": "A finite rectangular dielectric guide.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "slot",
+      "name": "Slot waveguide",
+      "category": "routing",
+      "summary": "Two separated dielectric rails with an editable slot.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "width_um",
+          "label": "Rail width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.3
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "width_um": 0.3,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "rib",
+      "name": "Rib waveguide",
+      "category": "routing",
+      "summary": "A raised ridge over a continuous partial-etch slab.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        },
+        {
+          "key": "slab_width_um",
+          "label": "Slab width",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 10.0,
+          "step": 0.1,
+          "default": 2.5
+        },
+        {
+          "key": "slab_height_um",
+          "label": "Slab thickness",
+          "unit": "\u00b5m",
+          "min": 0.01,
+          "max": 1.0,
+          "step": 0.01,
+          "default": 0.09
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "width_um": 0.5,
+        "height_um": 0.22,
+        "slab_width_um": 2.5,
+        "slab_height_um": 0.09
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "taper",
+      "name": "Linear taper",
+      "category": "routing",
+      "summary": "A polygonal transition between two guide widths.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 6.0
+        },
+        {
+          "key": "input_width_um",
+          "label": "Input width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.4
+        },
+        {
+          "key": "output_width_um",
+          "label": "Output width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 5.0,
+          "step": 0.05,
+          "default": 1.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 6.0,
+        "input_width_um": 0.4,
+        "output_width_um": 1.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-taper-fields",
+      "eligible_studies": [
+        "layout-3d",
+        "taper-3d",
+        "taper-ports-3d"
+      ]
+    },
+    {
+      "id": "bend",
+      "name": "Circular bend",
+      "category": "routing",
+      "summary": "A sampled constant-width circular arc.",
+      "parameters": [
+        {
+          "key": "radius_um",
+          "label": "Centreline bend radius",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 30.0,
+          "step": 0.25,
+          "default": 3.0
+        },
+        {
+          "key": "angle_deg",
+          "label": "Turn angle",
+          "unit": "\u00b0",
+          "min": 10.0,
+          "max": 170.0,
+          "step": 5.0,
+          "default": 90.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "radius_um": 3.0,
+        "angle_deg": 90.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Circular arc, not an Euler bend; 48 angular intervals per arc."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "s_bend",
+      "name": "Cosine S-bend",
+      "category": "routing",
+      "summary": "Smooth endpoint tangents join laterally displaced ports.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 2.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "offset_um",
+          "label": "Lateral offset",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 12.0,
+          "step": 0.25,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "offset_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Centreline cosine path sampled at 64 intervals; no bend-loss guarantee."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "directional_coupler",
+      "name": "Directional coupler",
+      "category": "coupling",
+      "summary": "Two parallel guide sections with four named ends.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "width_um": 0.5,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Coupling ratio is not inferred from separation or length."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "y_branch",
+      "name": "Y branch",
+      "category": "coupling",
+      "summary": "One input connects to two symmetric curved branches.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 3.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 10.0
+        },
+        {
+          "key": "pitch_um",
+          "label": "Output centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 10.0,
+          "step": 0.2,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 10.0,
+        "pitch_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Same-material branch overlap defines the junction. No splitting-ratio claim."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "mmi_1x2",
+      "name": "1\u00d72 MMI splitter",
+      "category": "coupling",
+      "summary": "A multimode body with one input and two access tapers.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "MMI body length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 30.0,
+          "step": 0.5,
+          "default": 6.0
+        },
+        {
+          "key": "body_width_um",
+          "label": "MMI body width",
+          "unit": "\u00b5m",
+          "min": 0.5,
+          "max": 12.0,
+          "step": 0.1,
+          "default": 3.0
+        },
+        {
+          "key": "pitch_um",
+          "label": "Output centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 8.0,
+          "step": 0.1,
+          "default": 1.5
+        },
+        {
+          "key": "access_um",
+          "label": "Access taper length",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 8.0,
+          "step": 0.1,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 6.0,
+        "body_width_um": 3.0,
+        "pitch_um": 1.5,
+        "access_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "mmi_2x2",
+      "name": "2\u00d72 MMI coupler",
+      "category": "coupling",
+      "summary": "A multimode body with two inputs and two outputs.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "MMI body length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 30.0,
+          "step": 0.5,
+          "default": 6.0
+        },
+        {
+          "key": "body_width_um",
+          "label": "MMI body width",
+          "unit": "\u00b5m",
+          "min": 0.5,
+          "max": 12.0,
+          "step": 0.1,
+          "default": 3.0
+        },
+        {
+          "key": "pitch_um",
+          "label": "Port centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 8.0,
+          "step": 0.1,
+          "default": 1.5
+        },
+        {
+          "key": "access_um",
+          "label": "Access taper length",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 8.0,
+          "step": 0.1,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 6.0,
+        "body_width_um": 3.0,
+        "pitch_um": 1.5,
+        "access_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "crossing",
+      "name": "Tapered crossing",
+      "category": "coupling",
+      "summary": "Two orthogonal guides widen through their intersection.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 2.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "centre_width_um",
+          "label": "Central width",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 5.0,
+          "step": 0.1,
+          "default": 1.2
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "centre_width_um": 1.2,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Same-material overlap defines the crossing; no crosstalk or insertion-loss claim."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "ring_bus",
+      "name": "Ring and bus",
+      "category": "resonators",
+      "summary": "A ring alongside a straight access guide.",
+      "parameters": [
+        {
+          "key": "radius_um",
+          "label": "Centreline bend radius",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 30.0,
+          "step": 0.25,
+          "default": 2.0
+        },
+        {
+          "key": "length_um",
+          "label": "Bus length",
+          "unit": "\u00b5m",
+          "min": 2.0,
+          "max": 80.0,
+          "step": 0.5,
+          "default": 10.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "radius_um": 2.0,
+        "length_um": 10.0,
+        "width_um": 0.5,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "ring_add_drop",
+      "name": "Add/drop ring",
+      "category": "resonators",
+      "summary": "A ring between two independently named access buses.",
+      "parameters": [
+        {
+          "key": "radius_um",
+          "label": "Centreline bend radius",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 30.0,
+          "step": 0.25,
+          "default": 2.0
+        },
+        {
+          "key": "length_um",
+          "label": "Bus length",
+          "unit": "\u00b5m",
+          "min": 2.0,
+          "max": 80.0,
+          "step": 0.5,
+          "default": 10.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "radius_um": 2.0,
+        "length_um": 10.0,
+        "width_um": 0.5,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "racetrack",
+      "name": "Racetrack resonator",
+      "category": "resonators",
+      "summary": "A closed capsule-shaped guide and adjacent bus.",
+      "parameters": [
+        {
+          "key": "radius_um",
+          "label": "Centreline bend radius",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 30.0,
+          "step": 0.25,
+          "default": 2.0
+        },
+        {
+          "key": "straight_um",
+          "label": "Racetrack straight length",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 30.0,
+          "step": 0.1,
+          "default": 4.0
+        },
+        {
+          "key": "length_um",
+          "label": "Bus length",
+          "unit": "\u00b5m",
+          "min": 2.0,
+          "max": 100.0,
+          "step": 0.5,
+          "default": 12.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "radius_um": 2.0,
+        "straight_um": 4.0,
+        "length_um": 12.0,
+        "width_um": 0.5,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Curved boundaries use 32 intervals per semicircle."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "mzi",
+      "name": "Mach\u2013Zehnder layout",
+      "category": "interferometers",
+      "summary": "Symmetric split and merge paths form two interferometer arms.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "End-to-end length",
+          "unit": "\u00b5m",
+          "min": 4.0,
+          "max": 80.0,
+          "step": 0.5,
+          "default": 16.0
+        },
+        {
+          "key": "separation_um",
+          "label": "Arm centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 12.0,
+          "step": 0.1,
+          "default": 3.0
+        },
+        {
+          "key": "transition_um",
+          "label": "Branch transition length",
+          "unit": "\u00b5m",
+          "min": 0.5,
+          "max": 20.0,
+          "step": 0.1,
+          "default": 4.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 16.0,
+        "separation_um": 3.0,
+        "transition_um": 4.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Passive balanced layout only; no heater, electrical modulation or calibrated phase shift."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "bragg",
+      "name": "Waveguide Bragg grating",
+      "category": "periodic",
+      "summary": "A continuous guide with periodic width corrugations.",
+      "parameters": [
+        {
+          "key": "period_um",
+          "label": "Period",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.4
+        },
+        {
+          "key": "periods",
+          "label": "Number of periods",
+          "unit": "",
+          "min": 2,
+          "max": 64,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "key": "duty",
+          "label": "Duty cycle",
+          "unit": "",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "corrugation_um",
+          "label": "Side corrugation",
+          "unit": "\u00b5m",
+          "min": 0.01,
+          "max": 1.0,
+          "step": 0.02,
+          "default": 0.15
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "period_um": 0.4,
+        "periods": 16,
+        "duty": 0.5,
+        "corrugation_um": 0.15,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "No stop-band or reflectivity is inferred from the drawn period."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "grating_coupler",
+      "name": "Linear grating coupler",
+      "category": "periodic",
+      "summary": "An access taper feeds a finite, partially etched grating aperture.",
+      "parameters": [
+        {
+          "key": "period_um",
+          "label": "Period",
+          "unit": "\u00b5m",
+          "min": 0.15,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.6
+        },
+        {
+          "key": "periods",
+          "label": "Number of teeth",
+          "unit": "",
+          "min": 3,
+          "max": 64,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "key": "duty",
+          "label": "Duty cycle",
+          "unit": "",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "aperture_um",
+          "label": "Aperture width",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 20.0,
+          "step": 0.25,
+          "default": 4.0
+        },
+        {
+          "key": "taper_um",
+          "label": "Access taper length",
+          "unit": "\u00b5m",
+          "min": 0.5,
+          "max": 30.0,
+          "step": 0.1,
+          "default": 4.0
+        },
+        {
+          "key": "slab_height_um",
+          "label": "Residual slab thickness",
+          "unit": "\u00b5m",
+          "min": 0.01,
+          "max": 1.0,
+          "step": 0.01,
+          "default": 0.08
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "period_um": 0.6,
+        "periods": 16,
+        "duty": 0.5,
+        "aperture_um": 4.0,
+        "taper_um": 4.0,
+        "slab_height_um": 0.08,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "One geometric guided input; vertical radiation is not represented as a guided port. No fibre-coupling efficiency claim."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "nanobeam_cavity",
+      "name": "Photonic-crystal nanobeam cavity",
+      "category": "laser-foundations",
+      "summary": "Two hole arrays surround an unperforated defect region.",
+      "parameters": [
+        {
+          "key": "period_um",
+          "label": "Hole centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.15,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.6
+        },
+        {
+          "key": "mirror_periods",
+          "label": "Holes per mirror",
+          "unit": "",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "default": 8
+        },
+        {
+          "key": "hole_radius_um",
+          "label": "Hole radius",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 0.7,
+          "step": 0.01,
+          "default": 0.18
+        },
+        {
+          "key": "defect_um",
+          "label": "Central defect length",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 8.0,
+          "step": 0.1,
+          "default": 1.0
+        },
+        {
+          "key": "width_um",
+          "label": "Nanobeam width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 1.0
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "period_um": 0.6,
+        "mirror_periods": 8,
+        "hole_radius_um": 0.18,
+        "defect_um": 1.0,
+        "width_um": 1.0,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Through holes are actual polygon holes with 20 vertices each. A passive cavity, not a simulated laser."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "dbr_cavity",
+      "name": "Passive DBR cavity",
+      "category": "laser-foundations",
+      "summary": "Two corrugated reflector sections flank a plain guide spacer.",
+      "parameters": [
+        {
+          "key": "period_um",
+          "label": "Mirror period",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.4
+        },
+        {
+          "key": "mirror_periods",
+          "label": "Periods per reflector",
+          "unit": "",
+          "min": 2,
+          "max": 48,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "key": "duty",
+          "label": "Duty cycle",
+          "unit": "",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "corrugation_um",
+          "label": "Side corrugation",
+          "unit": "\u00b5m",
+          "min": 0.01,
+          "max": 1.0,
+          "step": 0.02,
+          "default": 0.15
+        },
+        {
+          "key": "spacer_um",
+          "label": "Plain cavity spacer",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 12.0,
+          "step": 0.1,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "period_um": 0.4,
+        "mirror_periods": 12,
+        "duty": 0.5,
+        "corrugation_um": 0.15,
+        "spacer_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Passive geometry only: no pumping, gain, threshold or light\u2013current prediction."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "serpentine",
+      "name": "Serpentine delay layout",
+      "category": "routing",
+      "summary": "Parallel straight segments are joined by alternating semicircular turns.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Straight segment length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 40.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "rows",
+          "label": "Number of straight rows",
+          "unit": "",
+          "min": 2,
+          "max": 8,
+          "step": 1,
+          "default": 4
+        },
+        {
+          "key": "pitch_um",
+          "label": "Row centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 10.0,
+          "step": 0.2,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "rows": 4,
+        "pitch_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "A geometric delay path; delay, dispersion and bend loss require a qualified simulation."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "euler_bend",
+      "name": "Euler bend",
+      "category": "routing",
+      "summary": "Two clothoids join a straight input to a turned output.",
+      "parameters": [
+        {
+          "key": "min_radius_um",
+          "label": "Minimum curvature radius",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 30.0,
+          "step": 0.1,
+          "default": 3.0
+        },
+        {
+          "key": "angle_deg",
+          "label": "Turn angle",
+          "unit": "\u00b0",
+          "min": 10.0,
+          "max": 150.0,
+          "step": 5.0,
+          "default": 90.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "min_radius_um": 3.0,
+        "angle_deg": 90.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "The radius sets the tightest curvature at the midpoint. Both ends have zero curvature."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "strip_slot_converter",
+      "name": "Strip-to-slot transition",
+      "category": "routing",
+      "summary": "A widening through-slot divides a strip into two finite rails.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 5.0
+        },
+        {
+          "key": "width_um",
+          "label": "Input strip width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "rail_um",
+          "label": "Output rail width",
+          "unit": "\u00b5m",
+          "min": 0.08,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.3
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "slot_start",
+          "label": "Slot onset along transition",
+          "unit": "fraction",
+          "min": 0.05,
+          "max": 0.85,
+          "step": 0.05,
+          "default": 0.3
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 5.0,
+        "width_um": 0.5,
+        "rail_um": 0.3,
+        "gap_um": 0.2,
+        "slot_start": 0.3,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "The drawn slot begins at a sharp tip. Fabrication bias and modal conversion require separate analysis."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "mmi_1x4",
+      "name": "1\u00d74 MMI splitter",
+      "category": "coupling",
+      "summary": "Four spaced access tapers connect one multimode body to output guides.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "MMI body length",
+          "unit": "\u00b5m",
+          "min": 2.0,
+          "max": 40.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "body_width_um",
+          "label": "MMI body width",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 15.0,
+          "step": 0.25,
+          "default": 6.0
+        },
+        {
+          "key": "pitch_um",
+          "label": "Output centre spacing",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 5.0,
+          "step": 0.1,
+          "default": 1.4
+        },
+        {
+          "key": "access_um",
+          "label": "Access taper length",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 8.0,
+          "step": 0.1,
+          "default": 2.0
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "body_width_um": 6.0,
+        "pitch_um": 1.4,
+        "access_um": 2.0,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "The four output ports are separated physically. Their powers and phases require a multimode study."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "fan_grating",
+      "name": "Apodized fan grating",
+      "category": "periodic",
+      "summary": "Concentric shallow-etch teeth vary in duty cycle across a circular fan.",
+      "parameters": [
+        {
+          "key": "focus_um",
+          "label": "First tooth region radius",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 30.0,
+          "step": 0.25,
+          "default": 6.0
+        },
+        {
+          "key": "fan_deg",
+          "label": "Full fan angle",
+          "unit": "\u00b0",
+          "min": 10.0,
+          "max": 90.0,
+          "step": 2.0,
+          "default": 40.0
+        },
+        {
+          "key": "period_um",
+          "label": "Radial period",
+          "unit": "\u00b5m",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.62
+        },
+        {
+          "key": "periods",
+          "label": "Number of teeth",
+          "unit": "",
+          "min": 3,
+          "max": 40,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "key": "first_duty",
+          "label": "First tooth duty cycle",
+          "unit": "",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05,
+          "default": 0.35
+        },
+        {
+          "key": "last_duty",
+          "label": "Last tooth duty cycle",
+          "unit": "",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05,
+          "default": 0.7
+        },
+        {
+          "key": "slab_height_um",
+          "label": "Residual slab thickness",
+          "unit": "\u00b5m",
+          "min": 0.01,
+          "max": 1.0,
+          "step": 0.01,
+          "default": 0.08
+        },
+        {
+          "key": "width_um",
+          "label": "Core width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "focus_um": 6.0,
+        "fan_deg": 40.0,
+        "period_um": 0.62,
+        "periods": 12,
+        "first_duty": 0.35,
+        "last_duty": 0.7,
+        "slab_height_um": 0.08,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "Teeth are circular sectors. A fibre tilt, fibre mode, elliptical phase fronts and coupling efficiency require a dedicated optical design."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "tapered_coupler",
+      "name": "Tapered two-guide coupler",
+      "category": "coupling",
+      "summary": "Two guides exchange widths along a coupling region with fixed edge separation.",
+      "parameters": [
+        {
+          "key": "length_um",
+          "label": "Length",
+          "unit": "\u00b5m",
+          "min": 1.0,
+          "max": 60.0,
+          "step": 0.5,
+          "default": 8.0
+        },
+        {
+          "key": "narrow_um",
+          "label": "Narrow guide width",
+          "unit": "\u00b5m",
+          "min": 0.08,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.3
+        },
+        {
+          "key": "wide_um",
+          "label": "Wide guide width",
+          "unit": "\u00b5m",
+          "min": 0.1,
+          "max": 4.0,
+          "step": 0.05,
+          "default": 0.8
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "length_um": 8.0,
+        "narrow_um": 0.3,
+        "wide_um": 0.8,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "The four access leads have constant width. Adiabaticity and transfer efficiency require mode-resolved measurements."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "phc_line_defect",
+      "name": "Photonic-crystal line defect",
+      "category": "periodic",
+      "summary": "A missing row through a triangular lattice forms a line defect between strip leads.",
+      "parameters": [
+        {
+          "key": "period_um",
+          "label": "Lattice constant",
+          "unit": "\u00b5m",
+          "min": 0.15,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.45
+        },
+        {
+          "key": "columns",
+          "label": "Holes per row",
+          "unit": "",
+          "min": 2,
+          "max": 16,
+          "step": 1,
+          "default": 6
+        },
+        {
+          "key": "row_pairs",
+          "label": "Pairs of hole rows",
+          "unit": "",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 2
+        },
+        {
+          "key": "hole_radius_um",
+          "label": "Hole radius",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 0.8,
+          "step": 0.01,
+          "default": 0.12
+        },
+        {
+          "key": "width_um",
+          "label": "Strip lead width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.45
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "period_um": 0.45,
+        "columns": 6,
+        "row_pairs": 2,
+        "hole_radius_um": 0.12,
+        "width_um": 0.45,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "The slab has a finite lattice with through holes. Bloch bands and transmission require separate studies."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "id": "pulley_ring",
+      "name": "Pulley-coupled ring",
+      "category": "resonators",
+      "summary": "A bus follows the ring over a user-selected wrap angle before leaving tangentially.",
+      "parameters": [
+        {
+          "key": "radius_um",
+          "label": "Centreline bend radius",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 30.0,
+          "step": 0.25,
+          "default": 3.0
+        },
+        {
+          "key": "width_um",
+          "label": "Ring width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.5
+        },
+        {
+          "key": "bus_width_um",
+          "label": "Bus width",
+          "unit": "\u00b5m",
+          "min": 0.05,
+          "max": 2.0,
+          "step": 0.05,
+          "default": 0.45
+        },
+        {
+          "key": "wrap_deg",
+          "label": "Bus wrap angle",
+          "unit": "\u00b0",
+          "min": 10.0,
+          "max": 150.0,
+          "step": 5.0,
+          "default": 70.0
+        },
+        {
+          "key": "lead_um",
+          "label": "Straight lead length",
+          "unit": "\u00b5m",
+          "min": 0.3,
+          "max": 12.0,
+          "step": 0.1,
+          "default": 2.0
+        },
+        {
+          "key": "gap_um",
+          "label": "Edge-to-edge gap",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 3.0,
+          "step": 0.05,
+          "default": 0.2
+        },
+        {
+          "key": "height_um",
+          "label": "Finite core height",
+          "unit": "\u00b5m",
+          "min": 0.02,
+          "max": 2.0,
+          "step": 0.02,
+          "default": 0.22
+        }
+      ],
+      "defaults": {
+        "radius_um": 3.0,
+        "width_um": 0.5,
+        "bus_width_um": 0.45,
+        "wrap_deg": 70.0,
+        "lead_um": 2.0,
+        "gap_um": 0.2,
+        "height_um": 0.22
+      },
+      "limitations": [
+        "Editable design geometry. No electromagnetic performance is supplied.",
+        "Named ports are geometric intent, not measured or solved eigenmodes.",
+        "The coupling arc has constant nominal radial clearance. No coupling coefficient or resonance is inferred."
+      ],
+      "simulation_support": "bounded-layout-fields",
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": "generic-core",
+      "name": "Generic dielectric \u00b7 n = 2",
+      "model": "constant-nk",
+      "reference_wavelength_um": 1.55,
+      "n": 2.0,
+      "k": 0.0,
+      "source": "Original workbench design preset.",
+      "notes": "Illustrative lossless constant index, not a measured material dataset."
+    },
+    {
+      "id": "air",
+      "name": "Air approximation \u00b7 n = 1",
+      "model": "constant-nk",
+      "reference_wavelength_um": 1.55,
+      "n": 1.0,
+      "k": 0.0,
+      "source": "Vacuum-like design approximation.",
+      "notes": "Constant n = 1; atmospheric dispersion and absorption are omitted."
+    },
+    {
+      "id": "silica-reference",
+      "name": "Silica approximation \u00b7 n = 1.44",
+      "model": "constant-nk",
+      "reference_wavelength_um": 1.55,
+      "n": 1.44,
+      "k": 0.0,
+      "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/",
+      "notes": "Constant cladding index used in a public telecom strip benchmark; not a broadband silica model."
+    },
+    {
+      "id": "silicon-nitride-reference",
+      "name": "Silicon nitride approximation \u00b7 n = 2",
+      "model": "constant-nk",
+      "reference_wavelength_um": 1.55,
+      "n": 2.0,
+      "k": 0.0,
+      "source": "Original nominal design placeholder; material data: https://meep.readthedocs.io/en/latest/Materials/",
+      "notes": "Illustrative nominal index only. Deposition, wavelength and temperature dependence require measured data."
+    },
+    {
+      "id": "silicon-reference",
+      "name": "Silicon approximation \u00b7 n = 3.48",
+      "model": "constant-nk",
+      "reference_wavelength_um": 1.55,
+      "n": 3.48,
+      "k": 0.0,
+      "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/",
+      "notes": "Constant core index used in a public 1.55 \u00b5m strip benchmark; no dispersion or absorption model."
+    },
+    {
+      "id": "iii-v-reference",
+      "name": "III\u2013V reference \u00b7 n = 3.2",
+      "model": "constant-nk",
+      "reference_wavelength_um": 1.55,
+      "n": 3.2,
+      "k": 0.0,
+      "source": "Original nominal geometry placeholder; not semiconductor material data.",
+      "notes": "No alloy composition, gain, quantum wells or carrier physics. A passive geometric placeholder, not a laser material."
+    }
+  ]
+}

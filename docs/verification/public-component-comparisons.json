@@ -1,0 +1,1079 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-05T19:34:17.842335+00:00",
+  "solver": "MPB, fixed-frequency Maxwell eigenproblem",
+  "versions": {
+    "mpb": "1.12.0",
+    "meep": "1.35.0",
+    "python": "3.11.18",
+    "numpy": "2.4.6"
+  },
+  "cases": [
+    {
+      "id": "lumerical-coupler",
+      "title": "Uniform SOI directional coupler",
+      "vendor": "Ansys Lumerical MODE",
+      "source_url": "https://optics.ansys.com/hc/en-us/articles/360042304694-Evanescent-waveguide-couplers",
+      "source_kind": "Published FDE supermode indices and transfer length calculated from their splitting.",
+      "project_url": "https://optics.ansys.com/hc/en-us/article_attachments/360056406114",
+      "project_sha256": "9985f1670a106394f38b0a9a53e59a24bd0b3d56629168744c9b9d0e4e551b33",
+      "physics": {
+        "wavelength_um": 1.55,
+        "catalog_family": "directional_coupler",
+        "core_index": 3.5,
+        "substrate_index": 1.5,
+        "upper_index": 1.0,
+        "guide_width_um": 0.5,
+        "height_um": 0.2,
+        "edge_gap_um": 0.05
+      },
+      "limitations": [
+        "Uniform cross-section, real isotropic media. The finite coupler entrance, bends, radiation and output ports are excluded.",
+        "The source FDE uses a local 2 nm gap mesh. MPB uses Fourier modes in a periodic transverse supercell. The enlarged cell also changes the material sampling.",
+        "The source reports splitting with more precision than its rounded two individual indices. Each quantity uses its own published reference.",
+        "Only the FDE 50 nm-gap case is compared. The source also discusses distinct adjusted-gap varFDTD runs and an EME propagation run."
+      ],
+      "metrics": [
+        {
+          "key": "even_neff",
+          "label": "Even supermode index",
+          "unit": "1",
+          "reference": 2.378022,
+          "computed": 2.377821363734238,
+          "absolute_error": 0.00020063626576227733,
+          "relative_error": 8.437107216092926e-05,
+          "last_mesh_change": 0.00061068719636026,
+          "larger_domain_change": 2.008373733985991e-08
+        },
+        {
+          "key": "odd_neff",
+          "label": "Odd supermode index",
+          "unit": "1",
+          "reference": 2.317864,
+          "computed": 2.31803102810903,
+          "absolute_error": 0.00016702810903002074,
+          "relative_error": 7.206122060225309e-05,
+          "last_mesh_change": 0.0005755775578282218,
+          "larger_domain_change": 1.5924256189236985e-05
+        },
+        {
+          "key": "delta_neff",
+          "label": "Supermode splitting",
+          "unit": "1",
+          "reference": 0.0601584,
+          "computed": 0.059790335625207636,
+          "absolute_error": 0.0003680643747923651,
+          "relative_error": 0.006118254055832021,
+          "last_mesh_change": 3.510963853203819e-05,
+          "larger_domain_change": 1.5904172451897125e-05
+        },
+        {
+          "key": "transfer_length_um",
+          "label": "Full-transfer length",
+          "unit": "\u00b5m",
+          "reference": 12.8827,
+          "computed": 12.961961024237162,
+          "absolute_error": 0.0792610242371623,
+          "relative_error": 0.006152516493992898,
+          "last_mesh_change": 0.007615899006536253,
+          "larger_domain_change": 0.0034487866874517437
+        }
+      ],
+      "refinement": [
+        {
+          "resolution_cells_per_um": 40,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "even_neff": 2.367617473506227,
+            "odd_neff": 2.3061311143348457,
+            "delta_neff": 0.061486359171381455,
+            "transfer_length_um": 12.604421703354332
+          },
+          "modes": {
+            "even": {
+              "neff": 2.367617473506227,
+              "mode_area_um2": 0.22116728865547564,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.815347022860205,
+              "fixed_frequency_relative_residual": 2.7994029316857907e-11,
+              "dominant_field_lateral_mirror_overlap": 0.9994150174625421,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                120,
+                120
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-even-r40-span3x3-f1.npz",
+              "field_sha256": "fb69b6199d669b128390528cd6bb30105f0340ac7dde9db5e8b84eb84b13cd9a"
+            },
+            "odd": {
+              "neff": 2.3061311143348457,
+              "mode_area_um2": 0.3363825573248231,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.6900691557386722,
+              "fixed_frequency_relative_residual": 5.6787907709576755e-15,
+              "dominant_field_lateral_mirror_overlap": -0.9998499159788359,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                120,
+                120
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-odd-r40-span3x3-f1.npz",
+              "field_sha256": "14f7bf628b507ce59c7f119479bef91d8f2b9bb24b22825eccca0bd940d0a6d4"
+            }
+          }
+        },
+        {
+          "resolution_cells_per_um": 80,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "even_neff": 2.375214461387887,
+            "odd_neff": 2.3152201574256495,
+            "delta_neff": 0.059994303962237705,
+            "transfer_length_um": 12.917893013440231
+          },
+          "modes": {
+            "even": {
+              "neff": 2.375214461387887,
+              "mode_area_um2": 0.19852436215090993,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.8151448369030646,
+              "fixed_frequency_relative_residual": 1.3766765505351941e-15,
+              "dominant_field_lateral_mirror_overlap": 0.9998431854908506,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                240,
+                240
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-even-r80-span3x3-f1.npz",
+              "field_sha256": "8d04c5fc1d1a5e7b062e6373c56aaa36edf629c7a42c74a22b5bc5e5aa691426"
+            },
+            "odd": {
+              "neff": 2.3152201574256495,
+              "mode_area_um2": 0.33503150494235956,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.6895046686460922,
+              "fixed_frequency_relative_residual": 8.896772207833692e-14,
+              "dominant_field_lateral_mirror_overlap": -0.9999577754158252,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                240,
+                240
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-odd-r80-span3x3-f1.npz",
+              "field_sha256": "0106b5930c8e4eba7048031080206ddd3c127b77b3572d6f2e69edf492fdc45b"
+            }
+          }
+        },
+        {
+          "resolution_cells_per_um": 160,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "even_neff": 2.3772106765378775,
+            "odd_neff": 2.317455450551202,
+            "delta_neff": 0.0597552259866756,
+            "transfer_length_um": 12.969576923243698
+          },
+          "modes": {
+            "even": {
+              "neff": 2.3772106765378775,
+              "mode_area_um2": 0.18642842063872478,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.8159429195200378,
+              "fixed_frequency_relative_residual": 1.9555002062077167e-11,
+              "dominant_field_lateral_mirror_overlap": 0.9999505923909574,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                480,
+                480
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-even-r160-span3x3-f1.npz",
+              "field_sha256": "590d660792c9da3d271dd8ccd3d913d082399fbfa1d18c522275daa54819bdd4"
+            },
+            "odd": {
+              "neff": 2.317455450551202,
+              "mode_area_um2": 0.3345096657126821,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.6894536075138746,
+              "fixed_frequency_relative_residual": 1.0307865672132266e-13,
+              "dominant_field_lateral_mirror_overlap": -0.9999863616324314,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                480,
+                480
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-odd-r160-span3x3-f1.npz",
+              "field_sha256": "c79206ece1ea8ff690caedbf54536e093e9b41b306fc1d861c52bfdb627cadca"
+            }
+          }
+        },
+        {
+          "resolution_cells_per_um": 256,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "even_neff": 2.377821363734238,
+            "odd_neff": 2.31803102810903,
+            "delta_neff": 0.059790335625207636,
+            "transfer_length_um": 12.961961024237162
+          },
+          "modes": {
+            "even": {
+              "neff": 2.377821363734238,
+              "mode_area_um2": 0.17851160545257047,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.8168844672862128,
+              "fixed_frequency_relative_residual": 1.7208456881689926e-15,
+              "dominant_field_lateral_mirror_overlap": 0.9999999999999999,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                768,
+                768
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-even-r256-span3x3-f1.npz",
+              "field_sha256": "79a1114e9273b97264ac8d110c0ecfd6e7681a3917b9eda1c3bda38285a328a5"
+            },
+            "odd": {
+              "neff": 2.31803102810903,
+              "mode_area_um2": 0.3343164613261724,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.6891934103665663,
+              "fixed_frequency_relative_residual": 1.2045919817182948e-15,
+              "dominant_field_lateral_mirror_overlap": -0.999999893776863,
+              "sampled_epsilon": {
+                "core": 12.250000000000002,
+                "upper": 1.0,
+                "lower": 2.25,
+                "centre_gap": 1.0
+              },
+              "grid_shape_yz": [
+                768,
+                768
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "lumerical-coupler-odd-r256-span3x3-f1.npz",
+              "field_sha256": "edfaa8e6d36df1fd383e1376515a267782fdc07008028fd65eedbd76c6e8017a"
+            }
+          }
+        }
+      ],
+      "domain_check": {
+        "resolution_cells_per_um": 256,
+        "transverse_span_um": [
+          4.0,
+          4.0
+        ],
+        "quantities": {
+          "even_neff": 2.377821383817975,
+          "odd_neff": 2.3180469523652194,
+          "delta_neff": 0.05977443145275574,
+          "transfer_length_um": 12.965409810924614
+        },
+        "modes": {
+          "even": {
+            "neff": 2.377821383817975,
+            "mode_area_um2": 0.17851189329841552,
+            "expected_electric_component": "Ey",
+            "component_l2_fraction": 0.8168844113437347,
+            "fixed_frequency_relative_residual": 5.162537064506978e-16,
+            "dominant_field_lateral_mirror_overlap": 1.0000000000000002,
+            "sampled_epsilon": {
+              "core": 12.250000000000002,
+              "upper": 1.0,
+              "lower": 2.25,
+              "centre_gap": 1.0
+            },
+            "grid_shape_yz": [
+              1024,
+              1024
+            ],
+            "frequency_ratio": 1.0,
+            "field_file": "lumerical-coupler-even-r256-span4x4-f1.npz",
+            "field_sha256": "35bdcbc209038dbb87ddc3a701c5900c0c94c906d837cec1c30dd4d11767ae5a"
+          },
+          "odd": {
+            "neff": 2.3180469523652194,
+            "mode_area_um2": 0.3342584336268377,
+            "expected_electric_component": "Ey",
+            "component_l2_fraction": 0.6892485632006686,
+            "fixed_frequency_relative_residual": 8.139600105039335e-14,
+            "dominant_field_lateral_mirror_overlap": -0.9999999185096001,
+            "sampled_epsilon": {
+              "core": 12.250000000000002,
+              "upper": 1.0,
+              "lower": 2.25,
+              "centre_gap": 1.0
+            },
+            "grid_shape_yz": [
+              1024,
+              1024
+            ],
+            "frequency_ratio": 1.0,
+            "field_file": "lumerical-coupler-odd-r256-span4x4-f1.npz",
+            "field_sha256": "25054e4245ae6e0f7d176eddd590a157c3b33f17697ae935687ea361086a8200"
+          }
+        }
+      }
+    },
+    {
+      "id": "tidy3d-strip-plugin",
+      "title": "Dispersive strip, quasi-TE and quasi-TM",
+      "vendor": "Tidy3D waveguide plugin",
+      "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/WaveguidePluginDemonstration/",
+      "source_kind": "Six scalar outputs printed by the waveguide plugin example.",
+      "physics": {
+        "wavelength_um": 1.55,
+        "catalog_family": "strip",
+        "guide_width_um": 0.5,
+        "height_um": 0.22,
+        "media": [
+          "cSi/Li1993_293K",
+          "SiO2/Horiba"
+        ],
+        "sampled_with": "Tidy3D 2.11.2 material evaluation only",
+        "eps_samples": {
+          "0.995": {
+            "core_real": 12.071312067444534,
+            "clad_real": 2.124948290829251,
+            "clad_imaginary": 0.0006245144056152194
+          },
+          "1.0": {
+            "core_real": 12.075663669334666,
+            "clad_real": 2.1249983698346497,
+            "clad_imaginary": 0.0006277085542436616
+          },
+          "1.005": {
+            "core_real": 12.080040531703059,
+            "clad_real": 2.1250487043548034,
+            "clad_imaginary": 0.0006309035508102008
+          }
+        },
+        "group_frequency_step_fraction": 0.005
+      },
+      "limitations": [
+        "MPB uses Re(\u03b5) at each frequency. Horiba silica has a small nonzero imaginary part, retained in the input record; attenuation is outside this real-valued comparison.",
+        "Effective area uses the full electric intensity integral on the MPB uniform grid. Discrete field sampling and finite solver windows differ.",
+        "Published values belong to the notebook\u2019s mode solver and its default grid. The reference does not specify the backend version or export corresponding field arrays."
+      ],
+      "metrics": [
+        {
+          "key": "te_neff",
+          "label": "Quasi-TE effective index",
+          "unit": "1",
+          "reference": 2.44624476,
+          "computed": 2.4473946684464205,
+          "absolute_error": 0.0011499084464206,
+          "relative_error": 0.0004700708879272571,
+          "last_mesh_change": 1.5751005966180287e-07,
+          "larger_domain_change": 1.0647945636321765e-08
+        },
+        {
+          "key": "tm_neff",
+          "label": "Quasi-TM effective index",
+          "unit": "1",
+          "reference": 1.7895686,
+          "computed": 1.7845481227918245,
+          "absolute_error": 0.0050204772081754445,
+          "relative_error": 0.0028054119904514668,
+          "last_mesh_change": 0.00014643299495475937,
+          "larger_domain_change": 6.4463330828878895e-06
+        },
+        {
+          "key": "te_group",
+          "label": "Quasi-TE group index",
+          "unit": "1",
+          "reference": 4.17353874,
+          "computed": 4.178054297889275,
+          "absolute_error": 0.004515557889275712,
+          "relative_error": 0.0010819494368167078,
+          "last_mesh_change": 0.00021171130707298147,
+          "larger_domain_change": 4.7194186336696475e-08
+        },
+        {
+          "key": "tm_group",
+          "label": "Quasi-TM group index",
+          "unit": "1",
+          "reference": 3.73989668,
+          "computed": 3.7116809657826,
+          "absolute_error": 0.028215714217400212,
+          "relative_error": 0.007544517036604394,
+          "last_mesh_change": 0.0008117391390198847,
+          "larger_domain_change": 0.00029622658753236664
+        },
+        {
+          "key": "te_area_um2",
+          "label": "Quasi-TE mode area",
+          "unit": "\u00b5m\u00b2",
+          "reference": 0.19145485,
+          "computed": 0.1904687740039043,
+          "absolute_error": 0.0009860759960957088,
+          "relative_error": 0.005150436231287475,
+          "last_mesh_change": 2.462542452938421e-05,
+          "larger_domain_change": 1.54015718512035e-08
+        },
+        {
+          "key": "tm_area_um2",
+          "label": "Quasi-TM mode area",
+          "unit": "\u00b5m\u00b2",
+          "reference": 0.35608204,
+          "computed": 0.34249554834876283,
+          "absolute_error": 0.013586491651237154,
+          "relative_error": 0.038155509475392674,
+          "last_mesh_change": 4.726632474050252e-05,
+          "larger_domain_change": 4.379739558302287e-05
+        }
+      ],
+      "refinement": [
+        {
+          "resolution_cells_per_um": 40,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "te_neff": 2.4433036295189146,
+            "te_group": 4.175501578260913,
+            "te_area_um2": 0.19040106329955686,
+            "tm_neff": 1.7826899412374142,
+            "tm_group": 3.6950074930358734,
+            "tm_area_um2": 0.3532352910871766
+          },
+          "modes": {
+            "te": [
+              {
+                "neff": 2.4345973165191874,
+                "mode_area_um2": 0.19276539465868808,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7513848630156363,
+                "fixed_frequency_relative_residual": 1.0895806869813722e-14,
+                "grid_shape_yz": [
+                  120,
+                  120
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 2.4433036295189146,
+                "mode_area_um2": 0.19040106329955686,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7535573645069552,
+                "fixed_frequency_relative_residual": 1.602107335685332e-13,
+                "grid_shape_yz": [
+                  120,
+                  120
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-te-r40-span3x3-f1.npz",
+                "field_sha256": "518baa33a8e199d7da4d249f2a2817395caa346983c8a076c8563b6a8b1fb2d1"
+              },
+              {
+                "neff": 2.4519192960066074,
+                "mode_area_um2": 0.18809317233740572,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7557202943823228,
+                "fixed_frequency_relative_residual": 2.3287066028953536e-14,
+                "grid_shape_yz": [
+                  120,
+                  120
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ],
+            "tm": [
+              {
+                "neff": 1.7731869602818,
+                "mode_area_um2": 0.3596569131378818,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6640159178693945,
+                "fixed_frequency_relative_residual": 2.9634035036025493e-10,
+                "grid_shape_yz": [
+                  120,
+                  120
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 1.7826899412374142,
+                "mode_area_um2": 0.3532352910871766,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.66016713024643,
+                "fixed_frequency_relative_residual": 3.269606807521086e-15,
+                "grid_shape_yz": [
+                  120,
+                  120
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-tm-r40-span3x3-f1.npz",
+                "field_sha256": "54e83d6248bb454dfaafa70780f97f89159719e9acf5fb9a95f9b511ee952239"
+              },
+              {
+                "neff": 1.7923101357997846,
+                "mode_area_um2": 0.34701359989715796,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6563777036808343,
+                "fixed_frequency_relative_residual": 1.7122842668348186e-16,
+                "grid_shape_yz": [
+                  120,
+                  120
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ]
+          }
+        },
+        {
+          "resolution_cells_per_um": 80,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "te_neff": 2.4454494130791224,
+            "te_group": 4.175499100446952,
+            "te_area_um2": 0.1906962936353527,
+            "tm_neff": 1.7832818419382155,
+            "tm_group": 3.7003254124777163,
+            "tm_area_um2": 0.35247282978050715
+          },
+          "modes": {
+            "te": [
+              {
+                "neff": 2.4367538605912338,
+                "mode_area_um2": 0.19303896790383956,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7512794667855194,
+                "fixed_frequency_relative_residual": 3.631935623271241e-14,
+                "grid_shape_yz": [
+                  240,
+                  240
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 2.4454494130791224,
+                "mode_area_um2": 0.1906962936353527,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7534404818317112,
+                "fixed_frequency_relative_residual": 1.7208456881689927e-16,
+                "grid_shape_yz": [
+                  240,
+                  240
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-te-r80-span3x3-f1.npz",
+                "field_sha256": "4b163be3741d6d2f239d5baa588d0b9e8afc0f8ceb071c89b566823bce79c6c6"
+              },
+              {
+                "neff": 2.454054357464912,
+                "mode_area_um2": 0.18841299450775592,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7555914498940894,
+                "fixed_frequency_relative_residual": 8.561421334174094e-16,
+                "grid_shape_yz": [
+                  240,
+                  240
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ],
+            "tm": [
+              {
+                "neff": 1.773755400627788,
+                "mode_area_um2": 0.3590200313105483,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6646687491713257,
+                "fixed_frequency_relative_residual": 8.353451933523853e-14,
+                "grid_shape_yz": [
+                  240,
+                  240
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 1.7832818419382155,
+                "mode_area_um2": 0.35247282978050715,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.660859596165221,
+                "fixed_frequency_relative_residual": 2.0035806347351583e-12,
+                "grid_shape_yz": [
+                  240,
+                  240
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-tm-r80-span3x3-f1.npz",
+                "field_sha256": "6feb6d9eea18779859c9addae5a50b726b15fd653e0fae764326b52ec580e1d1"
+              },
+              {
+                "neff": 1.792925836333183,
+                "mode_area_um2": 0.3461924159326697,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6571400114022207,
+                "fixed_frequency_relative_residual": 5.732385268509606e-12,
+                "grid_shape_yz": [
+                  240,
+                  240
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ]
+          }
+        },
+        {
+          "resolution_cells_per_um": 160,
+          "transverse_span_um": [
+            3.0,
+            3.0
+          ],
+          "quantities": {
+            "te_neff": 2.44739482595648,
+            "te_group": 4.178266009196348,
+            "te_area_um2": 0.19049339942843369,
+            "tm_neff": 1.7846945557867793,
+            "tm_group": 3.71249270492162,
+            "tm_area_um2": 0.34244828202402233
+          },
+          "modes": {
+            "te": [
+              {
+                "neff": 2.4386950810634307,
+                "mode_area_um2": 0.19281318236098005,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7512907232837195,
+                "fixed_frequency_relative_residual": 2.4039954839747735e-14,
+                "grid_shape_yz": [
+                  480,
+                  480
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 2.44739482595648,
+                "mode_area_um2": 0.19049339942843369,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7534496039643568,
+                "fixed_frequency_relative_residual": 1.874000954416033e-13,
+                "grid_shape_yz": [
+                  480,
+                  480
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-te-r160-span3x3-f1.npz",
+                "field_sha256": "ed9ba667814baa8a149b472deda80d5504ff2d5ed1bd10001f4868facc3b8d4f"
+              },
+              {
+                "neff": 2.4560037928958294,
+                "mode_area_um2": 0.18823191469572137,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7555988984554147,
+                "fixed_frequency_relative_residual": 5.136852800504456e-16,
+                "grid_shape_yz": [
+                  480,
+                  480
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ],
+            "tm": [
+              {
+                "neff": 1.7751145345055053,
+                "mode_area_um2": 0.34880182649383845,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6654800946759646,
+                "fixed_frequency_relative_residual": 1.4046943396290008e-12,
+                "grid_shape_yz": [
+                  480,
+                  480
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 1.7846945557867793,
+                "mode_area_um2": 0.34244828202402233,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6616939232219031,
+                "fixed_frequency_relative_residual": 1.945416050475046e-12,
+                "grid_shape_yz": [
+                  480,
+                  480
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-tm-r160-span3x3-f1.npz",
+                "field_sha256": "43af3b96f9b7a78a756aea5fdc3a0811e0af0e85835f5f48cbb50648b9cb021b"
+              },
+              {
+                "neff": 1.7943925159968537,
+                "mode_area_um2": 0.33636193754185423,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.658002789155205,
+                "fixed_frequency_relative_residual": 2.134191110182918e-12,
+                "grid_shape_yz": [
+                  480,
+                  480
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ]
+          }
+        },
+        {
+          "resolution_cells_per_um": 256,
+          "transverse_span_um": [
+            3,
+            3
+          ],
+          "quantities": {
+            "te_neff": 2.4473946684464205,
+            "te_area_um2": 0.1904687740039043,
+            "te_group": 4.178054297889275,
+            "tm_neff": 1.7845481227918245,
+            "tm_area_um2": 0.34249554834876283,
+            "tm_group": 3.7116809657826
+          },
+          "modes": {
+            "te": [
+              {
+                "neff": 2.4386959843328957,
+                "mode_area_um2": 0.19278223182873974,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7514058564694,
+                "fixed_frequency_relative_residual": 1.9231963871798188e-13,
+                "dominant_field_lateral_mirror_overlap": 0.9999999999999999,
+                "sampled_epsilon": {
+                  "core": 12.071312067444534,
+                  "upper": 2.124948290829251,
+                  "lower": 2.124948290829251
+                },
+                "grid_shape_yz": [
+                  768,
+                  768
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 2.4473946684464205,
+                "mode_area_um2": 0.1904687740039043,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7535621008157823,
+                "fixed_frequency_relative_residual": 3.310907104037142e-13,
+                "dominant_field_lateral_mirror_overlap": 0.9999999999999997,
+                "sampled_epsilon": {
+                  "core": 12.075663669334666,
+                  "upper": 2.1249983698346493,
+                  "lower": 2.1249983698346493
+                },
+                "grid_shape_yz": [
+                  768,
+                  768
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-te-r256-span3x3-f1.npz",
+                "field_sha256": "d8deaec9ebd55ad5e6cb116723676dd0648dbee1b934048ba79cf2cb224cf81b"
+              },
+              {
+                "neff": 2.4560025806273242,
+                "mode_area_um2": 0.18821345867506897,
+                "expected_electric_component": "Ey",
+                "component_l2_fraction": 0.7557085782396751,
+                "fixed_frequency_relative_residual": 5.47930965387142e-15,
+                "dominant_field_lateral_mirror_overlap": 0.9999999999999997,
+                "sampled_epsilon": {
+                  "core": 12.08004053170306,
+                  "upper": 2.125048704354803,
+                  "lower": 2.125048704354803
+                },
+                "grid_shape_yz": [
+                  768,
+                  768
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ],
+            "tm": [
+              {
+                "neff": 1.774971414024693,
+                "mode_area_um2": 0.34884061152015994,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6651519320263501,
+                "fixed_frequency_relative_residual": 2.09268671626581e-12,
+                "dominant_field_lateral_mirror_overlap": 1.0000000000000002,
+                "sampled_epsilon": {
+                  "core": 12.071312067444534,
+                  "upper": 2.124948290829251,
+                  "lower": 2.124948290829251
+                },
+                "grid_shape_yz": [
+                  768,
+                  768
+                ],
+                "frequency_ratio": 0.995,
+                "field_file": null,
+                "field_sha256": null
+              },
+              {
+                "neff": 1.7845481227918245,
+                "mode_area_um2": 0.34249554834876283,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6613581976174938,
+                "fixed_frequency_relative_residual": 2.0636381492522562e-12,
+                "dominant_field_lateral_mirror_overlap": 1.0,
+                "sampled_epsilon": {
+                  "core": 12.075663669334666,
+                  "upper": 2.1249983698346493,
+                  "lower": 2.1249983698346493
+                },
+                "grid_shape_yz": [
+                  768,
+                  768
+                ],
+                "frequency_ratio": 1.0,
+                "field_file": "tidy3d-strip-plugin-tm-r256-span3x3-f1.npz",
+                "field_sha256": "567b8d8ed4f764cbb49444e508b723b0df87da2e920901ba2e7784931660cf9f"
+              },
+              {
+                "neff": 1.7942427424546008,
+                "mode_area_um2": 0.3364177209740758,
+                "expected_electric_component": "Ez",
+                "component_l2_fraction": 0.6576597485797847,
+                "fixed_frequency_relative_residual": 1.9251212012023867e-12,
+                "dominant_field_lateral_mirror_overlap": 1.0,
+                "sampled_epsilon": {
+                  "core": 12.08004053170306,
+                  "upper": 2.125048704354803,
+                  "lower": 2.125048704354803
+                },
+                "grid_shape_yz": [
+                  768,
+                  768
+                ],
+                "frequency_ratio": 1.005,
+                "field_file": null,
+                "field_sha256": null
+              }
+            ]
+          }
+        }
+      ],
+      "domain_check": {
+        "resolution_cells_per_um": 256,
+        "transverse_span_um": [
+          4,
+          4
+        ],
+        "quantities": {
+          "te_neff": 2.447394679094366,
+          "te_area_um2": 0.19046875860233245,
+          "te_group": 4.178054250695089,
+          "tm_neff": 1.7845416764587416,
+          "tm_area_um2": 0.3424517509531798,
+          "tm_group": 3.7119771923701324
+        },
+        "modes": {
+          "te": [
+            {
+              "neff": 2.438695995270702,
+              "mode_area_um2": 0.19278219805058797,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.7514058230191841,
+              "fixed_frequency_relative_residual": 2.1168996204209516e-13,
+              "dominant_field_lateral_mirror_overlap": 1.0,
+              "sampled_epsilon": {
+                "core": 12.071312067444534,
+                "upper": 2.124948290829251,
+                "lower": 2.124948290829251
+              },
+              "grid_shape_yz": [
+                1024,
+                1024
+              ],
+              "frequency_ratio": 0.995,
+              "field_file": null,
+              "field_sha256": null
+            },
+            {
+              "neff": 2.447394679094366,
+              "mode_area_um2": 0.19046875860233245,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.7535620662360917,
+              "fixed_frequency_relative_residual": 3.052780250811793e-13,
+              "dominant_field_lateral_mirror_overlap": 1.0,
+              "sampled_epsilon": {
+                "core": 12.075663669334666,
+                "upper": 2.1249983698346493,
+                "lower": 2.1249983698346493
+              },
+              "grid_shape_yz": [
+                1024,
+                1024
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "tidy3d-strip-plugin-te-r256-span4x4-f1.npz",
+              "field_sha256": "ac261dc2f9b82bf90e79df9825350ef7d59cf29aac349ac7787a8717fbad3c62"
+            },
+            {
+              "neff": 2.456002590986709,
+              "mode_area_um2": 0.18821345715403381,
+              "expected_electric_component": "Ey",
+              "component_l2_fraction": 0.7557085598353789,
+              "fixed_frequency_relative_residual": 2.0718639628701307e-14,
+              "dominant_field_lateral_mirror_overlap": 1.0000000000000002,
+              "sampled_epsilon": {
+                "core": 12.08004053170306,
+                "upper": 2.125048704354803,
+                "lower": 2.125048704354803
+              },
+              "grid_shape_yz": [
+                1024,
+                1024
+              ],
+              "frequency_ratio": 1.005,
+              "field_file": null,
+              "field_sha256": null
+            }
+          ],
+          "tm": [
+            {
+              "neff": 1.7749632874724026,
+              "mode_area_um2": 0.34878410628271134,
+              "expected_electric_component": "Ez",
+              "component_l2_fraction": 0.6651010797260858,
+              "fixed_frequency_relative_residual": 2.0247176353160196e-12,
+              "dominant_field_lateral_mirror_overlap": 1.0,
+              "sampled_epsilon": {
+                "core": 12.071312067444534,
+                "upper": 2.124948290829251,
+                "lower": 2.124948290829251
+              },
+              "grid_shape_yz": [
+                1024,
+                1024
+              ],
+              "frequency_ratio": 0.995,
+              "field_file": null,
+              "field_sha256": null
+            },
+            {
+              "neff": 1.7845416764587416,
+              "mode_area_um2": 0.3424517509531798,
+              "expected_electric_component": "Ez",
+              "component_l2_fraction": 0.6613174382571682,
+              "fixed_frequency_relative_residual": 2.106487206887664e-12,
+              "dominant_field_lateral_mirror_overlap": 1.0,
+              "sampled_epsilon": {
+                "core": 12.075663669334666,
+                "upper": 2.1249983698346493,
+                "lower": 2.1249983698346493
+              },
+              "grid_shape_yz": [
+                1024,
+                1024
+              ],
+              "frequency_ratio": 1.0,
+              "field_file": "tidy3d-strip-plugin-tm-r256-span4x4-f1.npz",
+              "field_sha256": "1cb52ffef3284be5df341dc159f8e0d1b2ef95052120d97897bd1b5214981d13"
+            },
+            {
+              "neff": 1.7942376426315165,
+              "mode_area_um2": 0.3363838440670017,
+              "expected_electric_component": "Ez",
+              "component_l2_fraction": 0.6576271738134893,
+              "fixed_frequency_relative_residual": 1.769988246627152e-12,
+              "dominant_field_lateral_mirror_overlap": 1.0,
+              "sampled_epsilon": {
+                "core": 12.08004053170306,
+                "upper": 2.125048704354803,
+                "lower": 2.125048704354803
+              },
+              "grid_shape_yz": [
+                1024,
+                1024
+              ],
+              "frequency_ratio": 1.005,
+              "field_file": null,
+              "field_sha256": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,427 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T19:55:06.168Z",
+  "browser": "156.0.8078.81",
+  "opened": [
+    {
+      "family": "strip",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "slot",
+      "objects": 2,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "rib",
+      "objects": 2,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "taper",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d",
+        "taper-3d",
+        "taper-ports-3d"
+      ]
+    },
+    {
+      "family": "bend",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "s_bend",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "directional_coupler",
+      "objects": 2,
+      "ports": 4,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "y_branch",
+      "objects": 3,
+      "ports": 3,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "mmi_1x2",
+      "objects": 4,
+      "ports": 3,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "mmi_2x2",
+      "objects": 5,
+      "ports": 4,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "crossing",
+      "objects": 2,
+      "ports": 4,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "ring_bus",
+      "objects": 2,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "ring_add_drop",
+      "objects": 3,
+      "ports": 4,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "racetrack",
+      "objects": 2,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "mzi",
+      "objects": 4,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "bragg",
+      "objects": 17,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "grating_coupler",
+      "objects": 19,
+      "ports": 1,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "nanobeam_cavity",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "dbr_cavity",
+      "objects": 25,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "serpentine",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "euler_bend",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "strip_slot_converter",
+      "objects": 1,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "mmi_1x4",
+      "objects": 6,
+      "ports": 5,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "fan_grating",
+      "objects": 15,
+      "ports": 1,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "tapered_coupler",
+      "objects": 6,
+      "ports": 4,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "phc_line_defect",
+      "objects": 3,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    },
+    {
+      "family": "pulley_ring",
+      "objects": 2,
+      "ports": 2,
+      "eligible_studies": [
+        "layout-3d"
+      ]
+    }
+  ],
+  "checks": [
+    "Search and category filtering cover all 27 current component families.",
+    "Every catalog family displayed its actual API study capabilities, generated through the API, persisted exact v2 geometry and rendered actual solids and layout ports.",
+    "Fan-grating tested preset returned the exact measured finite scene, mesh, duration and source; target cleared. Undo restored the original library geometry.",
+    "Component regeneration preserves instance identity; invalid parameters/domain placement retain the scene; explicit domain fit and atomic manual detach/undo work.",
+    "Real polygon hole editing, invalid-hole retention, keyboard vertex movement and pointer dragging update validated geometry.",
+    "Local CSV n/k samples, reference index and provenance preserved; no extrapolation; current solvers reject unqualified geometry/materials before execution.",
+    "Geometry JSON import/export/reload is exact; actual Python/notebook design bundle downloaded."
+  ],
+  "new_solver_jobs": 0,
+  "browser_errors": [],
+  "material_sample_scope": "Synthetic user input tests material storage/interpolation only; no optical material or electromagnetic accuracy claim.",
+  "geometry": {
+    "schema": "photonics-workbench-geometry",
+    "schema_version": 2,
+    "units": "um",
+    "name": "Linear taper",
+    "mode": "draft-3d",
+    "domain": {
+      "x": 8.5,
+      "y": 17.7,
+      "z": 2.22
+    },
+    "objects": [
+      {
+        "id": "component-0003d137e5644b60-1",
+        "name": "Linear width transition",
+        "visible": true,
+        "kind": "polygon",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "size": {
+          "x": 1,
+          "y": 0.5,
+          "z": 0.22
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 2,
+        "vertices": [
+          {
+            "x": -4,
+            "y": -0.2
+          },
+          {
+            "x": 4,
+            "y": -0.6
+          },
+          {
+            "x": 4,
+            "y": 0.6
+          },
+          {
+            "x": -4,
+            "y": 0.2
+          }
+        ],
+        "holes": [],
+        "material_id": "generic-core",
+        "component_id": "component-ee32ae1c8af04cb8"
+      },
+      {
+        "id": "component-0ce3e18b23ce46f7-1",
+        "name": "Linear width transition",
+        "visible": true,
+        "kind": "polygon",
+        "position": {
+          "x": 0,
+          "y": 8,
+          "z": 0
+        },
+        "size": {
+          "x": 1,
+          "y": 0.5,
+          "z": 0.22
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 2.1,
+        "vertices": [
+          {
+            "x": -4.01,
+            "y": -0.2
+          },
+          {
+            "x": 3.8,
+            "y": -0.76
+          },
+          {
+            "x": 4,
+            "y": 0.6
+          },
+          {
+            "x": -4,
+            "y": 0.2
+          }
+        ],
+        "holes": [
+          [
+            {
+              "x": -0.15,
+              "y": 0.15
+            },
+            {
+              "x": 0.15,
+              "y": 0.15
+            },
+            {
+              "x": 0.15,
+              "y": -0.15
+            },
+            {
+              "x": -0.15,
+              "y": -0.15
+            }
+          ]
+        ],
+        "material_id": "material-fd20c344-a13d-490e-9aa5-dc6a31ec5f91"
+      }
+    ],
+    "materials": [
+      {
+        "id": "generic-core",
+        "name": "Generic dielectric · n = 2",
+        "reference_wavelength_um": 1.55,
+        "source": "Original workbench design preset.",
+        "notes": "Illustrative lossless constant index, not a measured material dataset.",
+        "model": "constant-nk",
+        "n": 2,
+        "k": 0
+      },
+      {
+        "id": "material-fd20c344-a13d-490e-9aa5-dc6a31ec5f91",
+        "name": "Browser tabulated material",
+        "reference_wavelength_um": 1.55,
+        "source": "User-supplied browser test samples; not measured material evidence",
+        "notes": "",
+        "model": "tabulated-nk",
+        "wavelength_um": [
+          1.45,
+          1.55,
+          1.65
+        ],
+        "n": [
+          2,
+          2.1,
+          2.2
+        ],
+        "k": [
+          0.01,
+          0.02,
+          0.03
+        ]
+      }
+    ],
+    "components": [
+      {
+        "id": "component-ee32ae1c8af04cb8",
+        "family": "taper",
+        "generator_version": 1,
+        "parameters": {
+          "length_um": 8,
+          "input_width_um": 0.4,
+          "output_width_um": 1.2,
+          "height_um": 0.22
+        },
+        "object_ids": [
+          "component-0003d137e5644b60-1"
+        ],
+        "placement": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "rotation_deg": 0
+        },
+        "material_id": "generic-core",
+        "ports": [
+          {
+            "name": "in",
+            "x": -4,
+            "y": 0,
+            "z": 0,
+            "angle_deg": 180,
+            "width_um": 0.4
+          },
+          {
+            "name": "out",
+            "x": 4,
+            "y": 0,
+            "z": 0,
+            "angle_deg": 0,
+            "width_um": 1.2
+          }
+        ]
+      }
+    ]
+  }
+}

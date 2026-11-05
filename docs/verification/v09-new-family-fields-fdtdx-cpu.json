@@ -1,0 +1,199 @@
+{
+  "checked_at": "2026-11-05T19:45:29.794954+00:00",
+  "passed": true,
+  "solver": "fdtdx",
+  "device": "cpu",
+  "scope": "Native finite point-current field/material tests of one stated configuration per catalog family. No measured port efficiencies or calibrated device performance.",
+  "cases": [
+    {
+      "family": "euler_bend",
+      "overrides": {
+        "min_radius_um": 1.2
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.2,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 554778,
+      "field_peak_ey_outside_0_6_um": 0.0032839756458997726,
+      "field_shape_zyx": [
+        41,
+        110,
+        118
+      ],
+      "field_sha256": "7cd846e2b7bf7847d5594edf7037dbf4b3d2c790ea22859e098d2001561c495d",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "d5084a58a7f12ba6a414bc32f6e1db71188826e51684209d0ba199106f82b849",
+      "native_material_check": {
+        "cells": 554778,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    {
+      "family": "strip_slot_converter",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.3,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 259896,
+      "field_peak_ey_outside_0_6_um": 0.0031920610927045345,
+      "field_shape_zyx": [
+        41,
+        51,
+        118
+      ],
+      "field_sha256": "8b20fd551e6ea9f4dabd1c0024a7dc7c29f83e4404972485802e3bda7373369d",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "ec2468f49e77575a76a43641429487954c59020e312d6dfadd5cc78f5fd5c16a",
+      "native_material_check": {
+        "cells": 259896,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    {
+      "family": "mmi_1x4",
+      "overrides": {},
+      "resolution": 14,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -5.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 881932,
+      "field_peak_ey_outside_0_6_um": 0.003850623033940792,
+      "field_shape_zyx": [
+        36,
+        117,
+        201
+      ],
+      "field_sha256": "11fd97816c01d7fd0df495634973e42ade36d9fb816a6f5c7b302700726a0ca3",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "af30b0731080e0dc951cba6d640ba98e3b34c319c29a776dad84c87d575481c4",
+      "native_material_check": {
+        "cells": 881932,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    {
+      "family": "fan_grating",
+      "overrides": {
+        "periods": 4,
+        "focus_um": 2.0,
+        "fan_deg": 30.0,
+        "slab_height_um": 0.14,
+        "height_um": 0.28
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.13301270189221942,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 594776,
+      "field_peak_ey_outside_0_6_um": 0.003349900944158435,
+      "field_shape_zyx": [
+        42,
+        75,
+        181
+      ],
+      "field_sha256": "6c3cbb6186f05dce20f04cffc76f1bf4535c78882da7dfa33a60733afa191705",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "417424a6ebfab1eb2370c39618298bfd9a937378ff61ed60d0036fda4361bcf4",
+      "native_material_check": {
+        "cells": 594776,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    {
+      "family": "tapered_coupler",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -0.5,
+        "z": 0
+      },
+      "cells": 568344,
+      "field_peak_ey_outside_0_6_um": 0.003831516019999981,
+      "field_shape_zyx": [
+        41,
+        67,
+        198
+      ],
+      "field_sha256": "0fe32966c1f7872d442392a45911040553c247ef73edb57d9ba7c63f00ddbe36",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "af03a97e07c68581790f501061b1e3cfe3b0386989f575f334c6191c1ca15260",
+      "native_material_check": {
+        "cells": 568344,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    {
+      "family": "phc_line_defect",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.2625,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 356832,
+      "field_peak_ey_outside_0_6_um": 0.0027005672454833984,
+      "field_shape_zyx": [
+        41,
+        71,
+        117
+      ],
+      "field_sha256": "044d97535d4a6fb3011a73ba6774b3f1593dbe0b6a0dc6b36a2f3ff68999c566",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "033771142b99ca08f86e3744b986f543f5228fe820ab3fe172ecf8c99b485b22",
+      "native_material_check": {
+        "cells": 356832,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    {
+      "family": "pulley_ring",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.58236708331028,
+        "y": -1.9779461773301623,
+        "z": 0
+      },
+      "cells": 1122744,
+      "field_peak_ey_outside_0_6_um": 0.003167505841702223,
+      "field_shape_zyx": [
+        41,
+        163,
+        162
+      ],
+      "field_sha256": "3740917743a3ed4a88b9c8b6cab999052ea24ba86b0fde008aa5ffb7d7fd7436",
+      "actual_device": "cpu:0",
+      "compiled_material_sha256": "227499735547c6c40fb8e090bcb94845c94606dcf3cf2c3162b0013b335a2585",
+      "native_material_check": {
+        "cells": 1122744,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    }
+  ]
+}

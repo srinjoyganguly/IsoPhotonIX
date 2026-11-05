@@ -105,3 +105,12 @@ The first application wheel packages the existing service and compiled interface
 with an explicit file allowlist. The managed Meep/MPB profile uses the existing
 official conda-forge artifact lock. Native numerical checks run before the
 installed application switches to the newly provisioned interpreter.
+
+The v0.9 work began on 5 November 2026 from clean commit `eb7b402`. It adds
+seven first-party geometry generators, an XY drawing workspace, finite passive
+layout simulation, and independently normalized two-ended taper measurements.
+The [commercial example review](VENDOR_COMPONENT_COVERAGE.md) records the
+public sources and gaps. The [new comparison cases](COMPONENT_REFERENCE_CHECKS.md)
+preserve published targets, local calculations, mesh and domain changes, and
+remaining differences. No commercial project files, private screenshots or
+vendor material databases are distributed. Screenshots show the running app.

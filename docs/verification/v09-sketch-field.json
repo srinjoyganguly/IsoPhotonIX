@@ -1,0 +1,209 @@
+{
+  "passed": true,
+  "scope": "Real Meep field solve on the exported drawing, with geometry kept as exported. The wavelength and resolution were explicitly selected to satisfy the cell limit.",
+  "matches_browser_json": true,
+  "geometry": {
+    "schema": "photonics-workbench-geometry",
+    "schema_version": 2,
+    "units": "um",
+    "name": "Ring and bus waveguide",
+    "mode": "draft-3d",
+    "domain": {
+      "x": 12,
+      "y": 8,
+      "z": 2.5
+    },
+    "objects": [
+      {
+        "id": "substrate",
+        "name": "Substrate",
+        "visible": true,
+        "kind": "box",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -0.56
+        },
+        "size": {
+          "x": 12,
+          "y": 8,
+          "z": 0.9
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 1.44
+      },
+      {
+        "id": "ring",
+        "name": "Ring core",
+        "visible": true,
+        "kind": "ring",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "size": {
+          "x": 1,
+          "y": 0.5,
+          "z": 0.22
+        },
+        "radius": 1.6,
+        "inner_radius": 1.1,
+        "rotation_deg": 0,
+        "refractive_index": 3.45
+      },
+      {
+        "id": "bus",
+        "name": "Bus waveguide",
+        "visible": true,
+        "kind": "box",
+        "position": {
+          "x": 0,
+          "y": -2.05,
+          "z": 0
+        },
+        "size": {
+          "x": 10,
+          "y": 0.5,
+          "z": 0.22
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 3.45
+      },
+      {
+        "id": "object-c6b73850-f54e-401f-9527-f49dcb19d00e",
+        "name": "Routed guide",
+        "visible": true,
+        "kind": "polygon",
+        "position": {
+          "x": -1,
+          "y": 0.25,
+          "z": 0.1
+        },
+        "size": {
+          "x": 5,
+          "y": 2.5,
+          "z": 0.3
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 0,
+        "refractive_index": 3.45,
+        "vertices": [
+          {
+            "x": -2.5,
+            "y": -1.25
+          },
+          {
+            "x": -0.25,
+            "y": -1.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.75
+          },
+          {
+            "x": 2.5,
+            "y": 0.75
+          },
+          {
+            "x": 2.5,
+            "y": 1.25
+          },
+          {
+            "x": -0.75,
+            "y": 1.25
+          },
+          {
+            "x": -0.75,
+            "y": -0.75
+          },
+          {
+            "x": -2.5,
+            "y": -0.75
+          }
+        ],
+        "holes": []
+      },
+      {
+        "id": "object-45176f40-e9a6-4d4f-81a6-28052a791380",
+        "name": "Tapered island",
+        "visible": true,
+        "kind": "polygon",
+        "position": {
+          "x": 2.0625,
+          "y": -0.125,
+          "z": 0.1
+        },
+        "size": {
+          "x": 1.875,
+          "y": 1.75,
+          "z": 0.3
+        },
+        "radius": 1,
+        "inner_radius": 0.6,
+        "rotation_deg": 30,
+        "refractive_index": 3.45,
+        "vertices": [
+          {
+            "x": -1.0414230484541327,
+            "y": -0.5650000000000002
+          },
+          {
+            "x": 0.9375,
+            "y": -0.875
+          },
+          {
+            "x": 0.6875,
+            "y": 0.875
+          },
+          {
+            "x": -0.5625,
+            "y": 0.625
+          }
+        ],
+        "holes": []
+      }
+    ],
+    "materials": [],
+    "components": []
+  },
+  "wavelength_um": 3.0,
+  "resolution": 12,
+  "material_grid_check": {
+    "bulk_voxels": 1036924,
+    "maximum_bulk_error": 0.0,
+    "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+  },
+  "shape": [
+    52,
+    124,
+    172
+  ],
+  "source": {
+    "type": "Ey point current, ramped sinusoid",
+    "requested_um": {
+      "x": -1.0,
+      "y": 0.25,
+      "z": 0.1
+    },
+    "position_um": {
+      "x": -1.0,
+      "y": 0.2916666666666667,
+      "z": 0.08333333333333333
+    },
+    "wavelength_um": 3.0,
+    "startup_periods": 4
+  },
+  "solver": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "field_peak": 0.8174302577972412,
+  "array_sha256": "d34e045b61f46550c249f71586b3d1007d053be4c8e6ef1da476f31b4aa4b035"
+}

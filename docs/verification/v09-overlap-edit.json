@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "exercise": "Regenerate a component below a different overlapping material using the frozen exported Python helper. Preserve applied optical precedence.",
+  "script_exact_geometry": true,
+  "notebook_exact_geometry": true,
+  "export_sha256": "6a9e3d092e02bdf25e6de7dfc7e7815a462a0bd1f266b4e3b84eb3d03981ea11",
+  "material_grid_before": "2607f6ed1b8060c689e443723a0c6fa56602158a897a7778b108d823badb4e95",
+  "material_grid_after": "2607f6ed1b8060c689e443723a0c6fa56602158a897a7778b108d823badb4e95"
+}

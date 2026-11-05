@@ -1,0 +1,113 @@
+{
+  "version": "0.9.0a1",
+  "checked_at_utc": "2026-11-05T20:13:16.887692+00:00",
+  "application_tests": {
+    "collected": 165,
+    "passed": 159,
+    "skipped_native_environment_checks": 6,
+    "frontend_passed": 21,
+    "typescript_vite_build": "passed"
+  },
+  "library": {
+    "legacy_families": 20,
+    "legacy_geometry_comparisons": 60,
+    "meep_families_with_measured_fields": 27,
+    "new_families_measured_fdtdx_cpu_and_cuda": [
+      "euler_bend",
+      "strip_slot_converter",
+      "mmi_1x4",
+      "fan_grating",
+      "tapered_coupler",
+      "phc_line_defect",
+      "pulley_ring"
+    ],
+    "max_new_family_fdtdx_cpu_gpu_field_relative_l2": 2.806170412032497e-06,
+    "cpu_gpu_geometry_and_coordinates_exact": true
+  },
+  "exports": {
+    "catalog_geometry_executions": 56,
+    "custom_sketch_script_and_notebook": true,
+    "finite_layout_replays": 6,
+    "finite_layout_all_arrays_byte_exact": true,
+    "taper_modal_replays": 6,
+    "taper_all_pointwise_passed": true,
+    "taper_all_complex_s_arrays_byte_exact": true,
+    "taper_all_arrays_byte_exact": false,
+    "taper_gpu_energy_variation": "On GPU, notebook energy reductions differed by at most 1.53e-5 absolute; relative L2 below 6.4e-8. This variation passed the same pointwise bounds; S, modes and raw phasors remained exact. All original comparison thresholds were retained."
+  },
+  "taper_modal": {
+    "fdtdx_cpu_gpu_complex_s_relative_l2": 4.2252244233516024e-08,
+    "meep_fdtdx_S21": {
+      "max_abs_complex_difference": 0.10196534825750353,
+      "max_abs_modal_power_difference": 0.001046462703919282,
+      "max_abs_principal_phase_difference_rad": 0.10201602144797324
+    },
+    "scope": "Default finite linear taper with matched straight reference solves, two guided ports and five spectral samples. Weak reflection and phase are mesh sensitive."
+  },
+  "commercial_examples": {
+    "local_solver": "MPB, fixed-frequency Maxwell eigenproblem",
+    "cases": [
+      {
+        "id": "lumerical-coupler",
+        "published_source": "https://optics.ansys.com/hc/en-us/articles/360042304694-Evanescent-waveguide-couplers",
+        "compared_observables": 4
+      },
+      {
+        "id": "tidy3d-strip-plugin",
+        "published_source": "https://www.flexcompute.com/tidy3d/examples/notebooks/WaveguidePluginDemonstration/",
+        "compared_observables": 6
+      }
+    ],
+    "largest_relative_difference": {
+      "quantity": "Quasi-TM mode area",
+      "relative_error": 0.038155509475392674,
+      "computed": 0.34249554834876283,
+      "reference": 0.35608204,
+      "unit": "\u00b5m\u00b2"
+    }
+  },
+  "wheel": {
+    "wheel": "photonics_workbench-0.9.0a1-py3-none-any.whl",
+    "wheel_sha256": "ed36808180bd614840fd2bd962a146fe4288f9dd632affd9c056066484552794",
+    "wheel_bytes": 517829,
+    "installed_from_offline_wheelhouse": true,
+    "installed_gpu_phc": {
+      "actual_device": "cuda:0",
+      "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "field_sha256": "34e1d61b3fb7c2c35241e6a784b5f7a05bc4a916f0f43841526af79dfd2d59fe",
+      "matches_reference_field_bytes": true,
+      "matches_reference_material_grid": true
+    }
+  },
+  "coverage_limits": [
+    "Finite-layout field runs verify geometry, material placement and propagation under local point-current excitation. Device-specific efficiencies, coupling, Q and lasing need suitable calibrated excitation and observables.",
+    "The two public comparisons measure ten scalar mode/coupling observables. The 27-family catalog has broader geometry and field coverage than external reference coverage.",
+    "The finite-layout field study supports constant, real isotropic refractive indices between 1 and 5. Active carrier and lasing physics are outside the qualified models."
+  ],
+  "evidence": [
+    "v09-legacy-library-audit.json",
+    "v09-library-browser.json",
+    "v09-component-catalog.json",
+    "v09-automatic-field-model.json",
+    "v09-family-fields.json",
+    "v09-new-family-fields-fdtdx-cpu.json",
+    "v09-new-family-fields-fdtdx-gpu.json",
+    "v09-sketch-browser.json",
+    "v09-sketch-export.json",
+    "v09-sketch-field.json",
+    "v09-overlap-edit.json",
+    "v09-library-exports.json",
+    "v09-layout-exports.json",
+    "v09-layout-cpu-gpu.json",
+    "v09-taper-port-exports.json",
+    "v09-taper-ports-comparison.json",
+    "v09-meep-taper-ports.json",
+    "fdtdx-taper-ports.json",
+    "v09-meep-taper-replay-investigation.json",
+    "v09-taper-ports-browser-meep-cpu.json",
+    "v09-taper-ports-browser-meep-cpu-initial.json",
+    "public-component-comparisons.json",
+    "tidy3d-local-plugin-check.json",
+    "v09-wheel-install.json"
+  ]
+}

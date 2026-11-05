@@ -9,31 +9,34 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**v0.8 preview.** Open **3D design → Photonic component library**, choose
-**Linear taper → Open as new design**, and inspect its finite-height fields
-on Meep CPU or FDTDX CPU/NVIDIA. The simulation uses the saved taper contour,
-adds matched straight access guides through the absorbing boundaries, and
-exports the actual field and material grids. The taper notebook and Python
-script rerun the same local solver. [Taper guide and validation](docs/TAPER_FIELDS.md).
+**v0.9 preview.** Open **3D design** to draw a physical polygon or route in the
+XY sketch, drag components into place, or browse **27 parametric component
+families**. The seven additions cover Euler bends, strip-to-slot transitions,
+1×4 MMIs, fan gratings, tapered couplers, photonic-crystal line defects and
+pulley rings. [Component catalog](docs/COMPONENT_LIBRARY.md) · [XY sketch and field guide](docs/LAYOUT_FIELDS.md).
 
-The local preview wheel bundles the web interface and Python service. On
-Linux/WSL2 with Python 3.11, install the wheel with pip, run
-`photonics-workbench setup meep` to provision the locked Meep/MPB environment
-using Conda, and launch `photonics-workbench web`. FDTDX uses an installed
-solver interpreter selected with `FDTDX_PYTHON`.
-[Installation and packaging](docs/PACKAGING.md).
+A finite-layout study runs eligible passive scenes on Meep CPU or FDTDX
+CPU/NVIDIA. You choose an Ey dipole position and inspect the calculated
+electric-field and dielectric grids. Every catalog family has a recorded
+finite-field Meep run. The taper also supports a matched-lead field
+study and separate guided modal measurements. [Taper fields](docs/TAPER_FIELDS.md)
+· [Taper ports](docs/TAPER_PORTS.md).
 
-The library contains **20 parametric families** with placement and editing,
-custom polygon extrusions with holes, and reusable constant or tabulated n/k
-material records. The centered, single, lossless linear taper has a qualified
-field study. The other families support design and geometry export.
-[Component guide](docs/COMPONENT_LIBRARY.md) · [Component and laser roadmap](docs/COMPONENT_ROADMAP.md).
+The public evidence panel compares local calculations with ten published
+observables from Lumerical MODE and Tidy3D examples. It includes mesh and
+domain sensitivities and the differences that persist. [Reference checks](docs/COMPONENT_REFERENCE_CHECKS.md)
+· [Commercial example coverage](docs/VENDOR_COMPONENT_COVERAGE.md).
+
+The local wheel bundles the web interface and Python service. On Linux/WSL2
+with Python 3.11, install the wheel with pip, use `photonics-workbench setup meep`
+to provision Meep/MPB through Conda, and launch `photonics-workbench web`.
+FDTDX uses an installed solver interpreter selected with `FDTDX_PYTHON`.
+[Installation](docs/PACKAGING.md).
 
 Choose **Open runnable 3D waveguide** to run a finite-height core with an optional
 substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and
 material slices in XY/XZ/YZ, then export the exact study and numerical volume.
-Those verified studies retain their existing bounded geometry contracts;
-new library documents are not automatically executable. **2D simulation** retains the
+Select a field or port study to validate the geometry, material and grid for that model. **2D simulation** retains the
 earlier slab workflow. [3D simulation guide](docs/3D_SIMULATION.md).
 [Numerical validation and comparison limits](docs/VALIDATION.md).
 [3D workspace guide](docs/3D_WORKSPACE.md) · [Product roadmap](docs/ROADMAP.md) ·
@@ -328,10 +331,8 @@ cavity layouts contain no pumping, gain, carrier dynamics or laser prediction.
 The [laser roadmap](docs/COMPONENT_ROADMAP.md) separates cold-cavity validation,
 gain benchmarks and semiconductor/electrical/thermal modeling.
 
-The executable 3D field study
-currently supports only one centred, unrotated rectangular guide spanning the
-domain along x, plus an optional substrate flush with the core bottom. General
-solids, bends, rings and couplers are not yet executable. In the original 3D
+The original rectangular 3D field study accepts one centred, unrotated guide spanning the
+domain along x, plus an optional substrate flush with the core bottom. The separate finite-layout study accepts bounded passive solids, bends, rings and couplers. In the original 3D
 field study, the source is a fixed
 finite Ey excitation with a four-period startup; no eigenmode normalization,
 S-parameters, flux analysis, or 3D time animation is provided. Material indices

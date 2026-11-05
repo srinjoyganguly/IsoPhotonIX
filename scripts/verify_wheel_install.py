@@ -49,6 +49,11 @@ def main():
     command([python, '-m', 'pip', 'install', '--no-index', '--find-links', args.wheelhouse.resolve(), wheel], 'install.log')
     command([python, '-m', 'pip', 'check'], 'dependency-check.log')
     command([cli, 'doctor', '--json'], 'doctor.json')
+    command([cli,'compare-examples','--case','lumerical-coupler','--resolutions','24','32',
+             '--output',target/'component-comparison'],'benchmark-cli.log')
+    comparison_output = json.loads((target/'component-comparison/report.json').read_text())
+    assert comparison_output['cases'][0]['id'] == 'lumerical-coupler'
+    assert len(comparison_output['cases'][0]['metrics']) == 4
     capabilities = json.loads((target / 'doctor.json').read_text())
     assert any(t['solver'] == 'meep' and t['device'] == 'cpu' and t['available'] for t in capabilities['targets'])
     with socket.socket() as sock:
@@ -95,13 +100,15 @@ def main():
             assert all(name.startswith('photonics_workbench/') or '.dist-info/' in name for name in wheel_names)
             assert not any(set(name.split('/')) & {'.local', 'runs', '.git', '.env', 'node_modules', '__pycache__'} for name in wheel_names)
         assert get('/api/benchmarks')['status'] == 'available'
-        assert len(get('/api/library')['components']) == 20
-        config = get('/api/taper/example')
-        config['geometry'] = get('/api/library/build', {'component_id': 'taper', 'parameters': {
-            'length_um': 3., 'height_um': .3, 'input_width_um': .5, 'output_width_um': 1.15}})['geometry']
-        config.update(resolution=16, duration_fs=40.)
-        assert get('/api/taper/validate', config)['valid']
-        job = get('/api/taper/jobs', config)
+        assert len(get('/api/library')['components']) == 27
+        comparisons = get('/api/component-benchmarks')
+        assert len(comparisons['cases']) == 2 and len(comparisons['report_sha256']) == 64
+        assert sum(len(case['metrics']) for case in comparisons['cases']) == 10
+        port_study = get('/api/taper-ports/example')
+        assert get('/api/taper-ports/validate', port_study)['layout']['width_in'] != get('/api/taper-ports/validate', port_study)['layout']['width_out']
+        config = get('/api/layout/example?family=phc_line_defect')
+        assert get('/api/layout/validate',config)['valid']
+        job = get('/api/layout/jobs',config)
         jid = job['id']
         for _ in range(350):
             job = get(f'/api/jobs/{jid}')
@@ -142,7 +149,7 @@ def main():
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
               'installed_from_offline_wheelhouse': True, 'pip_check': True, 'doctor_meep_ready': True,
-              'served_frontend_assets': assets, 'catalog_families': 20, 'benchmark_data': True,
+              'served_frontend_assets': assets, 'catalog_families': 27, 'benchmark_data': True,
               'job_id': jid, 'actual_device': job['result']['actual_device'], 'field_shape_zyx': volume['shape'],
               'state_separate_from_package': True, 'exclusive_store': True, 'saved_run_after_restart': True,
               'cli_run_all_arrays_exact': True, 'standalone_python_all_arrays_exact': True,

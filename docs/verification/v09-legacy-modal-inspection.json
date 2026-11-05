@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T19:58:13.669Z",
+  "run_id": "8c27feb4ea9b4f2e8901dbea075eedff",
+  "config": {
+    "schema_version": 4,
+    "study_type": "waveguide-ports-3d",
+    "geometry": {
+      "schema": "photonics-workbench-geometry",
+      "schema_version": 1,
+      "units": "um",
+      "name": "Finite-height modal two-port guide",
+      "mode": "draft-3d",
+      "domain": {
+        "x": 8,
+        "y": 4,
+        "z": 4
+      },
+      "objects": [
+        {
+          "id": "core",
+          "name": "Finite-height core",
+          "visible": true,
+          "kind": "box",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "size": {
+            "x": 8,
+            "y": 0.75,
+            "z": 0.5
+          },
+          "radius": 1,
+          "inner_radius": 0.6,
+          "rotation_deg": 0,
+          "refractive_index": 2
+        }
+      ]
+    },
+    "device_kind": "gap",
+    "gap_um": 0.375,
+    "cladding_index": 1,
+    "wavelength_min_um": 1.45,
+    "wavelength_max_um": 1.65,
+    "frequency_points": 5,
+    "resolution": 16,
+    "pml_um": 0.75,
+    "max_after_sources_fs": 600,
+    "decay_by": 1e-7,
+    "spectrum_tolerance": 0.0001,
+    "solver": "fdtdx",
+    "device": "gpu"
+  },
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "new_solver_jobs": 0,
+  "read_only": true,
+  "valid_bins": 5,
+  "downloads": {
+    "csv": "sparameters-8c27feb4.csv",
+    "spectrum": "sparameters-8c27feb4.json",
+    "results": "waveguide-8c27feb4.zip",
+    "code": "photonics-8c27feb4-python-notebook.zip"
+  },
+  "checks": [
+    "Explicit target required; invalid physical input rejected",
+    "Real four-direction S-matrix and measured settling",
+    "All plotted power/amplitude/phase/real/imaginary samples equal actual API values",
+    "Complex matrix real/imaginary values inspectable by keyboard",
+    "CSV and JSON downloads exactly equal saved API data",
+    "Result and standalone Python/notebook ZIP downloads",
+    "Actual finite-height field slice pixel matches saved Ez values",
+    "Passport solver and complex array hashes visible",
+    "Immutable saved configuration after editing",
+    "390px layout without page overflow",
+    "No browser exceptions"
+  ],
+  "browser_errors": []
+}

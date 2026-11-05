@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T19:57:19.896771+00:00",
+  "passed": true,
+  "solver": "fdtdx",
+  "device": "gpu",
+  "scope": "One bounded finite-layout point-current field study for each new family, using the same settings as its Meep and FDTDX CPU cases. Geometric/material checks and local Maxwell fields are verified. Transmission, loss, mode coupling, resonance and fabrication tolerances require separate calibrated studies.",
+  "qualification": "Explicit CUDA execution, verified material raster, nonzero Ey at least 0.6 \u00b5m from source, identical FDTDX CPU/GPU coordinates and material arrays, relative differences from signed raw and centred electric samples. Matched CPU/GPU integration sanity threshold 1e-4 combined, 1e-3 per component; these do not establish mesh convergence or commercial equivalence.",
+  "frozen_layout_sources_sha256": {
+    "backend/component_library.py": "7f36069d63a02e0e9f5e2d9b80b4af770afd51e6d7b9ad0fe9213baae26c5443",
+    "backend/geometry_draft.py": "00aec5e4f68d7f087cf09384892dec8879c261c58155b00c4babadd7121cd961",
+    "backend/layout_grid.py": "f5fabc1851ca04dd9f55eeaec62b41082c69d6122354080de775f49718b5af7b",
+    "backend/layout_study.py": "ba295cf9641f4e147e9c97fdeb5b00696c84ccf1dfd16c281ecefdcf39b5d6c6",
+    "backend/adapters/fdtdx_layout.py": "09fdde188a82de8dbc19d65dd82301435379aa7fb37c58104e1f0ca77b110857",
+    "scripts/qualify_layout_families.py": "0f05cf8ddf55104ad5b9123ff1562c94ab0d0109e71663a6be113a00a947548e"
+  },
+  "current_layout_sources_sha256": {
+    "backend/component_library.py": "795c7c21fd25859afa3be6c874bdc985253f100708fdf35f75ca3d5393bf3faf",
+    "backend/geometry_draft.py": "00aec5e4f68d7f087cf09384892dec8879c261c58155b00c4babadd7121cd961",
+    "backend/layout_grid.py": "f5fabc1851ca04dd9f55eeaec62b41082c69d6122354080de775f49718b5af7b",
+    "backend/layout_study.py": "ba295cf9641f4e147e9c97fdeb5b00696c84ccf1dfd16c281ecefdcf39b5d6c6",
+    "backend/adapters/fdtdx_layout.py": "09fdde188a82de8dbc19d65dd82301435379aa7fb37c58104e1f0ca77b110857",
+    "scripts/qualify_layout_families.py": "251cca8934ac9f7abd47b31b5025356f9a5896bf7c3cf556eab9d4b984c79388"
+  },
+  "freeze_audit": "Frozen independent worker tree protects run-time source capture from concurrent unrelated edits. The release changed only catalog capability labels/docstring and three report metadata fields among these files. All seven generated scenes, physical configurations and compiled material hashes were rechecked against the current checkout. Layout compiler, validator and FDTDX adapter source are byte-for-byte identical.",
+  "cases": [
+    {
+      "family": "euler_bend",
+      "overrides": {
+        "min_radius_um": 1.2
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.2,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 554778,
+      "field_peak_ey_outside_0_6_um": 0.0032839810010045767,
+      "field_shape_zyx": [
+        41,
+        110,
+        118
+      ],
+      "field_sha256": "a5d787c2c180d4765446a9c0236195daf23398f3d70edafbb8914f78e3f6a552",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "d5084a58a7f12ba6a414bc32f6e1db71188826e51684209d0ba199106f82b849",
+      "native_material_check": {
+        "cells": 554778,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.951346798483254,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 2.062292830033636e-06,
+        "raw_yee_field_relative_l2": 2.6124270176471194e-06,
+        "component_relative_l2": [
+          2.1951495039657815e-06,
+          1.810488630762789e-06,
+          2.9538029755880406e-06
+        ]
+      }
+    },
+    {
+      "family": "strip_slot_converter",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.3,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 259896,
+      "field_peak_ey_outside_0_6_um": 0.0031920638866722584,
+      "field_shape_zyx": [
+        41,
+        51,
+        118
+      ],
+      "field_sha256": "0e5eaf740f36b0a864ad07a78efc1e0624731ea1885446b8ea94f144c05627c1",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "ec2468f49e77575a76a43641429487954c59020e312d6dfadd5cc78f5fd5c16a",
+      "native_material_check": {
+        "cells": 259896,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.951346798483254,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 2.0801675766043543e-06,
+        "raw_yee_field_relative_l2": 2.6456370366190864e-06,
+        "component_relative_l2": [
+          2.0473916314410906e-06,
+          1.9116145359331173e-06,
+          2.8173727298785735e-06
+        ]
+      }
+    },
+    {
+      "family": "mmi_1x4",
+      "overrides": {},
+      "resolution": 14,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -5.8,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 881932,
+      "field_peak_ey_outside_0_6_um": 0.00385062163695693,
+      "field_shape_zyx": [
+        36,
+        117,
+        201
+      ],
+      "field_sha256": "9fe0f5ab90ac1b0a3317bdd4e9ae5bef059a6ef13b0e75e3ebecab221e74397b",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "af30b0731080e0dc951cba6d640ba98e3b34c319c29a776dad84c87d575481c4",
+      "native_material_check": {
+        "cells": 881932,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.968369788389783,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 2.806170412032497e-06,
+        "raw_yee_field_relative_l2": 3.0701105508313933e-06,
+        "component_relative_l2": [
+          2.7177495559640913e-06,
+          2.74819650329092e-06,
+          3.2544635974436775e-06
+        ]
+      }
+    },
+    {
+      "family": "fan_grating",
+      "overrides": {
+        "periods": 4,
+        "focus_um": 2.0,
+        "fan_deg": 30.0,
+        "slab_height_um": 0.14,
+        "height_um": 0.28
+      },
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": 0.13301270189221942,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 594776,
+      "field_peak_ey_outside_0_6_um": 0.003349902341142297,
+      "field_shape_zyx": [
+        42,
+        75,
+        181
+      ],
+      "field_sha256": "498a373a3d1ab8b94c0326c855dfb66f8743f6f7685abf70ddb41110fb9e9948",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "417424a6ebfab1eb2370c39618298bfd9a937378ff61ed60d0036fda4361bcf4",
+      "native_material_check": {
+        "cells": 594776,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.951346798483254,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 2.181083365993261e-06,
+        "raw_yee_field_relative_l2": 2.7291067469793577e-06,
+        "component_relative_l2": [
+          2.1565544539162204e-06,
+          2.042991738594448e-06,
+          2.7920051049782024e-06
+        ]
+      }
+    },
+    {
+      "family": "tapered_coupler",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -4.8,
+        "y": -0.5,
+        "z": 0
+      },
+      "cells": 568344,
+      "field_peak_ey_outside_0_6_um": 0.0038315136916935444,
+      "field_shape_zyx": [
+        41,
+        67,
+        198
+      ],
+      "field_sha256": "0784743af954d251f3910a28264c1698bb653ca9cfe53b7c843bee4b0ae42e0d",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "af03a97e07c68581790f501061b1e3cfe3b0386989f575f334c6191c1ca15260",
+      "native_material_check": {
+        "cells": 568344,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.951346798483254,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 1.9383593668240535e-06,
+        "raw_yee_field_relative_l2": 2.5384533957904384e-06,
+        "component_relative_l2": [
+          2.0097756970355987e-06,
+          1.740819394410046e-06,
+          2.6838462226375462e-06
+        ]
+      }
+    },
+    {
+      "family": "phc_line_defect",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -2.2625,
+        "y": -2.4492935982947065e-17,
+        "z": 0
+      },
+      "cells": 356832,
+      "field_peak_ey_outside_0_6_um": 0.002700566314160824,
+      "field_shape_zyx": [
+        41,
+        71,
+        117
+      ],
+      "field_sha256": "34e1d61b3fb7c2c35241e6a784b5f7a05bc4a916f0f43841526af79dfd2d59fe",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "033771142b99ca08f86e3744b986f543f5228fe820ab3fe172ecf8c99b485b22",
+      "native_material_check": {
+        "cells": 356832,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.951346798483254,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 2.139667629133087e-06,
+        "raw_yee_field_relative_l2": 2.581635161248486e-06,
+        "component_relative_l2": [
+          2.3162265918484457e-06,
+          1.9311756202110276e-06,
+          2.7451329011645933e-06
+        ]
+      }
+    },
+    {
+      "family": "pulley_ring",
+      "overrides": {},
+      "resolution": 16,
+      "duration_fs": 24.0,
+      "source_um": {
+        "x": -3.58236708331028,
+        "y": -1.9779461773301623,
+        "z": 0
+      },
+      "cells": 1122744,
+      "field_peak_ey_outside_0_6_um": 0.00316750630736351,
+      "field_shape_zyx": [
+        41,
+        163,
+        162
+      ],
+      "field_sha256": "7e59a7c6d17a011cd0e89db2cdd6b0b918fb2dfb7932d49abdf3457caef3af05",
+      "actual_device": "cuda:0",
+      "compiled_material_sha256": "227499735547c6c40fb8e090bcb94845c94606dcf3cf2c3162b0013b335a2585",
+      "native_material_check": {
+        "cells": 1122744,
+        "maximum_absolute_error": 0.0
+      },
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "pml_um": 0.8,
+      "cladding_index": 1.0,
+      "wavelength_um": 1.55,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "matches_meep_design_mask": true,
+      "matches_meep_configuration_except_target": true,
+      "fdtdx_cpu_gpu": {
+        "identical_physical_configuration": true,
+        "matched_time_fs": 23.951346798483254,
+        "coordinate_and_material_grids_identical": true,
+        "field_relative_l2": 2.4085894173496905e-06,
+        "raw_yee_field_relative_l2": 2.69877800946488e-06,
+        "component_relative_l2": [
+          2.8614695155042486e-06,
+          2.1323144535694875e-06,
+          2.873555471418163e-06
+        ]
+      }
+    }
+  ]
+}

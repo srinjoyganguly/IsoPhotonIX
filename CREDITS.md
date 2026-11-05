@@ -144,3 +144,10 @@ versions. They do not copy an upstream tutorial file wholesale.
   and [scoped Codex work example](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex).
   These informed the implementation workflow. There is no OpenAI runtime API
   dependency and no API key requirement.
+
+The v0.9 catalog, sketching tools, finite-scene rasterizer and taper port
+workflows are first-party code. Public examples influenced the families and
+benchmark selection. The [coverage review](docs/VENDOR_COMPONENT_COVERAGE.md)
+and [reference checks](docs/COMPONENT_REFERENCE_CHECKS.md) identify the source
+examples, numerical inputs, reference values and remaining differences.
+The wheel includes the local comparison script and recorded scalar results.

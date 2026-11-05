@@ -39,14 +39,40 @@ const { chromium } = require('playwright');
       if (item.reproduction_command) assert.equal(await card.locator('.benchmark-command').innerText(), item.reproduction_command);
       await card.locator('.benchmark-case-details > summary').click();
     }
+    const component = panel.locator('details[aria-label="Published component comparisons"]');
+    await component.locator(':scope > summary').click();
+    const comparisonResponse = await page.request.get(base+'/api/component-benchmarks');
+    assert.equal(comparisonResponse.status(),200);
+    const comparisons = await comparisonResponse.json();
+    const format = n => n.toLocaleString('en-GB',{maximumSignificantDigits:8});
+    assert.equal(await component.locator('article').count(),comparisons.cases.length);
+    for(const [i,item] of comparisons.cases.entries()){
+      const article=component.locator('article').nth(i);
+      assert.equal(await article.locator('h3').innerText(),item.title);
+      assert.equal(await article.locator('a').getAttribute('href'),item.source_url);
+      for(const [j,metric] of item.metrics.entries()){
+        const row=article.locator('tbody tr').nth(j);
+        assert.deepEqual(await row.locator('td').allTextContents(),[format(metric.reference),format(metric.computed),format(100*metric.relative_error)+'%']);
+      }
+      await article.locator('details > summary').click();
+      assert.deepEqual(await article.locator('details p').allTextContents(),item.limitations);
+      await article.locator('details > summary').click();
+    }
+    const awaiting=page.waitForEvent('download');
+    await component.getByRole('link',{name:'Download values, sources and refinement evidence'}).click();
+    const comparisonFile=path.join(output,'component-comparisons.json');
+    await (await awaiting).saveAs(comparisonFile);
+    assert.deepEqual(JSON.parse(fs.readFileSync(comparisonFile,'utf8')),comparisons);
+    await component.screenshot({path:path.join(output,'component-comparison-table.png')});
+    await component.locator(':scope > summary').click();
     const downloading = page.waitForEvent('download');
     await panel.getByRole('button', { name: 'Download evidence JSON', exact: true }).click();
     const download = await downloading, file = path.join(output, download.suggestedFilename()); await download.saveAs(file);
     assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), evidence);
-    await panel.locator('.benchmark-report > summary').click();
+    await panel.locator('.benchmark-report > summary').first().click();
     if (evidence.reproduction_command) assert.equal(await panel.locator('.benchmark-report .benchmark-command').innerText(), evidence.reproduction_command);
     if (evidence.report_sha256) assert.ok((await panel.locator('.benchmark-hash').innerText()).includes(evidence.report_sha256));
-    await panel.locator('.benchmark-report > summary').click();
+    await panel.locator('.benchmark-report > summary').first().click();
     await panel.screenshot({ path: path.join(output, 'public-mode-benchmarks-desktop.png') });
     await page.setViewportSize({ width: 390, height: 844 });
     await panel.scrollIntoViewIfNeeded();
@@ -66,7 +92,7 @@ const { chromium } = require('playwright');
     await panel.getByRole('button', { name: 'Refresh evidence', exact: true }).click();
     await panel.locator('.benchmark-card').first().waitFor();
     assert.deepEqual(errors, []);
-    const report = { passed: true, checked_at: new Date().toISOString(), browser: await browser.version(), cases: evidence.cases.map(({ id, reference_kind, computed_neff, reference_neff, relative_error }) => ({ id, reference_kind, computed_neff, reference_neff, relative_error })), checks: ['All displayed neff values and relative differences equal the actual MPB benchmark API report', 'Each card identifies analytic versus published solver references and the mode-only scope', 'Official source links, numerical refinement details and reproduction commands preserved', 'Downloaded evidence JSON equals the complete API response', 'Report provenance hash retained', '390px mobile layout has no horizontal overflow', 'Missing report and HTTP failure show no numerical result cards', 'Refresh recovers the actual evidence report', 'No browser exceptions'], new_solver_run: false, transport: 'Actual benchmark data; only empty-report and HTTP-failure UI states intercepted', browser_errors: errors };
+    const report = { passed: true, checked_at: new Date().toISOString(), browser: await browser.version(), component_metrics: comparisons.cases.map(c=>({id:c.id,vendor:c.vendor,metrics:c.metrics.length})), cases: evidence.cases.map(({ id, reference_kind, computed_neff, reference_neff, relative_error }) => ({ id, reference_kind, computed_neff, reference_neff, relative_error })), checks: ['Every published component metric, local computation, source, displayed percentage and limitation matches the comparison API; the downloaded JSON is exact', 'All displayed neff values and relative differences equal the actual MPB benchmark API report', 'Each card identifies analytic versus published solver references and the mode-only scope', 'Official source links, numerical refinement details and reproduction commands preserved', 'Downloaded evidence JSON equals the complete API response', 'Report provenance hash retained', '390px mobile layout has no horizontal overflow', 'Missing report and HTTP failure show no numerical result cards', 'Refresh recovers the actual evidence report', 'No browser exceptions'], new_solver_run: false, transport: 'Actual benchmark data; only empty-report and HTTP-failure UI states intercepted', browser_errors: errors };
     fs.writeFileSync(path.join(output, 'public-benchmarks-browser.json'), JSON.stringify(report, null, 2) + '\n'); console.log(JSON.stringify(report));
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

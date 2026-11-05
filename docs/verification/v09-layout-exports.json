@@ -1,0 +1,302 @@
+{
+  "passed": true,
+  "checked_at_utc": "2026-11-05T19:32:15.048770+00:00",
+  "executions": 6,
+  "all_array_bytes_equal": true,
+  "scope": "Three finite-layout field GUI runs. Standalone Python and actual Jupyter kernels ran outside the checkout using captured solver source. Every recorded field, permittivity and coordinate array matched its GUI reference byte-for-byte. Each notebook rendered its field plot.",
+  "cases": [
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T19:26:29.935721+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "study_type": "layout-3d",
+      "target": "meep:cpu",
+      "run_id": "4540de6c996143ad9d4c22ffdb6db1d8",
+      "device_name": "CPU",
+      "archive_sha256": "419f5c6918a6545b9e7806751ae5ae3313eb6d7c44e8858b7690ef67286eee36",
+      "config_sha256": "8620ab60d370c5fbae52292e044f8bba5a0507fb81aef1e93092b8a35f4b25d3",
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "design_epsilon",
+          "design_x_um",
+          "design_y_um",
+          "design_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "CPU",
+        "recorded_physical_times": {
+          "actual_duration_fs": {
+            "reference": 35.02422999580597,
+            "reproduced": 35.02422999580597,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 336,
+            "reproduced": 336,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "design_epsilon",
+          "design_x_um",
+          "design_y_um",
+          "design_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "CPU",
+        "recorded_physical_times": {
+          "actual_duration_fs": {
+            "reference": 35.02422999580597,
+            "reproduced": 35.02422999580597,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 336,
+            "reproduced": 336,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214"
+      },
+      "notebook_plot_png_bytes": 33825,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 16.28
+    },
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T19:29:21.769816+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "study_type": "layout-3d",
+      "target": "fdtdx:cpu",
+      "run_id": "9190e27164ab4ac891c67b6262176717",
+      "device_name": "cpu",
+      "archive_sha256": "af3a7e1786efda48f0321de5488ab0e6cd03d7f9269b367099b509a4fbed9e67",
+      "config_sha256": "10700a6fd9765cc10e30626fffb0329689a9c45b092d3c1c523e400175dcc7d5",
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cpu:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 35.03331322763222,
+            "reproduced": 35.03331322763222,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 294,
+            "reproduced": 294,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cpu:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 35.03331322763222,
+            "reproduced": 35.03331322763222,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 294,
+            "reproduced": 294,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214"
+      },
+      "notebook_plot_png_bytes": 35980,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 127.13
+    },
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T19:31:52.916852+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "study_type": "layout-3d",
+      "target": "fdtdx:gpu",
+      "run_id": "e64c81d4cd5d4825aa6d532b928a016b",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "archive_sha256": "6333eba6b3eb3578d49eaf3246d410a40a3ac7d479fb0f33bdc7674ab313d92d",
+      "config_sha256": "8d2ab0167d6d2211559b9d44f5808af0868b898e0c8c5b00a76921fcab9e7d25",
+      "implementation_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cuda:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 35.03331322763222,
+            "reproduced": 35.03331322763222,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 294,
+            "reproduced": 294,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cuda:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 35.03331322763222,
+            "reproduced": 35.03331322763222,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 294,
+            "reproduced": 294,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "af775176013b477a6d1e0471776b68dc3bca18d5bbae360edf9400c197d4b214"
+      },
+      "notebook_plot_png_bytes": 35980,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 131.0
+    }
+  ],
+  "command": "scripts/verify_taper_exports.py --study layout --browser-artifacts <real browser download directory> --output <new directory outside the checkout>"
+}

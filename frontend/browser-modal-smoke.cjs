@@ -1,5 +1,6 @@
 /** Real 3D modal journey. PHOTONICS_TEST_TARGET=meep:cpu|fdtdx:cpu|fdtdx:gpu.
  * PHOTONICS_MODAL_RUN_ID reopens an actual completed run without another solve.
+ * PHOTONICS_MODAL_KIND=taper exercises the finite-height uneven-width taper instead of the waveguide gap.
  * Optional PHOTONICS_URL, PHOTONICS_BROWSER_CHANNEL, PHOTONICS_ARTIFACT_DIR.
  * Numerical data are never mocked; no external solver/cloud service is used.
  */
@@ -17,23 +18,27 @@ const {chromium}=require('playwright');
   const panel=page.getByRole('region',{name:'Finite-height 3D modal ports',exact:true});
   let id=process.env.PHOTONICS_MODAL_RUN_ID||null;
   const readOnly=!!id,target=process.env.PHOTONICS_TEST_TARGET||'meep:cpu';
+  const taper=process.env.PHOTONICS_MODAL_KIND==='taper';
+  const endpoint=taper?'/api/taper-ports/jobs':'/api/ports3d/jobs';
   let submissions=0;
-  page.on('request',r=>{if(r.method()==='POST'&&r.url().endsWith('/api/ports3d/jobs'))submissions++;});
+  page.on('request',r=>{if(r.method()==='POST'&&r.url().endsWith(endpoint))submissions++;});
   async function json(url){const response=await page.request.get(base+url);assert.equal(response.status(),200,url);return response.json();}
   async function download(locator){const waiting=page.waitForEvent('download');await locator.click();const d=await waiting;const dest=path.join(output,d.suggestedFilename());await d.saveAs(dest);assert.ok(fs.statSync(dest).size>100);return path.basename(dest);}
   try{
     await page.goto(base);await page.getByRole('button',{name:'3D ports & S-matrix',exact:true}).click();
-    await panel.getByRole('button',{name:'Open 3D gap example',exact:true}).click();
+    await panel.getByRole('button',{name:taper?'Open taper port example':'Open 3D gap example',exact:true}).click();
     await panel.getByText('3D modal study validated',{exact:true}).waitFor();
     const run=panel.getByRole('button',{name:'Run 3D S-matrix',exact:true});assert.ok(await run.isDisabled(),'Target must be explicitly selected.');
-    await panel.getByLabel('Modal Gap length (µm)',{exact:true}).fill('.01');
+    const guard=panel.getByLabel(taper?'Modal Minimum wavelength (µm)':'Modal Gap length (µm)',{exact:true});
+    const original=await guard.inputValue();
+    await guard.fill(taper?'2.5':'.01');
     await panel.locator('.modal-validation.invalid').waitFor();assert.ok(await run.isDisabled());
-    await panel.getByLabel('Modal Gap length (µm)',{exact:true}).fill('.375');
+    await guard.fill(taper?original:'.375');
     await panel.getByText('3D modal study validated',{exact:true}).waitFor();
     if(readOnly){await panel.getByLabel('Saved 3D modal run',{exact:true}).selectOption(id);}
     else{
       await panel.locator(`input[name="modal-target"][value="${target}"]`).check();
-      const submitted=page.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith('/api/ports3d/jobs'));
+      const submitted=page.waitForResponse(r=>r.request().method()==='POST'&&r.url().endsWith(endpoint));
       await run.click();const response=await submitted;assert.equal(response.status(),202);id=(await response.json()).id;
       console.log(JSON.stringify({event:'submitted',run_id:id,target}));
       const deadline=Date.now()+1220000;
@@ -42,8 +47,8 @@ const {chromium}=require('playwright');
     await panel.locator('.modal-run-status[data-status="completed"]').waitFor({timeout:30000});
     await panel.locator(`.modal-results[data-run-id="${id}"]`).waitFor();
     const job=await json(`/api/jobs/${id}`),data=await json(`/api/jobs/${id}/sparameters`);
-    assert.equal(job.config.study_type,'waveguide-ports-3d');assert.equal(job.status,'completed');
-    if(!readOnly){assert.equal(`${job.config.solver}:${job.config.device}`,target);assert.equal(job.config.gap_um,.375);}
+    assert.equal(job.config.study_type,taper?'taper-ports-3d':'waveguide-ports-3d');assert.equal(job.status,'completed');
+    if(!readOnly){assert.equal(`${job.config.solver}:${job.config.device}`,target);if(!taper)assert.equal(job.config.gap_um,.375);else assert.equal(job.config.geometry.components[0].family,'taper');}
     assert.ok(data.valid_bin.every(Boolean),'The real example must settle with guided modes at every bin.');
     for(const metric of ['power','magnitude','phase_unwrapped_rad','real','imag']){
       await panel.getByLabel('S-parameter plot quantity',{exact:true}).selectOption(metric);
@@ -58,6 +63,14 @@ const {chromium}=require('playwright');
     for(const entry of ['S11','S21','S12','S22']){
       assert.equal(await panel.locator(`[data-matrix-entry="${entry}"] [data-complex="real"]`).innerText(),`Re ${data.parameters[entry].real[0].toPrecision(6)}`);
       assert.equal(await panel.locator(`[data-matrix-entry="${entry}"] [data-complex="imag"]`).innerText(),`Im ${data.parameters[entry].imag[0].toPrecision(6)}`);
+    }
+    if(taper){
+      assert.equal(data.mode_neff_ports_real.length,data.wavelength_um.length);
+      assert.ok(data.mode_neff_ports_real.every(row=>row.length===2));
+      for(const [i,neff] of data.mode_neff_ports_real[0].entries()){
+        const expected=typeof neff==='number'&&Number.isFinite(neff)?neff.toPrecision(6):'Undefined';
+        assert.equal(await panel.locator(`[data-neff-port="${i+1}"]`).innerText(),`Port ${i+1} effective index ${expected}`);
+      }
     }
     const csv=await download(panel.getByRole('link',{name:'Export complex CSV',exact:true}));
     const apiCsv=await page.request.get(`${base}/api/jobs/${id}/sparameters.csv`);assert.equal(fs.readFileSync(path.join(output,csv),'utf8'),await apiCsv.text());
@@ -85,7 +98,7 @@ const {chromium}=require('playwright');
     await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Page must fit a phone viewport.');
     await panel.locator('.modal-results').screenshot({path:path.join(output,'modal-mobile.png')});
     await page.setViewportSize({width:1580,height:1100});
-    await panel.getByLabel('Modal Gap length (µm)',{exact:true}).fill('.5');await panel.getByText('The editor differs from this saved run.',{exact:false}).waitFor();
+    await guard.fill(taper?'1.46':'.5');await panel.getByText('The editor differs from this saved run.',{exact:false}).waitFor();
     assert.deepEqual((await json(`/api/jobs/${id}`)).config,job.config);
     assert.deepEqual(errors,[]);
     const report={passed:true,checked_at:new Date().toISOString(),run_id:id,config:job.config,actual_device:data.metadata.actual_device,device_name:data.metadata.device_name,new_solver_jobs:submissions,read_only:readOnly,valid_bins:data.valid_bin.filter(Boolean).length,downloads:{csv,spectrum,results,code},checks:['Explicit target required; invalid physical input rejected','Real four-direction S-matrix and measured settling','All plotted power/amplitude/phase/real/imaginary samples equal actual API values','Complex matrix real/imaginary values inspectable by keyboard','CSV and JSON downloads exactly equal saved API data','Result and standalone Python/notebook ZIP downloads','Actual finite-height field slice pixel matches saved Ez values','Passport solver and complex array hashes visible','Immutable saved configuration after editing','390px layout without page overflow','No browser exceptions'],browser_errors:errors};

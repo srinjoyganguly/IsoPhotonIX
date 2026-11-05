@@ -13,13 +13,15 @@ def main():
     from .source_snapshot import capture_implementation, verify_implementation
     implementation = capture_implementation(output)
     print(f"Starting {config['solver']} on explicitly requested {config['device']}", flush=True)
-    ismodal = config.get("schema_version") == 4 and config.get("study_type") == "waveguide-ports-3d"
+    ismodal = (config.get("schema_version"),config.get("study_type")) in (
+        (4,"waveguide-ports-3d"), (7,"taper-ports-3d"))
     istaper = config.get("schema_version") == 5 and config.get("study_type") == "taper-3d"
-    is3d = istaper or ismodal or config.get("schema_version") == 2 and config.get("study_type") == "waveguide-3d"
+    islayout = config.get("schema_version") == 6 and config.get("study_type") == "layout-3d"
+    is3d = islayout or istaper or ismodal or config.get("schema_version") == 2 and config.get("study_type") == "waveguide-3d"
     isports = config.get("schema_version") == 3 and config.get("study_type") == "waveguide-ports-2d"
-    suffix = {1: "_adapter", 2: "3d_adapter", 3: "_ports_adapter", 4: "_ports3d_adapter", 5: "_taper"}
+    suffix = {1: "_adapter", 2: "3d_adapter", 3: "_ports_adapter", 4: "_ports3d_adapter", 5: "_taper", 6: "_layout", 7: "_ports3d_adapter"}
     version = config.get("schema_version", 1)
-    if version not in suffix or version == 5 and not istaper:
+    if version not in suffix or version == 5 and not istaper or version == 6 and not islayout or version == 7 and not ismodal:
         raise ValueError("Unknown worker study version or type.")
     adapter = importlib.import_module(f"backend.adapters.{config['solver']}{suffix[version]}")
     metadata = adapter.run(config, output)

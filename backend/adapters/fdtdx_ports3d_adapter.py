@@ -109,24 +109,90 @@ def modal_amplitudes(phasors, mode_e, mode_h, cell_area_um2):
     return np.stack([plus, minus], axis=1), power
 
 
+def port_basis(ep, frequencies, frequencies_hz, dx, dt, highest_cladding, core_index):
+    """Frequency-resolved power basis for one measured transverse material plane."""
+    import numpy as np
+    import jax.numpy as jnp
+    from fdtdx.core.physics.modes import compute_mode
+
+    aperture = ep.shape[-2:]
+    es, hs, ns, gauges, edge_fractions, ey_fractions = [], [], [], [], [], []
+    raw_es, raw_hs = [], []
+    for f, f_hz in zip(frequencies, frequencies_hz):
+        e, h, n = compute_mode(frequency=float(f_hz), inv_permittivities=ep,
+            inv_permeabilities=1., resolution=dx*1e-6, direction='+', mode_index=0, filter_pol='te', dtype=jnp.float32)
+        e,h,n = np.asarray(e),np.asarray(h),complex(np.asarray(n))
+        ey_fractions.append(require_quasi_te_mode(e))
+        anchor = e[1,0,aperture[0]//2,aperture[1]//2]
+        if not np.isfinite(anchor) or abs(anchor) < 1e-9:
+            raise RuntimeError('Fundamental Ey mode phase anchor is unavailable.')
+        gauge = np.exp(-1j*np.angle(anchor)); e=e*gauge;h=h*gauge
+        transverse = np.concatenate([e[1:].ravel(),h[1:].ravel()])
+        imaginary_fraction = np.linalg.norm(transverse.imag)/np.linalg.norm(transverse)
+        if imaginary_fraction > 1e-4 or not highest_cladding < n.real < core_index or abs(n.imag)>1e-5:
+            raise RuntimeError('The measured-frequency mode is not a supported lossless guided transverse basis.')
+        ec,hc = collocate_mode(e,h,2*np.pi*f*n.real*dx,2*np.pi*f_hz*dt)
+        intensity = np.sum(abs(e[:,0])**2,axis=0)
+        edge = intensity.copy();edge[2:-2,2:-2]=0
+        edge_fractions.append(float(edge.sum()/intensity.sum()))
+        es.append(ec);hs.append(hc);ns.append(n);gauges.append(gauge)
+        raw_es.append(e);raw_hs.append(h)
+    data = {
+        'raw_mode_e': np.asarray(raw_es), 'raw_mode_h': np.asarray(raw_hs),
+        'mode_e': np.asarray(es), 'mode_h': np.asarray(hs), 'mode_neff': np.asarray(ns),
+        'gauge_factors': np.asarray(gauges), 'ey_transverse_fraction': np.asarray(ey_fractions),
+    }
+    record = {'neff_real': data['mode_neff'].real.tolist(), 'neff_imag': data['mode_neff'].imag.tolist(),
+              'ey_transverse_fraction': ey_fractions, 'minimum_ey_transverse_fraction': .5,
+              'edge_electric_l2_fraction': edge_fractions,
+              'gauge': 'Ey at the center sample is real and positive; common +x basis at both ports'}
+    return data, record
+
+
+def taper_stage_material(profile, config, reverse, reference):
+    """Use the incident end's width throughout its corresponding reference."""
+    from .fdtdx_taper import raster_layout
+    model = dict(profile, source_x=profile['source_forward_x_um'])
+    if reference:
+        width = model['width_out'] if reverse else model['width_in']
+        model.update(width_in=width, width_out=width)
+    return raster_layout(model, config['resolution'], config['pml_um'])
+
+
 def run(config: dict, output_dir: Path) -> dict:
     import numpy as np
 
-    if config.get('study_type') != 'waveguide-ports-3d' or config.get('schema_version') != 4:
-        raise ValueError('Expected a schema-version-4 finite-height port study.')
+    kind = (config.get('schema_version'), config.get('study_type'))
+    is_taper = kind == (7, 'taper-ports-3d')
+    if kind != (4, 'waveguide-ports-3d') and not is_taper:
+        raise ValueError('Expected a finite-height straight/gap or taper modal study.')
     started = time.perf_counter()
+    if is_taper:
+        from ..taper_port_geometry import port_layout
+        profile = port_layout(config)
+        domain = [profile['domain'][axis] for axis in 'xyz']
+    else:
+        domain = [config['geometry']['domain'][axis] for axis in 'xyz']
     jax, jnp, fdtdx, target = _ports_runtime(config['device'])
     output = Path(output_dir); output.mkdir(parents=True, exist_ok=True)
     dx = 1/config['resolution']
-    domain = [config['geometry']['domain'][axis] for axis in 'xyz']
     shape = tuple(round(value/dx) for value in domain)
     nx, ny, nz = shape
     pml = round(config['pml_um']/dx)
     aperture = (ny-2*pml, nz-2*pml)
     objects_by_id = {item['id']: item for item in config['geometry']['objects']}
-    core = objects_by_id['core']
-    core_shape = (nx, round(core['size']['y']/dx), round(core['size']['z']/dx))
-    core_start = (0, (ny-core_shape[1])//2, (nz-core_shape[2])//2)
+    if is_taper:
+        core_index = profile['core_index']
+        geometry_translation = {'model': 'taper', 'profile': profile,
+            'convention': 'Cell-centre staircase taper with straight input and output leads'}
+    else:
+        core = objects_by_id['core']
+        core_index = core['refractive_index']
+        core_shape = (nx, round(core['size']['y']/dx), round(core['size']['z']/dx))
+        core_start = (0, (ny-core_shape[1])//2, (nz-core_shape[2])//2)
+        geometry_translation = {'core_start':list(core_start),'core_shape':list(core_shape),
+            'actual_gap_um':round(config['gap_um']/dx)*dx if config['device_kind']=='gap' else 0.,
+            'convention':'Dimensions rounded to cells; centered lower indices floored; source/port planes rounded to grid coordinates'}
     frequencies = np.linspace(1/config['wavelength_max_um'], 1/config['wavelength_min_um'], config['frequency_points'])
     frequencies_hz = frequencies*299792458e6
     center_hz, span_hz = float(np.mean(frequencies_hz)), float(np.ptp(frequencies_hz))
@@ -135,17 +201,19 @@ def run(config: dict, output_dir: Path) -> dict:
     total_fs = source_end_fs+config['max_after_sources_fs']
     source_left = -domain[0]/2+config['pml_um']+.5
     port_left, port_right = source_left+1, -source_left-1
+    if is_taper:
+        source_left = profile['source_forward_x_um']
+        port_left, port_right = profile['port_1_x_um'], profile['port_2_x_um']
     plane_index = {name: round((coordinate+nx*dx/2)/dx) for name, coordinate in
         [('source_forward', source_left), ('source_reverse', -source_left), ('left', port_left), ('right', port_right)]}
     waves = tuple(fdtdx.WaveCharacter(frequency=float(f)) for f in frequencies_hz)
-    profile = fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=sigma_frequency),
+    pulse_profile = fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=sigma_frequency),
         center_wave=fdtdx.WaveCharacter(frequency=center_hz))
     versions = {name: importlib.metadata.version(name) for name in ('fdtdx', 'jax', 'jaxlib', 'numpy', 'tidy3d')}
-    stages, results, mode_record, captured = {}, {}, {}, {}
-    basis_e = basis_h = neffs = None
+    stages, results, captured = {}, {}, {}
+    mode_cache, device_bases = {}, {}
 
     def stage_run(stage_name, reverse, gap_um):
-        nonlocal basis_e, basis_h, neffs
         stage_started = time.perf_counter()
         print(f'PORT_STAGE={stage_name}', flush=True)
         simulation = fdtdx.SimulationConfig(time=total_fs*1e-15, resolution=dx*1e-6,
@@ -165,15 +233,23 @@ def run(config: dict, output_dir: Path) -> dict:
             constraints.append(item.set_grid_coordinates(axes=(0,1,2), sides=('-','-','-'), coordinates=grid_start))
             items.append(item)
             expected[tuple(slice(a,a+b) for a,b in zip(grid_start,grid_shape))] = index**2
-        if 'substrate' in objects_by_id:
-            material('substrate', (nx,ny,core_start[2]), (0,0,0), objects_by_id['substrate']['refractive_index'], 0)
-        material('core', core_shape, core_start, core['refractive_index'], 1)
-        gap_cells = round(gap_um/dx)
-        if gap_cells:
-            material('gap', (gap_cells,*core_shape[1:]), ((nx-gap_cells)//2,*core_start[1:]), config['cladding_index'], 2)
+        if is_taper:
+            raster = taper_stage_material(profile, config, reverse, stage_name.startswith('reference'))
+            for i, (start, extent) in enumerate(raster['runs']):
+                material(f'core-{i}', extent, start, core_index, 1)
+            analytic = np.where(raster['occupied'], core_index**2, config['cladding_index']**2)
+            if not np.allclose(expected, analytic, rtol=1e-6, atol=1e-6):
+                raise RuntimeError('Taper material objects disagree with the complete voxel mask.')
+        else:
+            if 'substrate' in objects_by_id:
+                material('substrate', (nx,ny,core_start[2]), (0,0,0), objects_by_id['substrate']['refractive_index'], 0)
+            material('core', core_shape, core_start, core['refractive_index'], 1)
+            gap_cells = round(gap_um/dx)
+            if gap_cells:
+                material('gap', (gap_cells,*core_shape[1:]), ((nx-gap_cells)//2,*core_start[1:]), config['cladding_index'], 2)
         source = fdtdx.ModePlaneSource(name='source', partial_grid_shape=(1,*aperture),
             mode_index=0, filter_pol='te', direction='-' if reverse else '+',
-            wave_character=fdtdx.WaveCharacter(frequency=center_hz), temporal_profile=profile,
+            wave_character=fdtdx.WaveCharacter(frequency=center_hz), temporal_profile=pulse_profile,
             switch=fdtdx.OnOffSwitch(end_time=source_end_fs*1e-15))
         constraints.append(source.set_grid_coordinates(axes=(0,1,2), sides=('-','-','-'),
             coordinates=(plane_index['source_reverse' if reverse else 'source_forward'],pml,pml)))
@@ -220,41 +296,30 @@ def run(config: dict, output_dir: Path) -> dict:
         if not np.isfinite(source_e).all() or not np.isfinite(source_h).all() or not np.any(source_e[1:]):
             raise RuntimeError('Source has no finite nonzero transverse electric profile.')
         source_fraction = require_quasi_te_mode(source_e)
-        highest_cladding = max(config['cladding_index'],objects_by_id.get('substrate',{}).get('refractive_index',1))
-        if source_fraction < .5 or not highest_cladding < source_neff.real < core['refractive_index']:
+        highest_cladding = config['cladding_index'] if is_taper else max(config['cladding_index'], objects_by_id.get('substrate',{}).get('refractive_index',1))
+        if source_fraction < .5 or not highest_cladding < source_neff.real < core_index:
             raise RuntimeError('Source mode is not a guided fundamental quasi-TE mode.')
-        if basis_e is None:
-            print('Preparing independent local modes at every measured frequency', flush=True)
-            from fdtdx.core.physics.modes import compute_mode
-            ep = arrays.inv_permittivities[:,plane_index['left']:plane_index['left']+1,pml:ny-pml,pml:nz-pml]
-            es, hs, ns, gauges, edge_fractions, ey_fractions = [], [], [], [], [], []
-            raw_es, raw_hs = [], []
-            for f, f_hz in zip(frequencies, frequencies_hz):
-                e, h, n = compute_mode(frequency=float(f_hz), inv_permittivities=ep,
-                    inv_permeabilities=1., resolution=dx*1e-6, direction='+', mode_index=0, filter_pol='te', dtype=jnp.float32)
-                e,h,n = np.asarray(e),np.asarray(h),complex(np.asarray(n))
-                ey_fractions.append(require_quasi_te_mode(e))
-                anchor = e[1,0,aperture[0]//2,aperture[1]//2]
-                if not np.isfinite(anchor) or abs(anchor) < 1e-9:
-                    raise RuntimeError('Fundamental Ey mode phase anchor is unavailable.')
-                gauge = np.exp(-1j*np.angle(anchor)); e=e*gauge;h=h*gauge
-                transverse = np.concatenate([e[1:].ravel(),h[1:].ravel()])
-                imaginary_fraction = np.linalg.norm(transverse.imag)/np.linalg.norm(transverse)
-                if imaginary_fraction > 1e-4 or not highest_cladding < n.real < core['refractive_index'] or abs(n.imag)>1e-5:
-                    raise RuntimeError('The measured-frequency mode is not a supported lossless guided transverse basis.')
-                ec,hc = collocate_mode(e,h,2*np.pi*f*n.real*dx,2*np.pi*f_hz*simulation.time_step_duration)
-                intensity = np.sum(abs(e[:,0])**2,axis=0)
-                edge = intensity.copy();edge[2:-2,2:-2]=0
-                edge_fractions.append(float(edge.sum()/intensity.sum()))
-                es.append(ec);hs.append(hc);ns.append(n);gauges.append(gauge)
-                raw_es.append(e);raw_hs.append(h)
-            basis_e,basis_h,neffs = np.asarray(es),np.asarray(hs),np.asarray(ns)
-            mode_record.update(neff_real=neffs.real.tolist(),neff_imag=neffs.imag.tolist(),
-                ey_transverse_fraction=ey_fractions, minimum_ey_transverse_fraction=.5,
-                edge_electric_l2_fraction=edge_fractions, gauge='Ey at the center sample is real and positive; common +x basis at both ports')
-            np.savez_compressed(output/'port-modes.npz', frequency_per_um=frequencies,
-                raw_mode_e=np.asarray(raw_es),raw_mode_h=np.asarray(raw_hs),mode_e=basis_e,mode_h=basis_h,
-                mode_neff=neffs,gauge_factors=np.asarray(gauges),ey_transverse_fraction=np.asarray(ey_fractions),
+        # A different output cross-section requires a different mode basis.
+        # Cache by the actual component permittivity slice, never by port label.
+        bases = {}
+        for name in ('left', 'right'):
+            ix = plane_index[name]
+            ep = arrays.inv_permittivities[:, ix:ix+1, pml:ny-pml, pml:nz-pml]
+            material_key = np.asarray(ep).tobytes()
+            if material_key not in mode_cache:
+                print(f'Preparing local modes for the measured {name} cross-section', flush=True)
+                mode_cache[material_key] = port_basis(ep, frequencies, frequencies_hz, dx,
+                    simulation.time_step_duration, highest_cladding, core_index)
+            bases[name] = mode_cache[material_key]
+        if stage_name == 'device_forward':
+            device_bases.update(bases)
+            profile_data = dict(bases['left'][0])
+            if is_taper:
+                for name, (data, _) in bases.items():
+                    profile_data.update({f'{name}_{key}': value for key, value in data.items()})
+                profile_data['mode_neff_ports'] = np.column_stack(
+                    [bases[name][0]['mode_neff'] for name in ('left', 'right')])
+            np.savez_compressed(output/'port-modes.npz', frequency_per_um=frequencies, **profile_data,
                 y_um=np.arange(pml,ny-pml)*dx-ny*dx/2,z_um=(np.arange(pml,nz-pml)+.5)*dx-nz*dx/2)
         from fdtdx.fdtd.forward import forward
         def evolve(state,end_step):
@@ -275,7 +340,8 @@ def run(config: dict, output_dir: Path) -> dict:
             phasors={name:np.asarray(final.detector_states[name]['phasor'])[0] for name in ('left','right')}
             if not all(np.isfinite(v).all() for v in phasors.values()):
                 raise RuntimeError('Recorded complex port fields are nonfinite.')
-            amplitudes={name:modal_amplitudes(p,basis_e,basis_h,dx**2)[0] for name,p in phasors.items()}
+            amplitudes = {name: modal_amplitudes(p, bases[name][0]['mode_e'], bases[name][0]['mode_h'], dx**2)[0]
+                          for name, p in phasors.items()}
             energies,times,ratio=measured_energy_tail(np.asarray(final.detector_states['energy']['energy'])[:,0],
                 schedule,step,simulation.time_step_duration*1e15,40.)
             spectral_change=None
@@ -316,7 +382,7 @@ def run(config: dict, output_dir: Path) -> dict:
             captured.update(field_time_fs=elapsed,field_shape=list(fields.shape[1:]))
         return amplitudes,stage,source_e,source_h
 
-    gap=config['gap_um'] if config['device_kind']=='gap' else 0.
+    gap=config['gap_um'] if not is_taper and config['device_kind']=='gap' else 0.
     for reverse,direction in ((False,'forward'),(True,'reverse')):
         reference_e=reference_h=None
         for kind,stage_gap in (('reference',0.),('device',gap)):
@@ -344,7 +410,14 @@ def run(config: dict, output_dir: Path) -> dict:
     matrix=np.divide(outgoing,incident[:,None,:],out=np.full_like(outgoing,np.nan+1j*np.nan),where=abs(incident[:,None,:])>0)
     through=np.divide(reference_output,incident,out=np.full_like(reference_output,np.nan+1j*np.nan),where=abs(incident)>0)
     order=np.argsort(1/frequencies)
-    np.savez_compressed(output/'sparameters.npz',wavelength_um=(1/frequencies)[order],frequency_per_um=frequencies[order],
+    neffs, mode_record = device_bases['left'][0]['mode_neff'], device_bases['left'][1]
+    extra = {}
+    if is_taper:
+        by_port = np.column_stack([device_bases[name][0]['mode_neff'] for name in ('left', 'right')])
+        extra['mode_neff_ports'] = by_port[order]
+        mode_record = dict(mode_record, by_port={name:device_bases[name][1] for name in ('left','right')})
+        geometry_translation['reference_widths_um'] = [profile['width_in'],profile['width_out']]
+    np.savez_compressed(output/'sparameters.npz',**extra,wavelength_um=(1/frequencies)[order],frequency_per_um=frequencies[order],
         s=matrix[order],incident_amplitude=incident[order],outgoing_amplitude=outgoing[order],
         reference_through=through[order],valid_bin=valid[order],mode_neff=neffs[order],mode_valid=np.ones(len(frequencies),dtype=bool))
     return {'solver':'fdtdx','requested_device':config['device'],'actual_device':str(target),'device_name':target.device_kind,
@@ -371,12 +444,11 @@ def run(config: dict, output_dir: Path) -> dict:
             'projection':'a+/-=[integral(E_sim cross H_mode* +/- E_mode* cross H_sim).x dA]/(4 sqrt(P_mode)); P_mode=.5 Re integral(E_mode cross H_mode*).x dA',
             'phase_convention':'DFT sum(field(t)*exp(+i omega t)); physical exp(-i omega t); forward propagation exp(+i beta x)',
             'mode_gauge':mode_record['gauge'],'sampling':'Both mode profiles and measured E/H use Ez Yee-point spatial interpolation; H includes adjacent-time average cos(omega*dt/2)'},
-        'geometry_translation':{'grid_shape':list(shape),'grid_spacing_um':dx,'core_start':list(core_start),'core_shape':list(core_shape),
-            'actual_gap_um':round(gap/dx)*dx,'pml_cells':pml,'requested_domain_um':domain,
-            'actual_domain_um':[v*dx for v in shape],'material_grid_verified':True,
-            'convention':'Dimensions rounded to cells; centered lower indices floored; source/port planes rounded to grid coordinates'},
+        'geometry_translation':{**geometry_translation, 'grid_shape':list(shape),'grid_spacing_um':dx,
+            'pml_cells':pml,'requested_domain_um':domain,'actual_domain_um':[v*dx for v in shape],
+            'material_grid_verified':True},
         'boundaries':{'x':'PML','y':'PML','z':'PML','pml_cells':pml},
         'limitations':['Fundamental-mode submatrix only; radiation and higher-order modes are outside this2x2matrix.',
-            'Lossless nondispersive straight or centeredgap finite-height guide; geometric and modal discretization error remains.',
+            'Lossless nondispersive finite-height guide; geometric and modal discretization error remains.',
             'Settling checks and CPU/GPU repeatability do not establish mesh/domain convergence or commercial accuracy.',
             'Absolute phase uses declared physical port planes and a shared electric-mode gauge; no arbitrary phase alignment is applied.']}

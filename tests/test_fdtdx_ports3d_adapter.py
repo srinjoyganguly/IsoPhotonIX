@@ -7,6 +7,22 @@ from backend.adapters.fdtdx_ports3d_adapter import canonical_source_profile, col
 
 
 class ModalProjectionTests(unittest.TestCase):
+    def test_taper_reference_uses_the_incident_ends_width_over_the_whole_cell(self):
+        from backend.taper_port_geometry import port_layout
+        from backend.taper_ports import example_taper_ports
+        from backend.adapters.fdtdx_ports3d_adapter import taper_stage_material
+
+        config = example_taper_ports().model_dump()
+        model = port_layout(config)
+        device = taper_stage_material(model, config, reverse=False, reference=False)['occupied']
+        reverse_device = taper_stage_material(model, config, reverse=True, reference=False)['occupied']
+        left = taper_stage_material(model, config, reverse=False, reference=True)['occupied']
+        right = taper_stage_material(model, config, reverse=True, reference=True)['occupied']
+        np.testing.assert_array_equal(device, reverse_device)
+        self.assertTrue((left == device[0]).all())
+        self.assertTrue((right == device[-1]).all())
+        self.assertGreater(right.sum(), left.sum())
+
     def test_modes_must_actually_have_predominantly_ey_polarization(self):
         e=np.zeros((3,1,4,4),complex);e[1]=2j;e[2]=1
         self.assertAlmostEqual(require_quasi_te_mode(e),.8)

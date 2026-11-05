@@ -15,10 +15,12 @@ from .model import WaveguideConfig
 from .passport import FramesUnavailable, build_passport, passport_html, stored_frames
 from .runtime import ROOT
 from .study3d import Waveguide3DConfig, example3d, parse_study
+from .layout_study import LayoutStudy, example_layout
+from .taper_ports import TaperPortStudy, example_taper_ports
 from .taper_study import TaperStudy, example_taper
 from .volume import stored_volume, volume_info, volume_slice
 from .compare3d import compare_runs
-from .benchmarks import benchmark_report
+from .benchmarks import benchmark_report, component_benchmark_report
 from .ports import PortStudy, example_ports
 from .ports_capabilities import port_capabilities
 from .spectra import stored_spectrum, spectrum_response, spectrum_csv
@@ -39,7 +41,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.8.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.9.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -56,7 +58,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.8.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.9.0-preview.1", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -141,6 +143,25 @@ def validate_modal(config: ModalPortStudy):
 
 @app.post('/api/ports3d/jobs',status_code=202)
 def submit_modal(config: ModalPortStudy):
+    return submit_modal_checked(config)
+
+
+@app.get('/api/taper-ports/example')
+def taper_port_example():
+    return example_taper_ports().model_dump()
+
+
+@app.post('/api/taper-ports/validate')
+def validate_taper_ports(config: TaperPortStudy):
+    return {'valid':True,'config':config.model_dump(),'estimate':config.estimate(),'layout':config.layout(),'warnings':config.warnings()}
+
+
+@app.post('/api/taper-ports/jobs',status_code=202)
+def submit_taper_ports(config: TaperPortStudy):
+    return submit_modal_checked(config)
+
+
+def submit_modal_checked(config):
     target = next((t for t in port_capabilities()['targets'] if t['solver']==config.solver and t['device']==config.device),None)
     if not target or not target['available']:
         raise HTTPException(409,(target or {}).get('reason','Requested modal-study target is unavailable.'))
@@ -263,6 +284,42 @@ def submit_taper(config: TaperStudy):
     return submit_checked(config)
 
 
+@app.get('/api/layout/example')
+def get_layout_example(family: str | None = None):
+    if family is None:
+        return example_layout().model_dump()
+    from .layout_examples import qualified_layout_example
+    try:
+        return qualified_layout_example(family).model_dump()
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except (OSError, ValueError, TypeError) as exc:
+        raise HTTPException(409, 'The measured field configuration is unavailable or differs from its recorded grid.') from exc
+
+
+@app.post('/api/layout/validate')
+def validate_layout(config: LayoutStudy):
+    spec = config.layout()
+    return {'valid':True,'estimate':spec,'scene_layout':spec,
+            'warnings':['Finite as-drawn structures in homogeneous cladding with six PML faces.',
+                'A local Ey point dipole excites all available channels. Interpret the final field in arbitrary source units.',
+                'Shapes use a staircase grid. Refine the grid and absorbing boundaries before interpreting quantitative changes.',
+                spec['precedence']]}
+
+
+@app.post('/api/layout/jobs', status_code=202)
+def submit_layout(config: LayoutStudy):
+    return submit_checked(config)
+
+
+@app.get('/api/component-benchmarks')
+def public_component_benchmarks():
+    try:
+        return component_benchmark_report()
+    except (OSError, KeyError, ValueError, TypeError) as exc:
+        raise HTTPException(409, 'The recorded component comparison is missing or inconsistent.') from exc
+
+
 class Compare3DRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     reference_run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,80}$")
@@ -324,7 +381,7 @@ def field(job_id: str):
     job = get_job(job_id)
     if job["status"] != "completed":
         raise HTTPException(409, "Results are available only after successful completion.")
-    if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d"):
+    if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d","layout-3d","taper-ports-3d"):
         raise HTTPException(409, "This is a 3D run. Use the volume and slice endpoints with explicit component and plane.")
     with np.load(manager.directory/job_id/"arrays.npz") as arrays:
         data = {key: arrays[key].tolist() for key in ("field", "epsilon", "x_um", "y_um")}
@@ -340,10 +397,10 @@ def completed_output(job_id):
 
 def load_volume(job_id):
     job, output = completed_output(job_id)
-    if job["config"].get("study_type") not in ("waveguide-3d","waveguide-ports-3d","taper-3d"):
+    if job["config"].get("study_type") not in ("waveguide-3d","waveguide-ports-3d","taper-3d","layout-3d","taper-ports-3d"):
         raise HTTPException(409, "This run is a 2D slab, not a recorded 3D volume.")
     try:
-        return job, stored_volume(output,allow_zero=job['config'].get('study_type')=='waveguide-ports-3d')
+        return job, stored_volume(output,allow_zero=job['config'].get('study_type') in ('waveguide-ports-3d','taper-ports-3d'))
     except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as exc:
         raise HTTPException(409, "Saved 3D fields are missing or invalid.") from exc
 
@@ -403,7 +460,7 @@ def spectrum_download(job_id: str):
 
 def modal_output(job_id):
     job,output = completed_output(job_id)
-    if job['config'].get('study_type') != 'waveguide-ports-3d':
+    if job['config'].get('study_type') not in ('waveguide-ports-3d','taper-ports-3d'):
         raise HTTPException(409,'This run did not measure a finite-height modal S-matrix.')
     try:
         metadata = json.loads((output/'metadata.json').read_text())
@@ -484,13 +541,13 @@ def export(job_id: str):
         archive.writestr("passport.html", passport_html(record))
         archive.writestr("manifest.json", json.dumps(manifest, indent=2))
         array_note = ("3D arrays: fields[component,z,y,x] in Ex/Ey/Ez order, field=Ey[z,y,x], epsilon[z,y,x], and x_um/y_um/z_um display coordinates. Final-time snapshots only. Read metadata field_sampling before interpreting interpolated Yee-grid samples. FDTDX also retains raw_fields and their coordinate convention. "
-                      if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d") else
+                      if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d","layout-3d","taper-ports-3d") else
                       "2D arrays: field and epsilon[y,x], x_um/y_um, plus any frames/times_fs. Field is signed Ez. The final snapshot may be later than the last recorded frame. ")
         measurement_note = 'Fields use arbitrary source amplitude, not normalized transmission. '
         if job['config'].get('study_type') == 'waveguide-ports-2d':
             array_note = 'arrays.npz contains actual final-time Ez and material samples after the pulse. spectra.npz preserves signed measured powers and unclipped ratios. spectrum.csv retains raw values and valid_bin flags; ignore unqualified bins as measurements. Supplemental monitor files retain solver-specific provenance. '
             measurement_note = 'R=-reflected_flux/incident_flux and T=transmitted_flux/incident_flux use the measured straight reference. 1-R-T is uncollected flux, not absorption. These are finite-aperture powers, not complex modal S-parameters. '
-        if job['config'].get('study_type') == 'waveguide-ports-3d':
+        if job['config'].get('study_type') in ('waveguide-ports-3d','taper-ports-3d'):
             measurement_note = 'sparameters.npz preserves complex unit-power modal amplitudes and the 2x2 S-matrix in [frequency,outgoing,incoming] order. Read physical reference planes, phase gauge and four-stage settlement in metadata.json. CSV retains raw complex values and validity flags. Residual fundamental-channel power includes radiation/other modes/error, not absorption. arrays.npz is the actual forward-device late-time volume, not a monochromatic field synthesized from S. '
         archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json identifies all original result files with SHA256. " + array_note + measurement_note + f"Reproduce with {record['reproduce_command']} (choose a new output directory).\n")
     stream.seek(0)

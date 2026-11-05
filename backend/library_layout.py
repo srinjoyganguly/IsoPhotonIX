@@ -83,7 +83,25 @@ def place_component(geometry, component_id, parameters=None, placement=None,
         for item in objects:
             item['component_id'] = old['id']
     candidate = copy.deepcopy(original)
-    candidate['objects'] = [item for item in candidate['objects'] if item['id'] not in removed] + objects
+    if removed:
+        # The EM raster uses scene order for material overlaps. Replace old
+        # member slots in place, including in imported interleaved layouts.
+        # Additional members belong at the final old slot, below later solids.
+        last = max(i for i, item in enumerate(candidate['objects']) if item['id'] in removed)
+        replacements = iter(objects)
+        ordered = []
+        for i, item in enumerate(candidate['objects']):
+            if item['id'] not in removed:
+                ordered.append(item)
+            elif i == last:
+                ordered.extend(replacements)
+            else:
+                replacement = next(replacements, None)
+                if replacement is not None:
+                    ordered.append(replacement)
+        candidate['objects'] = ordered
+    else:
+        candidate['objects'].extend(objects)
     candidate['components'] = [item for item in candidate['components'] if item['id'] != replace_component_id] + [instance]
     if not any(item['id'] == selected['id'] for item in candidate['materials']):
         candidate['materials'].append(selected)

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "preflight": false,
+  "new_solver_jobs": 1,
+  "checked_at": "2026-11-05T19:28:17.326Z",
+  "run_id": "e64c81d4cd5d4825aa6d532b928a016b",
+  "target": "fdtdx:gpu",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "shape": [
+    42,
+    56,
+    84
+  ],
+  "material_grid_check": {
+    "cells": 208335,
+    "maximum_absolute_error": 0
+  },
+  "compiled_material_sha256": "b25b25fcc33990891f7992978ada7bc4de48c5244aeb25f945f7c226990262de",
+  "checks": [
+    "Edited dipole and explicit execution target",
+    "Actual nine plane/component canvas samples match stored solver slices",
+    "Native material grid, passport and immutable config",
+    "Downloaded runnable Python and notebook"
+  ],
+  "browser_errors": []
+}

@@ -1,0 +1,50 @@
+{
+  "checked_at": "2026-11-05T20:09:18.700210+00:00",
+  "passed": true,
+  "wheel": "photonics_workbench-0.9.0a1-py3-none-any.whl",
+  "wheel_sha256": "ed36808180bd614840fd2bd962a146fe4288f9dd632affd9c056066484552794",
+  "wheel_bytes": 517829,
+  "installed_from_offline_wheelhouse": true,
+  "pip_check": true,
+  "doctor_meep_ready": true,
+  "served_frontend_assets": [
+    "/assets/index-DjM35vYQ.js",
+    "/assets/index-X9-lAazd.css"
+  ],
+  "catalog_families": 27,
+  "benchmark_data": true,
+  "job_id": "36ab663eab8e42df9028f18f38266e60",
+  "actual_device": "CPU",
+  "field_shape_zyx": [
+    42,
+    72,
+    118
+  ],
+  "state_separate_from_package": true,
+  "exclusive_store": true,
+  "saved_run_after_restart": true,
+  "cli_run_all_arrays_exact": true,
+  "standalone_python_all_arrays_exact": true,
+  "solver_versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "state": "Fresh disposable user state and virtual environment.",
+  "component_reference_cli": {
+    "case": "lumerical-coupler",
+    "resolutions": [
+      24,
+      32
+    ],
+    "report_written": true
+  },
+  "installed_gpu_phc": {
+    "actual_device": "cuda:0",
+    "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "field_sha256": "34e1d61b3fb7c2c35241e6a784b5f7a05bc4a916f0f43841526af79dfd2d59fe",
+    "matches_reference_field_bytes": true,
+    "matches_reference_material_grid": true
+  },
+  "every_bundled_application_asset_matches_checkout": true
+}

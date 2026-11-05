@@ -16,6 +16,26 @@ from ..volume import validate_volume
 from .meep3d_adapter import C_UM_PER_FS
 
 
+def taper_prism(mp, model):
+    """Extrude the exact union of the taper and both constant-width access guides."""
+    height = model['height']
+    core = mp.Medium(index=model['core_index'])
+    half_length = model['domain']['x'] / 2
+    leads = [(-half_length, model['x_in'], model['width_in']),
+             (model['x_out'], half_length, model['width_out'])]
+    # All three regions are one dielectric. Independent touching solids cause
+    # Meep's subpixel averaging to introduce a seam even in a uniform guide.
+    # Extrude their exact union, retaining the taper vertices where width varies.
+    lower_in, lower_out, upper_out, upper_in = model['vertices']
+    outline = [(-half_length, lower_in[1]), lower_in, lower_out, (half_length, lower_out[1]),
+               (half_length, upper_out[1]), upper_out, upper_in, (-half_length, upper_in[1])]
+    if model['width_in'] == model['width_out']:
+        outline = [outline[0], outline[3], outline[4], outline[7]]
+    prism = mp.Prism(vertices=[mp.Vector3(x, y, -height / 2) for x, y in outline],
+                     height=height, material=core)
+    return prism, leads, outline
+
+
 def run(config: dict, output_dir: Path) -> dict:
     if config.get('device') != 'cpu':
         raise ValueError('Meep supports CPU only. Select CPU explicitly.')
@@ -32,20 +52,7 @@ def run(config: dict, output_dir: Path) -> dict:
     domain = model['domain']
     cell = mp.Vector3(*(domain[a] for a in 'xyz'))
     height = model['height']
-    core = mp.Medium(index=model['core_index'])
-    half_length = domain['x'] / 2
-    leads = [(-half_length, model['x_in'], model['width_in']),
-             (model['x_out'], half_length, model['width_out'])]
-    # All three regions are one dielectric. Independent touching solids cause
-    # Meep's subpixel averaging to introduce a seam even in a uniform guide.
-    # Extrude their exact union, retaining the taper vertices where width varies.
-    lower_in, lower_out, upper_out, upper_in = model['vertices']
-    outline = [(-half_length, lower_in[1]), lower_in, lower_out, (half_length, lower_out[1]),
-               (half_length, upper_out[1]), upper_out, upper_in, (-half_length, upper_in[1])]
-    if model['width_in'] == model['width_out']:
-        outline = [outline[0], outline[3], outline[4], outline[7]]
-    prism = mp.Prism(vertices=[mp.Vector3(x, y, -height / 2) for x, y in outline],
-                     height=height, material=core)
+    prism, leads, outline = taper_prism(mp, model)
     wavelength = config['wavelength_um']
     resolution = config['resolution']
 

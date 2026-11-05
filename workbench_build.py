@@ -9,16 +9,16 @@ from setuptools.command.sdist import sdist
 
 ROOT = Path(__file__).resolve().parent
 MODULES = ('__init__ app benchmarks capabilities compare3d component_library geometry_draft jobs '
-           'library_layout mode_benchmarks model passport ports ports3d ports_capabilities ports_probe probe '
+           'layout_examples layout_grid layout_study library_layout mode_benchmarks model passport ports ports3d ports_capabilities ports_probe probe '
            'reproduce reproduction_runtime runtime source_snapshot sparameters spectra study3d taper_geometry '
-           'taper_study volume worker').split()
-ADAPTERS = ('fdtdx_adapter fdtdx3d_adapter fdtdx_ports_adapter fdtdx_ports3d_adapter fdtdx_taper '
-            'meep_adapter meep3d_adapter meep_ports_adapter meep_ports3d_adapter meep_taper').split()
+           'taper_study taper_ports taper_port_geometry volume worker').split()
+ADAPTERS = ('fdtdx_adapter fdtdx3d_adapter fdtdx_ports_adapter fdtdx_ports3d_adapter fdtdx_taper fdtdx_layout '
+            'meep_adapter meep3d_adapter meep_ports_adapter meep_ports3d_adapter meep_taper meep_layout').split()
 FILES = ('LICENSE', 'CREDITS.md', 'frontend/THIRD_PARTY_NOTICES.txt', 'frontend/dist/index.html',
          'docs/licenses/MEEP-GPL-2.0.txt', 'docs/licenses/MPB-GPL-2.0.txt',
-         'environment-meep.yml', 'environment-meep-linux-64.lock', 'requirements-api.txt', 'scripts/run_simulation.py',
+         'environment-meep.yml', 'environment-meep-linux-64.lock', 'requirements-api.txt', 'scripts/run_simulation.py', 'scripts/benchmark_component_references.py',
          'requirements-fdtdx.txt', 'requirements-fdtdx-cuda.txt', 'docs/verification/public-mode-benchmarks.json',
-         'examples/finite-waveguide-3d.json', 'examples/ports-gap.json', 'examples/ports-straight.json',
+         'docs/verification/public-component-comparisons.json', 'docs/verification/v09-family-fields.json', 'examples/finite-waveguide-3d.json', 'examples/ports-gap.json', 'examples/ports-straight.json',
          'examples/ports3d-gap.json', 'examples/ports3d-straight.json', 'examples/slab-waveguide.json')
 
 

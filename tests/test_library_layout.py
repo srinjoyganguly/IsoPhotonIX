@@ -23,7 +23,7 @@ class LibraryLayouts(unittest.TestCase):
     def test_every_catalog_family_builds_valid_geometry_and_unique_membership(self):
         client = TestClient(app)
         catalog = client.get('/api/library').json()
-        self.assertEqual(len(catalog['components']), 20)
+        self.assertEqual(len(catalog['components']), 27)
         with patch('backend.app.manager.submit') as submit:
             for entry in catalog['components']:
                 with self.subTest(family=entry['id']):
@@ -34,7 +34,7 @@ class LibraryLayouts(unittest.TestCase):
                     self.assertEqual(result['component']['family'], entry['id'])
                     self.assertEqual(set(result['component']['object_ids']), {o['id'] for o in geometry['objects']})
                     self.assertEqual(result['component']['parameters'], entry['defaults'])
-                    self.assertEqual(entry['simulation_support'], 'bounded-taper-fields' if entry['id'] == 'taper' else 'design-only')
+                    self.assertEqual(entry['simulation_support'], 'bounded-taper-fields' if entry['id'] == 'taper' else 'bounded-layout-fields')
             submit.assert_not_called()
 
     def test_placement_preserves_existing_design_and_requires_explicit_domain_growth(self):
@@ -60,7 +60,7 @@ class LibraryLayouts(unittest.TestCase):
             replace_component_id=selected['id'])['geometry']
         self.assertEqual(together, before)
         unaffected = [o for o in before['objects'] if o['id'] not in selected['object_ids']]
-        self.assertEqual(changed['objects'][:len(unaffected)], unaffected)
+        self.assertEqual(changed['objects'][-len(unaffected):], unaffected)
         self.assertEqual(len(changed['components']), 2)
         self.assertEqual(changed['components'][-1]['id'], selected['id'])
         self.assertEqual(changed['components'][-1]['parameters']['width_um'], .75)

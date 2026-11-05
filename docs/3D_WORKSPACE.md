@@ -1,8 +1,9 @@
 # Interactive 3D geometry workspace
 
-The searchable [component library](COMPONENT_LIBRARY.md) adds 20 parametric
+The searchable [component library](COMPONENT_LIBRARY.md) includes 27 parametric
 families, polygon editing, material records and layout placement. For a real
-simulation from a library instance, open the [finite-height taper](TAPER_FIELDS.md).
+simulation from a library or custom shape, open [finite-layout fields](LAYOUT_FIELDS.md).
+The [XY drawing guide](XY_LAYOUT.md) covers routes, contours and moving whole components.
 
 
 The **3D design** workspace is a local, interactive geometry editor. It lets you

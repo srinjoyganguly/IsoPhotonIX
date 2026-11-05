@@ -69,7 +69,7 @@ fabrication-qualified component merely because its name matches an example.
 | F — Active devices and lasers | Validated gain/carrier/circuit models coupled to optical measurements | The staged laser gates below, followed by electrical/thermal qualification for named device platforms |
 
 The first part of increment B is available for the centered [linear taper](TAPER_FIELDS.md).
-The next step is calibrated modal measurement at its two different end widths. Larger resonant layouts need a resource
+A dedicated [taper port study](TAPER_PORTS.md) now measures its two different end widths. [Finite-layout fields](LAYOUT_FIELDS.md) cover bounded drawn scenes. Larger resonant layouts need a resource
 estimate and an adequate physical settling time. The existing tested studies
 must remain available throughout this expansion.
 

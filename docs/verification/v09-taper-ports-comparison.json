@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T20:02:44.395016+00:00",
+  "scope": "Direct differences between actual taper S matrices from matched GUI studies. CPU/GPU repeatability and cross-solver differences are separate measurements.",
+  "cases": {
+    "meep_cpu": {
+      "id": "8182bf334b97410e8f3ba6410747e13f",
+      "actual_device": "CPU",
+      "device_name": "CPU",
+      "reference_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "npz_sha256": "69096e755f6e3b6025b8a5cab1f680f1b25355e553d781568e59a2b2861beaa9",
+      "implementation_sha256": "bc565e7ed148d41fbc70ba0caa85c949bbc2964f8a335db91999ab95efb628e2"
+    },
+    "fdtdx_cpu": {
+      "id": "106408dead5243739ceef12f37e17ace",
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "reference_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "npz_sha256": "ab1a1633d9e77a7ae7d0e590949fdd22be6231984ec5d06e27221d0d2b301e52",
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    },
+    "fdtdx_gpu": {
+      "id": "ebe98b2f342f429180789b34e5bf00c1",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "reference_planes_um": [
+        -1.75,
+        1.75
+      ],
+      "npz_sha256": "195db13038de7839c3968b265c6c08576bc0a7fd34b673b66b124a45af86f0c1",
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa"
+    }
+  },
+  "same_physical_configuration": true,
+  "all_four_stages_settled_per_case": true,
+  "wavelength_um": [
+    1.45,
+    1.4953125,
+    1.5435483870967743,
+    1.5950000000000002,
+    1.6500000000000004
+  ],
+  "valid_bins_per_case": 5,
+  "fdtdx_cpu_gpu": {
+    "overall_complex_relative_l2": 4.2252244233516024e-08,
+    "maximum_absolute_complex_difference": 7.610311635050185e-08,
+    "maximum_wavelength_difference_um": 0.0,
+    "maximum_port_neff_difference": 0.0,
+    "entries": {
+      "S11": {
+        "max_abs_complex_difference": 7.610311635050185e-08,
+        "max_abs_modal_power_difference": 1.907452846469952e-09,
+        "max_abs_principal_phase_difference_rad": 2.1451493685327697e-06
+      },
+      "S21": {
+        "max_abs_complex_difference": 4.1780859229675756e-08,
+        "max_abs_modal_power_difference": 6.245133898907795e-08,
+        "max_abs_principal_phase_difference_rad": 2.7751748122147847e-08
+      },
+      "S12": {
+        "max_abs_complex_difference": 4.481399495782578e-08,
+        "max_abs_modal_power_difference": 8.707940868379893e-08,
+        "max_abs_principal_phase_difference_rad": 1.1768966961178785e-08
+      },
+      "S22": {
+        "max_abs_complex_difference": 4.1194099628276015e-08,
+        "max_abs_modal_power_difference": 9.454797543571435e-10,
+        "max_abs_principal_phase_difference_rad": 1.482002381117755e-06
+      }
+    }
+  },
+  "meep_vs_fdtdx_cpu": {
+    "overall_complex_relative_l2": 0.09251555626349019,
+    "maximum_absolute_complex_difference": 0.10201005065909632,
+    "maximum_wavelength_difference_um": 4.440892098500626e-16,
+    "maximum_port_neff_difference": 0.015886773818081013,
+    "entries": {
+      "S11": {
+        "max_abs_complex_difference": 0.014719979040862929,
+        "max_abs_modal_power_difference": 0.0002004916358289692,
+        "max_abs_principal_phase_difference_rad": 3.069014352022027
+      },
+      "S21": {
+        "max_abs_complex_difference": 0.10196534825750353,
+        "max_abs_modal_power_difference": 0.001046462703919282,
+        "max_abs_principal_phase_difference_rad": 0.10201602144797324
+      },
+      "S12": {
+        "max_abs_complex_difference": 0.10201005065909632,
+        "max_abs_modal_power_difference": 0.0034153080643253286,
+        "max_abs_principal_phase_difference_rad": 0.10210666174568507
+      },
+      "S22": {
+        "max_abs_complex_difference": 0.014649251591442172,
+        "max_abs_modal_power_difference": 0.00021860753621247622,
+        "max_abs_principal_phase_difference_rad": 2.685776847362645
+      }
+    }
+  },
+  "formulas": "Relative L2 uses all complex bins and entries. Power differences use raw |S|\u00b2. Phase difference is the principal argument of candidate times conjugate(reference), with amplitudes above 1e-8. No phase fitting, interpolation or amplitude normalization.",
+  "limits": "One finite-height taper on one mesh. Meep and FDTDX have different material/source/mode sampling. External benchmark agreement and convergence require separate checks."
+}

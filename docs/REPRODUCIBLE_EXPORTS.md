@@ -2,8 +2,8 @@
 
 The workbench exports both editable Python and a Jupyter notebook for every
 supported executable study, including the original 2D fields, finite-height 3D
-fields, 2D port measurements, the finite-height 3D modal study and the
-[finite-height library taper](TAPER_FIELDS.md). A separate
+fields, 2D port measurements, finite-height 3D modal studies, [taper fields](TAPER_FIELDS.md),
+[finite-layout fields](LAYOUT_FIELDS.md) and [taper S-parameters](TAPER_PORTS.md). A separate
 geometry export preserves editor boxes, cylinders, rings and polygon prisms
 with holes, including rotations, material records, component recipes, geometric
 ports and hidden-state flags. Use the taper **study** export for a numerical
@@ -164,6 +164,15 @@ All model limitations, convergence requirements and unsettled-bin flags still
 apply to reproduced output.
 
 ## Verification
+
+The v0.9 finite-layout field study passed six Python/notebook replays
+from actual GUI downloads across Meep CPU and FDTDX CPU/NVIDIA, with identical
+numerical array bytes. The 27-family geometry check passed 56 actual script
+and notebook executions. [Layout replay record](verification/v09-layout-exports.json)
+· [All design replays](verification/v09-library-exports.json).
+Taper modal measurements retain each end's complex effective indices and
+native reference/device monitor arrays. The [taper measurement guide](TAPER_PORTS.md)
+documents the physical planes, source conventions and sensitivity limits.
 
 The v0.8 taper checks cover six actual GUI-download replays. Python and Jupyter
 each reproduced every saved numerical array byte-for-byte on Meep CPU, FDTDX

@@ -11,3 +11,6 @@
 .study3d-taper-layout dl div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0 8px; }
 .study3d-taper-layout dt, .study3d-taper-layout dd { margin: 0; font-size: 10px; line-height: 1.5; }
 .study3d-taper-layout dt { color: #91a7bb; }
+
+.study3d-preset { display:grid; gap:4px; flex-basis:100%; justify-items:start; }
+.study3d-preset small { color:#a4bacb; font-size:10px; line-height:1.4; }

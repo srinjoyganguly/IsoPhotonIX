@@ -1,0 +1,218 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T19:48:37.686Z",
+  "run_id": "ebe98b2f342f429180789b34e5bf00c1",
+  "config": {
+    "schema_version": 7,
+    "study_type": "taper-ports-3d",
+    "geometry": {
+      "schema": "photonics-workbench-geometry",
+      "schema_version": 2,
+      "units": "um",
+      "name": "Linear taper",
+      "mode": "draft-3d",
+      "domain": {
+        "x": 4,
+        "y": 3,
+        "z": 2.5
+      },
+      "objects": [
+        {
+          "id": "component-taper-1",
+          "name": "Linear width transition",
+          "visible": true,
+          "kind": "polygon",
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "size": {
+            "x": 1,
+            "y": 0.5,
+            "z": 0.5
+          },
+          "radius": 1,
+          "inner_radius": 0.6,
+          "rotation_deg": 0,
+          "refractive_index": 2,
+          "vertices": [
+            {
+              "x": -1,
+              "y": -0.375
+            },
+            {
+              "x": 1,
+              "y": -0.5
+            },
+            {
+              "x": 1,
+              "y": 0.5
+            },
+            {
+              "x": -1,
+              "y": 0.375
+            }
+          ],
+          "holes": [],
+          "material_id": "generic-core",
+          "component_id": "component-taper"
+        }
+      ],
+      "materials": [
+        {
+          "id": "generic-core",
+          "name": "Generic dielectric \u00b7 n = 2",
+          "model": "constant-nk",
+          "reference_wavelength_um": 1.55,
+          "source": "Original workbench design preset.",
+          "notes": "Illustrative lossless constant index, not a measured material dataset.",
+          "n": 2,
+          "k": 0
+        }
+      ],
+      "components": [
+        {
+          "id": "component-taper",
+          "family": "taper",
+          "generator_version": 1,
+          "parameters": {
+            "length_um": 2,
+            "input_width_um": 0.75,
+            "output_width_um": 1,
+            "height_um": 0.5
+          },
+          "object_ids": [
+            "component-taper-1"
+          ],
+          "placement": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "rotation_deg": 0
+          },
+          "material_id": "generic-core",
+          "ports": [
+            {
+              "name": "in",
+              "x": -1,
+              "y": 0,
+              "z": 0,
+              "angle_deg": 180,
+              "width_um": 0.75
+            },
+            {
+              "name": "out",
+              "x": 1,
+              "y": 0,
+              "z": 0,
+              "angle_deg": 0,
+              "width_um": 1
+            }
+          ]
+        }
+      ]
+    },
+    "cladding_index": 1,
+    "wavelength_min_um": 1.45,
+    "wavelength_max_um": 1.65,
+    "frequency_points": 5,
+    "resolution": 16,
+    "pml_um": 0.75,
+    "max_after_sources_fs": 600,
+    "decay_by": 1e-07,
+    "spectrum_tolerance": 0.0001,
+    "solver": "fdtdx",
+    "device": "gpu"
+  },
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "new_solver_jobs": 1,
+  "read_only": false,
+  "valid_bins": 5,
+  "downloads": {
+    "csv": "sparameters-ebe98b2f.csv",
+    "spectrum": "sparameters-ebe98b2f.json",
+    "results": "waveguide-ebe98b2f.zip",
+    "code": "photonics-ebe98b2f-python-notebook.zip"
+  },
+  "checks": [
+    "Explicit target required; invalid physical input rejected",
+    "Real four-direction S-matrix and measured settling",
+    "All plotted power/amplitude/phase/real/imaginary samples equal actual API values",
+    "Complex matrix real/imaginary values inspectable by keyboard",
+    "CSV and JSON downloads exactly equal saved API data",
+    "Result and standalone Python/notebook ZIP downloads",
+    "Actual finite-height field slice pixel matches saved Ez values",
+    "Passport solver and complex array hashes visible",
+    "Immutable saved configuration after editing",
+    "390px layout without page overflow",
+    "No browser exceptions"
+  ],
+  "browser_errors": [],
+  "target": "fdtdx:gpu",
+  "mode_neff_ports_real": [
+    [
+      1.549141764640808,
+      1.6435495615005493
+    ],
+    [
+      1.5256184339523315,
+      1.6255905628204346
+    ],
+    [
+      1.5003044605255127,
+      1.6062244176864624
+    ],
+    [
+      1.4730638265609741,
+      1.5853064060211182
+    ],
+    [
+      1.443771481513977,
+      1.5626766681671143
+    ]
+  ],
+  "wavelength_um": [
+    1.45,
+    1.4953125,
+    1.5435483870967743,
+    1.595,
+    1.65
+  ],
+  "valid_bins_by_frequency": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "reference_planes": {
+    "port_1_x_um": -1.75,
+    "port_2_x_um": 1.75
+  },
+  "source_archive_sha256": "f41b27963f85a95cd18e0b9a3aef833a302c0dd8417499633b8808425a950bd6",
+  "source_implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+  "settlement": {
+    "reference_forward": {
+      "settled": true,
+      "energy_ratio": 8.408311373553357e-12,
+      "spectral_relative_change": 4.528452895827259e-09
+    },
+    "device_forward": {
+      "settled": true,
+      "energy_ratio": 8.49525744889279e-12,
+      "spectral_relative_change": 2.0736510525536717e-09
+    },
+    "reference_reverse": {
+      "settled": true,
+      "energy_ratio": 9.50503998425889e-12,
+      "spectral_relative_change": 2.673654633153622e-09
+    },
+    "device_reverse": {
+      "settled": true,
+      "energy_ratio": 9.44122471174813e-12,
+      "spectral_relative_change": 2.9575829530197537e-09
+    }
+  }
+}

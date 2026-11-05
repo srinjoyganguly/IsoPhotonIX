@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "preflight": false,
+  "new_solver_jobs": 1,
+  "checked_at": "2026-11-05T19:25:41.641Z",
+  "run_id": "4540de6c996143ad9d4c22ffdb6db1d8",
+  "target": "meep:cpu",
+  "actual_device": "CPU",
+  "device_name": "CPU",
+  "shape": [
+    43,
+    57,
+    85
+  ],
+  "material_grid_check": {
+    "bulk_voxels": 202455,
+    "maximum_bulk_error": 0,
+    "rule": "Compare only uniform 3x3x3 neighborhoods. Interface values include Meep interpolation."
+  },
+  "compiled_material_sha256": "b25b25fcc33990891f7992978ada7bc4de48c5244aeb25f945f7c226990262de",
+  "checks": [
+    "Edited dipole and explicit execution target",
+    "Actual nine plane/component canvas samples match stored solver slices",
+    "Native material grid, passport and immutable config",
+    "Downloaded runnable Python and notebook"
+  ],
+  "browser_errors": []
+}

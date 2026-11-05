@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T19:56:31.529Z",
+  "browser": "156.0.8078.81",
+  "component_metrics": [
+    {
+      "id": "lumerical-coupler",
+      "vendor": "Ansys Lumerical MODE",
+      "metrics": 4
+    },
+    {
+      "id": "tidy3d-strip-plugin",
+      "vendor": "Tidy3D waveguide plugin",
+      "metrics": 6
+    }
+  ],
+  "cases": [
+    {
+      "id": "comsol-slab",
+      "reference_kind": "analytic_reference",
+      "computed_neff": 1.4029088673573864,
+      "reference_neff": 1.402911575825797,
+      "relative_error": 0.0000019306052194110924
+    },
+    {
+      "id": "tidy3d-strip",
+      "reference_kind": "published_solver_value",
+      "computed_neff": 2.4486493809612986,
+      "reference_neff": 2.448339,
+      "relative_error": 0.00012677205293007293
+    },
+    {
+      "id": "lumerical-slab",
+      "reference_kind": "published_solver_value",
+      "computed_neff": 2.851213702612577,
+      "reference_neff": 2.84825,
+      "relative_error": 0.0010405345782767788
+    },
+    {
+      "id": "lumerical-slab-script",
+      "reference_kind": "published_solver_value",
+      "computed_neff": 2.847928619049539,
+      "reference_neff": 2.84825,
+      "relative_error": 0.00011283453013638898
+    }
+  ],
+  "checks": [
+    "Every published component metric, local computation, source, displayed percentage and limitation matches the comparison API; the downloaded JSON is exact",
+    "All displayed neff values and relative differences equal the actual MPB benchmark API report",
+    "Each card identifies analytic versus published solver references and the mode-only scope",
+    "Official source links, numerical refinement details and reproduction commands preserved",
+    "Downloaded evidence JSON equals the complete API response",
+    "Report provenance hash retained",
+    "390px mobile layout has no horizontal overflow",
+    "Missing report and HTTP failure show no numerical result cards",
+    "Refresh recovers the actual evidence report",
+    "No browser exceptions"
+  ],
+  "new_solver_run": false,
+  "transport": "Actual benchmark data; only empty-report and HTTP-failure UI states intercepted",
+  "browser_errors": []
+}

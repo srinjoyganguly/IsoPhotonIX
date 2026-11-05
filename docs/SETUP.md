@@ -10,15 +10,15 @@ workers in those interpreters, so Meep's native dependencies and JAX's CUDA
 runtime do not need to share one environment. No environment files or secrets
 need to be uploaded anywhere.
 
-For the v0.8 installed preview, use the local wheel, then
+For the v0.9 installed preview, use the local wheel, then
 `photonics-workbench setup meep` with Conda to install Meep and MPB.
 `photonics-workbench web` serves the bundled GUI and `photonics-workbench doctor`
 checks the solver targets. The [packaging guide](PACKAGING.md) gives the
 installation commands and tested platforms.
 
-For source development, complete sections 1 and 4 to edit the 20-family
+For source development, complete sections 1 and 4 to edit the 27-family
 component library locally. Install the appropriate solver environment to run
-the [finite-height taper](TAPER_FIELDS.md) and the other qualified studies.
+the [finite-height taper](TAPER_FIELDS.md) and other qualified studies, including [finite-layout fields](LAYOUT_FIELDS.md) and [taper ports](TAPER_PORTS.md).
 The remaining library families support design editing and geometric export.
 
 **Verification note:** The API was installed and tested in fresh isolated
@@ -56,9 +56,9 @@ locally:
 ```
 
 The application suite includes model, API, complex-port, source-archive and
-Python/notebook export contracts. The v0.8 run had 148 tests. 143 passed and five native Meep checks were
-skipped in the API interpreter. The taper received separate real checks in
-the Meep interpreter. [Verification](verification/v08-checks.json).
+Python/notebook export contracts. The v0.9 run had 165 tests. 159 passed and six native checks were skipped in the
+API interpreter. The solver environments ran separate physical checks.
+[Verification](verification/v09-checks.json).
 Actual solver checks are recorded separately in the relevant study guides.
 The API wheelhouse is a local cache and is not committed.
 

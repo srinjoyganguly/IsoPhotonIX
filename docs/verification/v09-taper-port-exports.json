@@ -1,0 +1,398 @@
+{
+  "passed": true,
+  "checked_at_utc": "2026-11-05T20:06:48.747978+00:00",
+  "executions": 6,
+  "scope": "Three actual GUI downloads, Python script and executed notebook each. Each run used the numerical source captured with that specific GUI run and its chosen solver target. Tests compared Ex/Ey/Ez, permittivity, coordinates, complex S, incident/outgoing amplitudes, both per-port mode indices and native monitor streams.",
+  "all_arrays_pointwise_passed": true,
+  "all_s_array_bytes_exact": true,
+  "all_array_bytes_equal": false,
+  "limits": "On GPU, notebook energy reductions differed by at most 1.53e-5 absolute; relative L2 below 6.4e-8. This variation passed the same pointwise bounds; S, modes and raw phasors remained exact. All original comparison thresholds were retained.",
+  "cases": [
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T20:06:05.822957+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "study_type": "taper-ports-3d",
+      "target": "meep:cpu",
+      "run_id": "8182bf334b97410e8f3ba6410747e13f",
+      "device_name": "CPU",
+      "archive_sha256": "5ed52e0ef0f762ca1a4d04488288f75c0b3993fdb4c277c413296ed26e856a5a",
+      "config_sha256": "0a893184aa49ea96e11374a1f59f9051486cfaa42664d2965b85af216b6e6125",
+      "implementation_sha256": "bc565e7ed148d41fbc70ba0caa85c949bbc2964f8a335db91999ab95efb628e2",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "byte_exact_by_file": {
+          "arrays.npz": true,
+          "device-forward-monitors.npz": true,
+          "device-reverse-monitors.npz": true,
+          "reference-forward-monitors.npz": true,
+          "reference-reverse-monitors.npz": true,
+          "sparameters.npz": true
+        },
+        "diagnostic_variations": [],
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "fields",
+          "field",
+          "epsilon",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "CPU",
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "bc565e7ed148d41fbc70ba0caa85c949bbc2964f8a335db91999ab95efb628e2",
+        "nonexact_arrays": [],
+        "published_s_max_abs_error": 0.0,
+        "mode_neff_ports_max_abs_error": 0.0
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "byte_exact_by_file": {
+          "arrays.npz": true,
+          "device-forward-monitors.npz": true,
+          "device-reverse-monitors.npz": true,
+          "reference-forward-monitors.npz": true,
+          "reference-reverse-monitors.npz": true,
+          "sparameters.npz": true
+        },
+        "diagnostic_variations": [],
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "fields",
+          "field",
+          "epsilon",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "CPU",
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 283.63371969817865,
+            "reproduced": 283.63371969817865,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "bc565e7ed148d41fbc70ba0caa85c949bbc2964f8a335db91999ab95efb628e2",
+        "nonexact_arrays": [],
+        "published_s_max_abs_error": 0.0,
+        "mode_neff_ports_max_abs_error": 0.0
+      },
+      "notebook_plot_png_bytes": 44983,
+      "notebook_plot_count": 2,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 178.93
+    },
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T19:55:10.983730+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "study_type": "taper-ports-3d",
+      "target": "fdtdx:cpu",
+      "run_id": "106408dead5243739ceef12f37e17ace",
+      "device_name": "cpu",
+      "archive_sha256": "3fae1b50e88f6671793a3d3170e3e411dd68a2eb91122a9fbb8120d7fa7359b3",
+      "config_sha256": "0b1098e57beffc70789516315c6fe8e7227e5f03d72ef1b5c3676e2b2316b5c7",
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "byte_exact_by_file": {
+          "arrays.npz": true,
+          "device-forward-monitors.npz": true,
+          "device-reverse-monitors.npz": true,
+          "port-modes.npz": true,
+          "reference-forward-monitors.npz": true,
+          "reference-reverse-monitors.npz": true,
+          "sparameters.npz": true
+        },
+        "diagnostic_variations": [],
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "fields",
+          "field",
+          "epsilon",
+          "epsilon_components",
+          "raw_fields",
+          "raw_epsilon",
+          "raw_permittivity_components",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cpu:0",
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+        "nonexact_arrays": [],
+        "published_s_max_abs_error": 0.0,
+        "mode_neff_ports_max_abs_error": 0.0
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "byte_exact_by_file": {
+          "arrays.npz": true,
+          "device-forward-monitors.npz": true,
+          "device-reverse-monitors.npz": true,
+          "port-modes.npz": true,
+          "reference-forward-monitors.npz": true,
+          "reference-reverse-monitors.npz": true,
+          "sparameters.npz": true
+        },
+        "diagnostic_variations": [],
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "fields",
+          "field",
+          "epsilon",
+          "epsilon_components",
+          "raw_fields",
+          "raw_epsilon",
+          "raw_permittivity_components",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cpu:0",
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+        "nonexact_arrays": [],
+        "published_s_max_abs_error": 0.0,
+        "mode_neff_ports_max_abs_error": 0.0
+      },
+      "notebook_plot_png_bytes": 50899,
+      "notebook_plot_count": 2,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 538.66
+    },
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T19:53:06.871947+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "study_type": "taper-ports-3d",
+      "target": "fdtdx:gpu",
+      "run_id": "ebe98b2f342f429180789b34e5bf00c1",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "archive_sha256": "f41b27963f85a95cd18e0b9a3aef833a302c0dd8417499633b8808425a950bd6",
+      "config_sha256": "0f33f59be9c2ce51e6c0de6db9d0f3274d1f2b3bfb614bbf66c29ca32f9e93bd",
+      "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "byte_exact_by_file": {
+          "arrays.npz": true,
+          "device-forward-monitors.npz": true,
+          "device-reverse-monitors.npz": true,
+          "port-modes.npz": true,
+          "reference-forward-monitors.npz": true,
+          "reference-reverse-monitors.npz": true,
+          "sparameters.npz": true
+        },
+        "diagnostic_variations": [],
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "fields",
+          "field",
+          "epsilon",
+          "epsilon_components",
+          "raw_fields",
+          "raw_epsilon",
+          "raw_permittivity_components",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cuda:0",
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+        "nonexact_arrays": [],
+        "published_s_max_abs_error": 0.0,
+        "mode_neff_ports_max_abs_error": 0.0
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": false,
+        "all_array_bytes_equal": false,
+        "byte_exact_by_file": {
+          "arrays.npz": true,
+          "device-forward-monitors.npz": false,
+          "device-reverse-monitors.npz": false,
+          "port-modes.npz": true,
+          "reference-forward-monitors.npz": false,
+          "reference-reverse-monitors.npz": false,
+          "sparameters.npz": true
+        },
+        "diagnostic_variations": [],
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "fields",
+          "field",
+          "epsilon",
+          "epsilon_components",
+          "raw_fields",
+          "raw_epsilon",
+          "raw_permittivity_components",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cuda:0",
+        "recorded_physical_times": {
+          "field_time_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          },
+          "actual_duration_fs": {
+            "reference": 319.47045157578907,
+            "reproduced": 319.47045157578907,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+        "nonexact_arrays": [
+          {
+            "filename": "device-forward-monitors.npz",
+            "array": "energy",
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 5.188987786424512e-08
+          },
+          {
+            "filename": "device-reverse-monitors.npz",
+            "array": "energy",
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 5.741756359115156e-08
+          },
+          {
+            "filename": "reference-forward-monitors.npz",
+            "array": "energy",
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 6.391421423386672e-08
+          },
+          {
+            "filename": "reference-reverse-monitors.npz",
+            "array": "energy",
+            "max_abs_error": 1.52587890625e-05,
+            "relative_l2": 5.152536418015099e-08
+          }
+        ],
+        "published_s_max_abs_error": 0.0,
+        "mode_neff_ports_max_abs_error": 0.0
+      },
+      "notebook_plot_png_bytes": 50901,
+      "notebook_plot_count": 2,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 193.85
+    }
+  ],
+  "earlier_meep_replay": "v09-meep-taper-replay-investigation.json",
+  "replay_harness": "scripts/verify_taper_exports.py --study taper-ports --browser-artifacts <download folder> --output <new folder outside checkout>"
+}

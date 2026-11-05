@@ -210,9 +210,7 @@ and verifies them.
 
 The [linear taper](TAPER_FIELDS.md) now runs on Meep CPU and FDTDX CPU/NVIDIA with
 a verified physical material grid, explicit excitation and standalone solver
-exports. The next optical increment is modal transmission and reflection for
-unequal input and output guides. Qualify source/reference planes and
-convergence before reporting insertion loss.
+exports. The [taper port study](TAPER_PORTS.md) measures complex scattering into different end guides. The [finite-layout study](LAYOUT_FIELDS.md) handles bounded passive drawings. Broader multiport, multimode and resonance measurements require independent qualification.
 The remaining backlog is:
 
 - **Geometry:** qualify selected library geometries for simulation; add routing

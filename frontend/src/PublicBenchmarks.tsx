@@ -1,3 +1,4 @@
+import ComponentComparisons from './ComponentComparisons';
 import { useEffect, useState } from 'react';
 import './publicBenchmarks.css';
 
@@ -117,5 +118,6 @@ export function PublicBenchmarks() {
         <details><summary>Complete API evidence JSON</summary><pre>{JSON.stringify(report, null, 2)}</pre></details>
       </div></details>
     </>}
+    <ComponentComparisons/>
   </section>;
 }

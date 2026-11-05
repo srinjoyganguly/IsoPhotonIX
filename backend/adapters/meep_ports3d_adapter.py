@@ -14,10 +14,12 @@ C_UM_PER_FS = .299792458
 def run(config, output_dir):
     if config.get('solver') != 'meep' or config.get('device') != 'cpu':
         raise ValueError('Meep 3D ports require an explicitly selected Meep CPU target.')
-    if config.get('schema_version') != 4 or config.get('study_type') != 'waveguide-ports-3d':
-        raise ValueError('Expected a schema-version-4 finite-height 3D modal-port study.')
-    if config.get('device_kind') not in ('straight', 'gap'):
-        raise ValueError('Only straight and centered cladding-gap studies are supported.')
+    is_taper = (config.get('schema_version'), config.get('study_type')) == (7, 'taper-ports-3d')
+    if not is_taper:
+        if (config.get('schema_version'), config.get('study_type')) != (4, 'waveguide-ports-3d'):
+            raise ValueError('Expected a supported finite-height 3D modal-port study.')
+        if config.get('device_kind') not in ('straight', 'gap'):
+            raise ValueError('Only straight and centered cladding-gap studies are supported.')
     import meep as mp
     import numpy as np
 
@@ -26,21 +28,32 @@ def run(config, output_dir):
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     geometry = config['geometry']
-    objects = {item['id']: item for item in geometry['objects']}
-    if set(objects)-{'core', 'substrate'} or 'core' not in objects:
-        raise ValueError('A centered rectangular core and optional substrate are required.')
-    if any(item['kind'] != 'box' or item['rotation_deg'] % 360 for item in objects.values()):
-        raise ValueError('The modal-port adapter supports only unrotated rectangular solids.')
-    core, substrate = objects['core'], objects.get('substrate')
-    length, height, depth = (float(geometry['domain'][axis]) for axis in 'xyz')
-    width, core_height = core['size']['y'], core['size']['z']
     resolution, pml = config['resolution'], config['pml_um']
-    cladding_index, core_index = config['cladding_index'], core['refractive_index']
+    cladding_index = config['cladding_index']
+    if is_taper:
+        from ..taper_port_geometry import port_layout
+        from .meep_taper import taper_prism
+        profile = port_layout(config)
+        length, height, depth = (profile['domain'][axis] for axis in 'xyz')
+        core_index, core_height = profile['core_index'], profile['height']
+        source_positions = (profile['source_forward_x_um'], profile['source_reverse_x_um'])
+        port_positions = (profile['port_1_x_um'], profile['port_2_x_um'])
+        aperture = (profile['aperture_y_um'], profile['aperture_z_um'])
+        substrate = None
+    else:
+        objects = {item['id']: item for item in geometry['objects']}
+        if set(objects)-{'core', 'substrate'} or 'core' not in objects:
+            raise ValueError('A centered rectangular core and optional substrate are required.')
+        if any(item['kind'] != 'box' or item['rotation_deg'] % 360 for item in objects.values()):
+            raise ValueError('The waveguide port study requires unrotated rectangular solids.')
+        core, substrate = objects['core'], objects.get('substrate')
+        length, height, depth = (float(geometry['domain'][axis]) for axis in 'xyz')
+        width, core_height, core_index = core['size']['y'], core['size']['z'], core['refractive_index']
+        source_offset = length/2-pml-.5
+        source_positions = (-source_offset, source_offset)
+        port_positions = (1-source_offset, source_offset-1)
+        aperture = (height-2*pml, depth-2*pml)
     high_cladding = max(cladding_index, substrate['refractive_index'] if substrate else cladding_index)
-    source_offset = length/2-pml-.5
-    port_offset = source_offset-1
-    port_positions = (-port_offset, port_offset)
-    aperture = (height-2*pml, depth-2*pml)
     frequency_min, frequency_max = 1/config['wavelength_max_um'], 1/config['wavelength_min_um']
     frequency, span = (frequency_min+frequency_max)/2, frequency_max-frequency_min
     count, source_end = config['frequency_points'], 12/(2*span)
@@ -57,7 +70,21 @@ def run(config, output_dir):
     modal_checks = []
     field_time_fs = None
 
-    def materials(kind):
+    def materials(kind, direction):
+        if is_taper:
+            if kind == 'taper':
+                return [taper_prism(mp, profile)[0]]
+            # The incident reference must reproduce the cross section at this
+            # particular input plane. Opposite illuminations differ in width.
+            lead_width = profile['width_in'] if direction == 1 else profile['width_out']
+            # Use the same native Prism material rule on both sides of the
+            # reference subtraction. A Block can give a distinct sampled
+            # cross section even when its physical width is identical.
+            left, right = profile['x_in'], profile['x_out']
+            half = lead_width / 2
+            reference = {**profile, 'width_in':lead_width, 'width_out':lead_width,
+                         'vertices':[(left,-half),(right,-half),(right,half),(left,half)]}
+            return [taper_prism(mp, reference)[0]]
         result = []
         for identifier in ('substrate', 'core'):
             if identifier not in objects:
@@ -77,13 +104,16 @@ def run(config, output_dir):
     def build(kind, direction):
         mp.set_random_seed(0)
         sim = mp.Simulation(cell_size=cell, dimensions=3, resolution=resolution, Courant=.5,
-            default_material=mp.Medium(index=cladding_index), geometry=materials(kind),
+            default_material=mp.Medium(index=cladding_index), geometry=materials(kind, direction),
             boundary_layers=[mp.PML(pml)], symmetries=symmetries,
             sources=[mp.EigenModeSource(mp.GaussianSource(frequency, fwidth=2*span, cutoff=6),
-                center=mp.Vector3(-direction*source_offset), size=plane_size,
+                center=mp.Vector3(source_positions[0 if direction == 1 else 1]), size=plane_size,
                 direction=mp.X, eig_band=1, eig_kpoint=mp.Vector3(direction),
                 eig_match_freq=True, eig_parity=parity, eig_resolution=resolution,
                 eig_tolerance=eig_tolerance)])
+        if is_taper:
+            mp.set_random_seed(0)
+            sim.init_sim()
         monitors = [sim.add_flux(frequency, span, count,
             mp.FluxRegion(center=mp.Vector3(position), size=plane_size, direction=mp.X),
             decimation_factor=1) for position in port_positions]
@@ -218,7 +248,7 @@ def run(config, output_dir):
 
     for direction, suffix in ((1, 'forward'), (-1, 'reverse')):
         reference_data, _ = execute('straight', direction, 'reference_'+suffix)
-        execute(config['device_kind'], direction, 'device_'+suffix, reference_data)
+        execute('taper' if is_taper else config['device_kind'], direction, 'device_'+suffix, reference_data)
 
     print('PORT_STAGE=normalization', flush=True)
     reference_forward, reference_reverse = native_stages['reference_forward'], native_stages['reference_reverse']
@@ -234,14 +264,22 @@ def run(config, output_dir):
     valid = positive & all(item['settled'] for item in settlement.values()) & np.isfinite(s).all(axis=(1, 2))
     frequencies = reference_forward[0]['frequency_per_um']
     order = np.argsort(1/frequencies)
+    extra_arrays = {}
+    left_index = reference_forward[0]['mode_neff'][order].astype(np.complex128)
+    # Keep the original left-port mode_neff field for backward compatibility.
+    # Device modes come from the actual cross section at each physical plane.
+    if is_taper:
+        indices = np.stack([item['mode_neff'] for item in device_forward], axis=1)
+        extra_arrays['mode_neff_ports'] = indices[order].astype(np.complex128)
+        left_index = extra_arrays['mode_neff_ports'][:, 0]
     np.savez_compressed(output/'sparameters.npz', wavelength_um=(1/frequencies)[order], frequency_per_um=frequencies[order],
         s=s[order], incident_amplitude=incident[order], outgoing_amplitude=outgoing[order],
         reference_through=reference_through[order], valid_bin=valid[order],
-        mode_neff=reference_forward[0]['mode_neff'][order].astype(np.complex128),
-        mode_valid=np.ones(count, dtype=bool))
+        mode_neff=left_index,
+        mode_valid=np.ones(count, dtype=bool), **extra_arrays)
     with np.load(output/'arrays.npz', allow_pickle=False) as arrays:
         field_shape = list(arrays['field'].shape)
-    return {'solver': 'meep', 'device': 'cpu', 'actual_device': 'CPU', 'device_name': 'CPU',
+    metadata = {'solver': 'meep', 'device': 'cpu', 'actual_device': 'CPU', 'device_name': 'CPU',
         'versions': {'meep': mp.__version__, 'numpy': np.__version__, 'python': platform.python_version()},
         'dimensions': '3D', 'field_component': 'Ey', 'field_components': ['Ex', 'Ey', 'Ez'],
         'field_shape': field_shape, 'array_order': 'fields[component,z,y,x]; final device_forward ringdown',
@@ -254,7 +292,7 @@ def run(config, output_dir):
         'source': {'type': '3D MPB fundamental Ey-like eigenmode Gaussian pulse', 'band': 1,
             'eig_parity': 'ODD_Y' if substrate else 'ODD_Y + EVEN_Z', 'eig_resolution': resolution,
             'eig_tolerance': eig_tolerance, 'center_frequency_per_um': frequency, 'fwidth_per_um': 2*span,
-            'cutoff': 6, 'source_duration_fs': source_end/C_UM_PER_FS, 'source_x_um': [-source_offset, source_offset],
+            'cutoff': 6, 'source_duration_fs': source_end/C_UM_PER_FS, 'source_x_um': list(source_positions),
             'profile_note': 'Source mode is solved at pulse center; projection modes are solved independently at every reported frequency.'},
         'boundaries': {'all_six_faces': 'PML', 'pml_um': pml,
             'exact_symmetries': ['Y odd'] if substrate else ['Y odd', 'Z even']},
@@ -275,3 +313,10 @@ def run(config, output_dir):
             'Temporal settling and device repeatability do not establish spatial/PML convergence or commercial agreement.',
             'Finite transverse modal aperture and fixed-profile broadband injection require separate sensitivity checks.',
             'S values and passivity/reciprocity discrepancies are never clipped or symmetrized.']}
+
+    if is_taper:
+        metadata['geometry_translation'] = profile
+        metadata['ports'].update(widths_um=[profile['width_in'], profile['width_out']],
+            reference_widths_um={'forward': profile['width_in'], 'reverse': profile['width_out']})
+        metadata['limitations'][1] = 'Single centered finite-height linear taper in homogeneous cladding with constant-width access guides.'
+    return metadata

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-05T19:20:37.969194+00:00",
+  "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/WaveguidePluginDemonstration/",
+  "tidy3d_version": "2.11.2",
+  "solver": "Installed Tidy3D SDK local CPU mode solver",
+  "use_local_subpixel": false,
+  "group_frequency_step_fraction": 0.005,
+  "geometry": "500 nm \u00d7 220 nm cSi/Li1993_293K core in SiO2/Horiba cladding at 1.55 \u00b5m.",
+  "scope": "Local discretization contrast using the same named complex media. The public notebook output remains the reference. MPB is an independent solver.",
+  "rows": [
+    {
+      "grid_resolution": 15,
+      "computed": {
+        "te_neff": 2.5328785162533785,
+        "tm_neff": 1.8925657898006236,
+        "te_group": 4.177417425188878,
+        "tm_group": 4.1890872047008445,
+        "te_area_um2": 0.18574033158098052,
+        "tm_area_um2": 0.3248220041333307
+      },
+      "relative_errors_to_public_output": {
+        "te_neff": 0.03541499921429716,
+        "tm_neff": 0.05755420038137888,
+        "te_group": 0.0009293516678554541,
+        "tm_group": 0.12010773642571439,
+        "te_area_um2": 0.02984786449139046,
+        "tm_area_um2": 0.08778885861996666
+      }
+    },
+    {
+      "grid_resolution": 30,
+      "computed": {
+        "te_neff": 2.479257723133756,
+        "tm_neff": 1.8317648203156518,
+        "te_group": 4.188183819552107,
+        "tm_group": 3.951320310742579,
+        "te_area_um2": 0.19033391269667932,
+        "tm_area_um2": 0.3312173686408364
+      },
+      "relative_errors_to_public_output": {
+        "te_neff": 0.013495363862836082,
+        "tm_neff": 0.023578990107253697,
+        "te_group": 0.0035090316550187147,
+        "tm_group": 0.056531944284241284,
+        "te_area_um2": 0.005854838899723305,
+        "tm_area_um2": 0.06982849053314678
+      }
+    },
+    {
+      "grid_resolution": 60,
+      "computed": {
+        "te_neff": 2.452716802904735,
+        "tm_neff": 1.7881567398232971,
+        "te_group": 4.17318625730652,
+        "tm_group": 3.727208384872958,
+        "te_area_um2": 0.18979509401862385,
+        "tm_area_um2": 0.3434314455622975
+      },
+      "relative_errors_to_public_output": {
+        "te_neff": 0.002645705372807793,
+        "tm_neff": 0.0007889388407367039,
+        "te_group": 8.445655244578295e-05,
+        "tm_group": 0.003392686005176531,
+        "te_area_um2": 0.00866917699591397,
+        "tm_area_um2": 0.03552719041292422
+      }
+    }
+  ]
+}

@@ -17,11 +17,15 @@ def main(argv=None):
     run = commands.add_parser('run', help='run an exported study configuration in its selected solver')
     run.add_argument('config', type=Path)
     run.add_argument('--output', required=True, type=Path, help='new directory for the result')
+    references = commands.add_parser('compare-examples',help='reproduce the published component comparisons with local MPB')
+    references.add_argument('--output',required=True,type=Path,help='new directory for measured results and refinement records')
+    references.add_argument('--case',choices=('all','lumerical-coupler','tidy3d-strip-plugin'),default='all')
+    references.add_argument('--resolutions',nargs='+',type=int,help='increasing grid densities, 24–256 cells/µm')
     setup = commands.add_parser('setup', help='install a managed local numerical environment')
     setup.add_argument('profile', choices=['meep'])
     setup.add_argument('--conda', help='path to the Conda executable')
     setup.add_argument('--offline', action='store_true', help='use the existing Conda package cache')
-    for command in (web, doctor, setup, run):
+    for command in (web, doctor, setup, run, references):
         command.add_argument('--data-dir', type=Path, help='location for local runs, settings and managed environments')
     args = parser.parse_args(argv)
     if args.command == 'web' and not 1 <= args.port <= 65535:
@@ -55,6 +59,13 @@ def main(argv=None):
     if args.command == 'run':
         return subprocess.call([sys.executable, str(resources / 'scripts/run_simulation.py'),
                                 str(args.config.resolve()), '--output', str(args.output.resolve())])
+    if args.command == 'compare-examples':
+        from backend.runtime import interpreter, worker_env
+        command = [interpreter('meep'), str(resources/'scripts/benchmark_component_references.py'),
+                   '--output', str(args.output.resolve()), '--case', args.case]
+        if args.resolutions:
+            command.extend(['--resolutions', *map(str, args.resolutions)])
+        return subprocess.call(command, env=worker_env('meep','cpu'))
     if args.command == 'setup':
         from .managed_setup import setup_meep
         try:

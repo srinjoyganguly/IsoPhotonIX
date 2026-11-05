@@ -9,6 +9,11 @@ from .volume import COMPONENTS, stored_volume
 
 def physics_spec(config):
     # Presentation state and execution device do not change this physical study.
+    if config.get('study_type') == 'layout-3d':
+        from .layout_grid import rasterize
+        spec, _, _ = rasterize(config)
+        keys = ('study_type', 'wavelength_um', 'resolution', 'duration_fs', 'pml_um', 'cladding_index', 'solver')
+        return {k: config[k] for k in keys} | {k: spec[k] for k in ('grid','source_um','epsilon_xyz_sha256')}
     if config.get('study_type') == 'taper-3d':
         from .taper_geometry import taper_geometry
         keys = ('study_type', 'schema_version', 'wavelength_um', 'resolution', 'duration_fs', 'pml_um', 'cladding_index', 'solver')
@@ -24,7 +29,7 @@ def compare_runs(reference, candidate, directory):
     if reference['id'] == candidate['id']:
         raise ValueError('Choose two different completed 3D runs.')
     for job in (reference, candidate):
-        if job['status'] != 'completed' or job['config'].get('study_type') not in ('waveguide-3d', 'taper-3d'):
+        if job['status'] != 'completed' or job['config'].get('study_type') not in ('waveguide-3d', 'taper-3d', 'layout-3d'):
             raise ValueError('Both comparison runs must be completed finite-height 3D studies.')
     if physics_spec(reference['config']) != physics_spec(candidate['config']):
         raise ValueError('Same-study comparison requires the same solver, geometry, materials, source settings, resolution and duration. Only the execution device and presentation settings may differ. No automatic rescaling or source calibration is applied.')

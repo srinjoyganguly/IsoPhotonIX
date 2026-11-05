@@ -155,6 +155,12 @@ def example3d():
 def parse_study(value):
     # Preserve the v1 slab format and reject unknown versions, never downgrade.
     from .model import WaveguideConfig
+    if value.get("schema_version") == 7:
+        from .taper_ports import TaperPortStudy
+        return TaperPortStudy.model_validate(value)
+    if value.get("schema_version") == 6:
+        from .layout_study import LayoutStudy
+        return LayoutStudy.model_validate(value)
     if value.get("schema_version") == 5:
         from .taper_study import TaperStudy
         return TaperStudy.model_validate(value)

@@ -8,7 +8,7 @@ import './study3d.css';
 type Solver = 'meep' | 'fdtdx';
 type Device = 'cpu' | 'gpu';
 type Settings = { wavelength_um: number; resolution: number; duration_fs: number; pml_um: number; cladding_index: number };
-type StudyFormat = { schema_version: 2; study_type: 'waveguide-3d' } | { schema_version: 5; study_type: 'taper-3d' };
+type StudyFormat = { schema_version: 2; study_type: 'waveguide-3d' } | { schema_version: 5; study_type: 'taper-3d' } | { schema_version: 6; study_type: 'layout-3d'; source_um: {x:number;y:number;z:number} };
 export type Study3D = Settings & StudyFormat & { geometry: GeometryDocument; solver: Solver; device: Device };
 type Target = { solver: Solver; device: Device; available: boolean; reason?: string; device_name?: string; version?: string };
 type Job = { id: string; status: string; config: Study3D; logs?: string; error?: string; result?: Record<string, unknown>; elapsed_s?: number };
@@ -16,14 +16,16 @@ type PhysicalLayout = {
   domain: { x: number; y: number; z: number };
   x_in: number; x_out: number; width_in: number; width_out: number; height: number; source_x: number;
 };
-type Validation = { valid: boolean; estimate: Record<string, unknown>; warnings: string[]; physical_layout?: PhysicalLayout };
+type Validation = { valid: boolean; estimate: Record<string, unknown>; warnings: string[]; physical_layout?: PhysicalLayout; scene_layout?: { domain: Record<string,number>; source_um: Record<string,number>; objects: unknown[] } };
 type Plane = 'xy' | 'xz' | 'yz';
 type Component = 'Ex' | 'Ey' | 'Ez';
 type Volume = { components: Component[]; shape: number[]; x_um: number[]; y_um: number[]; z_um: number[]; field_peak_abs: number; field_peaks_by_component?: Record<Component, number>; metadata: Record<string, unknown> };
 type Slice = { field: number[][]; epsilon: number[][]; u_um: number[]; v_um: number[]; u_axis: string; v_axis: string; normal_axis: string; coordinate_um: number; index: number; plane: Plane; component: Component; metadata: Record<string, unknown> };
 type Comparison = { kind: 'same-study-repeatability'; reference_run_id: string; candidate_run_id: string; components: Record<Component, { relative_l2: number | null; max_abs_error: number }>; overall_relative_l2: number | null; epsilon_identical: boolean; commercial_agreement: 'not_validated'; notes: string[]; reference_target: string; candidate_target: string };
 const initialSettings: Settings = { wavelength_um: 1.55, resolution: 16, duration_fs: 60, pml_um: .75, cladding_index: 1 };
+const fieldNames = {'waveguide-3d':'Finite-height waveguide','taper-3d':'Library taper','layout-3d':'Finite layout'};
 const fieldRoutes = {
+  'layout-3d': {example:'/api/layout/example',validate:'/api/layout/validate',jobs:'/api/layout/jobs'},
   'waveguide-3d': { example: '/api/example3d', validate: '/api/validate3d', jobs: '/api/jobs3d' },
   'taper-3d': { example: '/api/taper/example', validate: '/api/taper/validate', jobs: '/api/taper/jobs' },
 };
@@ -175,11 +177,14 @@ export function VolumeSlices({ job }: { job: { id: string; result?: Record<strin
   </div>;
 }
 
-export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geometry: GeometryDocument; onOpenGeometry: (document: GeometryDocument) => void; onEditGeometry: (document: GeometryDocument) => void }) {
+export function Study3DPanel({ geometry, familyNames, onOpenGeometry, onEditGeometry }: { geometry: GeometryDocument; familyNames: Record<string,string>; onOpenGeometry: (document: GeometryDocument) => void; onEditGeometry: (document: GeometryDocument) => void }) {
   const [studySettings, setStudySettings] = useState({
     'waveguide-3d': initialSettings,
+    'layout-3d': {...initialSettings, duration_fs:35},
     'taper-3d': { ...initialSettings, resolution: 20 },
   });
+  const [source, setSource] = useState({x:0,y:0,z:0});
+  const [model, setModel] = useState<StudyFormat['study_type'] | 'auto'>('auto');
   const [targets, setTargets] = useState<Target[]>([]);
   const [choice, setChoice] = useState<{ kind: Study3D['study_type']; target: string } | null>(null);
   const [checkingTargets, setCheckingTargets] = useState(true);
@@ -191,9 +196,17 @@ export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geo
   const [opening, setOpening] = useState(false);
   const [retryValidation, setRetryValidation] = useState(0);
   const [recent, setRecent] = useState<Job[]>([]);
-  const libraryDraft = geometry.schema_version === 2;
-  const format: StudyFormat = libraryDraft ? { schema_version: 5, study_type: 'taper-3d' } : { schema_version: 2, study_type: 'waveguide-3d' };
-  const kind = format.study_type;
+  const instance = geometry.components?.[0];
+  const presetFamily = geometry.components?.length === 1 && instance && Object.hasOwn(familyNames,instance.family) ? instance.family : null;
+  const currentGeometry = useRef(geometry); currentGeometry.current = geometry;
+  const singleTaper = geometry.components?.length === 1 && geometry.objects.length === 1 &&
+    instance?.family === 'taper' && Object.values(instance.placement).every(value => value === 0);
+  const automatic = geometry.schema_version === 1 ? 'waveguide-3d' : singleTaper ? 'taper-3d' : 'layout-3d';
+  const kind = model === 'auto' ? automatic : model;
+  const format: StudyFormat = kind === 'layout-3d' ? {schema_version:6, study_type:kind, source_um:source}
+    : kind === 'taper-3d' ? {schema_version:5, study_type:kind} : {schema_version:2, study_type:kind};
+  const libraryDraft = kind === 'taper-3d';
+  const finite = kind === 'layout-3d';
   const settings = studySettings[kind];
   const routes = fieldRoutes[kind];
   const target = choice?.kind === kind ? choice.target : '';
@@ -211,7 +224,7 @@ export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geo
   }
   function loadRecent() {
     request<Job[]>('/api/jobs').then(value => setRecent(value.filter(item =>
-      item.config?.study_type === 'waveguide-3d' || item.config?.study_type === 'taper-3d'))).catch(() => {});
+      item.config?.study_type in fieldRoutes))).catch(() => {});
   }
   useEffect(() => { checkTargets(); loadRecent(); }, []);
   useEffect(() => {
@@ -226,12 +239,17 @@ export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geo
     const timer = setInterval(() => request<Job>(`/api/jobs/${job.id}`).then(value => { if (active) { setJob(value); if (!['queued', 'running'].includes(value.status)) loadRecent(); } }).catch(reason => { if (active) setError(`Run status: ${reason.message}`); }), 800);
     return () => { active = false; clearInterval(timer); };
   }, [job?.id, job?.status]);
-  async function openExample(type: Study3D['study_type']) {
+  async function openExample(type: Study3D['study_type'], family?: string) {
     setOpening(true); setError('');
     try {
-      const example = await request<Study3D>(fieldRoutes[type].example);
+      const url = fieldRoutes[type].example + (family ? '?family=' + encodeURIComponent(family) : '');
+      const example = await request<Study3D>(url);
+      if (currentGeometry.current !== geometry) throw new Error('The editor changed while opening this example. Review the current design and try again.');
       if (example.study_type !== type) throw new Error('Returned example uses a different study type.');
       const document = validateGeometryDocument(example.geometry);
+      if (family && (document.components?.length !== 1 || document.components[0].family !== family)) throw new Error('Returned field setup has a different component family.');
+      setModel(type);
+      if (example.study_type === 'layout-3d') setSource(example.source_um);
       onOpenGeometry(document);
       setStudySettings(current => ({ ...current, [type]: settingsFrom(example) }));
       setChoice(null);
@@ -265,23 +283,32 @@ export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geo
   const actualDevice = job?.result?.device_name ?? job?.result?.actual_device;
   return <section className="study3d panel" aria-label="Finite-height 3D simulation">
     <div className="study3d-heading">
-      <div><h2>{libraryDraft ? 'Library taper field study' : 'Finite-height waveguide study'}</h2>
+      <div><h2>{fieldNames[kind]} field study</h2>
         <p>{libraryDraft ? 'Validate the current editor design, then compute its electric field and material grid.' : 'A real 3D calculation, with absorbing boundaries on all six faces.'}</p></div>
       <div className="study3d-examples">
+        {presetFamily && <div className="study3d-preset"><button className="button primary compact" onClick={() => openExample('layout-3d',presetFamily)} disabled={opening || !!busy}>Open tested {familyNames[presetFamily]} field setup</button><small>Opens a new design. Undo restores the previous layout.</small></div>}
         <button className="button secondary compact" onClick={() => openExample('waveguide-3d')} disabled={opening || !!busy}>Open runnable 3D waveguide</button>
+        <button className="button secondary compact" onClick={() => openExample('layout-3d')} disabled={opening || !!busy}>Open finite coupler example</button>
         <button className="button secondary compact" onClick={() => openExample('taper-3d')} disabled={opening || !!busy}>Open runnable taper</button>
       </div>
     </div>
     <div className="study3d-layout">
       <div className="study3d-setup">
-        <h3>STUDY SETTINGS</h3><div className="study3d-parameters">{parameter('wavelength_um', 'Wavelength', 'µm', .05)}{parameter('cladding_index', 'Cladding index', 'n', .05)}{parameter('resolution', 'Resolution', 'cells / µm', 1)}{parameter('duration_fs', 'Duration', 'fs', 10)}{parameter('pml_um', 'PML thickness', 'µm', .0625)}</div>
-        <div className="study3d-model-note">{libraryDraft
+        <h3>STUDY SETTINGS</h3>
+        <label className="parameter">Excitation model<select aria-label="3D excitation model" value={model} disabled={!!busy} onChange={e=>{setModel(e.target.value as typeof model);setChoice(null);}}>
+          <option value="auto">From current geometry</option><option value="layout-3d">Finite layout · local Ey dipole</option>
+          <option value="taper-3d">Taper · matched access guides</option><option value="waveguide-3d">Straight waveguide study</option>
+        </select></label>
+        {finite && <fieldset className="study3d-parameters"><legend>Ey dipole position (µm)</legend>{(['x','y','z'] as const).map(a=>
+          <label className="parameter" key={a}>{a.toUpperCase()}<input type="number" aria-label={`Dipole ${a} (µm)`} step=".05" value={Number.isFinite(source[a]) ? source[a] : ''} onChange={e=>setSource({...source,[a]:e.target.value === '' ? NaN : Number(e.target.value)})}/></label>)}</fieldset>}
+        <div className="study3d-parameters">{parameter('wavelength_um', 'Wavelength', 'µm', .05)}{parameter('cladding_index', 'Cladding index', 'n', .05)}{parameter('resolution', 'Resolution', 'cells / µm', 1)}{parameter('duration_fs', 'Duration', 'fs', 10)}{parameter('pml_um', 'PML thickness', 'µm', .0625)}</div>
+        <div className="study3d-model-note">{finite ? 'Drive the finite structure as drawn with a local electric dipole. Solids end inside homogeneous cladding. The last solid wins where materials overlap.' : libraryDraft
           ? 'Use one centred, unrotated linear taper from the component library. Its finite-height polygon and lossless constant core material define the device. The study adds matched straight access guides extending through the X absorbing layers.'
           : 'Use one centred rectangular core spanning the domain along X. An optional full-width substrate can meet its bottom face. Dimensions and indices come from the inspector. Visibility affects only the preview.'}</div>
-        {core && substrate && <button className="study3d-fit" onClick={fitSubstrate}>Fit substrate to core</button>}
+        {kind==='waveguide-3d' && core && substrate && <button className="study3d-fit" onClick={fitSubstrate}>Fit substrate to core</button>}
         <div className={`study3d-validation ${validationError ? 'invalid' : ''}`} role="status">{validationError ? <><strong>Study needs attention</strong><p>{validationError}</p><button onClick={() => setRetryValidation(value => value + 1)}>Recheck study</button></> : valid ? <><strong>3D study validated</strong>{estimate && <p>{Array.isArray(estimate.grid) ? `${estimate.grid.join(' × ')} cells` : estimate.cells ? `${Number(estimate.cells).toLocaleString()} cells` : 'Bounded study ready for execution'}{typeof estimate.planning_memory_mib === 'number' ? ` · memory planning allowance ${estimate.planning_memory_mib.toFixed(0)} MiB` : ''}</p>}</> : <><span className="spinner tiny"/> Checking geometry and numerical settings…</>}</div>
         {valid && !!validation?.data.warnings?.length && <details className="study3d-assumptions"><summary>Study assumptions & limits</summary>{typeof estimate?.note === 'string' && <p>{estimate.note}</p>}{validation.data.warnings.map((value, i) => <p key={i}>{value}</p>)}</details>}
-        {libraryDraft ? layout && <div className="study3d-taper-layout" aria-label="Validated taper simulation layout">
+        {finite ? valid && validation.data.scene_layout && <p className="study3d-source">Applied dipole: {Object.values(validation.data.scene_layout.source_um).map(n=>n.toFixed(4)).join(', ')} µm · {validation.data.scene_layout.objects.length} sampled solids · cell {Object.values(validation.data.scene_layout.domain).map(n=>n.toFixed(3)).join(' × ')} µm</p> : libraryDraft ? layout && <div className="study3d-taper-layout" aria-label="Validated taper simulation layout">
           <h4>Simulation domain and excitation</h4>
           <dl>
             <div><dt>FDTD cell (X × Y × Z)</dt><dd>{[layout.domain.x, layout.domain.y, layout.domain.z].map(n => n.toFixed(3)).join(' × ')} µm</dd></div>
@@ -300,10 +327,10 @@ export function Study3DPanel({ geometry, onOpenGeometry, onEditGeometry }: { geo
       </div>
       <div className="study3d-output">
         <div className="study3d-output-heading"><h3>INSPECT & EXPORT</h3>{job && <span className={`status-tag ${job.status}`}><i/>{job.status}</span>}</div>
-        {!!recent.length && <label className="study3d-recent">Recent 3D runs<select aria-label="Recent 3D run" value={job && recent.some(item => item.id === job.id) ? job.id : ''} disabled={!!busy} onChange={event => openRun(event.target.value)}><option value="">Select a saved run…</option>{recent.map(item => <option key={item.id} value={item.id}>{item.id.slice(0, 8)} · {item.config.study_type === 'taper-3d' ? 'Taper' : 'Guide'} · {solverName(item.config.solver)} / {item.config.device.toUpperCase()} · {item.status}</option>)}</select></label>}
+        {!!recent.length && <label className="study3d-recent">Recent 3D runs<select aria-label="Recent 3D run" value={job && recent.some(item => item.id === job.id) ? job.id : ''} disabled={!!busy} onChange={event => openRun(event.target.value)}><option value="">Select a saved run…</option>{recent.map(item => <option key={item.id} value={item.id}>{item.id.slice(0, 8)} · {fieldNames[item.config.study_type]} · {solverName(item.config.solver)} / {item.config.device.toUpperCase()} · {item.status}</option>)}</select></label>}
         {job ? <><div className="study3d-run-facts"><span>Run <strong>{job.id.slice(0, 10)}</strong></span><span><strong>{solverName(job.config.solver)} / {job.config.device.toUpperCase()}</strong></span><span>{job.config.wavelength_um} µm · {job.config.resolution} cells / µm</span></div>
           {hasChanged && <div className="snapshot-note">The editor differs from this run. Results retain their saved geometry and study settings.</div>}
-          {job.status === 'completed' && <><div className="study3d-execution-proof">Executed on {String(actualDevice ?? 'recorded target')} · finite 3D volume</div><VolumeSlices key={job.id} job={job}/><div className="study3d-export"><a className="button primary compact" href={`/api/jobs/${job.id}/export`}>Export 3D results .zip</a><button className="button secondary compact" onClick={() => saveStudy(job.config)}>Save run configuration</button>{job.config.study_type === 'taper-3d' && <a className="button secondary compact" href={`/api/jobs/${job.id}/reproduce`}>Export taper run Python + notebook</a>}</div><RunPassport key={job.id} jobId={job.id}/><StudyComparison key={job.id} job={job} recent={recent.filter(item => item.config.study_type === job.config.study_type)}/></>}
+          {job.status === 'completed' && <><div className="study3d-execution-proof">Executed on {String(actualDevice ?? 'recorded target')} · finite 3D volume</div><VolumeSlices key={job.id} job={job}/><div className="study3d-export"><a className="button primary compact" href={`/api/jobs/${job.id}/export`}>Export 3D results .zip</a><button className="button secondary compact" onClick={() => saveStudy(job.config)}>Save run configuration</button>{job.config.study_type !== 'waveguide-3d' && <a className="button secondary compact" href={`/api/jobs/${job.id}/reproduce`}>Export {job.config.study_type === 'taper-3d' ? 'taper' : 'layout'} run Python + notebook</a>}</div><RunPassport key={job.id} jobId={job.id}/><StudyComparison key={job.id} job={job} recent={recent.filter(item => item.config.study_type === job.config.study_type)}/></>}
           {job.error && <div className="error-banner" role="alert">{job.error}</div>}
           <details className="logs" open={!!busy || job.status === 'failed'}><summary>3D solver log</summary><pre>{job.logs || 'Waiting for the isolated solver worker…'}</pre></details>
         </> : <div className="study3d-empty"><span>↗</span><h3>Inspect a real volume.</h3><p>Open the runnable example, edit its geometry, choose CPU or GPU, then run. Completed results expose Ex, Ey, Ez and material slices on XY, XZ and YZ planes.</p></div>}
