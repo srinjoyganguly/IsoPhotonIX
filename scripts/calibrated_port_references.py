@@ -3,6 +3,7 @@
 No cloud simulation, API key or commercial installation is used.
 """
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -66,11 +67,27 @@ def solve(td, mode_solver, case, mesh):
     return row
 
 
+def published_comparisons(report):
+    published = {'lumerical-slab':{'even':2.84825},
+                 'lumerical-coupler':{'even':2.378022,'odd':2.317864,'transfer_length_um':12.8827}}
+    comparisons={}
+    for name, values in published.items():
+        row=report['cases'][name][-1]
+        comparisons[name]={}
+        for mode,reference in values.items():
+            measured=row['transfer_length_um'] if mode=='transfer_length_um' else row['modes'][mode]['neff']
+            comparisons[name][mode]={'published_Lumerical':reference,'measured_Tidy3D_local':measured,
+                                     'relative_difference':(measured-reference)/reference}
+    report.update(direct_published_comparisons=comparisons,source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                  qualification='Local double-precision mode solver on uniform grids without subpixel smoothing; parity is checked at mirrored physical coordinates. These are cross-section measurements.')
+
+
 def main():
     import tidy3d as td
     from tidy3d.plugins.mode import ModeSolver
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--refine-couplers',action='store_true',help='also solve both coupled cross sections with 6.25 nm cells')
     args=parser.parse_args()
     if args.output.exists():parser.error('Choose a fresh JSON file.')
     td.config.simulation.use_local_subpixel=False
@@ -78,12 +95,15 @@ def main():
             'references':{'lumerical_coupler':LUMERICAL_COUPLER,'lumerical_slab':LUMERICAL_SLAB,'tidy3d':TIDY3D},'cases':{}}
     for name in ('lumerical-slab','multimode','lumerical-coupler','workbench-coupler','multimode-3d'):
         meshes=(.0125,.00625,.003125) if name in ('lumerical-slab','multimode') else (.025,.0125)
+        if args.refine_couplers and name.endswith('coupler'):
+            meshes=(*meshes,.00625)
         rows=[]
         for mesh in meshes:
             row=solve(td,ModeSolver,name,mesh)
             print(name,row,flush=True)
             rows.append(row)
         report['cases'][name]=rows
+    published_comparisons(report)
     args.output.write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
 
 if __name__=='__main__':

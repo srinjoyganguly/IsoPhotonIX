@@ -39,7 +39,8 @@
   "checks": {
     "largest_guided_output_sum": 0.985382037938876,
     "max_power_reciprocity_residual": 0.0007857793780509104,
-    "max_complex_reciprocity_residual": 0.004123235467008433
+    "max_complex_reciprocity_residual": 0.004123235467008433,
+    "straight_reference_offmode_input_power_max": 9.64195485237008e-09
   },
   "mesh_sensitivity": {},
   "native_runs": [
@@ -59,10 +60,24 @@
           2.3392478393977445,
           2.4008385812003423
         ]
-      ]
+      ],
+      "straight_reference_offmode_input_power_max": 9.64195485237008e-09
     }
   ],
-  "controls": [],
+  "controls": [
+    {
+      "control": "straight",
+      "resolution": 16,
+      "pml_um": 1.0,
+      "aperture_um": 3.0,
+      "after_source_um_over_c": 80.0,
+      "original_sha256": "8db99c9dadc16e316d5dda249364a695b6b4fa6a616d8825d12049e09f7be5bb",
+      "native_phase_version": 1,
+      "scope": "One separately measured left TE0 input column.",
+      "max_spurious_mode_power": 3.5638273103375664e-10,
+      "max_through_power_error": 0.003027598277168253
+    }
+  ],
   "s_real": [
     [
       [
@@ -305,7 +320,7 @@
   ],
   "source_arrays": {
     "file": "v011-multimode-finite.npz",
-    "sha256": "1071bde6729b2834c64deec31ee5571ef22cd2ab0dc605c02c577206bf6293ba",
+    "sha256": "1824a80ca431f5fe11e3a8663faf411843f906319c5548cbf70a080762aa3b66",
     "contents": "Original measured modal arrays, corrected electric-basis S, available single-launch controls and independent matrices. All four input columns are independently simulated."
   },
   "vendor_sources": {

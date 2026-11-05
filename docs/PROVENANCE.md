@@ -131,3 +131,7 @@ details recorded in [BeamZ reference studies](BEAMZ_REFERENCE.md). The
 [FDTDX setup](FDTDX_MANAGED_SETUP.md) and [desktop window](DESKTOP_WINDOW.md)
 record the host-specific qualifications. No solver credentials or commercial
 application installations are required for these paths.
+
+## Calibrated components after the event
+
+The finite-height coupler, splitter, modal step, ring and grating drivers are workbench implementations. Meep, MPB, FDTDX, JAX, SciPy and the optional local Tidy3D mode solver carry out the numerical work. The code describes and measures explicitly defined physical geometries. Comparisons identify which parameters came from published vendor examples and how raw data or graph readings were obtained. The original vendor project files and screenshots are excluded from the distribution. [Coverage](CALIBRATED_COMPONENTS.md) · [Port-mode sources](CALIBRATED_VENDOR_CHECKS.md) · [Ring and grating sources](RING_GRATING_CALIBRATION.md).

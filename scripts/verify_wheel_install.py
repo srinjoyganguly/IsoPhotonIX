@@ -100,6 +100,16 @@ def main():
             assert all(name.startswith('photonics_workbench/') or '.dist-info/' in name for name in wheel_names)
             assert not any(set(name.split('/')) & {'.local', 'runs', '.git', '.env', 'node_modules', '__pycache__'} for name in wheel_names)
         assert get('/api/benchmarks')['status'] == 'available'
+        presets = get('/api/calibrations')
+        assert len(presets)==6 and {p['case'] for p in presets}=={'coupler','splitter','ring','grating','multimode','multimode-3d'}
+        for preset in presets:
+            config={'case':preset['case'],'solver':'meep','device':'cpu'}
+            with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
+                assert {'config.json','calibration.ipynb','run.py'} <= set(source.namelist())
+        command([cli,'calibrate','coupler','--solver','fdtdx','--device','gpu','--export-only',
+                 '--output',target/'calibrated-gpu-program'],'calibrated-cli.log')
+        with zipfile.ZipFile(target/'calibrated-gpu-program/python-notebook.zip') as archive:
+            assert json.loads(archive.read('config.json'))['device']=='gpu'
         cavity = get('/api/cavity-benchmark')
         assert cavity['passed'] and len(cavity['reference_comparison']) == 4
         command([cli, 'benchmark-cavity', '--output', target/'cavity-study'], 'cavity.log')

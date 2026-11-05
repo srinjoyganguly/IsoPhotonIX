@@ -30,6 +30,15 @@ def main(argv=None):
     beamz = commands.add_parser('benchmark-beamz', help='run a local BeamZ reference study')
     beamz.add_argument('--device', required=True, choices=['cpu', 'gpu'])
     beamz.add_argument('--output', required=True, type=Path, help='new folder for the numerical reference study')
+    calibration = commands.add_parser('calibrate',help='run a calibrated component preset and export its exact program and measurements')
+    calibration.add_argument('case',choices=['coupler','splitter','ring','grating','multimode','multimode-3d'])
+    calibration.add_argument('--solver',choices=['meep','fdtdx'],required=True)
+    calibration.add_argument('--device',choices=['cpu','gpu'],required=True)
+    calibration.add_argument('--resolution',type=int,help='cells per µm on supported matrix presets')
+    calibration.add_argument('--offset-um',type=float,help='lateral offset for a multimode joint, in µm')
+    calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned'],help='FDTDX permittivity placement')
+    calibration.add_argument('--export-only', action='store_true', help='write a runnable Python and notebook ZIP without executing the solver')
+    calibration.add_argument('--output',type=Path,required=True,help='new local study directory')
     mesh = commands.add_parser('compare-taper-mesh', help='measure changes between two saved taper-port meshes')
     mesh.add_argument('coarse', type=Path, help='coarse result directory or extracted result export')
     mesh.add_argument('fine', type=Path, help='finer result directory for the same physical study and target')
@@ -39,7 +48,7 @@ def main(argv=None):
     setup.add_argument('--conda', help='path to the Conda executable')
     setup.add_argument('--offline', action='store_true', help='install from the existing package cache or wheelhouse')
     setup.add_argument('--wheelhouse', type=Path, help='local directory of wheels for a managed pip-based solver')
-    for command in (web, desktop, doctor, setup, run, references, cavity, beamz):
+    for command in (web, desktop, doctor, setup, run, references, cavity, beamz, calibration):
         command.add_argument('--data-dir', type=Path, help='location for local runs, settings and managed environments')
     args = parser.parse_args(argv)
     if args.command in ('web', 'desktop') and not 1 <= args.port <= 65535:
@@ -69,6 +78,18 @@ def main(argv=None):
         return 0
     os.environ['PHOTONICS_DATA_DIR'] = str(data)
     data.mkdir(mode=0o700, parents=True, exist_ok=True)
+    if args.command == 'calibrate':
+        from backend.calibrations import Calibration, design_archive, run_config
+        try:
+            model=Calibration(case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model)
+            if args.export_only:
+                archive = design_archive(model)
+                args.output.mkdir(parents=True, exist_ok=False)
+                (args.output/'python-notebook.zip').write_bytes(archive)
+                return 0
+            return run_config(model.model_dump(),args.output)
+        except (OSError,ValueError,RuntimeError) as error:
+            parser.exit(1,f'Calibration failed: {error}\n')
     if args.command == 'desktop':
         from .desktop import launch_desktop
         try:

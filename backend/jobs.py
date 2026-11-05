@@ -2,6 +2,7 @@ import json
 import os
 import signal
 import subprocess
+import sys
 import threading
 import time
 import uuid
@@ -119,6 +120,8 @@ class JobManager:
             return dict(job)
 
     def _command(self, config, output):
+        if config.get('study_type') == 'calibrated-component':
+            return [sys.executable, '-m', 'backend.calibrations', str(output)]
         return [interpreter(config["solver"], config["device"]), "-m", "backend.worker", str(output/"config.json"), str(output)]
 
     def _run(self, job_id):
@@ -142,6 +145,8 @@ class JobManager:
                 self._save(job)
             try:
                 limit = 1200 if config.get('study_type') in ('waveguide-ports-3d','taper-ports-3d') else 300
+                if config.get('study_type') == 'calibrated-component':
+                    limit = 6*60*60
                 code = process.wait(timeout=limit)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid, signal.SIGKILL)
@@ -152,10 +157,16 @@ class JobManager:
                     return
                 if code != 0:
                     raise RuntimeError(f"Solver worker exited with code {code}. See the run log for the cause; no fallback was attempted.")
-                if not (output/"arrays.npz").exists() or not (output/"metadata.json").exists():
-                    raise RuntimeError("Solver exited without numerical results.")
-                job.update(status="completed", result=json.loads((output/"metadata.json").read_text()),
-                           elapsed_s=round(time.monotonic()-started, 3))
+                if config.get('study_type') == 'calibrated-component':
+                    numerical = output/'calculation'
+                    if not (numerical/'arrays.npz').is_file() or not (numerical/'report.json').is_file():
+                        raise RuntimeError('Calibration ended without the measured report and arrays.')
+                    result = {'case':config['case'], 'solver':config['solver'], 'device':config['device']}
+                else:
+                    if not (output/"arrays.npz").exists() or not (output/"metadata.json").exists():
+                        raise RuntimeError("Solver exited without numerical results.")
+                    result = json.loads((output/"metadata.json").read_text())
+                job.update(status="completed", result=result, elapsed_s=round(time.monotonic()-started, 3))
                 self._save(job)
         except Exception as exc:
             with self.lock:

@@ -8,7 +8,7 @@ from setuptools.command.build_py import build_py
 from setuptools.command.sdist import sdist
 
 ROOT = Path(__file__).resolve().parent
-MODULES = ('__init__ app benchmarks capabilities compare3d component_library geometry_draft jobs '
+MODULES = ('__init__ app benchmarks calibrated_geometry calibrations calibration_replay capabilities compare3d component_library geometry_draft jobs '
            'layout_examples layout_grid layout_study library_layout mode_benchmarks model passport ports ports3d ports_capabilities ports_probe probe '
            'reproduce reproduction_runtime runtime solver_environment source_snapshot sparameters spectra study3d taper_geometry '
            'taper_refinement taper_study taper_ports taper_port_geometry thin_film volume worker').split()
@@ -18,6 +18,8 @@ FILES = ('LICENSE', 'CREDITS.md', 'frontend/THIRD_PARTY_NOTICES.txt', 'frontend/
          'docs/licenses/MEEP-GPL-2.0.txt', 'docs/licenses/MPB-GPL-2.0.txt', 'docs/licenses/BEAMZ-APACHE-2.0.txt',
          'environment-meep.yml', 'environment-meep-linux-64.lock',
          'environment-fdtdx-cpu-linux-64.lock', 'environment-fdtdx-cuda12-linux-64.lock', 'environment-beamz-cpu-linux-64.lock', 'requirements-api.txt', 'scripts/run_simulation.py', 'scripts/benchmark_component_references.py', 'scripts/benchmark_passive_cavity.py', 'scripts/benchmark_beamz_reference.py',
+         'docs/verification/v011-calibrated-index.json', 'scripts/calibrate_multiport.py', 'scripts/calibrate_fdtdx_multiport.py',
+         'scripts/calibrate_multimode.py', 'scripts/calibrate_ring.py', 'scripts/calibrate_grating.py',
          'docs/verification/v010-passive-cavity.json', 'docs/verification/v010-beamz-cpu.json', 'docs/verification/v010-beamz-gpu.json',
          'requirements-fdtdx.txt', 'requirements-fdtdx-cuda.txt', 'docs/verification/public-mode-benchmarks.json',
          'docs/verification/public-component-comparisons.json', 'docs/verification/v09-family-fields.json', 'examples/finite-waveguide-3d.json', 'examples/ports-gap.json', 'examples/ports-straight.json',

@@ -42,7 +42,8 @@ def assess(runs, references, controls, dest):
             samples[f'mesh{mesh}_original_phase_version'] = phase
         notes.append({'mesh':mesh, 'native_arrays_sha256':digest(path),'native_phase_version':phase,
                       'phase_conversion':'Signed flux overlap to electric amplitudes' if phase==1 else 'Recorded electric amplitudes',
-                      'left_port_neff':indices.tolist()})
+                      'left_port_neff':indices.tolist(),
+                      'straight_reference_offmode_input_power_max':original['checks'].get('straight_reference_offmode_input_power_max')})
         matrices[mesh] = matrix
     meshes = sorted(matrices)
     mesh = meshes[-1]
@@ -57,6 +58,10 @@ def assess(runs, references, controls, dest):
                'max_power_reciprocity_residual':float(np.max(abs(power-power.transpose(0,2,1)))),
                'max_complex_reciprocity_residual':float(np.max(abs(matrix-matrix.transpose(0,2,1))))}
     passed = np.isfinite(matrix).all() and metrics['largest_guided_output_sum'] < 1.03 and metrics['max_power_reciprocity_residual'] < .03
+    if original['case']=='multimode-3d':
+        crossfeed=next(row['straight_reference_offmode_input_power_max'] for row in notes if row['mesh']==mesh)
+        metrics['straight_reference_offmode_input_power_max']=crossfeed
+        passed=passed and crossfeed is not None and crossfeed<.01
     if references:
         refs = {}
         for label,file in zip(('coarse','refined','wide'),references):

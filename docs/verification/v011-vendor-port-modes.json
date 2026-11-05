@@ -119,6 +119,22 @@
           }
         },
         "transfer_length_um": 12.946197839505786
+      },
+      {
+        "mesh_um": 0.00625,
+        "modes": {
+          "even": {
+            "neff": 2.382815281111925,
+            "polarization_fraction": 0.8173191387396488,
+            "parity_overlap": 0.9975220394502851
+          },
+          "odd": {
+            "neff": 2.323810915010048,
+            "polarization_fraction": 0.694303220813566,
+            "parity_overlap": -0.994928583127605
+          }
+        },
+        "transfer_length_um": 13.134621235687593
       }
     ],
     "workbench-coupler": [
@@ -153,6 +169,22 @@
           }
         },
         "transfer_length_um": 25.40641937198195
+      },
+      {
+        "mesh_um": 0.00625,
+        "modes": {
+          "even": {
+            "neff": 2.5975007652801105,
+            "polarization_fraction": 0.8173135721223198,
+            "parity_overlap": 1.0000000000000056
+          },
+          "odd": {
+            "neff": 2.5646124375967867,
+            "polarization_fraction": 0.7428774704887001,
+            "parity_overlap": -1.000000000000006
+          }
+        },
+        "transfer_length_um": 23.56459128789838
       }
     ],
     "multimode-3d": [
@@ -199,21 +231,21 @@
     "lumerical-coupler": {
       "even": {
         "published_Lumerical": 2.378022,
-        "measured_Tidy3D_local": 2.3897475313222687,
-        "relative_difference": 0.004930791776639834
+        "measured_Tidy3D_local": 2.382815281111925,
+        "relative_difference": 0.0020156588593062295
       },
       "odd": {
         "published_Lumerical": 2.317864,
-        "measured_Tidy3D_local": 2.3298843954728334,
-        "relative_difference": 0.005185979622977573
+        "measured_Tidy3D_local": 2.323810915010048,
+        "relative_difference": 0.002565687637431687
       },
       "transfer_length_um": {
         "published_Lumerical": 12.8827,
-        "measured_Tidy3D_local": 12.946197839505786,
-        "relative_difference": 0.004928923246352526
+        "measured_Tidy3D_local": 13.134621235687593,
+        "relative_difference": 0.019555002886630386
       }
     }
   },
-  "qualification": "Local Tidy3D 2.11.2 CPU mode solver, double precision, unsmoothed uniform grids. Each reported parity uses both sides of a mode on mirrored physical coordinates. These are cross-section results, not a vendor FDTD scattering matrix.",
-  "source_sha256": "5b02f2ab65c2b3cfab65ec2a8a1882fb4a2d6d6f2c5e5937e06aa66a6e699e48"
+  "qualification": "Local double-precision mode solver on uniform grids without subpixel smoothing; parity is checked at mirrored physical coordinates. These are cross-section measurements.",
+  "source_sha256": "f612af10f16849321992e352a210d45c14276eb46e806b774e9b3ecba512d294"
 }

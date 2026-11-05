@@ -1,14 +1,18 @@
 import io
 import json
 import zipfile
+import tempfile
+from pathlib import Path
 from contextlib import asynccontextmanager
 from urllib.parse import urlsplit
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse, StreamingResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, Response
+from starlette.background import BackgroundTask
 from fastapi.staticfiles import StaticFiles
 
+from .calibrations import CASES, Calibration, design_archive, result_zip
 from .capabilities import capabilities
 from .jobs import JobManager
 from .model import WaveguideConfig
@@ -41,7 +45,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.10.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.11.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -58,7 +62,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.10.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.11.0-preview.1", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -430,6 +434,71 @@ def compare_taper_mesh_runs(config: TaperMeshRequest):
         raise HTTPException(409, "Saved taper results are incomplete. Check both result exports.") from exc
 
 
+@app.get('/api/calibrations')
+def calibrated_presets():
+    index = ROOT/'docs/verification/v011-calibrated-index.json'
+    receipts = json.loads(index.read_text()) if index.is_file() else {}
+    return [{'case':key,'name':title,'scope':scope,'routes':(['meep:cpu','fdtdx:cpu','fdtdx:gpu']
+             if key in ('coupler','splitter') else ['meep:cpu']), 'evidence':receipts.get(key)}
+            for key,(title,scope) in CASES.items()]
+
+
+@app.post('/api/reproduce/calibration')
+def export_calibration_inputs(config: Calibration):
+    return code_archive(design_archive(config), f'workbench-{config.case}-python-notebook.zip')
+
+
+@app.post('/api/calibrations/jobs',status_code=202)
+def start_calibration(config: Calibration):
+    return submit_checked(config)
+
+
+@app.get('/api/calibrations/jobs')
+def calibrated_jobs():
+    with manager.lock:
+        rows = sorted((j for j in manager.jobs.values() if j['config'].get('study_type')=='calibrated-component'),
+                      key=lambda j:j['created_at'],reverse=True)
+        return [dict(j) for j in rows[:50]]
+
+
+def calibration_directory(job_id):
+    job = get_job(job_id)
+    if job['config'].get('study_type') != 'calibrated-component':
+        raise HTTPException(409, 'Choose a calibrated component job.')
+    return job, manager.directory/job_id
+
+
+@app.get('/api/calibrations/jobs/{job_id}/report')
+def calibration_report(job_id: str):
+    job, folder = calibration_directory(job_id)
+    if job['status'] not in ('completed','failed'):
+        raise HTTPException(409,'The numerical measurement has not finished.')
+    try:
+        return json.loads((folder/'calculation/report.json').read_text())
+    except (ValueError,OSError) as exc:
+        raise HTTPException(409,'No complete calibration report is available.') from exc
+
+
+def calibration_download(job_id):
+    job, folder = calibration_directory(job_id)
+    if job['status'] != 'completed':
+        raise HTTPException(409,'Complete the study before downloading its numerical export.')
+    with tempfile.NamedTemporaryFile(suffix='.zip',delete=False) as tmp:
+        path=Path(tmp.name)
+    try:
+        result_zip(folder,path)
+        return FileResponse(path,media_type='application/zip',filename=f'workbench-{job["config"]["case"]}-{job_id[:8]}.zip',
+                            background=BackgroundTask(path.unlink,missing_ok=True))
+    except BaseException:
+        path.unlink(missing_ok=True)
+        raise
+
+
+@app.get('/api/calibrations/jobs/{job_id}/export')
+def export_calibration(job_id: str):
+    return calibration_download(job_id)
+
+
 @app.get("/api/jobs")
 def jobs():
     return [manager.get(j) for j in reversed(list(manager.jobs))][:30]
@@ -473,6 +542,8 @@ def field(job_id: str):
     job = get_job(job_id)
     if job["status"] != "completed":
         raise HTTPException(409, "Results are available only after successful completion.")
+    if job["config"].get("study_type") == "calibrated-component":
+        raise HTTPException(409, "Inspect the calibrated component report and its array download.")
     if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d","layout-3d","taper-ports-3d"):
         raise HTTPException(409, "This is a 3D run. Use the volume and slice endpoints with explicit component and plane.")
     with np.load(manager.directory/job_id/"arrays.npz") as arrays:
@@ -580,6 +651,8 @@ def modal_csv(job_id: str):
 def reproduce_run(job_id: str):
     from .reproduce import study_bundle
     job,output = completed_output(job_id)
+    if job['config'].get('study_type') == 'calibrated-component':
+        return calibration_download(job_id)
     try:
         build_passport(job,output)
         config = json.loads((output/'config.json').read_text())
@@ -620,6 +693,8 @@ def export(job_id: str):
     job = get_job(job_id)
     if job["status"] != "completed":
         raise HTTPException(409, "Only completed runs can be exported as results.")
+    if job['config'].get('study_type') == 'calibrated-component':
+        return calibration_download(job_id)
     stream = io.BytesIO()
     output = manager.directory/job_id
     try:

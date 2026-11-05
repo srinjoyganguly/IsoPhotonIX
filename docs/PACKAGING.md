@@ -1,12 +1,12 @@
 # Install Photonics Workbench locally
 
-The **0.10.0a1 wheel** contains the local service, the compiled React interface,
+The **0.11.0a1 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
-separate environments. The wheel is available as a local build artifact.
+separate environments. Tagged wheels are distributed through [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases).
 
-The [v0.10 verification summary](verification/v010-checks.json) covers this preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
+The [calibration checklist](CALIBRATED_COMPONENTS.md) tracks the v0.11 results. The [v0.10 verification summary](verification/v010-checks.json) records the preceding preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
 offline installation, an installed CLI run of the Lumerical comparison, and
 real simulations of the photonic-crystal line-defect layout on CPU and NVIDIA.
 The installed NVIDIA field bytes and material digest matched the corresponding
@@ -20,7 +20,7 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.10.0a1-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.11.0a1-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
@@ -45,6 +45,19 @@ runs, registry and caches live under `$XDG_DATA_HOME/photonics-workbench`
 (default `~/.local/share/photonics-workbench`). Use `--data-dir /path/to/state`
 on any command or set `PHOTONICS_DATA_DIR` to select a different store. A
 second installed server can use a separate store and port.
+
+## Run or export a calibrated preset
+
+Open **Calibrated components** in the web or desktop interface. Select an execution target. **Export Python + notebook** saves the preset before simulation. After a successful local run, the result export includes its measured arrays and a reference manifest. Both Python and Jupyter execute the captured numerical source in the chosen worker.
+
+The installed command uses the same code:
+
+```bash
+photonics-workbench calibrate multimode --solver meep --device cpu --resolution 48 --offset-um 0.125 --output joint-results
+photonics-workbench calibrate splitter --solver fdtdx --device gpu --export-only --output splitter-program
+```
+
+The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. A replay of a result export checks its numerical arrays and recorded observables. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
 
 ## Set up the numerical runtimes
 

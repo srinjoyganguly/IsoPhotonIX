@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function CodeExport({ value, kind = 'study', disabled = false }: { value: unknown; kind?: 'study' | 'geometry'; disabled?: boolean }) {
+export function CodeExport({ value, kind = 'study', disabled = false }: { value: unknown; kind?: 'study' | 'geometry' | 'calibration'; disabled?: boolean }) {
   const [busy,setBusy] = useState(false);
   const [error,setError] = useState('');
   async function download() {

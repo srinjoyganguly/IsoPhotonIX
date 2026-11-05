@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-11-05T22:49:15.822045+00:00",
+  "comparison_count": 2,
+  "coverage": {
+    "coupler/legacy_cuda": "pending native records",
+    "coupler/yee_cuda": "pending native records",
+    "coupler/yee_cpu": "pending native records",
+    "splitter/legacy_cuda": "measured",
+    "splitter/yee_cuda": "measured",
+    "splitter/yee_cpu": "pending native records"
+  },
+  "scope": "Fundamental through outputs at the stated physical planes; each device phase is additionally compared to an independently measured uniform straight on its own solver. Data are archived physical amplitudes; no fitted rotation or replacement of S. Legacy and corrected FDTDX samplings are separate.",
+  "cases": {
+    "splitter/legacy_cuda": {
+      "case": "splitter",
+      "resolution": 16,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "x_planes_um": [
+        -4.75,
+        4.75
+      ],
+      "straight_guide_y_um": 0.0,
+      "meep_reference_far_over_near": [
+        [
+          0.9962723357554122,
+          0.08551671131851372
+        ],
+        [
+          0.4293911858093181,
+          -0.9031158196891619
+        ],
+        [
+          -0.696703009139711,
+          -0.7172733270643205
+        ]
+      ],
+      "fdtdx_reference_far_over_near": [
+        [
+          -0.5719873047972504,
+          0.820145113265606
+        ],
+        [
+          0.4751977196665983,
+          0.8798782915192219
+        ],
+        [
+          0.9993843826162969,
+          -0.03410217737263193
+        ]
+      ],
+      "straight_fdtdx_minus_meep_phase_rad": [
+        2.0941632467483746,
+        2.202583827620566,
+        2.3075377155581482
+      ],
+      "meep_device_archive_sha256": "0325de59a31ffdd028950c86828fb459ad1791c48b9daed8789048177fc577fe",
+      "fdtdx_device_archive_sha256": "333433a42d9f2f69f7673edf86500799df2de28ac98fcbef8e3c820e5ba6fd68",
+      "meep_straight_receipt_sha256": "d9c3c4b68f2fb51e536a356a29270970455028f7e54ac277f404629a2d97352f",
+      "description": "Excess = principal arg(S_device / T_straight) at the named physical x planes. Straight reference uses an uninterrupted guide in the incident lane. Off-lane device outputs therefore compare to a straight path of the same longitudinal length. This diagnostic changes no physical S coefficient and measures neither loss nor an independently optimized phase correction.",
+      "actual_execution": [
+        "Meep CPU",
+        "cuda:0"
+      ],
+      "fdtdx_material_model": "legacy-x",
+      "entries": [
+        {
+          "incident": "left_center",
+          "outgoing": "right_lower",
+          "meep_S": [
+            [
+              -0.47241217455425555,
+              0.42989460328506407
+            ],
+            [
+              0.16954005676986356,
+              0.6126929634418714
+            ],
+            [
+              0.6199079416863159,
+              0.11860795612851027
+            ]
+          ],
+          "fdtdx_S": [
+            [
+              -0.11144231710721197,
+              -0.6253816694818349
+            ],
+            [
+              -0.5698002799039232,
+              -0.23678273449678314
+            ],
+            [
+              -0.49627539535240434,
+              0.35511772047335016
+            ]
+          ],
+          "meep_power": [
+            0.4079826326007031,
+            0.4041364983007108,
+            0.3983537034227476
+          ],
+          "fdtdx_power": [
+            0.4035216225661114,
+            0.3807384223343633,
+            0.37239786342637354
+          ],
+          "raw_fdtdx_minus_meep_phase_rad": [
+            2.1327605455389054,
+            2.2345969219598256,
+            2.331449227852174
+          ],
+          "meep_device_excess_rad": [
+            2.3176538360644905,
+            2.427814917097486,
+            2.5306944663740762
+          ],
+          "fdtdx_device_excess_rad": [
+            2.3562511348550212,
+            2.4598280114367452,
+            2.554605978668102
+          ],
+          "fdtdx_minus_meep_excess_phase_rad": [
+            0.038597298790530754,
+            0.03201309433925914,
+            0.023911512294025883
+          ]
+        },
+        {
+          "incident": "left_center",
+          "outgoing": "right_upper",
+          "meep_S": [
+            [
+              -0.46186110341647074,
+              0.42397668169386565
+            ],
+            [
+              0.16936163799747048,
+              0.6000934271255195
+            ],
+            [
+              0.6086206975267153,
+              0.11265251132117841
+            ]
+          ],
+          "fdtdx_S": [
+            [
+              -0.10998242964586792,
+              -0.5821809296524396
+            ],
+            [
+              -0.5337586327557393,
+              -0.22137020679051866
+            ],
+            [
+              -0.4710092810367505,
+              0.3426059242225966
+            ]
+          ],
+          "meep_power": [
+            0.39307190546922144,
+            0.38879548570443745,
+            0.3831097417648737
+          ],
+          "fdtdx_power": [
+            0.35103076968178726,
+            0.33390304649575314,
+            0.33922856213517616
+          ],
+          "raw_fdtdx_minus_meep_phase_rad": [
+            2.126739687240921,
+            2.2390144793007907,
+            2.3296983709088983
+          ],
+          "meep_device_excess_rad": [
+            2.3133084206983754,
+            2.42270174600961,
+            2.524671068498784
+          ],
+          "fdtdx_device_excess_rad": [
+            2.345884861190922,
+            2.4591323976898347,
+            2.546831723849534
+          ],
+          "fdtdx_minus_meep_excess_phase_rad": [
+            0.0325764404925466,
+            0.03643065168022464,
+            0.02216065535075007
+          ]
+        }
+      ]
+    },
+    "splitter/yee_cuda": {
+      "case": "splitter",
+      "resolution": 16,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "x_planes_um": [
+        -4.75,
+        4.75
+      ],
+      "straight_guide_y_um": 0.0,
+      "meep_reference_far_over_near": [
+        [
+          0.9962723357554122,
+          0.08551671131851372
+        ],
+        [
+          0.4293911858093181,
+          -0.9031158196891619
+        ],
+        [
+          -0.696703009139711,
+          -0.7172733270643205
+        ]
+      ],
+      "fdtdx_reference_far_over_near": [
+        [
+          0.9983065573875421,
+          0.05519465014700077
+        ],
+        [
+          0.3989014234478523,
+          -0.9169920021335561
+        ],
+        [
+          -0.7226996781259191,
+          -0.6911987646554517
+        ]
+      ],
+      "straight_fdtdx_minus_meep_phase_rad": [
+        -0.030394749850597307,
+        -0.033500502795682445,
+        -0.036822614127190026
+      ],
+      "meep_device_archive_sha256": "0325de59a31ffdd028950c86828fb459ad1791c48b9daed8789048177fc577fe",
+      "fdtdx_device_archive_sha256": "1bb4f8721f890d6ad0e9a96b01ad9140f536e875dc605b1fd52f8a730c38070c",
+      "meep_straight_receipt_sha256": "d9c3c4b68f2fb51e536a356a29270970455028f7e54ac277f404629a2d97352f",
+      "description": "Excess = principal arg(S_device / T_straight) at the named physical x planes. Straight reference uses an uninterrupted guide in the incident lane. Off-lane device outputs therefore compare to a straight path of the same longitudinal length. This diagnostic changes no physical S coefficient and measures neither loss nor an independently optimized phase correction.",
+      "actual_execution": [
+        "Meep CPU",
+        "cuda:0"
+      ],
+      "fdtdx_material_model": "yee-aligned",
+      "entries": [
+        {
+          "incident": "left_center",
+          "outgoing": "right_lower",
+          "meep_S": [
+            [
+              -0.47241217455425555,
+              0.42989460328506407
+            ],
+            [
+              0.16954005676986356,
+              0.6126929634418714
+            ],
+            [
+              0.6199079416863159,
+              0.11860795612851027
+            ]
+          ],
+          "fdtdx_S": [
+            [
+              -0.4819578701769336,
+              0.37878541226618345
+            ],
+            [
+              0.11847892049896641,
+              0.5932235028058304
+            ],
+            [
+              0.5841884346716792,
+              0.14664809932439538
+            ]
+          ],
+          "meep_power": [
+            0.4079826326007031,
+            0.4041364983007108,
+            0.3983537034227476
+          ],
+          "fdtdx_power": [
+            0.37576177717114845,
+            0.3659513788838194,
+            0.3627817922396046
+          ],
+          "raw_fdtdx_minus_meep_phase_rad": [
+            0.07220908527258504,
+            0.07283115979682778,
+            0.05689987313892412
+          ],
+          "meep_device_excess_rad": [
+            2.3176538360644905,
+            2.427814917097486,
+            2.5306944663740762
+          ],
+          "fdtdx_device_excess_rad": [
+            2.420257671187673,
+            2.5341465796899962,
+            2.6244169536401905
+          ],
+          "fdtdx_minus_meep_excess_phase_rad": [
+            0.10260383512318239,
+            0.10633166259251015,
+            0.0937224872661142
+          ]
+        },
+        {
+          "incident": "left_center",
+          "outgoing": "right_upper",
+          "meep_S": [
+            [
+              -0.46186110341647074,
+              0.42397668169386565
+            ],
+            [
+              0.16936163799747048,
+              0.6000934271255195
+            ],
+            [
+              0.6086206975267153,
+              0.11265251132117841
+            ]
+          ],
+          "fdtdx_S": [
+            [
+              -0.48195511457573836,
+              0.3787931326178003
+            ],
+            [
+              0.11848043640343446,
+              0.5932181516597285
+            ],
+            [
+              0.5841863021529935,
+              0.14665024113831135
+            ]
+          ],
+          "meep_power": [
+            0.39307190546922144,
+            0.38879548570443745,
+            0.3831097417648737
+          ],
+          "fdtdx_power": [
+            0.3757649697841194,
+            0.365945389268933,
+            0.3627799288491135
+          ],
+          "raw_fdtdx_minus_meep_phase_rad": [
+            0.07654182067547458,
+            0.07794014103652054,
+            0.06292758202645811
+          ],
+          "meep_device_excess_rad": [
+            2.3133084206983754,
+            2.42270174600961,
+            2.524671068498784
+          ],
+          "fdtdx_device_excess_rad": [
+            2.4202449912244473,
+            2.534142389841813,
+            2.6244212646524323
+          ],
+          "fdtdx_minus_meep_excess_phase_rad": [
+            0.10693657052607186,
+            0.11144064383220309,
+            0.09975019615364823
+          ]
+        }
+      ]
+    }
+  }
+}

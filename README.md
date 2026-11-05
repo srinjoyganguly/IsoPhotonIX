@@ -9,6 +9,8 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
+**Calibrated components.** The workbench measures directional-coupler and splitter S matrices, multimode conversion, ring spectra and grating coupling in dedicated physical presets. Open **Calibrated components**, select an input, wavelength and local execution target, then inspect the measured data and export the run as Python and a Jupyter notebook. You can export the configured program before running it. The checklist identifies which devices, meshes and commercial observables have been verified. [Calibration checklist](docs/CALIBRATED_COMPONENTS.md) · [Lumerical and Tidy3D comparisons](docs/CALIBRATED_VENDOR_CHECKS.md).
+
 **v0.10 preview.** Select an object in 3D or XY to delete a component and
 its ports in one edit, undo it or redo it. You can also join two components
 using their named ports. [Editing and recovery](docs/EDITOR_RECOVERY.md).

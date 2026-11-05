@@ -30,3 +30,5 @@ locally with the Tidy3D Python package and accepts `--output NEW_JSON_FILE`.
 A coupling length inferred from two straight-guide supermodes differs in meaning
 from a complete port matrix of a device with bends and access guides. The
 device records retain their own uncertainties and comparison conditions.
+
+At the finer **6.25 nm** spacing, local Tidy3D measured 2.382815 and 2.323811 for the Lumerical section, giving **13.13462 µm**. Its transfer length differs from the published Lumerical value by **1.956%**, larger than the 12.5 nm result. The 50 nm gap puts some interface locations on different Yee-grid sampling offsets as the mesh changes. The unsmoothed sequence gives an empirical sensitivity range; a single favorable mesh is insufficient to establish agreement at 0.5%. For the workbench 125 nm gap, local Tidy3D changed from 25.4064 to 23.5646 µm while the Meep/MPB straight-section estimate is 21.8532 µm. Reproduce the extended local mode series with `--refine-couplers`. [All mode samples](verification/v011-vendor-port-modes.json) · [Independent workbench cross sections](verification/v011-multiport-mpb.json).

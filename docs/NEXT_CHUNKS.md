@@ -1,6 +1,6 @@
 # What works and what remains
 
-This is the product backlog following the v0.10 preview. For each piece, the
+This is the product backlog through the v0.11 calibration work. For each piece, the
 release gate describes a result that a user could independently reproduce.
 Previous evidence for the [27-family library](verification/v09-checks.json),
 [finite-layout fields](LAYOUT_FIELDS.md) and [taper ports](TAPER_PORTS.md) has
@@ -9,7 +9,7 @@ a narrower scope than commercial coverage.
 | Chunk | Already usable | Remaining implementation and evidence |
 | --- | --- | --- |
 | Layout editing and circuit construction | 27 parametric families, polygon holes, finite-height routed guides, undoable placement, port alignment, component deletion and tab-local undo/redo recovery | Add persistent connection constraints and explicit disconnect, auto-routing with minimum radius and clearance, hierarchy, Boolean operations, layer-aware GDS import/export and process-specific DRC. Round-trip ports, layers, IDs, polarities and material precedence through imported layouts. |
-| Calibrated passive components | Fields in all 27 sampled families on Meep CPU and FDTDX CPU/CUDA, and complex fundamental-mode two-port data for bounded straight/gap and linear-taper studies | First qualify a four-port directional coupler and a splitter using normalized launches in both directions. Then measure ring/add-drop spectra, grating radiation efficiency and multimode coupling. Sweep mesh, run time, PML and port aperture, check reciprocity and power accounting, and compare each measured quantity with a named reference. |
+| Calibrated passive components | Complete finite-height multiport Meep and CUDA measurements for the directional coupler and splitter. Planar and finite-height two-mode joints have measured four-channel matrices. Compact grating coupling has a Python and notebook replay. | Track remaining target, mesh, ring and grating controls individually. Each row lists its Lumerical and Tidy3D observable and limitations. [Calibration checklist](CALIBRATED_COMPONENTS.md). |
 | Numerical studies and validation | Explicit Meep CPU and FDTDX CPU/CUDA jobs, immutable results, Python/notebook replays and paired taper mesh sensitivity | Generalize convergence and parameter sweeps beyond the taper; add time/domain/PML sensitivities and mode tracking. Support queued studies, resource estimates, checkpoint/restart and multi-observable regression references. Establish thresholds per observable, especially weak reflection and phase. |
 | Materials and fabrication stacks | Constant-index passive layout simulation and a [single-film spectrum](PLANAR_FILM.md) from constant or tabulated n/k, checked against independent Meep runs at several wavelengths | Fit documented complex-index data to passive causal material models, enforce validity bands and check plane-wave dispersion/absorption against analytic slabs on each supported solver. Extend to anisotropy, sidewalls, etch operations, conformal meshing and process-specific layers. |
 | Passive resonators and lasers | Measured decay frequencies and Q for a 1D passive Fabry–Pérot slab, compared with the analytical solution and COMSOL Table 1 | Next verify a finite 3D on-chip cavity with leakage channels, mode volume and Q sensitivity. Then validate carrier and photon rate equations against an independent threshold and light–current curve for a named material/device, followed by spatial gain, injection and thermal coupling. Passive DBR/ring geometry alone cannot supply those measurements. |
@@ -18,9 +18,7 @@ a narrower scope than commercial coverage.
 
 ## Order of the next physics work
 
-1. A four-port directional coupler with per-port reference solves and a
-   check against independently computed even/odd supermode splitting. Export
-   both the raw amplitudes and the normalized complex matrix from each target.
+1. Extend the [calibrated component measurements](CALIBRATED_COMPONENTS.md) with additional reference spectra, paired mesh studies for weak signals and modes beyond the current presets.
 2. A finite-height passive resonator with a decay trace, known external versus
    intrinsic loss, and the same named pole under mesh, PML and time-window
    changes. Use the [1D cavity benchmark](PASSIVE_CAVITY.md) as a numerical

@@ -14,6 +14,8 @@ TIDY_URL = 'https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler
 ANSYS_URL = 'https://optics.ansys.com/hc/en-us/articles/360042304774-Broadband-grating-coupler-2D'
 ANSYS_PROJECT = 'https://optics.ansys.com/hc/en-us/article_attachments/360057295433'
 ANSYS_SHA = '849ce6962c5bf6ac6afeca8e02c9a2fea21bc6d5948d1cfbc206bb1dc171c9e5'
+ANSYS_SPECTRUM = 'https://optics.ansys.com/hc/article_attachments/360057322053/broadband_coupler_wavelength_results.png'
+ANSYS_SPECTRUM_SHA = '3d7cb298706477113ea9a586b3d8dd6b2ffb5ee0adbdd6a2c1269a72b81d9036'
 
 CASES = {
     'tidy3d': dict(wavelength=1.55, period=.620, fill=.80, teeth=20,
@@ -27,6 +29,9 @@ CASES = {
                       waist_radius=17.3, beam_span=67.5, tooth_at_start=False,
                       right_guide_is_full=True, published=.557, url=ANSYS_URL),
 }
+
+ANSYS_FILED = dict(CASES['lumerical'], oxide_n=1.44, beam_x=14.8, beam_z=3.3,
+                   waist_radius=17.288, focus_distance=3.2, exit_trench=.250)
 
 
 def phase_matching_estimate(case):
@@ -51,6 +56,39 @@ def phase_matching_estimate(case):
                 phase_match_required_index=case['wavelength']/case['period']+projected_air_index)
 
 
+def sampled_peak(wavelengths, coupling):
+    """Peak sample and its neighbor spacing, without a fitted spectral shift."""
+    index=int(np.argmax(coupling))
+    left=max(0,index-1)
+    right=min(len(wavelengths)-1,index+1)
+    spacing=max(abs(wavelengths[index]-wavelengths[left]),
+                abs(wavelengths[right]-wavelengths[index]))
+    return dict(wavelength_um=float(wavelengths[index]), beam_to_guide=float(coupling[index]),
+                largest_adjacent_bin_width_nm=float(1000*spacing), at_band_edge=index in (0,len(coupling)-1))
+
+
+def valid_beam_bins(incident, coupling):
+    return (incident>=.01*np.max(incident)) & np.isfinite(coupling) & (coupling>=0) & (coupling<=1.02)
+
+
+def compare_ansys_spectrum(wavelengths, coupling):
+    """Independent readout from the labeled broadband-direct curve in Figure 6."""
+    reference_nm=np.array([1298.,1303.,1308.,1310.,1313.,1318.,1323.])
+    reference_percent=np.array([10.45,35.61,54.06,55.61,51.51,29.22,6.83])
+    nm=1000*np.asarray(wavelengths)
+    order=np.argsort(nm)
+    if reference_nm[0]<nm[order[0]] or reference_nm[-1]>nm[order[-1]]:
+        raise ValueError('The measured grating band must cover the published comparison wavelengths.')
+    measured=100*np.interp(reference_nm,nm[order],np.asarray(coupling)[order])
+    delta=measured-reference_percent
+    return dict(wavelength_nm=reference_nm.tolist(), published_broadband_direct_percent=reference_percent.tolist(),
+                measured_percent=measured.tolist(), difference_percentage_points=delta.tolist(),
+                mean_absolute_difference_percentage_points=float(np.mean(abs(delta))),
+                reference_readout_uncertainty_percentage_points=.4, reference_fwhm_nm=16.66,
+                reference_figure_url=ANSYS_SPECTRUM, reference_figure_sha256=ANSYS_SPECTRUM_SHA,
+                scope='Local spectrum linearly interpolated to seven published plot coordinates; single-frequency Meep Gaussian profile compared with vendor broadband direct curve. Nominal 55.7% is reported separately by the vendor.')
+
+
 def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     import meep as mp
 
@@ -58,7 +96,7 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     length = teeth * period
     top, bottom = case['oxide_top'], case['oxide_bottom']
     height, etch = case['height'], case['etch']
-    beam_z = top + .5
+    beam_z = case.get('beam_z', top + .5)
     beam = stage.startswith('beam')
     xmin = min(-6., case['beam_x'] - case['beam_span']/2) - pml - margin
     xmax = max(length + 2., case['beam_x'] + case['beam_span']/2) + pml + margin
@@ -92,7 +130,7 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
         geometry.extend([block(xmin-1, 0, 0, height, core),
                          block(0, xmax+1, 0, height-etch, core)])
         if case['right_guide_is_full']:
-            geometry.append(block(length, xmax+1, 0, height, core))
+            geometry.append(block(length+case.get('exit_trench',0.), xmax+1, 0, height, core))
         for i in range(teeth):
             x = period * i + (0 if case['tooth_at_start'] else period*(1-case['fill']))
             geometry.append(block(x, x+period*case['fill'], height-etch, height, core))
@@ -103,9 +141,12 @@ def measure(case, stage, resolution, pml, margin, end, aperture, compact=False):
     pulse = mp.GaussianSource(frequency, fwidth=1.4*bandwidth, cutoff=4)
     if beam:
         angle = math.radians(case['angle_deg'])
+        focus_distance = case.get('focus_distance', 0.)
+        focus = mp.Vector3(case['beam_x']-source_midpoint-focus_distance*math.sin(angle),
+                           -focus_distance*math.cos(angle))
         source = mp.GaussianBeam2DSource(src=pulse, center=point(source_midpoint, beam_z),
                  size=mp.Vector3(source_span, 0), beam_E0=mp.Vector3(z=1),
-                 beam_w0=case['waist_radius'], beam_x0=mp.Vector3(case['beam_x']-source_midpoint,0),
+                 beam_w0=case['waist_radius'], beam_x0=focus,
                  beam_kdir=mp.Vector3(-math.sin(angle), -math.cos(angle)))
     else:
         source = mp.EigenModeSource(src=pulse, center=point(-4., height/2),
@@ -156,6 +197,7 @@ def spectrum(case, label, settings, arrays):
     result = dict(label=label, resolution_cells_per_um=resolution, pml_um=pml,
                   padding_um=margin, post_source_duration_um_c=end, port_aperture_um=aperture,
                   wavelength_um=(1/freq).tolist(), beam_to_guide=coupled.tolist(),
+                  sampled_peak=sampled_peak(1/freq,coupled),
                   guide_radiation_up=up.tolist(), guide_radiation_down=downward.tolist(),
                   outlet_right=right.tolist(), outlet_left=reflection.tolist(),
                   power_sum=balance.tolist(),
@@ -164,7 +206,10 @@ def spectrum(case, label, settings, arrays):
                               outlet_left_fraction=float(reflection[zero]), outlet_right_fraction=float(right[zero]),
                               power_sum=float(balance[zero])),
                   valid_energy_bins=(abs(balance-1) < .04).tolist(),
+                  valid_beam_bins=valid_beam_bins(incident_beam,coupled).tolist(),
                   max_abs_balance_error=float(np.max(abs(balance-1))))
+    if case['url']==ANSYS_URL:
+        result['published_spectral_comparison']=compare_ansys_spectrum(1/freq,coupled)
     print(label, result['center'], flush=True)
     return result
 
@@ -180,8 +225,13 @@ def gaussian_only(case, resolution, compact, arrays, prefix):
     coupled=abs(device[:,1])**2/incident
     arrays[prefix+'_reference']=ref
     arrays[prefix+'_device_modes']=device
-    return dict(resolution=resolution,pml_um=pml,physical_cell='vendor box with finite source clipping' if compact else 'extended aperture',
+    result=dict(resolution=resolution,pml_um=pml,physical_cell='vendor box with finite source clipping' if compact else 'extended aperture',
+                sampled_peak=sampled_peak(1/f,coupled),
+                valid_beam_bins=valid_beam_bins(incident,coupled).tolist(),
                 wavelength_um=(1/f).tolist(),beam_to_guide=coupled.tolist(),center_beam_to_guide=float(coupled[len(coupled)//2]))
+    if case['url']==ANSYS_URL:
+        result['published_spectral_comparison']=compare_ansys_spectrum(1/f,coupled)
+    return result
 
 
 def run(out):
@@ -212,11 +262,12 @@ def run(out):
             source_url=CASES[name]['url'], scope=(
             'Published best 2D period/beam position, layer boundaries and indices matched. Beam normalization and domain placement differ.'
             if name=='tidy3d' else
-            'Local reconstruction of 100-tooth project geometry at the published optimum angle. Material dispersion, vectorial thin-lens focus, beam position and actual waist differ. This delta compares related setups.')))
+            'Article-based 100-tooth reconstruction at the published optimum angle. Oxide index, vectorial thin-lens focus, beam position and actual waist differ. The separate project-source control uses the index, waist and position from the downloadable FSP.')))
         checks[name+'_finite_reference_and_power'] = all(
             np.isfinite(row['beam_to_guide']).all() and .01 < row['center']['beam_to_guide'] < 1
             and row['center']['upper_flux_fraction'] > .01 for row in results.values())
         checks[name+'_center_energy_balance_within_0_04'] = abs(central['power_sum']-1) < .04
+        checks[name+'_beam_spectrum_within_source_band_and_passivity'] = all(all(row['valid_beam_bins']) for row in results.values())
     sensitivity = {name:{key:dict(
         max_beam_efficiency_change=float(np.max(np.abs(np.subtract(row['beam_to_guide'],results['fine']['beam_to_guide'])))),
         max_upper_fraction_change=float(np.max(np.abs(np.subtract(row['guide_radiation_up'],results['fine']['guide_radiation_up'])))))
@@ -236,13 +287,14 @@ def run(out):
     return report
 
 
-def beam_receipt(vendor, result, arrays_path):
-    case=CASES[vendor]
+def beam_receipt(vendor, result, arrays_path, case=None):
+    if case is None:
+        case=CASES[vendor]
     measured=result['center_beam_to_guide']
     return dict(schema_version=1,case_id='grating-gaussian-profile',vendor=vendor,solver='Meep CPU',
       physical_model=case,result=result,reference_coupling=case['published'],
       delta_percentage_points=100*(measured-case['published']),source_url=case['url'],
-      passed=bool(np.isfinite(result['beam_to_guide']).all() and 0<measured<1),
+      passed=bool(all(result['valid_beam_bins']) and 0<measured<1),
       arrays_file='arrays.npz',arrays_sha256=hashlib.sha256(arrays_path.read_bytes()).hexdigest(),
       scope='Actual downward Gaussian power in air and a separate excited device measured on the same source aperture; outgoing TE0 power referenced to that source.')
 
@@ -252,10 +304,13 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--beam-only',choices=tuple(CASES),help='repeat only one measured Gaussian-to-guide case')
     parser.add_argument('--vendor-box',action='store_true',help='use Tidy3D notebook box and monitor with an explicitly clipped beam')
-    parser.add_argument('--resolution',type=int,choices=(28,40),help='mesh for an individual Gaussian comparison (default 40)')
+    parser.add_argument('--project-source',action='store_true',help='use the published Ansys project oxide index, beam position and waist')
+    parser.add_argument('--resolution',type=int,choices=(28,40,60),help='mesh for an individual Gaussian comparison (default 40)')
     args = parser.parse_args()
     if args.vendor_box and args.beam_only!='tidy3d':
         parser.error('--vendor-box requires --beam-only tidy3d')
+    if args.project_source and args.beam_only!='lumerical':
+        parser.error('--project-source requires --beam-only lumerical')
     if args.resolution is not None and not args.beam_only:
         parser.error('--resolution applies to --beam-only')
     destination = args.output.resolve()
@@ -268,11 +323,15 @@ def main():
             import meep as mp
             mp.verbosity(0)
             arrays={}
-            row=gaussian_only(CASES[args.beam_only],args.resolution or 40,args.vendor_box,arrays,
+            case=ANSYS_FILED if args.project_source else CASES[args.beam_only]
+            row=gaussian_only(case,args.resolution or 40,args.vendor_box,arrays,
                               'tidy_compact' if args.vendor_box else args.beam_only)
             arrays_path=stage/'arrays.npz'
             np.savez_compressed(arrays_path,**arrays)
-            result=beam_receipt(args.beam_only,row,arrays_path)
+            result=beam_receipt(args.beam_only,row,arrays_path,case)
+            if args.project_source:
+                result.update(ansys_project_url=ANSYS_PROJECT, ansys_project_sha256=ANSYS_SHA,
+                              beam_profile='2D Gaussian with downstream waist; vendor uses a vectorial thin-lens source')
             (stage/'report.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
         else:
             result = run(stage)

@@ -1,0 +1,22 @@
+.cal-lab {max-width:1180px;margin:0 auto;padding:28px 20px 60px;color:#d3e3e9}
+.cal-lab h1 {font-size:26px;margin:0 0 8px}
+.cal-lab p {font-size:13px;line-height:1.65;margin:8px 0;color:#a9bfcc}
+.cal-columns {display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;margin-top:18px}
+.cal-columns aside {display:flex;flex-direction:column;gap:4px}
+.cal-columns aside button {text-align:left;color:#b8cad6;background:#122430;border:1px solid #284655;padding:10px 12px;border-radius:5px}
+.cal-columns aside button[aria-pressed=true] {background:#16483f;color:#c1fff0;border-color:#439a82}
+.cal-columns main {min-width:0;padding:18px 22px;border:1px solid #2a4250;border-radius:8px;background:#10202b}
+.cal-lab h2 {font-size:20px;margin:0}
+.cal-lab h3 {font-size:14px;margin:16px 0 6px}
+.cal-lab main section {margin-top:15px;padding-top:10px;border-top:1px solid #2b414c}
+.cal-lab a {color:#8fe9cb}
+.cal-lab fieldset {padding:8px 0;border:0;display:flex;gap:12px;flex-wrap:wrap}
+.cal-lab label,.cal-lab legend {font-size:12px;color:#b6cbd6}
+.cal-lab select {max-width:100%;margin-left:6px;border:1px solid #375361;background:#122c39;color:#d6e8ed;padding:6px}
+.cal-lab pre {overflow:auto;max-height:320px;font-size:11px}
+.cal-spectrum svg {width:100%;max-width:620px;display:block;margin-top:8px;background:#0c1b25}
+@media(max-width:700px){.cal-columns{grid-template-columns:1fr}.cal-columns aside{flex-direction:row;flex-wrap:wrap}.cal-columns aside button{font-size:11px}.cal-lab{padding:14px 10px 40px}.cal-columns main{padding:14px}}
+.cal-lab table {width:100%;margin:14px 0;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+.cal-lab th,.cal-lab td {padding:7px 4px;text-align:right;border-bottom:1px solid #2b414c}
+.cal-lab th:first-child {text-align:left}
+.cal-offset{display:inline-flex;align-items:center;gap:6px;margin:7px 10px}.cal-offset input{width:6em;color:#d6e8ed;background:#122c39;border:1px solid #375361;padding:6px}

@@ -169,3 +169,24 @@ The second command requires the original Meep version and a complete saved run.
 Comparison tools refuse to mix the two phase conventions.
 
 The same electric-phase convention applies to new finite-height straight, gap and tapered Meep two-port runs. Those exports include the signed group velocities, the electric-field phase anchors, the unmodified solver coefficients and the direction factors at every frequency. Earlier archived workbench versions reproduce their historic reflected amplitudes. Updating a historic reflection to the electric basis changes its sign. The measured transmitted amplitudes and powers are identical under this basis conversion. [Independent analytic step and direct field checks](verification/v011-meep-fresnel-phase.json).
+
+### Device excess relative to an independently measured straight guide
+
+The auxiliary quantity is `arg(S_out,in / T_straight)`, where `T_straight`
+is the directly measured far/near complex fundamental-mode amplitude of an
+uninterrupted guide. The guide matches the incident rail, material, aperture,
+mesh and the physical x planes. For a routed off-lane output the straight
+path defines a longitudinal baseline, not a path along the device bends.
+The physical S matrix and its phase are retained separately. This comparison
+uses neither a fitted phase shift nor a static eigenmode estimate of
+propagation. [Measured straight/physical/excess phases](verification/v011-multiport-excess-phase.json).
+
+At 1.55 µm in the splitter, FDTDX's legacy CUDA sampling and Meep differed by
+2.2346 and 2.2390 radians in the two forward device phases (FDTDX minus Meep);
+their measured straight reference phases differed by 2.2026 radians.
+With Yee-aligned FDTDX materials the raw device differences were 0.07283
+and 0.07794 radians and the straight difference was −0.03350 radians. The
+corresponding excess-phase differences were 0.10633 and 0.11144 radians.
+These measured excess phases are distinct from the physical power and phase.
+For example, the lower-port power remained 0.40414 for Meep versus 0.36595
+for the corrected FDTDX run.
