@@ -1,0 +1,13 @@
+{
+  "case": "Tidy3D compact grating",
+  "passed": true,
+  "worker_sha256": "da024e3f372520c433d73ea58739d050aed274f06cb9cf4bc55cc4552b6ae689",
+  "measured_beam_to_guide": 0.5823413109784932,
+  "resumed_arrays_byte_exact": true,
+  "checkpointed_solver_stages": {
+    "beam_device": "08be4e4e054b5d3fce1e002d6cd07cd4998d1ce44bce20421792955cd81ac79d",
+    "beam_reference": "dbbfd7de7874b879f7ace33b53d8ea2a5f27fca48ada8b37a77f0cbd960191c1"
+  },
+  "distinct_measurement_signatures_for_changed_source": 4,
+  "method": "Executed matched source and grating device, then launched a new output with the same verified stage cache. Complex arrays reproduced byte for byte and agreed with the prior independently acquired record within tolerance."
+}

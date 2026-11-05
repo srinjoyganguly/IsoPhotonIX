@@ -1,0 +1,138 @@
+{
+  "case": "coupler",
+  "material_model": "yee-aligned",
+  "solver": "FDTDX local mode preparation using its bundled Tidy3D mode solver",
+  "actual_device": "cpu:0",
+  "nominal_gap_um": 0.125,
+  "wavelength_um": 1.55,
+  "mode_aperture_um": [
+    3.0,
+    3.0
+  ],
+  "rows": [
+    {
+      "resolution": 12,
+      "effective_scalar_center_gap_um": 0.16666666666666666,
+      "indices": {
+        "even": 2.545379161834717,
+        "odd": 2.5173606872558594
+      },
+      "Ey_mirror_parity": {
+        "even": 1.0,
+        "odd": -1.0
+      },
+      "Ey_fraction": {
+        "even": 0.793698787689209,
+        "odd": 0.7283909916877747
+      },
+      "uniform_transfer_length_um": 27.6603209721064
+    },
+    {
+      "resolution": 16,
+      "effective_scalar_center_gap_um": 0.125,
+      "indices": {
+        "even": 2.5629351139068604,
+        "odd": 2.523458480834961
+      },
+      "Ey_mirror_parity": {
+        "even": 1.0,
+        "odd": -1.0
+      },
+      "Ey_fraction": {
+        "even": 0.8100888729095459,
+        "odd": 0.729508638381958
+      },
+      "uniform_transfer_length_um": 19.631866744777355
+    },
+    {
+      "resolution": 20,
+      "effective_scalar_center_gap_um": 0.1,
+      "indices": {
+        "even": 2.5756924152374268,
+        "odd": 2.525879383087158
+      },
+      "Ey_mirror_parity": {
+        "even": 1.0,
+        "odd": -1.0
+      },
+      "Ey_fraction": {
+        "even": 0.8231666088104248,
+        "odd": 0.7309426069259644
+      },
+      "uniform_transfer_length_um": 15.558177580158043
+    },
+    {
+      "resolution": 24,
+      "effective_scalar_center_gap_um": 0.125,
+      "indices": {
+        "even": 2.5686538219451904,
+        "odd": 2.5311858654022217
+      },
+      "Ey_mirror_parity": {
+        "even": 0.9603126049041748,
+        "odd": -0.9690223336219788
+      },
+      "Ey_fraction": {
+        "even": 0.8117360472679138,
+        "odd": 0.7317317724227905
+      },
+      "uniform_transfer_length_um": 20.684341274689473
+    },
+    {
+      "resolution": 32,
+      "effective_scalar_center_gap_um": 0.125,
+      "indices": {
+        "even": 2.570683240890503,
+        "odd": 2.533996820449829
+      },
+      "Ey_mirror_parity": {
+        "even": 1.0,
+        "odd": -1.0
+      },
+      "Ey_fraction": {
+        "even": 0.8123564720153809,
+        "odd": 0.7326439023017883
+      },
+      "uniform_transfer_length_um": 21.12498277811716
+    }
+  ],
+  "source_sha256": "fff2199f8cd729b09dd3468668bba6a3fc6e2fff4b6ccc301cd973606094cb6b",
+  "scope": "Uniform transfer length from even/odd phase indices in the local central section. The finite coupler has tapered approaches and separate measured scattering matrices.",
+  "checked_at": "2026-11-05T23:31:24.040201+00:00",
+  "comparisons": {
+    "shared_physical_workbench_section": {
+      "MPB_source": "v011-multiport-mpb.json",
+      "MPB_mesh_series": [
+        {
+          "cells_per_um": 32,
+          "uniform_transfer_length_um": 21.827002797187525
+        },
+        {
+          "cells_per_um": 80,
+          "uniform_transfer_length_um": 21.853167853535005
+        }
+      ],
+      "standalone_Tidy3D_source": "v011-vendor-port-modes.json",
+      "standalone_Tidy3D_mesh_series": [
+        {
+          "mesh_um": 0.025,
+          "uniform_transfer_length_um": 24.440767180285555
+        },
+        {
+          "mesh_um": 0.0125,
+          "uniform_transfer_length_um": 25.40641937198195
+        },
+        {
+          "mesh_um": 0.00625,
+          "uniform_transfer_length_um": 23.56459128789838
+        }
+      ]
+    },
+    "different_Lumerical_published_section": {
+      "url": "https://optics.ansys.com/hc/en-us/articles/360042304694-Evanescent-waveguide-couplers",
+      "scope": "The published 0.050 \u00b5m gap, 0.20 \u00b5m height, air/silica section differs from this calibration. Its matched local comparison is in v011-vendor-port-modes.json."
+    },
+    "solver_relationship": "FDTDX prepares its port modes using the installed local Tidy3D eigensolver. The standalone Tidy3D inputs use a different material translation; the MPB method is the independent cross-section check."
+  },
+  "same_values_on_two_FDTDX_executions": true
+}

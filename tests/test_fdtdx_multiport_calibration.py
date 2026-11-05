@@ -51,6 +51,13 @@ class MultiportCalibrationTests(unittest.TestCase):
         np.testing.assert_allclose(matrix,np.broadcast_to(desired,matrix.shape))
         np.testing.assert_allclose(transmit,-.98j)
         self.assertTrue(settled.all())
+        from scripts.measure_fdtdx_mesh_column import first_column
+        launch = {"frequency_per_um": model["frequency_per_um"], "source_e": np.ones(1), "source_h": np.ones(1)}
+        one, _, straight, difference = first_column(
+            model, {**launch, "amplitudes": rows[0][0]}, {**launch, "amplitudes": rows[0][1]})
+        np.testing.assert_array_equal(one, matrix[:, :, 0])
+        np.testing.assert_array_equal(straight, transmit[:, 0])
+        self.assertEqual(difference, 0.)
         rows[0][3]['settled']=False
         self.assertFalse(normalize(model,rows)[3][0])
         rows[0][3]['source_profile_sha256']='different'
@@ -110,3 +117,22 @@ class MultiportCalibrationTests(unittest.TestCase):
     def test_port_sampling_rejects_invalid_aperture(self):
         with self.assertRaises(ValueError):
             multiport_model('coupler',aperture_y_um=3.)
+
+    def test_matched_fields_compare_complex_planes_without_cancelling_opposite_errors(self):
+        from scripts.compare_fdtdx_targets import aggregate
+
+        cpu = {"left": np.array([1j, 2j]), "right": np.array([-1j, -2j])}
+        gpu = {name: -samples for name, samples in cpu.items()}
+        difference = aggregate(cpu, gpu, list(cpu))
+        self.assertAlmostEqual(difference["relative_l2"], 2.)
+        self.assertAlmostEqual(difference["max_difference_over_cpu_peak"], 2.)
+        with self.assertRaisesRegex(ValueError, "Invalid native array"):
+            aggregate(cpu, {"left": np.array([1j])}, ["left"])
+
+    def test_sampled_central_gap_records_the_integer_grid_representation(self):
+        from scripts.inspect_coupler_grid import central_section
+
+        model = multiport_model("coupler")
+        for resolution, gap in ((12, 2/12), (16, .125), (20, .1), (24, .125), (32, .125)):
+            _, measured = central_section(model, resolution)
+            self.assertAlmostEqual(measured, gap)

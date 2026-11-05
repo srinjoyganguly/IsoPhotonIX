@@ -89,7 +89,11 @@ def build():
                             'recorded':stored}
             continue
         if key=='grating' and (report is None or not report.get('passed')):
-            compact=read('v011-grating-compact-tidy3d.json')
+            compact_file='v011-grating-compact-gui.json'
+            compact=read(compact_file)
+            if compact is None:
+                compact_file='v011-grating-compact-tidy3d.json'
+                compact=read(compact_file)
             if compact and compact.get('passed'):
                 view={'compact_tidy_domain':{n:compact['result'][n] for n in ('wavelength_um','beam_to_guide','valid_beam_bins') if n in compact['result']}}
                 index[key]={'dimension':'Planar grating with finite collection aperture','routes':['Meep CPU'],
@@ -98,7 +102,7 @@ def build():
                             'comparisons':[vendor('Tidy3D',compact['source_url'],'Measured 58.23% against 56.23% at 1.55 µm for this compact setup.'),
                                            vendor('Lumerical','https://optics.ansys.com/hc/en-us/articles/360042304774-Broadband-grating-coupler-2D',
                                                   'The 1.31 µm Lumerical grating has a 30 nm etched groove. At 40 cells/µm Meep measured 49.42% at the nominal wavelength; Lumerical reports 55.7%.')],
-                            'recorded':[{'label':'Meep CPU','receipt':'v011-grating-compact-tidy3d.json','report':view}]}
+                            'recorded':[{'label':'Meep CPU','receipt':compact_file,'report':view}]}
             continue
         if report is None or not report.get('passed'):continue
         comparisons=[]
@@ -126,7 +130,8 @@ def build():
                    'recorded':[{'label':'Meep CPU','receipt':file,'report':view}]}
     if 'grating' in index:
         for label,name in [('Lumerical article · 28 cells/µm','v011-grating-ansys-article-r28.json'),
-                           ('Lumerical article · 40 cells/µm','v011-grating-ansys-article-r40.json')]:
+                           ('Lumerical article · 40 cells/µm','v011-grating-ansys-article-r40.json'),
+                           ('Lumerical project source · 40 cells/µm','v011-grating-ansys-project-r40.json')]:
             beam=read(name)
             if beam and beam.get('passed'):
                 panel={'case_id':beam['case_id'],'vendor':beam['vendor'],

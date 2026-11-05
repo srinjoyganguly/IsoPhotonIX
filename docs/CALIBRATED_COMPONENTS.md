@@ -27,3 +27,5 @@ identified in its measurement record. The live Meep port convention is backed by
 
 
 [Matched Lumerical and local Tidy3D port-mode measurements](CALIBRATED_VENDOR_CHECKS.md).
+
+[See the actual local grating run](verification/v011-calibrated-grating.png) · [Browser checks and exported inputs](verification/v011-browser-grating.json).

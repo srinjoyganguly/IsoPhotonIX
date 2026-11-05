@@ -89,13 +89,41 @@ subtraction within 0.000003 across both directions and both meshes.
 Run `scripts/check_fdtdx_port_phase.py --output fresnel.json` in the FDTDX
 CPU environment. [Signed reflected fields and analytic control](verification/v011-fdtdx-fresnel-phase.json).
 
-Repeat both controls in the respective solver environments:
+Run the straight-guide phase control in each solver environment.
 
 ```bash
 "$MEEP_PYTHON" scripts/verify_multiport_phase.py --solver meep --device cpu --output meep-phase
 "$FDTDX_PYTHON" scripts/verify_multiport_phase.py --solver fdtdx --device gpu \
   --material-model legacy-x --output fdtdx-phase
 ```
+
+## Mesh and hardware controls
+
+The coupler's nominal 0.125 µm gap samples as 0.1667, 0.125 and 0.100 µm
+at 12, 16 and 20 cells/µm. Local even/odd mode indices then imply uniform
+transfer lengths of 27.66, 19.63 and 15.56 µm. At 32 cells/µm the gap
+samples as 0.125 µm and the estimated transfer length is 21.12 µm.
+The high-resolution MPB calculation gives 21.85 µm for the same section.
+The local Tidy3D series and its distinct material sampling are recorded
+alongside these results. [Measured grid gaps and local supermodes](verification/v011-fdtdx-yee-coupler-grid.json).
+
+The 12- and 16-cell CUDA splitter matrices differ by up to 0.02164 in
+guided port power. The relative L2 difference in their complex physical-plane
+matrices is 1.003 using the 16-cell matrix as the denominator. The two meshes
+give similar center-input output powers with appreciably different phases.
+[Splitter mesh comparison](verification/v011-fdtdx-yee-splitter-gpu12.json).
+
+To verify target repeatability, pass completed studies at identical settings
+to `scripts/compare_fdtdx_targets.py --cpu CPU_DIR --gpu CUDA_DIR --output checks.json`.
+The comparison verifies each archived native field checksum, material grid,
+source profile, time-step count, monitor-plane field discrepancy and complex
+S matrix. Its acceptance limits apply to execution on different hardware at
+one fixed mesh.
+
+For a separate first-input mesh control,
+`scripts/measure_fdtdx_mesh_column.py --case coupler --device gpu --resolution 24 --compare BASE16 --output fresh-column`
+measures a straight reference and one device launch. Its output records
+`s_column[frequency, outgoing_port]` and identifies the sole incident port.
 
 ## What the matrix measures
 

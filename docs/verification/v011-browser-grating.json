@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T23:30:20.055Z",
+  "job_id": "e384a577902346ee80c9f6eb88ebc043",
+  "config": {
+    "study_type": "calibrated-component",
+    "case": "grating",
+    "solver": "meep",
+    "device": "cpu",
+    "resolution": 40,
+    "offset_um": null,
+    "material_model": null,
+    "ring_scope": null,
+    "grating_scope": "tidy3d-compact"
+  },
+  "coupling_fraction": 0.5823413109784938,
+  "plotted_samples": 21,
+  "gpu_design_export": true,
+  "result_export": true,
+  "browser_errors": [],
+  "splitter-gpu.zip": {
+    "sha256": "3b7b3e547dbf6b6d94478b6adec441f267901667660b3d7cb98b97d831bf2f38",
+    "verified_files": 17,
+    "selected_arguments": [
+      "--case",
+      "splitter",
+      "--device",
+      "gpu",
+      "--material-model",
+      "yee-aligned",
+      "--resolution",
+      "16"
+    ]
+  },
+  "grating-result.zip": {
+    "sha256": "3f72526e2526cc845b95aec465dd1f28a9f14254281f2b7add956ce08d6ce196",
+    "verified_files": 11,
+    "selected_arguments": [
+      "--beam-only",
+      "tidy3d",
+      "--vendor-box",
+      "--resolution",
+      "40"
+    ]
+  }
+}
