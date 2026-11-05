@@ -1,0 +1,744 @@
+{
+  "engine": "mpb",
+  "wavelength_um": 1.55,
+  "meshes": [
+    {
+      "cells_per_um": 32,
+      "sections": {
+        "lumerical-soi": {
+          "section": {
+            "name": "lumerical-soi",
+            "centers": [
+              -0.275,
+              0.275
+            ],
+            "width": 0.5,
+            "height": 0.2,
+            "core": 3.5,
+            "upper": 1.0,
+            "lower": 1.5,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.362195733859264,
+              "ey_fraction": 0.8133886363093834,
+              "mirror_overlap": 0.9956891040112638,
+              "residual": 1.9607315770997503e-12
+            },
+            "odd": {
+              "neff": 2.3016243991857075,
+              "ey_fraction": 0.687534449668957,
+              "mirror_overlap": -0.9988392484883235,
+              "residual": 9.4324714705607e-12
+            }
+          },
+          "delta_neff": 0.060571334673556354
+        },
+        "isolated-lead": {
+          "section": {
+            "name": "isolated-lead",
+            "centers": [
+              0.0
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5371274741642265,
+              "ey_fraction": 0.7595485029314238,
+              "mirror_overlap": 1.0,
+              "residual": 7.22755189030977e-15
+            }
+          }
+        },
+        "coupler-section-0": {
+          "section": {
+            "name": "coupler-section-0",
+            "centers": [
+              -0.3125,
+              0.3125
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.558900339150386,
+              "ey_fraction": 0.8128438256022946,
+              "mirror_overlap": 0.9999999999999996,
+              "residual": 3.286815264402776e-14
+            },
+            "odd": {
+              "neff": 2.5233938609040982,
+              "ey_fraction": 0.7341276001287811,
+              "mirror_overlap": -0.9999992177856887,
+              "residual": 1.3867607062678644e-11
+            }
+          },
+          "delta_neff": 0.03550647824628772
+        },
+        "coupler-section-1": {
+          "section": {
+            "name": "coupler-section-1",
+            "centers": [
+              -0.3481814691353343,
+              0.3481814691353343
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5477165122627468,
+              "ey_fraction": 0.7908224351665296,
+              "mirror_overlap": 1.0000000000000002,
+              "residual": 9.028628566998265e-10
+            },
+            "odd": {
+              "neff": 2.529698021398219,
+              "ey_fraction": 0.7373706298011018,
+              "mirror_overlap": -0.9999998038128871,
+              "residual": 7.22755189030977e-15
+            }
+          },
+          "delta_neff": 0.01801849086452778
+        },
+        "coupler-section-2": {
+          "section": {
+            "name": "coupler-section-2",
+            "centers": [
+              -0.44979369631880584,
+              0.44979369631880584
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5429776698726663,
+              "ey_fraction": 0.7665520738407816,
+              "mirror_overlap": 1.0000000000000002,
+              "residual": 3.0097591086075684e-13
+            },
+            "odd": {
+              "neff": 2.5389969891604456,
+              "ey_fraction": 0.7493730818965711,
+              "mirror_overlap": -0.9999982382897843,
+              "residual": 3.4416913763379854e-16
+            }
+          },
+          "delta_neff": 0.0039806807122206855
+        },
+        "coupler-section-3": {
+          "section": {
+            "name": "coupler-section-3",
+            "centers": [
+              -0.6018671410788641,
+              0.6018671410788641
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.539092527095341,
+              "ey_fraction": 0.7600736018127181,
+              "mirror_overlap": 0.9999999999999999,
+              "residual": 8.15594813907694e-12
+            },
+            "odd": {
+              "neff": 2.5384305535206617,
+              "ey_fraction": 0.7575093273901228,
+              "mirror_overlap": -0.9999993262713032,
+              "residual": 2.4298341116946175e-13
+            }
+          },
+          "delta_neff": 0.00066197357467912
+        },
+        "coupler-section-4": {
+          "section": {
+            "name": "coupler-section-4",
+            "centers": [
+              -0.78125,
+              0.78125
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.536613029524881,
+              "ey_fraction": 0.759918263305747,
+              "mirror_overlap": 1.0,
+              "residual": 1.422795214978123e-12
+            },
+            "odd": {
+              "neff": 2.536603171318566,
+              "ey_fraction": 0.75982660708252,
+              "mirror_overlap": -0.9999987214512371,
+              "residual": 6.235295058054647e-11
+            }
+          },
+          "delta_neff": 9.8582063152719e-06
+        },
+        "coupler-section-5": {
+          "section": {
+            "name": "coupler-section-5",
+            "centers": [
+              -0.9606328589211357,
+              0.9606328589211357
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5389818627756635,
+              "ey_fraction": 0.7592903859028811,
+              "mirror_overlap": 1.0000000000000002,
+              "residual": 3.8719027983802334e-12
+            },
+            "odd": {
+              "neff": 2.538531103231665,
+              "ey_fraction": 0.7582817990916291,
+              "mirror_overlap": -0.9999992082969765,
+              "residual": 1.9617640845126518e-14
+            }
+          },
+          "delta_neff": 0.0004507595439986467
+        },
+        "coupler-section-6": {
+          "section": {
+            "name": "coupler-section-6",
+            "centers": [
+              -1.1127063036811942,
+              1.1127063036811942
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5414910431293896,
+              "ey_fraction": 0.7589820782957981,
+              "mirror_overlap": 0.9999999999999997,
+              "residual": 1.4747647547608268e-13
+            },
+            "odd": {
+              "neff": 2.5404228923673666,
+              "ey_fraction": 0.7565760706585078,
+              "mirror_overlap": -0.9999981375262523,
+              "residual": 6.883382752675971e-16
+            }
+          },
+          "delta_neff": 0.0010681507620229347
+        },
+        "coupler-section-7": {
+          "section": {
+            "name": "coupler-section-7",
+            "centers": [
+              -1.2143185308646656,
+              1.2143185308646656
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5376725904768005,
+              "ey_fraction": 0.7594707207925941,
+              "mirror_overlap": 1.0000000000000002,
+              "residual": 1.703637231287303e-14
+            },
+            "odd": {
+              "neff": 2.537540817830123,
+              "ey_fraction": 0.7591786767944362,
+              "mirror_overlap": -0.999999776733946,
+              "residual": 2.5073065845759857e-11
+            }
+          },
+          "delta_neff": 0.0001317726466774083
+        },
+        "coupler-section-8": {
+          "section": {
+            "name": "coupler-section-8",
+            "centers": [
+              -1.25,
+              1.25
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5362841819176887,
+              "ey_fraction": 0.7600617735373127,
+              "mirror_overlap": 0.9996744264172519,
+              "residual": 2.9684588120915123e-13
+            },
+            "odd": {
+              "neff": 2.536284239581054,
+              "ey_fraction": 0.760062496938069,
+              "mirror_overlap": -0.9996746643425773,
+              "residual": 1.2045919817182948e-14
+            }
+          },
+          "delta_neff": -5.766336519386073e-08
+        }
+      },
+      "central_uniform_transfer_length_um": 21.827002797187525,
+      "adiabatic_cross_fraction": 0.04187602738253361,
+      "adiabatic_delta_neff_integral_um": 0.10168181661342068,
+      "adiabatic_cross_fraction_coarser_quadrature": 0.03962556366457934
+    },
+    {
+      "cells_per_um": 80,
+      "sections": {
+        "lumerical-soi": {
+          "section": {
+            "name": "lumerical-soi",
+            "centers": [
+              -0.275,
+              0.275
+            ],
+            "width": 0.5,
+            "height": 0.2,
+            "core": 3.5,
+            "upper": 1.0,
+            "lower": 1.5,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.3747311497266015,
+              "ey_fraction": 0.814858539624513,
+              "mirror_overlap": 0.9999999999999999,
+              "residual": 3.097522238704187e-15
+            },
+            "odd": {
+              "neff": 2.314992595173028,
+              "ey_fraction": 0.6894142173656691,
+              "mirror_overlap": -0.9999996151640876,
+              "residual": 5.92659255005401e-13
+            }
+          },
+          "delta_neff": 0.059738554553573575
+        },
+        "isolated-lead": {
+          "section": {
+            "name": "isolated-lead",
+            "centers": [
+              0.0
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5487732684407023,
+              "ey_fraction": 0.7598018355246764,
+              "mirror_overlap": 0.9999999999999998,
+              "residual": 1.0581135967413503e-11
+            }
+          }
+        },
+        "coupler-section-0": {
+          "section": {
+            "name": "coupler-section-0",
+            "centers": [
+              -0.3125,
+              0.3125
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.570782062977557,
+              "ey_fraction": 0.8126503453570987,
+              "mirror_overlap": 0.9999999999999997,
+              "residual": 1.0325074129013957e-15
+            },
+            "odd": {
+              "neff": 2.5353180970576394,
+              "ey_fraction": 0.7337968749738342,
+              "mirror_overlap": -0.9999998983827836,
+              "residual": 8.053557820630885e-14
+            }
+          },
+          "delta_neff": 0.035463965919917406
+        },
+        "coupler-section-1": {
+          "section": {
+            "name": "coupler-section-1",
+            "centers": [
+              -0.3481814691353343,
+              0.3481814691353343
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.558720060233953,
+              "ey_fraction": 0.7907838030229671,
+              "mirror_overlap": 1.0,
+              "residual": 3.699818229563334e-14
+            },
+            "odd": {
+              "neff": 2.5410512275623276,
+              "ey_fraction": 0.7379190157861849,
+              "mirror_overlap": -0.9999999643750496,
+              "residual": 4.727163105400223e-13
+            }
+          },
+          "delta_neff": 0.017668832671625445
+        },
+        "coupler-section-2": {
+          "section": {
+            "name": "coupler-section-2",
+            "centers": [
+              -0.44979369631880584,
+              0.44979369631880584
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5501590181915,
+              "ey_fraction": 0.7670916612613792,
+              "mirror_overlap": 1.0,
+              "residual": 1.3766765505351941e-15
+            },
+            "odd": {
+              "neff": 2.547429595727786,
+              "ey_fraction": 0.7528467592628427,
+              "mirror_overlap": -0.9999999966435418,
+              "residual": 9.832241132379239e-11
+            }
+          },
+          "delta_neff": 0.002729422463714215
+        },
+        "coupler-section-3": {
+          "section": {
+            "name": "coupler-section-3",
+            "centers": [
+              -0.6018671410788641,
+              0.6018671410788641
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5489684408126227,
+              "ey_fraction": 0.7605747857775302,
+              "mirror_overlap": 1.0,
+              "residual": 2.885169880784133e-12
+            },
+            "odd": {
+              "neff": 2.5487656699105425,
+              "ey_fraction": 0.7590206209305975,
+              "mirror_overlap": -0.99999997959151,
+              "residual": 5.833666882892886e-14
+            }
+          },
+          "delta_neff": 0.0002027709020802071
+        },
+        "coupler-section-4": {
+          "section": {
+            "name": "coupler-section-4",
+            "centers": [
+              -0.78125,
+              0.78125
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5499660988782296,
+              "ey_fraction": 0.7601143021730323,
+              "mirror_overlap": 0.9999999999999998,
+              "residual": 2.0473417405852955e-11
+            },
+            "odd": {
+              "neff": 2.5496793196193392,
+              "ey_fraction": 0.7593516489694152,
+              "mirror_overlap": -0.9999997465092549,
+              "residual": 2.168265567092931e-14
+            }
+          },
+          "delta_neff": 0.00028677925889031286
+        },
+        "coupler-section-5": {
+          "section": {
+            "name": "coupler-section-5",
+            "centers": [
+              -0.9606328589211357,
+              0.9606328589211357
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.548879228958326,
+              "ey_fraction": 0.759826034008641,
+              "mirror_overlap": 0.9999999999999998,
+              "residual": 2.5430657579761375e-12
+            },
+            "odd": {
+              "neff": 2.548854544428437,
+              "ey_fraction": 0.7597664885859421,
+              "mirror_overlap": -0.9999999767831503,
+              "residual": 5.334621633323877e-14
+            }
+          },
+          "delta_neff": 2.468452988901859e-05
+        },
+        "coupler-section-6": {
+          "section": {
+            "name": "coupler-section-6",
+            "centers": [
+              -1.1127063036811942,
+              1.1127063036811942
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5487745620149704,
+              "ey_fraction": 0.7598033366753234,
+              "mirror_overlap": 1.0000000000000002,
+              "residual": 1.1009970712905214e-12
+            },
+            "odd": {
+              "neff": 2.5487742662740125,
+              "ey_fraction": 0.7598011667711951,
+              "mirror_overlap": -0.9999999997455206,
+              "residual": 2.565832546430613e-11
+            }
+          },
+          "delta_neff": 2.957409579451564e-07
+        },
+        "coupler-section-7": {
+          "section": {
+            "name": "coupler-section-7",
+            "centers": [
+              -1.2143185308646656,
+              1.2143185308646656
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.5488737718745442,
+              "ey_fraction": 0.7598230110938582,
+              "mirror_overlap": 1.0,
+              "residual": 5.48485146190103e-12
+            },
+            "odd": {
+              "neff": 2.548850449309232,
+              "ey_fraction": 0.7597705551217057,
+              "mirror_overlap": -0.999999979513956,
+              "residual": 1.2045919817182948e-13
+            }
+          },
+          "delta_neff": 2.332256531234478e-05
+        },
+        "coupler-section-8": {
+          "section": {
+            "name": "coupler-section-8",
+            "centers": [
+              -1.25,
+              1.25
+            ],
+            "width": 0.5,
+            "height": 0.25,
+            "core": 3.48,
+            "upper": 1.45,
+            "lower": 1.45,
+            "span_yz": [
+              6.0,
+              3.0
+            ]
+          },
+          "modes": {
+            "even": {
+              "neff": 2.548656391123216,
+              "ey_fraction": 0.7599066440204555,
+              "mirror_overlap": 0.9999409171290259,
+              "residual": 3.4761082901013654e-14
+            },
+            "odd": {
+              "neff": 2.5486563934760462,
+              "ey_fraction": 0.7599065400778862,
+              "mirror_overlap": -0.9999408896660323,
+              "residual": 3.488154209918548e-13
+            }
+          },
+          "delta_neff": -2.3528303749742463e-09
+        }
+      },
+      "central_uniform_transfer_length_um": 21.853167853535005,
+      "adiabatic_cross_fraction": 0.03990135397483419,
+      "adiabatic_delta_neff_integral_um": 0.09922177860304926,
+      "adiabatic_cross_fraction_coarser_quadrature": 0.036168452263082386
+    }
+  ],
+  "lumerical_reference": "https://optics.ansys.com/hc/en-us/articles/360042304694-Evanescent-waveguide-couplers",
+  "tidy3d_local_reference": "https://docs.flexcompute.com/projects/tidy3d/en/latest/faq/docs/faq/how-do-i-run-the-mode-solver-locally.html",
+  "measured_source": "Local MPB fixed-frequency guided eigensolves at 1.55 \u00b5m. Lateral parity and dominant Ey checked for each mode.",
+  "source_sha256": "9f81f0e33c78c896512442b86a54f3d8d6a28dafa56daf5ece2e0de655228bbd",
+  "published_lumerical_fde": {
+    "even_neff": 2.378022,
+    "odd_neff": 2.317864,
+    "full_transfer_length_um": 12.8827
+  },
+  "scope": "Only the lumerical-soi row has the published Lumerical transverse dimensions/materials; other rows describe the workbench ports and cosine coupler. Adiabatic cross fraction is a prediction, not a measured matrix."
+}
