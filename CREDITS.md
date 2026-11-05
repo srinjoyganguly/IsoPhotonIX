@@ -99,8 +99,8 @@ polygon/material validation, component placement and standalone design source
 bundles. Public [Tidy3D component examples](https://www.flexcompute.com/tidy3d/examples/notebooks/PICComponents/)
 and the [Ansys FDTD reference](https://optics.ansys.com/hc/en-us/articles/360033154434-FDTD-product-reference-manual)
 informed family coverage and terminology. No vendor generator code, project
-files, PDK, material database or performance dataset was copied. These are
-design-only components, not licensed or fabrication-qualified vendor models.
+files, PDK, material database or performance dataset was copied. The recipes are original editable geometry. The v0.8 taper uses first-party
+adapters around Meep and FDTDX for its bounded 3D field study.
 
 The nominal silicon/silica constant indices are attributed to the public
 [Tidy3D/Femwell benchmark](https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/).

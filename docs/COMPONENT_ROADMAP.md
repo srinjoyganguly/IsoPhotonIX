@@ -68,8 +68,8 @@ fabrication-qualified component merely because its name matches an example.
 | E — Layout and product delivery | Connectivity, routing constraints, hierarchy, GDS/layer mapping, DRC, managed installs and desktop shell | Geometry/layout round-trips; meaningful process rules; clean installation and offline restart on every claimed platform |
 | F — Active devices and lasers | Validated gain/carrier/circuit models coupled to optical measurements | The staged laser gates below, followed by electrical/thermal qualification for named device platforms |
 
-Increment B should start with a small deterministic device such as a taper or
-crossing, not an arbitrary full chip. Larger resonant layouts need a resource
+The first part of increment B is available for the centered [linear taper](TAPER_FIELDS.md).
+The next step is calibrated modal measurement at its two different end widths. Larger resonant layouts need a resource
 estimate and an adequate physical settling time. The existing tested studies
 must remain available throughout this expansion.
 

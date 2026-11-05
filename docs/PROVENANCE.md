@@ -91,3 +91,17 @@ new library geometries, sampled materials or passive cavities into supported
 electromagnetic or laser models. Original browser screenshots and recorded
 Python/notebook executions document the actual design features; separate
 real Meep/FDTDX checks exercise the previously supported finite-height guide.
+
+On 5 November 2026 the taper and packaging increments started from clean commit
+`175a198` on branch `feat/passive-taper-studies`. New first-party code checks the
+complete editor taper, resolves its access guides and simulation cell, and
+runs the native Meep and FDTDX adapters. A straight-guide control exposed an
+artificial interface between separately represented pieces in Meep. Extruding
+one continuous contour eliminated the difference against an independent native
+block in both its material grid and vector fields. The [native records](TAPER_FIELDS.md)
+retain the original discrepancy, correction and independent CPU/GPU checks.
+
+The first application wheel packages the existing service and compiled interface
+with an explicit file allowlist. The managed Meep/MPB profile uses the existing
+official conda-forge artifact lock. Native numerical checks run before the
+installed application switches to the newly provisioned interpreter.

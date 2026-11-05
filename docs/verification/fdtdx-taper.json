@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "timestamp_utc": "2026-11-05T18:37:37.584017+00:00",
+  "scope": "Direct real FDTDX field and material-grid qualification for the bounded taper. Instantaneous source-unit fields do not measure transmission, S parameters or convergence.",
+  "passed": true,
+  "cases": [
+    {
+      "case": "default-cpu",
+      "requested_device": "cpu",
+      "actual_device": "cpu:0",
+      "device_name": "cpu",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "parameters": {
+        "length_um": 6.0,
+        "input_width_um": 0.4,
+        "output_width_um": 1.2,
+        "height_um": 0.22
+      },
+      "grid_shape_xyz": [
+        210,
+        78,
+        60
+      ],
+      "display_shape_zyx": [
+        59,
+        77,
+        209
+      ],
+      "cell_spacing_um": 0.05,
+      "field_peaks": {
+        "Ex": 0.9824252128601074,
+        "Ey": 0.4360146224498749,
+        "Ez": 0.24302351474761963
+      },
+      "time_steps": 629,
+      "actual_duration_fs": 59.96177964675013,
+      "material_grid_check": {
+        "passed": true,
+        "maximum_absolute_error": 0.0,
+        "checked_voxels": 982800,
+        "core_voxels": 13472
+      },
+      "staircase_blocks": 9,
+      "plane_checks": [
+        {
+          "x_um": -3.975,
+          "analytic_width_um": 0.4,
+          "occupied_width_um": 0.4,
+          "Ey_peak_abs_on_plane": 0.2851274907588959
+        },
+        {
+          "x_um": -0.025,
+          "analytic_width_um": 0.7966666666666666,
+          "occupied_width_um": 0.8,
+          "Ey_peak_abs_on_plane": 0.09828942269086838
+        },
+        {
+          "x_um": 3.475,
+          "analytic_width_um": 1.2,
+          "occupied_width_um": 1.2000000000000002,
+          "Ey_peak_abs_on_plane": 0.11144216358661652
+        }
+      ],
+      "field_arrays_sha256": {
+        "fields": "4488efa2b40f841f9de50a15f552a5af7b781fd038da377d4dfd8ad1c1a9d64f",
+        "raw_fields": "0a63aa5c338d7f4888dd91062d9b7bd18abd92348e4c3ae8bb62e6d3d508663f",
+        "epsilon": "876babf65eac6b3f586f9ddc381c45b3c478ff1bda2128bdbac70a0b65e6fe2b",
+        "raw_epsilon": "9ed5e201a8e47f3097786e123956fe7c7bcbdfacab966e0deb27006c3e85614d"
+      },
+      "all_field_samples_finite": true
+    },
+    {
+      "case": "default-gpu",
+      "requested_device": "gpu",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "parameters": {
+        "length_um": 6.0,
+        "input_width_um": 0.4,
+        "output_width_um": 1.2,
+        "height_um": 0.22
+      },
+      "grid_shape_xyz": [
+        210,
+        78,
+        60
+      ],
+      "display_shape_zyx": [
+        59,
+        77,
+        209
+      ],
+      "cell_spacing_um": 0.05,
+      "field_peaks": {
+        "Ex": 0.9824273586273193,
+        "Ey": 0.4360148310661316,
+        "Ez": 0.24302515387535095
+      },
+      "time_steps": 629,
+      "actual_duration_fs": 59.96177964675013,
+      "material_grid_check": {
+        "passed": true,
+        "maximum_absolute_error": 0.0,
+        "checked_voxels": 982800,
+        "core_voxels": 13472
+      },
+      "staircase_blocks": 9,
+      "plane_checks": [
+        {
+          "x_um": -3.975,
+          "analytic_width_um": 0.4,
+          "occupied_width_um": 0.4,
+          "Ey_peak_abs_on_plane": 0.2851301431655884
+        },
+        {
+          "x_um": -0.025,
+          "analytic_width_um": 0.7966666666666666,
+          "occupied_width_um": 0.8,
+          "Ey_peak_abs_on_plane": 0.0982896238565445
+        },
+        {
+          "x_um": 3.475,
+          "analytic_width_um": 1.2,
+          "occupied_width_um": 1.2000000000000002,
+          "Ey_peak_abs_on_plane": 0.11144211888313293
+        }
+      ],
+      "field_arrays_sha256": {
+        "fields": "4b4a6137026c3379ae3b338e626372983adb6f7c52585fe69ec85d36b43a82e0",
+        "raw_fields": "328429d10436c1daddf820507d0caec0972e4804893ce8cf93237d53d36443dc",
+        "epsilon": "876babf65eac6b3f586f9ddc381c45b3c478ff1bda2128bdbac70a0b65e6fe2b",
+        "raw_epsilon": "9ed5e201a8e47f3097786e123956fe7c7bcbdfacab966e0deb27006c3e85614d"
+      },
+      "all_field_samples_finite": true
+    },
+    {
+      "case": "straight-gpu",
+      "requested_device": "gpu",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "parameters": {
+        "length_um": 6.0,
+        "input_width_um": 0.4,
+        "output_width_um": 0.4,
+        "height_um": 0.22
+      },
+      "grid_shape_xyz": [
+        210,
+        78,
+        60
+      ],
+      "display_shape_zyx": [
+        59,
+        77,
+        209
+      ],
+      "cell_spacing_um": 0.05,
+      "field_peaks": {
+        "Ex": 0.9826674461364746,
+        "Ey": 0.43419787287712097,
+        "Ez": 0.24433723092079163
+      },
+      "time_steps": 629,
+      "actual_duration_fs": 59.96177964675013,
+      "material_grid_check": {
+        "passed": true,
+        "maximum_absolute_error": 0.0,
+        "checked_voxels": 982800,
+        "core_voxels": 6720
+      },
+      "staircase_blocks": 1,
+      "plane_checks": [
+        {
+          "x_um": -3.975,
+          "analytic_width_um": 0.4,
+          "occupied_width_um": 0.4,
+          "Ey_peak_abs_on_plane": 0.284122109413147
+        },
+        {
+          "x_um": -0.025,
+          "analytic_width_um": 0.4,
+          "occupied_width_um": 0.4,
+          "Ey_peak_abs_on_plane": 0.09850721061229706
+        },
+        {
+          "x_um": 3.475,
+          "analytic_width_um": 0.4,
+          "occupied_width_um": 0.4,
+          "Ey_peak_abs_on_plane": 0.011530144140124321
+        }
+      ],
+      "field_arrays_sha256": {
+        "fields": "f06a5c3f0927b367d734ef040f0090390b4673266d82e72d8e98da1910f17e0b",
+        "raw_fields": "cee0d103ae952924fed5f2132458d4d373b2aeaba6a149638ed700857ab12196",
+        "epsilon": "e2f8c6c33404d89667c1a0eeb5ee3db219f0ce0f5871404e46a5e52554669351",
+        "raw_epsilon": "48342cf425ed9520cb872e16fafc3a1a9274bce63f5a966605196f99e1585457"
+      },
+      "all_field_samples_finite": true
+    }
+  ],
+  "cpu_gpu_repeatability": {
+    "relative_l2": 1.7727651184568566e-06,
+    "max_abs_error": 2.9243528842926025e-06,
+    "component_relative_l2": {
+      "Ex": 2.1203291230491683e-06,
+      "Ey": 1.5636820247653832e-06,
+      "Ez": 3.541650407965333e-06
+    },
+    "coordinate_grids_identical": true,
+    "raw_material_grid_identical": true,
+    "acceptance_rule": "For this matched float32 integration control only, require exact coordinates/materials and field relative L2 < 1e-4. This threshold catches device translation or large trajectory discrepancies and does not establish discretization accuracy."
+  },
+  "straight_control": {
+    "relative_l2": 0.7852845493803536,
+    "max_abs_error": 0.22205014526844025,
+    "reference": "Equal-width straight control (0.4 \u00b5m throughout), same input width, source, domain and numerical settings as widening taper.",
+    "coordinates_identical": true,
+    "changed_raw_material_voxels": 6752
+  },
+  "unavailable_gpu_control": {
+    "requested": "GPU with CUDA unavailable",
+    "worker_exit_code": 1,
+    "stored_field_file": false,
+    "error": "Requested cuda execution could not initialize: AssertionError. CPU fallback is disabled."
+  },
+  "references": [
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.UniformMaterialObject.html",
+    "https://fdtdx.readthedocs.io/en/stable/api/fdtdx.UniformPlaneSource.html"
+  ],
+  "limitations": [
+    "One finite-height taper, constant lossless core and homogeneous cladding.",
+    "Staircase boundaries are sampled at voxel centres; default height spans four occupied cells.",
+    "The source is a finite uniform driven sheet. Device repeatability is separate from modal transmission and mesh convergence."
+  ]
+}

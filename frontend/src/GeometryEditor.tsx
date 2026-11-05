@@ -70,6 +70,11 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   const lastStored = useRef(initial.stored);
   const selected = scene.objects.find(object => object.id === selectedId);
 
+  function inspectFieldStudy() {
+    setStudyMode('fields');
+    requestAnimationFrame(() => document.getElementById('geometry-studies')?.scrollIntoView({ behavior: 'smooth' }));
+  }
+
   function pauseAutosave() {
     // Pause synchronously as well as visually, before any pending scene effect can save.
     paused.current = true;
@@ -192,7 +197,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   }
   return <div className="geometry-editor">
     <div className="geo-intro"><div><span className="eyebrow">YOUR LOCAL PHOTONICS STUDIO</span><h1>Design in three dimensions.</h1><p>Build, inspect, and keep your geometry. Every dimension is in micrometres.</p></div><span className="geo-stage">GEOMETRY WORKSPACE · PREVIEW</span></div>
-    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onApply={(document,text,selection,fit)=>{if(!apply(document,text))return false;setSelectedId(selection);if(fit)setResetKey(key=>key+1);return true;}}/>
+    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onStudy={inspectFieldStudy} onApply={(document,text,selection,fit)=>{if(!apply(document,text))return false;setSelectedId(selection);if(fit)setResetKey(key=>key+1);return true;}}/>
     <div className="geo-document-bar">
       <label className="geo-document-name"><span>DESIGN</span><TextInput label="Design name" value={scene.name} onCommit={name => apply({ ...scene, name })}/></label>
       <div className="geo-file-actions"><button className="button secondary compact" onClick={undo} disabled={!history.past.length}>Undo</button><button className="button secondary compact" onClick={redo} disabled={!history.future.length}>Redo</button><span className="geo-divider"/><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><CodeExport value={scene} kind="geometry"/><button className="button secondary compact" onClick={()=>{setStudyMode('modal');setTimeout(()=>document.getElementById('geometry-studies')?.scrollIntoView({behavior:'smooth'}),0);}}>3D ports &amp; S-matrix</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
@@ -215,7 +220,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
       </aside>
       <div className="geo-stage-column">
         <GeometryViewport document={scene} selectedId={selectedId} onSelect={setSelectedId} resetKey={resetKey}/>
-        <div className="geo-science-boundary"><div><strong>{scene.mode === 'slab-preview' ? 'Extruded view of the 2D slab' : '3D geometry'}</strong><p>{scene.mode === 'slab-preview' ? 'The slab solver is invariant along z. The displayed thickness is illustrative and does not change its physics.' : 'The study below validates this exact geometry for the supported finite-height waveguide. Rings, couplers, and other shapes remain editable drafts.'}</p></div><button onClick={onSimulation}>Open tested 2D simulation →</button></div>
+        <div className="geo-science-boundary"><div><strong>{scene.mode === 'slab-preview' ? 'Extruded view of the 2D slab' : '3D geometry'}</strong><p>{scene.mode === 'slab-preview' ? 'The slab solver is invariant along z. The displayed thickness is illustrative and does not change its physics.' : 'The field study validates the current geometry for a finite-height waveguide or a single library taper.'}</p></div><button onClick={onSimulation}>Open tested 2D simulation →</button></div>
         <div className="geo-status" role="status"><span>{saveState}</span><span>X propagation · Y lateral · Z vertical</span></div>
       </div>
       <aside className="panel geo-inspector">
@@ -236,7 +241,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
       </aside>
     </div>
     <nav className="geo-study-tabs" id="geometry-studies" aria-label="3D study type"><button aria-pressed={studyMode==='fields'} onClick={()=>setStudyMode('fields')}>3D field study</button><button aria-pressed={studyMode==='modal'} onClick={()=>setStudyMode('modal')}>3D modal S-parameters</button></nav>
-    <div hidden={studyMode!=='fields'}><Study3DPanel geometry={scene} onOpenGeometry={document => replace(document, 'Runnable 3D waveguide opened. Choose a CPU or GPU target in the study below.')} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/></div>
+    <div hidden={studyMode!=='fields'}><Study3DPanel geometry={scene} onOpenGeometry={document => replace(document, `${document.schema_version === 2 ? 'Taper' : 'Waveguide'} example opened. Select a CPU or GPU target in the study below.`)} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/></div>
     <div hidden={studyMode!=='modal'}><ModalPorts geometry={scene} active={studyMode==='modal'} onOpenGeometry={document=>replace(document,'Finite-height modal study opened. Inspect the geometry and explicitly select its execution target.')}/></div>
     <PublicBenchmarks/>
     {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}

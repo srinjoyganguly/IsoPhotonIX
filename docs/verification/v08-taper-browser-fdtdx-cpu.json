@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T18:39:22.076Z",
+  "target": "fdtdx:cpu",
+  "preflight": false,
+  "new_solver_jobs": 1,
+  "run_id": "fcb8de551cdd4512885777dbb3cbc2a5",
+  "actual_device": "cpu:0",
+  "device_name": "cpu",
+  "shape": [
+    47,
+    61,
+    119
+  ],
+  "observed_core_width_cells": [
+    8,
+    18
+  ],
+  "parameters": {
+    "length_um": 3,
+    "input_width_um": 0.5,
+    "output_width_um": 1.15,
+    "height_um": 0.3
+  },
+  "checks": [
+    "User-selected solver/device, exact edited geometry and visible physical cell/source; config and Python/notebook downloads.",
+    "Real worker on chosen target; actual nine component/plane slices agree with rendered samples; material grid widens between taper faces; immutable result and replay exports.",
+    "A second solid prevents submission; small-screen layout fits; no browser exception or unexpected job."
+  ],
+  "browser_errors": [],
+  "browser": "156.0.8078.81"
+}

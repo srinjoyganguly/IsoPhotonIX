@@ -59,10 +59,12 @@ def _base_files():
 
 
 def _archive(files, kind, config, *, versions=None, snapshot_origin='not_applicable', implementation=None):
-    try:
-        revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
-    except (OSError, subprocess.CalledProcessError):
-        revision = None
+    revision = None
+    if (ROOT / '.git').exists():
+        try:
+            revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip()
+        except (OSError, subprocess.CalledProcessError):
+            pass
     manifest = {'schema_version': 1, 'kind': kind, 'created_at_utc': datetime.now(timezone.utc).isoformat(),
                 'base_revision': revision, 'revision_meaning': 'Checkout revision at export time; file hashes identify the actual numerical implementation.',
                 'snapshot_origin': snapshot_origin, 'implementation_snapshot': implementation,

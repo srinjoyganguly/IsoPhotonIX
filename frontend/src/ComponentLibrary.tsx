@@ -4,11 +4,11 @@ import { validateGeometryDocument, type GeometryDocument, type MaterialRecord, t
 import './componentLibrary.css';
 
 type Parameter = { key:string; label:string; unit:string; min:number; max:number; step:number; default:number };
-type Family = { id:string; name:string; category:string; summary:string; parameters:Parameter[]; defaults:Record<string,number>; limitations:string[]; simulation_support:'design-only' };
+type Family = { id:string; name:string; category:string; summary:string; parameters:Parameter[]; defaults:Record<string,number>; limitations:string[]; simulation_support:'design-only'|'bounded-taper-fields' };
 type Catalog = { components:Family[]; materials:MaterialRecord[] };
 type Placement = { x:number; y:number; z:number; rotation_deg:number };
 type Generated = { geometry:GeometryDocument; component:ComponentInstance };
-type Props = { document:GeometryDocument; selectedId:string|null; editRequest?:number; onApply:(geometry:GeometryDocument,message:string,selectedId:string|null,fit:boolean)=>boolean };
+type Props = { document:GeometryDocument; selectedId:string|null; editRequest?:number; onStudy:()=>void; onApply:(geometry:GeometryDocument,message:string,selectedId:string|null,fit:boolean)=>boolean };
 const origin:Placement = {x:0,y:0,z:0,rotation_deg:0};
 const title=(text:string)=>text.replaceAll('_',' ').replaceAll('-',' ').replace(/\b\w/g,s=>s.toUpperCase());
 
@@ -30,7 +30,7 @@ function ComponentGlyph({family}:{family:string}) {
   return <svg className="component-glyph" viewBox="0 0 120 80" aria-hidden="true"><g {...common}>{drawing}</g></svg>;
 }
 
-export function ComponentLibrary({document,selectedId,onApply,editRequest=0}:Props) {
+export function ComponentLibrary({document,selectedId,onApply,onStudy,editRequest=0}:Props) {
   const [catalog,setCatalog]=useState<Catalog|null>(null),[loadError,setLoadError]=useState(''),[retry,setRetry]=useState(0);
   const [query,setQuery]=useState(''),[category,setCategory]=useState('all'),[familyId,setFamilyId]=useState('taper');
   const [parameters,setParameters]=useState<Record<string,string>>({}),[placement,setPlacement]=useState<Record<keyof Placement,string>>({x:'0',y:'0',z:'0',rotation_deg:'0'});
@@ -40,6 +40,8 @@ export function ComponentLibrary({document,selectedId,onApply,editRequest=0}:Pro
   const details=useRef<HTMLDetailsElement>(null);
   useEffect(()=>{let active=true;setLoadError('');request<Catalog>('/api/library').then(value=>{if(active){setCatalog(value);const first=value.components.find(c=>c.id==='taper')??value.components[0];if(first){setFamilyId(first.id);setParameters(Object.fromEntries(Object.entries(first.defaults).map(([key,v])=>[key,String(v)])));}}}).catch(e=>{if(active)setLoadError(e.message);});return()=>{active=false;};},[retry]);
   const family=catalog?.components.find(item=>item.id===familyId);
+  const studyTaper = family?.simulation_support === 'bounded-taper-fields'
+    && document.components?.length === 1 && document.components[0].family === 'taper';
   const selectedComponent=document.components?.find(component=>component.object_ids.includes(selectedId??''));
   const currentInstance=document.components?.find(component=>component.id===editingId);
   const materialMap=new Map((catalog?.materials??[]).map(material=>[material.id,material]));
@@ -81,7 +83,7 @@ export function ComponentLibrary({document,selectedId,onApply,editRequest=0}:Pro
       <div className="library-intro"><div><h2>Build the next circuit.</h2><p>Choose a component, tune its dimensions, and place it in your 3D layout. Generated geometry and recipes travel with your exports.</p></div><span className="library-design-badge">Geometry designs · solver coverage is checked separately</span></div>
       {loadError?<div className="frame-error" role="alert">Component library unavailable: {loadError}<button onClick={()=>setRetry(value=>value+1)}>Retry library</button></div>:!catalog?<p role="status">Reading local component definitions…</p>:<>
         <div className="library-controls"><label>Find a component<input type="search" aria-label="Search photonic components" placeholder="Try taper, cavity, grating…" value={query} onChange={event=>setQuery(event.target.value)}/></label><label>Category<select aria-label="Component category" value={category} onChange={event=>setCategory(event.target.value)}><option value="all">All categories</option>{[...new Set(catalog.components.map(item=>item.category))].map(value=><option key={value} value={value}>{title(value)}</option>)}</select></label><span>{families.length} of {catalog.components.length} designs</span></div>
-        <div className="library-layout"><div className="library-cards" role="list" aria-label="Photonic components">{families.map(item=><div role="listitem" key={item.id}><button className={`component-card ${item.id===familyId?'selected':''}`} aria-label={`Choose component ${item.name}`} aria-pressed={item.id===familyId} disabled={busy} onClick={()=>choose(item)}><ComponentGlyph family={item.id}/><span className="component-card-category">{title(item.category)}</span><strong>{item.name}</strong><span className="component-card-summary">{item.summary}</span><span className="component-card-status">Design-ready</span></button></div>)}{!families.length&&<p className="library-no-results">No components match this search. Try another term or category.</p>}</div>
+        <div className="library-layout"><div className="library-cards" role="list" aria-label="Photonic components">{families.map(item=><div role="listitem" key={item.id}><button className={`component-card ${item.id===familyId?'selected':''}`} aria-label={`Choose component ${item.name}`} aria-pressed={item.id===familyId} disabled={busy} onClick={()=>choose(item)}><ComponentGlyph family={item.id}/><span className="component-card-category">{title(item.category)}</span><strong>{item.name}</strong><span className="component-card-summary">{item.summary}</span><span className="component-card-status">{item.simulation_support === 'bounded-taper-fields' ? '3D field study available' : 'Design-ready'}</span></button></div>)}{!families.length&&<p className="library-no-results">No components match this search. Try another term or category.</p>}</div>
           {family&&<aside className="library-config" aria-label="Component parameters"><div className="library-config-title"><span className="eyebrow">PARAMETRIC DESIGN</span><h3>{family.name}</h3><p>{family.summary}</p></div>
             {selectedComponent&&<button className="library-edit-selected" disabled={busy} onClick={()=>editInstance(selectedComponent)}>Edit selected component</button>}
             {editingId&&<p className="library-editing">Editing component {editingId.slice(0,18)}{!currentInstance?' · no longer in this design':''}. Values remain a draft until applied.</p>}
@@ -91,7 +93,8 @@ export function ComponentLibrary({document,selectedId,onApply,editRequest=0}:Pro
             <div className="library-actions"><button className="button primary compact" onClick={()=>void generate('add')}>Add to layout</button><button className="button secondary compact" onClick={()=>void generate('new')}>Open as new design</button>{editingId&&<button className="button primary compact" disabled={!currentInstance} onClick={()=>void generate('update')}>Update component</button>}</div></fieldset>
             {busy&&<p role="status">Building and validating exact geometry…</p>}
             {error&&<p className="library-error" role="alert">{error} The previous design is retained.</p>}{notice&&<div className="library-notice" role="status">{notice}<button onClick={()=>window.document.querySelector('.geo-stage-column')?.scrollIntoView({behavior:'smooth',block:'center'})}>Inspect in 3D ↓</button></div>}
-            <details className="library-limits"><summary>Model and simulation scope</summary><p>These templates are original, editable geometry designs. A library entry does not certify electromagnetic performance or fabrication readiness.</p>{family.limitations.map((limit,index)=><p key={index}>{limit}</p>)}<p>The current field/port studies accept their explicitly validated waveguide geometries. Laser cavity layouts contain no carrier injection, gain, threshold or lasing result.</p></details>
+            {studyTaper && <button className="button secondary compact" onClick={onStudy}>Set up taper simulation</button>}
+            <details className="library-limits"><summary>Model and simulation scope</summary><p>These templates are original, editable geometry designs. A library entry does not certify electromagnetic performance or fabrication readiness.</p>{family.limitations.map((limit,index)=><p key={index}>{limit}</p>)}<p>{family.simulation_support === 'bounded-taper-fields' ? 'Open a single taper as a new design, then set up its 3D field study. The service validates geometry, material and grid before execution.' : 'This family supports geometry editing and design exports.'}</p></details>
           </aside>}
         </div>
       </>}

@@ -1,52 +1,104 @@
-# Local application and solver packaging design
+# Install Photonics Workbench locally
 
-Design proposal checked against official sources on **1 November 2026**.
-This is a proposed installation architecture, not a claim that a published
-`photonics-workbench` wheel, desktop application, or solver installer exists.
-The current tested setup remains [SETUP.md](SETUP.md).
+The **0.8.0a1 wheel** contains the local service, the compiled React interface,
+20 component families, solver adapters, examples and dependency notices. The
+wheel installs the pinned application dependencies through pip. The tested
+platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
+separate environments. The wheel is available as a local build artifact.
 
-## Intended user experience
+## Install and launch
 
-The application wheel will contain the Python service, command-line entry
-point, schema definitions, solver adapters, examples, notices, and a prebuilt
-React interface. End users should not need Node, pnpm, a source checkout, or
-a compiler to launch the application.
+Use the wheel from this release, or build one as described below. In a new
+Python 3.11 environment, run the following commands with the actual wheel path.
 
-Proposed commands, **not available yet**:
-
-```text
-python -m pip install photonics-workbench
-photonics-workbench setup --solvers meep,mpb,fdtdx,beamz --device cpu
+```bash
+python3.11 -m venv .venv-workbench
+source .venv-workbench/bin/activate
+python -m pip install /path/to/photonics_workbench-0.8.0a1-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
-
-# Optional, on a qualified NVIDIA platform:
-photonics-workbench setup --solvers fdtdx,beamz --device cuda
-
-# Optional desktop extra and launcher:
-python -m pip install "photonics-workbench[desktop]"
-photonics-workbench desktop
 ```
 
-The setup command or first-run setup screen automates the selected dependencies
-in managed environments. It reports download size, target device, platform
-requirements and installed versions. It must offer existing-runtime discovery
-and an explicit noninteractive mode for reproducible setup. Missing drivers or
-unsupported platforms are reported with an actionable explanation.
+Open `http://127.0.0.1:8000` in a browser. `web --port 8010` selects another
+loopback port. Node and the source checkout are build-time tools. Installed
+runs, registry and caches live under `$XDG_DATA_HOME/photonics-workbench`
+(default `~/.local/share/photonics-workbench`). Use `--data-dir /path/to/state`
+on any command or set `PHOTONICS_DATA_DIR` to select a different store. A
+second installed server can use a separate store and port.
 
-Do not implement network downloads, driver changes, shell profile changes, or
-Conda environment creation as arbitrary `pip` build/install hooks. Installing
-the core package should have normal Python package behavior. Automated solver
-setup is a visible application action, and can be retried, cancelled or repaired
-independently. An expert may continue using the already-supported interpreter
-overrides instead.
+## Set up the numerical runtimes
+
+For the supported managed Meep/MPB profile, install Conda and run:
+
+```bash
+photonics-workbench setup meep --conda /path/to/conda
+photonics-workbench doctor --json
+```
+
+`setup meep --offline` uses the Conda cache and the bundled Linux x86-64 lock.
+The installer checks package identities, runs a Meep field calculation and an
+MPB mode check, then registers the working interpreter. It can reuse a
+previously qualified managed prefix. To use existing environments instead,
+set `MEEP_PYTHON` and/or `FDTDX_PYTHON` to their Python executables. Follow the
+[FDTDX CPU and NVIDIA environment instructions](SETUP.md) to prepare FDTDX.
+The doctor command probes each execution target and reports its availability.
+
+To reproduce a saved study through the installed CLI:
+
+```bash
+photonics-workbench run config.json --output reproduced-run
+```
+
+The output directory must be new. Saved-run Python/notebook exports also
+contain their numerical source and can be replayed independently. [Standalone
+exports](REPRODUCIBLE_EXPORTS.md).
+
+The [final wheel verification](verification/v08-checks.json) records the
+tested artifact's SHA-256. A fresh offline installation provisioned all 90
+locked Conda packages and checked the expected MPB homogeneous-mode frequency
+of 0.125. Repeating setup reused the same interpreter. The installed CLI
+reproduced the GUI taper arrays with managed Meep and with the existing
+NVIDIA FDTDX environment. [Managed profile record](verification/v08-managed-install.json).
+The installed browser also completed the real taper journey, including
+field and material inspection and export. [Browser record](verification/v08-wheel-browser.json).
+
+## Build the wheel from source
+
+First build `frontend/dist` with the pinned package manager as described in
+[SETUP.md](SETUP.md). From the repository root, run:
+
+```bash
+python3.11 -m pip wheel --no-deps . --wheel-dir dist
+```
+
+For an offline build, use an environment with the declared setuptools build
+requirement and add `--no-build-isolation --no-index`. The build selects the
+script and stylesheet referenced by the compiled index, along with the listed
+application modules, examples, measured public benchmark, environment locks
+and redistributable notices. The installed service keeps writable state separate
+from these resources. [PyPA packaging guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/),
+[setuptools package data](https://setuptools.pypa.io/en/stable/userguide/datafiles.html).
+
+`scripts/verify_wheel_install.py` creates a clean environment outside the
+checkout, installs via local wheels, checks dependencies, runs an actual Meep
+taper through the installed service, restarts it and compares fresh CLI and
+standalone Python results with the saved arrays. [Verification record](verification/v08-wheel-install.json).
+
+The installed GUI also completed a real edited taper through Meep CPU.
+The browser compared all nine component/plane field views against their
+numerical samples and downloaded the results and Python/notebook bundle.
+[Installed GUI verification](verification/v08-wheel-browser.json).
+
+The managed FDTDX/BeamZ installers, additional platform qualification and
+the native desktop shell are subsequent increments. The following design
+notes retain the dependency research from 1 November 2026.
 
 ## Dependency facts and current evidence
 
 | Component | Official distribution / requirement | What is established here |
 | --- | --- | --- |
 | Meep | Conda-forge `pymeep`; latest documentation also describes a PyPI `pymeep` wheel route | Conda PyMeep 1.35.0 passed fresh-prefix and real numerical checks; PyPI `pymeep` availability is unresolved, as detailed below |
-| MPB Python interface | Uses the Meep Python environment through `from meep import mpb` | Local MPB 1.12.0 public slab/strip benchmark harness verified through isolated workers; general interactive mode studies and clean installation remain unqualified |
+| MPB Python interface | Uses the Meep Python environment through `from meep import mpb` | The managed profile verifies a homogeneous mode in MPB 1.12.0. The public slab/strip benchmarks have separate numerical evidence |
 | FDTDX | PyPI `fdtdx`, with a compatible JAX installation | Existing 0.6.2 / JAX 0.10.2 environment passed real CPU/GPU runs; clean FDTDX installation is still unverified |
 | BeamZ | PyPI `beamz`, upstream `beamzorg/beamz` | Identity and official release metadata verified; no local installation or run yet |
 | NVIDIA execution | Compatible host driver plus JAX CUDA dependencies for the JAX route | RTX 3080 Ti Laptop GPU execution verified inside WSL; this does not establish support on other hosts |

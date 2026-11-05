@@ -8,25 +8,70 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .runtime import ROOT, clean_log, interpreter, worker_env
+from .runtime import ROOT, clean_log, data_root, interpreter, worker_env
 
 
 class JobManager:
-    def __init__(self, directory=None):
-        self.directory = Path(directory or ROOT/"runs")
-        self.directory.mkdir(parents=True, exist_ok=True)
+    def __init__(self, directory=None, *, defer_recovery=False):
+        self.directory = Path(directory or data_root()/"runs")
         self.lock = threading.RLock()
         self.jobs = {}
         self.processes = {}
+        self._deferred = defer_recovery
+        self._store_lock = None
+        if defer_recovery:
+            self._reload(recover=False)
+        else:
+            # Standalone callers historically recover on construction.
+            with self._claim_store():
+                self._reload(recover=True)
+
+    def _claim_store(self):
+        import fcntl
+        self.directory.mkdir(parents=True, exist_ok=True)
+        guard = (self.directory / ".service.lock").open("a")
+        try:
+            fcntl.flock(guard, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            guard.close()
+            raise RuntimeError(f"Another workbench service is using the run store {self.directory}.") from exc
+        except BaseException:
+            guard.close()
+            raise
+        return guard
+
+    def _reload(self, *, recover):
+        jobs = {}
         for path in self.directory.glob("*/job.json"):
             try:
                 job = json.loads(path.read_text())
-                if job["status"] in ("queued", "running"):
-                    job.update(status="failed", error="Service restarted before completion. Run again.")
-                self.jobs[job["id"]] = job
-                self._save(job)
-            except (ValueError, KeyError, OSError):
+                if job["id"] != path.parent.name:
+                    continue
+                interrupted = job["status"] in ("queued", "running")
+            except (ValueError, KeyError, OSError, TypeError):
                 continue
+            if recover and interrupted:
+                job.update(status="failed", error="Service restarted before completion. Run again.")
+                self._save(job)
+            jobs[job["id"]] = job
+        self.jobs = jobs
+
+    def start(self):
+        """Claim the store before treating any queued or running record as interrupted."""
+        with self.lock:
+            if self._store_lock is not None:
+                raise RuntimeError("This workbench service already owns the run store.")
+            guard = self._claim_store()
+            try:
+                self._reload(recover=True)
+            except BaseException:
+                guard.close()
+                raise
+            self._store_lock = guard
+
+    def _require_active(self):
+        if self._deferred and self._store_lock is None:
+            raise RuntimeError("The workbench service must own the run store before changing jobs.")
 
     def _save(self, job):
         path = self.directory/job["id"]/"job.json"
@@ -58,6 +103,7 @@ class JobManager:
 
     def submit(self, config):
         with self.lock:
+            self._require_active()
             config = json.loads(json.dumps(config))
             if any(j["status"] in ("queued", "running") for j in self.jobs.values()):
                 raise RuntimeError("A simulation is already active. Wait for it or cancel it before starting another.")
@@ -123,6 +169,7 @@ class JobManager:
 
     def cancel(self, job_id):
         with self.lock:
+            self._require_active()
             job = self.jobs[job_id]
             if job["status"] not in ("queued", "running"):
                 return self.get(job_id)
@@ -139,6 +186,14 @@ class JobManager:
             return self.get(job_id)
 
     def shutdown(self):
-        for job_id in list(self.jobs):
-            if self.jobs[job_id]["status"] in ("queued", "running"):
-                self.cancel(job_id)
+        with self.lock:
+            if self._deferred and self._store_lock is None:
+                return
+            try:
+                for job_id, job in self.jobs.items():
+                    if job["status"] in ("queued", "running"):
+                        self.cancel(job_id)
+            finally:
+                if self._store_lock is not None:
+                    self._store_lock.close()
+                    self._store_lock = None

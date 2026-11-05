@@ -1,0 +1,34 @@
+{
+  "checked_at": "2026-11-05T18:47:01.566953+00:00",
+  "passed": true,
+  "wheel": "photonics_workbench-0.8.0a1-py3-none-any.whl",
+  "wheel_sha256": "9eb3f4670195ccea53e66229c7da86088fca4188984987bef34331a672ace2fe",
+  "wheel_bytes": 471304,
+  "installed_from_offline_wheelhouse": true,
+  "pip_check": true,
+  "doctor_meep_ready": true,
+  "served_frontend_assets": [
+    "/assets/index-BlzXsNzH.js",
+    "/assets/index-CaJgVeYu.css"
+  ],
+  "catalog_families": 20,
+  "benchmark_data": true,
+  "job_id": "06968df275ca43f48050c0a0f836815a",
+  "actual_device": "CPU",
+  "field_shape_zyx": [
+    48,
+    62,
+    120
+  ],
+  "state_separate_from_package": true,
+  "exclusive_store": true,
+  "saved_run_after_restart": true,
+  "cli_run_all_arrays_exact": true,
+  "standalone_python_all_arrays_exact": true,
+  "solver_versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "state": "Fresh disposable user state and virtual environment."
+}

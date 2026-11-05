@@ -10,13 +10,16 @@ workers in those interpreters, so Meep's native dependencies and JAX's CUDA
 runtime do not need to share one environment. No environment files or secrets
 need to be uploaded anywhere.
 
-The **v0.7 design library** needs the API and built interface, but no solver
-installation: complete sections 1 and 4 to edit components, polygon contours
-and material records locally. Install the relevant solver environment to run
-the existing supported studies. The new 20-family library is design-only;
-its geometric ports and tabulated n/k records do not extend solver coverage.
-See the [component guide](COMPONENT_LIBRARY.md). A pip-installed application,
-managed solver installation and a desktop shell remain roadmap work.
+For the v0.8 installed preview, use the local wheel, then
+`photonics-workbench setup meep` with Conda to install Meep and MPB.
+`photonics-workbench web` serves the bundled GUI and `photonics-workbench doctor`
+checks the solver targets. The [packaging guide](PACKAGING.md) gives the
+installation commands and tested platforms.
+
+For source development, complete sections 1 and 4 to edit the 20-family
+component library locally. Install the appropriate solver environment to run
+the [finite-height taper](TAPER_FIELDS.md) and the other qualified studies.
+The remaining library families support design editing and geometric export.
 
 **Verification note:** The API was installed and tested in fresh isolated
 virtual environments using official PyPI wheels with verified SHA256 hashes.
@@ -53,9 +56,9 @@ locally:
 ```
 
 The application suite includes model, API, complex-port, source-archive and
-Python/notebook export contracts. The v0.7 run had 136 tests: 132 passed
-and four Meep runtime checks were skipped in the
-API interpreter because Meep lives in a separate environment.
+Python/notebook export contracts. The v0.8 run had 148 tests. 143 passed and five native Meep checks were
+skipped in the API interpreter. The taper received separate real checks in
+the Meep interpreter. [Verification](verification/v08-checks.json).
 Actual solver checks are recorded separately in the relevant study guides.
 The API wheelhouse is a local cache and is not committed.
 

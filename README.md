@@ -9,19 +9,27 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**Post-event development: v0.7 preview.** The interactive **3D design**
-workspace now includes a searchable **20-family photonic component library**,
-parametric placement and editing, custom polygon extrusions with holes, and
-reusable constant or tabulated n/k material records. Orbit/pan/zoom, selection,
-undo/redo and portable geometry JSON support inspecting and composing layouts.
-The new library is **design-only**: named ports describe geometry, and stored
-material data does not imply a qualified solver model. See the
-[component guide](docs/COMPONENT_LIBRARY.md) for every family and its limits,
-and the [component/material/laser plan](docs/COMPONENT_ROADMAP.md) for the next
-validation gates.
+**v0.8 preview.** Open **3D design → Photonic component library**, choose
+**Linear taper → Open as new design**, and inspect its finite-height fields
+on Meep CPU or FDTDX CPU/NVIDIA. The simulation uses the saved taper contour,
+adds matched straight access guides through the absorbing boundaries, and
+exports the actual field and material grids. The taper notebook and Python
+script rerun the same local solver. [Taper guide and validation](docs/TAPER_FIELDS.md).
 
-Open
-**Open runnable 3D waveguide** to run a finite-height core with an optional
+The local preview wheel bundles the web interface and Python service. On
+Linux/WSL2 with Python 3.11, install the wheel with pip, run
+`photonics-workbench setup meep` to provision the locked Meep/MPB environment
+using Conda, and launch `photonics-workbench web`. FDTDX uses an installed
+solver interpreter selected with `FDTDX_PYTHON`.
+[Installation and packaging](docs/PACKAGING.md).
+
+The library contains **20 parametric families** with placement and editing,
+custom polygon extrusions with holes, and reusable constant or tabulated n/k
+material records. The centered, single, lossless linear taper has a qualified
+field study. The other families support design and geometry export.
+[Component guide](docs/COMPONENT_LIBRARY.md) · [Component and laser roadmap](docs/COMPONENT_ROADMAP.md).
+
+Choose **Open runnable 3D waveguide** to run a finite-height core with an optional
 substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and
 material slices in XY/XZ/YZ, then export the exact study and numerical volume.
 Those verified studies retain their existing bounded geometry contracts;

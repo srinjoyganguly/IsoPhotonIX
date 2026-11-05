@@ -53,11 +53,12 @@ def build_passport(job, output):
     config = json.loads((output / "config.json").read_text())
     metadata = json.loads((output / "metadata.json").read_text())
     ismodal = config.get('study_type') == 'waveguide-ports-3d'
-    is3d = ismodal or config.get("study_type") == "waveguide-3d"
+    istaper = config.get("study_type") == "taper-3d"
+    is3d = ismodal or istaper or config.get("study_type") == "waveguide-3d"
     isports = config.get("study_type") == "waveguide-ports-2d"
     snapshot_ok = metadata.get("config") == config and job["config"] == config
-    if (isports or ismodal or job["config"].get("study_type") in ("waveguide-ports-2d","waveguide-ports-3d")) and not snapshot_ok:
-        raise ValueError("Port result configuration differs between saved files and the run snapshot.")
+    if (isports or ismodal or istaper or job["config"].get("study_type") in ("waveguide-ports-2d","waveguide-ports-3d","taper-3d")) and not snapshot_ok:
+        raise ValueError("Result configuration differs between saved files and the run snapshot.")
     component = "Ey" if is3d else "Ez"
     with np.load(output / "arrays.npz", allow_pickle=False) as arrays:
         field, epsilon = arrays["field"], arrays["epsilon"]
@@ -158,8 +159,12 @@ def build_passport(job, output):
     assumptions = metadata.get("assumptions", metadata.get("notes", metadata.get('limitations',[])))
     if isinstance(assumptions, str):
         assumptions = [assumptions]
-    command = ".venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run"
-    notes = ["Run from the repository root after copying config.json from this export.",
+    from .runtime import ROOT
+    installed = ROOT.name == '_app' and ROOT.parent.name == 'photonics_workbench'
+    command = ("photonics-workbench run config.json --output reproduced-run" if installed else
+               ".venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run")
+    notes = ["Copy config.json from the export and use the installed CLI." if installed else
+             "Run from the repository root after copying config.json from this export.",
              "Use a new output directory and install the recorded solver/device environment first.",
              "The command preserves the explicit solver and device; it never switches GPU to CPU."]
     timings = metadata.get("timings") or {key: metadata[key] for key in
@@ -185,6 +190,11 @@ def build_passport(job, output):
     if is3d:
         passport["numerical"].update(dimensions="3D", components=["Ex", "Ey", "Ez"],
                                       array_order="component,z,y,x", field_sampling=metadata.get("field_sampling"))
+    if istaper:
+        from .taper_geometry import taper_geometry
+        passport['title'] = 'Finite-height taper field passport'
+        passport['numerical'].update(study_type='taper-3d', physical_layout=taper_geometry(config))
+        passport['limitations'][1] = 'One lossless finite-height linear taper with matched straight access guides and six-face PML. Quantitative accuracy requires mesh and boundary refinement.'
     if isports:
         passport['numerical'].update(study_type='waveguide-ports-2d',maximum_after_source_fs=config['max_after_sources_fs'],
             field_time_fs=metadata.get('field_time_fs'), frequency_bins=len(spectra['valid_bin']),

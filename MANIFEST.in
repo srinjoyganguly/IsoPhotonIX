@@ -1,0 +1,2 @@
+include workbench_build.py
+include requirements-api.txt

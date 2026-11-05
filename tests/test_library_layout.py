@@ -34,7 +34,7 @@ class LibraryLayouts(unittest.TestCase):
                     self.assertEqual(result['component']['family'], entry['id'])
                     self.assertEqual(set(result['component']['object_ids']), {o['id'] for o in geometry['objects']})
                     self.assertEqual(result['component']['parameters'], entry['defaults'])
-                    self.assertEqual(entry['simulation_support'], 'design-only')
+                    self.assertEqual(entry['simulation_support'], 'bounded-taper-fields' if entry['id'] == 'taper' else 'design-only')
             submit.assert_not_called()
 
     def test_placement_preserves_existing_design_and_requires_explicit_domain_growth(self):

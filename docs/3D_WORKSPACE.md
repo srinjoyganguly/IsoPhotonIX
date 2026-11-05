@@ -1,5 +1,10 @@
 # Interactive 3D geometry workspace
 
+The searchable [component library](COMPONENT_LIBRARY.md) adds 20 parametric
+families, polygon editing, material records and layout placement. For a real
+simulation from a library instance, open the [finite-height taper](TAPER_FIELDS.md).
+
+
 The **3D design** workspace is a local, interactive geometry editor. It lets you
 inspect and edit finite solids in physical units. A bounded **finite-height
 waveguide study** now connects supported geometry to real Meep CPU and FDTDX

@@ -1,0 +1,85 @@
+{
+  "release": "0.8.0-preview.1",
+  "checked_at": "2026-11-05T18:48:36.400211+00:00",
+  "scope": "One finite-height, centered, unrotated library taper with homogeneous lossless cladding and straight access guides. Installable web workbench and managed Linux x86-64 Meep/MPB profile.",
+  "checks": {
+    "application_unittests": {
+      "run": 148,
+      "passed": 143,
+      "skipped": 5,
+      "failed": 0,
+      "skip_reason": "Native Meep tests require the separate solver interpreter."
+    },
+    "geometry_tests_passed": 18,
+    "typescript_build_passed": true,
+    "all_20_library_browser_checks": "v08-library-regression.json"
+  },
+  "physical_checks": {
+    "meep": "meep-taper.json",
+    "fdtdx": "fdtdx-taper.json",
+    "browser_runs": {
+      "meep-cpu": {
+        "run_id": "286d582c75f54915876288e34eaf419c",
+        "actual_device": "CPU",
+        "shape": [
+          48,
+          62,
+          120
+        ],
+        "observed_core_width_cells": [
+          8,
+          16
+        ],
+        "record": "v08-taper-browser-meep-cpu.json"
+      },
+      "fdtdx-cpu": {
+        "run_id": "fcb8de551cdd4512885777dbb3cbc2a5",
+        "actual_device": "cpu:0",
+        "shape": [
+          47,
+          61,
+          119
+        ],
+        "observed_core_width_cells": [
+          8,
+          18
+        ],
+        "record": "v08-taper-browser-fdtdx-cpu.json"
+      },
+      "fdtdx-gpu": {
+        "run_id": "16475f2bb2804f8d818cd17412074e69",
+        "actual_device": "cuda:0",
+        "shape": [
+          47,
+          61,
+          119
+        ],
+        "observed_core_width_cells": [
+          8,
+          18
+        ],
+        "record": "v08-taper-browser-fdtdx-gpu.json"
+      }
+    },
+    "browser_cpu_gpu_repeatability": "taper-cpu-gpu-comparison.json",
+    "gui_exports": {
+      "executions": 6,
+      "all_array_bytes_equal": true,
+      "record": "taper-exports.json"
+    }
+  },
+  "wheel": {
+    "filename": "photonics_workbench-0.8.0a1-py3-none-any.whl",
+    "sha256": "9eb3f4670195ccea53e66229c7da86088fca4188984987bef34331a672ace2fe",
+    "bytes": 471304,
+    "platform_tested": "Linux x86-64 / WSL2, Python 3.11",
+    "managed_setup": "v08-managed-install.json",
+    "clean_pip_install_and_offline_restart": "v08-wheel-install.json",
+    "real_browser_run_from_installed_application": "v08-wheel-browser.json"
+  },
+  "boundaries": [
+    "Taper results are instantaneous fields with native solver sampling. Calibrated taper S parameters, insertion loss and external commercial benchmark agreement require separate verification.",
+    "The remaining 19 catalog families are design/export recipes. Passive cavities have no gain or carrier model.",
+    "The wheel provides managed Meep/MPB setup via Conda, and can use existing FDTDX interpreters. Managed FDTDX/BeamZ installation, desktop shells and other platforms remain future work."
+  ]
+}

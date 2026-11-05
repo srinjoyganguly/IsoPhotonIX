@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T18:36:54.192Z",
+  "target": "meep:cpu",
+  "preflight": true,
+  "new_solver_jobs": 0,
+  "run_id": null,
+  "actual_device": null,
+  "device_name": null,
+  "shape": null,
+  "observed_core_width_cells": null,
+  "parameters": {
+    "length_um": 3,
+    "input_width_um": 0.5,
+    "output_width_um": 1.15,
+    "height_um": 0.3
+  },
+  "checks": [
+    "User-selected solver/device, exact edited geometry and visible physical cell/source; config and Python/notebook downloads.",
+    "A second solid prevents submission; small-screen layout fits; no browser exception or unexpected job."
+  ],
+  "browser_errors": [],
+  "browser": "156.0.8078.81"
+}

@@ -1,0 +1,550 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T18:38:17.128968+00:00",
+  "passed": true,
+  "scope": "Real Meep CPU field and material checks for a centered linear taper and its access guides.",
+  "development_check": {
+    "segmented_prism_and_leads_vs_uniform_block_epsilon_relative_l2": 0.00581317,
+    "segmented_prism_and_leads_vs_uniform_block_epsilon_peak_difference": 0.793724,
+    "correction": "A single prism extrudes the union of the exact saved taper and access leads, removing internal subpixel interfaces."
+  },
+  "checks": {
+    "relative_l2_equal_width_vs_native_block_permittivity": 0.0,
+    "relative_l2_equal_width_vs_native_block_vector_fields": 0.0,
+    "relative_l2_widening_vs_equal_width_ey": 1.0397340842639848,
+    "max_allowed_width_or_height_error_grid_cells": 1.5
+  },
+  "cases": {
+    "widening-taper": {
+      "grid_xyz": [
+        120,
+        64,
+        56
+      ],
+      "resolution": 16,
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "duration_fs": 60.04153713566737,
+      "source_x_um": -2.5,
+      "time_steps": 576,
+      "peak_abs_ey": 0.2119806408882141,
+      "geometry": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Linear taper",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 7.5,
+          "y": 4.0,
+          "z": 3.5
+        },
+        "objects": [
+          {
+            "id": "component-taper-1",
+            "name": "Linear width transition",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 1.0,
+              "y": 0.5,
+              "z": 0.375
+            },
+            "radius": 1.0,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.0,
+            "vertices": [
+              {
+                "x": -1.5,
+                "y": -0.3125
+              },
+              {
+                "x": 1.5,
+                "y": -0.625
+              },
+              {
+                "x": 1.5,
+                "y": 0.625
+              },
+              {
+                "x": -1.5,
+                "y": 0.3125
+              }
+            ],
+            "holes": [],
+            "material_id": "generic-core",
+            "component_id": "component-taper"
+          }
+        ],
+        "materials": [
+          {
+            "id": "generic-core",
+            "name": "Generic dielectric \u00b7 n = 2",
+            "model": "constant-nk",
+            "reference_wavelength_um": 1.55,
+            "source": "Original workbench design preset.",
+            "notes": "Illustrative lossless constant index, not a measured material dataset.",
+            "n": 2.0,
+            "k": 0
+          }
+        ],
+        "components": [
+          {
+            "id": "component-taper",
+            "family": "taper",
+            "generator_version": 1,
+            "parameters": {
+              "length_um": 3.0,
+              "input_width_um": 0.625,
+              "output_width_um": 1.25,
+              "height_um": 0.375
+            },
+            "object_ids": [
+              "component-taper-1"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "generic-core",
+            "ports": [
+              {
+                "name": "in",
+                "x": -1.5,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180.0,
+                "width_um": 0.625
+              },
+              {
+                "name": "out",
+                "x": 1.5,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 0,
+                "width_um": 1.25
+              }
+            ]
+          }
+        ]
+      },
+      "array_sha256": {
+        "fields": "b57c98af2a5c6567f6d144006eb2eced44d14200d4343a5fa0e80383309f4d8f",
+        "epsilon": "003cdb735b2a5ee37b597026a7b4be23bad78d65ea591fcca8554fb1836dfe04"
+      },
+      "width_probes": [
+        {
+          "x_um": -1.78125,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.625
+        },
+        {
+          "x_um": -1.28125,
+          "expected_width_um": 0.6705729166666666,
+          "measured_width_um": 0.625
+        },
+        {
+          "x_um": -0.03125,
+          "expected_width_um": 0.9309895833333334,
+          "measured_width_um": 0.875
+        },
+        {
+          "x_um": 1.21875,
+          "expected_width_um": 1.19140625,
+          "measured_width_um": 1.125
+        },
+        {
+          "x_um": 1.71875,
+          "expected_width_um": 1.25,
+          "measured_width_um": 1.25
+        }
+      ],
+      "measured_height_um": 0.375,
+      "output_lead_peak_abs_ey": 0.1846601963043213
+    },
+    "constant-width-taper": {
+      "grid_xyz": [
+        120,
+        64,
+        56
+      ],
+      "resolution": 16,
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "duration_fs": 60.04153713566737,
+      "source_x_um": -2.5,
+      "time_steps": 576,
+      "peak_abs_ey": 0.21602335572242737,
+      "geometry": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Linear taper",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 7.5,
+          "y": 4.0,
+          "z": 3.5
+        },
+        "objects": [
+          {
+            "id": "component-taper-1",
+            "name": "Linear width transition",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 1.0,
+              "y": 0.5,
+              "z": 0.375
+            },
+            "radius": 1.0,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.0,
+            "vertices": [
+              {
+                "x": -1.5,
+                "y": -0.3125
+              },
+              {
+                "x": 1.5,
+                "y": -0.3125
+              },
+              {
+                "x": 1.5,
+                "y": 0.3125
+              },
+              {
+                "x": -1.5,
+                "y": 0.3125
+              }
+            ],
+            "holes": [],
+            "material_id": "generic-core",
+            "component_id": "component-taper"
+          }
+        ],
+        "materials": [
+          {
+            "id": "generic-core",
+            "name": "Generic dielectric \u00b7 n = 2",
+            "model": "constant-nk",
+            "reference_wavelength_um": 1.55,
+            "source": "Original workbench design preset.",
+            "notes": "Illustrative lossless constant index, not a measured material dataset.",
+            "n": 2.0,
+            "k": 0
+          }
+        ],
+        "components": [
+          {
+            "id": "component-taper",
+            "family": "taper",
+            "generator_version": 1,
+            "parameters": {
+              "length_um": 3.0,
+              "input_width_um": 0.625,
+              "output_width_um": 0.625,
+              "height_um": 0.375
+            },
+            "object_ids": [
+              "component-taper-1"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "generic-core",
+            "ports": [
+              {
+                "name": "in",
+                "x": -1.5,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180.0,
+                "width_um": 0.625
+              },
+              {
+                "name": "out",
+                "x": 1.5,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 0,
+                "width_um": 0.625
+              }
+            ]
+          }
+        ]
+      },
+      "array_sha256": {
+        "fields": "31f04fbed84799ec5d0307ecb7557d4a68eb61bc18aa48601648ed5c6a8d5c37",
+        "epsilon": "2267bedaa91b8a0173f6eb3ce11e9c68ea87ededefcff79851e7690b1f9cbc41"
+      },
+      "width_probes": [
+        {
+          "x_um": -1.78125,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.625
+        },
+        {
+          "x_um": -1.28125,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.625
+        },
+        {
+          "x_um": -0.03125,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.625
+        },
+        {
+          "x_um": 1.21875,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.625
+        },
+        {
+          "x_um": 1.71875,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.625
+        }
+      ],
+      "measured_height_um": 0.375,
+      "output_lead_peak_abs_ey": 0.21429800987243652
+    },
+    "single-native-block": {
+      "grid_xyz": [
+        120,
+        64,
+        56
+      ],
+      "resolution": 16,
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "duration_fs": 60.04153713566737,
+      "source_x_um": -2.5,
+      "time_steps": 576,
+      "peak_abs_ey": 0.21602335572242737,
+      "geometry": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 1,
+        "mode": "draft-3d",
+        "units": "um",
+        "name": "Matched rectangular guide",
+        "domain": {
+          "x": 7.5,
+          "y": 4.0,
+          "z": 3.5
+        },
+        "objects": [
+          {
+            "id": "core",
+            "name": "Straight block",
+            "kind": "box",
+            "visible": true,
+            "rotation_deg": 0.0,
+            "radius": 1.0,
+            "inner_radius": 0.6,
+            "size": {
+              "x": 7.5,
+              "y": 0.625,
+              "z": 0.375
+            },
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "refractive_index": 2.0
+          }
+        ]
+      },
+      "array_sha256": {
+        "fields": "31f04fbed84799ec5d0307ecb7557d4a68eb61bc18aa48601648ed5c6a8d5c37",
+        "epsilon": "2267bedaa91b8a0173f6eb3ce11e9c68ea87ededefcff79851e7690b1f9cbc41"
+      }
+    },
+    "widening-taper-finer-grid": {
+      "grid_xyz": [
+        150,
+        80,
+        70
+      ],
+      "resolution": 20,
+      "versions": {
+        "meep": "1.35.0",
+        "numpy": "2.4.6",
+        "python": "3.11.18"
+      },
+      "duration_fs": 60.04153713566737,
+      "source_x_um": -2.5,
+      "time_steps": 720,
+      "peak_abs_ey": 0.21662645041942596,
+      "geometry": {
+        "schema": "photonics-workbench-geometry",
+        "schema_version": 2,
+        "units": "um",
+        "name": "Linear taper",
+        "mode": "draft-3d",
+        "domain": {
+          "x": 7.5,
+          "y": 4.0,
+          "z": 3.5
+        },
+        "objects": [
+          {
+            "id": "component-taper-1",
+            "name": "Linear width transition",
+            "visible": true,
+            "kind": "polygon",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "size": {
+              "x": 1.0,
+              "y": 0.5,
+              "z": 0.375
+            },
+            "radius": 1.0,
+            "inner_radius": 0.6,
+            "rotation_deg": 0,
+            "refractive_index": 2.0,
+            "vertices": [
+              {
+                "x": -1.5,
+                "y": -0.3125
+              },
+              {
+                "x": 1.5,
+                "y": -0.625
+              },
+              {
+                "x": 1.5,
+                "y": 0.625
+              },
+              {
+                "x": -1.5,
+                "y": 0.3125
+              }
+            ],
+            "holes": [],
+            "material_id": "generic-core",
+            "component_id": "component-taper"
+          }
+        ],
+        "materials": [
+          {
+            "id": "generic-core",
+            "name": "Generic dielectric \u00b7 n = 2",
+            "model": "constant-nk",
+            "reference_wavelength_um": 1.55,
+            "source": "Original workbench design preset.",
+            "notes": "Illustrative lossless constant index, not a measured material dataset.",
+            "n": 2.0,
+            "k": 0
+          }
+        ],
+        "components": [
+          {
+            "id": "component-taper",
+            "family": "taper",
+            "generator_version": 1,
+            "parameters": {
+              "length_um": 3.0,
+              "input_width_um": 0.625,
+              "output_width_um": 1.25,
+              "height_um": 0.375
+            },
+            "object_ids": [
+              "component-taper-1"
+            ],
+            "placement": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "rotation_deg": 0
+            },
+            "material_id": "generic-core",
+            "ports": [
+              {
+                "name": "in",
+                "x": -1.5,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 180.0,
+                "width_um": 0.625
+              },
+              {
+                "name": "out",
+                "x": 1.5,
+                "y": 0,
+                "z": 0,
+                "angle_deg": 0,
+                "width_um": 1.25
+              }
+            ]
+          }
+        ]
+      },
+      "array_sha256": {
+        "fields": "130c73ac7a89153a880b5c847bf46580ae585cb37cc28a41a975e4f82d6a31d5",
+        "epsilon": "91325e6830dd5301500a991f98248c0aaff22faba95eb3cf212a660cfc10d13e"
+      },
+      "width_probes": [
+        {
+          "x_um": -1.775,
+          "expected_width_um": 0.625,
+          "measured_width_um": 0.6
+        },
+        {
+          "x_um": -1.275,
+          "expected_width_um": 0.671875,
+          "measured_width_um": 0.6
+        },
+        {
+          "x_um": -0.02499999999999991,
+          "expected_width_um": 0.9322916666666667,
+          "measured_width_um": 0.9
+        },
+        {
+          "x_um": 1.225,
+          "expected_width_um": 1.1927083333333335,
+          "measured_width_um": 1.2
+        },
+        {
+          "x_um": 1.725,
+          "expected_width_um": 1.25,
+          "measured_width_um": 1.2
+        }
+      ],
+      "measured_height_um": 0.3,
+      "output_lead_peak_abs_ey": 0.186661496758461
+    }
+  },
+  "interpretation": "The two meshes check physical shape sampling. These fields use a finite ramped current sheet; they do not measure modal transmission, convergence or commercial solver agreement.",
+  "documentation": "https://meep.readthedocs.io/en/latest/Python_User_Interface/#prism"
+}

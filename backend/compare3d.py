@@ -9,6 +9,10 @@ from .volume import COMPONENTS, stored_volume
 
 def physics_spec(config):
     # Presentation state and execution device do not change this physical study.
+    if config.get('study_type') == 'taper-3d':
+        from .taper_geometry import taper_geometry
+        keys = ('study_type', 'schema_version', 'wavelength_um', 'resolution', 'duration_fs', 'pml_um', 'cladding_index', 'solver')
+        return {key: config[key] for key in keys} | {'physical_layout': taper_geometry(config)}
     geometry = config['geometry']
     objects = [{key: obj[key] for key in ('id', 'kind', 'position', 'size', 'rotation_deg', 'refractive_index')}
                for obj in geometry['objects']]
@@ -20,7 +24,7 @@ def compare_runs(reference, candidate, directory):
     if reference['id'] == candidate['id']:
         raise ValueError('Choose two different completed 3D runs.')
     for job in (reference, candidate):
-        if job['status'] != 'completed' or job['config'].get('study_type') != 'waveguide-3d':
+        if job['status'] != 'completed' or job['config'].get('study_type') not in ('waveguide-3d', 'taper-3d'):
             raise ValueError('Both comparison runs must be completed finite-height 3D studies.')
     if physics_spec(reference['config']) != physics_spec(candidate['config']):
         raise ValueError('Same-study comparison requires the same solver, geometry, materials, source settings, resolution and duration. Only the execution device and presentation settings may differ. No automatic rescaling or source calibration is applied.')

@@ -35,7 +35,7 @@ class ComponentLibraryTests(unittest.TestCase):
         for recipe in catalog['components']:
             with self.subTest(recipe=recipe['id']):
                 built=build_component(recipe['id']);doc=built['geometry'];instance=built['component']
-                self.assertEqual(recipe['simulation_support'],'design-only')
+                self.assertEqual(recipe['simulation_support'],'bounded-taper-fields' if recipe['id'] == 'taper' else 'design-only')
                 self.assertEqual(doc['schema_version'],2)
                 self.assertEqual(validate_geometry(json.loads(json.dumps(doc))),doc)
                 self.assertEqual(instance,doc['components'][0])

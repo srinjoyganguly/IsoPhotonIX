@@ -15,6 +15,7 @@ from .model import WaveguideConfig
 from .passport import FramesUnavailable, build_passport, passport_html, stored_frames
 from .runtime import ROOT
 from .study3d import Waveguide3DConfig, example3d, parse_study
+from .taper_study import TaperStudy, example_taper
 from .volume import stored_volume, volume_info, volume_slice
 from .compare3d import compare_runs
 from .benchmarks import benchmark_report
@@ -25,16 +26,20 @@ from .ports3d import ModalPortStudy, example_ports3d
 from .sparameters import stored_sparameters, sparameters_response, sparameters_csv
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-manager = JobManager()
+manager = JobManager(defer_recovery=True)
 
 
 @asynccontextmanager
 async def lifespan(app):
-    yield
-    manager.shutdown()
+    if isinstance(manager, JobManager):
+        manager.start()
+    try:
+        yield
+    finally:
+        manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.7.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.8.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -51,7 +56,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.7.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.8.0-preview.1", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -239,6 +244,25 @@ def create_job3d(config: Waveguide3DConfig):
     return submit_checked(config)
 
 
+@app.get('/api/taper/example')
+def get_taper_example():
+    return example_taper().model_dump()
+
+
+@app.post('/api/taper/validate')
+def validate_taper(config: TaperStudy):
+    layout = config.layout()
+    return {'valid': True, 'estimate': config.estimate(layout), 'warnings': config.warnings(),
+            'physical_layout': layout, 'boundaries': 'PML on all six faces',
+            'source': {'component': 'Ey', 'x_um': layout['source_x'],
+                       'width_um': layout['width_in'], 'height_um': layout['height']}}
+
+
+@app.post('/api/taper/jobs', status_code=202)
+def submit_taper(config: TaperStudy):
+    return submit_checked(config)
+
+
 class Compare3DRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     reference_run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,80}$")
@@ -300,7 +324,7 @@ def field(job_id: str):
     job = get_job(job_id)
     if job["status"] != "completed":
         raise HTTPException(409, "Results are available only after successful completion.")
-    if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d"):
+    if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d"):
         raise HTTPException(409, "This is a 3D run. Use the volume and slice endpoints with explicit component and plane.")
     with np.load(manager.directory/job_id/"arrays.npz") as arrays:
         data = {key: arrays[key].tolist() for key in ("field", "epsilon", "x_um", "y_um")}
@@ -316,7 +340,7 @@ def completed_output(job_id):
 
 def load_volume(job_id):
     job, output = completed_output(job_id)
-    if job["config"].get("study_type") not in ("waveguide-3d","waveguide-ports-3d"):
+    if job["config"].get("study_type") not in ("waveguide-3d","waveguide-ports-3d","taper-3d"):
         raise HTTPException(409, "This run is a 2D slab, not a recorded 3D volume.")
     try:
         return job, stored_volume(output,allow_zero=job['config'].get('study_type')=='waveguide-ports-3d')
@@ -460,7 +484,7 @@ def export(job_id: str):
         archive.writestr("passport.html", passport_html(record))
         archive.writestr("manifest.json", json.dumps(manifest, indent=2))
         array_note = ("3D arrays: fields[component,z,y,x] in Ex/Ey/Ez order, field=Ey[z,y,x], epsilon[z,y,x], and x_um/y_um/z_um display coordinates. Final-time snapshots only. Read metadata field_sampling before interpreting interpolated Yee-grid samples. FDTDX also retains raw_fields and their coordinate convention. "
-                      if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d") else
+                      if job["config"].get("study_type") in ("waveguide-3d","waveguide-ports-3d","taper-3d") else
                       "2D arrays: field and epsilon[y,x], x_um/y_um, plus any frames/times_fs. Field is signed Ez. The final snapshot may be later than the last recorded frame. ")
         measurement_note = 'Fields use arbitrary source amplitude, not normalized transmission. '
         if job['config'].get('study_type') == 'waveguide-ports-2d':
@@ -468,7 +492,7 @@ def export(job_id: str):
             measurement_note = 'R=-reflected_flux/incident_flux and T=transmitted_flux/incident_flux use the measured straight reference. 1-R-T is uncollected flux, not absorption. These are finite-aperture powers, not complex modal S-parameters. '
         if job['config'].get('study_type') == 'waveguide-ports-3d':
             measurement_note = 'sparameters.npz preserves complex unit-power modal amplitudes and the 2x2 S-matrix in [frequency,outgoing,incoming] order. Read physical reference planes, phase gauge and four-stage settlement in metadata.json. CSV retains raw complex values and validity flags. Residual fundamental-channel power includes radiation/other modes/error, not absorption. arrays.npz is the actual forward-device late-time volume, not a monochromatic field synthesized from S. '
-        archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json identifies all original result files with SHA256. " + array_note + measurement_note + "Reproduce from the repository with .venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run (new output directory).\n")
+        archive.writestr("README.txt", "Actual local solver output. Open passport.html for configuration, recorded execution, file checks, limitations and reproduction. manifest.json identifies all original result files with SHA256. " + array_note + measurement_note + f"Reproduce with {record['reproduce_command']} (choose a new output directory).\n")
     stream.seek(0)
     return StreamingResponse(stream, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="waveguide-{job_id[:8]}.zip"'})
 

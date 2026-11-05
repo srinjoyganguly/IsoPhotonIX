@@ -3,3 +3,11 @@
 @media(max-width:1050px){.study3d-layout{grid-template-columns:290px minmax(0,1fr)}.study3d-setup,.study3d-output{padding:15px}.study3d-heading h2{font-size:18px}.study3d-heading{padding:18px}.study3d-output .logs{margin:17px -15px -15px}.slice3d-controls{gap:8px}.slice3d-display{padding-left:40px}}
 @media(max-width:720px){.study3d-heading{display:block}.study3d-heading>.button{margin-top:15px}.study3d-layout{display:block}.study3d-setup{border-right:0;border-bottom:1px solid #2b3a49}.study3d-targets{display:grid;grid-template-columns:1fr}.study3d-empty{min-height:200px}.slice3d-scale{font-size:8px;gap:8px}.slice3d-readout{font-size:7px}.study3d-heading h2{font-size:18px}}
 .study3d-comparison{margin-top:14px;border:1px solid #314657;border-radius:6px;background:#10202c}.study3d-comparison>summary{padding:13px;cursor:pointer;font-size:11px;color:#bed8e7}.study3d-comparison-body{padding:0 13px 14px}.study3d-comparison-body p{font-size:10px;line-height:1.7;color:#8fadc1;margin:0 0 10px}.study3d-comparison-select{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:13px 0}.study3d-comparison-select label{display:flex;flex-direction:column;gap:6px;color:#9cb6c9;font-size:10px;min-width:0;flex:1}.study3d-comparison-select select{border:1px solid #35495b;background:#0d1925;border-radius:4px;color:#c4d8e7;padding:8px;max-width:100%;min-width:0;font-size:10px}.study3d-comparison table{width:100%;border-collapse:collapse;font-size:10px;margin:12px 0 15px}.study3d-comparison th,.study3d-comparison td{text-align:left;padding:8px 5px;border-bottom:1px solid #2c4354}.study3d-comparison th{font-weight:500;color:#9bb7cb}.study3d-comparison td{font-family:ui-monospace,monospace;color:#d0e0ec}.comparison-overall{font-family:ui-monospace,monospace;font-weight:500;color:#cedee9}
+
+.study3d-examples { display: flex; flex-wrap: wrap; gap: 8px; }
+.study3d-taper-layout { margin: 14px 0; padding: 12px; border: 1px solid #2c4857; border-radius: 5px; }
+.study3d-taper-layout h4 { margin: 0 0 8px; font-size: 12px; }
+.study3d-taper-layout dl { display: grid; gap: 6px; margin: 0; }
+.study3d-taper-layout dl div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0 8px; }
+.study3d-taper-layout dt, .study3d-taper-layout dd { margin: 0; font-size: 10px; line-height: 1.5; }
+.study3d-taper-layout dt { color: #91a7bb; }

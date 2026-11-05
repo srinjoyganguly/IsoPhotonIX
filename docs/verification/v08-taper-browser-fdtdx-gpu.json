@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T18:40:22.558Z",
+  "target": "fdtdx:gpu",
+  "preflight": false,
+  "new_solver_jobs": 1,
+  "run_id": "16475f2bb2804f8d818cd17412074e69",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "shape": [
+    47,
+    61,
+    119
+  ],
+  "observed_core_width_cells": [
+    8,
+    18
+  ],
+  "parameters": {
+    "length_um": 3,
+    "input_width_um": 0.5,
+    "output_width_um": 1.15,
+    "height_um": 0.3
+  },
+  "checks": [
+    "User-selected solver/device, exact edited geometry and visible physical cell/source; config and Python/notebook downloads.",
+    "Real worker on chosen target; actual nine component/plane slices agree with rendered samples; material grid widens between taper faces; immutable result and replay exports.",
+    "A second solid prevents submission; small-screen layout fits; no browser exception or unexpected job."
+  ],
+  "browser_errors": [],
+  "browser": "156.0.8078.81"
+}

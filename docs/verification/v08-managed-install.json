@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T18:47:06.575426+00:00",
+  "platform": "WSL2 Linux x86-64, Python 3.11",
+  "wheel": "photonics_workbench-0.8.0a1-py3-none-any.whl",
+  "wheel_sha256": "9eb3f4670195ccea53e66229c7da86088fca4188984987bef34331a672ace2fe",
+  "installation": "Fresh isolated venv and application state outside checkout. Offline pip wheelhouse and authorized conda-forge cache.",
+  "setup": {
+    "first": "installed",
+    "second": "already-ready",
+    "lock_sha256": "b0be0c7b04c39a9e5b7f0b307f0fa435e6180de80a4d7847a416551538879d24",
+    "native_check": {
+      "meep": "1.35.0",
+      "field_peak": 0.022904066407527804,
+      "mpb_frequency": 0.1250000000000027,
+      "expected_mpb_frequency": 0.125,
+      "locked_artifacts": 90,
+      "mpb_version": "1.12.0"
+    }
+  },
+  "discovery": [
+    {
+      "solver": "meep",
+      "device": "cpu",
+      "available": true,
+      "device_name": "CPU",
+      "version": "1.35.0"
+    },
+    {
+      "solver": "fdtdx",
+      "device": "cpu",
+      "available": true,
+      "device_name": "cpu",
+      "version": "0.6.2"
+    },
+    {
+      "solver": "fdtdx",
+      "device": "gpu",
+      "available": true,
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "version": "0.6.2"
+    }
+  ],
+  "installed_cli_taper_runs": [
+    {
+      "target": "meep-cpu",
+      "gui_reference_run_id": "286d582c75f54915876288e34eaf419c",
+      "actual_device": "CPU",
+      "device_name": "CPU",
+      "array_count": 6,
+      "all_array_bytes_exact": true,
+      "numerical_source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+    },
+    {
+      "target": "fdtdx-gpu",
+      "gui_reference_run_id": "16475f2bb2804f8d818cd17412074e69",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "array_count": 11,
+      "all_array_bytes_exact": true,
+      "numerical_source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+    }
+  ]
+}

@@ -58,8 +58,7 @@ families, component placement/regeneration, polygon extrusions with holes and
 reusable constant/tabulated n/k material records. Standalone design bundles
 carry the original generators, validator, exact contours, materials and
 geometric ports. [Implemented catalog and limits](COMPONENT_LIBRARY.md) ·
-[Export contract](REPRODUCIBLE_EXPORTS.md). These additions do not broaden the
-existing executable study schemas: library components remain design-only.
+[Export contract](REPRODUCIBLE_EXPORTS.md). This was the starting point for the v0.8 taper field study.
 The [component/material/laser roadmap](COMPONENT_ROADMAP.md) defines separate
 gates for general passive studies, quantitative measurements, physical material
 models, layout/process support and active devices.
@@ -209,10 +208,11 @@ and verifies them.
 
 ## Professional feature backlog
 
-The design library now provides a broader set of geometry candidates. The next
-increment should qualify a small passive device with explicit sources and
-ports through real Meep and FDTDX CPU/NVIDIA simulations before expanding
-simulation claims. Keep the existing studies available throughout that work.
+The [linear taper](TAPER_FIELDS.md) now runs on Meep CPU and FDTDX CPU/NVIDIA with
+a verified physical material grid, explicit excitation and standalone solver
+exports. The next optical increment is modal transmission and reflection for
+unequal input and output guides. Qualify source/reference planes and
+convergence before reporting insertion loss.
 The remaining backlog is:
 
 - **Geometry:** qualify selected library geometries for simulation; add routing

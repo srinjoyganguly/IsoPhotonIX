@@ -1,5 +1,9 @@
 # Run and inspect a finite-height 3D waveguide
 
+This guide covers the rectangular waveguide study. The library taper has its
+own schema, access guides and validation. [Finite-height taper fields](TAPER_FIELDS.md).
+
+
 This milestone connects a supported geometry from the 3D editor to real Meep
 CPU and FDTDX CPU/NVIDIA GPU calculations. It evolves Maxwell fields in all
 three spatial dimensions and saves Ex, Ey, Ez and the actual material volume.

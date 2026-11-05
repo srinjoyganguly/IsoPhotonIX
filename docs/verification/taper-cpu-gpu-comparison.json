@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "kind": "same-study-repeatability",
+  "generated_at": "2026-11-05T18:40:55.675945+00:00",
+  "reference_run_id": "fcb8de551cdd4512885777dbb3cbc2a5",
+  "candidate_run_id": "16475f2bb2804f8d818cd17412074e69",
+  "reference_target": "fdtdx / cpu",
+  "candidate_target": "fdtdx / gpu",
+  "components": {
+    "Ex": {
+      "relative_l2": 1.063898039888972e-06,
+      "max_abs_error": 6.556510925292969e-07,
+      "reference_peak_abs": 1.1067962646484375
+    },
+    "Ey": {
+      "relative_l2": 1.1046562989633052e-06,
+      "max_abs_error": 1.2218952178955078e-06,
+      "reference_peak_abs": 0.736875593662262
+    },
+    "Ez": {
+      "relative_l2": 1.3021490571659979e-06,
+      "max_abs_error": 2.980232238769531e-07,
+      "reference_peak_abs": 0.5162811875343323
+    }
+  },
+  "overall_relative_l2": 1.1004870527234552e-06,
+  "epsilon_identical": true,
+  "coordinate_grids_identical": true,
+  "actual_time_fs": 40.03807226015111,
+  "commercial_agreement": "not_validated",
+  "notes": [
+    "Metrics describe differences between actual saved samples on identical grids at the same physical time.",
+    "Physical inputs, source conventions, numerical versions and material arrays were checked before comparing.",
+    "These are repeatability metrics. A small difference does not establish convergence or agreement with commercial software.",
+    "No arbitrary pass/fail threshold, phase fitting, amplitude normalization or resampling was applied."
+  ],
+  "source": "Actual POST /api/compare3d on the two completed browser-submitted taper runs.",
+  "verification_rule": "For this local same-grid CPU/GPU float32 regression, require identical coordinate/material arrays and overall field relative L2 below 1e-4. This is an engineering repeatability limit, independent of accuracy or convergence.",
+  "verification_passed": true
+}

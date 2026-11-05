@@ -66,7 +66,7 @@ def _recipe(identifier, name, category, summary, parameters, limitations=()):
                 parameters=parameters, defaults={p['key']:p['default'] for p in parameters},
                 limitations=['Editable design geometry. No electromagnetic performance is supplied.',
                              'Named ports are geometric intent, not measured or solved eigenmodes.', *limitations],
-                simulation_support='design-only')
+                simulation_support='bounded-taper-fields' if identifier == 'taper' else 'design-only')
 
 
 _RECIPES = [

@@ -5,13 +5,12 @@ editor. Each instance retains its recipe, dimensions, placement, material,
 member solids and named geometric ports. These are original geometry
 generators, not imported vendor component files or measured performance data.
 
-**These library documents are design-only.** The existing verified simulation
-studies have their own narrower geometry contracts. A displayed component or
-port does not establish that the selected solver can simulate it, launch its
-mode or calculate its S-parameters. The workbench must reject unsupported
-designs instead of substituting a strip waveguide. See the
-[staged roadmap](COMPONENT_ROADMAP.md) for the next simulation and material
-qualification gates.
+**Linear taper supports a bounded finite-height field study** on Meep CPU
+and FDTDX CPU/NVIDIA. Open one centered taper with a constant lossless core.
+Its saved end widths and height define the matched access guides. The other
+19 families support design editing and geometric export. Named layout ports
+retain their position and direction. Quantitative modal measurements require
+a separately qualified study. [Taper fields](TAPER_FIELDS.md) · [Roadmap](COMPONENT_ROADMAP.md).
 
 ## Using an instance
 
@@ -144,8 +143,8 @@ Recipe generation is deterministic. Saved instances include
 `generator_version`, resolved parameters, material reference and explicit
 solid membership. Layout placement assigns distinct instance/object IDs so
 multiple copies can coexist. JSON and design Python/notebook exports preserve
-the explicit geometry, materials and instances; they do not promise an
-electromagnetic solve for these design-only families.
+the explicit geometry, materials and instances. The taper field study has a
+separate numerical Python/notebook export that reruns the selected device.
 
 Run focused generator checks with:
 

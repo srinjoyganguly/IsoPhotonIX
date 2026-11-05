@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 
-def execute_notebook(folder):
+def execute_notebook(folder, name='geometry.ipynb', timeout=120):
     import nbformat
     from nbclient import NotebookClient
     # Resolve the kernel's "python" inside the same explicitly chosen QA env.
@@ -32,10 +32,10 @@ def execute_notebook(folder):
     os.environ['MPLCONFIGDIR'] = str(folder/'.matplotlib')
     os.environ.pop('PYTHONPATH', None)
     os.environ.pop('MPLBACKEND', None)
-    notebook = nbformat.read(folder/'geometry.ipynb', as_version=4)
+    notebook = nbformat.read(folder/name, as_version=4)
     nbformat.validate(notebook)
-    NotebookClient(notebook, timeout=120, kernel_name='python3', resources={'metadata': {'path': str(folder)}}).execute()
-    nbformat.write(notebook, folder/'executed-geometry.ipynb')
+    NotebookClient(notebook, timeout=timeout, kernel_name='python3', resources={'metadata': {'path': str(folder)}}).execute()
+    nbformat.write(notebook, folder/('executed-' + name))
     assert not any(output.output_type == 'error' for cell in notebook.cells if cell.cell_type == 'code' for output in cell.outputs)
     assert any('image/png' in output.get('data', {}) for cell in notebook.cells if cell.cell_type == 'code' for output in cell.outputs)
 

@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-11-05T18:42:08.204465+00:00",
+  "passed": true,
+  "executions": 6,
+  "all_array_bytes_equal": true,
+  "source": "Actual completed-run ZIPs downloaded from the taper study UI. Each script and notebook ran a fresh real solver outside the checkout against its captured source and saved reference.",
+  "scope": "Same-input, same-device reproduction of three finite-height taper field runs. Numeric arrays include all stored staggered and display fields, permittivity and axes for each solver. Checksum of compressed files and wall-clock timings are outside numerical comparison.",
+  "acceptance": "Declared fixed pointwise rtol=1e-6, atol=1e-12; coordinates, shapes, dtypes and physical times exact. All six observed executions also matched every reference numeric array byte, including signed zeros.",
+  "cases": [
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T18:39:36.015288+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "target": "meep:cpu",
+      "run_id": "286d582c75f54915876288e34eaf419c",
+      "device_name": "CPU",
+      "archive_sha256": "75923ca6fb391a0b99d98e26826be9abafc0aebe334d635d538b51db44614bfb",
+      "config_sha256": "ec25c83ad368661f169e878a742c5a64137074b2a6b6ee27efeef98077069220",
+      "implementation_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "CPU",
+        "recorded_physical_times": {
+          "actual_duration_fs": {
+            "reference": 40.02769142377825,
+            "reproduced": 40.02769142377825,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 384,
+            "reproduced": 384,
+            "exact": true
+          },
+          "time_step_fs": {
+            "reference": 0.10423877974942253,
+            "reproduced": 0.10423877974942253,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "x_um",
+          "y_um",
+          "z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "CPU",
+        "recorded_physical_times": {
+          "actual_duration_fs": {
+            "reference": 40.02769142377825,
+            "reproduced": 40.02769142377825,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 384,
+            "reproduced": 384,
+            "exact": true
+          },
+          "time_step_fs": {
+            "reference": 0.10423877974942253,
+            "reproduced": 0.10423877974942253,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+      },
+      "notebook_plot_png_bytes": 40713,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 19.37
+    },
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T18:40:21.694371+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "target": "fdtdx:cpu",
+      "run_id": "fcb8de551cdd4512885777dbb3cbc2a5",
+      "device_name": "cpu",
+      "archive_sha256": "7f0438d2a7030eb11a83a864e62182378034c3f1611aa59a47514d52c3d58db4",
+      "config_sha256": "825c3304ad023c4ca91a33811434a668f5c538daafbfbc7e5eb973ae1de7bfa9",
+      "implementation_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cpu:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 40.03807226015111,
+            "reproduced": 40.03807226015111,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 336,
+            "reproduced": 336,
+            "exact": true
+          },
+          "time_step_fs": {
+            "reference": 0.11916092934568782,
+            "reproduced": 0.11916092934568782,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cpu:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 40.03807226015111,
+            "reproduced": 40.03807226015111,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 336,
+            "reproduced": 336,
+            "exact": true
+          },
+          "time_step_fs": {
+            "reference": 0.11916092934568782,
+            "reproduced": 0.11916092934568782,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+      },
+      "notebook_plot_png_bytes": 36934,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 40.33
+    },
+    {
+      "passed": true,
+      "checked_at_utc": "2026-11-05T18:41:27.024374+00:00",
+      "source": "Python and notebook ZIP downloaded through the real GUI",
+      "target": "fdtdx:gpu",
+      "run_id": "16475f2bb2804f8d818cd17412074e69",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "archive_sha256": "4868748059254eb666d8ee452785a821b22c4cee39c8a1e1859abac3e799e3c6",
+      "config_sha256": "e8f993c178442aa1e9c22e4ca05cb2a43729cbf8991df8caf290cfe68fe6407f",
+      "implementation_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0",
+      "script": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cuda:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 40.03807226015111,
+            "reproduced": 40.03807226015111,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 336,
+            "reproduced": 336,
+            "exact": true
+          },
+          "time_step_fs": {
+            "reference": 0.11916092934568782,
+            "reproduced": 0.11916092934568782,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+      },
+      "notebook": {
+        "passed": true,
+        "all_arrays_exact": true,
+        "all_array_bytes_equal": true,
+        "all_arrays_pointwise_passed": true,
+        "rtol": 1e-06,
+        "atol": 1e-12,
+        "array_names": [
+          "field",
+          "fields",
+          "epsilon",
+          "raw_fields",
+          "raw_epsilon",
+          "x_um",
+          "y_um",
+          "z_um",
+          "raw_x_um",
+          "raw_y_um",
+          "raw_z_um"
+        ],
+        "field_relative_l2": 0.0,
+        "field_max_abs_error": 0.0,
+        "actual_device": "cuda:0",
+        "recorded_physical_times": {
+          "simulated_time_fs": {
+            "reference": 40.03807226015111,
+            "reproduced": 40.03807226015111,
+            "exact": true
+          },
+          "time_steps": {
+            "reference": 336,
+            "reproduced": 336,
+            "exact": true
+          },
+          "time_step_fs": {
+            "reference": 0.11916092934568782,
+            "reproduced": 0.11916092934568782,
+            "exact": true
+          }
+        },
+        "versions_match": true,
+        "implementation_preserved": true,
+        "source_sha256": "161debe40b2ccf0d866960fc44a1d1f2f67c4682f886ef6c1486e650d62aa0e0"
+      },
+      "notebook_plot_png_bytes": 36934,
+      "notebook_environment": {
+        "nbclient": "0.10.2",
+        "nbformat": "5.10.4",
+        "ipykernel": "7.1.0",
+        "matplotlib": "3.10.8"
+      },
+      "wall_seconds": 36.46
+    }
+  ],
+  "related": [
+    "fdtdx-taper.json",
+    "taper-cpu-gpu-comparison.json"
+  ],
+  "replay_harness": "scripts/verify_taper_exports.py"
+}

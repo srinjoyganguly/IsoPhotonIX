@@ -14,10 +14,14 @@ def main():
     implementation = capture_implementation(output)
     print(f"Starting {config['solver']} on explicitly requested {config['device']}", flush=True)
     ismodal = config.get("schema_version") == 4 and config.get("study_type") == "waveguide-ports-3d"
-    is3d = ismodal or config.get("schema_version") == 2 and config.get("study_type") == "waveguide-3d"
+    istaper = config.get("schema_version") == 5 and config.get("study_type") == "taper-3d"
+    is3d = istaper or ismodal or config.get("schema_version") == 2 and config.get("study_type") == "waveguide-3d"
     isports = config.get("schema_version") == 3 and config.get("study_type") == "waveguide-ports-2d"
-    adapter_name = f"{config['solver']}_ports3d" if ismodal else f"{config['solver']}_ports" if isports else f"{config['solver']}3d" if is3d else config['solver']
-    adapter = importlib.import_module(f"backend.adapters.{adapter_name}_adapter")
+    suffix = {1: "_adapter", 2: "3d_adapter", 3: "_ports_adapter", 4: "_ports3d_adapter", 5: "_taper"}
+    version = config.get("schema_version", 1)
+    if version not in suffix or version == 5 and not istaper:
+        raise ValueError("Unknown worker study version or type.")
+    adapter = importlib.import_module(f"backend.adapters.{config['solver']}{suffix[version]}")
     metadata = adapter.run(config, output)
     import numpy as np
     with np.load(output/"arrays.npz") as data:

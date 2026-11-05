@@ -51,4 +51,4 @@ def benchmark_report(path=None):
     return {**report, 'scope': 'mode-benchmarks', 'status': 'available',
             'report_sha256': hashlib.sha256(raw).hexdigest(),
             'notes': [*NOTES, *report.get('notes', [])],
-            'reproduction_command': report.get('reproduction_command', '.venv/bin/python scripts/benchmark_waveguide_modes.py')}
+            'reproduction_command': ('From the source checkout: ' if ROOT.name == '_app' else '') + report.get('reproduction_command', '.venv/bin/python scripts/benchmark_waveguide_modes.py')}

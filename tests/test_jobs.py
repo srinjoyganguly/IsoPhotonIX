@@ -1,3 +1,6 @@
+import json
+import os
+import subprocess
 import sys
 import tempfile
 import time
@@ -63,3 +66,59 @@ class JobLifecycleTests(unittest.TestCase):
         (directory/"job.json").write_text('{"id":"a","status":"running"}')
         restored = JobManager(self.temp.name)
         self.assertEqual(restored.get("a")["status"], "failed")
+
+
+class JobStoreOwnershipTests(unittest.TestCase):
+    def test_api_import_and_competing_start_leave_running_job_intact(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            store = root / "runs"
+            owner = JobManager(store, defer_recovery=True)
+            owner.start()
+            try:
+                with patch.object(owner, "_command", return_value=[sys.executable, "-c", "import time; time.sleep(30)"]):
+                    job = owner.submit({"solver": "meep", "device": "cpu"})
+                    deadline = time.monotonic() + 5
+                    while owner.get(job["id"])["status"] == "queued" and time.monotonic() < deadline:
+                        time.sleep(.01)
+                    self.assertEqual(owner.get(job["id"])["status"], "running")
+                    record = store / job["id"] / "job.json"
+                    original = record.read_bytes()
+                    env = {**os.environ, "PHOTONICS_DATA_DIR": str(root)}
+                    subprocess.run([sys.executable, "-c", "import backend.app"], env=env,
+                                   cwd=Path(__file__).resolve().parents[1], check=True, timeout=20)
+                    contender = JobManager(store, defer_recovery=True)
+                    self.assertEqual(contender.get(job["id"])["status"], "running")
+                    with self.assertRaisesRegex(RuntimeError, "Another workbench service"):
+                        contender.start()
+                    with self.assertRaisesRegex(RuntimeError, "own the run store"):
+                        contender.cancel(job["id"])
+                    contender.shutdown()
+                    self.assertEqual(record.read_bytes(), original)
+            finally:
+                owner.shutdown()
+            contender.start()
+            try:
+                self.assertEqual(contender.get(job["id"])["status"], "cancelled")
+            finally:
+                contender.shutdown()
+
+    def test_service_recovers_only_interrupted_records_after_start(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for status in ("completed", "queued"):
+                path = root / status / "job.json"
+                path.parent.mkdir()
+                path.write_text(json.dumps({"id": status, "status": status}, indent=3) + "\n")
+            completed = root / "completed" / "job.json"
+            saved, timestamp = completed.read_bytes(), completed.stat().st_mtime_ns
+            manager = JobManager(root, defer_recovery=True)
+            self.assertEqual(manager.get("queued")["status"], "queued")
+            manager.start()
+            try:
+                self.assertEqual(manager.get("queued")["status"], "failed")
+                self.assertEqual(json.loads((root / "queued/job.json").read_text())["status"], "failed")
+                self.assertEqual(completed.read_bytes(), saved)
+                self.assertEqual(completed.stat().st_mtime_ns, timestamp)
+            finally:
+                manager.shutdown()

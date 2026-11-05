@@ -1,6 +1,6 @@
 {
   "name": "photonics-workbench-ui",
-  "version": "0.7.0-preview.1",
+  "version": "0.8.0-preview.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,7 @@
     "test:geometry": "node --test geometry-model.test.mjs",
     "test:geometry:browser": "node browser-geometry-smoke.cjs",
     "test:library:browser": "node browser-library-smoke.cjs",
+    "test:taper:browser": "node browser-taper-smoke.cjs",
     "test:3d:browser": "node browser-study3d-smoke.cjs",
     "test:benchmarks:browser": "node browser-benchmarks-smoke.cjs",
     "test:ports:browser": "node browser-ports-smoke.cjs",

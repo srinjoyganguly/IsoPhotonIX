@@ -13,3 +13,6 @@ frontend/dist/
 playwright-report/
 test-results/
 *.log
+/build/
+/dist/
+/src/*.egg-info/

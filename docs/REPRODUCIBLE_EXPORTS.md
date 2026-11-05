@@ -2,11 +2,12 @@
 
 The workbench exports both editable Python and a Jupyter notebook for every
 supported executable study, including the original 2D fields, finite-height 3D
-fields, 2D port measurements and the finite-height 3D modal study. A separate
+fields, 2D port measurements, the finite-height 3D modal study and the
+[finite-height library taper](TAPER_FIELDS.md). A separate
 geometry export preserves editor boxes, cylinders, rings and polygon prisms
 with holes, including rotations, material records, component recipes, geometric
-ports and hidden-state flags. The v0.7 component library is design-only;
-exporting its geometry does not qualify it for electromagnetic simulation.
+ports and hidden-state flags. Use the taper **study** export for a numerical
+replay and the **geometry** export for standalone layout editing.
 
 The export is a ZIP containing source code, configuration and setup files. It
 does not call the workbench API when executed. A completed-run export also
@@ -163,6 +164,11 @@ All model limitations, convergence requirements and unsettled-bin flags still
 apply to reproduced output.
 
 ## Verification
+
+The v0.8 taper checks cover six actual GUI-download replays. Python and Jupyter
+each reproduced every saved numerical array byte-for-byte on Meep CPU, FDTDX
+CPU and FDTDX NVIDIA. Each notebook also displayed the computed field.
+[Taper execution records](verification/taper-exports.json)
 
 The v0.7 design-export checks execute Python and notebooks outside the checkout
 for all 20 component defaults and a custom-material design: **42 replays** with
