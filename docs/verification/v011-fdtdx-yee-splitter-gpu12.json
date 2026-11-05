@@ -342,7 +342,7 @@
   "mirror_symmetry_max_guided_power_delta": 1.4569980973488939e-05,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T23:23:51.958651+00:00",
+  "checked_at": "2026-11-05T23:55:49.540738+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -482,6 +482,23 @@
   ],
   "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
   "source_note": "worker_source_sha256 identifies the driver available at receipt generation. numerical_sha256 identifies the physical implementation recorded by the native run.",
+  "matched_cpu_gpu": {
+    "complex_s_relative_l2": 1.123801191156016e-07,
+    "max_complex_s_difference": 1.0330852674373419e-07,
+    "max_modal_power_difference": 6.227397031377535e-08,
+    "center_input0_guided_power_first": [
+      0.005538106367049233,
+      0.37517284836436193,
+      0.37516264070572913
+    ],
+    "center_input0_guided_power_second": [
+      0.005538106354922859,
+      0.37517280646426265,
+      0.3751625881009469
+    ],
+    "other_actual_device": "cpu:0",
+    "other_array_sha256": "8505f4ba7772a891d77b135260c3efd084c361cc34e6e466ec8fbfa1c8cd315e"
+  },
   "mesh_control": {
     "complex_s_relative_l2": 1.0025730284863934,
     "max_complex_s_difference": 0.7170202390457271,

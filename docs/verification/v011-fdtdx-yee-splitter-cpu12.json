@@ -1,0 +1,502 @@
+{
+  "solver": "fdtdx",
+  "case": "splitter",
+  "requested_device": "cpu",
+  "actual_device": "cpu:0",
+  "port_order": [
+    "left_center",
+    "right_lower",
+    "right_upper"
+  ],
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port",
+    "incoming_port"
+  ],
+  "complex_encoding": [
+    "real",
+    "imag"
+  ],
+  "s": [
+    [
+      [
+        [
+          0.09040391324651528,
+          -0.07551490830389508
+        ],
+        [
+          -0.596712069746642,
+          -0.09325497478832213
+        ],
+        [
+          -0.5967214024418173,
+          -0.09327374283842192
+        ]
+      ],
+      [
+        [
+          -0.5978049094456642,
+          -0.09388040173996007
+        ],
+        [
+          -0.008337991078374572,
+          -0.008250042937157288
+        ],
+        [
+          -0.02152790955531944,
+          -0.08207821491600155
+        ]
+      ],
+      [
+        [
+          -0.5978098248960806,
+          -0.09386605391412722
+        ],
+        [
+          -0.02152956564823859,
+          -0.08207930134358231
+        ],
+        [
+          -0.008338792086962164,
+          -0.008250922482372565
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.02110349278903891,
+          -0.07136349870224863
+        ],
+        [
+          -0.4490883321438432,
+          0.4169362440595914
+        ],
+        [
+          -0.44909782740915083,
+          0.41693845454540474
+        ]
+      ],
+      [
+        [
+          -0.4480463645269507,
+          0.41764489904516433
+        ],
+        [
+          -0.01500546715192949,
+          0.06217547603413567
+        ],
+        [
+          0.03480643321023821,
+          -0.06632824728158797
+        ]
+      ],
+      [
+        [
+          -0.4480382219412769,
+          0.4176414009418199
+        ],
+        [
+          0.03480716223279663,
+          -0.06632823879059789
+        ],
+        [
+          -0.015003845720435484,
+          0.062176585252364545
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.03917993329153684,
+          0.07678331172297506
+        ],
+        [
+          0.04581576415215225,
+          0.618053402572277
+        ],
+        [
+          0.04581577459070734,
+          0.6180594096698084
+        ]
+      ],
+      [
+        [
+          0.04425214162337637,
+          0.6184391731922693
+        ],
+        [
+          -0.012184681830521385,
+          -0.06001787973165639
+        ],
+        [
+          0.03538700409506518,
+          -0.013419480013876498
+        ]
+      ],
+      [
+        [
+          0.044248734728323406,
+          0.6184381594467265
+        ],
+        [
+          0.035386691616878345,
+          -0.013420503796115126
+        ],
+        [
+          -0.01218376040953622,
+          -0.06001792669573426
+        ]
+      ]
+    ]
+  ],
+  "modal_power": [
+    [
+      [
+        0.013875368906429144,
+        0.364761784504092,
+        0.3647764232352173
+      ],
+      [
+        0.3661842395881951,
+        0.00013758530368799282,
+        0.007200284253619353
+      ],
+      [
+        0.3661874228196923,
+        0.007200533906052407,
+        0.00013761317527970386
+      ]
+    ],
+    [
+      [
+        0.005538106354922859,
+        0.3755161616782579,
+        0.37552653346232995
+      ],
+      [
+        0.37517280646426265,
+        0.004090953864519014,
+        0.0056109241802662566
+      ],
+      [
+        0.3751625881009469,
+        0.0056109738037627985,
+        0.004091043140047186
+      ]
+    ],
+    [
+      [
+        0.0074307441318768345,
+        0.38408909267601477,
+        0.38409651908273856
+      ],
+      [
+        0.384425262976993,
+        0.0037506123587946086,
+        0.0014323225026669903
+      ],
+      [
+        0.3844237075849123,
+        0.0014323278657295884,
+        0.003750595542571514
+      ]
+    ]
+  ],
+  "reference_through_power": [
+    [
+      0.9994762683646372,
+      0.9994266121538955,
+      0.9994266735722638
+    ],
+    [
+      0.9999886466828118,
+      0.9999895058809025,
+      0.99998963021379
+    ],
+    [
+      0.9999591927340017,
+      1.0000367228232605,
+      1.0000368597944826
+    ]
+  ],
+  "sum_observed_power": [
+    [
+      0.7462470313143166,
+      0.37209990371383245,
+      0.37211432066411637
+    ],
+    [
+      0.7558735009201324,
+      0.3852180893465397,
+      0.3852285007826434
+    ],
+    [
+      0.7762797146937821,
+      0.38927203290053897,
+      0.3892794371279771
+    ]
+  ],
+  "max_reciprocity_complex_difference": 0.0016121616928260539,
+  "max_modal_power_excess": 0.0,
+  "maximum_singular_value": [
+    0.8785992047770244,
+    0.9129792856538037,
+    0.9161562948988287
+  ],
+  "sampled_setup_checks": {
+    "complete_settling": true,
+    "straight_reference_power_within_0_03": true,
+    "max_complex_reciprocity_difference_below_0_05": true,
+    "max_singular_value_squared_at_most_1_05": true
+  },
+  "sampled_setup_checks_passed": true,
+  "valid_column": [
+    true,
+    true,
+    true
+  ],
+  "settled": true,
+  "resolution": 12,
+  "grid_shape": [
+    168,
+    84,
+    48
+  ],
+  "after_source_cap_um_over_c": 80.0,
+  "sampled_ports": [
+    {
+      "name": "left_center",
+      "x": -4.75,
+      "y": 0.0,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        27,
+        30,
+        9
+      ],
+      "source_ix": 18,
+      "shape": [
+        1,
+        24,
+        30
+      ],
+      "actual_x": -4.75,
+      "actual_y": 0.0
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        141,
+        15,
+        9
+      ],
+      "source_ix": 150,
+      "shape": [
+        1,
+        24,
+        30
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        141,
+        45,
+        9
+      ],
+      "source_ix": 150,
+      "shape": [
+        1,
+        24,
+        30
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "phase": "exp(-i omega t), common forward Ey-positive power basis, matched reference backwave subtracted only at launched port",
+  "scope": "The named straight-guide fundamental modes are observed at finite apertures. Radiation and other modes are not included.",
+  "mirror_symmetry_max_guided_power_delta": 1.4638731125282689e-05,
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "schema_version": 1,
+  "checked_at": "2026-11-05T23:55:51.178539+00:00",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "device_name": "cpu",
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "material_model": "yee-aligned",
+  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
+  "array_payload_sha256": "8505f4ba7772a891d77b135260c3efd084c361cc34e6e466ec8fbfa1c8cd315e",
+  "array_fields": [
+    "s",
+    "incident",
+    "reference_through",
+    "valid_column",
+    "frequency_per_um",
+    "wavelength_um"
+  ],
+  "stages": [
+    {
+      "name": "left_center-reference",
+      "settled": true,
+      "step_count": 2583,
+      "seconds": 577.3445380170015,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.9052377808748133e-07,
+        "amplitude_change": 5.007779724111018e-06
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "c435c8db56e9156bb5a87ca9e71c62e7dd2353bf24ca611168bd22c0fdea9b66",
+      "yee_component_grid_sha256": "135a66aa72a323b2e84ab5074b3416c497d9fe1f625dfaaf9596feabbe4a337b",
+      "source_profile_sha256": "3a1d8ea45ef9d7e9f9f3b91d0c69b47f5fe9915a26664ceefed679d1125b1407",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931663721043151e-05,
+      "raw_monitor_sha256": "786418925da1a19d4dda907da71a78f81413d07c1bd70045d15fb23968206484",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "left_center-device",
+      "settled": true,
+      "step_count": 2751,
+      "seconds": 632.0767951820017,
+      "final_sample": {
+        "time_fs": 437.082288839983,
+        "energy_ratio": 3.66181723165937e-07,
+        "amplitude_change": 4.8342394410119736e-05
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "b4317247291523393487a9b19829db319d3923230626eaf32d7802bec2dabdc3",
+      "yee_component_grid_sha256": "55abd0f721d168cb3274aea0de4b6b95372a67a97069c258ba699828250fde19",
+      "source_profile_sha256": "3a1d8ea45ef9d7e9f9f3b91d0c69b47f5fe9915a26664ceefed679d1125b1407",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931663721043151e-05,
+      "raw_monitor_sha256": "95d145521d18caa249a7f4d70c9153888be51169368f33aff43ccd28d9452cb2",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_lower-reference",
+      "settled": true,
+      "step_count": 2583,
+      "seconds": 661.8034154540001,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.9156358632699266e-07,
+        "amplitude_change": 5.895305106559505e-06
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "9034c23eb3cf51ade24bf070767a99c66d9a852b3bd0ed21952e64014e9b295e",
+      "yee_component_grid_sha256": "f3a13fa6436cbe4b5f7e2a9b155298a00645ea72799d5eaa3dd54642dc05202d",
+      "source_profile_sha256": "59795617cba3a72e35e6a5188c5a676c73adea926b9aa08e395ae4bf1bd62f17",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931663721043151e-05,
+      "raw_monitor_sha256": "4707b71037f579e437c9d0dfb78816266ef0f783488681e2decd093ff34122f5",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_lower-device",
+      "settled": true,
+      "step_count": 2919,
+      "seconds": 947.4657236390012,
+      "final_sample": {
+        "time_fs": 463.77433701341704,
+        "energy_ratio": 1.8124802636521054e-07,
+        "amplitude_change": 0.00010256588865013304
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "b4317247291523393487a9b19829db319d3923230626eaf32d7802bec2dabdc3",
+      "yee_component_grid_sha256": "55abd0f721d168cb3274aea0de4b6b95372a67a97069c258ba699828250fde19",
+      "source_profile_sha256": "59795617cba3a72e35e6a5188c5a676c73adea926b9aa08e395ae4bf1bd62f17",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931663721043151e-05,
+      "raw_monitor_sha256": "486cf52b4721b79a91738a12fea73eff134520f3320019e7fa13d736b1e5edd7",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_upper-reference",
+      "settled": true,
+      "step_count": 2583,
+      "seconds": 858.2198722840003,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.915568077492935e-07,
+        "amplitude_change": 5.898152660497099e-06
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "c55629262fc497b17a3fe660ca7a27708a206aba50cf061eab4bbf9f74ebefd4",
+      "yee_component_grid_sha256": "40f28e0843e74b1a91a523db5082bb5018edd0838249ad55487f953b260be480",
+      "source_profile_sha256": "59795617cba3a72e35e6a5188c5a676c73adea926b9aa08e395ae4bf1bd62f17",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931663721043151e-05,
+      "raw_monitor_sha256": "6e0bb50d4c7bfef2da26a8d46c89192de3e63f741227d904dd90ee588211502f",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_upper-device",
+      "settled": true,
+      "step_count": 2919,
+      "seconds": 927.2388230350007,
+      "final_sample": {
+        "time_fs": 463.77433701341704,
+        "energy_ratio": 1.8228971043754427e-07,
+        "amplitude_change": 0.00010256365022054542
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "b4317247291523393487a9b19829db319d3923230626eaf32d7802bec2dabdc3",
+      "yee_component_grid_sha256": "55abd0f721d168cb3274aea0de4b6b95372a67a97069c258ba699828250fde19",
+      "source_profile_sha256": "59795617cba3a72e35e6a5188c5a676c73adea926b9aa08e395ae4bf1bd62f17",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931663721043151e-05,
+      "raw_monitor_sha256": "33c0a7b922e53629a59275299939d3002a91b2c8a513fa573f2a179b0cd52e73",
+      "reference_reused_from_verified_cache": false
+    }
+  ],
+  "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
+  "source_note": "worker_source_sha256 identifies the driver available at receipt generation. numerical_sha256 identifies the physical implementation recorded by the native run.",
+  "matched_cpu_gpu": {
+    "complex_s_relative_l2": 1.1238011817148595e-07,
+    "max_complex_s_difference": 1.0330852674373419e-07,
+    "max_modal_power_difference": 6.227397031377535e-08,
+    "center_input0_guided_power_first": [
+      0.005538106354922859,
+      0.37517280646426265,
+      0.3751625881009469
+    ],
+    "center_input0_guided_power_second": [
+      0.005538106367049233,
+      0.37517284836436193,
+      0.37516264070572913
+    ],
+    "other_actual_device": "cuda:0",
+    "other_array_sha256": "febd327cc2b792b7541b9a247fe3ef8bd7af969e89344ca4e4ef5b2b53059712"
+  }
+}

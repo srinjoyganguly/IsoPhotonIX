@@ -1,0 +1,67 @@
+{
+  "case": "Ansys lateral ring, planar limited coarse profile",
+  "worker_sha256": "a1b23ccf3290de2d887489441228e0b8cbe1765b4b77be101152cec5d1b876ea",
+  "results": {
+    "python": {
+      "passed": true,
+      "all_raw_array_bytes_equal": false,
+      "maximum_absolute_difference_per_array": {
+        "wavelength_um": 0.0,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_reference_modes": 7.160723346098895e-15,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_device_modes": 7.160723346098895e-15,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_s": 7.216449660063518e-16,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_s_early": 6.856526084140016e-16,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_ring_time": 0.0,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_ring_Hz": 0.0
+      },
+      "peaks": [
+        {
+          "wavelength_um": 1.496,
+          "drop_power": 0.9836205922640785,
+          "loaded_q_half_max": null
+        },
+        {
+          "wavelength_um": 1.534,
+          "drop_power": 0.9773354184476694,
+          "loaded_q_half_max": 286.07257706004293
+        },
+        {
+          "wavelength_um": 1.574,
+          "drop_power": 0.9924196720108408,
+          "loaded_q_half_max": 237.03119675978917
+        }
+      ]
+    },
+    "notebook": {
+      "passed": true,
+      "all_raw_array_bytes_equal": false,
+      "maximum_absolute_difference_per_array": {
+        "wavelength_um": 0.0,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_reference_modes": 7.160723346098895e-15,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_device_modes": 4.873218969144106e-13,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_s": 4.949755385751975e-14,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_s_early": 4.9755459579375886e-14,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_ring_time": 0.0,
+        "lumerical_r20_p0.8_pad0.8_a2.0_t1000_ring_Hz": 1.2134182547640648e-12
+      },
+      "peaks": [
+        {
+          "wavelength_um": 1.496,
+          "drop_power": 0.9836205922641672,
+          "loaded_q_half_max": null
+        },
+        {
+          "wavelength_um": 1.534,
+          "drop_power": 0.9773354184476992,
+          "loaded_q_half_max": 286.07257706004293
+        },
+        {
+          "wavelength_um": 1.574,
+          "drop_power": 0.9924196720108127,
+          "loaded_q_half_max": 237.03119675978917
+        }
+      ]
+    }
+  },
+  "passed": true
+}
