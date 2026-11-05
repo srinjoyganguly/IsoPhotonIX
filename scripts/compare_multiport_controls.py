@@ -35,6 +35,8 @@ def compare(baseline, control, phase_floor=.01):
     if (a['solver'],a['version'],a['actual_device'],a['case'],a['ports']) != (
             b['solver'],b['version'],b['actual_device'],b['case'],b['ports']):
         raise ValueError('Solver/version, target, case and physical ports must match.')
+    if a.get('phase_convention_version',1) != b.get('phase_convention_version',1):
+        raise ValueError('Phase conventions differ. Re-express old Meep results before comparing.')
     if not np.array_equal(fa,fb) or not set(ins_b).issubset(ins_a):
         raise ValueError('Frequencies or incident-port coverage are incompatible.')
     # These quantities define the physical circuit, excitation and geometry.

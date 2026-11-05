@@ -1,0 +1,147 @@
+{
+  "passed": true,
+  "solver": "Meep",
+  "version": "1.35.0",
+  "source_url": "https://github.com/NanoComp/meep/blob/v1.35.0/src/mpb.cpp#L963-L982",
+  "observable": "Electric reflected/incident amplitude one micrometre from a dielectric step. Direct native Ez DFT subtraction and Fresnel theory independently determine the phase.",
+  "rows": [
+    {
+      "resolution": 32,
+      "incident_from": "left",
+      "native_field_reflection": [
+        0.08417729969428768,
+        -0.31973871151596456
+      ],
+      "unsigned_MPB_ratio": [
+        -0.08417676049777947,
+        0.3197395757296803
+      ],
+      "signed_MPB_ratio": [
+        0.08417676049777947,
+        -0.3197395757296803
+      ],
+      "analytic": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "unsigned_minus_direct_abs": 0.6612681524478383,
+      "signed_minus_direct_abs": 1.0186256530069172e-06,
+      "signed_minus_analytic_abs": 0.0030184073301097207
+    },
+    {
+      "resolution": 32,
+      "incident_from": "right",
+      "native_field_reflection": [
+        -0.28227953769920366,
+        -0.17215583139887491
+      ],
+      "unsigned_MPB_ratio": [
+        0.28227825281212165,
+        0.17215767991194164
+      ],
+      "signed_MPB_ratio": [
+        -0.28227825281212165,
+        -0.17215767991194164
+      ],
+      "analytic": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "unsigned_minus_direct_abs": 0.6612694555914505,
+      "signed_minus_direct_abs": 2.251207536273299e-06,
+      "signed_minus_analytic_abs": 0.013858564815309614
+    },
+    {
+      "resolution": 64,
+      "incident_from": "left",
+      "native_field_reflection": [
+        0.08371035464899267,
+        -0.3219589303393966
+      ],
+      "unsigned_MPB_ratio": [
+        -0.08371018780493676,
+        0.32195912148325573
+      ],
+      "signed_MPB_ratio": [
+        0.08371018780493676,
+        -0.32195912148325573
+      ],
+      "analytic": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "unsigned_minus_direct_abs": 0.6653270590458861,
+      "signed_minus_direct_abs": 2.537181780510908e-07,
+      "signed_minus_analytic_abs": 0.0007503653390794257
+    },
+    {
+      "resolution": 64,
+      "incident_from": "right",
+      "native_field_reflection": [
+        -0.28920408569267003,
+        -0.16439513468155872
+      ],
+      "unsigned_MPB_ratio": [
+        0.28920402715968774,
+        0.16439528327901737
+      ],
+      "signed_MPB_ratio": [
+        -0.28920402715968774,
+        -0.16439528327901737
+      ],
+      "analytic": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "unsigned_minus_direct_abs": 0.6653262988610296,
+      "signed_minus_direct_abs": 1.5971009589747333e-07,
+      "signed_minus_analytic_abs": 0.003456228455256366
+    },
+    {
+      "resolution": 96,
+      "incident_from": "left",
+      "native_field_reflection": [
+        0.08362167185454815,
+        -0.32236667339187647
+      ],
+      "unsigned_MPB_ratio": [
+        -0.08362171314401597,
+        0.3223666173695933
+      ],
+      "signed_MPB_ratio": [
+        0.08362171314401597,
+        -0.3223666173695933
+      ],
+      "analytic": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "unsigned_minus_direct_abs": 0.6660715922796077,
+      "signed_minus_direct_abs": 6.95939391145746e-08,
+      "signed_minus_analytic_abs": 0.00033337535157110953
+    },
+    {
+      "resolution": 96,
+      "incident_from": "right",
+      "native_field_reflection": [
+        -0.290455311936361,
+        -0.16293755233049412
+      ],
+      "unsigned_MPB_ratio": [
+        0.290455296210126,
+        0.16293754106310784
+      ],
+      "signed_MPB_ratio": [
+        -0.290455296210126,
+        -0.16293754106310784
+      ],
+      "analytic": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "unsigned_minus_direct_abs": 0.666071851342939,
+      "signed_minus_direct_abs": 1.9346019231935577e-08,
+      "signed_minus_analytic_abs": 0.0015351248509218012
+    }
+  ]
+}

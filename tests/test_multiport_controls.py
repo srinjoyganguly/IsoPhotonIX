@@ -41,6 +41,11 @@ class MultiportControls(unittest.TestCase):
             self.assertAlmostEqual(result['entries'][0]['max_absolute_power_change'],0.)
             self.assertAlmostEqual(result['entries'][0]['max_principal_phase_change_rad'],.03)
             self.assertIsNone(result['entries'][1]['max_principal_phase_change_rad'])
+            newer=json.loads((b/'report.json').read_text());newer['phase_convention_version']=2
+            (b/'report.json').write_text(json.dumps(newer))
+            with self.assertRaisesRegex(ValueError,'Phase conventions'): compare(a,b)
+            newer.pop('phase_convention_version')
+            (b/'report.json').write_text(json.dumps(newer))
             config=json.loads((b/'config.json').read_text());config['model']['width'] *= 1.1
             (b/'config.json').write_text(json.dumps(config))
             with self.assertRaisesRegex(ValueError,'Physical'):

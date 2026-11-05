@@ -199,14 +199,17 @@ def run(config, output_dir):
                 anchors.append(anchor)
             anchors = np.asarray(anchors)
             gauge = anchors/np.abs(anchors)
-            alpha = raw_alpha*gauge
+            # A signed MPB flux overlap changes sign for the negative-velocity
+            # mode on a +x monitor. Convert to the physical electric amplitude.
+            direction_factor = np.sign(np.asarray(values.vgrp))
+            alpha = raw_alpha*gauge*direction_factor
             neff = np.asarray([point.x for point in values.kpoints])/frequencies
             fractions = np.asarray(fractions)
             guided = np.isfinite(neff) & (sign*neff > high_cladding) & (sign*np.asarray(values.vgrp) > 0)
             polarization = fractions[:, 1] > .5
             if not np.isfinite(alpha).all() or not np.all(guided & polarization):
                 raise RuntimeError('MPB did not find the required signed-k guided Ey-dominant mode at every frequency.')
-            by_direction.append({'alpha': alpha, 'raw_alpha': raw_alpha, 'gauge': gauge,
+            by_direction.append({'alpha': alpha, 'raw_alpha': raw_alpha, 'gauge': gauge, 'direction_factor': direction_factor,
                 'ey_anchor': anchors, 'mode_neff': neff, 'group_velocity': np.asarray(values.vgrp),
                 'electric_l2_fraction': fractions, 'edge_intensity_relative_peak': np.asarray(edge_ratios)})
         result = {key: np.stack([item[key] for item in by_direction], axis=1)
@@ -298,8 +301,9 @@ def run(config, output_dir):
             'exact_symmetries': ['Y odd'] if substrate else ['Y odd', 'Z even']},
         'ports': {'port_1_x_um': port_positions[0], 'port_2_x_um': port_positions[1], 'aperture_yz_um': list(aperture),
             'basis': 'One Ey-dominant guided mode per lead, evaluated at each frequency; squared amplitude is modal power',
+            'phase_convention_version': 2,
             'phase_convention': 'DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation',
-            'mode_gauge': 'Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions',
+            'mode_gauge': 'Positive-real Ey at the core center at each physical plane; independent +k and -k modes, signed MPB flux overlap multiplied by sign(group velocity)',
             'normalization': 'Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients',
             'matrix_order': 's[frequency,outgoing_port,incoming_port]; rows and columns are [port1,port2]',
             'reference_planes': 'Physical monitor planes; propagation phase retained; no reference-through division or de-embedding'},
@@ -307,7 +311,7 @@ def run(config, output_dir):
             'reflection': 'Reference complex Fourier E/H subtracted at input plane before native unit-power modal decomposition',
             'transmission': 'Actual outgoing device modal coefficient divided by measured incident coefficient',
             'weak_incident_power_relative_threshold': 1e-6, 'clipping': False,
-            'raw_monitors': 'Native *_dft_e/h are opaque Meep FluxData streams; per-port alpha arrays are [ascending frequency,+x/-x] from independent signed-k mode solves with exported center-Ey gauges'},
+            'raw_monitors': 'Native *_dft_e/h are opaque Meep FluxData streams; per-port alpha arrays are [ascending frequency,+x/-x] from independent signed-k mode solves with exported center-Ey gauges and direction factors'},
         'limitations': ['One fundamental Ey-like mode per physical port; radiation and other modes are not a full loss or absorption accounting.',
             'Lossless nondispersive straight or centered-gap finite-height guide; optional substrate breaks Z mirror symmetry.',
             'Temporal settling and device repeatability do not establish spatial/PML convergence or commercial agreement.',

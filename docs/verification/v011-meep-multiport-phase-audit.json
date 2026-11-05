@@ -1,0 +1,91 @@
+{
+  "passed": true,
+  "case": "splitter",
+  "meep_version": "1.35.0",
+  "method": "Original native reference E/H DFT data are loaded onto their exact Meep monitor. Direct centre-nearest Ey phase is compared to the raw and sign(group velocity)-corrected amplitudes. No new time stepping or fitted rotation.",
+  "max_absolute_electric_phase_residual_rad": 0.002957172319594971,
+  "guard_rad": 0.025,
+  "rows": [
+    {
+      "port": "left_center",
+      "inward_sign": 1,
+      "physical_plane_x_um": -4.75,
+      "sample_yz_um": [
+        -0.03125,
+        -0.03125
+      ],
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "native_reference_Ey": [
+        [
+          -6.3367073188703085,
+          -5.890825115030598
+        ],
+        [
+          -11.167491143315727,
+          5.058339463278007
+        ],
+        [
+          0.2684266531636914,
+          9.329267626382853
+        ]
+      ],
+      "phase_Ey_over_historic_flux_amplitude_rad": [
+        0.0009026046704029125,
+        -0.0011361372788382441,
+        -0.002957172319594971
+      ],
+      "phase_Ey_over_electric_amplitude_rad": [
+        0.0009026046704029125,
+        -0.0011361372788382441,
+        -0.002957172319594971
+      ],
+      "live_native_projection_relative_l2": 0.0,
+      "source_monitor_sha256": "80ba2a8b69e9b54bbbb63c1872af6be107d52103885110307f4c2114ce309a52"
+    },
+    {
+      "port": "right_lower",
+      "inward_sign": -1,
+      "physical_plane_x_um": 4.75,
+      "sample_yz_um": [
+        -1.28125,
+        -0.03125
+      ],
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "native_reference_Ey": [
+        [
+          -6.33670995902905,
+          -5.890824680077608
+        ],
+        [
+          -11.167490357643539,
+          5.058342783086834
+        ],
+        [
+          0.26842937402807254,
+          9.329266903911073
+        ]
+      ],
+      "phase_Ey_over_historic_flux_amplitude_rad": [
+        -3.140678282588288,
+        3.140464416228992,
+        3.138643198253871
+      ],
+      "phase_Ey_over_electric_amplitude_rad": [
+        0.0009143710015051641,
+        -0.0011282373608014998,
+        -0.0029494553359222906
+      ],
+      "live_native_projection_relative_l2": 3.2337939099943226e-11,
+      "source_monitor_sha256": "f7d3a344af8b894dbab1842292aa52a16cab2993fc2b237c46ed2bd0eb83fdf6"
+    }
+  ],
+  "source": "https://github.com/NanoComp/meep/blob/v1.35.0/src/mpb.cpp#L963-L982"
+}

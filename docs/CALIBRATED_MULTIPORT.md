@@ -113,3 +113,59 @@ stopping tolerance can resolve the main transmitted amplitude while a much
 smaller reflected coefficient remains sensitive. A mesh change gives a
 measured sensitivity for those inputs; it cannot supply an asymptotic
 convergence order from two meshes.
+
+## Electric-amplitude convention and measured matrices
+
+For a signed-k eigenmode, Meep 1.35 returns the **signed** normal-flux
+overlap multiplied by a positive normalization. Its native same-mode
+coefficient therefore carries the sign of the group velocity. This study
+multiplies that coefficient by `sign(vgrp)` as well as fixing the local Ey
+phase. In the electric basis, multiplying the mode by amplitude +1 gives a
+positive centre Ey at its own plane for either propagation direction. A check
+using the *actual stored* straight-reference monitor streams found that the
+historic negative-x amplitude was about π radians from the directly sampled
+electric field, whereas the corrected amplitudes for both directions were
+within 0.003 radians of the measured Ey phase. [Native Meep implementation](https://github.com/NanoComp/meep/blob/v1.35.0/src/mpb.cpp#L963-L982) ·
+[Device-port audit](verification/v011-meep-multiport-phase-audit.json).
+
+The following are the authoritative matrices. Every stage settled at all three
+sample frequencies. The superseded overlap-basis receipts are retained with
+their original digests in the verification directory. Changing basis reverses
+entries whose two ports are on the same end of the circuit; opposite-end
+transmission entries, powers and singular values keep their measured values.
+The original E/H streams were byte-checked during the conversion.
+[Four-port Meep matrix](verification/v011-meep-multiport-coupler-electric.json) ·
+[Three-port Meep matrix](verification/v011-meep-multiport-splitter-electric.json).
+
+At 1.55 µm, launching into the lower-left coupler port gave 0.873874 bar
+power, 0.073204 cross power and a 0.077294 forward-normalized cross fraction.
+The largest complex reciprocity residual across the three bins was
+7.42 × 10⁻⁶; the largest singular value was 0.985968. Independent MPB
+eigensolves estimated a 21.8532 µm central straight-section transfer length
+and an adiabatic cross fraction of 0.039901. The latter excludes radiation and
+reflection and does not reproduce this finite circuit's cross fraction.
+On the separately matched Ansys SOI geometry at 80 cells/µm, the computed
+full-transfer length was 12.9732 µm versus 12.8827 µm published (0.702%
+difference). [MPB modes, mesh and quadrature controls](verification/v011-multiport-mpb.json).
+
+At the same wavelength, the centre-left splitter launch delivered 0.4041365
+and 0.3887955 to the lower and upper fundamental modes. The normalized split
+was 50.967% / 49.033%, with 1.008 dB excess loss from the sum of the two
+measured output powers. The largest complex reciprocity residual was 0.001257
+and the largest singular value was 0.925115. The measured imbalance and loss
+are retained. A symmetric geometric layout does not establish exact sampled
+field symmetry or reproduce the optimized Tidy3D junction's published
+insertion loss.
+
+To update the phase basis of a historic workbench Meep multiport result while
+keeping the original result:
+
+```bash
+python scripts/reproject_meep_multiport.py historic-run --output electric-run
+python scripts/check_multiport_reference_phase.py electric-run --output reference-phase.json
+```
+
+The second command requires the original Meep version and a complete saved run.
+Comparison tools refuse to mix the two phase conventions.
+
+The same electric-phase convention applies to new finite-height straight, gap and tapered Meep two-port runs. Those exports include the signed group velocities, the electric-field phase anchors, the unmodified solver coefficients and the direction factors at every frequency. Earlier archived workbench versions reproduce their historic reflected amplitudes. Updating a historic reflection to the electric basis changes its sign. The measured transmitted amplitudes and powers are identical under this basis conversion. [Independent analytic step and direct field checks](verification/v011-meep-fresnel-phase.json).

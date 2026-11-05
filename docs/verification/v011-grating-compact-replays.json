@@ -1,0 +1,17 @@
+{
+  "checked_source_sha256": "5b75e6be3affad1ab985d5f755e64ce4f7bbeffa050d6691fa4d325008fe64b1",
+  "vendor": "Tidy3D",
+  "results": {
+    "python": {
+      "arrays_byte_exact": false,
+      "maximum_absolute_array_difference": 1.7100505601326383e-11,
+      "beam_to_guide": 0.5823413109784932
+    },
+    "notebook": {
+      "arrays_byte_exact": false,
+      "maximum_absolute_array_difference": 1.6458944508589025e-11,
+      "beam_to_guide": 0.5823413109784938
+    }
+  },
+  "passed": true
+}

@@ -113,7 +113,11 @@ def project(mp, sim, monitor, port, model, sign, resolution):
         fractions.append(fraction)
         edge_ratios.append(max(np.max(intensity[[0,-1],:]),np.max(intensity[:,[0,-1]])) / np.max(intensity))
     gauge = np.asarray(anchors) / np.abs(anchors)
-    return alpha*gauge, neff, fractions, edge_ratios
+    # Meep 1.35 uses the signed normal-flux overlap with a positive
+    # sqrt(1/abs(normfac)) scale, even for a negative-vg same-direction mode.
+    # Express the overlap in the centre-Ey electric basis, independently for
+    # each requested signed mode. See src/mpb.cpp lines 967–981.
+    return alpha*gauge*np.sign(values.vgrp), neff, fractions, edge_ratios
 
 
 def measure_column(launch, model, resolution, after_time, directory, minimum_ringdown=0.):
@@ -155,7 +159,7 @@ def measure_column(launch, model, resolution, after_time, directory, minimum_rin
     np.savez_compressed(out/f'{name}-monitors.npz', **native, incident=incident, outgoing=outgoing, s=column,
                         neff_reference=neff_in, neff_device_outward=np.array(neff).T)
     receipt = {'launch':name, 'reference':reference, 'device':device, 'seconds':time.monotonic()-start,
-               'minimum_Ey_fraction':float(np.min(all_fractions)), 'maximum_edge_intensity_fraction':float(np.max(all_edges)),
+               'phase_convention_version':2, 'minimum_Ey_fraction':float(np.min(all_fractions)), 'maximum_edge_intensity_fraction':float(np.max(all_edges)),
                'incident':as_pairs(incident), 'outgoing':as_pairs(outgoing), 's':as_pairs(column),
                'min_incident_relative_power':float(np.min(abs(incident)**2)/np.max(abs(incident)**2))}
     (out/f'{name}.json').write_text(json.dumps(receipt,indent=2)+'\n')
@@ -205,6 +209,8 @@ def measure(case, output, resolution=16, pml_um=.75, aperture_um=2., after_time=
         'ports':names, 'input_ports':[names[i] for i in ids], 'full_matrix':launch_port is None, 'matrix_order':'[frequency, outgoing port, incident port]; [real,imag] pairs',
         'wavelength_um':(1/np.asarray(model['frequency_per_um'])).tolist(), 's':as_pairs(s),
         'power_sums':power.tolist(),'maximum_reciprocity_error':None if reciprocity is None else reciprocity.tolist(),'largest_singular_value':singular.tolist(),
+        'phase_convention_version':2,
+        'phase_convention':'Positive-real centre Ey for each signed-k MPB mode; native overlap multiplied by sign(group velocity).',
         'all_stages_settled':valid,'valid_bins':[valid]*len(s), 'stage_checks':[
             {k:c[k] for k in ('launch','minimum_Ey_fraction','maximum_edge_intensity_fraction','min_incident_relative_power','seconds')}|
             {k:{key:c[k][key] for key in ('elapsed_fs','settled','steps')} for k in ('reference','device')} for c in columns],
