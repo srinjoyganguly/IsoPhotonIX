@@ -1,0 +1,108 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-05T23:20:55.071398+00:00",
+  "export_sha256": "ce0fe32cf10e20af0b82bc0d1d53ea1bd8dcc99d9d9e72564e6daa75a0ed45d0",
+  "python": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:s": 4.771609462523055e-09,
+      "arrays.npz:reference_0": 5.7542598291233147e-08,
+      "arrays.npz:device_0": 2.1177389495618443e-08,
+      "arrays.npz:reference_neff_0": 3.552713678800501e-15,
+      "arrays.npz:device_neff_0": 6.217248937900877e-15,
+      "arrays.npz:incident_1": 1.0624402418594838e-10,
+      "arrays.npz:reference_1": 9.51587393682149e-09,
+      "arrays.npz:device_1": 5.180739622876262e-09,
+      "arrays.npz:reference_neff_1": 7.105427357601002e-15,
+      "arrays.npz:device_neff_1": 6.661338147750939e-15,
+      "arrays.npz:incident_2": 4.8590636757915616e-12,
+      "arrays.npz:reference_2": 5.6524969235422305e-12,
+      "arrays.npz:device_2": 6.053617611162573e-09,
+      "arrays.npz:reference_neff_2": 3.1086244689504383e-15,
+      "arrays.npz:device_neff_2": 2.6645352591003757e-15,
+      "arrays.npz:final_Ez_2": 3.3840660308703807e-16,
+      "arrays.npz:incident_3": 5.652332851261591e-15,
+      "arrays.npz:reference_3": 9.362168076681304e-09,
+      "arrays.npz:device_3": 3.085525307642052e-09,
+      "arrays.npz:reference_neff_3": 4.440892098500626e-15,
+      "arrays.npz:device_neff_3": 7.549516567451064e-15
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power"
+    ]
+  },
+  "notebook": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:s": 4.7715964551760265e-09,
+      "arrays.npz:incident_0": 4.6985393935360396e-14,
+      "arrays.npz:reference_0": 2.0901013580035583e-10,
+      "arrays.npz:device_0": 2.1177370216290204e-08,
+      "arrays.npz:reference_neff_0": 2.220446049250313e-15,
+      "arrays.npz:device_neff_0": 2.220446049250313e-15,
+      "arrays.npz:incident_1": 7.965396709881033e-11,
+      "arrays.npz:reference_1": 9.920774900249146e-09,
+      "arrays.npz:device_1": 6.921131573119461e-09,
+      "arrays.npz:reference_neff_1": 2.220446049250313e-15,
+      "arrays.npz:device_neff_1": 7.105427357601002e-15,
+      "arrays.npz:incident_2": 6.117536102247395e-11,
+      "arrays.npz:reference_2": 6.117536102247395e-11,
+      "arrays.npz:device_2": 3.6679241958459246e-09,
+      "arrays.npz:reference_neff_2": 5.329070518200751e-15,
+      "arrays.npz:device_neff_2": 2.6645352591003757e-15,
+      "arrays.npz:final_Ez_2": 4.499063988668724e-16,
+      "arrays.npz:incident_3": 5.652332851261591e-15,
+      "arrays.npz:reference_3": 1.4060843863463789e-08,
+      "arrays.npz:device_3": 6.905619322129835e-09,
+      "arrays.npz:reference_neff_3": 5.773159728050814e-15,
+      "arrays.npz:device_neff_3": 7.549516567451064e-15,
+      "arrays.npz:final_Ez_3": 2.8885283309716675e-16
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power"
+    ]
+  },
+  "browser": {
+    "passed": true,
+    "checked_at": "2026-11-05T22:57:07.029Z",
+    "job_id": "4fc0e591d183445b83debef9d8d0ce48",
+    "config": {
+      "study_type": "calibrated-component",
+      "case": "multimode",
+      "solver": "meep",
+      "device": "cpu",
+      "resolution": 48,
+      "offset_um": 0.125
+    },
+    "report_checks": {
+      "power_vs_independent_reference_max": 0.0018278009658314054,
+      "complex_vs_independent_reference_max": 0.07289042233310399,
+      "reference_mesh_power_change_max": 0.0014924686938627696,
+      "reference_box_power_change_max": 3.936880747512639e-07,
+      "power_reciprocity_max": 0.0036293057238427906,
+      "largest_guided_output_sum": 0.9690876562775701
+    },
+    "all_table_samples_equal": true,
+    "offline_bundle_downloaded": true,
+    "mobile_width": 390,
+    "browser_errors": []
+  }
+}

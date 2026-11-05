@@ -342,7 +342,7 @@
   "mirror_symmetry_max_guided_power_delta": 8.665624434300856e-06,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T22:47:45.432702+00:00",
+  "checked_at": "2026-11-05T23:23:48.710630+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -499,5 +499,22 @@
     "source": "v011-meep-multiport-splitter-electric.json",
     "source_sha256": "5d73fd1029d2d773475c7e037a19b8c90051880162ae6bd0e93c7b7da5fe1f43",
     "phase_convention_version": 2
+  },
+  "mesh_control": {
+    "complex_s_relative_l2": 0.9954819124313115,
+    "max_complex_s_difference": 0.7170202390457271,
+    "max_modal_power_difference": 0.02164378172035364,
+    "center_input0_guided_power_first": [
+      0.013617364579789099,
+      0.3659513788838194,
+      0.365945389268933
+    ],
+    "center_input0_guided_power_second": [
+      0.005538106367049233,
+      0.37517284836436193,
+      0.37516264070572913
+    ],
+    "other_resolution": 12,
+    "other_array_sha256": "febd327cc2b792b7541b9a247fe3ef8bd7af969e89344ca4e4ef5b2b53059712"
   }
 }

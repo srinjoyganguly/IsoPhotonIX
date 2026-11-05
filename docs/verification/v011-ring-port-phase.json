@@ -1,0 +1,80 @@
+{
+  "solver": "Meep CPU",
+  "version": "1.35.0",
+  "passed": true,
+  "rows": [
+    {
+      "resolution": 32,
+      "incident_from": "left",
+      "electric_projected_reflection": [
+        0.08418264047212076,
+        -0.31974250988062497
+      ],
+      "direct_ey_reflection": [
+        0.08418441644626307,
+        -0.31974337775005734
+      ],
+      "fresnel_reflection_at_port": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "complex_error_vs_direct": 1.9766844729959495e-06,
+      "complex_error_vs_fresnel": 0.003016762972648157
+    },
+    {
+      "resolution": 32,
+      "incident_from": "right",
+      "electric_projected_reflection": [
+        -0.28227926534402353,
+        -0.1721640402103961
+      ],
+      "direct_ey_reflection": [
+        -0.2822823231939604,
+        -0.17216092654000456
+      ],
+      "fresnel_reflection_at_port": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "complex_error_vs_direct": 4.36410237547442e-06,
+      "complex_error_vs_fresnel": 0.013862664271312644
+    },
+    {
+      "resolution": 64,
+      "incident_from": "left",
+      "electric_projected_reflection": [
+        0.08370989919929056,
+        -0.3219577794061991
+      ],
+      "direct_ey_reflection": [
+        0.08370972822428059,
+        -0.32195774022419066
+      ],
+      "fresnel_reflection_at_port": [
+        0.08355084408624028,
+        -0.3226923729554014
+      ],
+      "complex_error_vs_direct": 1.7540719431507746e-07,
+      "complex_error_vs_fresnel": 0.0007516157339472549
+    },
+    {
+      "resolution": 64,
+      "incident_from": "right",
+      "electric_projected_reflection": [
+        -0.28920357577374667,
+        -0.1643948883308064
+      ],
+      "direct_ey_reflection": [
+        -0.2892034231261687,
+        -0.1643950807283438
+      ],
+      "fresnel_reflection_at_port": [
+        -0.2914488720481939,
+        -0.16176732084369386
+      ],
+      "complex_error_vs_direct": 2.455974255919823e-07,
+      "complex_error_vs_fresnel": 0.003456221384601632
+    }
+  ],
+  "observable": "Ey reflection at a plane 1 \u00b5m from an interface, checked against native DFT field subtraction and de-embedded Fresnel reflection. Both propagation directions use a positive Ey anchor."
+}

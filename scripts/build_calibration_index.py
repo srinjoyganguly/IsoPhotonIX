@@ -66,6 +66,28 @@ def build():
         if entry:index[key]=entry
     for key,file in [('ring','v011-ring.json'),('grating','v011-grating.json')]:
         report=read(file)
+        if key=='ring' and (report is None or not report.get('passed')):
+            stored=[]
+            comparisons=[]
+            for name,brand in [('lumerical','Lumerical'),('tidy3d','Tidy3D')]:
+                filename=f'v011-ring-loaded-{name}-fine.json'
+                native=read(filename)
+                if native is None or not native.get('passed'):
+                    url=('https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/' if name=='tidy3d'
+                         else 'https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction')
+                    comparisons.append(vendor(brand,url,'The published loaded-ring spectrum is the reference; local settling and mesh checks are in progress.'))
+                    continue
+                row=native['series'][name]
+                view={'series':{name:{k:row[k] for k in ('wavelength_um','through','drop','reflection','add_side','valid_bins')}}}
+                stored.append({'label':f'{brand} geometry · Meep CPU','receipt':filename,'report':view})
+                comparisons.append(vendor(brand,native['physical_model']['source'],
+                    f"Measured planar mode spacing {native['measured_loaded_fsr_nm']:.2f} nm. The published loaded-ring spacing is {native['vendor_loaded_fsr_nm']:.2f} nm."))
+            if stored:
+                index[key]={'dimension':'Planar effective-index add/drop model','routes':['Meep CPU'],'series':[],'wavelengths_um':[],
+                            'summary':'Both buses are monitored over the spectral band.',
+                            'comparisons':comparisons,'limits':'A finite-height isolated-ring pole and a resonance of a loaded ring have different boundary conditions.',
+                            'recorded':stored}
+            continue
         if key=='grating' and (report is None or not report.get('passed')):
             compact=read('v011-grating-compact-tidy3d.json')
             if compact and compact.get('passed'):

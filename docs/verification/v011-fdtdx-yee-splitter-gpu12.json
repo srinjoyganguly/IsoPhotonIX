@@ -1,0 +1,502 @@
+{
+  "solver": "fdtdx",
+  "case": "splitter",
+  "requested_device": "gpu",
+  "actual_device": "cuda:0",
+  "port_order": [
+    "left_center",
+    "right_lower",
+    "right_upper"
+  ],
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port",
+    "incoming_port"
+  ],
+  "complex_encoding": [
+    "real",
+    "imag"
+  ],
+  "s": [
+    [
+      [
+        [
+          0.09040390623652451,
+          -0.0755148474243685
+        ],
+        [
+          -0.5967120809170054,
+          -0.09325501064574097
+        ],
+        [
+          -0.5967213607516041,
+          -0.09327374832485036
+        ]
+      ],
+      [
+        [
+          -0.5978049026963442,
+          -0.09388042038472909
+        ],
+        [
+          -0.008338002963679429,
+          -0.008250029682298671
+        ],
+        [
+          -0.02152789449950007,
+          -0.08207821917208337
+        ]
+      ],
+      [
+        [
+          -0.5978098107793692,
+          -0.09386604780981277
+        ],
+        [
+          -0.02152956088528819,
+          -0.08207931835171725
+        ],
+        [
+          -0.00833885456532553,
+          -0.008250868714428932
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.021103435889377086,
+          -0.07136351561345744
+        ],
+        [
+          -0.4490883682432479,
+          0.4169362526181409
+        ],
+        [
+          -0.44909783025555605,
+          0.41693837679939155
+        ]
+      ],
+      [
+        [
+          -0.4480463953707192,
+          0.41764491611854565
+        ],
+        [
+          -0.015005440551053361,
+          0.062175486113286826
+        ],
+        [
+          0.034806426917825595,
+          -0.06632826280490506
+        ]
+      ],
+      [
+        [
+          -0.44803825804775416,
+          0.4176414251858442
+        ],
+        [
+          0.03480715188299478,
+          -0.06632823654960487
+        ],
+        [
+          -0.015003806606576672,
+          0.0621765777745941
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.03917996193009894,
+          0.07678333640730696
+        ],
+        [
+          0.04581573196628327,
+          0.6180534456232863
+        ],
+        [
+          0.04581572863211418,
+          0.6180594005689567
+        ]
+      ],
+      [
+        [
+          0.044252151825325874,
+          0.6184391904518713
+        ],
+        [
+          -0.012184608242248379,
+          -0.060017807223603226
+        ],
+        [
+          0.03538698147532561,
+          -0.013419475501596426
+        ]
+      ],
+      [
+        [
+          0.04424875981978906,
+          0.6184381600644301
+        ],
+        [
+          0.03538672052590833,
+          -0.01342049535508167
+        ],
+        [
+          -0.012183786110711865,
+          -0.060017999576548936
+        ]
+      ]
+    ]
+  ],
+  "modal_power": [
+    [
+      [
+        0.013875358444347967,
+        0.36476180452284007,
+        0.36477637450381356
+      ],
+      [
+        0.3661842350193991,
+        0.00013758528318113606,
+        0.00720028430404216
+      ],
+      [
+        0.36618740479549916,
+        0.007200536492995881,
+        0.00013761333000439254
+      ]
+    ],
+    [
+      [
+        0.005538106367049233,
+        0.3755162012386412,
+        0.37552647118835963
+      ],
+      [
+        0.37517284836436193,
+        0.004090954319554719,
+        0.005610925801502487
+      ],
+      [
+        0.37516264070572913,
+        0.005610972785986207,
+        0.004091041036447702
+      ]
+    ],
+    [
+      [
+        0.007430750166681674,
+        0.38408914294242286,
+        0.3840965036217497
+      ],
+      [
+        0.38442528522793773,
+        0.0037506018619466665,
+        0.0014323207806729843
+      ],
+      [
+        0.3844237105694671,
+        0.0014323296851545101,
+        0.003750604917162204
+      ]
+    ]
+  ],
+  "reference_through_power": [
+    [
+      0.9994761806696554,
+      0.999426628476869,
+      0.9994266620242175
+    ],
+    [
+      0.9999887156645829,
+      0.9999894789613826,
+      0.9999895396118533
+    ],
+    [
+      0.9999591860726438,
+      1.0000367234403182,
+      1.0000367334783367
+    ]
+  ],
+  "sum_observed_power": [
+    [
+      0.7462469982592462,
+      0.3720999262990171,
+      0.37211427213786014
+    ],
+    [
+      0.7558735954371403,
+      0.3852181283441821,
+      0.3852284380263098
+    ],
+    [
+      0.7762797459640864,
+      0.389272074489524,
+      0.38927942931958487
+    ]
+  ],
+  "max_reciprocity_complex_difference": 0.0016120949147649002,
+  "max_modal_power_excess": 0.0,
+  "maximum_singular_value": [
+    0.878599172171972,
+    0.9129793202216718,
+    0.9161563400631494
+  ],
+  "sampled_setup_checks": {
+    "complete_settling": true,
+    "straight_reference_power_within_0_03": true,
+    "max_complex_reciprocity_difference_below_0_05": true,
+    "max_singular_value_squared_at_most_1_05": true
+  },
+  "sampled_setup_checks_passed": true,
+  "valid_column": [
+    true,
+    true,
+    true
+  ],
+  "settled": true,
+  "resolution": 12,
+  "grid_shape": [
+    168,
+    84,
+    48
+  ],
+  "after_source_cap_um_over_c": 80.0,
+  "sampled_ports": [
+    {
+      "name": "left_center",
+      "x": -4.75,
+      "y": 0.0,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        27,
+        30,
+        9
+      ],
+      "source_ix": 18,
+      "shape": [
+        1,
+        24,
+        30
+      ],
+      "actual_x": -4.75,
+      "actual_y": 0.0
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        141,
+        15,
+        9
+      ],
+      "source_ix": 150,
+      "shape": [
+        1,
+        24,
+        30
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        141,
+        45,
+        9
+      ],
+      "source_ix": 150,
+      "shape": [
+        1,
+        24,
+        30
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "phase": "exp(-i omega t), common forward Ey-positive power basis, matched reference backwave subtracted only at launched port",
+  "scope": "The named straight-guide fundamental modes are observed at finite apertures. Radiation and other modes are not included.",
+  "mirror_symmetry_max_guided_power_delta": 1.4569980973488939e-05,
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "schema_version": 1,
+  "checked_at": "2026-11-05T23:23:51.958651+00:00",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "material_model": "yee-aligned",
+  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
+  "array_payload_sha256": "febd327cc2b792b7541b9a247fe3ef8bd7af969e89344ca4e4ef5b2b53059712",
+  "array_fields": [
+    "s",
+    "incident",
+    "reference_through",
+    "valid_column",
+    "frequency_per_um",
+    "wavelength_um"
+  ],
+  "stages": [
+    {
+      "name": "left_center-reference",
+      "settled": true,
+      "step_count": 2583,
+      "seconds": 152.71609203799744,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.9049768695822422e-07,
+        "amplitude_change": 4.997926151200031e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "c435c8db56e9156bb5a87ca9e71c62e7dd2353bf24ca611168bd22c0fdea9b66",
+      "yee_component_grid_sha256": "135a66aa72a323b2e84ab5074b3416c497d9fe1f625dfaaf9596feabbe4a337b",
+      "source_profile_sha256": "29073fbb8c70b428b18928c3117e45a5e0d41dfa066a89cf1bbeecf06cc815cc",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931664630537853e-05,
+      "raw_monitor_sha256": "2fcd3263c17e517e9d393924b51b91fc7f2654ee409403fae650fdb37cf92f10",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "left_center-device",
+      "settled": true,
+      "step_count": 2751,
+      "seconds": 150.07026006199885,
+      "final_sample": {
+        "time_fs": 437.082288839983,
+        "energy_ratio": 3.6616205534301116e-07,
+        "amplitude_change": 4.8350092964507934e-05
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "b4317247291523393487a9b19829db319d3923230626eaf32d7802bec2dabdc3",
+      "yee_component_grid_sha256": "55abd0f721d168cb3274aea0de4b6b95372a67a97069c258ba699828250fde19",
+      "source_profile_sha256": "29073fbb8c70b428b18928c3117e45a5e0d41dfa066a89cf1bbeecf06cc815cc",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931664630537853e-05,
+      "raw_monitor_sha256": "834c298847f4b91fce59c494ee25860eabd03f0109685ac4ae6a732930383e5c",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_lower-reference",
+      "settled": true,
+      "step_count": 2583,
+      "seconds": 186.84192847400118,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.9155282870997326e-07,
+        "amplitude_change": 5.900637778565317e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "9034c23eb3cf51ade24bf070767a99c66d9a852b3bd0ed21952e64014e9b295e",
+      "yee_component_grid_sha256": "f3a13fa6436cbe4b5f7e2a9b155298a00645ea72799d5eaa3dd54642dc05202d",
+      "source_profile_sha256": "ff222a15314b3b2763316a224a151e6b88e2bb4cc6a1c38e1782a23334bfd618",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931664630537853e-05,
+      "raw_monitor_sha256": "940b5e6f5da7cad5f115a362f36512b88c1120cde23c5db99b3896c54a0b5f4d",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_lower-device",
+      "settled": true,
+      "step_count": 2919,
+      "seconds": 171.04329741399852,
+      "final_sample": {
+        "time_fs": 463.77433701341704,
+        "energy_ratio": 1.8124447365153173e-07,
+        "amplitude_change": 0.00010256878943672034
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "b4317247291523393487a9b19829db319d3923230626eaf32d7802bec2dabdc3",
+      "yee_component_grid_sha256": "55abd0f721d168cb3274aea0de4b6b95372a67a97069c258ba699828250fde19",
+      "source_profile_sha256": "ff222a15314b3b2763316a224a151e6b88e2bb4cc6a1c38e1782a23334bfd618",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931664630537853e-05,
+      "raw_monitor_sha256": "654757e4dbbd65c79eadbaae3397f843b7af843fe63ed1e863fe910f7563b12f",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_upper-reference",
+      "settled": true,
+      "step_count": 2583,
+      "seconds": 187.08352571700016,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.9154180108671426e-07,
+        "amplitude_change": 5.902781200608692e-06
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "c55629262fc497b17a3fe660ca7a27708a206aba50cf061eab4bbf9f74ebefd4",
+      "yee_component_grid_sha256": "40f28e0843e74b1a91a523db5082bb5018edd0838249ad55487f953b260be480",
+      "source_profile_sha256": "ff222a15314b3b2763316a224a151e6b88e2bb4cc6a1c38e1782a23334bfd618",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931664630537853e-05,
+      "raw_monitor_sha256": "ffedeea95268024d8a26f96cb3b2f084bcd376ec3cf8a44c158e0eafacac25b2",
+      "reference_reused_from_verified_cache": false
+    },
+    {
+      "name": "right_upper-device",
+      "settled": true,
+      "step_count": 2919,
+      "seconds": 219.94052167700283,
+      "final_sample": {
+        "time_fs": 463.77433701341704,
+        "energy_ratio": 1.8228993781121972e-07,
+        "amplitude_change": 0.00010256965963515611
+      },
+      "actual_device": "cuda:0",
+      "material_grid_sha256": "b4317247291523393487a9b19829db319d3923230626eaf32d7802bec2dabdc3",
+      "yee_component_grid_sha256": "55abd0f721d168cb3274aea0de4b6b95372a67a97069c258ba699828250fde19",
+      "source_profile_sha256": "ff222a15314b3b2763316a224a151e6b88e2bb4cc6a1c38e1782a23334bfd618",
+      "source_neff": 2.5289883613586426,
+      "max_edge_mode_fraction": 1.1931664630537853e-05,
+      "raw_monitor_sha256": "070a785b440000b397e363ab783a2750afc7dff43eb146de2941677df5781c83",
+      "reference_reused_from_verified_cache": false
+    }
+  ],
+  "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
+  "source_note": "worker_source_sha256 identifies the driver available at receipt generation. numerical_sha256 identifies the physical implementation recorded by the native run.",
+  "mesh_control": {
+    "complex_s_relative_l2": 1.0025730284863934,
+    "max_complex_s_difference": 0.7170202390457271,
+    "max_modal_power_difference": 0.02164378172035364,
+    "center_input0_guided_power_first": [
+      0.005538106367049233,
+      0.37517284836436193,
+      0.37516264070572913
+    ],
+    "center_input0_guided_power_second": [
+      0.013617364579789099,
+      0.3659513788838194,
+      0.365945389268933
+    ],
+    "other_resolution": 16,
+    "other_array_sha256": "1bb4f8721f890d6ad0e9a96b01ad9140f536e875dc605b1fd52f8a730c38070c"
+  }
+}
