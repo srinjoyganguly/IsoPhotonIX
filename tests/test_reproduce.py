@@ -32,6 +32,17 @@ def unpack(data, folder):
 
 
 class ReproductionExports(unittest.TestCase):
+    def test_exported_alignment_verifies_its_bundled_generator_before_use(self):
+        from backend.library_layout import build_design
+        geometry = build_design('strip')['geometry']
+        with tempfile.TemporaryDirectory() as temp:
+            folder = Path(temp)
+            unpack(geometry_bundle(geometry), folder)
+            source = folder / 'design_source/library_layout.py'
+            source.write_bytes(source.read_bytes() + b'\n# Changed after export\n')
+            with self.assertRaisesRegex(ValueError, 'Bundled source or reference file changed'):
+                runtime(folder).align_ports(geometry, 'moving', 'in', 'fixed', 'out')
+
     def test_all_study_formats_embed_editable_code_notebooks_and_complete_source(self):
         configs = [WaveguideConfig().model_dump(), example3d().model_dump(by_alias=True),
                    example_ports().model_dump(), example_ports3d().model_dump(by_alias=True)]

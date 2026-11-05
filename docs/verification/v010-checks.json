@@ -1,0 +1,123 @@
+{
+  "version": "0.10.0a1",
+  "based_on_commit": "25353f2",
+  "verified_at_utc": "2026-11-05T21:30:31.787091+00:00",
+  "platform": "Linux x86-64 on WSL2; NVIDIA GeForce RTX 3080 Ti Laptop GPU; Windows Chrome desktop window.",
+  "tests": {
+    "application_collected": 196,
+    "application_passed": 190,
+    "native_only_in_app_suite": 6,
+    "separate_meep_suite_passed": 11,
+    "native_meep_suite_skipped": 0,
+    "frontend_unit_passed": 28,
+    "production_typescript_and_vite_build": true
+  },
+  "editing": {
+    "legacy_v07_families": 20,
+    "legacy_exact_geometry_comparisons": 60,
+    "catalog_python_notebook_executions": 56,
+    "delete_undo_real_simulations": 9,
+    "after_undo": [
+      {
+        "target": "meep:cpu",
+        "native_changed_material_cells": 4156,
+        "undo_restored_all_field_bytes": true,
+        "undo_restored_all_native_material_bytes": true
+      },
+      {
+        "target": "fdtdx:cpu",
+        "native_changed_material_cells": 3072,
+        "undo_restored_all_field_bytes": true,
+        "undo_restored_all_native_material_bytes": true
+      },
+      {
+        "target": "fdtdx:gpu",
+        "native_changed_material_cells": 3072,
+        "undo_restored_all_field_bytes": true,
+        "undo_restored_all_native_material_bytes": true
+      }
+    ],
+    "restored_scene_numerical_replays": 6,
+    "all_replay_arrays_byte_exact": true,
+    "empty_and_joined_design_script_and_notebook_executed": true,
+    "standalone_alignment_helper_matches_gui_algorithm": true
+  },
+  "taper_mesh": {
+    "meep_cpu_max_S21_phase_change_rad": 0.054301109404575776,
+    "fdtdx_gpu_max_S21_phase_change_rad": 0.0641334688403219
+  },
+  "passive_cavity": {
+    "max_relative_frequency_error_vs_published": 0.0007062431779568668,
+    "max_relative_Q_error_vs_published": 0.0016601230707325998,
+    "source_url": "https://doc.comsol.com/5.5/doc/com.comsol.help.models.woptics.fabry_perot/models.woptics.fabry_perot.pdf"
+  },
+  "planar_film": {
+    "reference_and_device_meep_solves": 24,
+    "finest_mesh_cells_per_um": 320,
+    "max_power_fraction_difference": 0.0009068789425711321
+  },
+  "beamz": {
+    "release": "0.6.2",
+    "field_backend": "BeamZ JAX Maxwell time stepper",
+    "finest_phase_velocity_relative_error": 0.0005926427811581148,
+    "max_cpu_cuda_field_relative_l2": 1.4800178808064125e-08,
+    "slab_neff": 2.8514205276625386,
+    "published_neff": 2.84825,
+    "slab_source_url": "https://optics.ansys.com/hc/en-us/articles/1500007378182-Inverse-design-of-an-efficient-narrow-band-grating-coupler"
+  },
+  "wheel": {
+    "wheel": "photonics_workbench-0.10.0a1-py3-none-any.whl",
+    "wheel_bytes": 580911,
+    "wheel_sha256": "3519bf3247351859267cb53b82db4cc802bba14187764017c6bd501a99fa7449",
+    "sdist_rebuild_every_entry_byte_equal": true
+  },
+  "coverage_limits": [
+    "The FDTD editor supports explicitly qualified Meep CPU and FDTDX CPU/NVIDIA studies. BeamZ GPU is verified for its JAX reference benchmark. General BeamZ 3D layout and port adapters remain open.",
+    "The film tool is a single infinite planar layer at normal incidence. Loss and dispersion in general 3D editor simulations require additional solver models.",
+    "The passive slab cavity benchmark measures resonance and decay. Semiconductor gain, carrier transport, laser threshold and thermal coupling have no device-specific qualification here.",
+    "Multiport/multimode device matrices, persistent circuit connectivity, GDS/DRC, foundry process stacks, batch convergence and wider platform packaging remain open."
+  ],
+  "evidence": [
+    "v010-legacy-library-audit.json",
+    "v010-catalog-exports.json",
+    "v010-edit-history-browser.json",
+    "v010-sketch-history-browser.json",
+    "v010-editor-regressions.json",
+    "v010-edit-fields.json",
+    "v010-edit-geometry-exports.json",
+    "v010-edited-run-exports.json",
+    "v010-taper-mesh-meep-cpu.json",
+    "v010-taper-mesh-fdtdx-gpu.json",
+    "v010-taper-mesh-browser.json",
+    "v010-taper-mesh-browser-download.json",
+    "v010-passive-cavity.json",
+    "v010-passive-cavity-exports.json",
+    "v010-beamz-cpu.json",
+    "v010-beamz-gpu.json",
+    "v010-beamz-replays.json",
+    "v010-beamz-setup.json",
+    "v010-managed-fdtdx.json",
+    "v010-desktop-window.json",
+    "v010-thin-film-meep.json",
+    "v010-thin-film-exports.json",
+    "v010-reference-panels.json",
+    "v010-wheel-install.json",
+    "v010-all-family-meep.json",
+    "v010-all-family-fdtdx-cpu.json",
+    "v010-all-family-fdtdx-gpu.json"
+  ],
+  "catalog_field_qualification": {
+    "families": 27,
+    "real_field_studies": 81,
+    "completed_by_target": {
+      "meep_cpu": 27,
+      "fdtdx_cpu": 27,
+      "fdtdx_cuda": 27
+    },
+    "meep_complete_array_sets_byte_equal_to_v09": 27,
+    "max_fdtdx_cpu_cuda_displayed_field_relative_l2": 2.8808850597450726e-06,
+    "max_fdtdx_cpu_cuda_raw_yee_field_relative_l2": 3.1207617223976287e-06,
+    "same_coordinate_and_material_arrays": true,
+    "scope": "Bounded finite-layout point-current fields at the tested geometry and grid. Device-specific loss, efficiency, Q, gain and multimode scattering require separate calibrated measurements."
+  }
+}

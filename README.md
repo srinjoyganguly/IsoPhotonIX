@@ -9,7 +9,18 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**v0.9 preview.** Open **3D design** to draw a physical polygon or route in the
+**v0.10 preview.** Select an object in 3D or XY to delete a component and
+its ports in one edit, undo it or redo it. You can also join two components
+using their named ports. [Editing and recovery](docs/EDITOR_RECOVERY.md).
+
+Compare two meshes of a finite taper in the **3D ports & S-matrix** panel or
+with the installed CLI. The passive Fabry–Pérot benchmark measures four modes
+against the COMSOL example using local Meep. A selected material now has a
+planar thin-film spectrum with complex amplitudes, power fractions and runnable
+exports. [Material study](docs/PLANAR_FILM.md). [Taper mesh sensitivity](docs/TAPER_MESH_SENSITIVITY.md) ·
+[Measured cavity modes](docs/PASSIVE_CAVITY.md) · [Remaining product work](docs/NEXT_CHUNKS.md).
+
+Open **3D design** to draw a physical polygon or route in the
 XY sketch, drag components into place, or browse **27 parametric component
 families**. The seven additions cover Euler bends, strip-to-slot transitions,
 1×4 MMIs, fan gratings, tapered couplers, photonic-crystal line defects and
@@ -30,8 +41,8 @@ domain sensitivities and the differences that persist. [Reference checks](docs/C
 The local wheel bundles the web interface and Python service. On Linux/WSL2
 with Python 3.11, install the wheel with pip, use `photonics-workbench setup meep`
 to provision Meep/MPB through Conda, and launch `photonics-workbench web`.
-FDTDX uses an installed solver interpreter selected with `FDTDX_PYTHON`.
-[Installation](docs/PACKAGING.md).
+Use `setup fdtdx-cpu`, `setup fdtdx-cuda12` or `setup beamz-cpu` to provision a separate local worker. `photonics-workbench desktop` opens the dedicated application window.
+[Installation](docs/PACKAGING.md) · [Desktop window](docs/DESKTOP_WINDOW.md) · [BeamZ reference studies](docs/BEAMZ_REFERENCE.md).
 
 Choose **Open runnable 3D waveguide** to run a finite-height core with an optional
 substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and
@@ -123,8 +134,7 @@ The [v0.2.0 release bundle](https://github.com/srinjoyganguly/photonics-workbenc
 includes source and the built interface. After extracting it, install the API
 and solver environments in the setup guide, then run `bash scripts/start.sh`;
 you can skip the Node build step. Solver binaries and environments are not bundled.
-That release contains the submitted 2D workflow. The post-event preview
-requires the current source checkout and an interface build.
+That release contains the submitted 2D workflow. The post-event preview is available as a locally built wheel with the compiled interface. Building the wheel from source requires the frontend build.
 
 Use Linux or WSL2, Python 3.11, Conda for Meep, and Node 22.12+ for building the
 interface. Follow [the full setup instructions](docs/SETUP.md) to install the

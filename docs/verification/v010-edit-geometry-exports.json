@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "geometry_executions": 4,
+  "cases": [
+    {
+      "name": "joined",
+      "passed": true,
+      "script_exact_geometry": true,
+      "notebook_exact_geometry": true,
+      "script_png": true,
+      "notebook_png": true,
+      "objects": 3,
+      "polygon_holes": 0,
+      "materials": 1,
+      "component_instances": 2,
+      "export_sha256": "6bc098558c98d7b8171565c0d828169603d78ef66e3b44caab05036723f2a1dd",
+      "geometry_sha256": "b32ff1cf9c95665492e699a3a271e32413b3ab0277a1c08baa1eec993c0ee62c",
+      "wall_seconds": 5.38
+    },
+    {
+      "name": "empty",
+      "passed": true,
+      "script_exact_geometry": true,
+      "notebook_exact_geometry": true,
+      "script_png": true,
+      "notebook_png": true,
+      "objects": 0,
+      "polygon_holes": 0,
+      "materials": 1,
+      "component_instances": 0,
+      "export_sha256": "f11457e007fe40d18efa8f24e546722f98f101d90dfd481eb639fa2ddcf4804c",
+      "geometry_sha256": "149e0acb2aef72228e9d38a1898137dcbcfac4dc52863fb21af608a9d66b49af",
+      "wall_seconds": 3.853
+    }
+  ],
+  "exported_align_ports_matches_editor": true
+}

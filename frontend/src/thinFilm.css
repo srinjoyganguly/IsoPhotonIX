@@ -1,0 +1,17 @@
+.film-study {border-top:1px solid #2b4051;margin-top:12px;color:#a8bdd0;font-size:11px;}
+.film-study summary {padding:12px 0;cursor:pointer;color:#cee4ea;font-size:12px;}
+.film-study p {margin:0 0 10px;line-height:1.55;}
+.film-inputs {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px;}
+.film-inputs label,.film-wavelength {display:grid;gap:4px;color:#a8bdd0;font-size:10px;}
+.film-inputs input {width:100%;min-width:0;box-sizing:border-box;background:#0d1823;color:#dbebf4;border:1px solid #385061;border-radius:4px;padding:6px;}
+.film-output {padding-top:10px;}
+.film-output svg {width:100%;display:block;background:#0c1823;border:1px solid #293f4e;border-radius:4px;}
+.film-output svg line {stroke:#2c4051;stroke-width:.7;}
+.film-output svg text {font-size:8px;fill:#acc0d2;}
+.film-output svg polyline {stroke:currentColor;stroke-width:1.8;fill:none;}
+.film-output svg circle {fill:currentColor;}
+.film-R {color:#f5bb77;}.film-T {color:#72d9c4;}.film-A {color:#c3adf8;}
+.film-wavelength {margin:9px 0;}
+.film-output dl {margin:8px 0 12px;display:grid;gap:5px;font-variant-numeric:tabular-nums;}
+.film-output dl div {display:flex;justify-content:space-between;gap:5px;}
+.film-output dd {margin:0;text-align:right;overflow-wrap:anywhere;}

@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T21:09:04.928Z",
+  "browser": "156.0.8078.81",
+  "widths": [
+    1400,
+    390
+  ],
+  "checks": [
+    "Assigned a tabulated n,k material, edited the real solid thickness and ran the film calculation.",
+    "GUI showed the independently checked 1.55 \u00b5m power samples and hid stale results after a band edit.",
+    "Out-of-table wavelengths were rejected. GUI downloaded a Python, notebook, CSV and full precision JSON archive."
+  ],
+  "wavelength_count": 3,
+  "last_sample": {
+    "wavelength_um": 1.55,
+    "n": 2,
+    "k": 0.08,
+    "r": [
+      -0.22499838779536052,
+      0.01908029439970372
+    ],
+    "t": [
+      -0.7021495669905101,
+      -0.0756903351737809
+    ],
+    "R": 0.050988332144890805,
+    "T": 0.7231774098323361,
+    "A": 0.22583425802277302
+  },
+  "browser_errors": [],
+  "python_replay_exact": true,
+  "executed_jupyter_notebook_exact": true,
+  "csv_values_exact": true,
+  "source": "Downloaded from the local GUI. Python and a real Jupyter kernel ran in an independent temporary folder.",
+  "archive_sha256": "8d88d595bf61b7ee3446b9d4b0e6792996e91bf0fc7ce1b141d57fa8e5b1d163"
+}

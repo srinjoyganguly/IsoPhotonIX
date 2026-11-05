@@ -7,6 +7,8 @@ import {
   parseGeometryDocument, serializeGeometryDocument, validateGeometryDocument,
   evaluateMaterial, geometryBounds, upgradeToV2, detachComponent,
 } from './src/geometryModel.ts';
+import { commitDesign, deleteSelection, initialHistory, redoDesign, selectObject, undoDesign } from './src/designHistory.ts';
+import { packHistory, unpackHistory } from './src/designRecovery.ts';
 
 const clone = value => JSON.parse(JSON.stringify(value));
 
@@ -181,4 +183,93 @@ test('document size and object count are bounded', () => {
   assert.throws(() => validateGeometryDocument(input), /at most 100/);
   input.objects.pop();
   assert.equal(validateGeometryDocument(input).objects.length, 100);
+});
+
+test('delete one entire instance without changing shared materials, other ports or overlap order', () => {
+  const raw = clone(shared.valid[4].input);
+  const core = raw.objects[0];
+  raw.objects.push({ ...core, id: 'other', component_id: 'instance-2' }, { ...core, id: 'second' });
+  raw.components[0].object_ids.push('second');
+  raw.components.push({ ...raw.components[0], id: 'instance-2', object_ids: ['other'] });
+  const original = validateGeometryDocument(raw);
+  let history = selectObject(initialHistory(original), 'second');
+  assert.equal(history.past.length, 0);
+  const deleted = validateGeometryDocument(deleteSelection(original, 'second'));
+  assert.deepEqual(deleted.objects, [original.objects[1]]);
+  assert.deepEqual(deleted.components, [original.components[1]]);
+  assert.deepEqual(deleted.materials, original.materials);
+  history = commitDesign(history, deleted, null);
+  assert.equal(history.present.selectedId, null);
+  assert.deepEqual(undoDesign(history).present, { document: original, selectedId: 'second' });
+  assert.deepEqual(redoDesign(undoDesign(history)).present, { document: deleted, selectedId: null });
+});
+
+test('empty designs, old primitives and missing selections are safe; redo follows only actual edits', () => {
+  const legacy = createGeometryTemplate('strip');
+  let history = initialHistory({ ...legacy, objects: [legacy.objects[1]] });
+  const original = history.present;
+  assert.equal(deleteSelection(original.document, null), original.document);
+  assert.equal(deleteSelection(original.document, 'missing'), original.document);
+  const empty = validateGeometryDocument(deleteSelection(original.document, original.selectedId));
+  assert.deepEqual(empty.objects, []);
+  assert.equal(empty.schema_version, 1);
+  assert.equal('components' in empty, false);
+  history = undoDesign(commitDesign(history, empty, null));
+  assert.equal(history.future.length, 1);
+  history = commitDesign(history, clone(history.present.document));
+  assert.equal(history.future.length, 1);
+  history = commitDesign(history, { ...original.document, name: 'Changed' });
+  assert.equal(history.future.length, 0);
+  assert.equal(redoDesign(history), history);
+  assert.deepEqual(undoDesign(history).present, original);
+});
+
+test('design history retains the latest fifty changes and selections without mutating prior snapshots', () => {
+  const document = createGeometryTemplate('ring');
+  let history = initialHistory(document);
+  for (let i = 1; i <= 55; i++) {
+    history = commitDesign(history, { ...document, name: String(i) });
+  }
+  assert.equal(history.past.length, 50);
+  for (let i = 0; i < 50; i++) history = undoDesign(history);
+  assert.equal(history.present.document.name, '5');
+  assert.equal(history.future.length, 50);
+  assert.equal(undoDesign(history), history);
+  for (let i = 0; i < 50; i++) history = redoDesign(history);
+  assert.equal(history.present.document.name, '55');
+  assert.equal(redoDesign(history), history);
+});
+
+test('tab checkpoints require the exact saved draft and validate every restored document and selection', () => {
+  const doc = createGeometryTemplate('ring');
+  const changed = { ...doc, name: 'Edited' };
+  const history = undoDesign(commitDesign(initialHistory(doc), changed));
+  const checkpoint = packHistory(history);
+  assert.ok(checkpoint && !checkpoint.trimmed);
+  const saved = serializeGeometryDocument(doc);
+  assert.deepEqual(unpackHistory(checkpoint.text, saved, doc), history);
+  assert.deepEqual(unpackHistory(checkpoint.text, serializeGeometryDocument(changed), changed), initialHistory(changed));
+  for (const corrupt of [
+    '{', { ...JSON.parse(checkpoint.text), version: 2 },
+    { ...JSON.parse(checkpoint.text), future: [{ document: changed, selectedId: 'missing' }] },
+    { ...JSON.parse(checkpoint.text), past: [{ document: { ...doc, schema_version: 99 }, selectedId: null }] },
+  ]) assert.deepEqual(unpackHistory(typeof corrupt === 'string' ? corrupt : JSON.stringify(corrupt), saved, doc), initialHistory(doc));
+});
+
+test('history storage budget preserves adjacent undo/redo steps and the in-memory history remains complete', () => {
+  const first = createGeometryTemplate('strip');
+  let history = initialHistory(first);
+  for (let i = 1; i <= 12; i++) history = commitDesign(history, { ...first, name: String(i) });
+  for (let i = 0; i < 6; i++) history = undoDesign(history);
+  const budget = JSON.stringify(history.present).length * 2 * 6;
+  const packet = packHistory(history, budget);
+  assert.ok(packet.trimmed);
+  assert.ok(packet.text.length * 2 <= budget);
+  const cut = JSON.parse(packet.text);
+  assert.ok(cut.past.length > 0 && cut.future.length > 0);
+  assert.deepEqual(cut.past, history.past.slice(-cut.past.length));
+  assert.deepEqual(cut.future, history.future.slice(0, cut.future.length));
+  assert.equal(packHistory(history, 32), null);
+  assert.equal(history.past.length, 6);
+  assert.equal(history.future.length, 6);
 });

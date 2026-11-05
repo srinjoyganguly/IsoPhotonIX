@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "kind": "taper-port-mesh-sensitivity",
+  "generated_at_utc": "2026-11-05T20:46:14.288089+00:00",
+  "solver": "fdtdx",
+  "device": "gpu",
+  "implementation_sha256": "39bb4f18aec0df52cee0289e63d116ea672fb2e843b7eaac8c522513f5c371aa",
+  "versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "source": {
+    "kind": "Local numerical fundamental quasi-TE ModePlaneSource; finite-band Gaussian pulse",
+    "mode_preparation_device": "Local CPU callback; requested CPU/CUDA performs full3D time evolution",
+    "gaussian_sigma_time_fs": 19.951302444039452,
+    "effective_end_fs": 239.41562932847341,
+    "mode_index": 0,
+    "polarization": "Predominantly Ey transverse electric field"
+  },
+  "boundaries": {
+    "x": "PML",
+    "y": "PML",
+    "z": "PML"
+  },
+  "port_conventions": {
+    "phase_convention": "DFT exp(+i omega t), physical exp(-i omega t), forward exp(+i beta x)",
+    "mode_gauge": "Ey at the center sample is real and positive; common +x basis at both ports",
+    "normalization": "Unit-power reciprocal E/H modal projection divided by separately measured incident coefficient; reflection reference subtracted; transmission propagation phase retained"
+  },
+  "normalization": {
+    "definition": "S[frequency,output_port,input_port] = outgoing unit-power modal amplitude / separately measured incoming reference amplitude",
+    "reflection": "Complex reference backward amplitude is subtracted before incident normalization",
+    "transmission": "Actual device output / reference input; straight-guide propagation phase retained, no through correction or deembedding",
+    "projection": "a+/-=[integral(E_sim cross H_mode* +/- E_mode* cross H_sim).x dA]/(4 sqrt(P_mode)); P_mode=.5 Re integral(E_mode cross H_mode*).x dA",
+    "phase_convention": "DFT sum(field(t)*exp(+i omega t)); physical exp(-i omega t); forward propagation exp(+i beta x)",
+    "mode_gauge": "Ey at the center sample is real and positive; common +x basis at both ports",
+    "sampling": "Both mode profiles and measured E/H use Ez Yee-point spatial interpolation; H includes adjacent-time average cos(omega*dt/2)"
+  },
+  "domain_um": [
+    8.0,
+    4.0,
+    4.0
+  ],
+  "source_planes_um": [
+    -2.75,
+    2.75
+  ],
+  "reference_planes_um": [
+    -1.75,
+    1.75
+  ],
+  "aperture_yz_um": [
+    2.5,
+    2.5
+  ],
+  "pml_um": 0.75,
+  "coarse": {
+    "resolution_cells_per_um": 16,
+    "files": [
+      {
+        "name": "config.json",
+        "sha256": "0c64c53750d25aecd1176dd6b57c302b51186cfcc76503a302afb2bbb532aafc",
+        "size_bytes": 2662
+      },
+      {
+        "name": "metadata.json",
+        "sha256": "8c264ce812e20071837e0efc05e314a9742ab7e7863eb624dc051f2477a8d2d3",
+        "size_bytes": 17447
+      },
+      {
+        "name": "sparameters.npz",
+        "sha256": "195db13038de7839c3968b265c6c08576bc0a7fd34b673b66b124a45af86f0c1",
+        "size_bytes": 3202
+      }
+    ],
+    "valid_bins": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "settled_stages": {
+      "reference_forward": true,
+      "device_forward": true,
+      "reference_reverse": true,
+      "device_reverse": true
+    }
+  },
+  "fine": {
+    "resolution_cells_per_um": 20,
+    "files": [
+      {
+        "name": "config.json",
+        "sha256": "b404b6cdc9d1112a0dacf5e43b320086e4dce8de981b5a9a430d3490a542b994",
+        "size_bytes": 1676
+      },
+      {
+        "name": "metadata.json",
+        "sha256": "7f55b33154668c580079180fcd5814498c940cb191d40595d964b22c5e3cc41a",
+        "size_bytes": 17417
+      },
+      {
+        "name": "sparameters.npz",
+        "sha256": "cc6dc6c7396c3e005a2ef77024c619ffebde5ed8129e22778f665450dc48dcd3",
+        "size_bytes": 3205
+      }
+    ],
+    "valid_bins": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "settled_stages": {
+      "reference_forward": true,
+      "device_forward": true,
+      "reference_reverse": true,
+      "device_reverse": true
+    }
+  },
+  "wavelength_um": [
+    1.45,
+    1.4953125,
+    1.5435483870967743,
+    1.595,
+    1.65
+  ],
+  "jointly_valid_bins": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "compared_bins": 5,
+  "complex_matrix_relative_l2": 0.05029334300439493,
+  "maximum_absolute_port_index_change": [
+    0.029356956481933594,
+    0.0019333362579345703
+  ],
+  "entries": {
+    "S11": {
+      "maximum_absolute_complex_change": 0.018386348557579462,
+      "maximum_absolute_power_change": 0.00020023935677346231,
+      "maximum_absolute_phase_change_rad": 3.0983881838552527,
+      "power_change": [
+        -4.087022514187998e-05,
+        -0.00011561206031277836,
+        -0.00017470576230316958,
+        -0.00020023935677346231,
+        -0.00017771490044189234
+      ],
+      "principal_phase_change_rad": [
+        3.0983881838552527,
+        2.9734045905458433,
+        2.9128989658079587,
+        3.0100489983078957,
+        -2.0478926094287155
+      ]
+    },
+    "S21": {
+      "maximum_absolute_complex_change": 0.06407396940215648,
+      "maximum_absolute_power_change": 0.0010708968154333753,
+      "maximum_absolute_phase_change_rad": 0.0641334688403219,
+      "power_change": [
+        -0.00016909806613307765,
+        -3.4030609812107926e-05,
+        0.00013869862667992283,
+        0.00043792034747824893,
+        0.0010708968154333753
+      ],
+      "principal_phase_change_rad": [
+        0.0240183643838473,
+        0.03530965544818754,
+        0.04586130488810847,
+        0.055534917361991905,
+        0.0641334688403219
+      ]
+    },
+    "S12": {
+      "maximum_absolute_complex_change": 0.06436179305787547,
+      "maximum_absolute_power_change": 0.0015707201929139325,
+      "maximum_absolute_phase_change_rad": 0.0644528110789726,
+      "power_change": [
+        0.0015707201929139325,
+        0.0011806829111928874,
+        0.0008924003625363497,
+        0.0007125413516866352,
+        0.000766858305648932
+      ],
+      "principal_phase_change_rad": [
+        0.023962622998751067,
+        0.035279624237028344,
+        0.04588186820916773,
+        0.055664995669696626,
+        0.0644528110789726
+      ]
+    },
+    "S22": {
+      "maximum_absolute_complex_change": 0.018833276298824503,
+      "maximum_absolute_power_change": 0.00021714798068651412,
+      "maximum_absolute_phase_change_rad": 3.1079294445276155,
+      "power_change": [
+        -3.411878583380925e-05,
+        -0.00011284905822793345,
+        -0.00018148559594382424,
+        -0.00021714798068651412,
+        -0.0001981906907422881
+      ],
+      "principal_phase_change_rad": [
+        -3.1079294445276155,
+        -2.9239716635619195,
+        -2.8377271601503646,
+        -2.9971707539608867,
+        2.1527923269799025
+      ]
+    }
+  },
+  "phase_amplitude_floor": 1e-08,
+  "interpretation": "Changes are fine minus coarse at fixed physical planes. Power is |S|\u00b2. Phase is the principal angle in radians, where both amplitudes exceed the floor. The relative matrix L2 norm uses the coarse matrix norm over mutually valid bins. Two resolutions measure sensitivity. An absolute error bound or convergence order requires additional evidence."
+}

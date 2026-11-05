@@ -10,19 +10,27 @@ import { MaterialEditor } from './MaterialEditor';
 import { PolygonEditor } from './PolygonEditor';
 import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument, detachComponent, upgradeToV2, GEOMETRY_LIMITS,
   serializeGeometryDocument, validateGeometryDocument, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
+import { commitDesign, deleteSelection, initialHistory, initialSelection, redoDesign, selectObject, undoDesign } from './designHistory';
+import { HISTORY_KEY, packHistory, unpackHistory } from './designRecovery';
 import './geometryEditor.css';
 
 const STORAGE_KEY = 'photonics-workbench.geometry.v1';
-const initialSelection = (scene: GeometryDocument) => scene.objects.find(object => object.id !== 'substrate')?.id ?? scene.objects[0]?.id ?? null;
 type SlabConfig = { length_um: number; height_um: number; core_width_um: number; core_index: number };
-type History = { past: GeometryDocument[]; present: GeometryDocument; future: GeometryDocument[] };
-function initialDraft(): { document: GeometryDocument; warning: string; stored: string | null } {
-  let raw: string | null = null;
+function initialDraft() {
+  let stored: string | null = null;
   try {
-    raw = localStorage.getItem(STORAGE_KEY);
-    return { document: raw ? { ...parseGeometryDocument(raw), mode: 'draft-3d' } : createGeometryTemplate('ring'), warning: '', stored: raw };
+    stored = localStorage.getItem(STORAGE_KEY);
+    const draft: GeometryDocument = stored ? { ...parseGeometryDocument(stored), mode: 'draft-3d' } : createGeometryTemplate('ring');
+    let history = initialHistory(draft);
+    try {
+      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+      // A new tab may receive a copy of its opener's sessionStorage. Only resume this tab on reload.
+      if (navigation?.type === 'reload' && stored) history = unpackHistory(sessionStorage.getItem(HISTORY_KEY), stored, draft);
+      else sessionStorage.removeItem(HISTORY_KEY);
+    } catch { /* The validated draft remains usable if the tab has no session storage. */ }
+    return { history, warning: '', stored };
   } catch {
-    return { document: createGeometryTemplate('ring'), warning: 'The saved browser draft could not be loaded. It has not been overwritten. Edit or import a valid design to start a new draft.', stored: raw };
+    return { history: initialHistory(createGeometryTemplate('ring')), warning: 'The saved browser draft could not be loaded. It has not been overwritten. Edit or import a valid design to start a new draft.', stored };
   }
 }
 
@@ -54,9 +62,10 @@ function TextInput({ label, value, onCommit }: { label: string; value: string; o
 
 export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabConfig; onSimulation: () => void }) {
   const [initial] = useState(initialDraft);
-  const [history, setHistory] = useState<History>({ past: [], present: initial.document, future: [] });
-  const scene = history.present;
-  const [selectedId, setSelectedId] = useState<string | null>(initialSelection(scene));
+  const [history, setHistory] = useState(initial.history);
+  const { document: scene, selectedId } = history.present;
+  const editorRef = useRef<HTMLDivElement>(null);
+  function setSelectedId(id: string | null) { setHistory(old => selectObject(old, id)); }
   const [message, setMessage] = useState(initial.warning);
   const [error, setError] = useState('');
   const [saveState, setSaveState] = useState('Browser draft · export JSON to keep a portable copy');
@@ -71,6 +80,8 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   const paused = useRef(false);
   const lastStored = useRef(initial.stored);
   const selected = scene.objects.find(object => object.id === selectedId);
+  const component = scene.components?.find(instance => instance.id === selected?.component_id);
+  const selectionName = component ? familyNames[component.family] ?? component.family : selected?.name;
 
   function inspectFieldStudy() {
     setStudyMode('fields');
@@ -98,22 +109,33 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
     return () => window.removeEventListener('storage', onStorage);
   }, []);
 
+  function saveCheckpoint() {
+    try {
+      const checkpoint = packHistory(history);
+      if (!checkpoint) throw new Error('Current design exceeds the tab history budget.');
+      sessionStorage.setItem(HISTORY_KEY, checkpoint.text);
+      setSaveState(checkpoint.trimmed ? 'Draft saved · recent edits recoverable on reload' : 'Draft and undo history saved in this tab');
+    } catch {
+      try { sessionStorage.removeItem(HISTORY_KEY); } catch { /* Storage may be disabled. */ }
+      setSaveState('Draft saved · undo available until reload');
+    }
+  }
+
   useEffect(() => {
     if (!changed.current || paused.current) return;
     try {
       // Check before writing too: the other tab's storage event may still be queued.
-      if (localStorage.getItem(STORAGE_KEY) !== lastStored.current) { pauseAutosave(); return; }
+      const current = localStorage.getItem(STORAGE_KEY);
+      if (current !== lastStored.current) { pauseAutosave(); return; }
       const serialized = serializeGeometryDocument(scene);
-      localStorage.setItem(STORAGE_KEY, serialized);
+      if (serialized !== current) localStorage.setItem(STORAGE_KEY, serialized);
       lastStored.current = serialized;
-      setSaveState('Draft saved in this browser');
+    } catch {
+      setSaveState('Browser storage unavailable · export JSON to save this design');
+      return;
     }
-    catch { setSaveState('Browser storage unavailable · export JSON to save this design'); }
-  }, [scene]);
-
-  useEffect(() => {
-    if (selectedId !== null && !scene.objects.some(object => object.id === selectedId)) setSelectedId(initialSelection(scene));
-  }, [scene, selectedId]);
+    saveCheckpoint();
+  }, [history]);
 
   function resumeSaving() {
     try {
@@ -123,7 +145,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
       changed.current = true;
       paused.current = false;
       setAutosavePaused(false);
-      setSaveState('Draft saved in this browser');
+      saveCheckpoint();
       setMessage('This design is now the saved browser draft. Autosave resumed.');
     } catch {
       setSaveState('Browser storage unavailable · export JSON to save this design');
@@ -131,11 +153,11 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
     }
   }
 
-  function apply(candidate: GeometryDocument, text = '') {
+  function apply(candidate: GeometryDocument, text = '', selection?: string | null) {
     try {
       const document = validateGeometryDocument(candidate);
       changed.current = true;
-      setHistory(old => ({ past: [...old.past.slice(-49), old.present], present: document, future: [] }));
+      setHistory(old => commitDesign(old, document, selection));
       setError(''); setMessage(text);
       return true;
     } catch (reason) { setError((reason as Error).message); return false; }
@@ -153,33 +175,53 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   }
   function undo() {
     changed.current = true;
-    setHistory(old => old.past.length ? { past: old.past.slice(0, -1), present: old.past[old.past.length - 1], future: [old.present, ...old.future] } : old);
+    setHistory(undoDesign);
     setError(''); setMessage('Previous design restored.');
   }
   function redo() {
     changed.current = true;
-    setHistory(old => old.future.length ? { past: [...old.past, old.present], present: old.future[0], future: old.future.slice(1) } : old);
+    setHistory(redoDesign);
     setError(''); setMessage('Design change reapplied.');
   }
   function replace(document: GeometryDocument, text: string) {
-    if (apply(document, text)) { setSelectedId(initialSelection(document)); setResetKey(key => key + 1); }
+    if (apply(document, text, initialSelection(document))) setResetKey(key => key + 1);
   }
   function addObject() {
     const object = createGeometryObject(addKind);
     const target = addKind === 'polygon' ? upgradeToV2(scene) : scene;
-    if (apply({ ...target, mode: 'draft-3d', objects: [...target.objects, object] }, `${object.name} added at the origin.`)) setSelectedId(object.id);
+    apply({ ...target, mode: 'draft-3d', objects: [...target.objects, object] }, `${object.name} added at the origin.`, object.id);
   }
   function duplicate() {
     if (!selected) return;
     const detached = detachComponent(scene,selected.id);
     const object = { ...detached.objects.find(item=>item.id===selected.id)!, id: createGeometryObject(selected.kind).id, name: `${selected.name.slice(0, 70)} copy` };
-    if (apply({ ...detached, mode: 'draft-3d', objects: [...detached.objects, object] }, 'Solid duplicated in place. Change its position to separate it; component recipes are detached before manual duplication.')) setSelectedId(object.id);
+    apply({ ...detached, mode: 'draft-3d', objects: [...detached.objects, object] }, 'Solid duplicated in place. Change its position to separate it; component recipes are detached before manual duplication.', object.id);
   }
   function remove() {
     if (!selected) return;
-    const detached = detachComponent(scene,selected.id);
-    if (apply({ ...detached, mode: 'draft-3d', objects: detached.objects.filter(object => object.id !== selectedId) }, 'Object deleted. Undo restores it.')) setSelectedId(null);
+    apply(deleteSelection(scene, selected.id), `${selectionName} deleted. Undo restores the ${component ? 'component and its ports' : 'object'}.`, null);
   }
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      const editor = editorRef.current;
+      const target = event.target;
+      if (!editor || editor.closest('[hidden]') || event.defaultPrevented || event.isComposing || event.repeat || event.altKey) return;
+      if (!(target instanceof Element)) return;
+      if (target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], .polygon-editor, .material-editor, [data-sketch-history="active"]')) return;
+      if (target !== window.document.body && (!editor.contains(target) || !target.closest('.geo-workspace, .geo-document-bar'))) return;
+      const mod = event.ctrlKey || event.metaKey;
+      const key = event.key.toLowerCase();
+      if (mod && key === 'z' && !event.shiftKey && history.past.length) {
+        event.preventDefault(); undo();
+      } else if (mod && ((key === 'z' && event.shiftKey) || (key === 'y' && !event.shiftKey)) && history.future.length) {
+        event.preventDefault(); redo();
+      } else if (!mod && !event.shiftKey && (key === 'delete' || key === 'backspace') && selected) {
+        event.preventDefault(); remove();
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
   function exportDesign() {
     const url = URL.createObjectURL(new Blob([serializeGeometryDocument(scene)], { type: 'application/json' }));
     const link = document.createElement('a'); link.href = url; link.download = 'photonics-geometry.json'; link.click();
@@ -197,14 +239,15 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   function vectorInputs(label: string, vector: Vec3, onCommit: (vector: Vec3) => void) {
     return <div className="geo-vector">{(['x', 'y', 'z'] as const).map(axis => <NumericInput key={axis} label={`${label} ${axis.toUpperCase()}`} value={vector[axis]} onCommit={value => onCommit({ ...vector, [axis]: value })}/>)}</div>;
   }
-  return <div className="geometry-editor">
+  return <div className="geometry-editor" ref={editorRef}>
     <div className="geo-intro"><div><span className="eyebrow">YOUR LOCAL PHOTONICS STUDIO</span><h1>Design in three dimensions.</h1><p>Build, inspect, and keep your geometry. Every dimension is in micrometres.</p></div><span className="geo-stage">GEOMETRY WORKSPACE · PREVIEW</span></div>
-    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onFamilies={setFamilyNames} onStudy={inspectFieldStudy} onApply={(document,text,selection,fit)=>{if(!apply(document,text))return false;setSelectedId(selection);if(fit)setResetKey(key=>key+1);return true;}}/>
+    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onFamilies={setFamilyNames} onStudy={inspectFieldStudy} onApply={(document,text,selection,fit)=>{if(!apply(document,text,selection))return false;if(fit)setResetKey(key=>key+1);return true;}}/>
     <div className="geo-document-bar">
       <label className="geo-document-name"><span>DESIGN</span><TextInput label="Design name" value={scene.name} onCommit={name => apply({ ...scene, name })}/></label>
-      <div className="geo-file-actions"><button className="button secondary compact" onClick={undo} disabled={!history.past.length}>Undo</button><button className="button secondary compact" onClick={redo} disabled={!history.future.length}>Redo</button><span className="geo-divider"/><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><CodeExport value={scene} kind="geometry"/><button className="button secondary compact" onClick={()=>{setStudyMode('modal');setTimeout(()=>document.getElementById('geometry-studies')?.scrollIntoView({behavior:'smooth'}),0);}}>3D ports &amp; S-matrix</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
+      <div className="geo-file-actions"><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><CodeExport value={scene} kind="geometry"/><button className="button secondary compact" onClick={()=>{setStudyMode('modal');setTimeout(()=>document.getElementById('geometry-studies')?.scrollIntoView({behavior:'smooth'}),0);}}>3D ports &amp; S-matrix</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
     </div>
     {autosavePaused && <div className="geo-message error-banner" role="alert"><span>Another tab changed the saved draft. Your current design is still open. Export it or choose Save this draft to resume saving.</span><button className="button secondary compact" onClick={resumeSaving}>Save this draft</button></div>}
+    {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}
     <div className="geo-workspace">
       <aside className="panel geo-tree-panel">
         <div className="panel-heading"><h2>Scene</h2><span className="tag">{scene.objects.length} objects</span></div>
@@ -213,14 +256,34 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
           <button onClick={() => replace(createGeometryTemplate('coupler'), 'Coupler template opened. Undo restores your previous design.')}><span aria-hidden="true">═</span><div>Directional coupler<small>Two guides with an editable gap</small></div></button>
           <button onClick={() => replace(createGeometryTemplate('ring'), 'Ring template opened. Undo restores your previous design.')}><span aria-hidden="true">◎</span><div>Ring & bus<small>An annulus beside a straight guide</small></div></button>
         </div>
+        {!!scene.components?.length && <label className="geo-component-picker">Select component
+          <select aria-label="Select component" value={component?.id ?? ''} onChange={event => {
+            const instance = scene.components?.find(item => item.id === event.target.value);
+            setSelectedId(instance?.object_ids[0] ?? null);
+          }}>
+            <option value="">Choose a component</option>
+            {scene.components.map((item, index) => <option key={item.id} value={item.id}>{index + 1}. {familyNames[item.family] ?? item.family} ({item.placement.x}, {item.placement.y} µm)</option>)}
+          </select>
+        </label>}
         <div className="geo-object-list" role="list" aria-label="Geometry objects">{scene.objects.map(object => <div role="listitem" className={`geo-object-row ${selectedId === object.id ? 'selected' : ''}`} key={object.id}>
           <button className="geo-object-select" aria-pressed={selectedId === object.id} onClick={() => setSelectedId(object.id)}><span className="geo-shape-symbol">{object.kind === 'box' ? '▱' : object.kind === 'ring' ? '◎' : object.kind === 'polygon' ? '⬡' : '◉'}</span><span>{object.name}<small>{object.kind} · n = {object.refractive_index}{object.component_id?' · component':''}</small></span></button>
           <button className="geo-visibility" aria-label={`${object.visible ? 'Hide' : 'Show'} ${object.name}`} title={`${object.visible ? 'Hide' : 'Show'} in viewport`} onClick={() => apply({ ...scene, objects: scene.objects.map(item => item.id === object.id ? { ...item, visible: !item.visible } : item) })}>{object.visible ? '◉' : '○'}</button>
         </div>)}{!scene.objects.length && <p className="geo-empty">Your scene is empty. Add a shape below.</p>}</div>
         <div className="geo-add"><select aria-label="New shape" value={addKind} onChange={e => setAddKind(e.target.value as GeometryObject['kind'])}><option value="box">Box</option><option value="cylinder">Cylinder</option><option value="ring">Ring</option><option value="polygon">Polygon prism</option></select><button className="button secondary compact" onClick={addObject} disabled={scene.objects.length >= (scene.schema_version===2?GEOMETRY_LIMITS.maxV2Objects:GEOMETRY_LIMITS.maxObjects)}>+ Add</button></div>
-        <div className="geo-tree-note">Select a shape in the scene or the viewport. Visibility changes only the preview. Material indices enter the solver only after the supported waveguide study validates.</div>
+        <div className="geo-tree-note">Select a solid in the list or viewport. Deleting a library component removes all its solids and ports together. Visibility affects the preview only.</div>
       </aside>
       <div className="geo-stage-column">
+        <div className="geo-edit-tools" role="group" aria-label="Design editing">
+          <div className="geo-edit-selection"><strong>{selectionName ?? 'No selection'}</strong>
+            {component && <span>{component.object_ids.length} {component.object_ids.length === 1 ? 'solid' : 'solids'} · {component.ports.length} {component.ports.length === 1 ? 'port' : 'ports'}</span>}
+          </div>
+          <div className="geo-edit-buttons">
+            <button className="button secondary compact" onClick={undo} disabled={!history.past.length} title="Undo design edit (Ctrl/⌘+Z). This tab keeps up to 50 edits; recent history can survive a reload." aria-keyshortcuts="Control+Z Meta+Z">Undo</button>
+            <button className="button secondary compact" onClick={redo} disabled={!history.future.length} title="Redo design edit (Ctrl/⌘+Shift+Z or Ctrl+Y)" aria-keyshortcuts="Control+Shift+Z Meta+Shift+Z Control+Y">Redo</button>
+            <button className="button secondary compact geo-delete-selection" onClick={remove} disabled={!selected} title={component ? 'Delete this component, all its solids and ports (Delete)' : 'Delete the selected object (Delete)'} aria-keyshortcuts="Delete Backspace">Delete {component ? 'component' : 'object'}</button>
+          </div>
+        </div>
+    {message && <div className="geo-message geo-notice" role="status"><span>{message}</span><button aria-label="Dismiss geometry notice" onClick={() => setMessage('')}>×</button></div>}
         <GeometryStage scene={scene} selectedId={selectedId} onSelect={setSelectedId} onApply={apply}>
           <GeometryViewport document={scene} selectedId={selectedId} onSelect={setSelectedId} resetKey={resetKey}/>
         </GeometryStage>
@@ -238,7 +301,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
           <NumericInput label="Refractive index" unit="n" step={.05} value={selected.refractive_index} onCommit={refractive_index => editObject({ refractive_index })}/>
           <MaterialEditor document={scene} object={selected} onApply={apply}/>
           {selected.kind==='polygon'&&<PolygonEditor object={selected} onCommit={editObject}/>}
-          <div className="geo-object-actions"><button onClick={duplicate} disabled={scene.objects.length >= (scene.schema_version===2?GEOMETRY_LIMITS.maxV2Objects:GEOMETRY_LIMITS.maxObjects)}>Duplicate</button><button className="geo-delete" onClick={remove}>Delete object</button></div>
+          <div className="geo-object-actions"><button onClick={duplicate} disabled={scene.objects.length >= (scene.schema_version===2?GEOMETRY_LIMITS.maxV2Objects:GEOMETRY_LIMITS.maxObjects)}>Duplicate</button></div>
         </div> : <p className="geo-empty">Select a shape to edit its dimensions, position, and material.</p>}
         <details className="geo-domain"><summary>Design domain</summary>{vectorInputs('Domain', scene.domain, domain => apply({ ...scene, mode: 'draft-3d', domain }))}<p>Objects must fit inside this centred box. Arbitrary overlaps remain drafts. A validated waveguide uses a centred core and optional substrate meeting its lower surface; its adapters define the material placement.</p></details>
         <button className="geo-slab-preview" onClick={() => replace(createSlabPreview(slabConfig), 'Current validated 2D slab opened as an illustrative extrusion.')}>Preview current 2D slab</button>
@@ -248,7 +311,5 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
     <div hidden={studyMode!=='fields'}><Study3DPanel geometry={scene} familyNames={familyNames} onOpenGeometry={document => replace(document, 'Field example opened. Select a CPU or GPU target in the study below.')} onEditGeometry={document => apply(document, 'Substrate fitted to the core. Review the geometry and study validation before running.')}/></div>
     <div hidden={studyMode!=='modal'}><ModalPorts geometry={scene} active={studyMode==='modal'} onOpenGeometry={document=>replace(document,'Finite-height modal study opened. Inspect the geometry and explicitly select its execution target.')}/></div>
     <PublicBenchmarks/>
-    {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}
-    {message && <div className="geo-message geo-notice" role="status"><span>{message}</span><button aria-label="Dismiss geometry notice" onClick={() => setMessage('')}>×</button></div>}
   </div>;
 }

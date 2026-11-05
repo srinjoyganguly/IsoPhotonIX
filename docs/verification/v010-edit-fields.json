@@ -1,0 +1,166 @@
+{
+  "checked_at": "2026-11-05T20:58:40.648530+00:00",
+  "passed": true,
+  "study": "A strip aligned to lower_in of a two-guide directional coupler, before deletion, after deletion and after Undo. Same physical grid and dipole throughout each run triplet.",
+  "cases": [
+    {
+      "target": "meep:cpu",
+      "actual_runs": [
+        {
+          "label": "joined",
+          "id": "6faace33875f4fd4a14835890d742cee",
+          "actual_device": "CPU",
+          "device_name": "CPU",
+          "design_epsilon_sha256": "3b4858cacea65d303b5d579daba93d1bfe901b42c2c27e9431656a140f0d161c",
+          "shape_zyx": [
+            48,
+            72,
+            112
+          ],
+          "fields_sha256": "f8b3fd7640030e44489cd7fe75a158d7139f3c3d430d5abbbbc344295dfebd1e",
+          "native_epsilon_sha256": "f55f5b739579ce3ad7e0ba98fa9ff1fd8694d1ae49c32242a3891ad786217570"
+        },
+        {
+          "label": "deleted",
+          "id": "7da46a5ed2de49809d2040ebec694bde",
+          "actual_device": "CPU",
+          "device_name": "CPU",
+          "design_epsilon_sha256": "c5d0ee0fb7c9bcb89b290b694890e32f421438e49b3ddc09072dd92289ed0c43",
+          "shape_zyx": [
+            48,
+            72,
+            112
+          ],
+          "fields_sha256": "ca806a8e81d8163a227cc101c467acf00601bca6e60651f7de3fd3a29552c2f1",
+          "native_epsilon_sha256": "8250b6ebe5a8ac47f0c4d8b54a3dd7543a4fe7ef36fa6f3faab0f93092e038d9"
+        },
+        {
+          "label": "restored",
+          "id": "4e97975d3f774d43807672208629fd92",
+          "actual_device": "CPU",
+          "device_name": "CPU",
+          "design_epsilon_sha256": "3b4858cacea65d303b5d579daba93d1bfe901b42c2c27e9431656a140f0d161c",
+          "shape_zyx": [
+            48,
+            72,
+            112
+          ],
+          "fields_sha256": "f8b3fd7640030e44489cd7fe75a158d7139f3c3d430d5abbbbc344295dfebd1e",
+          "native_epsilon_sha256": "f55f5b739579ce3ad7e0ba98fa9ff1fd8694d1ae49c32242a3891ad786217570"
+        }
+      ],
+      "same_grid_source_and_settings": true,
+      "native_changed_material_cells": 4156,
+      "deleted_vs_joined_field_relative_l2": 0.24375424651175356,
+      "undo_vs_joined_field_relative_l2": 0.0,
+      "undo_restored_all_field_bytes": true,
+      "undo_restored_all_native_material_bytes": true
+    },
+    {
+      "target": "fdtdx:cpu",
+      "actual_runs": [
+        {
+          "label": "joined",
+          "id": "5ca6f0b67ca34f28b6971f9b408bc60d",
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "design_epsilon_sha256": "3b4858cacea65d303b5d579daba93d1bfe901b42c2c27e9431656a140f0d161c",
+          "shape_zyx": [
+            47,
+            71,
+            111
+          ],
+          "fields_sha256": "ed023cd7be067834f87c13652c537222ab754af038c7867b1275f4f25385051c",
+          "native_epsilon_sha256": "c79795c9d230f64d9ec358f7c8976686c73b1336a86f0a69cbc0b0166fefed0b"
+        },
+        {
+          "label": "deleted",
+          "id": "8560ca2e67cc43238ac5a28d1598c3ab",
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "design_epsilon_sha256": "c5d0ee0fb7c9bcb89b290b694890e32f421438e49b3ddc09072dd92289ed0c43",
+          "shape_zyx": [
+            47,
+            71,
+            111
+          ],
+          "fields_sha256": "0ccf6b06ff5ced083027176bec2185b796c0ba423d5fd3366091c46a8b80e657",
+          "native_epsilon_sha256": "b4a11beb01268716a82b580f6b42804092528ce3310131c40f411623b7487532"
+        },
+        {
+          "label": "restored",
+          "id": "d3224370f1bc4334881f4a92a2968881",
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "design_epsilon_sha256": "3b4858cacea65d303b5d579daba93d1bfe901b42c2c27e9431656a140f0d161c",
+          "shape_zyx": [
+            47,
+            71,
+            111
+          ],
+          "fields_sha256": "ed023cd7be067834f87c13652c537222ab754af038c7867b1275f4f25385051c",
+          "native_epsilon_sha256": "c79795c9d230f64d9ec358f7c8976686c73b1336a86f0a69cbc0b0166fefed0b"
+        }
+      ],
+      "same_grid_source_and_settings": true,
+      "native_changed_material_cells": 3072,
+      "deleted_vs_joined_field_relative_l2": 0.26280642169389073,
+      "undo_vs_joined_field_relative_l2": 0.0,
+      "undo_restored_all_field_bytes": true,
+      "undo_restored_all_native_material_bytes": true
+    },
+    {
+      "target": "fdtdx:gpu",
+      "actual_runs": [
+        {
+          "label": "joined",
+          "id": "119e759d7d734ce0bd862bd9f910ad08",
+          "actual_device": "cuda:0",
+          "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "design_epsilon_sha256": "3b4858cacea65d303b5d579daba93d1bfe901b42c2c27e9431656a140f0d161c",
+          "shape_zyx": [
+            47,
+            71,
+            111
+          ],
+          "fields_sha256": "3b378a5cf4ba5aeafa953058bf3256dab034cd49d1d76e36addc7d5740658525",
+          "native_epsilon_sha256": "c79795c9d230f64d9ec358f7c8976686c73b1336a86f0a69cbc0b0166fefed0b"
+        },
+        {
+          "label": "deleted",
+          "id": "5578d6d01af248cda19f34f7a171bbc3",
+          "actual_device": "cuda:0",
+          "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "design_epsilon_sha256": "c5d0ee0fb7c9bcb89b290b694890e32f421438e49b3ddc09072dd92289ed0c43",
+          "shape_zyx": [
+            47,
+            71,
+            111
+          ],
+          "fields_sha256": "580e542af8d561a89d286d0eb789968d49175327fe8ae34fbd44cb66c1e4e5d7",
+          "native_epsilon_sha256": "b4a11beb01268716a82b580f6b42804092528ce3310131c40f411623b7487532"
+        },
+        {
+          "label": "restored",
+          "id": "35b57b83d2564049bbe57666a365f438",
+          "actual_device": "cuda:0",
+          "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "design_epsilon_sha256": "3b4858cacea65d303b5d579daba93d1bfe901b42c2c27e9431656a140f0d161c",
+          "shape_zyx": [
+            47,
+            71,
+            111
+          ],
+          "fields_sha256": "3b378a5cf4ba5aeafa953058bf3256dab034cd49d1d76e36addc7d5740658525",
+          "native_epsilon_sha256": "c79795c9d230f64d9ec358f7c8976686c73b1336a86f0a69cbc0b0166fefed0b"
+        }
+      ],
+      "same_grid_source_and_settings": true,
+      "native_changed_material_cells": 3072,
+      "deleted_vs_joined_field_relative_l2": 0.26280645589808416,
+      "undo_vs_joined_field_relative_l2": 0.0,
+      "undo_restored_all_field_bytes": true,
+      "undo_restored_all_native_material_bytes": true
+    }
+  ]
+}

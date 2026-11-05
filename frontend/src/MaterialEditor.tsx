@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ThinFilm } from './ThinFilm';
 import { request } from './api';
 import { detachComponent, evaluateMaterial, upgradeToV2, validateGeometryDocument, type GeometryDocument, type GeometryObject, type MaterialRecord } from './geometryModel';
 
@@ -72,7 +73,11 @@ export function MaterialEditor({document,object,onApply}:Props) {
       <label>Notes<textarea aria-label="Material notes" rows={3} value={notes} maxLength={2000} onChange={event=>setNotes(event.target.value)}/></label>
       <div className="material-actions"><button className="button primary compact" onClick={()=>save(false)}>Save as new & assign</button>{editingMaterial&&document.materials?.some(material=>material.id===editingMaterial)&&<button className="button secondary compact" onClick={()=>save(true)}>Update shared material</button>}</div>
     </details>
-    <p className="material-note">Passive isotropic design records. Tabulated values use interpolation within their recorded band. Current electromagnetic studies reject loss, tabulation and active gain models rather than ignoring them.</p>
+    <ThinFilm key={JSON.stringify(assigned ?? object.refractive_index)} material={assigned ?? {
+      id:'solid-index', name:object.name, model:'constant-nk', n:object.refractive_index, k:0,
+      reference_wavelength_um:1.55, source:'Selected solid scalar index', notes:'',
+    }} thickness={object.size.z}/>
+    <p className="material-note">Passive isotropic design records. Tabulated values use interpolation within their recorded band. The planar film calculation accepts passive loss. The 3D field studies require constant lossless indices.</p>
     {error&&<p className="library-error" role="alert">{error} Previous material and geometry retained.</p>}{notice&&<p className="library-notice" role="status">{notice}</p>}
   </section>;
 }

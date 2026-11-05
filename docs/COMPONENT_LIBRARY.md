@@ -13,6 +13,10 @@ permittivity. Each catalog port describes geometric connection intent. Power
 splitting, loss, resonance and modal S measurements need calibrated sources
 and monitors for the particular device.
 
+Every catalog family has a tested finite-layout example on all three execution
+targets. [Per-family field qualification](LAYOUT_FIELDS.md#verification) ·
+[Deletion, undo and named-port assembly](EDITOR_RECOVERY.md).
+
 ## Using an instance
 
 Open a recipe in the component library, choose its dimensions and material,

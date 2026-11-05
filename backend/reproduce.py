@@ -52,6 +52,7 @@ def _configuration_code(config, variable='CONFIG'):
 
 def _base_files():
     return {'workbench_runtime.py': RUNTIME.read_bytes(),
+            'workbench_solver_environment.py': (ROOT / 'backend/solver_environment.py').read_bytes(),
             'geometry_contract.py': (ROOT / 'backend/geometry_draft.py').read_bytes(),
             'requirements-controller.txt': CONTROLLER_REQUIREMENTS.encode(),
             'requirements-notebook.txt': NOTEBOOK_REQUIREMENTS.encode(),
@@ -153,7 +154,7 @@ def study_bundle(config, output=None):
               'Geometry objects, source/boundary settings, monitor conventions and stopping tolerances are preserved. '
               'The solver/device selection remains explicit; GPU requests cannot retry on CPU.', 'settings-help'),
         _cell('code', config_code, 'configuration'),
-        _cell('code', '# Use None when the current kernel contains the solver or MEEP_PYTHON/FDTDX_PYTHON is set.\n'
+        _cell('code', '# Use None when the current kernel contains the solver or a local managed worker (or MEEP_PYTHON/FDTDX_PYTHON) is configured.\n'
               '# Otherwise set this to your local solver environment Python executable. No machine-specific path is embedded.\n'
               'SOLVER_PYTHON = None\nOUTPUT = run(CONFIG, solver_python=SOLVER_PYTHON)\n', 'run-real-solver'),
         _cell('code', 'METADATA = summarize(OUTPUT)\nMETADATA\n', 'actual-provenance'),
@@ -212,7 +213,7 @@ python study.py --solver-python /path/to/selected/solver/python
 
 That path is a placeholder: use your installed solver interpreter. If the
 current Python already contains it, omit `--solver-python`. Alternatively set
-`MEEP_PYTHON` or `FDTDX_PYTHON`. These variables choose an interpreter, not a
+`MEEP_PYTHON` or `FDTDX_PYTHON`. Without an override, the export also checks the local workbench managed solver registry. These variables choose an interpreter, not a
 different solver or device. Edit the visible `CONFIG` dictionary in `study.py`
 to create a new experiment. Each run writes a new output directory. Optional
 `--output NEW_DIRECTORY` never overwrites an earlier run. `--timeout` controls
@@ -292,10 +293,10 @@ def geometry_bundle(geometry):
               'rotations and visibility flags from the editor. Curved surfaces are tessellated only for display; JSON retains their exact radii. '
               'It is a design export, not a solver result. Unsupported CAD is never silently reduced to a straight guide. '
               'Choose a supported executable study in the workbench to obtain a solver notebook. Install `requirements-notebook.txt` before Run All.', 'introduction'),
-        _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, evaluate_material, regenerate_component, plot_geometry\ncheck_bundle()\n', 'imports'),
+        _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, evaluate_material, regenerate_component, align_ports, plot_geometry\ncheck_bundle()\n', 'imports'),
         _cell('code', code, 'geometry'),
         _cell('markdown', '## Optional parametric editing\n\nThe original contours remain authoritative. To regenerate a component from changed parameters, use the bundled generator below. This creates a new design and preserves unrelated objects. Leave it commented to reproduce the exact exported geometry.', 'parametric-help'),
-        _cell('code', "# Example for a selected component with a width_um parameter:\n# GEOMETRY = regenerate_component(GEOMETRY, GEOMETRY['components'][0]['id'],\n#     parameters={'width_um': 0.6}, fit_domain=True)\n", 'parametric-edit'),
+        _cell('code', "# Example for a selected component with a width_um parameter:\n# GEOMETRY = regenerate_component(GEOMETRY, GEOMETRY['components'][0]['id'],\n#     parameters={'width_um': 0.6}, fit_domain=True)\n# GEOMETRY = align_ports(GEOMETRY, moving_id, 'in', fixed_id, 'out', fit_domain=True)\n", 'parametric-edit'),
         _cell('code', 'geometry = validate_geometry(GEOMETRY)\nPath("geometry.recreated.json").write_text(json.dumps(geometry, indent=2) + "\\n")\ngeometry\n', 'validate-exact-design'),
         _cell('code', "{material['name']: evaluate_material(material, material['reference_wavelength_um']) for material in geometry.get('materials', [])}\n", 'material-reference-values'),
         _cell('code', 'plot_geometry(geometry)\nplt.show()\n', 'inspect-solids'),

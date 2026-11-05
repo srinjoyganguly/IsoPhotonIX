@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T21:05:18.771855+00:00",
+  "scope": "A WSL2 pip-installed launcher using Windows Chrome, its own profile, and a loopback origin. A native Chrome window was also tested without instrumentation.",
+  "ordinary_launch": {
+    "passed": true,
+    "checked_at": "2026-11-05T21:02:20.749903+00:00",
+    "window": {
+      "process_name": "chrome.exe",
+      "windows_count": 1,
+      "has_native_window": true,
+      "debugger_enabled": false,
+      "title_identifies_workbench": true
+    },
+    "exit_code_on_terminal_signal": 130,
+    "owned_window_and_server_closed": true
+  },
+  "created_draft": {
+    "passed": true,
+    "checked_at": "2026-11-05T20:58:16.977Z",
+    "action": "create",
+    "origin": "http://127.0.0.1:8767",
+    "page_title": "Photonics Workbench \u00b7 Waveguide study",
+    "actual_chromium_window_bounds_px": {
+      "width": 1266,
+      "height": 1372
+    },
+    "persisted_geometry_name": "Finite taper desktop recovery",
+    "document_requests_outside_loopback": [],
+    "browser_errors": []
+  },
+  "offline_reopen": {
+    "passed": true,
+    "checked_at": "2026-11-05T20:59:09.234Z",
+    "action": "reopen",
+    "origin": "http://127.0.0.1:8767",
+    "page_title": "Photonics Workbench \u00b7 Waveguide study",
+    "actual_chromium_window_bounds_px": {
+      "width": 1266,
+      "height": 1373
+    },
+    "persisted_geometry_name": "Finite taper desktop recovery",
+    "document_requests_outside_loopback": [],
+    "browser_errors": []
+  },
+  "window_close_before_run_completion": {
+    "passed": true,
+    "checked_at": "2026-11-05T21:03:16.213Z",
+    "action": "finish-run",
+    "origin": "http://127.0.0.1:8767",
+    "page_title": "Photonics Workbench \u00b7 Waveguide study",
+    "actual_chromium_window_bounds_px": {
+      "width": 1266,
+      "height": 1372
+    },
+    "persisted_geometry_name": "Finite taper desktop recovery",
+    "visible_webgl_objects": 3,
+    "camera_zoom_checked": true,
+    "document_requests_outside_loopback": [],
+    "browser_errors": [],
+    "run_submitted_before_window_close": "7eb8f6c0c98a43269f8c0a55d91f03f2"
+  },
+  "offline_method": "On the reopen and finish-run checks Chrome was launched through a test-only wrapper with a closed proxy for non-loopback traffic. The page test also aborted requests outside its local origin. No production remote-debugging option is enabled.",
+  "desktop_preserves_active_run": {
+    "job_id": "7eb8f6c0c98a43269f8c0a55d91f03f2",
+    "status": "running",
+    "stage": "device_forward",
+    "server_reachable_after_window_close": true,
+    "completed_after_window_close": true,
+    "selected_solver": "meep",
+    "actual_device": "CPU",
+    "study": "taper-ports-3d",
+    "four_stages_settled": true,
+    "valid_spectral_bins": 5,
+    "maximum_abs_complex_s": 1.000321781946564,
+    "arrays_sha256": "19d48d14acb31ac59deaa5aec1b7482f01abb4012129a5381e3e4454b53b600a",
+    "sparameters_sha256": "69096e755f6e3b6025b8a5cab1f680f1b25355e553d781568e59a2b2861beaa9",
+    "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e",
+    "launcher_exit_status": 0,
+    "server_port_released_after_completion": true
+  },
+  "ownership": {
+    "occupied_port_exit_status": 1,
+    "duplicate_data_store_exit_status": 1,
+    "existing_server_still_healthy": true
+  },
+  "unit_tests_passed": 6,
+  "limits": "Windows Chrome via WSL2 was exercised. Other host browsers and native operating-system installers need separate qualification."
+}

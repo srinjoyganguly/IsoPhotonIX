@@ -11,11 +11,13 @@
 .plan-sketch :is(select,input) { min-width:0; color:#ddebf3; font-size:11px; padding:6px 7px; background:#0c1722; border:1px solid #354a5c; border-radius:4px; }
 .plan-sketch button:disabled { cursor:default; opacity:.42; }
 .plan-board { display:block; width:100%; background:#0a141d; cursor:crosshair; touch-action:none; user-select:none; }
+.plan-board:focus-visible { outline:2px solid #87eed5; outline-offset:-3px; }
 .plan-board text { fill:#9cb9cd; font:12px system-ui,sans-serif; pointer-events:none; }
 .plan-board.move { cursor:default; }
 .plan-axes { fill:none; stroke:#3a5361; stroke-dasharray:5 4; pointer-events:none; }
 .plan-object>* { vector-effect:non-scaling-stroke; fill:#43bcae; fill-opacity:.28; stroke:#6cc5b9; stroke-width:1.2px; }
 .plan-object.background>* { fill:#486880; fill-opacity:.14; stroke:#486880; }
+.plan-object.member>* {fill:#d0914f;fill-opacity:.25;stroke:#edbe84;stroke-width:1.6px}
 .plan-object.current>* { fill:#e9b868; fill-opacity:.24; stroke:#e9b868; stroke-width:1.9px; }
 .plan-board.move .plan-object { cursor:grab; }
 .plan-board.move .plan-object:active { cursor:grabbing; }

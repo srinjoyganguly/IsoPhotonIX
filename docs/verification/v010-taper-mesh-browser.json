@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T20:52:44.241Z",
+  "coarse_run_id": "8182bf334b97410e8f3ba6410747e13f",
+  "fine_run_id": "9815a61b04f446baa6e7b626e304f995",
+  "compared_bins": 5,
+  "incompatibility_shown": true,
+  "four_entries_equal_to_saved_response": true,
+  "downloaded_json_equals_response": true,
+  "stale_result_cleared": true,
+  "fits_390px": true,
+  "browser_errors": []
+}

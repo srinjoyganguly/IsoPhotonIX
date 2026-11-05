@@ -64,6 +64,40 @@ const { chromium } = require('playwright');
     await (await awaiting).saveAs(comparisonFile);
     assert.deepEqual(JSON.parse(fs.readFileSync(comparisonFile,'utf8')),comparisons);
     await component.screenshot({path:path.join(output,'component-comparison-table.png')});
+    const cavity = panel.locator('details[aria-label="Passive cavity reference"]');
+    await cavity.locator('summary').click();
+    const cavityResponse = await page.request.get(base + '/api/cavity-benchmark');
+    assert.equal(cavityResponse.status(), 200);
+    const poles = await cavityResponse.json();
+    await cavity.locator('tbody tr').first().waitFor();
+    assert.equal(await cavity.locator('tbody tr').count(), 4);
+    for (const [i, pole] of poles.reference_comparison.entries()) {
+      const cells = cavity.locator('tbody tr').nth(i).locator('td');
+      assert.deepEqual(await cells.allTextContents(), [pole.frequency_MHz.toFixed(4), String(pole.published_frequency_MHz),
+        pole.quality_factor.toFixed(4), String(pole.published_quality_factor)]);
+    }
+    assert.equal(await cavity.getByRole('link',{name:'COMSOL model, Table 1'}).getAttribute('href'), poles.source_url);
+    const cavityDownload = page.waitForEvent('download');
+    await cavity.getByRole('link',{name:'Download mode fits and refinement checks'}).click();
+    const cavityFile = path.join(output, 'cavity-report.json');
+    await (await cavityDownload).saveAs(cavityFile);
+    assert.deepEqual(JSON.parse(fs.readFileSync(cavityFile, 'utf8')), poles);
+    await cavity.screenshot({path:path.join(output,'passive-cavity.png')});
+    await cavity.locator('summary').click();
+    const beamz = panel.locator('details[aria-label="BeamZ propagation reference"]');
+    await beamz.locator('summary').click();
+    const beamzResponse = await page.request.get(base+'/api/beamz-benchmark');
+    assert.equal(beamzResponse.status(), 200);
+    const beamzCases = await beamzResponse.json();
+    await beamz.locator('tbody tr').first().waitFor();
+    const expectedRows = [beamzCases.cpu,beamzCases.gpu].flatMap(c => c.propagation.map(m =>
+      [c.actual_device, String(m.points_per_material_wavelength), m.phase_velocity_m_s.toExponential(5),
+       (100*m.continuum_relative_error).toFixed(4)+'%']));
+    assert.equal(await beamz.locator('tbody tr').count(), expectedRows.length);
+    for (const [i, expected] of expectedRows.entries()) {
+      assert.deepEqual(await beamz.locator('tbody tr').nth(i).locator('th,td').allTextContents(), expected);
+    }
+    await beamz.locator('summary').click();
     await component.locator(':scope > summary').click();
     const downloading = page.waitForEvent('download');
     await panel.getByRole('button', { name: 'Download evidence JSON', exact: true }).click();

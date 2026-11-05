@@ -16,3 +16,13 @@
 .library-cards>[role=listitem]{min-width:0;display:flex}.library-cards>[role=listitem]>.component-card{width:100%}
 
 .library-notice button{display:block;background:transparent;color:#81dec8;padding:8px 0 0;font-size:11px}.geo-inspector{max-height:880px;overflow-y:auto}@media(max-width:600px){.geo-inspector{max-height:none}}
+
+.port-alignment {margin:12px 0; padding:10px 14px; color:#cadbdc; border:1px solid #34505c; border-radius:6px; background:#10232c}
+.port-alignment summary {cursor:pointer; font-weight:600}
+.port-alignment p {font-size:12px; line-height:1.5; margin:10px 0}
+.port-alignment fieldset {margin:0; padding:0; border:0}
+.port-pair {display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px}
+.port-pair label {display:grid; gap:5px; font-size:12px}
+.port-pair select {width:100%; min-width:0; padding:7px; background:#142d39; border:1px solid #42606b; color:#def1ed; border-radius:4px}
+.port-alignment .library-fit {margin:12px 0}
+@media(max-width:760px){.port-pair{grid-template-columns:repeat(2,minmax(0,1fr))}}

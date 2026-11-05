@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-11-05T21:27:14.162573+00:00",
+  "scope": "Local study downloads for the three physically restored GUI layouts. Python and Jupyter each chose the registered solver interpreter without explicit overrides.",
+  "executions": 6,
+  "passed": true,
+  "cases": [
+    {
+      "target": "meep:cpu",
+      "source_run": "4e97975d3f774d43807672208629fd92",
+      "export_sha256": "c1a809f0de120b5611578fb91b3ac37cdf846e78ecacea5c802869631048500d",
+      "registry_only": true,
+      "python": {
+        "actual_device": "CPU",
+        "all_array_bytes_equal": true,
+        "strict_comparison_passed": true
+      },
+      "notebook": {
+        "actual_device": "CPU",
+        "all_array_bytes_equal": true,
+        "strict_comparison_passed": true
+      }
+    },
+    {
+      "target": "fdtdx:cpu",
+      "source_run": "d3224370f1bc4334881f4a92a2968881",
+      "export_sha256": "fdc9a3b2fbccb14a57ecde37f89917163f35311c8becef2ad2ba316fea2f2108",
+      "registry_only": true,
+      "python": {
+        "actual_device": "cpu:0",
+        "all_array_bytes_equal": true,
+        "strict_comparison_passed": true
+      },
+      "notebook": {
+        "actual_device": "cpu:0",
+        "all_array_bytes_equal": true,
+        "strict_comparison_passed": true
+      }
+    },
+    {
+      "target": "fdtdx:gpu",
+      "source_run": "35b57b83d2564049bbe57666a365f438",
+      "export_sha256": "39d2faacfae73442d6dce0c6b121c364542eef4b9ad6aacdec610330bdfb3eb4",
+      "registry_only": true,
+      "python": {
+        "actual_device": "cuda:0",
+        "all_array_bytes_equal": true,
+        "strict_comparison_passed": true
+      },
+      "notebook": {
+        "actual_device": "cuda:0",
+        "all_array_bytes_equal": true,
+        "strict_comparison_passed": true
+      }
+    }
+  ]
+}

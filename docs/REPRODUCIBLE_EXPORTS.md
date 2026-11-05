@@ -1,5 +1,11 @@
 # Python and Jupyter exports
 
+The current design bundle includes the same named-port alignment and parametric
+regeneration routines as the editor. Numerical Python/notebook exports find
+the managed Meep or device-specific FDTDX worker from local workbench settings.
+An explicit interpreter in the script or `MEEP_PYTHON` / `FDTDX_PYTHON` takes
+precedence. Use `PHOTONICS_DATA_DIR` if the workers live in a custom data store.
+
 The workbench exports both editable Python and a Jupyter notebook for every
 supported executable study, including the original 2D fields, finite-height 3D
 fields, 2D port measurements, finite-height 3D modal studies, [taper fields](TAPER_FIELDS.md),

@@ -100,6 +100,17 @@ def main():
             assert all(name.startswith('photonics_workbench/') or '.dist-info/' in name for name in wheel_names)
             assert not any(set(name.split('/')) & {'.local', 'runs', '.git', '.env', 'node_modules', '__pycache__'} for name in wheel_names)
         assert get('/api/benchmarks')['status'] == 'available'
+        cavity = get('/api/cavity-benchmark')
+        assert cavity['passed'] and len(cavity['reference_comparison']) == 4
+        command([cli, 'benchmark-cavity', '--output', target/'cavity-study'], 'cavity.log')
+        measured = json.loads((target/'cavity-study/report.json').read_text())
+        assert measured['reference_comparison'] == cavity['reference_comparison']
+        assert (target/'cavity-study/cavity.py').is_file() and (target/'cavity-study/cavity.ipynb').is_file()
+        fixed = get('/api/library/build', {'component_id':'strip'})
+        pair = get('/api/library/place', {'geometry':fixed['geometry'], 'component_id':'strip'})
+        moved = get('/api/library/align', {'geometry':pair['geometry'], 'moving_component':pair['component']['id'],
+            'moving_port':'in', 'fixed_component':fixed['component']['id'], 'fixed_port':'out', 'fit_domain':True})
+        assert moved['geometry']['components'][1]['ports'][0]['x'] == fixed['component']['ports'][1]['x']
         assert len(get('/api/library')['components']) == 27
         comparisons = get('/api/component-benchmarks')
         assert len(comparisons['cases']) == 2 and len(comparisons['report_sha256']) == 64
@@ -138,7 +149,11 @@ def main():
     with server('offline-restart.log'):
         assert get(f'/api/jobs/{jid}')['status'] == 'completed'
     command([cli, 'run', result_store / 'config.json', '--output', target / 'cli-run'], 'cli-run.log')
-    command([python, target / 'export/study.py', '--solver-python', meep,
+    # Mimic a registered external worker: standalone reproduction must find it from the same state as the app.
+    registry = state / '.local/runtime.json'
+    registry.write_text(json.dumps({'meep_python': str(meep)}))
+    env.pop('MEEP_PYTHON')
+    command([python, target / 'export/study.py',
              '--output', target / 'replayed'], 'replay.log')
     result = json.loads((target / 'replayed/reproduction-check.json').read_text())
     assert result['passed'] and result['all_arrays_exact']
@@ -148,7 +163,8 @@ def main():
              result_store / 'arrays.npz', target / 'cli-run/arrays.npz'], 'cli-comparison.log')
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
-              'installed_from_offline_wheelhouse': True, 'pip_check': True, 'doctor_meep_ready': True,
+              'installed_from_offline_wheelhouse': True, 'export_found_registered_interpreter': True,
+              'cavity_four_modes_equal_to_packaged_reference': True, 'installed_port_alignment': True, 'pip_check': True, 'doctor_meep_ready': True,
               'served_frontend_assets': assets, 'catalog_families': 27, 'benchmark_data': True,
               'job_id': jid, 'actual_device': job['result']['actual_device'], 'field_shape_zyx': volume['shape'],
               'state_separate_from_package': True, 'exclusive_store': True, 'saved_run_after_restart': True,

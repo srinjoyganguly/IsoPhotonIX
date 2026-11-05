@@ -1,0 +1,254 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T20:58:44.244368+00:00",
+  "geometry": {
+    "checked_at": "2026-11-05T20:56:54.431Z",
+    "browser": "156.0.8078.81",
+    "checks": [
+      "WebGL render; pointer orbit/wheel zoom/right-drag pan; camera presets and guide toggles",
+      "Raycast selection; validated dimensions; invalid edit retention; Escape cancel; undo/redo; editable names",
+      "Visibility; duplicate/delete/undo; strip and coupler templates; cylinder and box creation; transform containment",
+      "JSON export/roundtrip; malformed import retention; imported preview treated as draft; browser reload recovery",
+      "Cross-tab draft conflict pauses autosave until explicit save",
+      "Illustrative slab labeling; illustrative extrusion cannot run as 3D; workspace switch retains camera and explicit target requirement",
+      "Responsive layouts 1600/1280/800/390; actual WebGL context loss/recovery; no external application requests",
+      "WebGL unavailable: visible explanation and functional parameter editor"
+    ],
+    "browser_errors": []
+  },
+  "library": {
+    "checked_at": "2026-11-05T20:57:11.806Z",
+    "checks": [
+      "Search and category filtering cover all 27 current component families.",
+      "Every catalog family displayed its actual API study capabilities, generated through the API, persisted exact v2 geometry and rendered actual solids and layout ports.",
+      "Fan-grating tested preset returned the exact measured finite scene, mesh, duration and source; target cleared. Undo restored the original library geometry.",
+      "Component regeneration preserves instance identity; invalid parameters/domain placement retain the scene; explicit domain fit and atomic manual detach/undo work.",
+      "Real polygon hole editing, invalid-hole retention, keyboard vertex movement and pointer dragging update validated geometry.",
+      "Local CSV n/k samples, reference index and provenance preserved; no extrapolation; current solvers reject unqualified geometry/materials before execution.",
+      "Geometry JSON import/export/reload is exact; actual Python/notebook design bundle downloaded."
+    ],
+    "opened": [
+      {
+        "family": "strip",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "slot",
+        "objects": 2,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "rib",
+        "objects": 2,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "taper",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d",
+          "taper-3d",
+          "taper-ports-3d"
+        ]
+      },
+      {
+        "family": "bend",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "s_bend",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "directional_coupler",
+        "objects": 2,
+        "ports": 4,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "y_branch",
+        "objects": 3,
+        "ports": 3,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "mmi_1x2",
+        "objects": 4,
+        "ports": 3,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "mmi_2x2",
+        "objects": 5,
+        "ports": 4,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "crossing",
+        "objects": 2,
+        "ports": 4,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "ring_bus",
+        "objects": 2,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "ring_add_drop",
+        "objects": 3,
+        "ports": 4,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "racetrack",
+        "objects": 2,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "mzi",
+        "objects": 4,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "bragg",
+        "objects": 17,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "grating_coupler",
+        "objects": 19,
+        "ports": 1,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "nanobeam_cavity",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "dbr_cavity",
+        "objects": 25,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "serpentine",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "euler_bend",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "strip_slot_converter",
+        "objects": 1,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "mmi_1x4",
+        "objects": 6,
+        "ports": 5,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "fan_grating",
+        "objects": 15,
+        "ports": 1,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "tapered_coupler",
+        "objects": 6,
+        "ports": 4,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "phc_line_defect",
+        "objects": 3,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      },
+      {
+        "family": "pulley_ring",
+        "objects": 2,
+        "ports": 2,
+        "eligible_studies": [
+          "layout-3d"
+        ]
+      }
+    ],
+    "new_solver_jobs": 0,
+    "browser_errors": []
+  },
+  "coverage": "Existing browser-geometry-smoke.cjs and browser-library-smoke.cjs run against the local v0.10 workbench in Chrome."
+}

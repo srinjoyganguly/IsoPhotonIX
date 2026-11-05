@@ -1,0 +1,1672 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T21:28:56.270614+00:00",
+  "passed": true,
+  "families": 27,
+  "device_requested": "gpu",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6"
+  },
+  "profile": "fdtdx-cuda12",
+  "profile_lock_sha256": "2d2727c04c75559548c5b1af866e230710578add65410943e08b56edd61a9a62",
+  "worker": "scripts/qualify_layout_families.py --solver fdtdx --device gpu, backend.worker",
+  "scope": "One finite, local Ey dipole Maxwell field solve per measured catalog preset. Confirms grid translation, propagation and FDTDX CPU/GPU repeatability. Calibrated transmission, resonator Q, lasing, and commercial field agreement require independent physical references.",
+  "comparison": "Same configuration except CPU/GPU, identical effective step count, time, source and every raw and display axis/permittivity array. Relative L2 = norm(GPU - CPU)/norm(CPU), float64 accumulation on signed float32 fields. Existing field integration limits are 1e-4 combined and 1e-3 per component.",
+  "digest_convention": "SHA-256 of C-contiguous numeric array bytes, no filenames or metadata. Configuration SHA-256 is compact sorted-key JSON excluding the device field.",
+  "max_display_relative_l2": 2.8808850597450726e-06,
+  "max_native_relative_l2": 3.1207617223976287e-06,
+  "cases": [
+    {
+      "family": "strip",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 329658,
+      "grid_shape_xyz": [
+        167,
+        47,
+        42
+      ],
+      "material_check": {
+        "cells": 329658,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "40699f6efd11b125df2c5889932ae5677e00c480c48d1c85fce5fc797517b612",
+      "axis_and_permittivity_sha256": {
+        "x_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+        "y_um": "e6566b1122c927ccac49620c02af24b7da4cff55c1e7f528f087f9b407428cee",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+        "raw_y_um": "330e9e182d60bff67e0e52b33f478b397b113220f533251faf7e16685e506044",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "3a582fa76323151b591bc9483b9f2c1f1c8157e3c20a0949afd225d91f6af268",
+        "raw_epsilon": "6349c555a97cc857ea323041506a2927e85fc600bae49090dffe88bf96274060"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        23,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0035112618934363127,
+      "physical_configuration_sha256": "abfb5001de0ed28cb742aa2784845a9d8bc46f0b521fc20db24516cd1a5b2153",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.9549154007086253e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.0374317397932296e-06,
+            1.7465832784459578e-06,
+            2.7443487998381783e-06
+          ],
+          "gpu_sha256": "8f3cc33380b36285f009bcf8c5e06c8d2b1609d866ca0c967271d21b7b77d866",
+          "cpu_sha256": "123d1e858da96ba3948b7fec3b6f93b16514c93e52f78c47bf5ee499875a2da0"
+        },
+        "raw_fields": {
+          "relative_l2": 2.5671530533174125e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1631928965546227e-06,
+            2.81241288715147e-06,
+            2.36938438604969e-06
+          ],
+          "gpu_sha256": "4198c5c52799f5fce6f45a0eb010eb2241b4e7f8c79a630afbffcff674fe24c8",
+          "cpu_sha256": "56f00a7cb5dcf483b1165efda8c04858e83fe48b4bd88cd85c2eb738fb1e1ef6"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "slot",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 364728,
+      "grid_shape_xyz": [
+        167,
+        52,
+        42
+      ],
+      "material_check": {
+        "cells": 364728,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "38aa7fd1954749666683bf86eb57a93e30e52a6d8d08662ea08e33ee9e79ebc7",
+      "axis_and_permittivity_sha256": {
+        "x_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+        "y_um": "37980264e2328ab7139115f71d5e10a039b4e5a91f1cb8a5e2e0c62aa12ab49e",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+        "raw_y_um": "79e828c9e097dea2b0882bb8f31a34d50f98f14c9def00b1818acb988396d0da",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "312223c561d7fb069aef04e5d3547828be8264a63e744ca768a9d1ab7726d123",
+        "raw_epsilon": "c2f446fa428eea16b7dd2f25816b7e2e1c646bf2c430b2e81554d65c219943ef"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        26,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.005010118708014488,
+      "physical_configuration_sha256": "c6ebcae620d02834acd502ec9f36d7a6b9818f07cce594ef15130015d7bc41e0",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.2568055912828222e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            1.281196932858974e-06,
+            1.2380600348691394e-06,
+            1.3138524003586483e-06
+          ],
+          "gpu_sha256": "a864900c4e39ad247467f2b30361ab429b9c141e1d7ff16d0cf9e54be08ea27f",
+          "cpu_sha256": "16b6604ba1abdaff8cc1ea01c7893f5f57fb2591aa7d475f9a9b261dd08a3774"
+        },
+        "raw_fields": {
+          "relative_l2": 1.4077437923186747e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            1.2353977868978893e-06,
+            1.5396454907643796e-06,
+            1.2780941553063119e-06
+          ],
+          "gpu_sha256": "b1dca70d34569be4f63e0f929e6953993d339285a7d569a2d0ab045398b9dbed",
+          "cpu_sha256": "1a393cf6561a100294f44a70cc9e8067c59ef46f2b01ff9cc139fc0b5ae78ee3"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "rib",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 358028,
+      "grid_shape_xyz": [
+        103,
+        79,
+        44
+      ],
+      "material_check": {
+        "cells": 358028,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "897c32a98f920a20f5c72311b81019740fe3df6d821a389e0a8fed95aa4953da",
+      "axis_and_permittivity_sha256": {
+        "x_um": "55d2fbbe1a65df3138ac43eccc0e795fa4b3a9e0ed0a798e99d975ccec3509ee",
+        "y_um": "db44393e6f2fbbb2653453907e338179f2afcd2c6e47bbb3438b0ba69c4fc950",
+        "z_um": "9888e61d0eac8f1a7c9e7883126218adb9942c4ec3e0446f3344a646d763fea7",
+        "raw_x_um": "74f05ee5141f656fae0c8f33bf6cc91b7ab974eb1851d5513fbed72dd1484b30",
+        "raw_y_um": "114fe8ea96c1227feae7cf569a1818e7ab57b0c2fb688537c493eef0075f16ad",
+        "raw_z_um": "0fbef7421be7c59896018197d05ab7f6b283422555d794f74bf818cdb8290a0e",
+        "epsilon": "04ae86889ffe27c39b9d793de387d751d1700a31958c6eba098af49281613984",
+        "raw_epsilon": "caf1d2b54f189b885aa1ab731bb933ecc66f6aa27b176e050288c33dfb1fb597"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        39,
+        22
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003022013697773218,
+      "physical_configuration_sha256": "b02dc9d44bbe1938a877259c013288be3c7ae9807177b11effe430ade89adc7b",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.8751966490493533e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            1.9649376633339465e-06,
+            1.7161829961791893e-06,
+            2.2902731069214503e-06
+          ],
+          "gpu_sha256": "ad407324354fefb66bc837dc40954ef1c7c61f918dba04914963c6fc03c71607",
+          "cpu_sha256": "ab635bbb65e3c6fa79e66473e10bf596d8452115a736dac52c113d114c6cc554"
+        },
+        "raw_fields": {
+          "relative_l2": 2.4663460883867124e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1150197065470408e-06,
+            2.757341787977464e-06,
+            2.1770537371299748e-06
+          ],
+          "gpu_sha256": "5e172b76a81c52cd5653f7ebc25d7485e2c5a13fc4c7d92ff4b4578952180703",
+          "cpu_sha256": "6f1aa6197061cd29ba5374a7917937a3ff60deb2d5ffc83878d7cbe34697f48c"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "taper",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 328860,
+      "grid_shape_xyz": [
+        135,
+        58,
+        42
+      ],
+      "material_check": {
+        "cells": 328860,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "a4050018365be9acb676a92e0bf6329fec44f13eaea1a55b3a3643118e11ce57",
+      "axis_and_permittivity_sha256": {
+        "x_um": "9f082e071c8452de0458029a5e296b9f9402fcef70882ffce48d8eaab926cd39",
+        "y_um": "8c1f57bbbd4b49dbd318a89dadd9dff38c6f77b923281a26e43a39c2d7ca427f",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "52dd015b471747e680b036891fe84ab8d75bdc476313dbbdbdf4ba4f196c929b",
+        "raw_y_um": "d2bd84c9f53cf2c8ae29a77fe584d4f2407302736617baeb2d7a030d5b33425d",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "166dfa05044ebd1273e91c578f27aafe03fe5e2e7523c98babeab22b79b948a8",
+        "raw_epsilon": "6f6a8a8647fb5f8ee883aacd3b79aa0174d0755f79cfe1cef225873e379a614a"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        29,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.002923127030953765,
+      "physical_configuration_sha256": "5ed7e558fd383a832edd66734cb094d13a2efedb6b9a4d1a855b155b162825a3",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.1713795204423667e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1061533620025744e-06,
+            2.0346191366034783e-06,
+            2.792666526181608e-06
+          ],
+          "gpu_sha256": "99c63ed423a9776d814328371afb9089c0bb4ae35ccb38d5e7fbae668604a84c",
+          "cpu_sha256": "dc76562878098f4a835f95106d364375a17af1812411f107b787c639e8abb79f"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6516845054383454e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1334027909999274e-06,
+            2.996564881460307e-06,
+            2.379054868943329e-06
+          ],
+          "gpu_sha256": "2182dee9592c0b1dbeb7eaa6f4363d9e50ea7799c39baf0de6c63324ab6b1a82",
+          "cpu_sha256": "1fc7ed8deddf6864f97f407a4f760063705dbb6b03158e2c0728fd0d7329d034"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "bend",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 810810,
+      "grid_shape_xyz": [
+        143,
+        135,
+        42
+      ],
+      "material_check": {
+        "cells": 810810,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "a47a9c4e5926420bd7b864843e84838ac8bfc6b195558f7ab1efcddb508c38cb",
+      "axis_and_permittivity_sha256": {
+        "x_um": "238a187949a0b8aea103a2bf4b518feee40e99618e5345d69b29c2368ce0ee56",
+        "y_um": "9f082e071c8452de0458029a5e296b9f9402fcef70882ffce48d8eaab926cd39",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "064a1c128dc198be666378bc799901643943e8bfc3d1c9b7b2583ebe19449d2c",
+        "raw_y_um": "52dd015b471747e680b036891fe84ab8d75bdc476313dbbdbdf4ba4f196c929b",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "b71a00ce82642f1027c484af4af84a25b7398e72c71885b2a9e517b41ac1f2c1",
+        "raw_epsilon": "b95c5839e43515a55d372209575cc8f6d5bec2f64aaa1a39e64737811659dd86"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        75,
+        67,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0032128910534083843,
+      "physical_configuration_sha256": "c43f8bf798116a8885a8f7000ac8797ec5aa0310880b3b45ba7fbfde73250674",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.1948506694705836e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.3710658532698606e-06,
+            1.928314039688103e-06,
+            3.103044700190377e-06
+          ],
+          "gpu_sha256": "615033b21ab7a4da84a0b60cccc51040ebc1ad4dee22cf395aff0a6b6bd7ed46",
+          "cpu_sha256": "bd9b77ac5744f378a027e39877b19120a0f94233a3b2db3306a1d86315b1e306"
+        },
+        "raw_fields": {
+          "relative_l2": 2.7693774630307966e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.315289950961958e-06,
+            3.0137891897482066e-06,
+            2.630743791467183e-06
+          ],
+          "gpu_sha256": "90693e3d0c3d7302bbd8f1c1e3ddf895de4541fcaf210f0350eab30a8438d9f3",
+          "cpu_sha256": "b5c91f49bc79ed996ead474879e5eaa9b92d7b513e04fc752b5e41615729f360"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "s_bend",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 554106,
+      "grid_shape_xyz": [
+        167,
+        79,
+        42
+      ],
+      "material_check": {
+        "cells": 554106,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "c22510f0c23c732b08f81db0280caff68ef9e15773fbd444ecbc603edd098e62",
+      "axis_and_permittivity_sha256": {
+        "x_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+        "y_um": "db44393e6f2fbbb2653453907e338179f2afcd2c6e47bbb3438b0ba69c4fc950",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+        "raw_y_um": "114fe8ea96c1227feae7cf569a1818e7ab57b0c2fb688537c493eef0075f16ad",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "5a4486f421afea93050445663e9093abe37aa77a966cae629e54c23e1ceb8247",
+        "raw_epsilon": "d58eab84146b5159f37e9af7bc1b921507438df20b977ef931c2c4935e790b3f"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        23,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.00325111486017704,
+      "physical_configuration_sha256": "55054b2d3edfa16a32aba9ce93191f9f38e8675387f3554ad116a0aac25a63f6",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.103088724368723e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.2709980788147216e-06,
+            1.8598740021000004e-06,
+            2.886417955650726e-06
+          ],
+          "gpu_sha256": "de30a1d748a57032fac02d56326745b76934a7c69bcae91ee18bf586552d8914",
+          "cpu_sha256": "260b963ab8895fca6984afa29b2341e5be1673f3647756dd48dc5f7cb4e3dda5"
+        },
+        "raw_fields": {
+          "relative_l2": 2.689247892653052e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.249684998549018e-06,
+            2.949100442531403e-06,
+            2.507157246139561e-06
+          ],
+          "gpu_sha256": "a7e1e7a41a568580411d8dc9f376ade2934d9831bec52e41c2040448181788d1",
+          "cpu_sha256": "439eb7f9a7147e6e5916dd7cd215524fc2dec21174dc794af255297302c2dfab"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "directional_coupler",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 406812,
+      "grid_shape_xyz": [
+        167,
+        58,
+        42
+      ],
+      "material_check": {
+        "cells": 406812,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "a885fdcfebb1c94e8ff810fdad78a890c8b93bcef039f169e1058fdfb784712d",
+      "axis_and_permittivity_sha256": {
+        "x_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+        "y_um": "8c1f57bbbd4b49dbd318a89dadd9dff38c6f77b923281a26e43a39c2d7ca427f",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+        "raw_y_um": "d2bd84c9f53cf2c8ae29a77fe584d4f2407302736617baeb2d7a030d5b33425d",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "d206c182ea28fc175bc0b9c3f8babd8bc07135daa59007365fa1165f3976f5ce",
+        "raw_epsilon": "499cf0d561211c968f8ee4c2b66b5380d910ce8e2b8d14c02f0f1deae41042ff"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        23,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003455989295616746,
+      "physical_configuration_sha256": "b36c380aa8dae29d1759af0a0d1460daf592e0a5660121ad0d8d856fe2b5c2a5",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.0465278151392726e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.04614704814769e-06,
+            1.874585745930313e-06,
+            2.725000466386256e-06
+          ],
+          "gpu_sha256": "e553c2aa30acbde230ce2ff8bc100a886d2561d561136fe3ea1877680331024c",
+          "cpu_sha256": "005992638b28ecd86d85b89a526dbbedaf4ec8127579e8c490be4d1001742d1c"
+        },
+        "raw_fields": {
+          "relative_l2": 2.677587797169834e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.210650250372676e-06,
+            2.990437530717859e-06,
+            2.3997824107726078e-06
+          ],
+          "gpu_sha256": "66c55a00b7af10a365ff252b8b7d8a3c463839d60bdeb8f12e4b0cc4e98a0e9a",
+          "cpu_sha256": "9706e040b0ca53aee36995f349ab594cda6995ff04aaf5d85325aa3a0a7530c0"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "y_branch",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 660282,
+      "grid_shape_xyz": [
+        199,
+        79,
+        42
+      ],
+      "material_check": {
+        "cells": 660282,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "af4615014830ebc0bd02c1382515122d2366e17f17e9563242812c6e3d86b7fa",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ce7225d46c82f56729b6605920a15ee86b5808589049691619a5cc2cc9280d0a",
+        "y_um": "db44393e6f2fbbb2653453907e338179f2afcd2c6e47bbb3438b0ba69c4fc950",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "054fb3824943d511cb41794c70b4060011aaf3bac3fa9b04bcbf4d0cb96d8c08",
+        "raw_y_um": "114fe8ea96c1227feae7cf569a1818e7ab57b0c2fb688537c493eef0075f16ad",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "00428d897619dc04730514edf22274cfc08d80982f38e1b7fbc2a939ada4fcd8",
+        "raw_epsilon": "096a478094de8d2e3f74cc88fde6d0847b09aa1134988e7e759b762168671671"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        176,
+        23,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0035637803375720978,
+      "physical_configuration_sha256": "4f1ee2db58c32c6dd7929cd2212ace21e16762b00fe2f7be403960a275dcd495",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.090086042358412e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.406828026487189e-06,
+            1.8192459233028828e-06,
+            2.7944487500729197e-06
+          ],
+          "gpu_sha256": "035fc8eefb9b9b55cd083f48c6fa66b7d5eaf3d1e9c19f63bf94d4b11b6c18d2",
+          "cpu_sha256": "7a35b9e3cc43f2329065b8547ca088c6f4c39e8d80bde74b54d381165901b7f6"
+        },
+        "raw_fields": {
+          "relative_l2": 2.588656940173291e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.3118952754815727e-06,
+            2.775058394052987e-06,
+            2.4191122084151246e-06
+          ],
+          "gpu_sha256": "3bf236011c89371062404f2cf8787d4d4a991dcaf87b73bd8c4c40f60768d9f6",
+          "cpu_sha256": "baabd6eba4f6da3c98202a41444d3b08d0607ac50e3d7979a6b02dd599f63ff9"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "mmi_1x2",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 727146,
+      "grid_shape_xyz": [
+        199,
+        87,
+        42
+      ],
+      "material_check": {
+        "cells": 727146,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "0056743b7d3accf671ed6d0132a777e0534bce71577183f840e07931f38f2326",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ce7225d46c82f56729b6605920a15ee86b5808589049691619a5cc2cc9280d0a",
+        "y_um": "39249a3a3d7d569937c7929554b76835e294f3062ffbafba2780095fe902ca7f",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "054fb3824943d511cb41794c70b4060011aaf3bac3fa9b04bcbf4d0cb96d8c08",
+        "raw_y_um": "86f253487a48addaaba742772134266c4284a5ef49f217d399cadd668b6cbc38",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "e0197b1c0cc0087fff2bb1c47b9fa3e322419dbc840330b57845e8a4ce5a7311",
+        "raw_epsilon": "e3b2214966527d5fdae71d4ac8326bf3ebae9f3a3629fe758acd68f461211cae"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        43,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003417612984776497,
+      "physical_configuration_sha256": "7f66da85bb30b434fda6952659933e72a8b931eb78e3bef89db44ede249044c1",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.0332018219979403e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.0712387876304555e-06,
+            1.7935355607613184e-06,
+            2.960500014702369e-06
+          ],
+          "gpu_sha256": "a3418e4e8733034590fee16dfcdeb70f635da6ba3fb3ad7cad01b52e3d32cafb",
+          "cpu_sha256": "6294a98d5d790a07a4f46dacb1f4db7f3158f917a86ba2f659d7c9440f0daf2b"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6555082414940904e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.195873243035807e-06,
+            2.9123190956621515e-06,
+            2.4990620369736905e-06
+          ],
+          "gpu_sha256": "cbf91ae7e7c73b8594bb4f3391116ad4bb4b13ae6a90380f6a8f4ce3cb429444",
+          "cpu_sha256": "11bfacbad3badb125e8e00f5c59d744f98d8063cfc430f4218c35da6dbff32c6"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "mmi_2x2",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 727146,
+      "grid_shape_xyz": [
+        199,
+        87,
+        42
+      ],
+      "material_check": {
+        "cells": 727146,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "e3f2eeea9bcb9909e6b7e947035f8be265df9f285b9426354901b9478d1ee241",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ce7225d46c82f56729b6605920a15ee86b5808589049691619a5cc2cc9280d0a",
+        "y_um": "39249a3a3d7d569937c7929554b76835e294f3062ffbafba2780095fe902ca7f",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "054fb3824943d511cb41794c70b4060011aaf3bac3fa9b04bcbf4d0cb96d8c08",
+        "raw_y_um": "86f253487a48addaaba742772134266c4284a5ef49f217d399cadd668b6cbc38",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "9dc88f58aea82c04e059e2d430229613a1725b18ee7dbca3e605e4deb248ced8",
+        "raw_epsilon": "1ed630df04d81e33ab9c321193c4384245b3d5da395804b8dba16d9e701dd3ee"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        31,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0034173682797700167,
+      "physical_configuration_sha256": "f5cf8633124c06a160ed58820606646329db93d9a3c6a774800933794ed8d5df",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.986807284099765e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.027699783624473e-06,
+            1.7497191587344985e-06,
+            2.8951083810644175e-06
+          ],
+          "gpu_sha256": "9a7cba61c139fd9d55dfc37d7135373dbe0160a459ee3b5cb53818d6cd96161d",
+          "cpu_sha256": "8610b4b2e8be693a14ad924af0d6f45ee4dd3421e69c1709b3d799bdbbf05fa5"
+        },
+        "raw_fields": {
+          "relative_l2": 2.5760019417716916e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.103127733447378e-06,
+            2.847275026460173e-06,
+            2.3890420423292736e-06
+          ],
+          "gpu_sha256": "b165bd499b562f4a100c40fa4c6a62bd9a62cbdb9c3fa4f22e2e3381d1d8369a",
+          "cpu_sha256": "b07528e70eaf3b3fc055a51936281ec65a4c4e67cde2446501263c79307e01ab"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "crossing",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 1171338,
+      "grid_shape_xyz": [
+        167,
+        167,
+        42
+      ],
+      "material_check": {
+        "cells": 1171338,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "c8ec0af49e882be1e88818076b99f12cfa1769430fc0fc9c37aed86998ce4f7f",
+      "axis_and_permittivity_sha256": {
+        "x_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+        "y_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+        "raw_y_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "036c5d74f28137f2f9e9b6f0958cc9c300f6cad1785ca484740abdca28982be7",
+        "raw_epsilon": "4d0bec322cc3c4791192c9ab3f8df02c988b4ea694e9718e478a66a8cec7357f"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        83,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003803991014137864,
+      "physical_configuration_sha256": "a217827c2ba3afbcb2d5924e1eb17b36af23bcf0cb24e7d7e5ccf0b4c0ad4099",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.0760296804575754e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.101541562046187e-06,
+            1.8684093840398285e-06,
+            2.9041207838287493e-06
+          ],
+          "gpu_sha256": "2267ce8a9b9e17bc3e58896641d4c5b1ff233c90ff2b1ad1349b2bd7d92fcdad",
+          "cpu_sha256": "7fb79afbe417b99abd9c526b96120c258f0df0c2d22e13482a9a7c29dda2d3df"
+        },
+        "raw_fields": {
+          "relative_l2": 2.713163606544648e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.232340154272323e-06,
+            3.0178300205712447e-06,
+            2.454386090327569e-06
+          ],
+          "gpu_sha256": "4bc83a11e32f386176fe9a5cb86c230aaf8d1c58e386fa86b14afc0f3efda428",
+          "cpu_sha256": "19c97527e548969368e23eba38fa0aabe6021db17c92e76a1888c8ad8f893b29"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "ring_bus",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 1111614,
+      "grid_shape_xyz": [
+        199,
+        133,
+        42
+      ],
+      "material_check": {
+        "cells": 1111614,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "417a47a2c77f4048ea6388ce34dc3f1eae217ad2a879b612dd1ae2bbe98b3bd8",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ce7225d46c82f56729b6605920a15ee86b5808589049691619a5cc2cc9280d0a",
+        "y_um": "951b18cc5cfee225d28cd17d7d7dcda9f87c355aeb4882e59fecd08ca8de46fb",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "054fb3824943d511cb41794c70b4060011aaf3bac3fa9b04bcbf4d0cb96d8c08",
+        "raw_y_um": "6da40464edfc14a421b2742d696079013aa7be26817c13dfb3c9498a2b12d548",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "4a502b7aaaf7886fad4b7675e2cffc661d7f4571bc714ce034298dd1cda48770",
+        "raw_epsilon": "346f075b553d2bead5d40ed7ce49473462277c8b3b423694cffde8fcdd87aa97"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        23,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0033749041613191366,
+      "physical_configuration_sha256": "0a3f749effd134d35e1156b23276275e25c4f4d505fc49f021857076a9f670e6",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.0841630564422364e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.0836408313042126e-06,
+            1.9068044311338943e-06,
+            2.825540770036335e-06
+          ],
+          "gpu_sha256": "ef22ba43caee3ef369007bd951470b59978efeff3eac6ec5b69ef6403604c437",
+          "cpu_sha256": "f7a658cb6ab3f55a0fd00996414de214198775a0de7f52d4f11bf8da2963ceaa"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6516004703381804e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.198784444267745e-06,
+            2.945366129709911e-06,
+            2.391773292994966e-06
+          ],
+          "gpu_sha256": "25c73f454be84a5dcb91cd01af31801b34a0f2795f9dd7c35a967cf6a42d4f87",
+          "cpu_sha256": "d0e96682706342b9b1e83c4214efd1caa4b025af3240299dbc23f3ceb5ac5fd1"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "ring_add_drop",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 1111614,
+      "grid_shape_xyz": [
+        199,
+        133,
+        42
+      ],
+      "material_check": {
+        "cells": 1111614,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "6db3ef70467eae2aaf6df83a0ce16d2d8522cf97db397ddc48db9df0f250fa22",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ce7225d46c82f56729b6605920a15ee86b5808589049691619a5cc2cc9280d0a",
+        "y_um": "951b18cc5cfee225d28cd17d7d7dcda9f87c355aeb4882e59fecd08ca8de46fb",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "054fb3824943d511cb41794c70b4060011aaf3bac3fa9b04bcbf4d0cb96d8c08",
+        "raw_y_um": "6da40464edfc14a421b2742d696079013aa7be26817c13dfb3c9498a2b12d548",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "28835206badfc80453fd0d115b1e01ecdb716c8c0d743251bed2db7fef0512b2",
+        "raw_epsilon": "4abad39f8015ea7961c326f6c6e76c2c5f5cac4d1e0c902c2ea68530c8da47bb"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        23,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0033749041613191366,
+      "physical_configuration_sha256": "42288f84c6e969a0967bfcebe46c7228e3a32c3abb868e5fec22321d8a22dbee",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.0841635900484255e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.083642936261874e-06,
+            1.9068050122107713e-06,
+            2.825538985933972e-06
+          ],
+          "gpu_sha256": "ccbc95c3747f8a2fca6dafde7fde00090916152fbd2ada34c3662ecc7fdf7a85",
+          "cpu_sha256": "c6dfdab22624a4e652ccf07fe285d43759e3c4c2d425878c8b0f2faade96d08b"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6516005156283125e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.198784463223726e-06,
+            2.9453663468807956e-06,
+            2.391771798786375e-06
+          ],
+          "gpu_sha256": "618fa9dc4effee47b2d8b69b35c6336ecb5d5e47a88fbcfdf4e10e19fedbe9c5",
+          "cpu_sha256": "7f6bbeffc9c970af0cfed8fd1d1f9c5f82529122c4719c46b2a8d9c940902658"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "racetrack",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 14,
+      "cells": 874458,
+      "grid_shape_xyz": [
+        202,
+        117,
+        37
+      ],
+      "material_check": {
+        "cells": 874458,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "5481f3a6fddb9b35150717ece4c498b52036a300033637edbf39082b756f1dd5",
+      "axis_and_permittivity_sha256": {
+        "x_um": "858086c6a09faae24c683d9ba0e78af009fef41c08887fc98d21910673efee67",
+        "y_um": "11baf9f95cae153260deb2e78ddfc286c33932f1c66e2c93f8754130feccf1ff",
+        "z_um": "8b71e83c1f1a9e2fa0bc44b951cb69e49832e5b05a150a30ece68301b84da27f",
+        "raw_x_um": "706f1875a200d37f5a088344e02909edd8f542497fcf1fa31a0ba00c9ece5edd",
+        "raw_y_um": "3c16a8f1216eadd529c5e53308e2e753ff4bbf74f980dc861646b9f721b5b2a9",
+        "raw_z_um": "ef7c96aab6e666c9cb0e4a45226ad9f00ba44e0454d9a1b30154fe987f072fdf",
+        "epsilon": "1f2f851d3387061658760d6424381970f10504dd51a79c8da616cfff03695d9c",
+        "raw_epsilon": "641c5b6189ef409cbed68c86f439996c1d2624243369225310494132cd943e30"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        20,
+        20,
+        19
+      ],
+      "time_steps": 176,
+      "measured_time_fs": 23.968369788389783,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.004064210224896669,
+      "physical_configuration_sha256": "3af30ef3a4d47ac41c68ea7d014d241ea7870e09a8809c4cf56f0bb049dac948",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.875844964328051e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.950298492591561e-06,
+            2.779913959431343e-06,
+            3.2700364592351993e-06
+          ],
+          "gpu_sha256": "e00ea1a91e8dd543409b1ce97b6fc95399793acf16c7388b5b73173f3e4dd809",
+          "cpu_sha256": "19852b794442ba905e8efa4ae1b46bd54284e9f76e4bf4fa264147ae6554c223"
+        },
+        "raw_fields": {
+          "relative_l2": 3.1207617223976287e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            3.084111978974749e-06,
+            3.1130141384561306e-06,
+            3.196141365316128e-06
+          ],
+          "gpu_sha256": "35a4e08e71653506c1d8de0b0279ef86bd9f7d2582193f1fbaededba4105bbf8",
+          "cpu_sha256": "7501c5a38a721a9362b23075f63349add1ffbcd53852c30e6d3f3e36bec847bb"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "mzi",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 1177050,
+      "grid_shape_xyz": [
+        295,
+        95,
+        42
+      ],
+      "material_check": {
+        "cells": 1177050,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "be5b2842ca5bf6d5913ca441bc2bdb109db3c9639e706d781d67dfb5ea52f960",
+      "axis_and_permittivity_sha256": {
+        "x_um": "e0d452046980dc7e0c6ac8584786ff9a29cb6f1338e738baca8896a79d95a9f8",
+        "y_um": "f058e81d44bb47ab663062d2269f5183c7d4a6ae9533c1ec8540c2f425879686",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "e2ad82aa7ce2b7cfbdd2b69d9ef4f49bf254a196dd5b4e61de67688b16aa2b02",
+        "raw_y_um": "6b9c9def550e7b6f47fa0f9d3c50b1079c0f39c60be90042b4d95fde7a777af3",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "f85615872756692a6daac068fee0f6dcc41efb323d81913b93b3f5488c51732b",
+        "raw_epsilon": "44cb93ae129a56923164bc4acb487a86af4d99207a8ec52bf2080e79d15f950f"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        47,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.00394649151712656,
+      "physical_configuration_sha256": "9b41e284b5e0d8ba631a1ecc990b11356a8f97a74fd8ea8d7eab934ac3d660bc",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.012041260571482e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.047114487584404e-06,
+            1.7673271727978545e-06,
+            2.964096847153045e-06
+          ],
+          "gpu_sha256": "feae75ff1b76ad19121919852d9dd371fa2dd952eaf9bff9024c454159ec7c45",
+          "cpu_sha256": "0c21577c25905c175aef39d965fbd2da5880c75980572ab5d3a7e88f77176441"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6047968946338915e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.163474610721228e-06,
+            2.842972905619149e-06,
+            2.4781898644622e-06
+          ],
+          "gpu_sha256": "35c022dc33978c5273d7d5763e197b1a365f100417ff854538591b4efc44faac",
+          "cpu_sha256": "75dfdd76f8f75ad29950f56df2794f61f39be5d52b59baf107a109b668b7c9d0"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "bragg",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 377832,
+      "grid_shape_xyz": [
+        173,
+        52,
+        42
+      ],
+      "material_check": {
+        "cells": 377832,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "176c0c1d21f1d7865690acc32497127c816fbecafd3f69c805116a6441f30e6b",
+      "axis_and_permittivity_sha256": {
+        "x_um": "e2c80af997e6b0f7388a702cf4dc6749f596d0b38ded3ba4697d428623da6d61",
+        "y_um": "37980264e2328ab7139115f71d5e10a039b4e5a91f1cb8a5e2e0c62aa12ab49e",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "684b2e69cddcdca384951994d6ab7b801852653155aa1a17ac5639cd81354af6",
+        "raw_y_um": "79e828c9e097dea2b0882bb8f31a34d50f98f14c9def00b1818acb988396d0da",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "79f49d8bb7d8ecb8faddaaeb29d7b27425a54329212460f11a5e2733e0f13a7f",
+        "raw_epsilon": "021af19d819917eaca995d584ce2703cb7c667cbee4c66bca4699660a32210ce"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        26,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0030513880774378777,
+      "physical_configuration_sha256": "625141784169267172faa8fad23bf7d71909860530826c7d56a4b4c41e997cba",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.113854419199472e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.100164318525543e-06,
+            1.942818307135629e-06,
+            2.8375592229608024e-06
+          ],
+          "gpu_sha256": "5da9ebbddcbddd03e5e0791a70fdfae2df9846846bebecf5f3f5f2dc89d41074",
+          "cpu_sha256": "023dfeb906fdf1629d8179bba19540607162863419f8a27ee05b53a919ab7f78"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6714836983619945e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.178565182370281e-06,
+            2.994390166925617e-06,
+            2.3768550827813557e-06
+          ],
+          "gpu_sha256": "107d323431af32b275841e3490ed32983d3f1cff414e2069598cac331b66e8c2",
+          "cpu_sha256": "7b58b4d2d5c13de3ebb1085921b7ea517de75b68264174cf502a706d8b810842"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "grating_coupler",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 470162,
+      "grid_shape_xyz": [
+        154,
+        71,
+        43
+      ],
+      "material_check": {
+        "cells": 470162,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "7e170e3b6666e7658419ce0b0c309eaa1ecadd2fafeca86be6c3d333a150bdfd",
+      "axis_and_permittivity_sha256": {
+        "x_um": "6bc2b68279752162c0c9f4be7510dfd64afc5d7fa46ee02e673fdd83d993f662",
+        "y_um": "db289a555d99ae485a64eae5efcd3f09aed72e8d0b79b8d7951d53b401135a4a",
+        "z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "raw_x_um": "88545a4bc3b9aea640a46602853932eb5bdc9377b63a80bc1863c6e1261bac68",
+        "raw_y_um": "8e652f404f4adb1e02c55716f9c53a8f8bf37319b979fc84ad6149deea38e1ea",
+        "raw_z_um": "9888e61d0eac8f1a7c9e7883126218adb9942c4ec3e0446f3344a646d763fea7",
+        "epsilon": "19512f35130f7dcf98a8b616b79c688caf5b60841486a7f9c510cc2534a27978",
+        "raw_epsilon": "a58c506fe7ce23da190dbb758e216116c9554cb0b85ee6977847c3a9022ca435"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        48,
+        35,
+        22
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0036011952906847,
+      "physical_configuration_sha256": "a998a040446f6fc172357261742575472be5cdf42493b4a2d786e819adba526b",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.91596808008742e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.0076078587489592e-06,
+            1.7563051768849016e-06,
+            2.46351868860137e-06
+          ],
+          "gpu_sha256": "0a56a0ba0c9602a0d40e6c808df4c9aec10350638cfebf0110103dc66de34e36",
+          "cpu_sha256": "604d0f46e0b4d4c99571749d2aa5b5bf80bf8576d67da85b57e725aa2d3170b4"
+        },
+        "raw_fields": {
+          "relative_l2": 2.415795805076031e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1517121983815444e-06,
+            2.5869751376103324e-06,
+            2.2785454964814812e-06
+          ],
+          "gpu_sha256": "f3c01531fd2e2690a8301ed9c4e7ca4e21e51fb7b1850b9bf9709474a50cbf4f",
+          "cpu_sha256": "0b67c3f792f845bc665bfd1e690a4cb55afc275e2face802b39158df57e9e0de"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "nanobeam_cavity",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 554400,
+      "grid_shape_xyz": [
+        240,
+        55,
+        42
+      ],
+      "material_check": {
+        "cells": 554400,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "ec61f99d0fb6871f1699f407b1ce3735a1e866a719d6d27ced656e34ce28213e",
+      "axis_and_permittivity_sha256": {
+        "x_um": "d8547b95a86750570959a52d36b5bae4b39cbe8269dfd47b27983c23e9d22b88",
+        "y_um": "f5e9049f8523a12cc21c6bb4a898d7e845fc207f4962ab94a316e3a49382b878",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "a561e46144b377e6ecf03d0655b5d5a03f8cb2b2985d1c6230d6c66805acb37c",
+        "raw_y_um": "69deab912c63ba0612e7f02bdbab3e9afaead3720c1c2fead98012fe2707ec4d",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "e940e12ca4db4246574e66f1e78da197ed196231df75359dcfe0a7ab2088dd31",
+        "raw_epsilon": "07f7644c151905af3fda5ad18e8c9e1ecc4599b426cae791a06fb0303dfc3a10"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        22,
+        27,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003492494812235236,
+      "physical_configuration_sha256": "1dff293e6a25e7bceb5f30feb41e670bc2efb1812dcf09b753ae4cf2cdb0d78e",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.9853083933917253e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1414483935449938e-06,
+            1.8163982569401256e-06,
+            2.4860797134712483e-06
+          ],
+          "gpu_sha256": "70e55f80ebe1a1930529da6bd8db66164d85d62331c2afa3fdd0993013ef2cd4",
+          "cpu_sha256": "8596ce48cf076ec64d4fe1523c83d2c346fa02cadfed72a190a0abc0408fdecb"
+        },
+        "raw_fields": {
+          "relative_l2": 2.5339019879919278e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.278973869779196e-06,
+            2.7592581869018056e-06,
+            2.237326721158572e-06
+          ],
+          "gpu_sha256": "e8899db03c8c49421bb626aedbe1b6bd4e013dfee0ead1099de621f42bccde3c",
+          "cpu_sha256": "35291ea4cbb498ce273002dc20e0416bc8fca31590f56fcd786bfdde6a152cfd"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "dbr_cavity",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 559104,
+      "grid_shape_xyz": [
+        256,
+        52,
+        42
+      ],
+      "material_check": {
+        "cells": 559104,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "421cdea51618477494d5c7dfc9300aa17577b2bf8f3c385eaebb052594a6602f",
+      "axis_and_permittivity_sha256": {
+        "x_um": "5d45d3b192afad1909a7c7443604ab2a4e570b6035425bc366cd2ef9dab326d5",
+        "y_um": "37980264e2328ab7139115f71d5e10a039b4e5a91f1cb8a5e2e0c62aa12ab49e",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "59c42b84ae212ede230d2f8ce3bb4883f6f4103504f930c0679bfa6eeb477883",
+        "raw_y_um": "79e828c9e097dea2b0882bb8f31a34d50f98f14c9def00b1818acb988396d0da",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "64d7aa39e24b06b07deaf5479a393827e13e4e7dc0ff4c1588c18f534fc7a4bb",
+        "raw_epsilon": "8823ab9218cbdb62615ef5876a21a2f2671efd1e52fd2fa645722482a896deb4"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        22,
+        26,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003093317849561572,
+      "physical_configuration_sha256": "97703a019ba15c5e43c28179cfd334577622b76de95dedb58bc887f2549b62ba",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.131316205369099e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.2858232371707416e-06,
+            1.9349227360452923e-06,
+            2.74882651533936e-06
+          ],
+          "gpu_sha256": "37e4d176e7625995bc5f63cdc69e58c2f41ded7640f976db5d1ef3f2792b00ea",
+          "cpu_sha256": "064342ccf724d279c7f26bc5c1eb1613fc381aa5152e00ece05503df7aa0e007"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6118661564450497e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.2769082733727864e-06,
+            2.864946665392223e-06,
+            2.338083855255946e-06
+          ],
+          "gpu_sha256": "650a610194e290c0718a1475df17d99b151803c46c8836d09edcdcc486bccab4",
+          "cpu_sha256": "c705873f98e893b301d9c4020b0f3fbc770163492e9972f489a535c2cb561725"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "serpentine",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 14,
+      "cells": 837125,
+      "grid_shape_xyz": [
+        181,
+        125,
+        37
+      ],
+      "material_check": {
+        "cells": 837125,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "f0cd326294c387a0ce1e84102d14cd1f1e0fbddd79240f43eac7683c5db36171",
+      "axis_and_permittivity_sha256": {
+        "x_um": "f74c4fa6834c6811b9b799f0b28d9d7c30e256b3bed228d69bffef5ad24d0c7c",
+        "y_um": "f474bb4b4b3a4c5ade6454f03fe6752b2b5784452c0eb65480d44e486d299d52",
+        "z_um": "8b71e83c1f1a9e2fa0bc44b951cb69e49832e5b05a150a30ece68301b84da27f",
+        "raw_x_um": "a8b77e9140164d7a61daa43ce69a72a74980326b96b5066fffd056e15b5f5318",
+        "raw_y_um": "9d03984a3a149a3d69d1f067b60551bd9e3680d52fc52f8d6a78a4d37dc0878b",
+        "raw_z_um": "ef7c96aab6e666c9cb0e4a45226ad9f00ba44e0454d9a1b30154fe987f072fdf",
+        "epsilon": "340b3b54b6b1c7b69c12e4bc58da00df2e4b332dcd0402645ae43ad9161ac566",
+        "raw_epsilon": "52bf8258dc7fa17168fe084298ccac05128b49317e394d1f995de6ab929c8987"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        37,
+        20,
+        19
+      ],
+      "time_steps": 176,
+      "measured_time_fs": 23.968369788389783,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.004066897556185722,
+      "physical_configuration_sha256": "6c14c3b75d8f66aade1811fbbf69070c31474ecdc543fb15d5f322eb678ed75c",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.8808850597450726e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.9120388311457157e-06,
+            2.7954167931173083e-06,
+            3.307611378373638e-06
+          ],
+          "gpu_sha256": "8f1a98cc25c99d5ba073175ba2a759e48a6f04f6cd6e7068691c8566e7884821",
+          "cpu_sha256": "c5158e2ff43d57b07cdb22cf208509499bd2ef5bea9d78708b344ff05162890f"
+        },
+        "raw_fields": {
+          "relative_l2": 3.1177631446116355e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            3.0778850889617973e-06,
+            3.1022272067352224e-06,
+            3.222841177820819e-06
+          ],
+          "gpu_sha256": "ea4429417dbbf1d9d4370610a92573c2876e7826ac045838ac2e700cec228109",
+          "cpu_sha256": "b77c65d72528152437253d92146ed6d33777df9586cf28809ad5c18f1eae0010"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "euler_bend",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 554778,
+      "grid_shape_xyz": [
+        119,
+        111,
+        42
+      ],
+      "material_check": {
+        "cells": 554778,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "d5084a58a7f12ba6a414bc32f6e1db71188826e51684209d0ba199106f82b849",
+      "axis_and_permittivity_sha256": {
+        "x_um": "815108bb7936f9dc5d200a8c3403464832a40d7d7915a9de9045011b2eb58f4b",
+        "y_um": "d8b28c33a702f8bbc01d52f69c8c7a00e4ee2158f2608c4e965f7b9728eedd79",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "6d2e141ac06c2b3c1016681092a06068a9e868ab188044476f3f403edfa7f3cf",
+        "raw_y_um": "7a409aaa4e02f2376940a63373b6640402ceb75939f5e9161be1d3c93bab20d1",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "8999f7de10ae62c3d2272c51e7b8b5caeb990c4013db7c0e153a8a39080f5320",
+        "raw_epsilon": "dfcdcc6ad53d5006f1b26cc51b713eaa0bd0872110e2b0ad331009f0be56dd72"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        63,
+        55,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0032839810010045767,
+      "physical_configuration_sha256": "7151496e28cbd3c7f3f3eb6f0c916562b29cdb91357d6cb49299c6177d712ef7",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.062292830033636e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1951495039657663e-06,
+            1.810488630762777e-06,
+            2.953802975588026e-06
+          ],
+          "gpu_sha256": "a5d787c2c180d4765446a9c0236195daf23398f3d70edafbb8914f78e3f6a552",
+          "cpu_sha256": "7cd846e2b7bf7847d5594edf7037dbf4b3d2c790ea22859e098d2001561c495d"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6124270176471194e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1725821458318707e-06,
+            2.838167997928279e-06,
+            2.5101008480845987e-06
+          ],
+          "gpu_sha256": "c6a914de8511e45b51ec2642457b2ff96383de387fb0e23e4969718f7217a055",
+          "cpu_sha256": "8c8edc4ea3ff15f47bad74abf79e4a781a6d33b87707c4dbaca88cdc62c6e58d"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "strip_slot_converter",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 259896,
+      "grid_shape_xyz": [
+        119,
+        52,
+        42
+      ],
+      "material_check": {
+        "cells": 259896,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "ec2468f49e77575a76a43641429487954c59020e312d6dfadd5cc78f5fd5c16a",
+      "axis_and_permittivity_sha256": {
+        "x_um": "815108bb7936f9dc5d200a8c3403464832a40d7d7915a9de9045011b2eb58f4b",
+        "y_um": "37980264e2328ab7139115f71d5e10a039b4e5a91f1cb8a5e2e0c62aa12ab49e",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "6d2e141ac06c2b3c1016681092a06068a9e868ab188044476f3f403edfa7f3cf",
+        "raw_y_um": "79e828c9e097dea2b0882bb8f31a34d50f98f14c9def00b1818acb988396d0da",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "08ada3a5f29eb2c788a9f5f0954a895447e4cf817cb66e3920f9e47a67c75e7e",
+        "raw_epsilon": "d0535415c119a1ff0645d32738720ed4afc2b2ed0da3d94efe421ed3a31fd6aa"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        26,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0031920638866722584,
+      "physical_configuration_sha256": "43b210b188047ab1e78c054f4ee2837ab51a2abcfade356f9d3cade228705ab0",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.0801675766043543e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.0473916314410855e-06,
+            1.9116145359331126e-06,
+            2.817372729878565e-06
+          ],
+          "gpu_sha256": "0e5eaf740f36b0a864ad07a78efc1e0624731ea1885446b8ea94f144c05627c1",
+          "cpu_sha256": "8b20fd551e6ea9f4dabd1c0024a7dc7c29f83e4404972485802e3bda7373369d"
+        },
+        "raw_fields": {
+          "relative_l2": 2.6456370366190864e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.142356701455126e-06,
+            2.954878237242853e-06,
+            2.3978118630259676e-06
+          ],
+          "gpu_sha256": "ae7d94784f72f4c3345d58193712a9161298aca8d5beba7443020cbc72b5f81d",
+          "cpu_sha256": "9c72b40a5e4e17b25f6ebb90d43f76be56a31e2315734939fa51ce03fa4d58e8"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "mmi_1x4",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 14,
+      "cells": 881932,
+      "grid_shape_xyz": [
+        202,
+        118,
+        37
+      ],
+      "material_check": {
+        "cells": 881932,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "af30b0731080e0dc951cba6d640ba98e3b34c319c29a776dad84c87d575481c4",
+      "axis_and_permittivity_sha256": {
+        "x_um": "858086c6a09faae24c683d9ba0e78af009fef41c08887fc98d21910673efee67",
+        "y_um": "2ac50a0a6c1c47bd6f9954949b568b81780c432bedc26c18aa8878969c90b464",
+        "z_um": "8b71e83c1f1a9e2fa0bc44b951cb69e49832e5b05a150a30ece68301b84da27f",
+        "raw_x_um": "706f1875a200d37f5a088344e02909edd8f542497fcf1fa31a0ba00c9ece5edd",
+        "raw_y_um": "88f95fe7c7a29ec74fe279d70be5c6b966a3a7a95ebb69ba5d425b268deeb0a0",
+        "raw_z_um": "ef7c96aab6e666c9cb0e4a45226ad9f00ba44e0454d9a1b30154fe987f072fdf",
+        "epsilon": "24784dc3d5406e9e4574f01bddd8143a68b0b046a24ccd3b98a9fa73c95f30dd",
+        "raw_epsilon": "132879d5a76b4707adeb9c88eb35528edb7992c8be49464541e0b478bada3322"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        20,
+        59,
+        19
+      ],
+      "time_steps": 176,
+      "measured_time_fs": 23.968369788389783,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.00385062163695693,
+      "physical_configuration_sha256": "d45b9cd9e1ee32e31a8d15d9a2e9a5b82e6cca7ec8cd45d9b2810e3622b6c583",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.806170412032497e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.7177495559640795e-06,
+            2.748196503290913e-06,
+            3.2544635974436597e-06
+          ],
+          "gpu_sha256": "9fe0f5ab90ac1b0a3317bdd4e9ae5bef059a6ef13b0e75e3ebecab221e74397b",
+          "cpu_sha256": "11fd97816c01d7fd0df495634973e42ade36d9fb816a6f5c7b302700726a0ca3"
+        },
+        "raw_fields": {
+          "relative_l2": 3.0701105508313933e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.937418412485658e-06,
+            3.076745649870424e-06,
+            3.2375190059474887e-06
+          ],
+          "gpu_sha256": "d748492f87c0ee0e40df2076c2f726bf201d05d60084c1d9273f8691b9c892ef",
+          "cpu_sha256": "8bdb154ed8118da8c6bb522ada362b1282097b0457051e71e0b751331d1acf0b"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "fan_grating",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 594776,
+      "grid_shape_xyz": [
+        182,
+        76,
+        43
+      ],
+      "material_check": {
+        "cells": 594776,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "417424a6ebfab1eb2370c39618298bfd9a937378ff61ed60d0036fda4361bcf4",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ceebeb9bfd111883d6c7afa950088dd364b10bb29aa250366306fdf5e2e7ba2f",
+        "y_um": "6884230a6fa03cbf44ae9fc5c00b6da11841f80edd351c93c70767d423b7c90a",
+        "z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "raw_x_um": "7c6b26c02b05d831ad16df59e27f132ca36c0a91c353791f4c2e4d344a49f509",
+        "raw_y_um": "c4cb38891eeb80fb0a6373ec6e161e3c5ba568d378cd223646cc3226ad19a57d",
+        "raw_z_um": "9888e61d0eac8f1a7c9e7883126218adb9942c4ec3e0446f3344a646d763fea7",
+        "epsilon": "77968c9c7f60869cad76f71cc7244ce2967864ee539f8dbc9398d10c1d4305fc",
+        "raw_epsilon": "8957fe68b3010268d5b506aedb9d4713e8c8fa3f9072734df69e3c10a5aaf206"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        93,
+        38,
+        22
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.003349902341142297,
+      "physical_configuration_sha256": "b1159781f126dca767ab8410d8ecd4515967214184c61857db4fb729abdd5995",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.181083365993261e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.1565544539162115e-06,
+            2.042991738594438e-06,
+            2.792005104978188e-06
+          ],
+          "gpu_sha256": "498a373a3d1ab8b94c0326c855dfb66f8743f6f7685abf70ddb41110fb9e9948",
+          "cpu_sha256": "6c3cbb6186f05dce20f04cffc76f1bf4535c78882da7dfa33a60733afa191705"
+        },
+        "raw_fields": {
+          "relative_l2": 2.7291067469793577e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.24648674565976e-06,
+            3.017715725994361e-06,
+            2.5140136907521774e-06
+          ],
+          "gpu_sha256": "b9c98c2fea2317a106f45287c891dd15de581d2f2e5a65450b7964af4a797ac3",
+          "cpu_sha256": "307169b8d365c9d075b820320cb6e0acefa104c1277460e1dd037e645dc509c1"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "tapered_coupler",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 568344,
+      "grid_shape_xyz": [
+        199,
+        68,
+        42
+      ],
+      "material_check": {
+        "cells": 568344,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "af03a97e07c68581790f501061b1e3cfe3b0386989f575f334c6191c1ca15260",
+      "axis_and_permittivity_sha256": {
+        "x_um": "ce7225d46c82f56729b6605920a15ee86b5808589049691619a5cc2cc9280d0a",
+        "y_um": "8ae16220a77941a0b43137e78eb8ae4c706cf487d8e2cd0a22210b8d2aec03d2",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "054fb3824943d511cb41794c70b4060011aaf3bac3fa9b04bcbf4d0cb96d8c08",
+        "raw_y_um": "e910f11c3f5adef0fe3329786ff928f9200e17bdf82b29a3eb75db01f3e5724a",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "5a1fc9d5bf7edefbba69a57c7d2b01ec4e31e2b40994e0be66c7f9991b5f98a9",
+        "raw_epsilon": "bdecfe488e2bff5b675e4b439249a55d66f9d1a75bd73920370834887faacbe4"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        26,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.0038315136916935444,
+      "physical_configuration_sha256": "7569b7be8f07e74704a2d34ea11163e2d60b478beafb2e498eec758c79844e72",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 1.9383593668240535e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.009775697035594e-06,
+            1.7408193944100401e-06,
+            2.6838462226375356e-06
+          ],
+          "gpu_sha256": "0784743af954d251f3910a28264c1698bb653ca9cfe53b7c843bee4b0ae42e0d",
+          "cpu_sha256": "0fe32966c1f7872d442392a45911040553c247ef73edb57d9ba7c63f00ddbe36"
+        },
+        "raw_fields": {
+          "relative_l2": 2.5384533957904384e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.208370724770569e-06,
+            2.770473842753283e-06,
+            2.2937934469799834e-06
+          ],
+          "gpu_sha256": "6bec53288d5e975e2df5e80548808b462802463c3817da59db2282321571ef72",
+          "cpu_sha256": "dfb190895f6e20fced469a8adbb37a30c235bf871855274ff0ef26c701c0b87b"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "phc_line_defect",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 356832,
+      "grid_shape_xyz": [
+        118,
+        72,
+        42
+      ],
+      "material_check": {
+        "cells": 356832,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "033771142b99ca08f86e3744b986f543f5228fe820ab3fe172ecf8c99b485b22",
+      "axis_and_permittivity_sha256": {
+        "x_um": "4d504c9d8b6383c1550785a776e44e6f087f2168b22abd93c7ed593cf7930522",
+        "y_um": "8e652f404f4adb1e02c55716f9c53a8f8bf37319b979fc84ad6149deea38e1ea",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "815108bb7936f9dc5d200a8c3403464832a40d7d7915a9de9045011b2eb58f4b",
+        "raw_y_um": "62823597cd0943d7cb4c33621679f1324d44f219301163858e5447b807db3c97",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "62ce709f02c40611247b22f8ab28b4faeee447fc48196e98e7321f0dd19a948d",
+        "raw_epsilon": "90f0a163946599bd44f8d72f966c3746087285611c7a10102c4567e3e8906296"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        23,
+        36,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.002700566314160824,
+      "physical_configuration_sha256": "a265347c1eb9c566f633fc765fea70a86b8118d6fca8944097cc979a3ae66aec",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.139667629133087e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.316226591848438e-06,
+            1.9311756202110216e-06,
+            2.745132901164586e-06
+          ],
+          "gpu_sha256": "34e1d61b3fb7c2c35241e6a784b5f7a05bc4a916f0f43841526af79dfd2d59fe",
+          "cpu_sha256": "044d97535d4a6fb3011a73ba6774b3f1593dbe0b6a0dc6b36a2f3ff68999c566"
+        },
+        "raw_fields": {
+          "relative_l2": 2.581635161248486e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.2581470223466683e-06,
+            2.8132486925411685e-06,
+            2.3655944493650296e-06
+          ],
+          "gpu_sha256": "0a6e89e38b2f427c088dfea136e565571319e490820793b910cd96759987bd96",
+          "cpu_sha256": "9afae38bb29e3bbf18b938bd95839b7dec40a29ab79c4a6f0ef8b9c14fbc9697"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    },
+    {
+      "family": "pulley_ring",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "resolution_cells_per_um": 16,
+      "cells": 1122744,
+      "grid_shape_xyz": [
+        163,
+        164,
+        42
+      ],
+      "material_check": {
+        "cells": 1122744,
+        "maximum_absolute_error": 0.0
+      },
+      "compiled_material_xyz_sha256": "227499735547c6c40fb8e090bcb94845c94606dcf3cf2c3162b0013b335a2585",
+      "axis_and_permittivity_sha256": {
+        "x_um": "0f69d9aa9a95199105055f4faa01797a4d78e6eeb6591d07d9afbe5541462a48",
+        "y_um": "873992a3c5f07644c7f314373f0a45d1d7694333c83fc509e6c7e1d74a17de38",
+        "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+        "raw_x_um": "873992a3c5f07644c7f314373f0a45d1d7694333c83fc509e6c7e1d74a17de38",
+        "raw_y_um": "3bf9ac7a5f091bba6260327d61f56256655949d2213ce07827dd61931dd31371",
+        "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298",
+        "epsilon": "d155d274a1c3acdae7a7aa8759e1b2db7cddc16385fc62bba3c2639e430b2989",
+        "raw_epsilon": "400f84d3d85df405371c5ea5d9b201677ef60a988ebd2fea744a162ea35ed5dc"
+      },
+      "same_coordinate_and_material_buffers": true,
+      "same_source_grid_index": [
+        24,
+        50,
+        21
+      ],
+      "time_steps": 201,
+      "measured_time_fs": 23.951346798483254,
+      "Ey_peak_abs_at_least_0_6_um_from_source": 0.00316750630736351,
+      "physical_configuration_sha256": "50f789731f79efc34e885e067bd732810a0ef3541ea148e8c76a5c50b2ea85bc",
+      "field_comparison": {
+        "fields": {
+          "relative_l2": 2.4085894173496905e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.8614695155042164e-06,
+            2.132314453569479e-06,
+            2.87355547141814e-06
+          ],
+          "gpu_sha256": "7e59a7c6d17a011cd0e89db2cdd6b0b918fb2dfb7932d49abdf3457caef3af05",
+          "cpu_sha256": "3740917743a3ed4a88b9c8b6cab999052ea24ba86b0fde008aa5ffb7d7fd7436"
+        },
+        "raw_fields": {
+          "relative_l2": 2.69877800946488e-06,
+          "relative_l2_Ex_Ey_Ez": [
+            2.774422142062614e-06,
+            2.779890596682696e-06,
+            2.410448170008986e-06
+          ],
+          "gpu_sha256": "c953e5952f74ae1ea9e04eafe1b82e3b475afdb723dd615859e7b21a04c6b93c",
+          "cpu_sha256": "210db21b63e42af8fac62e84a8733c8f2a87bef022bf951c618a85c832643736"
+        }
+      },
+      "integration_tolerances_passed": true,
+      "implementation_sha256": "47330aacf263ce999f45ebef67ae67b0568f80e3189a4b277f8791dea830af3e"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checked_at_utc": "2026-11-05T20:51:51.646832+00:00",
+  "case_id": "comsol-fabry-perot",
+  "solver_source_sha256": "b219ea820f86d521dbc70172de106496b2bdaf15db3a5a9ab567d6f72503c6d0",
+  "exported_python_sha256": "b219ea820f86d521dbc70172de106496b2bdaf15db3a5a9ab567d6f72503c6d0",
+  "exported_notebook_sha256": "bca6bf7ea9466155b9ae05bd00f59b383a8df0cede04f09b6453cdaed38dd515",
+  "original_report_sha256": "814f34b046d2a984f03497bb7db9dae44a6cfcbb8d28539d4417bf636bf7e000",
+  "original_trace_sha256": "9cba9354f552a609b3944a53b54b86de179dfc6ae63d7263514da3c89ca52a04",
+  "executions": [
+    {
+      "kind": "standalone Python",
+      "passes_all_numerical_gates": true,
+      "all_trace_arrays_byte_exact": true,
+      "number_of_trace_arrays": 12,
+      "trace_sha256": "9cba9354f552a609b3944a53b54b86de179dfc6ae63d7263514da3c89ca52a04",
+      "all_fitted_modes_and_report_bytes_exact": true
+    },
+    {
+      "kind": "Jupyter notebook",
+      "passes_all_numerical_gates": true,
+      "all_trace_arrays_byte_exact": true,
+      "number_of_trace_arrays": 12,
+      "trace_sha256": "9cba9354f552a609b3944a53b54b86de179dfc6ae63d7263514da3c89ca52a04",
+      "all_fitted_modes_and_report_bytes_exact": true
+    }
+  ]
+}

@@ -31,6 +31,79 @@ const canonical=(value:unknown)=>JSON.stringify(value,(_key,item)=>item&&typeof 
 const fmt=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)?value.toPrecision(6):'Undefined';
 function saveJson(value:unknown,name:string){const url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)+'\n'],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 
+type MeshRun = { id:string; solver:Study['solver']; device:Study['device']; resolution:number; name:string };
+type MeshEntry = { maximum_absolute_complex_change:number; maximum_absolute_power_change:number; maximum_absolute_phase_change_rad:number|null };
+type MeshReport = { coarse_run_id:string; fine_run_id:string; device_name:string; complex_matrix_relative_l2:number|null;
+  compared_bins:number; wavelength_um:number[]; jointly_valid_bins:boolean[]; reference_planes_um:number[]; entries:Record<Entry,MeshEntry> };
+
+function TaperMeshComparison({currentId, recentKey}:{currentId?:string; recentKey:string}) {
+  const [expanded,setExpanded]=useState(false);
+  const [runs,setRuns]=useState<MeshRun[]>([]);
+  const [coarse,setCoarse]=useState(''),[fine,setFine]=useState('');
+  const [result,setResult]=useState<MeshReport|null>(null),[problem,setProblem]=useState('');
+  const [loading,setLoading]=useState(false),[comparing,setComparing]=useState(false),[revision,setRevision]=useState(0);
+  const sequence=useRef(0);
+  useEffect(()=>{
+    if(!expanded)return;
+    let live=true;
+    setLoading(true);setProblem('');
+    request<MeshRun[]>('/api/taper-ports/mesh-runs').then(values=>{
+      if(!live)return;
+      setRuns(values);
+      setCoarse(old=>values.some(item=>item.id===old)?old:values.find(item=>item.id===currentId)?.id||'');
+      setFine(old=>values.some(item=>item.id===old)?old:'');
+    }).catch(e=>{if(live)setProblem(e.message);}).finally(()=>{if(live)setLoading(false);});
+    return ()=>{live=false;};
+  },[expanded,currentId,recentKey,revision]);
+  useEffect(()=>()=>{sequence.current++;},[]);
+  const coarseRun=runs.find(run=>run.id===coarse);
+  const candidates=runs.filter(run=>coarseRun && run.solver===coarseRun.solver && run.device===coarseRun.device && run.resolution>coarseRun.resolution);
+  const label=(run:MeshRun)=>`${run.name} · ${run.resolution} cells/µm · ${run.solver} ${run.device.toUpperCase()} · ${run.id.slice(0,8)}`;
+  function resetReport() {
+    sequence.current++;setResult(null);setProblem('');setComparing(false);
+  }
+  async function compare() {
+    const order=++sequence.current;
+    setComparing(true);setResult(null);setProblem('');
+    try {
+      const report=await request<MeshReport>('/api/taper-ports/compare-mesh',{coarse_run_id:coarse,fine_run_id:fine});
+      if(order===sequence.current)setResult(report);
+    } catch(e) {
+      if(order===sequence.current)setProblem((e as Error).message);
+    } finally {
+      if(order===sequence.current)setComparing(false);
+    }
+  }
+  return <details className="modal-mesh" onToggle={event=>setExpanded(event.currentTarget.open)}>
+    <summary>Taper mesh sensitivity</summary>
+    <p>Choose two completed taper runs with the same study and execution target. Increase only the grid resolution.</p>
+    <div className="modal-mesh-selectors">
+      <label>Coarse mesh<select aria-label="Coarse taper mesh run" value={coarse} disabled={loading}
+        onChange={event=>{resetReport();setCoarse(event.target.value);setFine('');}}>
+        <option value="">{loading?'Loading saved runs…':'Select a saved taper run…'}</option>
+        {runs.map(run=><option value={run.id} key={run.id}>{label(run)}</option>)}</select></label>
+      <label>Fine mesh<select aria-label="Fine taper mesh run" value={fine} disabled={!coarseRun||loading}
+        onChange={event=>{resetReport();setFine(event.target.value);}}>
+        <option value="">{coarseRun && !candidates.length?'No finer run on this target':'Select a finer run…'}</option>
+        {candidates.map(run=><option value={run.id} key={run.id}>{label(run)}</option>)}</select></label>
+    </div>
+    <div className="modal-actions"><button className="button secondary compact" disabled={loading||comparing||!candidates.some(run=>run.id===fine)}
+      onClick={()=>void compare()}>{comparing?'Comparing meshes…':'Compare taper meshes'}</button>
+      <button className="button secondary compact" disabled={loading} onClick={()=>{resetReport();setRevision(n=>n+1);}}>Refresh taper runs</button></div>
+    {problem&&<p className="error-banner" role="alert">{problem}</p>}
+    {result&&<div className="modal-mesh-report" role="region" aria-label="Taper mesh comparison">
+      <p>{result.compared_bins} of {result.wavelength_um.length} common wavelengths qualified · {result.device_name} · Reference planes {result.reference_planes_um.map(value=>value.toFixed(3)).join(' and ')} µm</p>
+      <div className="modal-table"><table><caption>Maximum absolute changes</caption><thead><tr>
+        <th>Entry</th><th>Complex amplitude</th><th>Modal power</th><th>Phase (rad)</th>
+      </tr></thead><tbody>{entries.map(entry=><tr key={entry} data-mesh-entry={entry}><th scope="row">{entry}</th>
+        <td>{fmt(result.entries[entry].maximum_absolute_complex_change)}</td><td>{fmt(result.entries[entry].maximum_absolute_power_change)}</td>
+        <td>{fmt(result.entries[entry].maximum_absolute_phase_change_rad)}</td></tr>)}</tbody></table></div>
+      <p>Complex matrix relative L2 {fmt(result.complex_matrix_relative_l2)}. Two meshes measure sensitivity. More meshes and independent boundary checks are needed to estimate absolute error.</p>
+      <button className="button secondary compact" onClick={()=>saveJson(result,`taper-mesh-${result.coarse_run_id.slice(0,8)}-${result.fine_run_id.slice(0,8)}.json`)}>Download mesh comparison JSON</button>
+    </div>}
+  </details>;
+}
+
 function MatrixResults({job}:{job:Job}){
   const [data,setData]=useState<Spectrum|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0),[index,setIndex]=useState(0),[metric,setMetric]=useState<Metric>('power');
   useEffect(()=>{let active=true;setData(null);setError('');request<Spectrum>(`/api/jobs/${job.id}/sparameters`).then(value=>{
@@ -116,6 +189,7 @@ export function ModalPorts({geometry,onOpenGeometry,active}:{geometry:GeometryDo
     </div><div className="modal-output">
       {valid&&<details className="modal-preview"><summary>{taper?'Interactive editor taper':'Interactive study geometry · gap applied'}</summary><div className="modal-preview-canvas"><GeometryViewport document={taper?preview(geometry,0):preview(geometry,settings.gap_um)} selectedId={selected} onSelect={setSelected}/></div><p>{taper?'The taper joins straight input and output guides in the solver cell. ':''}Actual discretized material and field slices appear after execution.</p></details>}
       <label>Saved 3D modal run<select aria-label="Saved 3D modal run" value={job?.id||''} disabled={busy} onChange={e=>void openRun(e.target.value)}><option value="">Choose a saved measurement…</option>{[...(job&&!recent.some(j=>j.id===job.id)?[job]:[]),...recent].map(j=><option key={j.id} value={j.id}>{j.id.slice(0,8)} · {j.config.study_type==='taper-ports-3d'?'taper':j.config.device_kind} · {j.config.solver} {j.config.device} · {j.status}</option>)}</select></label><button onClick={()=>void loadRecent()}>Refresh saved modal runs</button>
+      <TaperMeshComparison currentId={job?.config.study_type==='taper-ports-3d'&&job.status==='completed'?job.id:undefined} recentKey={recent.map(item=>item.id).join(',')}/>
       <ol className="modal-progress">{stageIds.map((s,i)=><li key={s} className={job?.status==='completed'||stageIndex>i?'complete':stage===s?'active':''}>{stageNames[i]}<span>{job?.status==='completed'||stageIndex>i?'Recorded':stage===s?job?.status:'Pending'}</span></li>)}</ol>
       {changed&&<p className="snapshot-note">The editor differs from this saved run. Its complex amplitudes retain the exact submitted geometry and settings.</p>}
       {job&&<><p className="modal-run-status" data-status={job.status}>Run {job.id.slice(0,10)} · {job.status} · {job.port_progress?.message}</p>{job.status==='completed'&&<><MatrixResults key={job.id} job={job}/><details className="modal-fields"><summary>Inspect actual forward-device 3D fields</summary><VolumeSlices key={job.id} job={job}/></details><div className="modal-actions"><a className="button primary compact" href={`/api/jobs/${job.id}/export`}>Export 3D modal results .zip</a><a className="button secondary compact" href={`/api/jobs/${job.id}/reproduce`}>Export run Python + notebook</a><button className="button secondary compact" onClick={()=>saveJson(job.config,`modal-run-${job.id.slice(0,8)}.json`)}>Save modal run configuration</button></div><RunPassport key={job.id} jobId={job.id}/></>}{job.error&&<p className="error-banner" role="alert">{job.error}</p>}<details className="logs" open={job.status==='running'||job.status==='failed'}><summary>3D modal solver log</summary><pre>{job.logs||'Waiting for the solver…'}</pre></details></>}

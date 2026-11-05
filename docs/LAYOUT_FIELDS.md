@@ -57,6 +57,16 @@ time evolution. Both retain actual coordinates and the source/model settings.
 
 ## Verification
 
+The v0.10 qualification executed every tested catalog preset on Meep CPU,
+managed FDTDX CPU and managed FDTDX NVIDIA, for **81 field simulations**.
+The Meep reruns reproduced all 27 earlier numerical array sets byte for byte.
+All 27 FDTDX CPU/CUDA pairs agreed exactly on the sampling time, coordinates
+and material buffers. Across families, the largest relative L2 difference was
+2.881 × 10⁻⁶ in displayed fields and 3.121 × 10⁻⁶ in native Yee fields. Every
+case produced a nonzero field at least 0.6 µm away from the source. These runs
+qualify the sampled excitation and field recording of each preset. [Meep runs](verification/v010-all-family-meep.json) ·
+[FDTDX CPU runs](verification/v010-all-family-fdtdx-cpu.json) · [Matched CUDA runs](verification/v010-all-family-fdtdx-gpu.json).
+
 - All 27 families completed real Meep CPU field runs. The record includes
   each geometry override, grid, field digest, native material check and field
   peak at least 0.6 µm from the source. Four families used explicitly modified

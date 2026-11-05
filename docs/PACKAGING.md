@@ -1,12 +1,12 @@
 # Install Photonics Workbench locally
 
-The **0.9.0a1 wheel** contains the local service, the compiled React interface,
+The **0.10.0a1 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
 separate environments. The wheel is available as a local build artifact.
 
-The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
+The [v0.10 verification summary](verification/v010-checks.json) covers this preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
 offline installation, an installed CLI run of the Lumerical comparison, and
 real simulations of the photonic-crystal line-defect layout on CPU and NVIDIA.
 The installed NVIDIA field bytes and material digest matched the corresponding
@@ -20,10 +20,24 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.9.0a1-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.10.0a1-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
+
+Choose the native solvers you want for this machine:
+
+```bash
+photonics-workbench setup meep
+photonics-workbench setup fdtdx-cpu
+photonics-workbench setup fdtdx-cuda12
+photonics-workbench setup beamz-cpu
+```
+
+Meep setup includes MPB. The CUDA12 setup checks the actual NVIDIA target
+and also verifies CPU execution. A separate CPU profile is optional. See
+[managed FDTDX installation](FDTDX_MANAGED_SETUP.md) for offline wheelhouses
+and the runtime selection order. The [BeamZ reference guide](BEAMZ_REFERENCE.md) describes its scoped CPU/CUDA benchmarks and the tested managed CPU profile.
 
 Open `http://127.0.0.1:8000` in a browser. `web --port 8010` selects another
 loopback port. Node and the source checkout are build-time tools. Installed
@@ -95,9 +109,7 @@ The browser compared all nine component/plane field views against their
 numerical samples and downloaded the results and Python/notebook bundle.
 [Installed GUI verification](verification/v08-wheel-browser.json).
 
-The managed FDTDX/BeamZ installers, additional platform qualification and
-the native desktop shell are subsequent increments. The following design
-notes retain the dependency research from 1 November 2026.
+The current preview includes managed FDTDX and BeamZ CPU profiles and a dedicated desktop browser window. The following notes retain dependency research and platform goals from the original roadmap.
 
 ## Dependency facts and current evidence
 
@@ -105,8 +117,8 @@ notes retain the dependency research from 1 November 2026.
 | --- | --- | --- |
 | Meep | Conda-forge `pymeep`; latest documentation also describes a PyPI `pymeep` wheel route | Conda PyMeep 1.35.0 passed fresh-prefix and real numerical checks; PyPI `pymeep` availability is unresolved, as detailed below |
 | MPB Python interface | Uses the Meep Python environment through `from meep import mpb` | The managed profile verifies a homogeneous mode in MPB 1.12.0. The public slab/strip benchmarks have separate numerical evidence |
-| FDTDX | PyPI `fdtdx`, with a compatible JAX installation | Existing 0.6.2 / JAX 0.10.2 environment passed real CPU/GPU runs; clean FDTDX installation is still unverified |
-| BeamZ | PyPI `beamz`, upstream `beamzorg/beamz` | Identity and official release metadata verified; no local installation or run yet |
+| FDTDX | PyPI `fdtdx`, with a compatible JAX installation | FDTDX 0.6.2 / JAX 0.10.2 passed real slab simulations after fresh CPU and CUDA12 installations |
+| BeamZ | PyPI `beamz`, upstream `beamzorg/beamz` | BeamZ 0.6.2 ran independent CPU and NVIDIA propagation benchmarks and a CPU slab eigenmode comparison |
 | NVIDIA execution | Compatible host driver plus JAX CUDA dependencies for the JAX route | RTX 3080 Ti Laptop GPU execution verified inside WSL; this does not establish support on other hosts |
 
 ### Meep and MPB
@@ -195,6 +207,8 @@ download caches and user projects. Removing the app should never silently
 remove research data.
 
 ## Local web and desktop architecture
+
+Run `photonics-workbench desktop` for the dedicated local Chromium application window on the qualified WSL2 host. The port and profile remain stable between launches. See [Desktop window](DESKTOP_WINDOW.md) for browser selection, local storage and shutdown behavior. The following design notes describe possible future native shells.
 
 Use the same built React interface and API for both modes. The CLI starts a
 loopback-only service, obtains an available port, waits for health, and opens

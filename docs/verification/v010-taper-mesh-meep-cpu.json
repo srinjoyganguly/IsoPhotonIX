@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "kind": "taper-port-mesh-sensitivity",
+  "generated_at_utc": "2026-11-05T20:46:55.221897+00:00",
+  "solver": "meep",
+  "device": "cpu",
+  "implementation_sha256": "bc565e7ed148d41fbc70ba0caa85c949bbc2964f8a335db91999ab95efb628e2",
+  "versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "actual_device": "CPU",
+  "device_name": "CPU",
+  "source": {
+    "type": "3D MPB fundamental Ey-like eigenmode Gaussian pulse",
+    "band": 1,
+    "eig_parity": "ODD_Y + EVEN_Z",
+    "eig_tolerance": 1e-12,
+    "center_frequency_per_um": 0.6478578892371996,
+    "fwidth_per_um": 0.16718913270637414,
+    "cutoff": 6,
+    "source_duration_fs": 239.41562932847356,
+    "source_x_um": [
+      -2.75,
+      2.75
+    ],
+    "profile_note": "Source mode is solved at pulse center; projection modes are solved independently at every reported frequency."
+  },
+  "boundaries": {
+    "all_six_faces": "PML",
+    "pml_um": 0.75,
+    "exact_symmetries": [
+      "Y odd",
+      "Z even"
+    ]
+  },
+  "port_conventions": {
+    "phase_convention": "DFT exp(+i omega t); forward propagation exp(+i beta x); center Ey is real positive at each physical port; both directions use the same transverse E orientation",
+    "mode_gauge": "Positive-real Ey at the core center at each physical plane; independent +k and -k modes for the two propagation directions",
+    "normalization": "Direction-specific unit-power MPB coefficients on the Meep Yee integration grid; outgoing device coefficients divided by matching measured incident reference coefficients"
+  },
+  "normalization": {
+    "incident": "Measured incoming modal coefficient of the matching straight reference",
+    "reflection": "Reference complex Fourier E/H subtracted at input plane before native unit-power modal decomposition",
+    "transmission": "Actual outgoing device modal coefficient divided by measured incident coefficient",
+    "weak_incident_power_relative_threshold": 1e-06,
+    "clipping": false,
+    "raw_monitors": "Native *_dft_e/h are opaque Meep FluxData streams; per-port alpha arrays are [ascending frequency,+x/-x] from independent signed-k mode solves with exported center-Ey gauges"
+  },
+  "domain_um": [
+    8.0,
+    4.0,
+    4.0
+  ],
+  "source_planes_um": [
+    -2.75,
+    2.75
+  ],
+  "reference_planes_um": [
+    -1.75,
+    1.75
+  ],
+  "aperture_yz_um": [
+    2.5,
+    2.5
+  ],
+  "pml_um": 0.75,
+  "coarse": {
+    "resolution_cells_per_um": 16,
+    "files": [
+      {
+        "name": "config.json",
+        "sha256": "caf65b4d9e9e156181705713f510b9d648c967aa188ed024c1a5483800e3fe40",
+        "size_bytes": 2661
+      },
+      {
+        "name": "metadata.json",
+        "sha256": "334a62b37427902a1fd48d2b563134c87e25d458264b98e172e73c8a2167e627",
+        "size_bytes": 24263
+      },
+      {
+        "name": "sparameters.npz",
+        "sha256": "69096e755f6e3b6025b8a5cab1f680f1b25355e553d781568e59a2b2861beaa9",
+        "size_bytes": 3247
+      }
+    ],
+    "valid_bins": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "settled_stages": {
+      "reference_forward": true,
+      "device_forward": true,
+      "reference_reverse": true,
+      "device_reverse": true
+    }
+  },
+  "fine": {
+    "resolution_cells_per_um": 20,
+    "files": [
+      {
+        "name": "config.json",
+        "sha256": "30d2ae49dac5a2344a50ed4fc3f81e902baef70f6d667c363b3433b21d5a4bb6",
+        "size_bytes": 1675
+      },
+      {
+        "name": "metadata.json",
+        "sha256": "04b12f0597624e88aadabec73ee728722c5d92e4230b73169a53703c42ab281b",
+        "size_bytes": 24244
+      },
+      {
+        "name": "sparameters.npz",
+        "sha256": "b45eccd9e3c03b908142ecc73b7ec5060dbaaf2d55b7be07ab2d3792216a3375",
+        "size_bytes": 3243
+      }
+    ],
+    "valid_bins": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "settled_stages": {
+      "reference_forward": true,
+      "device_forward": true,
+      "reference_reverse": true,
+      "device_reverse": true
+    }
+  },
+  "wavelength_um": [
+    1.45,
+    1.4953125,
+    1.5435483870967743,
+    1.5950000000000002,
+    1.6500000000000004
+  ],
+  "jointly_valid_bins": [
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "compared_bins": 5,
+  "complex_matrix_relative_l2": 0.042808082353477245,
+  "maximum_absolute_port_index_change": [
+    0.0009751479591062484,
+    0.002482068939168025
+  ],
+  "entries": {
+    "S11": {
+      "maximum_absolute_complex_change": 0.002144370439492957,
+      "maximum_absolute_power_change": 7.1084702447169455e-06,
+      "maximum_absolute_phase_change_rad": 2.660957736385398,
+      "power_change": [
+        7.030948913916139e-07,
+        6.50120260019874e-07,
+        -2.6924404381329386e-06,
+        -5.6432785328028105e-06,
+        -7.1084702447169455e-06
+      ],
+      "principal_phase_change_rad": [
+        -0.6689042695110459,
+        -1.3553062621508394,
+        -2.660957736385398,
+        0.5277993939271621,
+        0.267645934994001
+      ]
+    },
+    "S21": {
+      "maximum_absolute_complex_change": 0.054279962823446395,
+      "maximum_absolute_power_change": 0.0004758367817214726,
+      "maximum_absolute_phase_change_rad": 0.054301109404575776,
+      "power_change": [
+        0.00027261540078937774,
+        0.0002467337346711007,
+        0.0002912967653267984,
+        0.00036924856010911444,
+        0.0004758367817214726
+      ],
+      "principal_phase_change_rad": [
+        -0.054301109404575776,
+        -0.04741653708211313,
+        -0.04126174832573737,
+        -0.03578864021184857,
+        -0.030960739528463455
+      ]
+    },
+    "S12": {
+      "maximum_absolute_complex_change": 0.05444517371746116,
+      "maximum_absolute_power_change": 0.0003687356585044821,
+      "maximum_absolute_phase_change_rad": 0.05444558230975871,
+      "power_change": [
+        -0.0003687356585044821,
+        -0.0003114074334942263,
+        -0.00028716158349073595,
+        -0.0002981777953343645,
+        -0.00034518505372171937
+      ],
+      "principal_phase_change_rad": [
+        -0.05444558230975871,
+        -0.04750644354283784,
+        -0.04128428713685617,
+        -0.03575686100349351,
+        -0.03091417226950721
+      ]
+    },
+    "S22": {
+      "maximum_absolute_complex_change": 0.0021508709809921586,
+      "maximum_absolute_power_change": 7.424489549460679e-06,
+      "maximum_absolute_phase_change_rad": 2.393987128779355,
+      "power_change": [
+        1.1654042047462e-06,
+        -3.8222505762293224e-07,
+        -3.3177025277372926e-06,
+        -5.323923105238537e-06,
+        -7.424489549460679e-06
+      ],
+      "principal_phase_change_rad": [
+        0.2263137420971992,
+        1.2036284293116573,
+        2.393987128779355,
+        -1.0076515394947443,
+        -0.3186993639432441
+      ]
+    }
+  },
+  "phase_amplitude_floor": 1e-08,
+  "interpretation": "Changes are fine minus coarse at fixed physical planes. Power is |S|\u00b2. Phase is the principal angle in radians, where both amplitudes exceed the floor. The relative matrix L2 norm uses the coarse matrix norm over mutually valid bins. Two resolutions measure sensitivity. An absolute error bound or convergence order requires additional evidence."
+}

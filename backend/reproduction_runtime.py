@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -32,7 +33,7 @@ def check_bundle():
     """Detect changed solver code or comparison data; edited CONFIG is allowed."""
     manifest = json.loads((BUNDLE / 'bundle-manifest.json').read_text())
     for name, record in manifest['files'].items():
-        if name.startswith(('source/', 'reference/', 'design_source/')) or name in ('workbench_runtime.py', 'geometry_contract.py'):
+        if name.startswith(('source/', 'reference/', 'design_source/')) or name in ('workbench_runtime.py', 'workbench_solver_environment.py', 'geometry_contract.py'):
             if _hash(BUNDLE / name) != record['sha256']:
                 raise ValueError(f'Bundled source or reference file changed: {name}. Keep an original bundle for GUI reproduction.')
     return manifest
@@ -179,7 +180,13 @@ def run(config, *, output=None, solver_python=None, timeout_seconds=1800, compar
     from backend.study3d import parse_study
     validated = parse_study(config).model_dump(by_alias=True)
     solver, device = validated['solver'], validated['device']
-    executable = solver_python or os.environ.get(f'{solver.upper()}_PYTHON') or sys.executable
+    executable = solver_python
+    if not executable:
+        if __package__:
+            from . import solver_environment
+        else:
+            solver_environment = _bundled_module('workbench_solver_environment')
+        executable = solver_environment.solver_interpreter(solver, config['device'], solver_environment.default_user_state())
     if output is None:
         stamp = datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')
         output = BUNDLE / 'output' / f'{stamp}-{uuid.uuid4().hex[:8]}'
@@ -272,16 +279,19 @@ def plot_results(output):
     return fig
 
 
+def _bundled_module(name):
+    spec = importlib.util.spec_from_file_location(name, BUNDLE / (name + '.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def _geometry_contract():
     # Repository and standalone bundles use the same first-party validator.
     if __package__:
         from . import geometry_draft
         return geometry_draft
-    import importlib.util
-    spec = importlib.util.spec_from_file_location('export_geometry_contract', BUNDLE / 'geometry_contract.py')
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    return _bundled_module('geometry_contract')
 
 
 def validate_geometry(value):
@@ -325,6 +335,13 @@ def regenerate_component(geometry, component_id, *, parameters=None, placement=N
     settings = {**instance['parameters'], **(parameters or {})}
     return _design_module('library_layout').place_component(geometry, instance['family'], settings,
         placement or instance['placement'], instance['material_id'], component_id, fit_domain)['geometry']
+
+
+def align_ports(geometry, moving_component, moving_port, fixed_component, fixed_port, *, fit_domain=False):
+    """Align two named layout ports using the same rigid transform as the editor."""
+    check_bundle()
+    return _design_module('library_layout').align_ports(
+        geometry, moving_component, moving_port, fixed_component, fixed_port, fit_domain)
 
 
 def plot_geometry(geometry, *, show_hidden=False):

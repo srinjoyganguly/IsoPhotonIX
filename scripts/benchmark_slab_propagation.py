@@ -236,7 +236,7 @@ def main():
                 else:
                     directory.mkdir()
                     (directory/"config.json").write_text(json.dumps(config, indent=2)+"\n")
-                    result = subprocess.run([interpreter(solver), "-m", "backend.worker",
+                    result = subprocess.run([interpreter(solver, device), "-m", "backend.worker",
                         str((directory/"config.json").resolve()), str(directory.resolve())],
                         cwd=ROOT, env=worker_env(solver, device), capture_output=True, text=True, timeout=300)
                     (directory/"worker.log").write_text(clean_log(result.stdout+"\n"+result.stderr))

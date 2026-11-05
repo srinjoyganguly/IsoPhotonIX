@@ -1,0 +1,168 @@
+{
+  "checked_at": "2026-11-05T20:58:44.243708+00:00",
+  "passed": true,
+  "platform": "WSL2 Linux x86_64",
+  "nvidia_driver": "617.42",
+  "method": "Two new CPython venvs with no inherited site packages, pip --no-index --require-hashes --only-binary=:all:, checked complete wheel versions, pip check and actual native FDTDX slab solves on each promised device. Repeated setup verified and reused each prefix. Explicit CUDA masking was exercised separately.",
+  "verified_pypi_wheel_hashes": 92,
+  "published_artifacts": "Hashes and distribution versions are in each linked lock; the 77 CPU artifacts are included in the CUDA12 closure.",
+  "profiles": {
+    "fdtdx-cpu": {
+      "lock": "environment-fdtdx-cpu-linux-64.lock",
+      "lock_sha256": "b941fc0f039a484d7cd13fdefd38c12f538cc87a319dbb5b1f82350cc6db29b9",
+      "python_version": "Python 3.11.15",
+      "installed_wheels": 77,
+      "initial_qualification": {
+        "cpu": {
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "numpy": "2.4.6"
+          },
+          "time_steps": 839,
+          "field_shape": [
+            100,
+            200
+          ],
+          "max_abs_field": 1.14091157913208,
+          "propagated_Ez_peak": 1.14091157913208,
+          "epsilon_range": [
+            1.0,
+            4.0
+          ]
+        }
+      },
+      "repeat_qualification": {
+        "cpu": {
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "numpy": "2.4.6"
+          },
+          "time_steps": 839,
+          "field_shape": [
+            100,
+            200
+          ],
+          "max_abs_field": 1.14091157913208,
+          "propagated_Ez_peak": 1.14091157913208,
+          "epsilon_range": [
+            1.0,
+            4.0
+          ]
+        }
+      },
+      "same_interpreter_on_repeat": true
+    },
+    "fdtdx-cuda12": {
+      "lock": "environment-fdtdx-cuda12-linux-64.lock",
+      "lock_sha256": "2d2727c04c75559548c5b1af866e230710578add65410943e08b56edd61a9a62",
+      "python_version": "Python 3.11.15",
+      "installed_wheels": 92,
+      "initial_qualification": {
+        "gpu": {
+          "actual_device": "cuda:0",
+          "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "numpy": "2.4.6"
+          },
+          "time_steps": 839,
+          "field_shape": [
+            100,
+            200
+          ],
+          "max_abs_field": 1.1409116983413696,
+          "propagated_Ez_peak": 1.1409116983413696,
+          "epsilon_range": [
+            1.0,
+            4.0
+          ]
+        },
+        "cpu": {
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "numpy": "2.4.6"
+          },
+          "time_steps": 839,
+          "field_shape": [
+            100,
+            200
+          ],
+          "max_abs_field": 1.14091157913208,
+          "propagated_Ez_peak": 1.14091157913208,
+          "epsilon_range": [
+            1.0,
+            4.0
+          ]
+        }
+      },
+      "repeat_qualification": {
+        "gpu": {
+          "actual_device": "cuda:0",
+          "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "numpy": "2.4.6"
+          },
+          "time_steps": 839,
+          "field_shape": [
+            100,
+            200
+          ],
+          "max_abs_field": 1.1409116983413696,
+          "propagated_Ez_peak": 1.1409116983413696,
+          "epsilon_range": [
+            1.0,
+            4.0
+          ]
+        },
+        "cpu": {
+          "actual_device": "cpu:0",
+          "device_name": "cpu",
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "numpy": "2.4.6"
+          },
+          "time_steps": 839,
+          "field_shape": [
+            100,
+            200
+          ],
+          "max_abs_field": 1.14091157913208,
+          "propagated_Ez_peak": 1.14091157913208,
+          "epsilon_range": [
+            1.0,
+            4.0
+          ]
+        }
+      },
+      "same_interpreter_on_repeat": true
+    }
+  },
+  "gpu_unavailable_control": {
+    "passed": true,
+    "CUDA_VISIBLE_DEVICES": "-1",
+    "qualified_gpu": false,
+    "used_cpu_fallback": false,
+    "registered_interpreters_preserved": true,
+    "source": "Native readiness check against the installed CUDA12 environment with all CUDA devices hidden."
+  },
+  "scope": "Managed installation and execution for CPython 3.11 on this WSL2/Linux x86-64 machine. Real CPU and CUDA installations used a local wheelhouse; public-index artifact hashes were verified independently. The slab readiness run is an execution/device/material check, not an external solver benchmark."
+}

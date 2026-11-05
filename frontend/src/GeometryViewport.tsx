@@ -27,12 +27,12 @@ type ViewportEngine = {
   distance: number;
 };
 
-function surfaceColors(index: number, selected: boolean) {
-  return selected
-    ? { surface: 0xf2b969, emissive: 0x39230d, edge: 0xffdeac }
-    : index <= 1.6
-      ? { surface: 0x344d64, emissive: 0x07121d, edge: 0x718b9e }
-      : { surface: 0x4ad4bf, emissive: 0x062523, edge: 0x93f4e2 };
+function surfaceColors(index: number, selected: boolean, componentMember: boolean) {
+  if (selected) return { surface: 0xf2b969, emissive: 0x39230d, edge: 0xffdeac };
+  if (componentMember) return { surface: 0xd0914f, emissive: 0x35210e, edge: 0xf6c98f };
+  return index <= 1.6
+    ? { surface: 0x344d64, emissive: 0x07121d, edge: 0x718b9e }
+    : { surface: 0x4ad4bf, emissive: 0x062523, edge: 0x93f4e2 };
 }
 
 function disposeGroup(group: THREE.Group) {
@@ -253,9 +253,10 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
     const engine = engineRef.current;
     if (!engine) return;
     disposeGroup(engine.model); disposeGroup(engine.guides); engine.meshes = [];
+    const instanceId = document.objects.find(object => object.id === selectedRef.current)?.component_id;
     for (const object of document.objects) {
       const selected = object.id === selectedRef.current;
-      const colors = surfaceColors(object.refractive_index, selected);
+      const colors = surfaceColors(object.refractive_index, selected, !!instanceId && instanceId === object.component_id);
       const material = new THREE.MeshStandardMaterial({ color: colors.surface, roughness: object.refractive_index <= 1.6 ? .6 : .32, metalness: .12, emissive: colors.emissive, emissiveIntensity: .24 });
       const geometry = makeGeometry(object);
       const mesh = new THREE.Mesh(geometry, material);
@@ -263,6 +264,7 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
       mesh.rotation.z = THREE.MathUtils.degToRad(object.rotation_deg);
       mesh.name = object.name; mesh.visible = object.visible;
       mesh.userData.objectId = object.id;
+      mesh.userData.componentId = object.component_id;
       mesh.userData.refractiveIndex = object.refractive_index;
       const outline = new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 25), new THREE.LineBasicMaterial({ color: colors.edge, transparent: true, opacity: .7 }));
       mesh.add(outline); engine.model.add(mesh); engine.meshes.push(mesh);
@@ -303,9 +305,10 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
   useEffect(() => {
     const engine = engineRef.current;
     if (!engine) return;
+    const instanceId = document.objects.find(object => object.id === selectedId)?.component_id;
     engine.meshes.forEach(mesh => {
       const selected = mesh.userData.objectId === selectedId;
-      const colors = surfaceColors(Number(mesh.userData.refractiveIndex), selected);
+      const colors = surfaceColors(Number(mesh.userData.refractiveIndex), selected, !!instanceId && mesh.userData.componentId === instanceId);
       mesh.material.color.setHex(colors.surface);
       mesh.material.emissive.setHex(colors.emissive);
       const outline = mesh.children[0] as THREE.LineSegments<THREE.EdgesGeometry, THREE.LineBasicMaterial>;

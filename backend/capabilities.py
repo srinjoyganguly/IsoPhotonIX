@@ -15,7 +15,7 @@ def _probe(target):
     solver, device = target
     base = {"solver": solver, "device": device, "available": False}
     try:
-        run = subprocess.run([interpreter(solver), "-m", "backend.probe", solver, device],
+        run = subprocess.run([interpreter(solver, device), "-m", "backend.probe", solver, device],
                              cwd=ROOT, env=worker_env(solver, device), capture_output=True, text=True, timeout=50)
         lines = [s[11:] for s in run.stdout.splitlines() if s.startswith("PROBE_JSON=")]
         if run.returncode or not lines:

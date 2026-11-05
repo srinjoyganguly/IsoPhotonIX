@@ -1,0 +1,1222 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "checks": {
+    "finest_within_0_3_percent_of_both_references": true,
+    "finest_mesh_change_within_0_2_percent": true,
+    "boundary_and_fit_changes_within_0_12_percent": true,
+    "all_fits_relative_residual_within_0_005": true
+  },
+  "case_id": "comsol-fabry-perot",
+  "source_url": "https://doc.comsol.com/5.5/doc/com.comsol.help.models.woptics.fabry_perot/models.woptics.fabry_perot.pdf",
+  "published_table": 1,
+  "physical_model": {
+    "slab_m": 1,
+    "slab_index": 4,
+    "exterior_index": 1,
+    "source_Ex_z_m": -0.29,
+    "probe_Ex_z_m": 0.13,
+    "time_unit_seconds": 3.3356409519815204e-09,
+    "one_dimensional_normal_incidence": true
+  },
+  "solver": "Meep CPU",
+  "versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "reference_comparison": [
+    {
+      "longitudinal_order": 1,
+      "frequency_MHz": 37.47351588082662,
+      "quality_factor": 3.074886820942144,
+      "amplitude_decay_per_time_unit": 0.12770987403333686,
+      "fit_amplitude_abs": 0.00043654906420652405,
+      "published_frequency_MHz": 37.5,
+      "published_quality_factor": 3.08,
+      "analytic_frequency_MHz": 37.47405725,
+      "analytic_quality_factor": 3.075014748113886,
+      "frequency_relative_error_published": 0.0007062431779568668,
+      "q_relative_error_published": 0.0016601230707325998,
+      "frequency_relative_error_analytic": 1.4446505478993288e-05,
+      "q_relative_error_analytic": 4.16021327444005e-05
+    },
+    {
+      "longitudinal_order": 2,
+      "frequency_MHz": 74.94622703988907,
+      "quality_factor": 6.149876448533349,
+      "amplitude_decay_per_time_unit": 0.1277063679003439,
+      "fit_amplitude_abs": 0.004441897918299348,
+      "published_frequency_MHz": 74.9,
+      "published_quality_factor": 6.15,
+      "analytic_frequency_MHz": 74.9481145,
+      "analytic_quality_factor": 6.150029496227772,
+      "frequency_relative_error_published": 0.0006171834431116796,
+      "q_relative_error_published": 2.0089669374168118e-05,
+      "frequency_relative_error_analytic": 2.5183556965124865e-05,
+      "q_relative_error_analytic": 2.4885684616116066e-05
+    },
+    {
+      "longitudinal_order": 3,
+      "frequency_MHz": 112.41585815980875,
+      "quality_factor": 9.224521292434908,
+      "amplitude_decay_per_time_unit": 0.1277064734545541,
+      "fit_amplitude_abs": 0.00945152939505648,
+      "published_frequency_MHz": 112.4,
+      "published_quality_factor": 9.22,
+      "analytic_frequency_MHz": 112.42217175,
+      "analytic_quality_factor": 9.225044244341657,
+      "frequency_relative_error_published": 0.0001410868310387503,
+      "q_relative_error_published": 0.0004903787890353506,
+      "frequency_relative_error_analytic": 5.61596533226183e-05,
+      "q_relative_error_analytic": 5.6688281692474085e-05
+    },
+    {
+      "longitudinal_order": 4,
+      "frequency_MHz": 149.8822482221705,
+      "quality_factor": 12.300804965217651,
+      "amplitude_decay_per_time_unit": 0.12768675086858597,
+      "fit_amplitude_abs": 0.00015375941337765326,
+      "published_frequency_MHz": 149.9,
+      "published_quality_factor": 12.3,
+      "analytic_frequency_MHz": 149.896229,
+      "analytic_quality_factor": 12.300058992455543,
+      "frequency_relative_error_published": 0.00011842413495344317,
+      "q_relative_error_published": 6.544432663813105e-05,
+      "frequency_relative_error_analytic": 9.326971013734475e-05,
+      "q_relative_error_analytic": 6.0647901165777895e-05
+    }
+  ],
+  "max_relative_sensitivity": {
+    "mesh_128_to_256": {
+      "frequency_MHz": 0.0003064830810084983,
+      "quality_factor": 0.0005150768889700888
+    },
+    "pml_3_to_6_m": {
+      "frequency_MHz": 5.3347376578580686e-08,
+      "quality_factor": 3.609364824480346e-06
+    },
+    "airgap_2_to_3_m": {
+      "frequency_MHz": 2.0224650542887723e-08,
+      "quality_factor": 5.52885611263431e-07
+    },
+    "window_and_rank": {
+      "frequency_MHz": 8.88323632646406e-06,
+      "quality_factor": 0.00012381586414742977
+    }
+  },
+  "cases": [
+    {
+      "trace_key": "r32_pml3_gap2",
+      "resolution_cells_per_m": 32,
+      "air_gap_m": 2,
+      "pml_m": 3,
+      "source_off_time_units": 20.0,
+      "recorded_samples": 832,
+      "peak_Ex": 0.0951230750317404,
+      "fits": [
+        {
+          "rank": 16,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.45826031980999,
+              "quality_factor": 3.073806553131974,
+              "amplitude_decay_per_time_unit": 0.1277027474976453,
+              "fit_amplitude_abs": 0.00043465808052542073
+            },
+            {
+              "frequency_MHz": 74.82728659204541,
+              "quality_factor": 6.14039528324329,
+              "amplitude_decay_per_time_unit": 0.12770057046494912,
+              "fit_amplitude_abs": 0.004394238343544773
+            },
+            {
+              "frequency_MHz": 112.01900405383901,
+              "quality_factor": 9.192628519327343,
+              "amplitude_decay_per_time_unit": 0.12769713880889152,
+              "fit_amplitude_abs": 0.009454474444135524
+            },
+            {
+              "frequency_MHz": 148.94537553811512,
+              "quality_factor": 12.224002471725678,
+              "amplitude_decay_per_time_unit": 0.12768584781716483,
+              "fit_amplitude_abs": 0.00016504891263763007
+            }
+          ],
+          "relative_field_fit_residual": 5.104130670459172e-06
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            21.0,
+            65.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.458099300428664,
+              "quality_factor": 3.073825961216535,
+              "amplitude_decay_per_time_unit": 0.12770139224067284,
+              "fit_amplitude_abs": 0.000561130724513472
+            },
+            {
+              "frequency_MHz": 74.82729553531813,
+              "quality_factor": 6.140403521071551,
+              "amplitude_decay_per_time_unit": 0.12770041440732244,
+              "fit_amplitude_abs": 0.005672862041557681
+            },
+            {
+              "frequency_MHz": 112.0189907884901,
+              "quality_factor": 9.192627662883954,
+              "amplitude_decay_per_time_unit": 0.12769713558400217,
+              "fit_amplitude_abs": 0.012205442959567972
+            },
+            {
+              "frequency_MHz": 148.94443501772867,
+              "quality_factor": 12.223182387505016,
+              "amplitude_decay_per_time_unit": 0.12769360825312492,
+              "fit_amplitude_abs": 0.00021308146647929432
+            }
+          ],
+          "relative_field_fit_residual": 4.816230158636789e-06
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            27.0,
+            81.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.457985766288374,
+              "quality_factor": 3.0737767950367743,
+              "amplitude_decay_per_time_unit": 0.12770304780649044,
+              "fit_amplitude_abs": 0.0002607989680285156
+            },
+            {
+              "frequency_MHz": 74.82729526536137,
+              "quality_factor": 6.140398436859688,
+              "amplitude_decay_per_time_unit": 0.12770051968176527,
+              "fit_amplitude_abs": 0.0026366055820737774
+            },
+            {
+              "frequency_MHz": 112.01899064789993,
+              "quality_factor": 9.192634513558202,
+              "amplitude_decay_per_time_unit": 0.12769704025934273,
+              "fit_amplitude_abs": 0.005672890602303269
+            },
+            {
+              "frequency_MHz": 148.94511587679762,
+              "quality_factor": 12.223551152340686,
+              "amplitude_decay_per_time_unit": 0.12769033964185852,
+              "fit_amplitude_abs": 9.903686124697346e-05
+            }
+          ],
+          "relative_field_fit_residual": 3.4647681979676322e-06
+        },
+        {
+          "rank": 12,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.45809761531143,
+              "quality_factor": 3.0737947702590365,
+              "amplitude_decay_per_time_unit": 0.12770268233004817,
+              "fit_amplitude_abs": 0.00043465732843464555
+            },
+            {
+              "frequency_MHz": 74.82730256591422,
+              "quality_factor": 6.140400265488643,
+              "amplitude_decay_per_time_unit": 0.12770049411132617,
+              "fit_amplitude_abs": 0.004394236398010433
+            },
+            {
+              "frequency_MHz": 112.01899722910343,
+              "quality_factor": 9.192633766268582,
+              "amplitude_decay_per_time_unit": 0.12769705814242063,
+              "fit_amplitude_abs": 0.009454466282333462
+            },
+            {
+              "frequency_MHz": 148.94494941999773,
+              "quality_factor": 12.22360486456152,
+              "amplitude_decay_per_time_unit": 0.12768963585029347,
+              "fit_amplitude_abs": 0.00016505265119560935
+            }
+          ],
+          "relative_field_fit_residual": 5.8210673874583215e-06
+        },
+        {
+          "rank": 20,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.457981237046546,
+              "quality_factor": 3.0737648726824416,
+              "amplitude_decay_per_time_unit": 0.12770352769291693,
+              "fit_amplitude_abs": 0.00043466022465637913
+            },
+            {
+              "frequency_MHz": 74.82731070243723,
+              "quality_factor": 6.1404113258849975,
+              "amplitude_decay_per_time_unit": 0.12770027797700667,
+              "fit_amplitude_abs": 0.004394229024331129
+            },
+            {
+              "frequency_MHz": 112.0189910042579,
+              "quality_factor": 9.192628640411069,
+              "amplitude_decay_per_time_unit": 0.1276971222508917,
+              "fit_amplitude_abs": 0.009454471079612786
+            },
+            {
+              "frequency_MHz": 148.94497311607236,
+              "quality_factor": 12.222650320402877,
+              "amplitude_decay_per_time_unit": 0.12769962825859435,
+              "fit_amplitude_abs": 0.0001650660258652735
+            }
+          ],
+          "relative_field_fit_residual": 4.284302896488463e-06
+        }
+      ]
+    },
+    {
+      "trace_key": "r64_pml3_gap2",
+      "resolution_cells_per_m": 64,
+      "air_gap_m": 2,
+      "pml_m": 3,
+      "source_off_time_units": 20.0,
+      "recorded_samples": 832,
+      "peak_Ex": 0.09499086526188247,
+      "fits": [
+        {
+          "rank": 16,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47024660672083,
+              "quality_factor": 3.074724467800985,
+              "amplitude_decay_per_time_unit": 0.12770547514809188,
+              "fit_amplitude_abs": 0.00043595707753241376
+            },
+            {
+              "frequency_MHz": 74.91788893502131,
+              "quality_factor": 6.147617835700486,
+              "amplitude_decay_per_time_unit": 0.12770498164977612,
+              "fit_amplitude_abs": 0.004427501249874517
+            },
+            {
+              "frequency_MHz": 112.32133019263976,
+              "quality_factor": 9.2169467342599,
+              "amplitude_decay_per_time_unit": 0.1277039498710621,
+              "fit_amplitude_abs": 0.009436334513588824
+            },
+            {
+              "frequency_MHz": 149.65864403210276,
+              "quality_factor": 12.281758714881368,
+              "amplitude_decay_per_time_unit": 0.12769397745400626,
+              "fit_amplitude_abs": 0.00015614532676824132
+            }
+          ],
+          "relative_field_fit_residual": 6.276246003425483e-06
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            21.0,
+            65.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47008167101026,
+              "quality_factor": 3.0747034040507644,
+              "amplitude_decay_per_time_unit": 0.12770578787997666,
+              "fit_amplitude_abs": 0.0005628173013954186
+            },
+            {
+              "frequency_MHz": 74.91790651166153,
+              "quality_factor": 6.147628355169572,
+              "amplitude_decay_per_time_unit": 0.12770479308941265,
+              "fit_amplitude_abs": 0.005715852323028931
+            },
+            {
+              "frequency_MHz": 112.32131872779838,
+              "quality_factor": 9.216951874170805,
+              "amplitude_decay_per_time_unit": 0.12770386562091207,
+              "fit_amplitude_abs": 0.012182184801306778
+            },
+            {
+              "frequency_MHz": 149.6579059890437,
+              "quality_factor": 12.28113429417799,
+              "amplitude_decay_per_time_unit": 0.1276998401570871,
+              "fit_amplitude_abs": 0.00020159238031271278
+            }
+          ],
+          "relative_field_fit_residual": 5.931014928612182e-06
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            27.0,
+            81.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.46990515697447,
+              "quality_factor": 3.074697940946648,
+              "amplitude_decay_per_time_unit": 0.12770541318941425,
+              "fit_amplitude_abs": 0.00026157490390445464
+            },
+            {
+              "frequency_MHz": 74.91789065437352,
+              "quality_factor": 6.147620215497399,
+              "amplitude_decay_per_time_unit": 0.12770493514487954,
+              "fit_amplitude_abs": 0.0026565161791297304
+            },
+            {
+              "frequency_MHz": 112.32131381384093,
+              "quality_factor": 9.216956626278918,
+              "amplitude_decay_per_time_unit": 0.12770379419201544,
+              "fit_amplitude_abs": 0.00566184874168308
+            },
+            {
+              "frequency_MHz": 149.65865916143593,
+              "quality_factor": 12.28149686884288,
+              "amplitude_decay_per_time_unit": 0.127696712845806,
+              "fit_amplitude_abs": 9.369047073575773e-05
+            }
+          ],
+          "relative_field_fit_residual": 4.584015603270569e-06
+        },
+        {
+          "rank": 12,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.4699980624964,
+              "quality_factor": 3.0747098374623705,
+              "amplitude_decay_per_time_unit": 0.1277052357184962,
+              "fit_amplitude_abs": 0.0004359556589185862
+            },
+            {
+              "frequency_MHz": 74.91791310037144,
+              "quality_factor": 6.147624466480385,
+              "amplitude_decay_per_time_unit": 0.1277048851003716,
+              "fit_amplitude_abs": 0.004427499025908224
+            },
+            {
+              "frequency_MHz": 112.32132010601998,
+              "quality_factor": 9.216954586317248,
+              "amplitude_decay_per_time_unit": 0.12770382961022247,
+              "fit_amplitude_abs": 0.00943632378353282
+            },
+            {
+              "frequency_MHz": 149.65801996757023,
+              "quality_factor": 12.281071130732622,
+              "amplitude_decay_per_time_unit": 0.1277005941929864,
+              "fit_amplitude_abs": 0.00015615124084981838
+            }
+          ],
+          "relative_field_fit_residual": 6.86989833923347e-06
+        },
+        {
+          "rank": 20,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.470264359053886,
+              "quality_factor": 3.0747257341629814,
+              "amplitude_decay_per_time_unit": 0.12770548305427146,
+              "fit_amplitude_abs": 0.0004359571325971626
+            },
+            {
+              "frequency_MHz": 74.91788722002703,
+              "quality_factor": 6.147617247881883,
+              "amplitude_decay_per_time_unit": 0.12770499093720414,
+              "fit_amplitude_abs": 0.004427501694452576
+            },
+            {
+              "frequency_MHz": 112.32133097559424,
+              "quality_factor": 9.216946273733797,
+              "amplitude_decay_per_time_unit": 0.12770395714199073,
+              "fit_amplitude_abs": 0.009436335366079815
+            },
+            {
+              "frequency_MHz": 149.65868883527855,
+              "quality_factor": 12.281824577594236,
+              "amplitude_decay_per_time_unit": 0.12769333090762736,
+              "fit_amplitude_abs": 0.0001561441645652508
+            }
+          ],
+          "relative_field_fit_residual": 5.113301744438248e-06
+        }
+      ]
+    },
+    {
+      "trace_key": "r128_pml3_gap2",
+      "resolution_cells_per_m": 128,
+      "air_gap_m": 2,
+      "pml_m": 3,
+      "source_off_time_units": 20.0,
+      "recorded_samples": 832,
+      "peak_Ex": 0.09512591955106497,
+      "fits": [
+        {
+          "rank": 16,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47322587440711,
+              "quality_factor": 3.0750059217317682,
+              "amplitude_decay_per_time_unit": 0.12770393928398743,
+              "fit_amplitude_abs": 0.000436404360505546
+            },
+            {
+              "frequency_MHz": 74.94056145944573,
+              "quality_factor": 6.149466390530977,
+              "amplitude_decay_per_time_unit": 0.12770522896010306,
+              "fit_amplitude_abs": 0.00443930304474162
+            },
+            {
+              "frequency_MHz": 112.39695459530704,
+              "quality_factor": 9.22303111609752,
+              "amplitude_decay_per_time_unit": 0.12770562887940098,
+              "fit_amplitude_abs": 0.009451055399762652
+            },
+            {
+              "frequency_MHz": 149.83631184894688,
+              "quality_factor": 12.294469104864339,
+              "amplitude_decay_per_time_unit": 0.12771339926014652,
+              "fit_amplitude_abs": 0.00015438770863367582
+            }
+          ],
+          "relative_field_fit_residual": 1.1327162804879297e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            21.0,
+            65.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473003530993616,
+              "quality_factor": 3.075183279687604,
+              "amplitude_decay_per_time_unit": 0.12769581641974376,
+              "fit_amplitude_abs": 0.0005633488924143696
+            },
+            {
+              "frequency_MHz": 74.94054984997685,
+              "quality_factor": 6.149449562733478,
+              "amplitude_decay_per_time_unit": 0.1277055586383082,
+              "fit_amplitude_abs": 0.005731119619777413
+            },
+            {
+              "frequency_MHz": 112.39694845849414,
+              "quality_factor": 9.2230174228521,
+              "amplitude_decay_per_time_unit": 0.1277058115089458,
+              "fit_amplitude_abs": 0.012201258381906695
+            },
+            {
+              "frequency_MHz": 149.83561966249795,
+              "quality_factor": 12.292999586237384,
+              "amplitude_decay_per_time_unit": 0.12772807620211193,
+              "fit_amplitude_abs": 0.00019934468735105369
+            }
+          ],
+          "relative_field_fit_residual": 1.147579235244185e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            27.0,
+            81.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.4729899487095,
+              "quality_factor": 3.0749153339411293,
+              "amplitude_decay_per_time_unit": 0.12770689744648403,
+              "fit_amplitude_abs": 0.0002618514565406358
+            },
+            {
+              "frequency_MHz": 74.94051854523354,
+              "quality_factor": 6.14944957566408,
+              "amplitude_decay_per_time_unit": 0.12770550502362976,
+              "fit_amplitude_abs": 0.0026636005572161195
+            },
+            {
+              "frequency_MHz": 112.39693933839574,
+              "quality_factor": 9.223032150588352,
+              "amplitude_decay_per_time_unit": 0.12770559722051641,
+              "fit_amplitude_abs": 0.005670647204550545
+            },
+            {
+              "frequency_MHz": 149.83782834895655,
+              "quality_factor": 12.296610068350752,
+              "amplitude_decay_per_time_unit": 0.12769245544082314,
+              "fit_amplitude_abs": 9.26155739556696e-05
+            }
+          ],
+          "relative_field_fit_residual": 8.236075280868223e-06
+        },
+        {
+          "rank": 12,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473118333166454,
+              "quality_factor": 3.0750024129637366,
+              "amplitude_decay_per_time_unit": 0.12770371851493473,
+              "fit_amplitude_abs": 0.0004364033598052342
+            },
+            {
+              "frequency_MHz": 74.940572078775,
+              "quality_factor": 6.14946831338413,
+              "amplitude_decay_per_time_unit": 0.1277052071247096,
+              "fit_amplitude_abs": 0.004439302600976402
+            },
+            {
+              "frequency_MHz": 112.39695052572047,
+              "quality_factor": 9.22303535090261,
+              "amplitude_decay_per_time_unit": 0.1277055656188215,
+              "fit_amplitude_abs": 0.00945104987152642
+            },
+            {
+              "frequency_MHz": 149.83601726629269,
+              "quality_factor": 12.294243975716638,
+              "amplitude_decay_per_time_unit": 0.1277154868233045,
+              "fit_amplitude_abs": 0.0001543896226650206
+            }
+          ],
+          "relative_field_fit_residual": 1.2034544669045587e-05
+        },
+        {
+          "rank": 20,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47360288691962,
+              "quality_factor": 3.07505007658532,
+              "amplitude_decay_per_time_unit": 0.12770339036617886,
+              "fit_amplitude_abs": 0.0004364030038927838
+            },
+            {
+              "frequency_MHz": 74.94052872411277,
+              "quality_factor": 6.149449249460378,
+              "amplitude_decay_per_time_unit": 0.1277055291436394,
+              "fit_amplitude_abs": 0.004439313241828058
+            },
+            {
+              "frequency_MHz": 112.3969701620149,
+              "quality_factor": 9.223027788594234,
+              "amplitude_decay_per_time_unit": 0.1277056926402341,
+              "fit_amplitude_abs": 0.00945106261539617
+            },
+            {
+              "frequency_MHz": 149.83688410025457,
+              "quality_factor": 12.295915799122662,
+              "amplitude_decay_per_time_unit": 0.12769886065285052,
+              "fit_amplitude_abs": 0.00015437008538356665
+            }
+          ],
+          "relative_field_fit_residual": 9.872190934657595e-06
+        }
+      ]
+    },
+    {
+      "trace_key": "r256_pml3_gap2",
+      "resolution_cells_per_m": 256,
+      "air_gap_m": 2,
+      "pml_m": 3,
+      "source_off_time_units": 20.0,
+      "recorded_samples": 832,
+      "peak_Ex": 0.09514012845541382,
+      "fits": [
+        {
+          "rank": 16,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47351588082662,
+              "quality_factor": 3.074886820942144,
+              "amplitude_decay_per_time_unit": 0.12770987403333686,
+              "fit_amplitude_abs": 0.00043654906420652405
+            },
+            {
+              "frequency_MHz": 74.94622703988907,
+              "quality_factor": 6.149876448533349,
+              "amplitude_decay_per_time_unit": 0.1277063679003439,
+              "fit_amplitude_abs": 0.004441897918299348
+            },
+            {
+              "frequency_MHz": 112.41585815980875,
+              "quality_factor": 9.224521292434908,
+              "amplitude_decay_per_time_unit": 0.1277064734545541,
+              "fit_amplitude_abs": 0.00945152939505648
+            },
+            {
+              "frequency_MHz": 149.8822482221705,
+              "quality_factor": 12.300804965217651,
+              "amplitude_decay_per_time_unit": 0.12768675086858597,
+              "fit_amplitude_abs": 0.00015375941337765326
+            }
+          ],
+          "relative_field_fit_residual": 1.7928180770847366e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            21.0,
+            65.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47368960025876,
+              "quality_factor": 3.0749265710957996,
+              "amplitude_decay_per_time_unit": 0.12770881513257756,
+              "fit_amplitude_abs": 0.0005635803129420804
+            },
+            {
+              "frequency_MHz": 74.94620357886234,
+              "quality_factor": 6.149870132647059,
+              "amplitude_decay_per_time_unit": 0.12770645907715017,
+              "fit_amplitude_abs": 0.005734468777263324
+            },
+            {
+              "frequency_MHz": 112.41586167773505,
+              "quality_factor": 9.224509494707513,
+              "amplitude_decay_per_time_unit": 0.1277066407817494,
+              "fit_amplitude_abs": 0.012201893796229742
+            },
+            {
+              "frequency_MHz": 149.8820612452462,
+              "quality_factor": 12.300624070401536,
+              "amplitude_decay_per_time_unit": 0.12768846935847053,
+              "fit_amplitude_abs": 0.00019849958959592556
+            }
+          ],
+          "relative_field_fit_residual": 1.3751099343220637e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            27.0,
+            81.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473182994729065,
+              "quality_factor": 3.074822953531126,
+              "amplitude_decay_per_time_unit": 0.12771139220551597,
+              "fit_amplitude_abs": 0.00026192826149817774
+            },
+            {
+              "frequency_MHz": 74.94617593921431,
+              "quality_factor": 6.1498774337604525,
+              "amplitude_decay_per_time_unit": 0.127706260367266,
+              "fit_amplitude_abs": 0.002665134763598239
+            },
+            {
+              "frequency_MHz": 112.41585614609798,
+              "quality_factor": 9.224564184065281,
+              "amplitude_decay_per_time_unit": 0.12770587736774994,
+              "fit_amplitude_abs": 0.005670885835404101
+            },
+            {
+              "frequency_MHz": 149.88190573242207,
+              "quality_factor": 12.299281930421174,
+              "amplitude_decay_per_time_unit": 0.12770227066384968,
+              "fit_amplitude_abs": 9.227531495669326e-05
+            }
+          ],
+          "relative_field_fit_residual": 1.3171664668628482e-05
+        },
+        {
+          "rank": 12,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47369205724837,
+              "quality_factor": 3.0748949385319655,
+              "amplitude_decay_per_time_unit": 0.1277101372930661,
+              "fit_amplitude_abs": 0.0004365503988139305
+            },
+            {
+              "frequency_MHz": 74.94620976180187,
+              "quality_factor": 6.149872778610272,
+              "amplitude_decay_per_time_unit": 0.12770641466742214,
+              "fit_amplitude_abs": 0.004441898264836493
+            },
+            {
+              "frequency_MHz": 112.41586488500921,
+              "quality_factor": 9.224514909700492,
+              "amplitude_decay_per_time_unit": 0.12770656945866937,
+              "fit_amplitude_abs": 0.00945153734268003
+            },
+            {
+              "frequency_MHz": 149.8827055786405,
+              "quality_factor": 12.30121283950973,
+              "amplitude_decay_per_time_unit": 0.12768290674343094,
+              "fit_amplitude_abs": 0.00015375757541799884
+            }
+          ],
+          "relative_field_fit_residual": 1.8247416708446103e-05
+        },
+        {
+          "rank": 20,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47378935002331,
+              "quality_factor": 3.0749029095087517,
+              "amplitude_decay_per_time_unit": 0.127710137806367,
+              "fit_amplitude_abs": 0.00043655059461629106
+            },
+            {
+              "frequency_MHz": 74.94620065835205,
+              "quality_factor": 6.14986898827698,
+              "amplitude_decay_per_time_unit": 0.1277064778643416,
+              "fit_amplitude_abs": 0.00444189995726759
+            },
+            {
+              "frequency_MHz": 112.4158692785502,
+              "quality_factor": 9.224513251828883,
+              "amplitude_decay_per_time_unit": 0.12770659740182405,
+              "fit_amplitude_abs": 0.009451539740527294
+            },
+            {
+              "frequency_MHz": 149.88290730128384,
+              "quality_factor": 12.301640259648938,
+              "amplitude_decay_per_time_unit": 0.12767864224311404,
+              "fit_amplitude_abs": 0.00015375353497128197
+            }
+          ],
+          "relative_field_fit_residual": 1.57762133676263e-05
+        }
+      ]
+    },
+    {
+      "trace_key": "r256_pml6_gap2",
+      "resolution_cells_per_m": 256,
+      "air_gap_m": 2,
+      "pml_m": 6,
+      "source_off_time_units": 20.0,
+      "recorded_samples": 832,
+      "peak_Ex": 0.09514012845541972,
+      "fits": [
+        {
+          "rank": 16,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473513881712854,
+              "quality_factor": 3.0748865509205214,
+              "amplitude_decay_per_time_unit": 0.12770987843521117,
+              "fit_amplitude_abs": 0.00043654881657341135
+            },
+            {
+              "frequency_MHz": 74.94622799561348,
+              "quality_factor": 6.149871354088639,
+              "amplitude_decay_per_time_unit": 0.1277064753185716,
+              "fit_amplitude_abs": 0.004441900231473554
+            },
+            {
+              "frequency_MHz": 112.41585894856668,
+              "quality_factor": 9.224516653953058,
+              "amplitude_decay_per_time_unit": 0.1277065385668796,
+              "fit_amplitude_abs": 0.009451531176531018
+            },
+            {
+              "frequency_MHz": 149.8822511793144,
+              "quality_factor": 12.300760567124897,
+              "amplitude_decay_per_time_unit": 0.12768721425755727,
+              "fit_amplitude_abs": 0.00015376013258206836
+            }
+          ],
+          "relative_field_fit_residual": 1.7926412298727454e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            21.0,
+            65.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473686675935454,
+              "quality_factor": 3.074919450507332,
+              "amplitude_decay_per_time_unit": 0.12770910090177842,
+              "fit_amplitude_abs": 0.0005635816212222262
+            },
+            {
+              "frequency_MHz": 74.94620597917906,
+              "quality_factor": 6.149866170679399,
+              "amplitude_decay_per_time_unit": 0.12770654544038237,
+              "fit_amplitude_abs": 0.005734471751106334
+            },
+            {
+              "frequency_MHz": 112.41586202475361,
+              "quality_factor": 9.224505933551587,
+              "amplitude_decay_per_time_unit": 0.1277066904776084,
+              "fit_amplitude_abs": 0.012201895692014087
+            },
+            {
+              "frequency_MHz": 149.8820381095901,
+              "quality_factor": 12.30064357473443,
+              "amplitude_decay_per_time_unit": 0.12768824718130192,
+              "fit_amplitude_abs": 0.00019849931735987892
+            }
+          ],
+          "relative_field_fit_residual": 1.3748423111310077e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            27.0,
+            81.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47318049645038,
+              "quality_factor": 3.074821055821155,
+              "amplitude_decay_per_time_unit": 0.12771146251177243,
+              "fit_amplitude_abs": 0.0002619282183358048
+            },
+            {
+              "frequency_MHz": 74.94617586823242,
+              "quality_factor": 6.149872744354556,
+              "amplitude_decay_per_time_unit": 0.12770635762499474,
+              "fit_amplitude_abs": 0.0026651347688560092
+            },
+            {
+              "frequency_MHz": 112.41585755268083,
+              "quality_factor": 9.224559544881126,
+              "amplitude_decay_per_time_unit": 0.12770594319105327,
+              "fit_amplitude_abs": 0.00567088543691815
+            },
+            {
+              "frequency_MHz": 149.88190453425324,
+              "quality_factor": 12.29928104865293,
+              "amplitude_decay_per_time_unit": 0.12770227879830287,
+              "fit_amplitude_abs": 9.227532104333054e-05
+            }
+          ],
+          "relative_field_fit_residual": 1.3171965355963918e-05
+        },
+        {
+          "rank": 12,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473689767604284,
+              "quality_factor": 3.074894653828207,
+              "amplitude_decay_per_time_unit": 0.12771014131462186,
+              "fit_amplitude_abs": 0.00043655014938487455
+            },
+            {
+              "frequency_MHz": 74.9462107459282,
+              "quality_factor": 6.149867690345235,
+              "amplitude_decay_per_time_unit": 0.12770652200582344,
+              "fit_amplitude_abs": 0.004441900575184236
+            },
+            {
+              "frequency_MHz": 112.41586566262848,
+              "quality_factor": 9.224510281662706,
+              "amplitude_decay_per_time_unit": 0.127706634413844,
+              "fit_amplitude_abs": 0.009451539109764977
+            },
+            {
+              "frequency_MHz": 149.88270778614904,
+              "quality_factor": 12.301167754007,
+              "amplitude_decay_per_time_unit": 0.12768337659971898,
+              "fit_amplitude_abs": 0.00015375830279870282
+            }
+          ],
+          "relative_field_fit_residual": 1.824554337404712e-05
+        },
+        {
+          "rank": 20,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47378761858529,
+              "quality_factor": 3.0749026529635066,
+              "amplitude_decay_per_time_unit": 0.12771014256076135,
+              "fit_amplitude_abs": 0.00043655034827167453
+            },
+            {
+              "frequency_MHz": 74.94620158824948,
+              "quality_factor": 6.149863886887637,
+              "amplitude_decay_per_time_unit": 0.1277065853829927,
+              "fit_amplitude_abs": 0.004441902276976629
+            },
+            {
+              "frequency_MHz": 112.41587007809734,
+              "quality_factor": 9.224508605261853,
+              "amplitude_decay_per_time_unit": 0.1277066626384589,
+              "fit_amplitude_abs": 0.009451541534897608
+            },
+            {
+              "frequency_MHz": 149.88291091218488,
+              "quality_factor": 12.301596641917833,
+              "amplitude_decay_per_time_unit": 0.12767909802883792,
+              "fit_amplitude_abs": 0.00015375423797424467
+            }
+          ],
+          "relative_field_fit_residual": 1.5774806036490213e-05
+        }
+      ]
+    },
+    {
+      "trace_key": "r256_pml3_gap3",
+      "resolution_cells_per_m": 256,
+      "air_gap_m": 3,
+      "pml_m": 3,
+      "source_off_time_units": 20.0,
+      "recorded_samples": 832,
+      "peak_Ex": 0.09514012845542062,
+      "fits": [
+        {
+          "rank": 16,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473515122937854,
+              "quality_factor": 3.0748877760834104,
+              "amplitude_decay_per_time_unit": 0.12770983178039388,
+              "fit_amplitude_abs": 0.00043654894764027943
+            },
+            {
+              "frequency_MHz": 74.9462269920794,
+              "quality_factor": 6.14987304835515,
+              "amplitude_decay_per_time_unit": 0.12770643842592977,
+              "fit_amplitude_abs": 0.004441898233124297
+            },
+            {
+              "frequency_MHz": 112.41585962709117,
+              "quality_factor": 9.224524261605392,
+              "amplitude_decay_per_time_unit": 0.12770643401552192,
+              "fit_amplitude_abs": 0.009451528074267747
+            },
+            {
+              "frequency_MHz": 149.88224751326678,
+              "quality_factor": 12.300805843105465,
+              "amplitude_decay_per_time_unit": 0.12768674115187265,
+              "fit_amplitude_abs": 0.0001537594010347737
+            }
+          ],
+          "relative_field_fit_residual": 1.792825187263061e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            21.0,
+            65.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47368716175971,
+              "quality_factor": 3.0749283419049065,
+              "amplitude_decay_per_time_unit": 0.12770873327651938,
+              "fit_amplitude_abs": 0.0005635798732473623
+            },
+            {
+              "frequency_MHz": 74.94620356383574,
+              "quality_factor": 6.149866502368316,
+              "amplitude_decay_per_time_unit": 0.12770653443692853,
+              "fit_amplitude_abs": 0.005734470291910851
+            },
+            {
+              "frequency_MHz": 112.41586323943335,
+              "quality_factor": 9.224512495094022,
+              "amplitude_decay_per_time_unit": 0.1277066010177083,
+              "fit_amplitude_abs": 0.012201891080327779
+            },
+            {
+              "frequency_MHz": 149.8820649847143,
+              "quality_factor": 12.300627744491916,
+              "amplitude_decay_per_time_unit": 0.12768843440478705,
+              "fit_amplitude_abs": 0.0001984995099712757
+            }
+          ],
+          "relative_field_fit_residual": 1.3751147908344173e-05
+        },
+        {
+          "rank": 16,
+          "window_time_units": [
+            27.0,
+            81.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.4731815499863,
+              "quality_factor": 3.0748237756579524,
+              "amplitude_decay_per_time_unit": 0.12771135313506674,
+              "fit_amplitude_abs": 0.0002619282405831734
+            },
+            {
+              "frequency_MHz": 74.94617593638577,
+              "quality_factor": 6.149874096185642,
+              "amplitude_decay_per_time_unit": 0.12770632966942572,
+              "fit_amplitude_abs": 0.002665134179086915
+            },
+            {
+              "frequency_MHz": 112.41585759296137,
+              "quality_factor": 9.22456712012319,
+              "amplitude_decay_per_time_unit": 0.1277058383643106,
+              "fit_amplitude_abs": 0.005670885954645583
+            },
+            {
+              "frequency_MHz": 149.88190573323368,
+              "quality_factor": 12.299281092637132,
+              "amplitude_decay_per_time_unit": 0.12770227936317352,
+              "fit_amplitude_abs": 9.227532036131287e-05
+            }
+          ],
+          "relative_field_fit_residual": 1.31716663194524e-05
+        },
+        {
+          "rank": 12,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.47369130077905,
+              "quality_factor": 3.0748958944209384,
+              "amplitude_decay_per_time_unit": 0.12771009501393576,
+              "fit_amplitude_abs": 0.000436550282151352
+            },
+            {
+              "frequency_MHz": 74.94620971383173,
+              "quality_factor": 6.149869378322264,
+              "amplitude_decay_per_time_unit": 0.12770648519508276,
+              "fit_amplitude_abs": 0.004441898579776633
+            },
+            {
+              "frequency_MHz": 112.41586635236139,
+              "quality_factor": 9.224517878843029,
+              "amplitude_decay_per_time_unit": 0.12770653002004517,
+              "fit_amplitude_abs": 0.00945153602196241
+            },
+            {
+              "frequency_MHz": 149.8827048733919,
+              "quality_factor": 12.30121372351474,
+              "amplitude_decay_per_time_unit": 0.1276828969669332,
+              "fit_amplitude_abs": 0.00015375756290228625
+            }
+          ],
+          "relative_field_fit_residual": 1.8247497665320724e-05
+        },
+        {
+          "rank": 20,
+          "window_time_units": [
+            23.0,
+            75.0
+          ],
+          "modes": [
+            {
+              "frequency_MHz": 37.473788601934686,
+              "quality_factor": 3.0749038665326114,
+              "amplitude_decay_per_time_unit": 0.1277100955087721,
+              "fit_amplitude_abs": 0.00043655047792933317
+            },
+            {
+              "frequency_MHz": 74.94620060958397,
+              "quality_factor": 6.149865587631211,
+              "amplitude_decay_per_time_unit": 0.12770654839815013,
+              "fit_amplitude_abs": 0.004441900272181218
+            },
+            {
+              "frequency_MHz": 112.41587074627967,
+              "quality_factor": 9.224516220823302,
+              "amplitude_decay_per_time_unit": 0.127706557965663,
+              "fit_amplitude_abs": 0.009451538419938028
+            },
+            {
+              "frequency_MHz": 149.88290661350783,
+              "quality_factor": 12.301641179046502,
+              "amplitude_decay_per_time_unit": 0.12767863211480757,
+              "fit_amplitude_abs": 0.00015375352256403086
+            }
+          ],
+          "relative_field_fit_residual": 1.5776331438447504e-05
+        }
+      ]
+    }
+  ],
+  "fit_method": {
+    "type": "truncated Hankel matrix pencil",
+    "search_band_MHz": [
+      20,
+      166
+    ],
+    "primary_window_after_source_off": [
+      3,
+      55
+    ],
+    "primary_rank": 16,
+    "hankel_rows": 128,
+    "minimum_relative_mode_amplitude": 1e-05
+  },
+  "sampling": {
+    "interval_time_units": 0.125,
+    "Courant": 0.5,
+    "source_frequency": 0.295,
+    "source_frequency_width": 0.5,
+    "source_cutoff": 5,
+    "post_source_duration": 84
+  },
+  "trace_file": "traces.npz",
+  "trace_sha256": "9cba9354f552a609b3944a53b54b86de179dfc6ae63d7263514da3c89ca52a04",
+  "solver_source_sha256": "b219ea820f86d521dbc70172de106496b2bdaf15db3a5a9ab567d6f72503c6d0",
+  "scope": "Four passive longitudinal poles of a lossless dielectric slab at normal incidence. Q is the amplitude-decay pole Q. Electrical pumping, gain, lasing and finite-width photonic-crystal or ring cavities require separate models."
+}

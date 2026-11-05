@@ -1,0 +1,79 @@
+{
+  "checked_at": "2026-11-05T21:25:03.117961+00:00",
+  "passed": true,
+  "wheel": "photonics_workbench-0.10.0a1-py3-none-any.whl",
+  "wheel_sha256": "3519bf3247351859267cb53b82db4cc802bba14187764017c6bd501a99fa7449",
+  "wheel_bytes": 580911,
+  "installed_from_offline_wheelhouse": true,
+  "export_found_registered_interpreter": true,
+  "cavity_four_modes_equal_to_packaged_reference": true,
+  "installed_port_alignment": true,
+  "pip_check": true,
+  "doctor_meep_ready": true,
+  "served_frontend_assets": [
+    "/assets/index-CIPX0phv.js",
+    "/assets/index-BLFxTwb2.css"
+  ],
+  "catalog_families": 27,
+  "benchmark_data": true,
+  "job_id": "9a65cccbe36149db81c9c205f0d2f00e",
+  "actual_device": "CPU",
+  "field_shape_zyx": [
+    42,
+    72,
+    118
+  ],
+  "state_separate_from_package": true,
+  "exclusive_store": true,
+  "saved_run_after_restart": true,
+  "cli_run_all_arrays_exact": true,
+  "standalone_python_all_arrays_exact": true,
+  "solver_versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "state": "Fresh disposable user state and virtual environment.",
+  "wheel_assets_equal_checkout": true,
+  "wheel_entries": 94,
+  "sdist_rebuild_every_entry_byte_equal": true,
+  "taper_mesh_cli_matches_gui": true,
+  "managed_setup_repeat_checks": {
+    "beamz-cpu": {
+      "status": "already-ready",
+      "lock_sha256": "556f98e5eac826caea02c24f84253c863d71ddd0e2eb59dd82d8cd5eaeb42e74"
+    },
+    "fdtdx-cpu": {
+      "status": "already-ready",
+      "lock_sha256": "b941fc0f039a484d7cd13fdefd38c12f538cc87a319dbb5b1f82350cc6db29b9"
+    },
+    "fdtdx-cuda12": {
+      "status": "already-ready",
+      "lock_sha256": "2d2727c04c75559548c5b1af866e230710578add65410943e08b56edd61a9a62"
+    }
+  },
+  "numerical_targets": {
+    "fdtdx-cpu": {
+      "actual_device": "cpu:0",
+      "name": "cpu",
+      "all_arrays_equal_to_restored_gui": true
+    },
+    "beamz-cpu": {
+      "actual_device": "cpu:0",
+      "name": "cpu",
+      "fields_sha256": "5b878484cdd8b125de820f2c36639d945cd7303e86b70c1c2909b829f053b384",
+      "equal_to_reference_arrays": true
+    },
+    "fdtdx-gpu": {
+      "actual_device": "cuda:0",
+      "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "all_arrays_equal_to_restored_gui": true
+    },
+    "beamz-gpu": {
+      "actual_device": "cuda:0",
+      "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "fields_sha256": "a7ed182c6213740187f86a0b33d9348b4dd2c649b2428ade8510b95440b9ebfa",
+      "equal_to_reference_arrays": true
+    }
+  }
+}

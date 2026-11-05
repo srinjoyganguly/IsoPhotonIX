@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T21:12:49.029Z",
+  "checks": [
+    "Native text undo and delete retained the design and component selection.",
+    "Selected hidden member deleted its complete recipe and all ports, preserved interleaved solids and shared material, exported exact geometry, and restored original selection.",
+    "Delete and both redo shortcuts worked in XY; a committed rename after undo discarded the obsolete redo branch.",
+    "Explicit detachment permitted a single-solid delete; two undos restored first the solid and then its parametric membership and ports.",
+    "Delete to an empty scene and undo/redo both survived same-tab reloads. The restored selection and subsequent new geometry remained editable.",
+    "A fresh tab ignored inherited undo history; external draft conflict paused autosave and reload rejected the old checkpoint.",
+    "A full tab history store preserved the separately saved draft and in-memory undo, and prevented recovery of stale history."
+  ],
+  "fixture": {
+    "target_family": "directional_coupler",
+    "target_solids": 2,
+    "target_ports": 4,
+    "preserved_family": "slot",
+    "survivor_solids": 3
+  },
+  "browser_errors": []
+}

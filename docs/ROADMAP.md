@@ -1,5 +1,7 @@
 # Product roadmap
 
+For the current delivery status, remaining chunks and numerical release gates, see [Remaining work](NEXT_CHUNKS.md).
+
 Plan prepared on 1 November 2026 after the hackathon submission. The submitted
 v0.2 release remains the numerical baseline. Items below describe planned work
 unless an implementation and its verification are explicitly linked. Release
@@ -195,7 +197,7 @@ and [FDTDX documentation](https://fdtdx.readthedocs.io/en/latest/).
 | Meep | Time-domain electromagnetics; CPU route | Real 2D slab and finite-height 3D guide on CPU; 3D grid/PML sensitivity recorded | Analytical benchmarks, calibrated sources/monitors, broader geometry and installation qualification |
 | FDTDX / JAX | Time-domain electromagnetics on CPU and NVIDIA GPU; later differentiable studies | Real invariant-z slab and finite-height 3D guide on both targets; explicit device checks and bounded planning memory estimate | Analytical/convergence benchmarks; measured peak memory; clean installation; gradient tests before optimization |
 | MPB | Eigenmodes and photonic band structures | Local public slab/strip mode benchmark harness with fixed-frequency residuals, mesh/domain checks and inspectable evidence | General interactive mode studies, band reference, mode tracking, degeneracy and calibrated FDTD coupling |
-| BeamZ | Additional FDTD backend for supported photonic studies | No adapter or numerical verification yet | Locked release, isolated installation, minimal real CPU case, GPU placement, field/monitor and export tests |
+| BeamZ | Additional FDTD backend for supported photonic studies | Isolated BeamZ 0.6.2 CPU/CUDA field reference and CPU slab-mode comparison | Connect selected finite-height editor designs to qualified BeamZ sources, monitors and reproducible GUI runs |
 | Other engines | Additional numerical methods or coupled physics when justified | None | A specific unmet user study and its validation plan before integration |
 
 MPB is an eigenproblem solver, not a drop-in replacement for an FDTD time trace;

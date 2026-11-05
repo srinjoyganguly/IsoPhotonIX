@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import math
 import uuid
 
 from .component_library import build_component, get_catalog
@@ -106,9 +107,80 @@ def place_component(geometry, component_id, parameters=None, placement=None,
     if not any(item['id'] == selected['id'] for item in candidate['materials']):
         candidate['materials'].append(selected)
     if fit_domain:
-        extents = [geometry_bounds(item) for item in candidate['objects']]
-        for axis in 'xyz':
-            needed = 2*max((max(abs(item['min'][axis]), abs(item['max'][axis])) for item in extents), default=0) + .5
-            candidate['domain'][axis] = max(candidate['domain'][axis], needed)
+        _fit_domain(candidate)
     candidate = validate_geometry(candidate)
     return {'geometry': candidate, 'component': candidate['components'][-1]}
+
+
+def _fit_domain(geometry):
+    bounds = [geometry_bounds(item) for item in geometry['objects']]
+    ports = [port for component in geometry['components'] for port in component['ports']]
+    for axis in 'xyz':
+        extents = [abs(box[edge][axis]) for box in bounds for edge in ('min', 'max')]
+        extents.extend(abs(port[axis]) for port in ports)
+        geometry['domain'][axis] = max(geometry['domain'][axis], 2 * max(extents, default=0) + .5)
+
+
+def _same_endpoint(first, second):
+    return math.dist([first[a] for a in 'xyz'], [second[a] for a in 'xyz']) <= 1e-8
+
+
+def _facing(first, second):
+    return abs((first['angle_deg'] - second['angle_deg']) % 360 - 180) <= 1e-7
+
+
+def align_ports(geometry, moving_component, moving_port, fixed_component, fixed_port, fit_domain=False):
+    """Rigidly place one component against a named port. Dimensions are in µm."""
+    candidate = upgrade_geometry(geometry)
+    if moving_component == fixed_component:
+        raise ValueError('Choose ports on two different components.')
+
+    def endpoint(component_id, port_name):
+        component = next((c for c in candidate['components'] if c['id'] == component_id), None)
+        if component is None:
+            raise ValueError('Choose a component that is still in the layout.')
+        port = next((p for p in component['ports'] if p['name'] == port_name), None)
+        if port is None:
+            raise ValueError('Choose an existing named port on this component.')
+        return component, port
+
+    moving, source = endpoint(moving_component, moving_port)
+    _, target = endpoint(fixed_component, fixed_port)
+    if not math.isclose(source['width_um'], target['width_um'], rel_tol=1e-9, abs_tol=1e-9):
+        raise ValueError('Port widths differ. Choose equal-width ports or insert a taper.')
+    for neighbor in candidate['components']:
+        if neighbor['id'] in (moving_component, fixed_component):
+            continue
+        if any(_same_endpoint(p, target) for p in neighbor['ports']):
+            raise ValueError('That fixed port already meets another component.')
+    if _same_endpoint(source, target) and _facing(source, target):
+        return candidate
+    for neighbor in candidate['components']:
+        if neighbor['id'] != moving_component and any(
+            _same_endpoint(p, q) and _facing(p, q) for p in moving['ports'] for q in neighbor['ports']
+        ):
+            raise ValueError('Moving this component would break an existing port alignment. Move it apart first.')
+
+    angle = (target['angle_deg'] + 180 - source['angle_deg']) % 360
+    cos, sin = math.cos(math.radians(angle)), math.sin(math.radians(angle))
+    # Keep the original pivot until every solid, port and generator origin has moved.
+    pivot = {axis: source[axis] for axis in 'xyz'}
+
+    def move(point):
+        dx, dy = point['x'] - pivot['x'], point['y'] - pivot['y']
+        point.update(x=target['x'] + cos * dx - sin * dy,
+                     y=target['y'] + sin * dx + cos * dy,
+                     z=target['z'] + (point['z'] - pivot['z']))
+
+    for solid in candidate['objects']:
+        if solid.get('component_id') == moving_component:
+            move(solid['position'])
+            solid['rotation_deg'] = (solid['rotation_deg'] + angle) % 360
+    move(moving['placement'])
+    moving['placement']['rotation_deg'] = (moving['placement']['rotation_deg'] + angle) % 360
+    for port in moving['ports']:
+        move(port)
+        port['angle_deg'] = (port['angle_deg'] + angle) % 360
+    if fit_domain:
+        _fit_domain(candidate)
+    return validate_geometry(candidate)

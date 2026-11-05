@@ -1,7 +1,7 @@
-import json
 import os
-import sys
 from pathlib import Path
+
+from .solver_environment import solver_interpreter
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -11,17 +11,8 @@ def data_root():
     return Path(selected).expanduser().resolve() if selected else ROOT
 
 
-def interpreter(solver):
-    override = os.environ.get(f"{solver.upper()}_PYTHON")
-    if override:
-        return override
-    state = data_root() / ".local"
-    local = state / "runtime.json"
-    settings = json.loads(local.read_text()) if local.exists() else {}
-    if settings.get(f"{solver}_python"):
-        return settings[f"{solver}_python"]
-    candidate = state / ("meep-conda" if solver == "meep" else "fdtdx-env") / "bin/python"
-    return str(candidate) if candidate.exists() else sys.executable
+def interpreter(solver, device=None):
+    return solver_interpreter(solver, device, data_root())
 
 
 def worker_env(solver, device):

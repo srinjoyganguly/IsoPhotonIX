@@ -1,12 +1,13 @@
-import { useEffect, useId, useRef, useState, type PointerEvent, type ReactNode } from 'react';
+import { useEffect, useId, useReducer, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { type GeometryDocument, type GeometryObject, type Vec2 } from './geometryModel';
 import { addSketch, editContour, MAX_ROUTE_POINTS, moveSelection, routeOutline, snapPoint, worldPoint } from './sketchGeometry';
+import { initialPointHistory, pointHistory } from './sketchHistory';
 import './planSketch.css';
 
 type Tool = 'move' | 'polygon' | 'route';
 type Editing = { id: string; ring: number };
-type Drag = { kind: 'point'; index: number; before: Vec2[] }
-  | { kind: 'move'; id: string; start: Vec2; anchor: Vec2; original: GeometryDocument };
+type Drag = { kind: 'point'; pointerId: number; index: number; start: Vec2; original: GeometryDocument }
+  | { kind: 'move'; pointerId: number; id: string; start: Vec2; anchor: Vec2; original: GeometryDocument };
 type Props = {
   scene: GeometryDocument; selectedId: string | null; onSelect: (id: string | null) => void;
   onApply: (document: GeometryDocument, message: string) => boolean;
@@ -43,19 +44,23 @@ export function GeometryStage({children, ...props}: Props & {children: ReactNode
 
 function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
   const [tool, setTool] = useState<Tool>('route');
-  const [points, setPoints] = useState<Vec2[]>([]), [past, setPast] = useState<Vec2[][]>([]);
-  const [selectedPoint, setSelectedPoint] = useState(-1);
+  const [history, dispatch] = useReducer(pointHistory, undefined, () => initialPointHistory());
+  const { points: placed, selected: selectedPoint } = history.present;
+  const [previewPoint, setPreviewPoint] = useState<{ index: number; position: Vec2 } | null>(null);
+  const points = previewPoint ? placed.map((p, i) => i === previewPoint.index ? previewPoint.position : p) : placed;
   const [entryX, setEntryX] = useState(''), [entryY, setEntryY] = useState('');
   const [snap, setSnap] = useState('0.25'), [width, setWidth] = useState('0.5'), [radius,setRadius] = useState('0');
   const [height, setHeight] = useState('0.22'), [z, setZ] = useState('0'), [name, setName] = useState('Drawn route');
   const [editing, setEditing] = useState<Editing | null>(null), [ring, setRing] = useState(0);
   const [hover, setHover] = useState<Vec2 | null>(null), [offset, setOffset] = useState<Vec2 | null>(null);
   const [error, setError] = useState(''), [notice, setNotice] = useState('');
-  const drag = useRef<Drag | null>(null), base = useRef<GeometryDocument | null>(null);
+  const drag = useRef<Drag | null>(null);
+  const [base, setBase] = useState<GeometryDocument | null>(null);
   const svg = useRef<SVGSVGElement>(null), pattern = useId();
   const selected = scene.objects.find(o => o.id === selectedId);
   const member = scene.components?.find(c => c.id === selected?.component_id);
-  const stale = base.current !== null && base.current !== scene && (points.length > 0 || editing !== null);
+  const activeSketch = !!editing || !!placed.length || !!history.past.length || !!history.future.length;
+  const stale = activeSketch && base !== scene;
   const scale = Math.min((WIDTH - 88) / scene.domain.x, (HEIGHT - 70) / scene.domain.y);
   const canvasPoint = (p: Vec2) => ({ x: centre.x + p.x * scale, y: centre.y - p.y * scale });
   const snapSize = snap === 'off' ? null : Number(snap);
@@ -69,12 +74,14 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
   };
   const currentPoint = points[selectedPoint];
   useEffect(() => {
-    if (currentPoint) { setEntryX(String(currentPoint.x)); setEntryY(String(currentPoint.y)); }
+    setEntryX(currentPoint ? String(currentPoint.x) : '');
+    setEntryY(currentPoint ? String(currentPoint.y) : '');
   }, [selectedPoint, currentPoint?.x, currentPoint?.y]);
   useEffect(() => setRing(0), [selectedId]);
   function updatePoints(next: Vec2[], selection: number) {
-    if (base.current === null) base.current = scene;
-    setPast(p => [...p.slice(-49), points]); setPoints(next); setSelectedPoint(selection); setError(''); setNotice('');
+    if (stale) return;
+    if (base === null) setBase(scene);
+    dispatch({type:'write', points:next, selected:selection}); setError(''); setNotice('');
   }
   function append(p: Vec2) {
     if (points.length >= (tool === 'route' ? MAX_ROUTE_POINTS : 256)) {setError('The point limit has been reached.'); return;}
@@ -91,7 +98,7 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
     else append(p);
   }
   function reset() {
-    setPoints([]); setPast([]); setSelectedPoint(-1); setEditing(null); base.current = null;
+    dispatch({type:'reset', points:[], selected:-1}); setPreviewPoint(null); setEditing(null); setBase(null);
     setEntryX(''); setEntryY(''); setHover(null); setError(''); setNotice(''); drag.current = null; setOffset(null);
   }
   function choose(toolId: Tool) {
@@ -101,9 +108,9 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
     if (selected?.kind !== 'polygon') return;
     const boundaries = [selected.vertices!, ...selected.holes!];
     const index = boundaries[ring] ? ring : 0;
-    reset(); setTool('polygon'); setEditing({id:selected.id, ring:index}); base.current = scene;
-    setPoints(boundaries[index].map(p => worldPoint(selected, p))); setName(selected.name);
-    setHeight(String(selected.size.z)); setZ(String(selected.position.z)); setSelectedPoint(0);
+    reset(); setTool('polygon'); setEditing({id:selected.id, ring:index}); setBase(scene);
+    dispatch({type:'reset', points:boundaries[index].map(p => worldPoint(selected, p)), selected:0}); setName(selected.name);
+    setHeight(String(selected.size.z)); setZ(String(selected.position.z));
   }
   function commit() {
     try {
@@ -128,36 +135,51 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
   }
   function pointerDown(event: PointerEvent<SVGSVGElement>) {
     if (event.button !== 0 || !event.isPrimary) return;
+    svg.current?.focus({preventScroll:true});
     if (tool === 'move') {onSelect(null); return;}
     if (!stale) append(snapPoint(toWorld(event), snapSize));
     setHover(null);
   }
   function beginMove(event: PointerEvent<SVGGElement>, object: GeometryObject) {
     if (tool !== 'move' || event.button !== 0 || !event.isPrimary) return;
-    event.stopPropagation(); onSelect(object.id); setError(''); setNotice('');
+    event.stopPropagation(); svg.current?.focus({preventScroll:true}); onSelect(object.id); setError(''); setNotice('');
     const group = scene.components?.find(c => c.id === object.component_id);
-    drag.current = { kind:'move', id:object.id, start:toWorld(event), anchor:group?.placement ?? object.position, original:scene };
+    drag.current = { kind:'move', pointerId:event.pointerId, id:object.id, start:toWorld(event), anchor:group?.placement ?? object.position, original:scene };
     svg.current?.setPointerCapture(event.pointerId);
   }
   function beginPoint(event: PointerEvent<SVGCircleElement>, index: number) {
     if (!event.isPrimary || event.button !== 0) return;
-    event.stopPropagation(); setHover(null); setSelectedPoint(index); setError('');
-    drag.current = { kind:'point', index, before:points }; svg.current?.setPointerCapture(event.pointerId);
+    event.stopPropagation(); svg.current?.focus({preventScroll:true});
+    if (stale) return;
+    setHover(null); dispatch({type:'select', selected:index}); setError('');
+    drag.current = {kind:'point', pointerId:event.pointerId, index, start:toWorld(event), original:scene};
+    svg.current?.setPointerCapture(event.pointerId);
+  }
+  function draggedPosition(action: Extract<Drag,{kind:'point'}>, end: Vec2) {
+    const dx = end.x - action.start.x, dy = end.y - action.start.y;
+    const source = placed[action.index];
+    if (!source || Math.hypot(dx,dy)*scale < 2) return null;
+    return snapPoint({x:source.x+dx, y:source.y+dy}, snapSize);
   }
   function pointerMove(event: PointerEvent<SVGSVGElement>) {
     if (!event.isPrimary) return;
     const p = toWorld(event), action = drag.current;
+    if (action && action.pointerId !== event.pointerId) return;
     if (action?.kind === 'point') {
-      if (!stale) setPoints(action.before.map((point,i) => i === action.index ? snapPoint(p, snapSize) : point));
+      const position = !stale && action.original === scene ? draggedPosition(action, p) : null;
+      setPreviewPoint(position ? {index:action.index, position} : null);
     } else if (action?.kind === 'move') setOffset(moveDelta(action,p));
     else if (tool !== 'move') setHover(snapPoint(p,snapSize));
   }
   function pointerEnd(event: PointerEvent<SVGSVGElement>, cancelled: boolean) {
-    const action = drag.current; drag.current = null; setOffset(null);
-    if (!action) return;
+    const action = drag.current;
+    if (!action || action.pointerId !== event.pointerId) return;
+    drag.current = null; setOffset(null);
     if (action.kind === 'point') {
-      if (cancelled) setPoints(action.before);
-      else if (points[action.index].x !== action.before[action.index].x || points[action.index].y !== action.before[action.index].y) setPast(p => [...p.slice(-49),action.before]);
+      setPreviewPoint(null);
+      if (cancelled || stale || scene !== action.original) return;
+      const position = draggedPosition(action,toWorld(event));
+      if (position) updatePoints(placed.map((p,i) => i === action.index ? position : p), action.index);
       return;
     }
     if (cancelled) return;
@@ -173,6 +195,33 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
     } catch (reason) {setError((reason as Error).message);}
   }
 
+  function removePoint() {
+    if (selectedPoint < 0 || stale) return;
+    updatePoints(placed.filter((_,i) => i !== selectedPoint), Math.max(0,selectedPoint-1));
+  }
+  function navigate(direction: 'undo' | 'redo') {
+    drag.current = null; setPreviewPoint(null); setOffset(null); setHover(null); setError(''); setNotice('');
+    svg.current?.focus({preventScroll:true});
+    dispatch({type:direction});
+  }
+  function keyDown(event: KeyboardEvent<HTMLElement>) {
+    if (tool === 'move' || event.defaultPrevented || event.altKey || event.repeat || event.nativeEvent.isComposing) return;
+    const target = event.target;
+    if (target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"]')) return;
+    const key = event.key.toLowerCase();
+    if (event.ctrlKey || event.metaKey) {
+      if (!activeSketch) return;
+      if (key === 'z') navigate(event.shiftKey ? 'redo' : 'undo');
+      else if (key === 'y' && !event.shiftKey) navigate('redo');
+      else return;
+    } else if (!event.shiftKey && (key === 'delete' || key === 'backspace')) {
+      drag.current = null; setPreviewPoint(null); svg.current?.focus({preventScroll:true}); removePoint();
+    } else if (!event.shiftKey && key === 'escape' && activeSketch) {
+      choose('move'); setNotice('Sketch cancelled.');
+    } else return;
+    event.preventDefault(); event.stopPropagation();
+  }
+
   let preview: Vec2[] = [], previewProblem = '';
   // Preview a prospective segment at the pointer. Commit always uses only placed points.
   const tentative = tool !== 'move' && !editing && hover && (!points.length || Math.hypot(hover.x-points.at(-1)!.x,hover.y-points.at(-1)!.y)>1e-9) ? [...points,hover] : points;
@@ -183,8 +232,8 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
   const visible = scene.objects.filter(o => o.visible).sort((a,b) => (a.position.z+a.size.z/2)-(b.position.z+b.size.z/2));
   const moved = new Set(member?.object_ids ?? (selectedId ? [selectedId] : []));
   const min = canvasPoint({x:-scene.domain.x/2,y:scene.domain.y/2});
-  const activeSketch = points.length > 0 || !!editing;
-  return <section className="plan-sketch" aria-label="XY layout editor">
+  return <section className="plan-sketch" aria-label="XY layout editor"
+    data-sketch-history={activeSketch ? 'active' : undefined} onKeyDown={keyDown}>
     <div className="plan-tools" role="group" aria-label="Drawing tool">
       {tools.map(item => <button key={item.id} aria-pressed={tool === item.id} disabled={activeSketch && tool !== item.id}
         onClick={() => {if (item.id !== tool) choose(item.id);}}>{item.name}</button>)}
@@ -192,8 +241,8 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
         <option value="off">Off</option>{['0.01','0.05','0.1','0.25','0.5','1'].map(s=><option key={s} value={s}>{s} µm</option>)}</select></label>
     </div>
     <svg ref={svg} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className={tool === 'move' ? 'plan-board move' : 'plan-board'}
-      role="img" aria-label="XY layout drawing surface" onPointerDown={pointerDown} onPointerMove={pointerMove}
-      onPointerUp={e => pointerEnd(e,false)} onPointerCancel={e => pointerEnd(e,true)} onPointerLeave={() => setHover(null)}>
+      tabIndex={0} role="img" aria-label="XY layout drawing surface" onPointerDown={pointerDown} onPointerMove={pointerMove}
+      onPointerUp={e => pointerEnd(e,false)} onPointerCancel={e => pointerEnd(e,true)} onLostPointerCapture={e => pointerEnd(e,true)} onPointerLeave={() => setHover(null)}>
       <defs><pattern id={pattern} x={centre.x} y={centre.y} width={gridStep*scale} height={gridStep*scale} patternUnits="userSpaceOnUse">
         <path d={`M ${gridStep*scale} 0 H 0 V ${gridStep*scale}`} fill="none" stroke="#233749" strokeWidth="1.1"/></pattern></defs>
       <rect x={min.x} y={min.y} width={scene.domain.x*scale} height={scene.domain.y*scale} fill={`url(#${pattern})`} stroke="#456071"/>
@@ -203,7 +252,7 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
       <g transform={`translate(${centre.x} ${centre.y}) scale(${scale} ${-scale})`}>
         {visible.map(object=>{
           const d = offset && moved.has(object.id) ? offset : {x:0,y:0};
-          return <g key={object.id} className={`plan-object ${object.id===selectedId?'current':''} ${object.refractive_index<=1.6?'background':''}`}
+          return <g key={object.id} className={`plan-object ${object.id===selectedId?'current':member && object.component_id===member.id?'member':''} ${object.refractive_index<=1.6?'background':''}`}
             data-plan-object={object.id} transform={`translate(${object.position.x+d.x} ${object.position.y+d.y}) rotate(${object.rotation_deg})`}
             onPointerDown={e=>beginMove(e,object)}>{footprint(object)}</g>;
         })}
@@ -231,18 +280,19 @@ function PlanSketch({scene, selectedId, onSelect, onApply}: Props) {
         <label>Z centre (µm)<input aria-label="Sketch Z centre" type="number" step=".05" value={z} onChange={e=>{setZ(e.target.value);setError('');}}/></label>
       </div>
       <div className="plan-point-entry"><label>Point<select aria-label="Selected sketch point" value={selectedPoint} disabled={!points.length}
-        onChange={e=>setSelectedPoint(Number(e.target.value))}>{!points.length&&<option value="-1">—</option>}{points.map((_,i)=><option key={i} value={i}>{i+1} of {points.length}</option>)}</select></label>
+        onChange={e=>dispatch({type:'select', selected:Number(e.target.value)})}>{!points.length&&<option value="-1">—</option>}{points.map((_,i)=><option key={i} value={i}>{i+1} of {points.length}</option>)}</select></label>
         <label>X (µm)<input aria-label="Sketch point X" type="number" step="any" value={entryX} onChange={e=>setEntryX(e.target.value)}/></label>
         <label>Y (µm)<input aria-label="Sketch point Y" type="number" step="any" value={entryY} onChange={e=>setEntryY(e.target.value)}/></label>
-        <button type="button" onClick={()=>numericPoint(false)}>Add point</button>
-        <button type="button" disabled={!currentPoint} onClick={()=>numericPoint(true)}>Update point</button>
-        <button type="button" disabled={!currentPoint} onClick={()=>updatePoints(points.filter((_,i)=>i!==selectedPoint),Math.max(0,selectedPoint-1))}>Remove point</button>
+        <button type="button" disabled={stale} onClick={()=>numericPoint(false)}>Add point</button>
+        <button type="button" disabled={!currentPoint || stale} onClick={()=>numericPoint(true)}>Update point</button>
+        <button type="button" disabled={!currentPoint || stale} onClick={removePoint}>Remove point</button>
       </div>
-      {editing && selected?.component_id && <p>Applying a manual contour detaches this component’s recipe.</p>}
+      {editing && scene.objects.some(object => object.id === editing.id && object.component_id) && <p>Applying a manual contour detaches this component’s recipe.</p>}
       {stale && <p className="plan-warning">The design changed during this sketch. {editing ? 'Cancel and reopen the contour.' :
-        <button onClick={()=>{base.current=scene;setNotice('Sketch now targets the current design.');}}>Use current design</button>}</p>}
+        <button onClick={()=>{setBase(scene);setNotice('Sketch now targets the current design.');}}>Use current design</button>}</p>}
       <div className="plan-actions"><button className="button primary compact" disabled={stale || points.length < (tool==='route'?2:3)} onClick={commit}>{editing?'Apply contour':tool==='route'?'Place route':'Place polygon'}</button>
-        <button onClick={()=>{setPoints(past[past.length-1]);setSelectedPoint(past[past.length-1].length-1);setPast(p=>p.slice(0,-1));setError('');}} disabled={!past.length}>Undo point edit</button>
+        <button onClick={()=>navigate('undo')} disabled={!history.past.length} title="Undo a point edit (Ctrl/⌘ Z)" aria-keyshortcuts="Control+Z Meta+Z">Undo point edit</button>
+        <button onClick={()=>navigate('redo')} disabled={!history.future.length} title="Redo a point edit (Ctrl/⌘ Shift Z)" aria-keyshortcuts="Control+Shift+Z Meta+Shift+Z Control+Y">Redo point edit</button>
         <button onClick={()=>choose('move')}>Cancel sketch</button>
       </div>
       {previewProblem && !error && <p className="plan-warning">{previewProblem}</p>}

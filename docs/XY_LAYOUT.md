@@ -25,7 +25,7 @@ inspect the design in perspective.
 Pointer placement and dragging follow the chosen snap spacing. Typed coordinates
 remain exact, including values between grid lines. The displayed grid can use
 a multiple of the snap spacing to keep lines legible. Drag a draft vertex or
-select its number and use **Update point**. **Undo point edit** acts on the
+select its number and use **Update point**. **Undo point edit** and **Redo point edit** act on the
 uncommitted sketch. **Cancel sketch** abandons it. Once placed, each edit or
 move takes one step in the editor’s ordinary **Undo / Redo** history.
 
@@ -41,3 +41,5 @@ sampling and compute limits for the complete scene. [Browser checks](verificatio
 and [executed standalone export](verification/v09-sketch-export.json).
 
 ![A rounded route preview in the XY workspace](verification/v09-sketch-route.png)
+
+[Whole-component deletion, editor undo and named-port alignment](EDITOR_RECOVERY.md).

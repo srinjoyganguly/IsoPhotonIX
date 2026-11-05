@@ -41,7 +41,7 @@ def case(recipe, target, solver, device):
     folder.mkdir()
     (folder/'config.json').write_text(config.model_dump_json(indent=2))
     with (folder/'worker.log').open('w') as log:
-        subprocess.run([interpreter(solver),'-m','backend.worker',folder/'config.json',folder],cwd=ROOT,
+        subprocess.run([interpreter(solver, device),'-m','backend.worker',folder/'config.json',folder],cwd=ROOT,
             env=worker_env(solver,device),stdout=log,stderr=subprocess.STDOUT,check=True,timeout=300)
     meta=json.loads((folder/'metadata.json').read_text())
     with np.load(folder/'arrays.npz') as a:

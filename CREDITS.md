@@ -37,6 +37,7 @@ and [animation reproduction notes](docs/BLENDER.md).
 | JAX / JAXlib | 0.10.2 | Array execution and compilation | [Apache-2.0](https://github.com/jax-ml/jax/blob/main/LICENSE) |
 | JAX CUDA12 plugin / PJRT | 0.10.2 | CUDA execution integration | [JAX source and license](https://github.com/jax-ml/jax) |
 | NumPy | 2.4.6 | Numerical interchange and validation | [BSD-3-Clause and bundled notices](https://github.com/numpy/numpy/blob/main/LICENSE.txt) |
+| BeamZ | 0.6.2 | Isolated time-domain and mode reference studies | [Upstream source and Apache-2.0 license](https://github.com/beamzorg/beamz/tree/v0.6.2) |
 
 Meep's source header explicitly permits GPL version 2 or later. The MIT license
 for this application's own code does not replace the licenses of Meep, its
@@ -151,3 +152,5 @@ benchmark selection. The [coverage review](docs/VENDOR_COMPONENT_COVERAGE.md)
 and [reference checks](docs/COMPONENT_REFERENCE_CHECKS.md) identify the source
 examples, numerical inputs, reference values and remaining differences.
 The wheel includes the local comparison script and recorded scalar results.
+
+The passive Fabry–Pérot reference uses the published frequencies and Q values in Table 1 of the [COMSOL example](https://doc.comsol.com/5.5/doc/com.comsol.help.models.woptics.fabry_perot/models.woptics.fabry_perot.pdf). Workbench cavity and BeamZ benchmark programs, plots and traces were produced locally.

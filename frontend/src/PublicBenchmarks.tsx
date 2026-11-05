@@ -1,3 +1,5 @@
+import { BeamZReference } from './BeamZReference';
+import { PassiveCavityReference } from './PassiveCavityReference';
 import ComponentComparisons from './ComponentComparisons';
 import { useEffect, useState } from 'react';
 import './publicBenchmarks.css';
@@ -119,5 +121,7 @@ export function PublicBenchmarks() {
       </div></details>
     </>}
     <ComponentComparisons/>
+    <PassiveCavityReference/>
+    <BeamZReference/>
   </section>;
 }

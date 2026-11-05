@@ -41,7 +41,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.9.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.10.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -58,7 +58,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.9.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.10.0-preview.1", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -107,6 +107,44 @@ def library_place(request: LibraryPlace):
     try:
         return place_component(**request.model_dump(exclude={'material'}, exclude_unset=True))
     except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+class PortAlignment(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    geometry: dict
+    moving_component: str = Field(min_length=1, max_length=80)
+    moving_port: str = Field(min_length=1, max_length=80)
+    fixed_component: str = Field(min_length=1, max_length=80)
+    fixed_port: str = Field(min_length=1, max_length=80)
+    fit_domain: bool = False
+
+
+@app.post('/api/library/align')
+def library_align(request: PortAlignment):
+    from .library_layout import align_ports
+    try:
+        return {'geometry': align_ports(**request.model_dump())}
+    except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+@app.post('/api/materials/film')
+def material_film(config: dict):
+    from .thin_film import film_spectrum
+    try:
+        return film_spectrum(config)
+    except (ValueError, ArithmeticError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+@app.post('/api/materials/film/export')
+def export_material_film(config: dict):
+    from .thin_film import film_export
+    try:
+        return Response(film_export(config), media_type='application/zip',
+                        headers={'Content-Disposition':'attachment; filename="planar-film.zip"'})
+    except (ValueError, ArithmeticError) as exc:
         raise HTTPException(422, str(exc)) from exc
 
 
@@ -312,6 +350,26 @@ def submit_layout(config: LayoutStudy):
     return submit_checked(config)
 
 
+@app.get('/api/beamz-benchmark')
+def beamz_benchmark():
+    folder = ROOT / 'docs/verification'
+    try:
+        rows = {device: json.loads((folder / f'v010-beamz-{device}.json').read_text()) for device in ('cpu', 'gpu')}
+        if not all(row['passed'] and len(row['propagation']) == 3 for row in rows.values()):
+            raise ValueError('Incomplete BeamZ measurement')
+        return rows
+    except (OSError, KeyError, ValueError) as exc:
+        raise HTTPException(503, 'The measured BeamZ comparison is unavailable.') from exc
+
+
+@app.get('/api/cavity-benchmark')
+def passive_cavity_benchmark():
+    try:
+        return json.loads((ROOT / 'docs/verification/v010-passive-cavity.json').read_text())
+    except (OSError, ValueError) as exc:
+        raise HTTPException(503, 'The measured cavity report is unavailable.') from exc
+
+
 @app.get('/api/component-benchmarks')
 def public_component_benchmarks():
     try:
@@ -336,6 +394,40 @@ def compare3d(config: Compare3DRequest):
         raise HTTPException(409, str(exc)) from exc
     except (OSError, KeyError, TypeError, zipfile.BadZipFile) as exc:
         raise HTTPException(409, "Saved result files are incomplete; comparison is unavailable.") from exc
+
+
+class TaperMeshRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    coarse_run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,80}$")
+    fine_run_id: str = Field(pattern=r"^[a-zA-Z0-9_-]{1,80}$")
+
+
+@app.get("/api/taper-ports/mesh-runs")
+def taper_mesh_runs():
+    with manager.lock:
+        return [
+            {"id": job["id"], "solver": job["config"]["solver"], "device": job["config"]["device"],
+             "resolution": job["config"]["resolution"], "name": job["config"]["geometry"]["name"]}
+            for job in reversed(list(manager.jobs.values()))
+            if job["status"] == "completed" and job["config"].get("study_type") == "taper-ports-3d"
+        ]
+
+
+@app.post("/api/taper-ports/compare-mesh")
+def compare_taper_mesh_runs(config: TaperMeshRequest):
+    from .taper_refinement import compare_taper_mesh
+    coarse, coarse_output = completed_output(config.coarse_run_id)
+    fine, fine_output = completed_output(config.fine_run_id)
+    try:
+        for job, folder in ((coarse, coarse_output), (fine, fine_output)):
+            if job["config"] != json.loads((folder / "config.json").read_text()):
+                raise ValueError("The saved configuration differs from its job record.")
+        return {"coarse_run_id": coarse["id"], "fine_run_id": fine["id"],
+                **compare_taper_mesh(coarse_output, fine_output)}
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
+    except (OSError, KeyError, TypeError, zipfile.BadZipFile) as exc:
+        raise HTTPException(409, "Saved taper results are incomplete. Check both result exports.") from exc
 
 
 @app.get("/api/jobs")

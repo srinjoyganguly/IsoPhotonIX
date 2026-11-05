@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-05T20:48:53.729Z",
+  "browser": "156.0.8078.81",
+  "checks": [
+    "Scoped undo/redo and point deletion preserve the unpublished scene, restore the exact selected vertex, protect numeric input, and cancel safely. A drag is one edit, a cancelled drag preserves redo, and a new branch clears redo.",
+    "Pointer centreline snapped to the selected physical grid, with exact perpendicular caps, mitered corners and extrusion.",
+    "Whole-document undo/redo restored exact scenes. A pointer drag committed a validated move.",
+    "Document undo/redo invalidates stale sketch placement. Explicit retargeting permits a new drawing only on the reviewed document.",
+    "Invalid crossed boundary and cancellation retained the scene. Numeric points preserved off-grid values, undo-point edited the draft, and editing in world coordinates retained a rotated solid’s untouched local vertices.",
+    "Circular corners use tangent inner/outer radii. An oversized radius is rejected before placement.",
+    "Dragging a coupler translates all members, port coordinates and recipe placement together, preserving membership and directions.",
+    "Exact JSON export/import/reload and Python/notebook ZIP download, 390 px layout, no browser exceptions."
+  ],
+  "new_objects": 3,
+  "browser_errors": []
+}

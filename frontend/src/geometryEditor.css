@@ -3,3 +3,26 @@
 @media(max-width:1100px){.geo-workspace{grid-template-columns:185px minmax(300px,1fr) 215px;gap:9px}.geo-stage{display:none}.geo-document-name input{width:190px}.geo-properties{padding-left:10px;padding-right:10px}.geo-science-boundary{display:block}.geo-science-boundary button{margin-top:10px}.geo-template-list{padding-left:6px;padding-right:6px}}
 @media(max-width:850px){.geo-workspace{grid-template-columns:200px minmax(0,1fr)}.geo-tree-panel{grid-column:1;grid-row:1}.geo-inspector{grid-column:1;grid-row:2}.geo-stage-column{grid-column:2;grid-row:1/span 2}.geo-document-bar{align-items:stretch;flex-direction:column;gap:8px}.geo-document-name input{width:100%}.geo-status{flex-direction:column}.geo-intro h1{font-size:24px}.geo-file-actions{flex-wrap:wrap}.workspace-navigation span{display:none}}
 @media(max-width:600px){.geo-workspace{display:flex;flex-direction:column}.geo-stage-column{order:0;width:100%}.geo-tree-panel{order:1}.geo-inspector{order:2}.geo-template-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}.geo-template-list h3{grid-column:1/-1}.geo-template-list>button{display:block;font-size:10px;padding:7px}.geo-template-list small{font-size:8px;line-height:1.5}.geo-template-list>button>span{display:block;margin-bottom:5px}.geo-file-actions .button{font-size:10px;padding:8px}.geo-divider{display:none}.geo-intro{padding-bottom:17px}.geo-intro h1{font-size:23px}.geo-intro p{font-size:11px}.workspace-navigation{padding-top:12px}.workspace-navigation button{font-size:11px}.geo-stage-column .geo-status{font-size:8px}}
+
+.geo-edit-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  margin-bottom: 9px;
+  padding: 10px 12px;
+  border: 1px solid #314357;
+  border-radius: 6px;
+  background: #14212e;
+}
+.geo-edit-selection {display: grid; gap: 3px; min-width: 0;}
+.geo-edit-selection strong {color: #e0eaf4; font-size: 12px; overflow-wrap: anywhere;}
+.geo-edit-selection span {font-size: 10px; color: #9ab0c3;}
+.geo-edit-buttons {display: flex; flex-wrap: wrap; align-items: center; gap: 6px;}
+.geo-edit-buttons .geo-delete-selection {border-color: #674b46; color: #efd0c9;}
+.geo-edit-buttons .geo-delete-selection:hover:enabled {background: #392c31;}
+.geo-edit-tools button:disabled {opacity: .45;}
+.geo-component-picker {display: grid; gap: 6px; margin: 13px 12px 0; color: #9db2c5; font-size: 11px;}
+.geo-component-picker select {width: 100%; min-width: 0; padding: 7px; background: #0c1824; border: 1px solid #35485c; border-radius: 4px; color: #d2e0ed;}
+.geo-stage-column > .geo-message {margin: 0 0 9px;}

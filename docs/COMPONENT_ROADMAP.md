@@ -1,6 +1,6 @@
 # Photonic component, material and laser roadmap
 
-Research checked against official sources on **1 November 2026**. This document
+The original roadmap was researched on **1 November 2026**. [Current delivery status](NEXT_CHUNKS.md) and the [vendor coverage review](VENDOR_COMPONENT_COVERAGE.md) reflect later work. This document
 defines the next product increments and their evidence requirements. It is a
 plan, not a claim that every family or material below is executable. The
 [release guide](../README.md) and each study's verification record identify

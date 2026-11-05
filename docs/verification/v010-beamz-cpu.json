@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "case_id": "beamz-passive-reference",
+  "passed": true,
+  "checks": {
+    "continuum_phase_error_reduces_on_each_refinement": true,
+    "finest_phase_within_0_1_percent": true,
+    "discrete_phase_within_0_08_percent": true,
+    "impedance_and_amplitude_within_0_1_percent": true,
+    "slab_fine_analytic_within_0_02_percent": true,
+    "slab_fine_published_within_0_2_percent": true,
+    "slab_wider_domain_change_below_1e_6": true
+  },
+  "release": "0.6.2",
+  "tag_commit": "b2db93f11b6ae94160b7980866106320d2f161f5",
+  "solver_source_sha256": "939e3f82fd52a4649c8b1093e4aabaa637639828d0df0c1a57ae90e557911c87",
+  "device_requested": "cpu",
+  "implementation": "BeamZ JAX Maxwell time stepper",
+  "actual_device": "cpu:0",
+  "device_kind": "cpu",
+  "versions": {
+    "beamz": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1"
+  },
+  "python": "3.11.15",
+  "propagation": [
+    {
+      "points_per_material_wavelength": 12,
+      "n": 1.5,
+      "vacuum_wavelength_m": 1.55e-06,
+      "dx_m": 8.611111111111111e-08,
+      "dt_s": 1.827957110981005e-16,
+      "steps": 8,
+      "measurement_slice": [
+        36,
+        84
+      ],
+      "grid_shape_Ez_yx": [
+        73,
+        121
+      ],
+      "actual_device": "cpu:0",
+      "device_kind": "cpu",
+      "actual_platform": "cpu",
+      "field_dtype": "float32",
+      "phase_velocity_m_s": 197874956.16660926,
+      "continuum_velocity_m_s": 199861638.66666666,
+      "discrete_velocity_m_s": 197985643.14667943,
+      "continuum_relative_error": 0.009940289258664858,
+      "yee_relative_error": 0.0005590656893649237,
+      "impedance_ohm": 251.05654735921047,
+      "analytic_impedance_ohm": 251.15354244457444,
+      "impedance_relative_error": 0.0003861983566700866,
+      "amplitude_ratio": 0.9996957871648238
+    },
+    {
+      "points_per_material_wavelength": 24,
+      "n": 1.5,
+      "vacuum_wavelength_m": 1.55e-06,
+      "dx_m": 4.3055555555555555e-08,
+      "dt_s": 9.139785554905025e-17,
+      "steps": 8,
+      "measurement_slice": [
+        72,
+        168
+      ],
+      "grid_shape_Ez_yx": [
+        145,
+        241
+      ],
+      "actual_device": "cpu:0",
+      "device_kind": "cpu",
+      "actual_platform": "cpu",
+      "field_dtype": "float32",
+      "phase_velocity_m_s": 199375006.68601266,
+      "continuum_velocity_m_s": 199861638.66666666,
+      "discrete_velocity_m_s": 199393366.08249676,
+      "continuum_relative_error": 0.0024348443448202195,
+      "yee_relative_error": 9.20762653483509e-05,
+      "impedance_ohm": 251.18555251208443,
+      "analytic_impedance_ohm": 251.15354244457444,
+      "impedance_relative_error": 0.00012745218402421266,
+      "amplitude_ratio": 1.0000593705897391
+    },
+    {
+      "points_per_material_wavelength": 48,
+      "n": 1.5,
+      "vacuum_wavelength_m": 1.55e-06,
+      "dx_m": 2.1527777777777778e-08,
+      "dt_s": 4.569892777452513e-17,
+      "steps": 8,
+      "measurement_slice": [
+        144,
+        336
+      ],
+      "grid_shape_Ez_yx": [
+        289,
+        481
+      ],
+      "actual_device": "cpu:0",
+      "device_kind": "cpu",
+      "actual_platform": "cpu",
+      "field_dtype": "float32",
+      "phase_velocity_m_s": 199743192.10928044,
+      "continuum_velocity_m_s": 199861638.66666666,
+      "discrete_velocity_m_s": 199744616.83019465,
+      "continuum_relative_error": 0.0005926427811581148,
+      "yee_relative_error": 7.13271244456859e-06,
+      "impedance_ohm": 251.15670354150583,
+      "analytic_impedance_ohm": 251.15354244457444,
+      "impedance_relative_error": 1.2586312343465522e-05,
+      "amplitude_ratio": 1.0000062320469327
+    }
+  ],
+  "slab_modes_cpu": [
+    {
+      "grid_nm": 20,
+      "aperture_um": 4.0,
+      "neff": 2.8554463498753555,
+      "analytic_neff": 2.851356345104066,
+      "published_neff": 2.84825,
+      "analytic_relative_error": 0.0014344067441138808,
+      "published_relative_error": 0.0025265864567209917
+    },
+    {
+      "grid_nm": 10,
+      "aperture_um": 4.0,
+      "neff": 2.852382213596546,
+      "analytic_neff": 2.851356345104066,
+      "published_neff": 2.84825,
+      "analytic_relative_error": 0.0003597826326553477,
+      "published_relative_error": 0.0014507903437359637
+    },
+    {
+      "grid_nm": 5,
+      "aperture_um": 4.0,
+      "neff": 2.8516130227134684,
+      "analytic_neff": 2.851356345104066,
+      "published_neff": 2.84825,
+      "analytic_relative_error": 9.001947786813069e-05,
+      "published_relative_error": 0.0011807329811175382
+    },
+    {
+      "grid_nm": 2.5,
+      "aperture_um": 4.0,
+      "neff": 2.8514205276625386,
+      "analytic_neff": 2.851356345104066,
+      "published_neff": 2.84825,
+      "analytic_relative_error": 2.25094834542805e-05,
+      "published_relative_error": 0.0011131493592690944
+    },
+    {
+      "grid_nm": 2.5,
+      "aperture_um": 6.0,
+      "neff": 2.8514205276625533,
+      "analytic_neff": 2.851356345104066,
+      "published_neff": 2.84825,
+      "analytic_relative_error": 2.2509483459387525e-05,
+      "published_relative_error": 0.0011131493592744235
+    }
+  ],
+  "slab_reference_url": "https://optics.ansys.com/hc/en-us/articles/1500007378182-Inverse-design-of-an-efficient-narrow-band-grating-coupler",
+  "fields_sha256": "5b878484cdd8b125de820f2c36639d945cd7303e86b70c1c2909b829f053b384",
+  "limits": "Short-time homogeneous dielectric propagation and a separate CPU slab-mode comparison. General 3D layouts, port measurements, gain and BeamZ native CUDA kernels require separate qualification."
+}

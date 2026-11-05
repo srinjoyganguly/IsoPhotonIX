@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { addSketch, editContour, routeOutline, worldPoint, moveSelection, snapPoint } from './src/sketchGeometry.ts';
+import { initialPointHistory, pointHistory } from './src/sketchHistory.ts';
 import { createGeometryTemplate, geometryBounds } from './src/geometryModel.ts';
 const scene = createGeometryTemplate('ring');
 const v = (x,y) => ({x,y});
@@ -46,4 +47,36 @@ test('circular fillets preserve inner and outer radii with valid tangencies on b
   }
   assert.throws(()=>routeOutline([v(0,0),v(.4,0),v(.4,1)],.5,.75),/consume/);
   assert.throws(()=>routeOutline([v(0,0),v(2,0),v(2,2)],.5,.25),/half/);
+});
+
+test('point undo and redo restore the exact vertices and selection across update, deletion and empty drafts', () => {
+  const original = [v(-.025,0),v(1.125,-.2),v(0,1)];
+  let state = initialPointHistory(original,1);
+  const edited = [original[0],v(1.125,.75),original[2]];
+  state = pointHistory(state,{type:'write',points:edited,selected:1});
+  state = pointHistory(state,{type:'write',points:[edited[0], edited[2]],selected:0});
+  state = pointHistory(state,{type:'undo'});
+  assert.deepEqual(state.present,{points:edited,selected:1});
+  state = pointHistory(state,{type:'undo'});
+  assert.deepEqual(state.present,{points:original,selected:1});
+  state = pointHistory(state,{type:'redo'});
+  state = pointHistory(state,{type:'redo'});
+  assert.deepEqual(state.present,{points:[original[0],original[2]],selected:0});
+  const cleared = pointHistory(state,{type:'write',points:[],selected:0});
+  assert.deepEqual(cleared.present,{points:[],selected:-1});
+  assert.deepEqual(pointHistory(cleared,{type:'undo'}).present,state.present);
+});
+
+test('selecting and zero-distance edits preserve redo; branching or cancelling clears it', () => {
+  let state = initialPointHistory();
+  for (let i = 0; i < 57; i++) state = pointHistory(state,{type:'write',points:[v(i,0)],selected:0});
+  assert.equal(state.past.length,50);
+  state = pointHistory(state,{type:'undo'});
+  state = pointHistory(state,{type:'select', selected:0});
+  assert.strictEqual(pointHistory(state,{type:'write',points:[v(55,0)],selected:0}),state);
+  assert.equal(state.future.length,1);
+  state = pointHistory(state,{type:'write',points:[v(.1,-.25)],selected:0});
+  assert.equal(state.future.length,0);
+  state = pointHistory(state,{type:'reset',points:[],selected:-1});
+  assert.deepEqual(state,initialPointHistory());
 });

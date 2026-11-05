@@ -17,6 +17,6 @@ config = parse_study(json.loads(args.config.read_text())).model_dump()
 args.output.mkdir(parents=True, exist_ok=False)
 output = args.output.resolve()
 (output/"config.json").write_text(json.dumps(config, indent=2))
-run = subprocess.run([interpreter(config["solver"]), "-m", "backend.worker", str(output/"config.json"), str(output)],
+run = subprocess.run([interpreter(config["solver"], config["device"]), "-m", "backend.worker", str(output/"config.json"), str(output)],
                      cwd=ROOT, env=worker_env(config["solver"], config["device"]))
 raise SystemExit(run.returncode)

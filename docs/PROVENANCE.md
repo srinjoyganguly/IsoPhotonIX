@@ -114,3 +114,20 @@ public sources and gaps. The [new comparison cases](COMPONENT_REFERENCE_CHECKS.m
 preserve published targets, local calculations, mesh and domain changes, and
 remaining differences. No commercial project files, private screenshots or
 vendor material databases are distributed. Screenshots show the running app.
+
+## v0.10 editing, delivery and numerical qualification
+
+This increment began from local commit `25353f2` after v0.9. The editor reuses
+its validated geometry documents and material ordering. The new controls
+remove an entire instance atomically, recover local history, and place
+components using the coordinates of their own named ports. The application
+screenshot shows a workbench-generated strip and directional coupler.
+
+New numerical evidence uses local Meep, FDTDX/JAX, MPB and BeamZ. The COMSOL
+cavity and Ansys slab references use published observables. The simulations,
+reports, code and notebook replays were generated independently in this
+project. BeamZ 0.6.2 is obtained from upstream, with its release and licensing
+details recorded in [BeamZ reference studies](BEAMZ_REFERENCE.md). The
+[FDTDX setup](FDTDX_MANAGED_SETUP.md) and [desktop window](DESKTOP_WINDOW.md)
+record the host-specific qualifications. No solver credentials or commercial
+application installations are required for these paths.

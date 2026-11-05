@@ -55,10 +55,10 @@ locally:
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The application suite includes model, API, complex-port, source-archive and
-Python/notebook export contracts. The v0.9 run had 165 tests. 159 passed and six native checks were skipped in the
-API interpreter. The solver environments ran separate physical checks.
-[Verification](verification/v09-checks.json).
+The v0.10 application suite collected 196 tests. The application interpreter
+passed 190 and skipped six checks that require native Meep. All 11 tests
+in the separate Meep suite passed, including those six. The frontend passed 28 unit
+tests and the production TypeScript build. [Verification summary](verification/v010-checks.json).
 Actual solver checks are recorded separately in the relevant study guides.
 The API wheelhouse is a local cache and is not committed.
 

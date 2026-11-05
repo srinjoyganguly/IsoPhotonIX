@@ -1,0 +1,22 @@
+{
+  "profile": "beamz-cpu",
+  "passed": true,
+  "checked_at_utc": "2026-11-05T21:03:12.139908+00:00",
+  "platform": "Linux / WSL2 x86-64 CPython 3.11",
+  "fresh_offline_install": true,
+  "locked_wheels": 27,
+  "lock_sha256": "556f98e5eac826caea02c24f84253c863d71ddd0e2eb59dd82d8cd5eaeb42e74",
+  "reverification_same_prefix": true,
+  "existing_unrelated_setting_preserved": true,
+  "pip_check_each_time": true,
+  "readiness": {
+    "mode": "three plane-wave Maxwell meshes and five passive slab mode solves on CPU",
+    "actual_device": "cpu:0",
+    "finest_phase_relative_error": 0.0005926427811581148,
+    "slab_neff": 2.8514205276625386
+  },
+  "missing_wheel_refusal": {
+    "previous_runtime_settings_intact": true,
+    "incomplete_runtime_removed": true
+  }
+}

@@ -10,16 +10,14 @@ The **3D design** workspace is a local, interactive geometry editor. It lets you
 inspect and edit finite solids in physical units. A bounded **finite-height
 waveguide study** now connects supported geometry to real Meep CPU and FDTDX
 CPU/NVIDIA GPU calculations. Use **Open runnable 3D waveguide** in the study
-panel, then follow the [3D simulation guide](3D_SIMULATION.md). Rings, couplers,
-arbitrary solids and unsupported transforms remain editable drafts.
+panel, then follow the [3D simulation guide](3D_SIMULATION.md). The [finite-layout study](LAYOUT_FIELDS.md) runs eligible drawn solids and multi-component scenes. [Delete, undo, redo and port alignment](EDITOR_RECOVERY.md).
 The **2D simulation** workspace retains the existing Meep CPU and
 FDTDX CPU/NVIDIA GPU slab workflow, actual field playback and result exports.
 Geometry edits do not modify that solver configuration.
 
 See [ROADMAP.md](ROADMAP.md) for the staged numerical and CAD work, and
 [PACKAGING.md](PACKAGING.md) for the proposed pip, local web and desktop
-installation architecture. Neither a standalone desktop application nor the
-planned managed solver installer is part of this workspace milestone.
+installation architecture. The current platform and managed solver coverage are tracked in the installation guide.
 
 ## Open and inspect a design
 

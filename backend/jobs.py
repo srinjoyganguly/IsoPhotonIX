@@ -119,7 +119,7 @@ class JobManager:
             return dict(job)
 
     def _command(self, config, output):
-        return [interpreter(config["solver"]), "-m", "backend.worker", str(output/"config.json"), str(output)]
+        return [interpreter(config["solver"], config["device"]), "-m", "backend.worker", str(output/"config.json"), str(output)]
 
     def _run(self, job_id):
         started = time.monotonic()
