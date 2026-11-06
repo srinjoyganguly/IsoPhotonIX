@@ -62,6 +62,48 @@
         0.23633610808242236,
         0.2518378702526796
       ]
+    },
+    {
+      "receipt": "v013-grating3d-lumerical-direct-r12.json",
+      "received_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+      "resolution": 12,
+      "material_model": "direct-yee",
+      "guide_neff_interpolated_to_filed_frequency": 2.4588955602338234,
+      "guide_neff_minus_published": 0.00610223049709413,
+      "local_detector_coordinate": "FDTDX E_z co-location (i,j,k+1/2)",
+      "local_detector_x_um": -25.500000000000004,
+      "native_power_fraction_at_1550": 0.2514941337844058,
+      "registered_grid_diagnostic": {
+        "y_offset_cells": 0.0,
+        "z_offset_cells": 0.0,
+        "ey_shape_overlap": 0.9979859976273315,
+        "reprojected_power_fraction": 0.253833045149161
+      },
+      "half_cell_axis_uncertainty_power_fraction": [
+        0.23100340503095046,
+        0.253833045149161
+      ]
+    },
+    {
+      "receipt": "v013-grating3d-lumerical-direct-r14.json",
+      "received_arrays_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e",
+      "resolution": 14,
+      "material_model": "direct-yee",
+      "guide_neff_interpolated_to_filed_frequency": 2.44407465381007,
+      "guide_neff_minus_published": -0.008718675926659092,
+      "local_detector_coordinate": "FDTDX E_z co-location (i,j,k+1/2)",
+      "local_detector_x_um": -25.57142857142857,
+      "native_power_fraction_at_1550": 0.33612928378434725,
+      "registered_grid_diagnostic": {
+        "y_offset_cells": 0.0,
+        "z_offset_cells": 0.0,
+        "ey_shape_overlap": 0.9945584386825,
+        "reprojected_power_fraction": 0.3387911990695513
+      },
+      "half_cell_axis_uncertainty_power_fraction": [
+        0.3175276927804793,
+        0.3387911990695513
+      ]
     }
   ],
   "scope": "A diagnostic reprojects the unchanged 1550 nm local output phasors on the filed lossless strip E/H basis from the nearby stored frequency. It retains the native incident-power normalization and uses bilinear interpolation and vacuum-impedance-scaled H. The offset range covers \u00b1half a native cell on both transverse axes; it is a registration sensitivity, not a vendor rerun or an error bar. No commercial field arrays are distributed."

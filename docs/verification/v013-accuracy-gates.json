@@ -88,6 +88,13 @@
       },
       "all_evidenced_and_met": false
     },
+    "v013-grating3d-lumerical-direct-r14.json": {
+      "criteria": {
+        "target_within_five_points": false,
+        "band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
     "v013-ring3d-lumerical-r16-t3200-exact-area.json": {
       "criteria": {
         "nearest_drop_center_within_one_published_linewidth": false,
@@ -135,7 +142,15 @@
       "fine": "v012-grating3d-tidy3d-r14.json",
       "max_absolute_change": 0.03756317924524741,
       "within_two_points": false
+    },
+    {
+      "vendor": "lumerical",
+      "variant": "direct-yee / standard",
+      "coarse": "v013-grating3d-lumerical-direct-r12.json",
+      "fine": "v013-grating3d-lumerical-direct-r14.json",
+      "max_absolute_change": 0.08463514999994143,
+      "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "c82e842e5d4a35db68b510e92188b66f28287fbac7168ae855097e27e21087b2"
+  "diagnosis_sha256": "571be76b8722dda28ecae9f6a6015855bce78e529a353b2dc1d102d038a43b5f"
 }

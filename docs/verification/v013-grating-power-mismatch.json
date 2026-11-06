@@ -1,0 +1,350 @@
+{
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "design": "Curved Lumerical grating with physical polished fiber.",
+  "prespecified_metrics": "Reduce both the absolute 1550 nm S21-power discrepancy and the mean absolute error over all five original wavelengths. No geometric or material fitting to the target spectrum.",
+  "commercial_file_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+  "published_peak_wavelength_um": 1.557615894039735,
+  "published_s12_minus_s21_pp": [
+    2.2447707467580846,
+    1.8389621353414431,
+    0.9289467204011637,
+    1.4140909658031386,
+    2.6250705639563443
+  ],
+  "fiber_aperture": [
+    {
+      "resolution": 12,
+      "fraction_of_infinite_lp01_in_sampled_aperture": 0.9998633780868547,
+      "quadrature_change": 1.3469697565104966e-06,
+      "aperture_bounds_xy_um": [
+        [
+          -7.208333333333333,
+          12.874999999999996
+        ],
+        [
+          -10.041666666666666,
+          9.958333333333334
+        ]
+      ],
+      "scope": "Independent weak-guidance scalar fiber profile at 1550 nm on the horizontal plane. Actual normalization uses the numerical incident Poynting flux."
+    },
+    {
+      "resolution": 14,
+      "fraction_of_infinite_lp01_in_sampled_aperture": 0.9998631464542198,
+      "quadrature_change": 2.265223546293882e-06,
+      "aperture_bounds_xy_um": [
+        [
+          -7.178571428571429,
+          12.892857142857142
+        ],
+        [
+          -10.035714285714285,
+          9.964285714285715
+        ]
+      ],
+      "scope": "Independent weak-guidance scalar fiber profile at 1550 nm on the horizontal plane. Actual normalization uses the numerical incident Poynting flux."
+    }
+  ],
+  "direct_yee_studies": [
+    {
+      "resolution": 12,
+      "baseline_receipt": "v012-grating3d-lumerical-r12.json",
+      "experiment_receipt": "v013-grating3d-lumerical-direct-r12.json",
+      "baseline_arrays_sha256": "99ed493d7746c0a996b018e9a3fb0ca31a9669c26a95b6acdd4b18d0a6cc5992",
+      "experiment_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+      "same_source_eh_and_time_offsets": true,
+      "same_physical_input_and_scalar_grid": true,
+      "same_gpu_model": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "published_power_fraction": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "baseline_power_fraction": [
+        0.316544798824311,
+        0.31902785446514464,
+        0.22210307731559442,
+        0.11211647784705212,
+        0.0387506418651861
+      ],
+      "direct_yee_power_fraction": [
+        0.04602741644313781,
+        0.12411395474052811,
+        0.2514941337844058,
+        0.34357045115220763,
+        0.305873723461999
+      ],
+      "difference_from_published_percentage_points": [
+        -10.458564423437103,
+        -17.043192387547247,
+        -14.877154897982258,
+        -2.665305086429121,
+        8.214493203772907
+      ],
+      "baseline_finite_aperture_fluxes": {
+        "signed_total_outgoing_flux_fraction": [
+          0.3621975785930925,
+          0.3587490918910009,
+          0.2463169726847783,
+          0.12213043578769132,
+          0.04125006630683408
+        ],
+        "upper_scattered_net_flux_fraction": [
+          0.15718047550605255,
+          0.14379688850011793,
+          0.08645050675667759,
+          0.03895961509888582,
+          0.03183496950470929
+        ],
+        "projected_fiber_return_power_fraction": [
+          0.0013429152355936246,
+          0.003046478992211274,
+          0.0024535110554296143,
+          0.000676906919134804,
+          0.00020777867528435053
+        ]
+      },
+      "direct_yee_finite_aperture_fluxes": {
+        "signed_total_outgoing_flux_fraction": [
+          0.052911087489536386,
+          0.1418340937418973,
+          0.28339834063270886,
+          0.38179370403284774,
+          0.33595834137359154
+        ],
+        "upper_scattered_net_flux_fraction": [
+          0.2030228164772653,
+          0.27675244506101104,
+          0.2883462304148449,
+          0.1990270031988443,
+          0.08779729713588448
+        ],
+        "projected_fiber_return_power_fraction": [
+          0.0017778857034957442,
+          0.0017306090090170284,
+          0.0006724811462554687,
+          0.004674388217813995,
+          0.007214647485226407
+        ]
+      },
+      "baseline_five_bin_mae_pp": 16.233229863462213,
+      "direct_yee_five_bin_mae_pp": 10.651741999833726,
+      "baseline_center_error_pp": 17.8162605448634,
+      "direct_yee_center_error_pp": 14.877154897982258,
+      "improved_both_primary_metrics": true,
+      "baseline_strongest_sample_um": 1.525,
+      "direct_yee_strongest_sample_um": 1.575,
+      "direct_yee_component_hashes": [
+        "550ae25ea8171360ac1b6c51c21fecaa949b2ce7d4f40003659daac4f830700c",
+        "7eba9050aaff3b5fc58d3dc56679e90780c0efa4bc0957ccd9440080e0c4b66a",
+        "11a7e5faa982cbde5f09028b064fcbcaaa5f7b042a9d25382977e1e2257fc6bb"
+      ]
+    },
+    {
+      "resolution": 14,
+      "baseline_receipt": "v012-grating3d-lumerical-r14.json",
+      "experiment_receipt": "v013-grating3d-lumerical-direct-r14.json",
+      "baseline_arrays_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f",
+      "experiment_arrays_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e",
+      "same_source_eh_and_time_offsets": true,
+      "same_physical_input_and_scalar_grid": true,
+      "same_gpu_model": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "published_power_fraction": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "baseline_power_fraction": [
+        0.33678055968545206,
+        0.34601388383841986,
+        0.24908304350250732,
+        0.12989219821317505,
+        0.045921267823827494
+      ],
+      "direct_yee_power_fraction": [
+        0.09415942575952048,
+        0.20846862373193925,
+        0.33612928378434725,
+        0.37995319613092116,
+        0.29363404209710364
+      ],
+      "difference_from_published_percentage_points": [
+        -5.645363491798837,
+        -8.607725488406132,
+        -6.413639897988116,
+        0.9729694114422316,
+        6.990525067283373
+      ],
+      "baseline_finite_aperture_fluxes": {
+        "signed_total_outgoing_flux_fraction": [
+          0.37032883993739735,
+          0.3768936749059047,
+          0.26878398788572205,
+          0.13849075509643616,
+          0.04824368813683861
+        ],
+        "upper_scattered_net_flux_fraction": [
+          0.16164822246011112,
+          0.14636091100427767,
+          0.08413274530408278,
+          0.039882401771067374,
+          0.04944076032591983
+        ],
+        "projected_fiber_return_power_fraction": [
+          0.0013401570414421206,
+          0.004224282628112294,
+          0.003599848499930147,
+          0.0011221512412569671,
+          0.0003209062243940891
+        ]
+      },
+      "direct_yee_finite_aperture_fluxes": {
+        "signed_total_outgoing_flux_fraction": [
+          0.10445544711547602,
+          0.2303529407982654,
+          0.36881506477880843,
+          0.4138697898474428,
+          0.3174468078111235
+        ],
+        "upper_scattered_net_flux_fraction": [
+          0.20197235479005965,
+          0.2808740884168176,
+          0.2663544877792507,
+          0.1517526188298484,
+          0.05676268960055237
+        ],
+        "projected_fiber_return_power_fraction": [
+          0.001878416024197932,
+          0.001074480939147456,
+          0.0012110593880559541,
+          0.005245422037200588,
+          0.004797461747657341
+        ]
+      },
+      "baseline_five_bin_mae_pp": 16.139139417916994,
+      "direct_yee_five_bin_mae_pp": 5.726044671383739,
+      "baseline_center_error_pp": 15.11826392617211,
+      "direct_yee_center_error_pp": 6.413639897988116,
+      "improved_both_primary_metrics": true,
+      "baseline_strongest_sample_um": 1.525,
+      "direct_yee_strongest_sample_um": 1.575,
+      "direct_yee_component_hashes": [
+        "761773bb15959445fab26861db37b52459532affcd65cef5504a5b7871108ab3",
+        "bf002bff70c4292648e31ba4c4012629c3c7cd60feac8b254e3da92d9a102ae8",
+        "2833ff03ee19e1dc9e184925f626171347bd0603d1dad142b83fac3f2b996f12"
+      ]
+    }
+  ],
+  "slab_phase_screen": {
+    "frozen_material_mesh_controls": {
+      "volume-average": [
+        {
+          "mesh_cells_per_um": 12,
+          "rib_te_neff_1550": 2.864817513044042,
+          "film_te_neff_1550": 2.262428105374951,
+          "estimated_first_order_wavelength_um": 1.5227201977682399
+        },
+        {
+          "mesh_cells_per_um": 14,
+          "rib_te_neff_1550": 2.8611762383711086,
+          "film_te_neff_1550": 2.2632722485505856,
+          "estimated_first_order_wavelength_um": 1.5219013351359405
+        },
+        {
+          "mesh_cells_per_um": 24,
+          "rib_te_neff_1550": 2.8531959848694997,
+          "film_te_neff_1550": 2.314817691128585,
+          "estimated_first_order_wavelength_um": 1.5354286802429464
+        },
+        {
+          "mesh_cells_per_um": 48,
+          "rib_te_neff_1550": 2.8471627855283503,
+          "film_te_neff_1550": 2.334772097955477,
+          "estimated_first_order_wavelength_um": 1.540140526636674
+        },
+        {
+          "mesh_cells_per_um": 96,
+          "rib_te_neff_1550": 2.8478110093876174,
+          "film_te_neff_1550": 2.343080763727069,
+          "estimated_first_order_wavelength_um": 1.5427501057520907
+        }
+      ],
+      "direct-yee": [
+        {
+          "mesh_cells_per_um": 12,
+          "rib_te_neff_1550": 2.963278483440914,
+          "film_te_neff_1550": 2.4177301432972143,
+          "estimated_first_order_wavelength_um": 1.5847682073267608
+        },
+        {
+          "mesh_cells_per_um": 14,
+          "rib_te_neff_1550": 2.906260384757055,
+          "film_te_neff_1550": 2.4136658204349133,
+          "estimated_first_order_wavelength_um": 1.5739762319483073
+        },
+        {
+          "mesh_cells_per_um": 24,
+          "rib_te_neff_1550": 2.8654762311141937,
+          "film_te_neff_1550": 2.3563760293628095,
+          "estimated_first_order_wavelength_um": 1.550209841750801
+        },
+        {
+          "mesh_cells_per_um": 48,
+          "rib_te_neff_1550": 2.8544943404312297,
+          "film_te_neff_1550": 2.3513671850621267,
+          "estimated_first_order_wavelength_um": 1.5465614587759189
+        },
+        {
+          "mesh_cells_per_um": 96,
+          "rib_te_neff_1550": 2.8496187946780567,
+          "film_te_neff_1550": 2.345816879730034,
+          "estimated_first_order_wavelength_um": 1.5439299572412566
+        }
+      ]
+    },
+    "continuous_constant_index": {
+      "mesh_cells_per_um": null,
+      "rib_te_neff_1550": 2.8481578567840424,
+      "film_te_neff_1550": 2.3452709706929786,
+      "estimated_first_order_wavelength_um": 1.5434719819252285
+    },
+    "continuous_tabulated_index": {
+      "mesh_cells_per_um": null,
+      "rib_te_neff_1550": 2.8481578567840424,
+      "film_te_neff_1550": 2.3452709706929786,
+      "estimated_first_order_wavelength_um": 1.5437502152843947
+    },
+    "material_shift_nm": 0.2782333591662134,
+    "scope": "Independent TE slab dispersion approximation; ignores the curved finite tooth scattering, taper, asymmetric substrate and realistic fiber overlap. The tabulated-material calculation describes the reduced slab, not a dispersive 3D run."
+  },
+  "tidy3d_other_device": {
+    "published": [
+      0.07110364946451826,
+      0.2590468874157015,
+      0.38018939632056115,
+      0.2744817749939425,
+      0.12127849076095215
+    ],
+    "local": [
+      0.04971306948515579,
+      0.20615110207764634,
+      0.3566585155142766,
+      0.30335541591626264,
+      0.14198965514652684
+    ],
+    "mae_pp": 2.9480410286319403,
+    "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+    "receipt": "v012-grating3d-tidy3d-r14.json",
+    "scope": "Independent unchanged finite uniform taper/Gaussian control; the candidate curved-chip model is Lumerical-specific."
+  }
+}

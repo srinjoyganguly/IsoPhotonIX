@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "examples": [
+    {
+      "geometry": "lumerical",
+      "mesh": 14,
+      "file": "grating-lumerical-direct-3d-gpu-r14-v0.12.0a2.zip",
+      "bytes": 37167312,
+      "sha256": "235613c9b7a4e473bf1569cff87d70d9c233be03b454b53a7e514876573c572e",
+      "raw_result_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e",
+      "original_report_sha256": "0ee836299a7daff782204810662e118b8b899cab4723ac511a675b15b2769719",
+      "exact_native_source_hashes": {
+        "scripts/calibrate_finite_grating.py": "74a23c3c871c42c1f78469dd4d9d209d8c719a5e591603a46908998079bbf9fd",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "scripts/grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "scripts/grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+        "scripts/lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+        "scripts/grating_angular_spectrum.py": "e95a23cb4517c2e1168c73fe438c33acefe2e6c9a3d8236e77440178e1637045",
+        "docs/verification/v012-grating-commercial-references.json": "e36c4f699040b718b8c6656b3eed9bc87e50ac7795b7a80a93565c3e8c5417d2",
+        "docs/verification/v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655"
+      },
+      "entries": 26,
+      "native_receipt": "v013-grating3d-lumerical-direct-r14.json",
+      "actual_device": "cuda:0",
+      "scope": "Original physical worker, helpers, comparison inputs, memory budget and measured reference arrays were verified. Launcher and Jupyter notebook are the standard current result exports. This packaging step does not claim a fresh notebook simulation."
+    }
+  ]
+}
