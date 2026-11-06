@@ -38,3 +38,17 @@ At the finer **6.25 nm** spacing, local Tidy3D measured 2.382815 and 2.323811 fo
 - The loaded Lumerical add/drop reconstruction supplies four measured spectra at 561 wavelengths. Its planar free spectral range is 40.25 nm compared with the published 25.4549 nm. The comparison includes absolute wavelength and a finite-time linewidth qualification. [Measured ring spectrum](verification/v011-ring-loaded-lumerical-fine.json) · [Lumerical final parameter extraction](https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction) · [Tidy3D add/drop ring](https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/).
 - The grating calculations include separate empty-domain beam references. The Tidy3D compact setup is 2.00 percentage points above its 56.23% reference. The Lumerical article reconstruction at 40 cells/µm is 6.28 points below 55.7% at 1310 nm. The article also supplies a total-output-aperture measurement for a separate comparison from our near-output guided mode. [Grating measurements](RING_GRATING_CALIBRATION.md) · [Lumerical broadband grating](https://optics.ansys.com/hc/en-us/articles/360042304774-Broadband-grating-coupler-2D) · [Tidy3D grating](https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/).
 - For the two-mode planar guide, local Tidy3D measured even/odd indices 3.17002 and 2.14855. Meep's 64-cell port modes returned 3.16518 and 2.12984. The largest absolute difference from independent mode matching is 0.001243 in power fraction across the full 4 × 4, three-wavelength matrix. [Multimode measurements](CALIBRATED_MULTIMODE.md).
+
+## Tidy3D optimized Y-junction reconstruction
+
+Meep simulated a finite-height 220 nm silicon device using the thirteen published junction widths and the sinusoidal S-bend equation in the example text. The source was calibrated against a separate straight guide. Both outputs were measured independently. The Tidy3D plot doubles its upper-arm power, so that same positive excess-loss observable is compared here.
+
+| Wavelength (µm) | Workbench, 20 cells/µm (dB) | Tidy3D plot reading (dB) |
+| ---: | ---: | ---: |
+| 1.500 | 0.2452 | 0.2365 |
+| 1.525 | 0.1704 | 0.1595 |
+| 1.550 | 0.1497 | 0.1318 |
+| 1.575 | 0.1534 | 0.1372 |
+| 1.600 | 0.1654 | 0.1520 |
+
+The five-point mean absolute difference is 0.0135 dB, and the graph-readout uncertainty is approximately ±0.004 dB. The separate sum of both measured arms gives 0.1498 dB at 1.55 µm. The archived notebook generates its bends with PhotonForge's default Path.s_bend. Its plotted shape differs from the site's sinusoidal equation by about 0.05 µm at sampled positions. Workbench freezes the real central-wavelength permittivities across the band. The two grids and path constructions have independent uncertainties. [Measurements, source hashes and both definitions of loss](verification/v011-published-splitter.json) · [Published Tidy3D example](https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/) · [PhotonForge path interface](https://docs.flexcompute.com/projects/photonforge/en/v1.0.1/_autosummary/photonforge.Path.html) · [Related Lumerical Y branch](https://optics.ansys.com/hc/en-us/articles/360042800353-Y-branch).

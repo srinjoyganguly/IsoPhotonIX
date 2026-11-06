@@ -1253,6 +1253,11 @@
         "vendor": "Tidy3D",
         "url": "https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/",
         "description": "The published thirteen-width junction reports <0.2 dB mean excess loss over 1.50\u20131.60 \u00b5m. Our cosine branch has a different shape."
+      },
+      {
+        "vendor": "Tidy3D Y reconstruction",
+        "url": "https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/",
+        "description": "The published-width sine-path model at 20 cells/\u00b5m measures 0.150 dB at 1.55 \u00b5m, versus 0.132 dB read from the plot. The notebook uses a different bend construction."
       }
     ],
     "recorded": [

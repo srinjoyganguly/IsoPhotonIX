@@ -52,6 +52,12 @@ def build():
                               'The published optimized Y splits the transmitted power approximately in half. Compare arm imbalance separately from insertion loss.'),
                          vendor('Tidy3D','https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/',
                               'The published thirteen-width junction reports <0.2 dB mean excess loss over 1.50–1.60 µm. Our cosine branch has a different shape.')]
+        if key=='splitter':
+            replica=read('v011-published-splitter.json')
+            if replica and replica.get('passed'):
+                measured=replica['rows'][-1]
+                comparisons.append(vendor('Tidy3D Y reconstruction',replica['source_url'],
+                    f"The published-width sine-path model at {measured['resolution']} cells/µm measures {measured['published_observable_loss_db'][2]:.3f} dB at 1.55 µm, versus {measured['vendor_loss_db'][2]:.3f} dB read from the plot. The notebook uses a different bend construction."))
         entry=add_matrix_case(key,refs,summary,'Finite-height 3D',
                 'Fundamental quasi-TE mode at each port. Radiation and higher modes are excluded from the reported guided power sum. Material-grid differences affect weak reflection, phase and arm symmetry.',comparisons)
         if entry:index[key]=entry

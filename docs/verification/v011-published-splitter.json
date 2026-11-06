@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "case": "Tidy3D optimized Y reconstruction",
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/",
+  "source_notebook": "https://github.com/flexcompute/tidy3d-notebooks/blob/develop/YJunction.ipynb",
+  "source_notebook_sha256": "bc049b36b9b0e04cd83d79fd73550a2fe1a6e5b10562683957b0d3a9f21f95e9",
+  "curve_readout_uncertainty_db": 0.004,
+  "curve_axes_pixels_xyxy": [
+    73,
+    15,
+    569,
+    385
+  ],
+  "observable": "The published curve doubles its upper arm, so compare its positive excess loss against -10 log10(2 P_upper). loss_db independently uses both measured arm powers, -10 log10(P_lower+P_upper). All powers use the measured straight reference.",
+  "geometry": "Reconstruction of the sinusoidal centreline in the example text. The archived runnable notebook calls PhotonForge Path.s_bend with its default zero Euler fraction. Its plotted contours differ from the text-equation path by about 0.05 \u00b5m in the bends.",
+  "path_api": "https://docs.flexcompute.com/projects/photonforge/en/v1.0.1/_autosummary/photonforge.Path.html",
+  "rows": [
+    {
+      "published_observable_loss_db": [
+        0.24523067789066993,
+        0.17040915081047237,
+        0.1497490178129539,
+        0.15343763747202138,
+        0.16541239294537524
+      ],
+      "published_observable_delta_db": [
+        0.008744191390669925,
+        0.010949691310472354,
+        0.017992261012953897,
+        0.01627547527202139,
+        0.013385365945375233
+      ],
+      "published_observable_mean_absolute_delta_db": 0.01346939698629856,
+      "resolution": 20,
+      "native_arrays_sha256": "d28edbe8b2b34e42f668f82a7ad4c02aae50458785e89fea07a9ba8bc2d22efd",
+      "loss_db": [
+        0.24536402674654859,
+        0.1704942658316707,
+        0.14979237565749037,
+        0.1534063046076822,
+        0.16530650861407256
+      ],
+      "vendor_loss_db": [
+        0.2364864865,
+        0.1594594595,
+        0.1317567568,
+        0.1371621622,
+        0.152027027
+      ],
+      "delta_db": [
+        0.008877540246548576,
+        0.011034806331670699,
+        0.01803561885749036,
+        0.01624414240768221,
+        0.013279481614072552
+      ],
+      "mean_absolute_delta_db": 0.01349431789149288,
+      "measured_arm_powers": [
+        [
+          0.47252007733070805,
+          0.4807420002023359,
+          0.483043709630073,
+          0.48265021850441936,
+          0.4813377700728734
+        ],
+        [
+          0.4725490958499397,
+          0.48076084436001354,
+          0.4830533547204814,
+          0.48264325426665317,
+          0.48131430016191945
+        ]
+      ],
+      "late_monitor_changes": [
+        5.990185119366783e-08,
+        1.395453044813349e-05,
+        1.4070409953668081e-05
+      ],
+      "native_version": "1.35.0",
+      "native_scope": "Thirteen published junction widths, 2 \u00b5m junction and sinusoidal six-micrometre access bends reconstructed using constant normal path width. Real materials frozen at the reported central wavelength. Independent straight input reference and both output amplitudes. Vendor uses a nonuniform grid, a path construction library and dispersive media."
+    }
+  ],
+  "arrays_file": "v011-published-splitter.npz",
+  "arrays_sha256": "440e2826430cc6a38e395ba50faa4c369015eb017c1994c1a0511fa3aa3bc619",
+  "lumerical": {
+    "source_url": "https://optics.ansys.com/hc/en-us/articles/360042800353-Y-branch",
+    "scope": "The vendor Y-branch tutorial describes near-equal division for its own optimized device. Its loss curve is outside the matched Tidy3D geometry comparison."
+  },
+  "limits": "Digitization uncertainty, the reconstructed path, frozen central material indices and discretization are independent uncertainties."
+}
