@@ -1,0 +1,239 @@
+{
+  "case": "splitter",
+  "resolution": 28,
+  "material_model": "yee-aligned",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "launch": "left_center",
+  "port_order": [
+    "left_center",
+    "right_lower",
+    "right_upper"
+  ],
+  "s": [
+    [
+      [
+        -0.005591451944650892,
+        -0.07746451309542339
+      ],
+      [
+        -0.1357107439688912,
+        0.6147572651547231
+      ],
+      [
+        -0.13570750327115838,
+        0.6147593345569176
+      ]
+    ],
+    [
+      [
+        -0.06507081898527736,
+        0.05356024250698737
+      ],
+      [
+        0.5356807535111608,
+        0.3263731470768012
+      ],
+      [
+        0.5356796446761165,
+        0.3263707331686294
+      ]
+    ],
+    [
+      [
+        0.046468149653248345,
+        0.020176737997359643
+      ],
+      [
+        0.46982587516598673,
+        -0.4170734217872197
+      ],
+      [
+        0.4698258892880548,
+        -0.41707184139628506
+      ]
+    ]
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port"
+  ],
+  "full_matrix": false,
+  "modal_power": [
+    [
+      0.006032015123960362,
+      0.39634390108910433,
+      0.39634556586895564
+    ],
+    [
+      0.00710291106082203,
+      0.39347330081510035,
+      0.39347053718935926
+    ],
+    [
+      0.0025663896884107807,
+      0.39468659213678536,
+      0.3946852871309995
+    ]
+  ],
+  "sum_observed_power": [
+    0.7987214820820203,
+    0.7940467490652816,
+    0.7919382689561956
+  ],
+  "reference_through_power": [
+    0.9998806740606683,
+    1.0000012905687188,
+    1.0000368324140045
+  ],
+  "checks": {
+    "both_stages_settled": true,
+    "straight_reference_power_within_0_03": true,
+    "measured_column_total_guided_power_at_most_1_05": true,
+    "requested_native_device": true
+  },
+  "passed": true,
+  "sampled_ports": [
+    {
+      "name": "left_center",
+      "x": -4.75,
+      "y": 0.0,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        63,
+        70,
+        21
+      ],
+      "source_ix": 42,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": -4.75,
+      "actual_y": 0.0
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        329,
+        35,
+        21
+      ],
+      "source_ix": 350,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        329,
+        105,
+        21
+      ],
+      "source_ix": 350,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "reference_source_relative_difference": 0.0,
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "source_sha256": "dd6f648ecd6f5759659b710da9ab77deee7c4a4a68438fe6e506a573134e9c85",
+  "stage_sha256": {
+    "reference": "30e29ebdbe614498271ad71103c915622ee4eb3926955db8d2022c569798d8d4",
+    "device": "701ac40583e65547d8d3f01df6733b8c1ee5950205d17a6289783e9d1a4b61a2"
+  },
+  "stage_step_counts": {
+    "reference": 6026,
+    "device": 6026
+  },
+  "stage_final_convergence": {
+    "reference": [
+      {
+        "time_fs": 383.63010053348876,
+        "energy_ratio": 9.379016319144284e-07,
+        "amplitude_change": 5.8735008217490965e-06
+      },
+      {
+        "time_fs": 410.3221487069228,
+        "energy_ratio": 3.6311339352002037e-11,
+        "amplitude_change": 4.578108059547158e-09
+      }
+    ],
+    "device": [
+      {
+        "time_fs": 383.63010053348876,
+        "energy_ratio": 8.717546734260395e-06,
+        "amplitude_change": 0.00023972004303191472
+      },
+      {
+        "time_fs": 410.3221487069228,
+        "energy_ratio": 3.689982577270712e-07,
+        "amplitude_change": 7.653256784621034e-05
+      }
+    ]
+  },
+  "mesh_comparisons": [
+    {
+      "baseline_resolution": 16,
+      "max_complex_difference": 0.5752050854849786,
+      "complex_relative_l2_to_baseline": 0.8288903122527317,
+      "max_port_power_difference": 0.03190535828188601,
+      "baseline_center_guided_power": [
+        0.013617364579789099,
+        0.3659513788838194,
+        0.365945389268933
+      ],
+      "baseline_arrays_sha256": "1bb4f8721f890d6ad0e9a96b01ad9140f536e875dc605b1fd52f8a730c38070c"
+    }
+  ],
+  "scope": "One independently measured input column. Full-matrix reciprocity and passivity require launching every other input port.",
+  "arrays_sha256": "5851c1b940115dc53d8425e833ae4efd4f21a13a024aae060d89f43cc1151858",
+  "memory_preflight": {
+    "cell_shape": [
+      392,
+      196,
+      112
+    ],
+    "free_mib": 12592,
+    "required_free_mib": 12424.375
+  },
+  "arrays_file": "v012-splitter-cuda28-arrays.npz"
+}
