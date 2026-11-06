@@ -36,6 +36,21 @@ GPU_COMPONENTS = ('ring-3d', 'grating-3d')
 LAYOUT_CASES = ('layout-ports-2d','layout-ports-3d')
 
 
+def grating_meshes(geometry, domain, material):
+    if geometry not in ('lumerical','tidy3d'):
+        return [] if domain=='mirror-y' else [12,16]
+    if domain=='mirror-y' and geometry=='lumerical' and material!='direct-yee':
+        return []
+    defaults=[] if domain=='mirror-y' else [12,14]
+    catalogue=ROOT/'docs/verification/v014-grating-meshes.json'
+    if catalogue.is_file():
+        routes=json.loads(catalogue.read_text())['qualified']
+        for row in routes:
+            if (row['geometry'],row['domain'],row['material'])==(geometry,domain,material):
+                defaults.append(row['resolution'])
+    return sorted(set(defaults))
+
+
 def calibration_routes(case):
     if case in GPU_COMPONENTS or case=='layout-ports-3d':
         return ['fdtdx:gpu']
@@ -53,7 +68,7 @@ class Calibration(BaseModel):
     device: Literal['cpu','gpu']
     resolution: int | None = None
     offset_um: float | None = None
-    material_model: Literal['legacy-x','yee-aligned'] | None = None
+    material_model: Literal['legacy-x','yee-aligned','polygon-area'] | None = None
     ring_scope: Literal['full','lumerical','tidy3d'] | None = None
     grating_scope: Literal['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'] | None = None
 
@@ -62,9 +77,10 @@ class Calibration(BaseModel):
     port_distance_um: float | None = Field(default=None, exclude_if=lambda v: v is None)
     planar_layout: dict | None = Field(default=None, exclude_if=lambda v: v is None)
     duration_um_c: float | None = Field(default=None, exclude_if=lambda v: v is None)
-    ring_interface: Literal['legacy','exact-area'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    ring_interface: Literal['legacy','exact-area','wall-tensor'] | None = Field(default=None, exclude_if=lambda v: v is None)
     ring_material: Literal['constant','palik-ade'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_material_model: Literal['volume-average','direct-yee'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    grating_domain: Literal['full','mirror-y'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_spectrum: Literal['standard','dense'] | None = Field(default=None, exclude_if=lambda v: v is None)
 
     @model_validator(mode='before')
@@ -94,7 +110,7 @@ class Calibration(BaseModel):
             raise ValueError('Choose the 3D ring to set an observation duration.')
         if (self.ring_interface is not None or self.ring_material is not None) and self.case != 'ring-3d':
             raise ValueError('Ring interface and material settings require a full 3D ring.')
-        if (self.grating_material_model is not None or self.grating_spectrum is not None) and self.case != 'grating-3d':
+        if any(v is not None for v in (self.grating_material_model,self.grating_spectrum,self.grating_domain)) and self.case != 'grating-3d':
             raise ValueError('Grating material or spectrum settings require a full 3D grating.')
         if self.case == 'layout-ports-3d':
             if f'{self.solver}:{self.device}' not in calibration_routes(self.case):
@@ -118,9 +134,14 @@ class Calibration(BaseModel):
                 raise ValueError('Direct Yee-cell material sampling requires the Lumerical curved grating.')
             if self.geometry_3d not in geometries:
                 raise ValueError(f'Available {self.case} geometries: {", ".join(geometries)}.')
-            meshes = (12,16,20,24) if ring else ((12,14) if self.geometry_3d in ('lumerical','tidy3d') else (12,16))
+            meshes = (12,16,20,24) if ring else grating_meshes(self.geometry_3d,self.grating_domain or 'full',
+                                                              self.grating_material_model or 'volume-average')
+            if self.grating_domain=='mirror-y' and self.grating_spectrum=='dense':
+                raise ValueError('Mirror symmetry is qualified only for the standard grating spectrum.')
             if self.resolution is None:
                 self.resolution = 16 if ring else 12
+            if self.ring_interface=='wall-tensor' and self.resolution<16:
+                raise ValueError('The ring wall tensor requires at least 16 cells/µm.')
             if self.ring_material=='palik-ade' and (self.geometry_3d!='lumerical' or self.ring_interface!='exact-area' or self.resolution!=16):
                 raise ValueError('The measured dispersive ring uses the Lumerical geometry, exact area and 16 cells/µm.')
             if self.grating_spectrum=='dense' and (self.geometry_3d!='lumerical' or self.resolution!=12):
@@ -197,23 +218,28 @@ def specification(config):
             args += ['--ring-material',config.ring_material]
         if config.grating_material_model is not None:
             args += ['--grating-material-model',config.grating_material_model]
+        if config.grating_domain is not None:
+            args += ['--grating-domain',config.grating_domain]
         if config.grating_spectrum is not None:
             args += ['--grating-spectrum',config.grating_spectrum]
-        helpers = ['backend/__init__.py', *['backend/adapters/' + n + '.py' for n in (
+        helpers = ['backend/__init__.py', 'scripts/gpu_timing.py', *['backend/adapters/' + n + '.py' for n in (
             'fdtdx_adapter', 'fdtdx3d_adapter', 'fdtdx_ports_adapter', 'fdtdx_ports3d_adapter')]]
         if ring:
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py',
-                        'scripts/ring_stage_provenance.py']
+                        'scripts/ring_stage_provenance.py','scripts/ring_wall_tensor.py']
             if config.ring_material=='palik-ade':
                 helpers += ['scripts/ring_ade_stage.py','scripts/ring_palik_dispersion.py','docs/verification/v013-ring-project-audit.json']
         else:
-            helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json']
+            helpers += ['scripts/grating_mirror.py','scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json']
+            if config.resolution >= 16 and config.geometry_3d in ('lumerical','tidy3d'):
+                mirror='-mirror' if config.grating_domain=='mirror-y' else ''
+                helpers += [f'docs/verification/v014-grating-memory-{config.geometry_3d}{mirror}-r{config.resolution}.json']
             if config.grating_spectrum=='dense':
                 helpers += ['docs/verification/v013-grating-dense-reference.json','docs/verification/v013-grating-dense-memory.json']
         return worker, args, helpers
     if config.case == 'layout-ports-3d':
         helpers = ['backend/__init__.py','backend/planar_port_layout.py','backend/geometry_draft.py','backend/calibrated_geometry.py',
-                   'scripts/grating_cuda_identity.py','scripts/calibration_checkpoint.py','scripts/calibrate_fdtdx_multiport.py']
+                   'scripts/gpu_timing.py','scripts/phase_polygon_material.py','scripts/grating_cuda_identity.py','scripts/calibration_checkpoint.py','scripts/calibrate_fdtdx_multiport.py']
         helpers += ['backend/adapters/'+name+'.py' for name in (
             'fdtdx_adapter','fdtdx3d_adapter','fdtdx_ports_adapter','fdtdx_ports3d_adapter')]
         return 'calibrate_layout_ports3d', ['--design','layout.json','--device','gpu','--resolution',str(config.resolution)],helpers
@@ -234,6 +260,7 @@ def specification(config):
         helpers=['backend/__init__.py','backend/calibrated_geometry.py','scripts/calibration_checkpoint.py']
         if config.solver=='fdtdx':
             args+=['--device',config.device,'--material-model',config.material_model or 'legacy-x']
+            helpers+=['scripts/gpu_timing.py','scripts/phase_polygon_material.py']
             helpers+=['backend/adapters/'+n+'.py' for n in (
                 'fdtdx_adapter','fdtdx3d_adapter','fdtdx_ports_adapter','fdtdx_ports3d_adapter')]
     else:
@@ -285,6 +312,7 @@ def create_bundle(config, destination):
         'With a nondefault workbench store, set PHOTONICS_DATA_DIR to that directory. Keep the original export for replay.\n\n'
         'Run `python run.py --output fresh-result` or execute the notebook in this directory. '
         'The program launches its solver afresh. For long studies, run.py accepts --checkpoint PATH to reuse matching completed stages after an interruption. '
+        'Set PHOTONICS_CHECKPOINT to the path of a compatible local checkpoint to reuse measured stages in an unmodified notebook. '
         'In the notebook, pass checkpoint=Path("stages") to run() when you want that behavior. '
         'A completed run export contains reference/report.json, numerical NPZ files and their hashes. '
         'A fresh replay compares numerical arrays with the saved samples. Small floating-point differences are listed in reproduction.json. '
@@ -364,6 +392,14 @@ def result_zip(directory, target):
                     if prefix:
                         with path.open('rb') as stream:
                             reference_hashes[name]=hashlib.file_digest(stream,'sha256').hexdigest()
+        report_path=directory/'calculation/report.json'
+        if report_path.is_file() and 'gpu-performance.csv' not in reference_hashes:
+            from .calibration_performance import stage_rows, timing_csv
+            rows=stage_rows(json.loads(report_path.read_text()),'report.json')
+            if rows:
+                timing=timing_csv(rows).encode()
+                archive.writestr('reference/gpu-performance.csv',timing)
+                reference_hashes['gpu-performance.csv']=hashlib.sha256(timing).hexdigest()
         archive.writestr('reference-sha256.json',json.dumps(reference_hashes,indent=2))
 
 

@@ -22,10 +22,10 @@ def tag_offsets(data, name):
     return [match.end() for match in re.finditer(re.escape(prefix),data)]
 
 
-def read_matrix(data, name, port):
+def read_matrix(data, name, port, expected_count=2):
     offsets=tag_offsets(data,name)
-    if len(offsets)!=2:
-        raise ValueError(f'Expected both port records for {name}.')
+    if len(offsets)!=expected_count:
+        raise ValueError(f'Expected {expected_count} records for {name}.')
     start=offsets[port]
     kind,label_size=struct.unpack_from('<II',data,start)
     if kind!=3 or label_size>16:

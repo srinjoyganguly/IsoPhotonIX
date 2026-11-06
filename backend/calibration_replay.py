@@ -10,6 +10,27 @@ import sys
 import tempfile
 
 
+def gpu_lock_path():
+    """Use one private per-user lock for calibrated GPU programs and notebooks."""
+    override=os.environ.get('PHOTONICS_GPU_LOCK')
+    if override:
+        return Path(override).expanduser()
+    import stat
+    uid=os.getuid()
+    fallback=Path(tempfile.gettempdir())/f'photonics-workbench-{uid}'
+    runtime=os.environ.get('XDG_RUNTIME_DIR')
+    for directory in ([Path(runtime),fallback] if runtime else [fallback]):
+        if directory==fallback:
+            directory.mkdir(mode=0o700,exist_ok=True)
+        try:
+            info=directory.lstat()
+        except FileNotFoundError:
+            continue
+        if stat.S_ISDIR(info.st_mode) and info.st_uid==uid and info.st_mode & 0o077==0:
+            return directory/'photonics-workbench-gpu.lock'
+    raise PermissionError('A private per-user directory is required for the local GPU lock.')
+
+
 def verify_source(root, *, editable_notebook=False):
     manifest = json.loads((root/'manifest.json').read_text())
     for name, digest in manifest['files'].items():
@@ -114,6 +135,8 @@ def compare(original, output):
 
 
 def run(root, output, checkpoint=None):
+    if checkpoint is None:
+        checkpoint = os.environ.get('PHOTONICS_CHECKPOINT') or None
     root,output = Path(root).resolve(),Path(output).resolve()
     manifest=verify_source(root,editable_notebook=True)
     config=json.loads((root/'config.json').read_text())
@@ -150,7 +173,20 @@ def run(root, output, checkpoint=None):
             else:
                 raise ValueError('No checkpoint format is defined for this worker.')
         command=[solver,'-m',manifest['worker'],*arguments,'--output',str(work)]
-        process=subprocess.run(command,cwd=root/'source',env=env)
+        if config['device']=='gpu':
+            import fcntl
+            lock_path=gpu_lock_path()
+            env['PHOTONICS_GPU_LOCK']=str(lock_path)
+            # These two native workers acquire the same lock for each separate
+            # reference/device child. Their portable controller must not hold it.
+            if manifest['worker'] in ('scripts.calibrate_finite_grating','scripts.calibrate_layout_ports3d'):
+                process=subprocess.run(command,cwd=root/'source',env=env)
+            else:
+                with lock_path.open('a') as guard:
+                    fcntl.flock(guard,fcntl.LOCK_EX)
+                    process=subprocess.run(command,cwd=root/'source',env=env)
+        else:
+            process=subprocess.run(command,cwd=root/'source',env=env)
         # The shared checkpoint may already contain another completed report.
         # On rejection leave that cache intact and do not publish it as this job.
         if process.returncode and work!=staged:

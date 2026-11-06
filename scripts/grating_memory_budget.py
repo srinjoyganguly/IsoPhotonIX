@@ -16,8 +16,14 @@ def estimate(base,observed,refined,idle_used_mib,free_before_mib,observed_global
         raise ValueError('Memory planning arrays must have been allocated on the host.')
     if base['executed_fdtd_steps'] or refined['executed_fdtd_steps'] or observed['executed_fdtd_steps']!=1:
         raise ValueError('Expected two shape-only plans and one bounded native measurement.')
-    if base['geometry']!=refined['geometry'] or observed['geometry']!=base['geometry'] or base['resolution']!=12 or observed['resolution']!=12:
-        raise ValueError('Compare one physical geometry against its own measured 12-cell baseline.')
+    if base['geometry']!=refined['geometry'] or observed['geometry']!=base['geometry'] or base['resolution'] not in (12,14) or observed['resolution']!=base['resolution']:
+        raise ValueError('Compare one physical geometry against its own measured baseline.')
+    for setting in ('grating_material_model', 'grating_spectrum', 'stage'):
+        values = {run[setting] for run in (base, observed, refined) if setting in run}
+        if len(values) > 1:
+            raise ValueError(f'Memory profiles disagree on {setting}.')
+    if refined['resolution'] < base['resolution']:
+        raise ValueError('A finer-mesh estimate needs a candidate at or above its baseline.')
     if base['gpu']!=refined['gpu'] or observed['gpu']!=base['gpu']:
         raise ValueError('GPU device models differ.')
     reference_live=base['compiled_live_bytes']/MIB
@@ -25,7 +31,7 @@ def estimate(base,observed,refined,idle_used_mib,free_before_mib,observed_global
     # A shape-only plan must be close enough to the actual device executable to make a comparison.
     disagreement=abs(measured_live-reference_live)/max(measured_live,1.)
     if disagreement>.05:
-        raise ValueError('The abstract and actual 12-cell executable live memory disagree by more than 5%.')
+        raise ValueError('The abstract and actual baseline executable live memory disagree by more than 5%.')
     peak=max(observed['global_used_mib'],observed_global_peak_mib or 0.)
     allocator_peak=observed['allocator_bytes'].get('peak_bytes_in_use',0)/MIB
     baseline=max(allocator_peak,peak-idle_used_mib,measured_live)
@@ -45,7 +51,7 @@ def estimate(base,observed,refined,idle_used_mib,free_before_mib,observed_global
             'compiled_live_ratio':compiled_ratio,'estimated_runtime_mib':estimated,
             'required_free_with_reserve_mib':required,'available_before_launch_mib':free_before_mib,
             'fits_envelope':required<=free_before_mib,
-            'scope':'Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch.'}
+            'scope':'Hardware-specific memory admission estimate, combining measured baseline allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch.'}
 
 
 if __name__=='__main__':

@@ -5,6 +5,7 @@ import hashlib
 import importlib.metadata
 import json
 import math
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -20,6 +21,8 @@ from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes, port_basis,
 from scripts.grating_angular_spectrum import air_angular_flux
 from scripts import lumerical_grating3d as ansys
 from scripts import grating_cuda_identity as cuda_identity
+from scripts.gpu_timing import StageTiming
+from scripts import grating_mirror
 
 TIDY_URL = 'https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/'
 ANSYS_URL = 'https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler'
@@ -33,7 +36,12 @@ def monitoring_wavelengths(model):
     return WL
 
 
-def settings(name, resolution, grating_material_model='volume-average', grating_spectrum='standard'):
+def settings(name, resolution, grating_material_model='volume-average', grating_spectrum='standard', grating_domain='full'):
+    if grating_domain not in ('full','mirror-y') or (grating_domain == 'mirror-y' and name not in ('lumerical','tidy3d')):
+        raise ValueError('The y mirror requires a symmetric benchmark grating.')
+    mirrors = grating_domain == 'mirror-y'
+    if mirrors and (grating_spectrum != 'standard' or (name == 'lumerical' and grating_material_model != 'direct-yee')):
+        raise ValueError('Mirror symmetry requires the standard spectrum and direct Yee integration for the Lumerical grating.')
     if grating_spectrum not in ('standard', 'dense'):
         raise ValueError('Choose a standard or dense grating spectrum.')
     if grating_spectrum=='dense' and (name!='lumerical' or resolution!=12):
@@ -42,18 +50,22 @@ def settings(name, resolution, grating_material_model='volume-average', grating_
         raise ValueError('Unknown grating material model.')
     if grating_material_model=='direct-yee' and name!='lumerical':
         raise ValueError('Direct Yee-cell integration is supported for the Lumerical curved grating.')
-    if name == 'lumerical' and resolution in (12,14,16):
+    if name == 'lumerical' and resolution in ((12,14,16,18,20) if mirrors else (12,14,16)):
         model=ansys.model(resolution)
         if grating_spectrum=='dense':
             model['grating_spectrum']='dense'
         if grating_material_model!='volume-average':
             model['grating_material_model']=grating_material_model
+        if mirrors:
+            model['grating_domain']='mirror-y'
+        if resolution >= 16 and grating_material_model == 'direct-yee':
+            model['grating_allocator'] = 'platform'
         return model
     matched = name == 'tidy3d'
     allowed=(12,14,16) if matched else (12,16)
     if name not in ('tidy3d', 'compact', 'compact-narrow', 'compact-radiation') or resolution not in allowed:
         raise ValueError('Choose a supported grating and mesh.')
-    return dict(geometry=name, resolution=resolution, period=.62, fill=.8, teeth=20 if matched else 8,
+    model = dict(geometry=name, resolution=resolution, period=.62, fill=.8, teeth=20 if matched else 8,
                 width=10.8 if matched else (2. if name == 'compact-narrow' else 3.),
                 guide_width=.5, taper=50. if matched else 3., height=.26, etch=.16,
                 oxide_top=.68, oxide_bottom=2., n_si=3.47, n_oxide=1.44,
@@ -61,6 +73,11 @@ def settings(name, resolution, grating_material_model='volume-average', grating_
                 angle_deg=14.5, source_z=1.18, buffer=.93, pml=.667,
                 max_time_fs=2000. if matched else 750.,
                 residual_slab_laterally_extended=matched)
+    if mirrors:
+        model['grating_domain']='mirror-y'
+    if matched and resolution == 16:
+        model['grating_allocator'] = 'platform'
+    return model
 
 
 def grid(m):
@@ -197,13 +214,38 @@ def waist_source_type(m, lp):
     return WaistSource
 
 
+def memory_profile_name(m):
+    qualifier = '-mirror' if m.get('grating_domain') == 'mirror-y' else ''
+    return f"v014-grating-memory-{m['geometry']}{qualifier}-r{m['resolution']}.json"
+
+
 def memory_admission(m, available_mib):
     record=json.loads((ROOT/'docs/verification/v012-grating-memory-budget.json').read_text())
-    samples=[v for v in record['refinements'] if v['geometry']==m['geometry']]
-    if m['resolution']==12:
-        required=1024.+1.2*samples[0]['baseline_native_peak_mib']
+    allocator = m.get('grating_allocator')
+    samples = [v for v in record['refinements'] if v['geometry'] == m['geometry']]
+    if allocator == 'platform' and m['resolution'] != 12:
+        name = memory_profile_name(m)
+        path = ROOT/'docs/verification'/name
+        if not path.exists():
+            raise ValueError(f"This grating mesh requires its measured GPU admission profile {name}.")
+        profile = json.loads(path.read_text())
+        required = profile['required_free_with_reserve_mib']
+        matched = (profile['geometry'] == m['geometry'] and profile['resolution'] == m['resolution']
+                   and profile['allocator'] == allocator and profile['domain'] == m.get('grating_domain','full')
+                   and profile['material_model'] == m.get('grating_material_model', 'volume-average')
+                   and profile['grating_spectrum'] == m.get('grating_spectrum', 'standard')
+                   and profile['device'] == record['reference_runs'][m['geometry']]['shape_only']['gpu']
+                   and set(profile['roles']) == {'reference', 'device'}
+                   and required == max(v['estimate']['required_free_with_reserve_mib'] for v in profile['roles'].values())
+                   and math.isfinite(required) and required > 0)
+        if not matched:
+            raise ValueError('The on-demand grating memory profile differs from the requested GPU model.')
+    elif m['resolution'] == 12:
+        required = 1024. + 1.2*samples[0]['baseline_native_peak_mib']
     else:
-        required=next(v['required_free_with_reserve_mib'] for v in samples if v['resolution']==m['resolution'])
+        required = next(v['required_free_with_reserve_mib'] for v in samples if v['resolution'] == m['resolution'])
+    if allocator == 'platform' and os.environ.get('XLA_PYTHON_CLIENT_ALLOCATOR') != allocator:
+        raise ValueError('This grating mesh requires the on-demand allocator before creating its CUDA client.')
     if m.get('grating_spectrum')=='dense':
         profile=json.loads((ROOT/'docs/verification/v013-grating-dense-memory.json').read_text())
         if profile['resolution']!=m['resolution'] or profile['wavelength_um']!=monitoring_wavelengths(m).tolist():
@@ -212,25 +254,30 @@ def memory_admission(m, available_mib):
     if available_mib<required:
         raise ValueError(f"{m['geometry']} at {m['resolution']} cells/µm requires {math.ceil(required)} MiB free "
                          f"under the measured GPU budget, but {available_mib} MiB is available. Choose a smaller mesh or free GPU memory.")
-    return {'available_mib':available_mib,'required_free_with_reserve_mib':required,'profile_device':record['device']}
+    return {'available_mib':available_mib,'required_free_with_reserve_mib':required,'profile_device':record['reference_runs'][m['geometry']]['shape_only']['gpu'], 'allocator':allocator or 'default'}
 
 
 def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
+    worker_started=time.monotonic()
+    if 'grating_allocator' in m:
+        os.environ['XLA_PYTHON_CLIENT_ALLOCATOR'] = m['grating_allocator']
     jax,jnp,fdtdx,gpu = _ports_runtime('gpu')
     # The optional planner builds fields only on host RAM, then passes abstract
     # GPU shapes to XLA. Actual electromagnetic acquisition always uses the GPU.
     target=jax.devices('cpu')[0] if memory_plan else gpu
+    timer = StageTiming(target)
     if memory_plan:
         jax.config.update('jax_default_device',target)
     from fdtdx.fdtd.forward import forward
 
-    import os
     hardware=cuda_identity.fingerprint(bytes.fromhex(os.environ['PHOTONICS_GRATING_DEVICE_SALT']))
     if gpu.id!=hardware['ordinal'] or gpu.device_kind!=hardware['name']:
         raise RuntimeError('The native JAX target differs from the CUDA device selected for the checkpoint.')
     admission=None
     if not memory_plan and not observe_one_step and m['geometry'] in ('lumerical','tidy3d'):
         admission=memory_admission(m,cuda_identity.available_mib())
+        if 'grating_allocator' in m and gpu.device_kind != admission['profile_device']:
+            raise RuntimeError('The on-demand grating memory profile is specific to its measured GPU model.')
     fiber = m['geometry']=='lumerical'
     guided = m['geometry']=='compact-radiation'
     lp = ansys.lp01(m['fiber_radius'],m['fiber_core_n'],m['fiber_clad_n'],1.55) if fiber else None
@@ -239,6 +286,15 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
 
     shape,pml,axes = grid(m)
     nx,ny,nz = shape
+    full_shape=shape
+    mirror=m.get('grating_domain')=='mirror-y'
+    if mirror and m['geometry'] not in ('lumerical','tidy3d'):
+        raise ValueError('The reduced domain requires a symmetric TE-illuminated grating.')
+    mid=ny//2
+    shift=mid if mirror else 0
+    native_y0=0 if mirror else pml
+    if mirror:
+        shape=(nx, mid, nz)
     dx = 1/m['resolution']
     at = lambda axis,value: int(np.argmin(abs(axes[axis]-value)))
     wavelengths = monitoring_wavelengths(m)
@@ -252,8 +308,11 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     if not memory_plan and (sim.backend!='gpu' or target.platform!='gpu'):
         raise RuntimeError('Requested NVIDIA FDTDX execution is unavailable.')
     volume = fdtdx.SimulationVolume(name='domain', partial_grid_shape=shape, material=fdtdx.Material(permittivity=1.))
-    boundaries = fdtdx.BoundaryConfig(**{f'thickness_grid_{s}{a}':pml for s in ('min','max') for a in 'xyz'},
-                                      **{f'boundary_type_{s}{a}':'pml' for s in ('min','max') for a in 'xyz'})
+    bkw={f'thickness_grid_{s}{a}':pml for s in ('min','max') for a in 'xyz'}
+    bkw.update({f'boundary_type_{s}{a}':'pml' for s in ('min','max') for a in 'xyz'})
+    if mirror:
+        bkw.update(thickness_grid_miny=1,boundary_type_miny='pec')
+    boundaries=fdtdx.BoundaryConfig(**bkw)
     objects, constraints = fdtdx.boundary_objects_from_config(boundaries, volume)
     items = [volume,*objects.values()]
     constraints=list(constraints)
@@ -263,7 +322,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     source_half = m['source_half_span'] if fiber else 2*m['waist']
     xmin=max(pml,at(0,m['beam_x']-source_half))
     xmax=min(nx-pml,at(0,m['beam_x']+source_half)+1)
-    source_shape = (xmax-xmin,ny-2*pml,1)
+    source_shape = (xmax-xmin,ny-pml-native_y0-shift,1)
     source=WaistSource(name='beam',partial_grid_shape=source_shape, direction='-',
               fixed_E_polarization_vector=(0.,1.,0.), azimuth_angle=m['angle_deg'],
               normalize_by_energy=not fiber and m['geometry']!='tidy3d',
@@ -273,7 +332,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                                                           center_wave=fdtdx.WaveCharacter(frequency=center)),
               switch=fdtdx.OnOffSwitch(end_time=pulse_end*1e-15))
     if not guided:
-        add(source,(xmin,pml,at(2,m['source_z'])))
+        add(source,(xmin,native_y0,at(2,m['source_z'])))
     waves=tuple(fdtdx.WaveCharacter(frequency=float(f*299792458e6)) for f in frequencies)
     def detector(name, size, start, wave=waves):
         add(fdtdx.PhasorDetector(name=name, partial_grid_shape=size, wave_characters=wave,
@@ -284,7 +343,8 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     ax1=min(nx-pml,at(0,m['beam_x']+aperture_half)+1)
     ay=slice(pml,ny-pml)
     az=at(2,m.get('sample_z',.93))
-    detector('upper',(ax1-ax0,ny-2*pml,1),(ax0,pml,az))
+    upper_n=grating_mirror.positive_count(pml,ny-2*pml,mid) if mirror else ny-2*pml
+    detector('upper',(ax1-ax0,upper_n,1),(ax0,native_y0,az))
     py=int(round((2.5 if fiber else 2)/dx)); pz=int(round((2.25 if fiber else 6*m['height'])/dx))
     px=at(0,m['output_x'] if fiber else -m['taper']-m['buffer']/2)
     sy=(ny-py)//2; sz=at(2,(.05 if fiber else m['height']/2)-pz*dx/2+dx/2)
@@ -296,13 +356,14 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                     switch=fdtdx.OnOffSwitch(end_time=pulse_end*1e-15))
         add(source,(at(0,-m['taper']-.8),sy,sz))
     if guided or not reference:
-        detector('output',(1,py,pz),(px,sy,sz))
+        port_n=grating_mirror.positive_count(sy,py,mid) if mirror else py
+        detector('output',(1,port_n,pz),(px,0 if mirror else sy,sz))
     if not reference:
-        detector('center',(nx-2*pml,1,nz-2*pml),(pml,ny//2,pml),(waves[center_bin],))
-    energy = fdtdx.EnergyDetector(name='energy',partial_grid_shape=tuple(n-2*pml for n in shape),
+        detector('center',(nx-2*pml,1,nz-2*pml),(pml,mid-shift,pml),(waves[center_bin],))
+    energy = fdtdx.EnergyDetector(name='energy',partial_grid_shape=(nx-2*pml,ny-shift-native_y0-pml,nz-2*pml),
                 reduce_volume=True,exact_interpolation=True,plot=False,
                 switch=fdtdx.OnOffSwitch(interval=max(1,round(4e-15/sim.time_step_duration))))
-    add(energy,(pml,pml,pml))
+    add(energy,(pml,native_y0,pml))
     key = jax.random.PRNGKey(0)
     obj,arrays,params,sim,_=fdtdx.place_objects(object_list=items,config=sim,constraints=constraints,key=key)
     eps = material(m,reference and not guided)
@@ -313,6 +374,8 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     if not reference and m.get('grating_material_model')=='direct-yee':
         ansys.silicon_on_yee_grid(m,axes,staggered)
     component_hash=tuple(digest(component) for component in staggered)
+    port_section=1/staggered[:,px:px+1,sy:sy+py,sz:sz+pz] if (mirror and not reference) else None
+    staggered=staggered[:,:,shift:,:]
     arrays=arrays.aset('inv_permittivities',jax.device_put(1/staggered,target))
     arrays,obj,_=fdtdx.apply_params(arrays,obj,params,key)
     if arrays.fields.E.device!=target or not np.allclose(np.asarray(arrays.inv_permittivities),1/staggered,rtol=2e-6):
@@ -339,6 +402,22 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         else:
             electric,magnetic=np.asarray(source._E),np.asarray(source._H)
     delays_e=np.asarray(source._time_offset_E);delays_h=np.asarray(source._time_offset_H)
+    if mirror:
+        # Evaluate the identical full-width source on its original sheet, preserving the
+        # projected LP01 profile, phase origin and FDTDX component-specific time lags.
+        source_dims=(xmax-xmin,ny-2*pml,1)
+        sheet=source.aset('_grid_slice_tuple',tuple((0,n) for n in source_dims))
+        index=lp[2] if fiber else 1.
+        sheet=sheet.apply(key,jnp.full((3,*source_dims),1/index**2,dtype=jnp.float32),1.0)
+        if fiber:
+            electric,magnetic=np.asarray(sheet._E),np.asarray(sheet._H)
+        else:
+            electric,magnetic=sampled_gaussian_fields(axes[0][xmin:xmax],axes[1][pml:ny-pml],
+                                                     m['beam_x'],m['waist'],m['angle_deg'])
+        delays_e,delays_h=np.asarray(sheet._time_offset_E),np.asarray(sheet._time_offset_H)
+        for attribute,field in zip(('_E','_H','_time_offset_E','_time_offset_H'),(electric,magnetic,delays_e,delays_h)):
+            source=source.aset(attribute,jax.device_put(field[:,:,mid-pml:,:],target))
+        obj=obj.aset('object_list',[source if item.name=='beam' else item for item in obj.object_list])
     vector=np.cross(electric.squeeze().transpose(1,2,0).astype(np.float64),
                     magnetic.squeeze().transpose(1,2,0).astype(np.float64)).sum(axis=(0,1))
     direction=vector/np.linalg.norm(vector)
@@ -354,7 +433,8 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
             raise RuntimeError('Tilted LP01 sheet does not carry its selected modal impedance.')
     basis = None
     if guided or not reference:
-        basis,meta = port_basis(arrays.inv_permittivities[:,px:px+1,sy:sy+py,sz:sz+pz], frequencies,
+        section=jax.device_put(port_section,target) if mirror else arrays.inv_permittivities[:,px:px+1,sy:sy+py,sz:sz+pz]
+        basis,meta = port_basis(section, frequencies,
                                 frequencies*299792458e6, dx,sim.time_step_duration,m['n_oxide'],m['n_si'])
     def evolve(state,end):
         return jax.lax.while_loop(lambda s:s[0]<end,
@@ -385,11 +465,12 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                 'gpu':gpu.device_kind,'cpu_field_allocation_verified':arrays.fields.E.device.platform=='cpu',
                 'executed_fdtd_steps':0,'compiled_cuda_bytes':memory,'compiled_live_bytes':live,
                 'compilation_seconds':time.monotonic()-compile_start}
-    compiled=jax.jit(evolve,donate_argnums=(0,)).lower(state,jnp.asarray(1,dtype=jnp.int32)).compile()
+    with timer.compile():
+        compiled=jax.jit(evolve,donate_argnums=(0,)).lower(state,jnp.asarray(1,dtype=jnp.int32)).compile()
     compile_seconds=time.monotonic()-compile_start
     if observe_one_step:
-        if m['resolution']!=12:
-            raise ValueError('One-step memory observation is restricted to the previously run 12-cell geometry.')
+        if m['resolution'] not in (12, 14) or (m['resolution'] == 14 and m['geometry'] not in ('lumerical', 'tidy3d')):
+            raise ValueError('One-step memory observations require a mesh with a published full native run.')
         state=compiled(state,jnp.asarray(1,dtype=jnp.int32))
         jax.block_until_ready(state)
         if int(state[0])!=1 or state[1].fields.E.device!=gpu:
@@ -410,15 +491,22 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     schedule = np.flatnonzero(np.asarray(obj['energy']._is_on_at_time_step_arr))
     spectra=[]; history=[]; before=None; consecutive=0
     start=time.monotonic()
+    timer.begin_steps()
     for end in range(math.ceil(60/dt),sim.time_steps_total+math.ceil(60/dt),math.ceil(60/dt)):
         end=min(end,sim.time_steps_total)
-        state=compiled(state,jnp.asarray(end,dtype=jnp.int32)); step, final=state
-        jax.block_until_ready(final)
+        with timer.step():
+            state=compiled(state,jnp.asarray(end,dtype=jnp.int32))
+            jax.block_until_ready(state)
+        step, final=state
         upper=np.asarray(final.detector_states['upper']['phasor'])[0,:,:,:,:,0]
+        if mirror:
+            upper=grating_mirror.full_plane(upper,3,1,pml,ny-2*pml,mid)
         if reference and not guided:
             measure=-normal_flux(upper,dx)
         else:
             port=np.asarray(final.detector_states['output']['phasor'])[0]
+            if mirror:
+                port=grating_mirror.full_plane(port,3,1,sy,py,mid)
             amplitudes=modal_amplitudes(port,basis['mode_e'],basis['mode_h'],dx**2)[0]
             measure=amplitudes[:,0] if guided else amplitudes[:,1]
             if guided and not reference:
@@ -438,6 +526,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         print(f"{'reference' if reference else 'device'} t={end*dt:.0f} fs, relative energy={ratio:.3g}, DFT-change={change}",flush=True)
         if consecutive>=2 or end==sim.time_steps_total: break
         before=measure.copy()
+    timer.end_steps()
     if final.fields.E.device!=target:
         raise RuntimeError('FDTD fields left the requested device.')
     data={'upper':upper,'upper_x_um':axes[0][ax0:ax1],'upper_y_um':axes[1][ay],
@@ -450,8 +539,18 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         data.update(output=port,mode_e=basis['mode_e'],mode_h=basis['mode_h'],mode_neff=basis['mode_neff'],
                     output_amplitudes=modal_amplitudes(port,basis['mode_e'],basis['mode_h'],dx**2)[0])
     if not reference:
-        data['center_fields']=np.asarray(final.detector_states['center']['phasor'])[0,0,:,:,0,:]
-    detail=dict(stage='reference' if reference else 'device',actual_device=str(final.fields.E.device),device_name=target.device_kind,
+        center_plane=np.asarray(final.detector_states['center']['phasor'])[0,0]
+        if mirror:
+            center_plane=grating_mirror.full_plane(center_plane,2,0,mid,1,mid)
+        data['center_fields']=center_plane[:,:,0,:]
+    performance = timer.report(shape=shape, steps=int(step), dt_seconds=sim.time_step_duration,
+                               spacing_um=dx, pml_cells=pml)
+    performance['setup_before_compile_seconds']=compile_start-worker_started
+    if mirror:
+        performance['represented_full_shape']=list(full_shape)
+        performance['boundary_faces']={'min_y':'PEC mirror, one clamped Yee plane',
+                                       'remaining_five_faces':f'PML, {pml} cells per face'}
+    detail=dict(energy_volume='native allocated non-PML region', full_shape=list(full_shape), grating_domain=m.get('grating_domain','full'), performance=performance, stage='reference' if reference else 'device',actual_device=str(final.fields.E.device),device_name=target.device_kind,
                 shape=list(shape),grid_resolution=m['resolution'],pml_cells=pml,time_steps=int(step),settled=consecutive>=2,
                 history=history,compile_seconds=compile_seconds,stepping_seconds=time.monotonic()-start,source_direction=direction.tolist(),
                 source_eh_sha256=digest(np.stack([electric,magnetic])),
@@ -477,39 +576,54 @@ def stage_signature(identity):
 
 
 def stage_archive(m, label, cache):
-    import os
+    gpu_lock=Path(os.environ.get('PHOTONICS_GPU_LOCK', '/tmp/photonics-v012-gpu.lock'))
+    print(f"Waiting for NVIDIA device: {m['geometry']} {label}",flush=True)
+    wait_start=time.monotonic()
+    with gpu_lock.open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        wait_seconds=time.monotonic()-wait_start
+        return _locked_stage_archive(m,label,cache,wait_seconds)
+
+
+def _locked_stage_archive(m, label, cache, wait_seconds):
     import subprocess
     salt=cuda_identity.cache_salt(cache)
     hardware=cuda_identity.fingerprint(salt)
     sources=[Path(__file__),ROOT/'backend/adapters/fdtdx_ports_adapter.py',ROOT/'backend/adapters/fdtdx_ports3d_adapter.py',ROOT/'backend/adapters/fdtdx3d_adapter.py',
-             ROOT/'backend/adapters/fdtdx_adapter.py',ROOT/'scripts/grating_angular_spectrum.py',ROOT/'scripts/lumerical_grating3d.py',ROOT/'scripts/grating_emission.py',ROOT/'scripts/grating_cuda_identity.py']
+             ROOT/'backend/adapters/fdtdx_adapter.py',ROOT/'scripts/grating_angular_spectrum.py',ROOT/'scripts/lumerical_grating3d.py',ROOT/'scripts/grating_emission.py',ROOT/'scripts/grating_cuda_identity.py',ROOT/'scripts/gpu_timing.py']
+    if m['geometry'] in ('lumerical', 'tidy3d'):
+        sources.append(ROOT/'docs/verification/v012-grating-memory-budget.json')
+        if m.get('grating_allocator') == 'platform' and m['resolution'] != 12:
+            profile = ROOT/'docs/verification'/memory_profile_name(m)
+            if not profile.exists():
+                raise ValueError(f"The selected mesh and domain require the measured memory profile {profile.name}.")
+            sources.append(profile)
+        if m.get('grating_spectrum') == 'dense':
+            sources.append(ROOT/'docs/verification/v013-grating-dense-memory.json')
+    sources.append(ROOT/"scripts/grating_mirror.py")
     identity={'settings':m,'stage':label,'cuda_identity':hardware,'sources':{p.name:file_hash(p) for p in sources},
               'versions':{name:importlib.metadata.version(name) for name in ('fdtdx','jax','jaxlib','numpy','tidy3d','scipy')}}
     signature=stage_signature(identity)
     dest=cache/(label+'-'+signature[:20]); cache.mkdir(exist_ok=True,parents=True)
     with (cache/(label+'-'+signature[:20]+'.lock')).open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
-        if not dest.exists():
+        fresh = not dest.exists()
+        if fresh:
             with tempfile.TemporaryDirectory(dir=cache) as tmp:
                 staged=Path(tmp)/'stage'; staged.mkdir()
                 cmd=[sys.executable,str(Path(__file__).resolve()),'--device','gpu','--geometry',m['geometry'],
                      '--resolution',str(m['resolution']),'--stage',label,'--output',str(staged)]
                 if 'grating_material_model' in m:
                     cmd.extend(('--grating-material-model',m['grating_material_model']))
+                if m.get('grating_allocator') == 'platform':
+                    cmd.append('--on-demand-memory')
+                if m.get('grating_domain')=='mirror-y': cmd.extend(('--grating-domain','mirror-y'))
                 if 'grating_spectrum' in m:
                     cmd.extend(('--grating-spectrum',m['grating_spectrum']))
                 # Workers are separate processes so native device memory is released after each stage.
                 env={**os.environ,'PHOTONICS_GRATING_DEVICE_SALT':salt.hex()}
-                gpu_lock=os.environ.get('PHOTONICS_GPU_LOCK')
-                if gpu_lock:
-                    with Path(gpu_lock).open('a') as hardware_lock:
-                        print(f"Waiting for NVIDIA device: {m['geometry']} {label}",flush=True)
-                        fcntl.flock(hardware_lock,fcntl.LOCK_EX)
-                        print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
-                        subprocess.run(cmd,check=True,env=env)
-                else:
-                    print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
-                    subprocess.run(cmd,check=True,env=env)
+                print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
+                subprocess.run(cmd,check=True,env=env)
                 receipt=json.loads((staged/'receipt.json').read_text())
                 cuda_identity.validate_worker(hardware,receipt.get('cuda_identity'))
                 receipt['metadata_sha256']=hashlib.sha256(json.dumps(receipt,sort_keys=True,allow_nan=False).encode()).hexdigest()
@@ -526,7 +640,8 @@ def stage_archive(m, label, cache):
             raise ValueError('The worker changed during native acquisition.')
         if receipt['identity']!=identity or receipt['signature']!=signature or file_hash(dest/'arrays.npz')!=receipt['arrays_sha256']:
             raise ValueError(f'Native stage failed provenance checks: {label}')
-        return dest,receipt
+        return dest, dict(receipt, acquisition={'status':'fresh' if fresh else 'cache-hit',
+                                                'gpu_lock_wait_seconds':wait_seconds})
 
 
 def run(m, output, cache):
@@ -612,16 +727,23 @@ def run(m, output, cache):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--device',choices=['gpu'],required=True)
-    parser.add_argument('--resolution',type=int,choices=(12,14,16),default=12)
+    parser.add_argument('--resolution',type=int,choices=(12,14,16,18,20),default=12)
     parser.add_argument('--geometry',choices=('compact','compact-narrow','tidy3d','lumerical','compact-radiation'),default='compact')
     parser.add_argument('--grating-material-model',choices=('volume-average','direct-yee'),default='volume-average',
                         help='Use volume averaging or integrate the Lumerical silicon directly on the Yee cells.')
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--grating-spectrum',choices=('standard','dense'),default='standard',
                         help='Measure the published five samples, or 21 native wavelengths on the 12-cell Lumerical grid.')
+    parser.add_argument('--grating-domain',choices=('full','mirror-y'),default='full')
+    parser.add_argument('--on-demand-memory',action='store_true',
+                        help='Use the measured on-demand CUDA allocator for the 12-cell control or a qualified 16-cell grating.')
     parser.add_argument('--checkpoint',type=Path)
     parser.add_argument('--stage',choices=('reference','device'),help=argparse.SUPPRESS)
-    args=parser.parse_args(); m=settings(args.geometry,args.resolution,args.grating_material_model,args.grating_spectrum)
+    args=parser.parse_args(); m=settings(args.geometry,args.resolution,args.grating_material_model,args.grating_spectrum,args.grating_domain)
+    if args.on_demand_memory:
+        if m['geometry'] not in ('lumerical', 'tidy3d') or (m['resolution'] != 12 and 'grating_allocator' not in m):
+            parser.error('On-demand grating memory is qualified for the matched 12-cell controls and selected 16-cell models.')
+        m['grating_allocator']='platform'
     if args.stage:
         report,arrays=native_stage(m,args.stage=='reference')
         np.savez_compressed(args.output/'arrays.npz',**arrays)

@@ -1,0 +1,223 @@
+{
+  "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+  "notebook": "https://raw.githubusercontent.com/flexcompute/tidy3d-notebooks/18fd47f8bd87ad89582b507c20bf4997f79d55c0/GratingCoupler.ipynb",
+  "notebook_sha256": "d90e91b8a4b83e616e9661679908e715a020253ae76d75c1139bf2e21d4c692a",
+  "published_design_period_nm": 608,
+  "published_optimized_period_nm": 620,
+  "etch_nm": 160,
+  "unetched_height_nm": 260,
+  "residual_silicon_nm": 100,
+  "rows": [
+    {
+      "mesh_cells_per_um": 12,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.8548256977610067,
+          "aperture_grid_points": 16,
+          "edge_intensity_fraction": 5.3677570454667486e-05
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.0441857433977515,
+          "aperture_grid_points": 16,
+          "edge_intensity_fraction": 0.00031962315089728783
+        }
+      ],
+      "period_nm": 634.3159009220699,
+      "difference_from_notebook_nm": 26.315900922069886,
+      "native_field_grid_coefficients_checked": true
+    },
+    {
+      "mesh_cells_per_um": 14,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.900854530809218,
+          "aperture_grid_points": 18,
+          "edge_intensity_fraction": 5.197717077302978e-05
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.081838441316974,
+          "aperture_grid_points": 18,
+          "edge_intensity_fraction": 0.0002331657647392378
+        }
+      ],
+      "period_nm": 623.0076301161981,
+      "difference_from_notebook_nm": 15.00763011619813,
+      "native_field_grid_coefficients_checked": true
+    },
+    {
+      "mesh_cells_per_um": 16,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.9276488712545086,
+          "aperture_grid_points": 21,
+          "edge_intensity_fraction": 2.681170895974966e-05
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.1113049489730504,
+          "aperture_grid_points": 21,
+          "edge_intensity_fraction": 0.00012633108311528753
+        }
+      ],
+      "period_nm": 616.2385342203788,
+      "difference_from_notebook_nm": 8.238534220378824,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 20,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.9278226438450696,
+          "aperture_grid_points": 26,
+          "edge_intensity_fraction": 1.1439977131213287e-05
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.142046452189921,
+          "aperture_grid_points": 26,
+          "edge_intensity_fraction": 5.512565902032988e-05
+        }
+      ],
+      "period_nm": 614.7019822869983,
+      "difference_from_notebook_nm": 6.701982286998259,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 24,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.9386619886032483,
+          "aperture_grid_points": 31,
+          "edge_intensity_fraction": 8.654787637296861e-06
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.143741242992464,
+          "aperture_grid_points": 31,
+          "edge_intensity_fraction": 3.632050107667155e-05
+        }
+      ],
+      "period_nm": 612.513242632074,
+      "difference_from_notebook_nm": 4.513242632074025,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 48,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.950955251099918,
+          "aperture_grid_points": 63,
+          "edge_intensity_fraction": 1.1915202848640287e-06
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.1734738032205407,
+          "aperture_grid_points": 63,
+          "edge_intensity_fraction": 4.124789584010113e-06
+        }
+      ],
+      "period_nm": 608.71714653267,
+      "difference_from_notebook_nm": 0.7171465326699717,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.954356931266892,
+          "aperture_grid_points": 125,
+          "edge_intensity_fraction": 2.0071031607803345e-07
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.180296343838876,
+          "aperture_grid_points": 125,
+          "edge_intensity_fraction": 5.920228001174828e-07
+        }
+      ],
+      "period_nm": 607.7419644324384,
+      "difference_from_notebook_nm": -0.25803556756159196,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 192,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.9557311318115613,
+          "aperture_grid_points": 250,
+          "edge_intensity_fraction": 2.4872809688994515e-08
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.18219505787943,
+          "aperture_grid_points": 250,
+          "edge_intensity_fraction": 7.428831033373799e-08
+        }
+      ],
+      "period_nm": 607.3897124479131,
+      "difference_from_notebook_nm": -0.610287552086902,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 384,
+      "aperture_um": 1.3,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.9560253466312636,
+          "aperture_grid_points": 500,
+          "edge_intensity_fraction": 3.1034875247032796e-09
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.1825908948770705,
+          "aperture_grid_points": 500,
+          "edge_intensity_fraction": 9.332573067005474e-09
+        }
+      ],
+      "period_nm": 607.3148568138585,
+      "difference_from_notebook_nm": -0.6851431861415449,
+      "native_field_grid_coefficients_checked": false
+    },
+    {
+      "mesh_cells_per_um": 192,
+      "aperture_um": 2.0,
+      "sections": [
+        {
+          "thickness_nm": 260,
+          "effective_index": 2.9558157745970743,
+          "aperture_grid_points": 384,
+          "edge_intensity_fraction": 1.0705351972429225e-11
+        },
+        {
+          "thickness_nm": 100,
+          "effective_index": 2.182715797221173,
+          "aperture_grid_points": 384,
+          "edge_intensity_fraction": 4.4903561070011856e-10
+        }
+      ],
+      "period_nm": 607.3488095550857,
+      "difference_from_notebook_nm": -0.6511904449142776,
+      "native_field_grid_coefficients_checked": false
+    }
+  ],
+  "scope": "Local transverse TE calculation on a common input stack. The 608 nm quantity is the published design-period estimate, distinct from the 620 nm optimized pitch used in the 3D power comparison."
+}

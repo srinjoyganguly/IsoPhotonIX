@@ -1,0 +1,415 @@
+{
+  "component": "grating",
+  "vendor": "lumerical",
+  "amplitude_floor": 0.02,
+  "phase_increment_limit_rad": 1.5707963267948966,
+  "ring_80_to_100_percent_phase_limit_rad": 0.05,
+  "native_samples": [
+    {
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "lumerical",
+        "period": 0.6713,
+        "fill": 0.3992,
+        "teeth": 38,
+        "width": 15.0,
+        "guide_width": 0.5,
+        "height": 0.22,
+        "etch": 0.1,
+        "radius": 25.0,
+        "taper": null,
+        "taper_exponent": 1.15,
+        "oxide_top": 0.7,
+        "oxide_bottom": 1.0,
+        "n_si": 3.4763795526495227,
+        "n_oxide": 1.4440023011779028,
+        "source_z": 0.9901250394579352,
+        "beam_x": 2.8582013154835044,
+        "fiber_radius": 4.5,
+        "fiber_cladding_radius": 25.0,
+        "fiber_core_n": 1.44427,
+        "fiber_clad_n": 1.43482,
+        "fiber_center_x": 2.74533,
+        "angle_deg": 10.0,
+        "grating_material_model": "direct-yee",
+        "physical_bounds": [
+          [
+            -26.0,
+            -10.0,
+            -1.2
+          ],
+          [
+            16.0,
+            10.0,
+            1.3
+          ]
+        ]
+      },
+      "total_wavelengths": 5,
+      "resolution": 12,
+      "arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+      "planes": {
+        "center_x_um": 2.8937385420962913,
+        "sample_z_um": 0.8416666666666668,
+        "guide_x_um": -25.500000000000004,
+        "target_fiber_z_um": 0.9901250394579352,
+        "target_axis_x_um": 2.9199157587314675,
+        "file_port_center_x_um": 2.8582013154835044,
+        "target_guide_x_um": -25.5,
+        "fiber_lead_um": 0.15074858248950854,
+        "guide_lead_um": -3.552713678800501e-15,
+        "phase_convention": "Native DFT +i\u03c9t; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.041596644362169054,
+          0.13597560084103527
+        ],
+        [
+          0.03515289133994006,
+          0.2969064302171192
+        ],
+        [
+          0.02173015593183861,
+          -0.16769276469044855
+        ],
+        [
+          0.03879227053175489,
+          -0.585115459576395
+        ],
+        [
+          -0.05365771327343848,
+          -0.35300704989864057
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.006899629069955431,
+          0.16594593221606027
+        ],
+        [
+          -0.022245971308517777,
+          -0.18963260910575236
+        ],
+        [
+          -0.014152083572161639,
+          -0.4726238149468132
+        ],
+        [
+          -0.0562987385720598,
+          -0.0347900864746249
+        ],
+        [
+          -0.06584449325108262,
+          0.4257461053067397
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ]
+      ],
+      "commercial_comparison": {
+        "reflection": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.002461284237153269,
+            "max_abs": 0.0035117910998313717
+          },
+          "phase_increment_delta_rad": {
+            "count": 4,
+            "rms": 0.6113756801277093,
+            "max_abs": 0.8723009542885256
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "peak_power_a": 0.0072146474852264,
+          "peak_power_b": 0.007288613552480933
+        },
+        "guide": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.11795846774626854,
+            "max_abs": 0.17041952546238553
+          },
+          "phase_increment_delta_rad": {
+            "count": 4,
+            "rms": 0.5363763872652421,
+            "max_abs": 0.5590424319066086
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0
+        }
+      }
+    },
+    {
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "lumerical",
+        "period": 0.6713,
+        "fill": 0.3992,
+        "teeth": 38,
+        "width": 15.0,
+        "guide_width": 0.5,
+        "height": 0.22,
+        "etch": 0.1,
+        "radius": 25.0,
+        "taper": null,
+        "taper_exponent": 1.15,
+        "oxide_top": 0.7,
+        "oxide_bottom": 1.0,
+        "n_si": 3.4763795526495227,
+        "n_oxide": 1.4440023011779028,
+        "source_z": 0.9901250394579352,
+        "beam_x": 2.8582013154835044,
+        "fiber_radius": 4.5,
+        "fiber_cladding_radius": 25.0,
+        "fiber_core_n": 1.44427,
+        "fiber_clad_n": 1.43482,
+        "fiber_center_x": 2.74533,
+        "angle_deg": 10.0,
+        "grating_material_model": "direct-yee",
+        "physical_bounds": [
+          [
+            -26.0,
+            -10.0,
+            -1.2
+          ],
+          [
+            16.0,
+            10.0,
+            1.3
+          ]
+        ]
+      },
+      "total_wavelengths": 5,
+      "resolution": 14,
+      "arrays_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e",
+      "planes": {
+        "center_x_um": 2.8926889767349313,
+        "sample_z_um": 0.8357142857142854,
+        "guide_x_um": -25.57142857142857,
+        "target_fiber_z_um": 0.9901250394579352,
+        "target_axis_x_um": 2.9199157587314675,
+        "file_port_center_x_um": 2.8582013154835044,
+        "target_guide_x_um": -25.5,
+        "fiber_lead_um": 0.1567927885126384,
+        "guide_lead_um": -0.0714285714285694,
+        "phase_convention": "Native DFT +i\u03c9t; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.04332463375865495,
+          0.2686588398372632
+        ],
+        [
+          0.025055300447246135,
+          0.3521363695895963
+        ],
+        [
+          0.0319522457342918,
+          -0.09038263607625868
+        ],
+        [
+          0.014935783260455157,
+          -0.5179877424002965
+        ],
+        [
+          -0.06529483998162626,
+          -0.541463046216845
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.001179887230351464,
+          0.14826278540758717
+        ],
+        [
+          -0.021135582760966967,
+          -0.29063482403903107
+        ],
+        [
+          -0.013788160885026919,
+          -0.5726781494698868
+        ],
+        [
+          -0.07086850087025473,
+          -0.3341285603685578
+        ],
+        [
+          -0.023109427068431665,
+          0.02125586221912479
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ]
+      ],
+      "commercial_comparison": {
+        "reflection": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.0016741061979048647,
+            "max_abs": 0.002973212858030885
+          },
+          "phase_increment_delta_rad": {
+            "count": 4,
+            "rms": 0.5383992780490081,
+            "max_abs": 0.7690973169150275
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "peak_power_a": 0.005245422037200589,
+          "peak_power_b": 0.007288613552480933
+        },
+        "guide": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.06275215085922269,
+            "max_abs": 0.08606485647097434
+          },
+          "phase_increment_delta_rad": {
+            "count": 4,
+            "rms": 0.23079643286896334,
+            "max_abs": 0.2329744981949733
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0
+        }
+      }
+    }
+  ],
+  "mesh_pairs": [
+    {
+      "meshes": [
+        12,
+        14
+      ],
+      "shared_wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "channels": {
+        "reflection": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.0011746951455405509,
+            "max_abs": 0.0024171857375690593
+          },
+          "phase_increment_delta_rad": {
+            "count": 4,
+            "rms": 0.33036016604372376,
+            "max_abs": 0.5655010910271703
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.02444028566236501,
+            "max_abs": 0.04429117970497032
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 5,
+            "rms": 0.32307274054562507,
+            "max_abs": 0.5468598482140419
+          },
+          "peak_power_a": 0.0072146474852264,
+          "peak_power_b": 0.005245422037200589
+        },
+        "guide": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.060114928344123936,
+            "max_abs": 0.0846351499999417
+          },
+          "phase_increment_delta_rad": {
+            "count": 4,
+            "rms": 0.3061421889368031,
+            "max_abs": 0.32907755049456455
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.26091942308961263,
+            "max_abs": 0.44623762649665133
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 5,
+            "rms": 0.4819448535350253,
+            "max_abs": 0.8392962498086372
+          }
+        }
+      }
+    }
+  ],
+  "vendor_absolute_phase_basis": null
+}

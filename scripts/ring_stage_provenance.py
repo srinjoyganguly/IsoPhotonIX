@@ -14,6 +14,8 @@ import sys
 RING_SOURCE_FILES = (
     'scripts/calibrate_loaded_ring3d.py',
     'scripts/calibrate_ring.py',
+    'scripts/gpu_timing.py',
+    'scripts/ring_wall_tensor.py',
     'scripts/measure_loaded_ring_losses.py',
     'scripts/calibration_checkpoint.py',
     'scripts/ring_stage_provenance.py',
@@ -128,7 +130,8 @@ def fingerprint(root, runtime, versions):
     jax, _, _, target = runtime
     flags = {key: os.environ.get(key) for key in ('XLA_FLAGS', 'CUDA_VISIBLE_DEVICES', 'JAX_CUDA_VISIBLE_DEVICES',
             'NVIDIA_TF32_OVERRIDE', 'TF_CUDNN_DETERMINISTIC', 'CUBLAS_WORKSPACE_CONFIG', 'JAX_PJRT_CLIENT_CREATE_OPTIONS',
-            'OPENBLAS_NUM_THREADS', 'OPENBLAS_CORETYPE', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS')}
+            'OPENBLAS_NUM_THREADS', 'OPENBLAS_CORETYPE', 'OMP_NUM_THREADS', 'MKL_NUM_THREADS',
+            'PHOTONICS_CUPTI', 'XLA_PYTHON_CLIENT_PREALLOCATE', 'XLA_PYTHON_CLIENT_ALLOCATOR')}
     record = {'schema': SCHEMA, 'source_files': source_fingerprint(root), 'versions': versions,
               'backend_flags_sha256': json_digest(flags), 'python_abi': sys.implementation.cache_tag,
               'python': sys.version.split()[0], 'architecture': platform.machine(),

@@ -26,7 +26,7 @@ from scripts.grating_cuda_identity import cache_salt, fingerprint
 
 SOURCES = (
     'scripts/calibrate_layout_ports3d.py', 'scripts/calibrate_fdtdx_multiport.py',
-    'scripts/grating_cuda_identity.py', 'scripts/calibration_checkpoint.py',
+    'scripts/gpu_timing.py', 'scripts/phase_polygon_material.py', 'scripts/grating_cuda_identity.py', 'scripts/calibration_checkpoint.py',
     'backend/__init__.py', 'backend/planar_port_layout.py', 'backend/geometry_draft.py',
     'backend/calibrated_geometry.py', 'backend/adapters/fdtdx_ports_adapter.py',
     'backend/adapters/fdtdx_ports3d_adapter.py', 'backend/adapters/fdtdx3d_adapter.py',
@@ -157,6 +157,8 @@ def local_phasors(values, axis):
 
 def stage(design, resolution, launch, reference, identity):
     jax,jnp,fdtdx,target = _ports_runtime('gpu')
+    from scripts.gpu_timing import StageTiming
+    timer = StageTiming(target)
     from fdtdx.core.physics.modes import compute_mode
     from fdtdx.fdtd.forward import forward
 
@@ -239,13 +241,17 @@ def stage(design, resolution, launch, reference, identity):
     dt_fs = sim.time_step_duration*1e15
     window_fs = 8e9/LIGHT
     end = math.ceil((PULSE_END*1e9/LIGHT+window_fs)/dt_fs)
-    compiled = jax.jit(evolve,donate_argnums=(0,)).lower(state,jnp.int32(end)).compile()
+    with timer.compile():
+        compiled = jax.jit(evolve,donate_argnums=(0,)).lower(state,jnp.int32(end)).compile()
     schedule = np.flatnonzero(np.asarray(objects['energy']._is_on_at_time_step_arr))
     previous,consecutive,history = None,0,[]
+    jax.block_until_ready(state)
+    timer.begin_steps()
     while True:
-        state = compiled(state,jnp.int32(end))
-        step,final = state
-        jax.block_until_ready(final)
+        with timer.step():
+            state = compiled(state,jnp.int32(end))
+            step,final = state
+            jax.block_until_ready(final)
         step = int(step)
         amplitudes = []
         for i,(m,(basis,_)) in enumerate(zip(monitors,bases)):
@@ -263,6 +269,9 @@ def stage(design, resolution, launch, reference, identity):
             break
         previous = amplitudes.copy()
         end = min(sim.time_steps_total, step+math.ceil(window_fs/dt_fs))
+    timer.end_steps()
+    performance = timer.report(shape=shape, steps=step, dt_seconds=sim.time_step_duration,
+                               spacing_um=dx, pml_cells=pml)
     if final.fields.E.device!=target:
         raise RuntimeError('Final fields left the requested GPU.')
     raw.update(amplitudes=amplitudes,energy=energies,energy_time_fs=times)
@@ -270,7 +279,7 @@ def stage(design, resolution, launch, reference, identity):
         raw['midplane_e'] = np.asarray(final.detector_states['preview']['phasor'])[0,0,:,:,:,0]
     if not all(np.isfinite(a).all() for a in raw.values()):
         raise RuntimeError('Nonfinite native field sample.')
-    report = {'field_device':str(target),'mode_neff':{m['name']:b[1]['neff_real'] for m,b in zip(monitors,bases)},
+    report = {'performance':performance, 'field_device':str(target),'mode_neff':{m['name']:b[1]['neff_real'] for m,b in zip(monitors,bases)},
               'max_basis_edge_fraction':max(max(b[1]['edge_electric_l2_fraction']) for b in bases),
               'source_neff':float(np.real(neff)),'source_profile_sha256':digest(np.stack([e,h])),
               'material_sha256':digest(eps),'settled':consecutive>=2,'history':history,'steps':step}
@@ -298,7 +307,8 @@ def native_stage(checkpoint, destination, label):
         if spec!=expected or json_digest(expected)!=label:
             raise ValueError('Source, GPU or configuration changed between orchestration and acquisition.')
         entry = checkpoint/label
-        if not entry.exists():
+        fresh = not entry.exists()
+        if fresh:
             print('Measuring', spec['design']['name'], spec['launch'], 'reference' if spec['reference'] else 'device',flush=True)
             report, raw = stage(spec['design'],spec['resolution'],spec['launch'],spec['reference'],spec['device'])
             with tempfile.TemporaryDirectory(dir=checkpoint) as temp:
@@ -313,7 +323,7 @@ def native_stage(checkpoint, destination, label):
         if (receipt['specification']!=expected or json_digest(receipt['report'])!=receipt['report_sha256']
                 or file_digest(entry/'arrays.npz')!=receipt['archive_sha256']):
             raise ValueError('Stage checkpoint failed integrity verification.')
-        destination.write_text(label)
+        destination.write_text(json.dumps({'label':label,'fresh':fresh}))
 
 
 def run(design, resolution, dest, checkpoint):
@@ -327,13 +337,15 @@ def run(design, resolution, dest, checkpoint):
             spec = stage_spec(design,resolution,i,ref,checkpoint)
             path = dest/'stage-key'
             acquire_child(spec,checkpoint,path)
-            entry = checkpoint/path.read_text()
+            acquisition = json.loads(path.read_text())
+            entry = checkpoint/acquisition['label']
             path.unlink()
             receipt = json.loads((entry/'receipt.json').read_text())
             with np.load(entry/'arrays.npz',allow_pickle=False) as data:
                 fields = {key:data[key] for key in data.files}
             raw.update({f'{label}_{k}':v for k,v in fields.items()})
             stages.append({'label':label,'stage_key':entry.name,'archive_sha256':receipt['archive_sha256'],
+                           'invocation_acquisition':'computed_this_invocation' if acquisition['fresh'] else 'reused_verified_receipt',
                            **receipt['report']})
             row.append((fields,receipt['report']))
         (ref,rs),(dev,ds) = row

@@ -22,6 +22,33 @@ def subset(record, keys):
     return {key:record[key] for key in keys if key in record}
 
 
+def phase_studies():
+    """Summaries only; full signed coefficients, plane registrations and masks are linked."""
+    studies={'ring-3d':[],'grating-3d':[]}
+    for path in sorted(BASE.glob('v014-*-phase*.json')):
+        study=json.loads(path.read_text())
+        key=study.get('component','')+'-3d'
+        if key not in studies or not study.get('native_samples'):
+            continue
+        samples=[]
+        for sample in study['native_samples']:
+            central=sample.get('central_vendor_mode_check')
+            wavelength=central['port_overlaps'][0]['wavelength_um'] if central else None
+            samples.append({'mesh':sample['resolution'],'central_wavelength_um':wavelength,
+                            'absolute':central['channels'] if central else {},
+                            'passed':sample.get('native_run_passed',True),'valid':sum(sample['valid_bins']),'total':len(sample['valid_bins']),
+                            'band':{port:stats['absolute_phase_residual_rad'] for port,stats in
+                                    sample.get('single_central_basis_band',{}).get('channels',{}).items()},
+                            'commercial':{k:v.get('phase_increment_delta_rad',{}) for k,v in sample.get('commercial_comparison',{}).items()}})
+        pairs=[{'meshes':pair['meshes'],'channels':{port:{
+                'power':values['power_delta']['max_abs'],'complex':values['same_gauge_complex_delta']['max_abs'],
+                'phase':values['same_gauge_phase_delta_rad']['max_abs'],'strong':values['same_gauge_phase_delta_rad']['count']}
+                for port,values in pair['channels'].items()}} for pair in study['mesh_pairs']]
+        studies[key].append({'receipt':path.name,'vendor':study['vendor'],'amplitude_floor':study['amplitude_floor'],
+                             'samples':samples,'pairs':pairs})
+    return studies
+
+
 def spatial_index():
     index = {
         'ring-3d':case_entry('Finite-height, two-bus loaded ring','FDTDX NVIDIA',
@@ -42,9 +69,11 @@ def spatial_index():
     }
     best_ring, best_grating = {}, {}
     ring_order = {}
-    diagnostics_file = BASE/'v013-power-diagnostics.json'
+    diagnostics_file = BASE/'v014-power-diagnostics.json'
+    if not diagnostics_file.is_file():
+        diagnostics_file = BASE/'v013-power-diagnostics.json'
     diagnostics = json.loads(diagnostics_file.read_text())['records']
-    paths = {*BASE.glob('v012-*.json'), *BASE.glob('v013-ring3d-*.json'), *BASE.glob('v013-grating3d-*.json')}
+    paths = {*BASE.glob('v012-*.json'), *BASE.glob('v013-ring3d-*.json'), *BASE.glob('v013-grating3d-*.json'), *BASE.glob('v014-ring3d-*.json'), *BASE.glob('v014-grating3d-*.json')}
     for path in sorted(paths):
         if path.name == 'v012-calibrated-index.json':
             continue
@@ -94,6 +123,8 @@ def spatial_index():
                 label=f'{geometry} · {mesh} cells/µm'
                 if settings.get('grating_material_model','volume-average') != 'volume-average':
                     label += f" · {settings['grating_material_model']}"
+                if settings.get('grating_domain') == 'mirror-y':
+                    label += ' · mirror symmetry'
                 if settings.get('grating_spectrum') == 'dense':
                     label += ' · 21 wavelengths'
                 panel=subset(data,('case_id','vendor','result','radiation','comparisons','settings'))
@@ -164,6 +195,8 @@ def spatial_index():
                  description='The published asymmetric-slab reference checks guided indices separately from the device scattering matrix.'),
             dict(vendor='Tidy3D',url='https://www.flexcompute.com/tidy3d/examples/notebooks/EMESolver/',
                  description=('The finite-height reference checks port modes separately from the measured circuit matrix.' if case=='layout-ports-3d' else 'A local Tidy3D mode solve checks the port modes. The complete planar matrix is compared with an independent wave-equation calculation.'))]
+    for case,studies in phase_studies().items():
+        index[case]['phase_studies']=studies
     return index
 
 

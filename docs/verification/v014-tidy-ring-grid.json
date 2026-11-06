@@ -1,0 +1,89 @@
+{
+  "scope": "Offline grid and central material readout using the installed Tidy3D version and the inputs from the pinned notebook. This reconstruction is not a measured copy of the historical cloud solver grid or complex fields.",
+  "notebook_sha256": "b1dac0b3a47518cc5461c5457511748f5435eaea53703d9fdff1236adbd24908",
+  "tidy3d": "2.11.2",
+  "solver_jobs_submitted": 0,
+  "shape": [
+    545,
+    503,
+    122
+  ],
+  "symmetry": [
+    0,
+    0,
+    1
+  ],
+  "source_aperture_yz_um": [
+    1.72,
+    1.32
+  ],
+  "nominal_input_through_drop_plane_x_um": [
+    -5.0,
+    5.0,
+    -5.0
+  ],
+  "central_wavelength_um": 1.55,
+  "silicon_n": 3.4772318424714372,
+  "oxide_n": 1.4445618291988784,
+  "gap_at_closest_approach": {
+    "interval_um": [
+      5.215,
+      5.3149999999999995
+    ],
+    "intersecting_cells": 4,
+    "fully_inside_cells": 4,
+    "equivalent_cells": 3.999999999999396,
+    "widths_nm": [
+      25.000000000000355,
+      25.000000000000355,
+      25.000000000000355,
+      25.000000000000355
+    ]
+  },
+  "core_height": {
+    "interval_um": [
+      -0.11,
+      0.11
+    ],
+    "intersecting_cells": 8,
+    "fully_inside_cells": 8,
+    "equivalent_cells": 8.0,
+    "widths_nm": [
+      27.499999999999996,
+      27.500000000000004,
+      27.5,
+      27.5,
+      27.5,
+      27.5,
+      27.500000000000004,
+      27.499999999999996
+    ]
+  },
+  "straight_width": {
+    "interval_um": [
+      5.3149999999999995,
+      5.744999999999999
+    ],
+    "intersecting_cells": 15,
+    "fully_inside_cells": 15,
+    "equivalent_cells": 14.999999999999535,
+    "widths_nm": [
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174,
+      28.666666666666174
+    ]
+  },
+  "source": "https://github.com/flexcompute/tidy3d-notebooks/blob/18fd47f8bd87ad89582b507c20bf4997f79d55c0/RingResonator.ipynb"
+}

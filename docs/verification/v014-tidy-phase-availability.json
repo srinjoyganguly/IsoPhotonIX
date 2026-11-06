@@ -1,0 +1,20 @@
+{
+  "checked_date": "2026-11-06",
+  "observation": "GET of the official task detail endpoint without cookies, account or API key. Both public notebook task IDs require authentication; their notebook outputs publish powers, not raw complex S. No cloud job was submitted.",
+  "examples": [
+    {
+      "example": "ring",
+      "notebook_sha256": "b1dac0b3a47518cc5461c5457511748f5435eaea53703d9fdff1236adbd24908",
+      "published_task_id": "fdve-75d3a8a1-1f16-406c-9e77-a538945ec30e",
+      "official_task_detail_url": "https://tidy3d-api.simulation.cloud/tidy3d/tasks/fdve-75d3a8a1-1f16-406c-9e77-a538945ec30e/detail",
+      "signed_out_http_status": 401
+    },
+    {
+      "example": "grating",
+      "notebook_sha256": "d90e91b8a4b83e616e9661679908e715a020253ae76d75c1139bf2e21d4c692a",
+      "published_task_id": "fdve-c11a8f5d-9a77-4774-80f0-a36fa6d3dab8",
+      "official_task_detail_url": "https://tidy3d-api.simulation.cloud/tidy3d/tasks/fdve-c11a8f5d-9a77-4774-80f0-a36fa6d3dab8/detail",
+      "signed_out_http_status": 401
+    }
+  ]
+}

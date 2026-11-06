@@ -1,0 +1,126 @@
+{
+  "scope": "Interrupted first attempt using native dense nine-entry FDTDX update and optional CUPTI tracing; no device spectrum or elapsed field-step performance for the interrupted device was accepted.",
+  "device": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "reference_checkpoint_signature": "97059222fb545894c8059ba85b2f10fac6b4dc3acf8598cbd5f07b10f4ddf109",
+  "reference_native_arrays_sha256": "bfb18fec5cd8e7398100a7bdf598cec4df01d2e0a1f01540dd09c960899bb0ea",
+  "physical_model": {
+    "shape": [
+      190,
+      174,
+      56
+    ],
+    "pml": 10,
+    "ports": [
+      [
+        33,
+        15,
+        14
+      ],
+      [
+        157,
+        15,
+        14
+      ],
+      [
+        33,
+        131,
+        14
+      ],
+      [
+        157,
+        131,
+        14
+      ]
+    ],
+    "source_x": 21,
+    "half_ap": 14,
+    "vendor": "lumerical",
+    "resolution": 16,
+    "radius_um": 3.1,
+    "width_um": 0.4,
+    "height_um": 0.18,
+    "edge_gap_um": 0.1,
+    "bus_y_um": 3.6,
+    "top_index": 1.0,
+    "substrate_index": 1.44,
+    "silicon_index": 3.48,
+    "aperture_um": 1.75,
+    "pml_um": 0.65,
+    "ring_interface": "wall-tensor"
+  },
+  "versions": {
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "fdtdx": "0.6.2",
+    "scipy": "1.17.1",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "source_files": {
+    "scripts/calibrate_loaded_ring3d.py": "83d55d65c745c03b591601f871e4f70499b84c6acfd826db53f821ba75a21ac0",
+    "scripts/calibrate_ring.py": "50b544c7d7ea35efd7c826925ba435b4a25412e9a259b177b36d4fe13b245b8e",
+    "scripts/gpu_timing.py": "8f43dbd263efb179e98ace297620430e9549dd087644f86c4f601896ff238eba",
+    "scripts/ring_wall_tensor.py": "d48cff53884ef511804710c82685f9514f33a577a28322acfd258e1000196969",
+    "scripts/measure_loaded_ring_losses.py": "82437d514e203760a84c84bea376ded18eb75ad857972f84acf82940ce05effa",
+    "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+    "scripts/ring_stage_provenance.py": "81fb8193748e53e0120bcdf43595cf06e2509a81480258e42b6ee4a4425b42d6",
+    "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+    "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+    "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+    "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+    "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661"
+  },
+  "successful_reference": {
+    "time_steps": 4195,
+    "performance": {
+      "schema": 1,
+      "acquisition_id": "758398e402ce423b96c7f3669c5d7db9",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        190,
+        174,
+        56
+      ],
+      "cells": 1851360,
+      "spacing_um": 0.0625,
+      "pml_cells": {
+        "min_x": 10,
+        "max_x": 10,
+        "min_y": 10,
+        "max_y": 10,
+        "min_z": 10,
+        "max_z": 10
+      },
+      "steps": 4195,
+      "dt_seconds": 1.1916092934568783e-16,
+      "simulated_time_fs": 499.88009860516047,
+      "compile_seconds": 2.5144992569985334,
+      "synchronized_step_seconds": 15.63047015502525,
+      "step_batches": 14,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Kernel crossed a synchronized measurement boundary.",
+      "stage_through_steps_seconds": 25.25952906999737,
+      "million_cell_steps_per_second": 496.87918040667876,
+      "setup_seconds": 6.937626376005937,
+      "interior_non_pml_cells": 942480,
+      "cells_touching_pml": 908880,
+      "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+    }
+  },
+  "incomplete_device": {
+    "last_flushed_completed_samples": 2240,
+    "fdtd_steps_per_sample": 5,
+    "completed_fdtd_steps_lower_bound": 11200,
+    "completed_trace_time_um_c_lower_bound": 400.10373654841055,
+    "synchronized_step_seconds": null,
+    "cuda_event_elapsed_seconds": null,
+    "kernel_active_seconds": null,
+    "failure": "CUDA_ERROR_LAUNCH_FAILED in input_concatenate_fusion_2 during synchronized field stepping",
+    "timing_evidence": "Step timing accumulated in process memory and no device-stage receipt was emitted. The progress log shows completed samples, without timestamps on those lines."
+  },
+  "local_attempt_log_sha256": "0a03de05ea64225b2f2276427c36effba4f17ec202f695899b44b618a55e9073",
+  "remediation": "Later cohorts retain six-face CPML and native staggered xy interpolation, specialize the lossless constitutive update after independent dense-vs-specialized validation, reduce dispatch length and replace optional CUPTI tracing with CUDA elapsed-event timing."
+}

@@ -1,0 +1,38 @@
+{
+  "cadence": "Original runs used optional CUPTI kernel activity capture. All listed runs failed before a complete stage archive was produced. The subsequent cohort disables the optional collector and measures synchronized CUDA stepping time.",
+  "attempts": [
+    {
+      "study": "coupler-16",
+      "resolution": 16,
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "numerical_sha256": "117b1a4ca6d3dc46f43b0f8b71f1965c865817f4631da1388aebcc73eb60dd55",
+      "failed_at": "first field synchronization of straight reference",
+      "error": "jax.errors.JaxRuntimeError: INTERNAL: Failed to complete all kernels launched on stream <stream>: CUDA error: Could not synchronize CUDA stream: CUDA_ERROR_ILLEGAL_ADDRESS: an illegal memory access was encountered [executable_name='jit_evolve']",
+      "log_sha256": "b544fbb19e526a0a5e1393477b72dd704a48becdf627795718859c86728451c0",
+      "completed_stage_count": 0
+    },
+    {
+      "study": "splitter-16",
+      "resolution": 16,
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "numerical_sha256": "117b1a4ca6d3dc46f43b0f8b71f1965c865817f4631da1388aebcc73eb60dd55",
+      "failed_at": "first field synchronization of straight reference",
+      "error": "jax.errors.JaxRuntimeError: INTERNAL: Failed to complete all kernels launched on stream <stream>: CUDA error: Could not synchronize CUDA stream: CUDA_ERROR_ILLEGAL_ADDRESS: an illegal memory access was encountered [executable_name='jit_evolve']",
+      "log_sha256": "7225a63fd5e5d4f3724a5f2b5c7f249abbc1c87513d200d7d19978490c9e0f1b",
+      "completed_stage_count": 0
+    },
+    {
+      "study": "coupler-24",
+      "resolution": 24,
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "numerical_sha256": "117b1a4ca6d3dc46f43b0f8b71f1965c865817f4631da1388aebcc73eb60dd55",
+      "failed_at": "first field synchronization of straight reference",
+      "error": "jax.errors.JaxRuntimeError: INTERNAL: Failed to complete all kernels launched on stream <stream>: CUDA error: Could not synchronize CUDA stream: CUDA_ERROR_ILLEGAL_ADDRESS: an illegal memory access was encountered [executable_name='jit_evolve']",
+      "log_sha256": "1a59cb763ea99ef6f45d34fb31194c7ae14f06191bee538a49dc974d3a826f92",
+      "completed_stage_count": 0
+    }
+  ]
+}

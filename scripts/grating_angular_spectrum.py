@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def air_angular_flux(plane, spacing_um, wavelengths_um, upward=True):
+def angular_components(plane, spacing_um, wavelengths_um, upward=True):
     """Resolve tangential E/H into +/-z plane waves under exp(-i omega t).
 
     Each FFT bin represents a direction cosine. Flux weights include TE/TM
@@ -29,6 +29,15 @@ def air_angular_flux(plane, spacing_um, wavelengths_um, upward=True):
     sign = 1 if upward else -1
     e_s = .5*(s_e-sign*radial_h/cz)
     e_t = .5*(radial_e+sign*s_h*cz)
+    return e_s, e_t, cz, tx, ty, propagating, fx, fy
+
+
+def air_angular_flux(plane, spacing_um, wavelengths_um, upward=True):
+    """Integrate propagating TE/TM power through the recorded finite air aperture."""
+    wavelengths = np.asarray(wavelengths_um)
+    nx, ny = plane.shape[-2:]
+    e_s,e_t,cz,tx,ty,propagating,fx,fy = angular_components(plane,spacing_um,wavelengths,upward)
+    cosines = wavelengths[:,None,None]*np.hypot(fx,fy)
     power = np.where(propagating, .5*(cz*abs(e_s)**2+abs(e_t)**2/cz), 0.)*spacing_um**2/(nx*ny)
     theta = np.rad2deg(np.arcsin(np.clip(cosines,0,1)))
     bins = np.arange(0., 81., 10.)

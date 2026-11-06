@@ -40,13 +40,14 @@ def main(argv=None):
     calibration.add_argument('--layout',type=Path,help='planar model JSON with polygon vertices and port positions')
     calibration.add_argument('--port-distance-um',type=float,help='distance from the TM joint to its port planes')
     calibration.add_argument('--duration-um-c',type=float,help='observation duration for a loaded 3D ring in µm/c')
-    calibration.add_argument('--ring-interface',choices=['legacy','exact-area'],help='lateral material coverage for the 3D ring')
+    calibration.add_argument('--ring-interface',choices=['legacy','exact-area','wall-tensor'],help='lateral material coverage for the 3D ring')
     calibration.add_argument('--ring-material',choices=['constant','palik-ade'],help='material response of the 16-cell, exact-area Lumerical ring')
     calibration.add_argument('--grating-material-model',choices=['volume-average','direct-yee'],help='material sampling for the finite grating')
+    calibration.add_argument('--grating-domain',choices=['full','mirror-y'],help='use the full domain or a qualified reflection symmetry')
     calibration.add_argument('--grating-spectrum',choices=['standard','dense'],help='five samples or 21 samples for the 12-cell Lumerical grating')
     calibration.add_argument('--ring-scope',choices=['full','lumerical','tidy3d'])
     calibration.add_argument('--grating-scope',choices=['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'])
-    calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned'],help='FDTDX permittivity placement')
+    calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned','polygon-area'],help='FDTDX permittivity placement')
     calibration.add_argument('--checkpoint',type=Path,help='reuse matching measured native stages from this directory')
     calibration.add_argument('--export-only', action='store_true', help='write a runnable Python and notebook ZIP without executing the solver')
     calibration.add_argument('--output',type=Path,required=True,help='new local study directory')
@@ -94,7 +95,7 @@ def main(argv=None):
         try:
             model=Calibration(revision=2,case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope,geometry_3d=args.geometry_3d,port_distance_um=args.port_distance_um,duration_um_c=args.duration_um_c,
                               ring_interface=args.ring_interface,ring_material=args.ring_material,
-                              grating_material_model=args.grating_material_model,grating_spectrum=args.grating_spectrum,
+                              grating_material_model=args.grating_material_model,grating_spectrum=args.grating_spectrum,grating_domain=args.grating_domain,
                               planar_layout=json.loads(args.layout.read_text()) if args.layout is not None else None)
             if args.export_only:
                 archive = design_archive(model)

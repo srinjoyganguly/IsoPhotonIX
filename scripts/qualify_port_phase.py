@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 
 from scripts.calibrate_fdtdx_multiport import load_stage
-from scripts.measure_fdtdx_mesh_column import first_column
+from scripts.measure_fdtdx_mesh_column import project_column
 
 
 def native_column(directory):
@@ -17,7 +17,9 @@ def native_column(directory):
             report.get('passed') or report.get('sampled_setup_checks_passed')):
         raise ValueError(f'Target or numerical checks failed in {directory.name}')
     model = plan['model']
-    port = model['ports'][0]['name']
+    names = [p['name'] for p in model['ports']]
+    port = report.get('launch',names[0])
+    launch = names.index(port)
     files = {}
     measurements = []
     for kind in ('reference','device'):
@@ -28,9 +30,9 @@ def native_column(directory):
         files[path.name] = stage['archive_sha256']
         with np.load(path,allow_pickle=False) as data:
             measurements.append({k:data[k] for k in ('frequency_per_um','source_e','source_h','amplitudes')})
-    column, _, through, _ = first_column(model,*measurements)
+    column, _, through, _ = project_column(model,launch,*measurements)
     with np.load(directory/'arrays.npz',allow_pickle=False) as raw:
-        archived = raw['s_column'] if 's_column' in raw else raw['s'][:,:,0]
+        archived = raw['s_column'] if 's_column' in raw else raw['s'][:,:,launch]
         np.testing.assert_allclose(column,archived,rtol=1e-12,atol=1e-13)
     files['arrays.npz'] = hashlib.sha256((directory/'arrays.npz').read_bytes()).hexdigest()
     return plan, report, column, through, files
@@ -42,10 +44,13 @@ def qualify(directories):
         raise ValueError('Provide at least two distinct meshes.')
     first = studies[0][0]
     ports = first['model']['ports']
-    launch = ports[0]
+    name=studies[0][1].get('launch',ports[0]['name'])
+    launch=next(port for port in ports if port['name']==name)
     records = []
     comparisons = []
     for i,(plan,report,column,through,files) in enumerate(studies):
+        if report.get('launch',ports[0]['name'])!=name:
+            raise ValueError('All meshes must excite the same incoming port.')
         for key in ('model','actual_device','material_model','numerical_sha256','versions'):
             if plan[key] != first[key]:
                 raise ValueError(f'The meshes differ in {key}.')

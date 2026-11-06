@@ -37,3 +37,10 @@
 .cal-field-image{position:relative;width:100%;max-width:650px}
 .cal-field-cursor{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border:1px solid white;box-shadow:0 0 0 1px #1d2630;border-radius:50%;pointer-events:none}
 .cal-field .cal-field-extent{font-size:11px}
+
+.cal-runtime { margin: 1rem 0; }
+.cal-runtime summary { cursor: pointer; font-weight: 600; }
+.cal-time-scroll { overflow-x: auto; }
+.cal-time-scroll table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.cal-time-scroll th, .cal-time-scroll td { padding: .45rem; text-align: left; white-space: nowrap; }
+.cal-time-scroll caption { text-align: left; }

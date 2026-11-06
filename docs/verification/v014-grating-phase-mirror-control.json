@@ -1,0 +1,69 @@
+{
+  "metric": "Full versus mirror-reconstructed solver at 12 cells/\u00b5m. Same physical source, output planes and wavelengths.",
+  "full_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+  "mirror_arrays_sha256": "5121f0f82599afcf0d538301cdc4110b687f37939bfbb561ae99b65cc6603ef8",
+  "registered_planes": {
+    "center_x_um": 2.8937385420962913,
+    "sample_z_um": 0.8416666666666668,
+    "guide_x_um": -25.500000000000004,
+    "target_fiber_z_um": 0.9901250394579352,
+    "target_axis_x_um": 2.9199157587314675,
+    "file_port_center_x_um": 2.8582013154835044,
+    "target_guide_x_um": -25.5,
+    "fiber_lead_um": 0.15074858248950854,
+    "guide_lead_um": -3.552713678800501e-15,
+    "phase_convention": "Native DFT +i\u03c9t; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid."
+  },
+  "channels": {
+    "reflection": {
+      "power_delta": {
+        "count": 5,
+        "rms": 7.704032511750507e-09,
+        "max_abs": 1.6750741093675414e-08
+      },
+      "phase_increment_delta_rad": {
+        "count": 4,
+        "rms": 2.268352340281162e-06,
+        "max_abs": 3.035039302767828e-06
+      },
+      "strong_samples": 5,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 5,
+        "rms": 1.0761236712530896e-07,
+        "max_abs": 2.0196149003339207e-07
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 5,
+        "rms": 1.4760425207011694e-06,
+        "max_abs": 2.9538623960782025e-06
+      },
+      "peak_power_a": 0.0072146474852264,
+      "peak_power_b": 0.007214664235967494
+    },
+    "guide": {
+      "power_delta": {
+        "count": 5,
+        "rms": 9.043029075957743e-08,
+        "max_abs": 1.6071923558680368e-07
+      },
+      "phase_increment_delta_rad": {
+        "count": 4,
+        "rms": 2.9200551535176994e-07,
+        "max_abs": 5.311975872501762e-07
+      },
+      "strong_samples": 5,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 5,
+        "rms": 1.7929287620413265e-07,
+        "max_abs": 2.7247407280411475e-07
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 5,
+        "rms": 3.2522796497906493e-07,
+        "max_abs": 5.111045945326727e-07
+      }
+    }
+  }
+}

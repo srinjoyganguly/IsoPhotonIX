@@ -25,6 +25,7 @@ if (ROOT / 'backend').is_dir():
 
 from backend.calibrated_geometry import multiport_model, straight_polygon
 from scripts.calibration_checkpoint import read_locked_plan
+from scripts import phase_polygon_material
 from backend.adapters.fdtdx_ports_adapter import _ports_runtime, measured_energy_tail
 from backend.adapters.fdtdx_ports3d_adapter import (
     canonical_source_profile, longitudinal_yee_permittivity, modal_amplitudes, port_basis,
@@ -114,6 +115,8 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
     from fdtdx.core.jax.pytrees import autoinit, field
     from fdtdx.materials import compute_ordered_names
     from fdtdx.objects.static_material.static import StaticMultiMaterialObject
+    from scripts.gpu_timing import StageTiming
+    timer = StageTiming(target)
     from fdtdx.core.physics.modes import compute_mode
     from fdtdx.fdtd.forward import forward
 
@@ -127,7 +130,7 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
         def get_material_mapping(self):
             return self.occupancy
 
-    shape,pml,_,ports = grid(model, resolution)
+    shape,pml,axes,ports = grid(model, resolution)
     dx = 1/resolution
     port = ports[launch]
     mask = raster(model, resolution, launch if reference else None)
@@ -186,7 +189,11 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
     objects, arrays, params, sim, _ = fdtdx.place_objects(object_list=items,config=sim,constraints=constraints,key=key)
     if not np.allclose(np.asarray(1/arrays.inv_permittivities[0]),epsilon,rtol=1e-6,atol=1e-6):
         raise RuntimeError('FDTDX material initialization differs from the requested circuit.')
-    staggered = yee_material(epsilon,material_model)
+    if material_model == 'polygon-area':
+        polygons = [straight_polygon(model,launch)] if reference else model['polygons']
+        staggered = phase_polygon_material.extruded_yee(model,resolution,axes,polygons)
+    else:
+        staggered = yee_material(epsilon,material_model)
     arrays = arrays.aset('inv_permittivities',jax.device_put(1/staggered,target))
     arrays,objects,_ = fdtdx.apply_params(arrays,objects,params,key)
     if arrays.fields.E.device!=target or not np.allclose(np.asarray(1/arrays.inv_permittivities),staggered,rtol=1e-6,atol=1e-6):
@@ -216,14 +223,18 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
     dt_fs = sim.time_step_duration*1e15
     window_fs = 8/C_UM_PER_FS
     end = min(sim.time_steps_total,math.ceil((source_end_fs+window_fs)/dt_fs))
-    compiled = jax.jit(evolve).lower(state,jnp.asarray(end,dtype=jnp.int32)).compile()
+    with timer.compile():
+        compiled = jax.jit(evolve).lower(state,jnp.asarray(end,dtype=jnp.int32)).compile()
     schedule = np.flatnonzero(np.asarray(objects['energy']._is_on_at_time_step_arr))
     previous = None
     consecutive = 0
     history = []
+    jax.block_until_ready(state)
+    timer.begin_steps()
     while True:
-        state = compiled(state,jnp.asarray(end,dtype=jnp.int32)); step,final = state
-        jax.block_until_ready(final)
+        with timer.step():
+            state = compiled(state,jnp.asarray(end,dtype=jnp.int32)); step,final = state
+            jax.block_until_ready(final)
         step = int(step)
         phasors = {m['name']:np.asarray(final.detector_states[m['name']]['phasor'])[0] for m in monitors}
         amplitudes = np.array([modal_amplitudes(phasors[m['name']],bases[m['name']][0]['mode_e'],
@@ -240,9 +251,12 @@ def stage(runtime, model, resolution, after_time, launch, reference, output, bas
             break
         previous = amplitudes.copy()
         end = min(sim.time_steps_total, step+math.ceil(window_fs/dt_fs))
+    timer.end_steps()
+    performance = timer.report(shape=shape, steps=step, dt_seconds=sim.time_step_duration,
+                               spacing_um=dx, pml_cells=pml)
     if final.fields.E.device!=target:
         raise RuntimeError('Final EM fields left the selected device.')
-    detail = {'monitor_names':[m['name'] for m in monitors], 'source_mode_neff':float(np.real(n)),
+    detail = {'performance':performance, 'monitor_names':[m['name'] for m in monitors], 'source_mode_neff':float(np.real(n)),
               'mode_neff': {m['name']:bases[m['name']][1]['neff_real'] for m in monitors},
               'mode_edge_fractions':{m['name']:bases[m['name']][1]['edge_electric_l2_fraction'] for m in monitors},
               'time_steps':step,'history':history,'settled':consecutive>=2,'material_grid_sha256':digest(epsilon),
@@ -286,7 +300,8 @@ def numerical_digest():
     import backend.calibrated_geometry as geometry
     import backend.adapters.fdtdx_ports3d_adapter as projection
     import backend.adapters.fdtdx_ports_adapter as runtime
-    code = [inspect.getsource(f) for f in (geometry,projection,runtime,grid,raster,yee_material,stage)]
+    from scripts import gpu_timing
+    code = [inspect.getsource(f) for f in (gpu_timing,geometry,projection,runtime,phase_polygon_material,grid,raster,yee_material,stage)]
     constants = [C_UM_PER_FS, ENERGY_LIMIT, DFT_LIMIT]
     return hashlib.sha256(('\n'.join(code)+repr(constants)).encode()).hexdigest()
 
@@ -358,6 +373,9 @@ def reference_cache_key(plan,launch):
          **{key:model[key] for key in ('core_index','cladding_index','frequency_per_um','pulse_fwidth','pulse_cutoff')},
          **{key:plan[key] for key in ('device','actual_device','device_name','resolution','after_source_cap_um_over_c',
                                        'numerical_sha256','versions')}}
+    if ref['material_model'] == 'polygon-area':
+        ref['straight_polygon_um'] = straight_polygon(model,launch)
+        ref['physical_height_um'] = model['height']
     return hashlib.sha256(json.dumps(ref,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
@@ -430,8 +448,8 @@ def resolved_material_model(requested, saved_plan=None):
     """New studies use the qualified grid; an unspecified resume keeps its recorded physical representation."""
     if requested is None:
         requested = DEFAULT_MATERIAL_MODEL if saved_plan is None else saved_plan.get('material_model', 'legacy-x')
-    if requested not in ('legacy-x', 'yee-aligned'):
-        raise ValueError('Choose legacy-x or yee-aligned material sampling.')
+    if requested not in ('legacy-x', 'yee-aligned', 'polygon-area'):
+        raise ValueError('Choose legacy-x, yee-aligned or polygon-area material sampling.')
     return requested
 
 
@@ -479,8 +497,9 @@ def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=
                 stages[key]=details
         report=assemble(model,device,resolution,after_time,output,stages)
         report.update(material_model=material_model,
-                      material_sampling=('Adjacent-cell tangential averaging on both transverse axes at each electric component.'
-                          if material_model=='yee-aligned' else 'Legacy adjacent-x averaging of tangential components only.'),
+                      material_sampling={'yee-aligned':'Adjacent-cell tangential averaging on both transverse axes at each electric component.',
+                          'legacy-x':'Legacy adjacent-x averaging of tangential components only.',
+                          'polygon-area':'Exact polygon and height coverage on each Yee dual cell; diagonal interface-normal mixing.'}[material_model],
                       device_name=target.device_kind,versions=plan['versions'],numerical_sha256=plan['numerical_sha256'],
                       stage_seconds=sum(s['seconds'] for s in stages.values()))
         save_record(output/'report.json',report)
@@ -499,7 +518,7 @@ def main():
     parser.add_argument('--resume',action='store_true',help='verify and reuse completed stages from this exact study folder')
     parser.add_argument('--reference-cache',type=Path,help='optional cache of exactly matching measured straight references')
     parser.add_argument('--device-cache',type=Path,help='coordinate native device stages from identical study plans and input ports')
-    parser.add_argument('--material-model',choices=('legacy-x','yee-aligned'),
+    parser.add_argument('--material-model',choices=('legacy-x','yee-aligned','polygon-area'),
                         help='fresh runs use yee-aligned; omit on resume to keep the recorded material grid')
     args=parser.parse_args()
     report=run(args.case,args.device,args.resolution,args.output,args.pml,args.aperture,args.after_time,args.resume,args.reference_cache,args.material_model,args.device_cache)

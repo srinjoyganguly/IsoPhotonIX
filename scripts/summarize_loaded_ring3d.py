@@ -73,7 +73,9 @@ def publish(folder, source, output, checkpoint):
     vendor=report['vendor']
     base=f"v012-ring3d-{vendor}-r{report['physical_model']['resolution']}-t{int(report['duration_um_c'])}"
     g=report['physical_model']
-    if g.get('ring_interface','legacy')!='legacy':
+    if g.get('ring_interface')=='wall-tensor':
+        base=base.replace('v012-', 'v014-', 1) + '-wall-tensor'
+    elif g.get('ring_interface','legacy')!='legacy':
         base=base.replace('v012-', 'v013-', 1) + '-' + g['ring_interface']
     if g.get('ring_material')=='palik-ade':
         base+='-palik-ade'

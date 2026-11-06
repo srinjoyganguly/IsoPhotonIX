@@ -5,9 +5,12 @@ Each row is qualified for a named geometry, source, execution target and measure
 ## Current refinement campaign
 
 - [x] Checked the actual 100 nm coupling gap independently against Lumerical at 1550 nm. Four local mesh series expose the size of the coarse-grid error. The 128-cell wall and MPB mode splittings are 0.10992 and 0.11085 against the published 0.109. [Matched gap and sensitivity](RING_GAP_MODES.md).
+- [x] Ran the rotated wall model on the RTX 3080 Ti at 16 cells/µm. The 3,200 µm/c run has 236 of 241 usable bins, 25.50 nm spacing and 0.29248% drop at 1550 nm versus 67.44% published. The longer observation and finer meshes have their own records. [GPU spectrum and raw arrays](verification/v014-ring3d-lumerical-r16-t3200-wall-tensor.json).
+- [x] Reconstructed and checked the Lumerical grating's mirrored fields against the full-width GPU calculation at 12 cells/µm. Maximum differences over five samples were 0.0000161 percentage points in guided power and 2.11 × 10⁻⁷ in complex reflected amplitude. [Field and reflection checks](verification/v014-grating-mirror-lumerical-r12.json).
+- [x] Compared complex S at common port planes with the public Lumerical data. The 16-cell wall calculation gives 0.338 rad through and 1.924 rad drop RMS phase errors over the qualified samples. [Phase conventions and masks](COMPLEX_PORT_COMPARISONS.md).
 - [ ] Qualify GPU ring wall and grating etch refinements at fixed physical dimensions. Earlier matched controls remain available below.
 - [ ] Qualify phase and weak returns at common physical planes across meshes. Distinguish absolute phase, phase change with wavelength and power-only vendor data.
-- [ ] Publish per-stage cells, actual steps, elapsed GPU timing, exclusions and fresh/cache provenance alongside the refined device reports.
+- [x] Published per-stage cells, actual steps, elapsed GPU timing, exclusions and fresh/cache provenance. The live ring device advanced 89,575 steps over 1,851,360 cells in 338.13 GPU-clock seconds. [GPU timing ledger](GPU_TIMING.md).
 - [ ] Start persistent circuit connections after the calibration campaigns have been evaluated.
 
 ## v0.12 calibrated component checklist
@@ -97,3 +100,7 @@ The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coup
 - [ ] Qualify oblique or higher-order ports in arbitrary 3D layouts. The custom polygon solvers measure fundamental cardinal-axis ports in planar and finite-height designs.
 
 [Remaining product chunks](NEXT_CHUNKS.md) · [Detailed solver and convergence limits](FDTDX_MULTIPORT.md).
+
+### Independent grating etch check
+
+The pinned Tidy3D example gives **608 nm** for a period estimated from the etched and unetched slab modes. Its optimized device uses **620 nm** after a separate sweep. We solved the two TE transverse sections of the workbench stack at the same physical heights, 260 and 100 nm. At 12 and 14 cells/µm we also checked each sampled transverse electric coefficient against the actual finite-grating material grid. The estimated periods were 634.32 and 623.01 nm. At 96, 192 and 384 cells/µm the estimates were 607.74, 607.39 and 607.31 nm. Widening the mode window at 192 cells/µm changed the estimate by 0.04 nm. This identifies coarse vertical sampling as a source of propagation-phase error. Coupled power still requires the finite-width 3D runs. [Measurements and pinned source](verification/v014-grating-etch-modes.json) · [Tidy3D grating design](https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/).

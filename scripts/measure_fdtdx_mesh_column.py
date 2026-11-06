@@ -90,7 +90,7 @@ def gpu_preflight(case, resolution):
 
 
 def measure(case, device, resolution, destination, baselines, resume=False, launch_port=None,
-            reference_cache=None, device_cache=None):
+            reference_cache=None, device_cache=None, material_model="yee-aligned"):
     preflight = gpu_preflight(case, resolution) if device=='gpu' and resolution>24 else None
     runtime = _ports_runtime(device)
     target = runtime[-1]
@@ -100,7 +100,7 @@ def measure(case, device, resolution, destination, baselines, resume=False, laun
     if launch_port not in names:
         raise ValueError("Choose a port from " + ", ".join(names))
     launch = names.index(launch_port)
-    plan = build_plan(model, device, resolution, 80., target, "yee-aligned")
+    plan = build_plan(model, device, resolution, 80., target, material_model)
     if resume and not destination.is_dir():
         raise ValueError("There is no mesh-control directory to resume.")
     destination.mkdir(parents=True, exist_ok=resume)
@@ -168,6 +168,9 @@ def measure_locked(runtime, plan, destination, baselines, resume, launch, refere
         "source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         "stage_sha256": {role: stage["archive_sha256"] for role, stage in stages.items()},
         "stage_step_counts": {role: stage["time_steps"] for role, stage in stages.items()},
+        "stage_performance": {role: stage.get("performance") for role, stage in stages.items()},
+        "stage_acquisition": {role: ("cache" if stage.get("reuse_existing_"+role) else "fresh")
+                              for role, stage in stages.items()},
         "stage_final_convergence": {role: stage["history"][-2:] for role, stage in stages.items()},
         "mesh_comparisons": [compare_baseline(folder, plan, column, launch) for folder in baselines],
         "scope": "One independently measured input column. Full-matrix reciprocity and passivity require launching every other input port.",
@@ -183,6 +186,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case", choices=("coupler", "splitter"), required=True)
     parser.add_argument("--resolution", type=int, choices=(12, 16, 20, 24, 28), default=24)
+    parser.add_argument("--material-model", choices=("yee-aligned","polygon-area"), default="yee-aligned")
     parser.add_argument("--device", choices=("cpu", "gpu"), required=True)
     parser.add_argument("--launch-port", help="Named physical input to measure; defaults to the first port.")
     parser.add_argument("--reference-cache", type=Path, help="Share physically identical measured straight references.")
@@ -192,7 +196,7 @@ def main():
     parser.add_argument("--resume", action="store_true", help="Reuse verified stages from this exact mesh control.")
     args = parser.parse_args()
     result = measure(args.case, args.device, args.resolution, args.output, args.compare, args.resume,
-                     args.launch_port, args.reference_cache, args.device_cache)
+                     args.launch_port, args.reference_cache, args.device_cache, args.material_model)
     if not result["passed"]:
         raise SystemExit("The measured column failed its sampled checks.")
 

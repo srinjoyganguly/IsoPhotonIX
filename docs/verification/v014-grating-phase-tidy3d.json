@@ -1,0 +1,323 @@
+{
+  "component": "grating",
+  "vendor": "tidy3d",
+  "amplitude_floor": 0.02,
+  "phase_increment_limit_rad": 1.5707963267948966,
+  "ring_80_to_100_percent_phase_limit_rad": 0.05,
+  "native_samples": [
+    {
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "tidy3d",
+        "period": 0.62,
+        "fill": 0.8,
+        "teeth": 20,
+        "width": 10.8,
+        "guide_width": 0.5,
+        "height": 0.26,
+        "etch": 0.16,
+        "radius": null,
+        "taper": 50.0,
+        "taper_exponent": null,
+        "oxide_top": 0.68,
+        "oxide_bottom": 2.0,
+        "n_si": 3.47,
+        "n_oxide": 1.44,
+        "source_z": 1.18,
+        "beam_x": 3.6,
+        "fiber_radius": null,
+        "fiber_cladding_radius": null,
+        "fiber_core_n": null,
+        "fiber_clad_n": null,
+        "fiber_center_x": null,
+        "angle_deg": 14.5,
+        "grating_material_model": null,
+        "physical_bounds": null
+      },
+      "total_wavelengths": 5,
+      "resolution": 12,
+      "arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c",
+      "planes": {
+        "sample_z_um": 0.9283333333333341,
+        "target_beam_z_um": 0.93,
+        "target_beam_x_um": 3.6,
+        "guide_x_um": -50.46666666666666,
+        "target_guide_x_um": -50.465,
+        "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.00493689464249202,
+          -0.022903060343530346
+        ],
+        [
+          0.08747003806935663,
+          -0.32858809088117347
+        ],
+        [
+          -0.04243087095272579,
+          0.52142477337303
+        ],
+        [
+          -0.02488583181575185,
+          0.3472269343632157
+        ],
+        [
+          0.007693043744805927,
+          0.032103006473208545
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.03221832424099458,
+          -0.21799936912853718
+        ],
+        [
+          -0.0015105375322883973,
+          0.30937571335568675
+        ],
+        [
+          -0.09573928146768278,
+          0.2847989122846884
+        ],
+        [
+          0.04046087278898446,
+          -0.3840763252236797
+        ],
+        [
+          -0.004397507649335753,
+          -0.3215522863807075
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          false,
+          true
+        ]
+      ],
+      "commercial_phase_data": "Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs."
+    },
+    {
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "tidy3d",
+        "period": 0.62,
+        "fill": 0.8,
+        "teeth": 20,
+        "width": 10.8,
+        "guide_width": 0.5,
+        "height": 0.26,
+        "etch": 0.16,
+        "radius": null,
+        "taper": 50.0,
+        "taper_exponent": null,
+        "oxide_top": 0.68,
+        "oxide_bottom": 2.0,
+        "n_si": 3.47,
+        "n_oxide": 1.44,
+        "source_z": 1.18,
+        "beam_x": 3.6,
+        "fiber_radius": null,
+        "fiber_cladding_radius": null,
+        "fiber_core_n": null,
+        "fiber_clad_n": null,
+        "fiber_center_x": null,
+        "angle_deg": 14.5,
+        "grating_material_model": null,
+        "physical_bounds": null
+      },
+      "total_wavelengths": 5,
+      "resolution": 14,
+      "arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+      "planes": {
+        "sample_z_um": 0.9342857142857146,
+        "target_beam_z_um": 0.93,
+        "target_beam_x_um": 3.6,
+        "guide_x_um": -50.51428571428573,
+        "target_guide_x_um": -50.465,
+        "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.01564203004001146,
+          0.037231429165607115
+        ],
+        [
+          0.10932634546101024,
+          0.3829497469120918
+        ],
+        [
+          -0.06688209354703735,
+          -0.3619124369801067
+        ],
+        [
+          -0.0393961427078561,
+          -0.5376887539242522
+        ],
+        [
+          0.013032456923075544,
+          -0.28428435018814346
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.038648049320721314,
+          0.2198337784951215
+        ],
+        [
+          -0.019578166396591892,
+          -0.24392743473748743
+        ],
+        [
+          -0.12078895286226266,
+          -0.4750556846027597
+        ],
+        [
+          0.05835836067420431,
+          0.1193575293797911
+        ],
+        [
+          5.720253826005828e-05,
+          0.24732986755471295
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          true,
+          true
+        ],
+        [
+          false,
+          true
+        ]
+      ],
+      "commercial_phase_data": "Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs."
+    }
+  ],
+  "mesh_pairs": [
+    {
+      "meshes": [
+        12,
+        14
+      ],
+      "shared_wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "channels": {
+        "reflection": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.004364501380787816,
+            "max_abs": 0.00809679674504151
+          },
+          "phase_increment_delta_rad": {
+            "count": 1,
+            "rms": 0.07259337240552055,
+            "max_abs": 0.07259337240552055
+          },
+          "strong_samples": 4,
+          "bins_below_amplitude_floor": 1,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.02351446349853903,
+            "max_abs": 0.03500497569393537
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 4,
+            "rms": 0.14939720754295513,
+            "max_abs": 0.2325275968505125
+          },
+          "peak_power_a": 0.010966388825755053,
+          "peak_power_b": 0.019063185570796563
+        },
+        "guide": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.02314110154736492,
+            "max_abs": 0.03756317924524748
+          },
+          "phase_increment_delta_rad": {
+            "count": 2,
+            "rms": 0.17033637139486887,
+            "max_abs": 0.1974539854198929
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.8747179444544279,
+            "max_abs": 1.1651882404167355
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 5,
+            "rms": 2.744974964950174,
+            "max_abs": 3.078499117848406
+          }
+        }
+      }
+    }
+  ],
+  "vendor_absolute_phase_basis": null
+}

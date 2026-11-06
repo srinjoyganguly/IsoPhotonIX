@@ -145,6 +145,9 @@ def stage(runtime, g, duration, reference, frozen_source=None):
     from fdtdx.core.physics.modes import compute_mode
     from fdtdx.core.physics.curl import interpolate_fields
     from fdtdx.fdtd.forward import forward
+    from scripts.gpu_timing import StageTiming
+    stage_started=time.monotonic()
+    timer=StageTiming(target)
 
     dx=1/g['resolution']
     sim=fdtdx.SimulationConfig(time=duration*1e-6/LIGHT, resolution=dx*1e-6,
@@ -169,14 +172,24 @@ def stage(runtime, g, duration, reference, frozen_source=None):
         config=sim,constraints=constraints,key=key)
     ade=g.get('ring_material')=='palik-ade'
     basis_wavelengths=BASIS_WAVELENGTHS
-    if ade:
+    wall=g.get('ring_interface')=='wall-tensor'
+    full_inverse=None
+    if wall:
+        from scripts.ring_wall_tensor import forward_lossless_xy, wall_inverse
+        full_inverse=wall_inverse(g,reference,disk_fractions,lateral_fraction,permittivity)
+        for x in (g['source_x'], *(p[0] for p in g['ports'])):
+            if np.any(full_inverse[1,x]) or np.any(full_inverse[3,x]):
+                raise ValueError('A requested source or port intersects a curved sidewall.')
+        diagonal=full_inverse[[0,4,8]]
+        eps=1/diagonal
+    elif ade:
         from scripts import ring_ade_stage as dispersion
         coefficients,eps,material_metadata=dispersion.build(g,reference,sim.time_step_duration,permittivity)
         basis_wavelengths=dispersion.material.WAVELENGTHS
     else:
         eps=permittivity(g,reference)
-    material_sha=fingerprint(eps)
-    arrays=arrays.aset('inv_permittivities',jax.device_put(1/eps,target))
+    material_sha=fingerprint(full_inverse if wall else eps)
+    arrays=arrays.aset('inv_permittivities',jax.device_put(diagonal if wall else 1/eps,target))
     arrays, objects, _ = fdtdx.apply_params(arrays,objects,params,key)
     if arrays.fields.E.device!=target or not np.allclose(np.asarray(1/arrays.inv_permittivities),eps,rtol=1e-6):
         raise RuntimeError('Native FDTDX material or target differs from the requested 3D grid.')
@@ -187,7 +200,7 @@ def stage(runtime, g, duration, reference, frozen_source=None):
     e,h,_=canonical_source_profile(e,h)
     if not OXIDE<float(np.real(n))<SILICON:
         raise RuntimeError('Unguided launch mode.')
-    if ade and frozen_source is not None:
+    if (wall or ade) and frozen_source is not None:
         for current,key in [(e,'source_E'),(h,'source_H'),(native._time_offset_E,'source_offset_E'),(native._time_offset_H,'source_offset_H')]:
             np.testing.assert_allclose(np.asarray(current),frozen_source[key],rtol=2e-6,atol=1e-8)
         e,h=frozen_source['source_E'],frozen_source['source_H']
@@ -202,6 +215,9 @@ def stage(runtime, g, duration, reference, frozen_source=None):
     raw = {'source_E':e,'source_H':h,
            'permittivity_midplane':eps[1,:,:,shape[2]//2].copy(),
            'permittivity_cross_section':eps[:,g['source_x']].copy()}
+    if wall:
+        raw.update(inverse_xy_midplane=full_inverse[[1,3],:,:,shape[2]//2],
+                   source_offset_E=np.asarray(native._time_offset_E),source_offset_H=np.asarray(native._time_offset_H))
     if ade:
         raw.update(projection_wavelengths_um=basis_wavelengths,source_offset_E=np.asarray(native._time_offset_E),
                    source_offset_H=np.asarray(native._time_offset_H))
@@ -230,15 +246,21 @@ def stage(runtime, g, duration, reference, frozen_source=None):
         neff.append(details['neff_real']);edge.append(details['edge_electric_l2_fraction'])
         raw[f'basis_E_{i}']=mode_e
         raw[f'basis_H_{i}']=mode_h
+    if wall and not reference:
+        # All source/monitor cross-sections were checked to be exactly diagonal.
+        # Evolve the device with all nine coefficients; the reference is exactly diagonal everywhere.
+        arrays=arrays.aset('inv_permittivities',jax.device_put(full_inverse,target))
     dt=sim.time_step_duration*LIGHT*1e6
     stride=max(1,int(.20/dt))
-    chunk=64
+    chunk=16 if wall else 64
     size=sim.time_steps_total//stride
     points=[(round(x/dx+shape[0]/2),round(y/dx+shape[1]/2),shape[2]//2)
             for x,y in ((g['radius_um'],0.),(0.,-g['radius_um']),(0.,g['radius_um']))]
 
     def sample(carry, _):
         def step(_,state):
+            if wall and not reference:
+                return forward_lossless_xy(state,sim,objects)
             return forward(state=state,config=sim,objects=objects,key=key,
                            record_detectors=False,record_boundaries=False,simulate_boundaries=True)
         prior=jax.lax.fori_loop(0,stride-1,step,carry)
@@ -258,21 +280,31 @@ def stage(runtime, g, duration, reference, frozen_source=None):
         return following,(jnp.stack(result),probes)
     state=(jnp.asarray(0,dtype=jnp.int32),arrays)
     # Fixed sample count per execution amortizes dispatch. The last chunk uses its actual length.
-    evolve=jax.jit(lambda st:jax.lax.scan(sample,st,None,length=chunk),donate_argnums=(0,))
-    traces=[];probes=[];snapshots=[];snapshot_times=[]
+    jax.block_until_ready((state, weights))
+    setup_seconds=time.monotonic()-stage_started
     start=time.monotonic()
+    compiled={}
+    for n_samples in {min(chunk,size),size % chunk} - {0}:
+        with timer.compile():
+            evolve=jax.jit(lambda st:jax.lax.scan(sample,st,None,length=n_samples),donate_argnums=(0,))
+            compiled[n_samples]=evolve.lower(state).compile()
+    traces=[];probes=[];snapshots=[];snapshot_times=[]
+    timer.begin_steps()
     for first in range(0,size,chunk):
         n_samples=min(chunk,size-first)
-        if n_samples==chunk:
-            state,(signal,probe)=evolve(state)
-        else:
-            state,(signal,probe)=jax.jit(lambda st:jax.lax.scan(sample,st,None,length=n_samples))(state)
-        traces.append(np.asarray(signal));probes.append(np.asarray(probe))
+        with timer.step():
+            state,(signal,probe)=compiled[n_samples](state)
+            jax.block_until_ready((state,signal,probe))
+        signal_np, probe_np=np.asarray(signal),np.asarray(probe)
+        if not np.isfinite(signal_np).all() or not np.isfinite(probe_np).all():
+            raise ValueError(f'Nonfinite native fields at step {int(state[0])}.')
+        traces.append(signal_np);probes.append(probe_np)
         if not snapshot_times or (snapshot_times[-1]<PULSE_END+40<=float(state[0])*dt) or first+chunk>=size:
             snapshot_times.append(float(state[0])*dt)
             snapshots.append(np.asarray(state[1].fields.E[:,:,:,shape[2]//2]))
         if first%max(chunk,(size//8//chunk)*chunk)==0:
             print(f"{'reference' if reference else 'device'} {min(first+chunk,size)}/{size} samples",flush=True)
+    timer.end_steps()
     if state[1].fields.E.device!=target:
         raise RuntimeError('Final fields left the requested GPU.')
     raw.update(time_um_c=np.arange(1,size+1)*stride*dt,projections=np.concatenate(traces),
@@ -284,6 +316,19 @@ def stage(runtime, g, duration, reference, frozen_source=None):
     info=dict(device=str(target),device_name=target.device_kind,time_steps=int(state[0]),time_step_um_c=dt,
               elapsed_s=time.monotonic()-start,material_sha256=material_sha,source_mode_neff=float(np.real(n)),
               sampled_mode_edge_fraction_max=float(np.max(edge)),source_E_sha256=fingerprint(e),source_H_sha256=fingerprint(h))
+    info['performance']=timer.report(shape=shape,steps=int(state[0]),dt_seconds=sim.time_step_duration,
+                                     spacing_um=dx,pml_cells={f'{s}_{a}':int(pml) for a in 'xyz' for s in ('min','max')})
+    interior=math.prod(n-2*pml for n in shape)
+    info['performance'].update(setup_seconds=setup_seconds, interior_non_pml_cells=interior,
+                               cells_touching_pml=math.prod(shape)-interior,
+                               exclusions='Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution.')
+    info['requested_time_steps']=int(sim.time_steps_total)
+    info['unsampled_tail_steps']=int(sim.time_steps_total-state[0])
+    if wall:
+        info.update(evolution_tensor_components=arrays.inv_permittivities.shape[0],
+                    curved_inverse_xy_nonzero_cells=int(np.count_nonzero(full_inverse[[1,3]])),
+                    model='Sequential vertical-wall lamination, local radial normal, frozen positive-Ey source',
+                    electric_update='Native diagonal' if reference else 'FDTDX lossless xy block, native CPML and H update')
     if ade:
         info.update(material_validation=material_metadata,source_drive=source_drive)
     return raw,info
@@ -319,6 +364,9 @@ def qualified_spacing(peaks, valid):
 def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity):
     ref,dev = [stages[k][1] for k in ('reference','device')]
     ade=g.get('ring_material')=='palik-ade'
+    if g.get('ring_interface')=='wall-tensor':
+        for key in ('source_E','source_H','source_offset_E','source_offset_H'):
+            np.testing.assert_array_equal(ref[key],dev[key])
     if ade:
         for key in ('source_E','source_H','source_offset_E','source_offset_H','projection_wavelengths_um'):
             if not np.array_equal(ref[key],dev[key]):
@@ -374,6 +422,9 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
         max_collected_port_power=float(power.sum(axis=1).max()),incident_ratio_magnitude_range=[float(abs(ratio).min()),float(abs(ratio).max())],
         arrays_file='arrays.npz',arrays_sha256=hashlib.sha256((output/'arrays.npz').read_bytes()).hexdigest(),
         limits='Lossless, fixed central indices. Modal E/H overlaps interpolate five independently solved mode profiles across the band. FSR is loaded drop-peak spacing. Intrinsic/external rate estimates require the independent spectral/temporal gates in loaded_loss.')
+    if g.get('ring_interface')=='wall-tensor':
+        report['limits']+=' The rotated sidewall model uses native off-diagonal electric updates; subcell corners use sequential mixing. The midplane display stores the reciprocal inverse yy coefficient.'
+        report['physical_port_x_um']=[(x-g['shape'][0]/2)/g['resolution'] for x,y,z in g['ports']]
     if ade:
         report['material_band_bins']=int(in_band.sum())
         report['qualified_material_band_um']=[1.5,1.6]
@@ -397,7 +448,7 @@ def main():
     parser.add_argument('--vendor',choices=tuple(CASES),required=True)
     parser.add_argument('--device',choices=['gpu'],required=True)
     parser.add_argument('--resolution',type=int,choices=(12,16,20,24),default=16)
-    parser.add_argument('--ring-interface', choices=('legacy','exact-area'), default='legacy',
+    parser.add_argument('--ring-interface', choices=('legacy','exact-area','wall-tensor'), default='legacy',
                         help='How the ring and straight guides occupy the lateral Yee cells.')
     parser.add_argument('--ring-material',choices=('constant','palik-ade'),default='constant')
     parser.add_argument('--duration-um-c',type=float,help='Total recording in µm/c (Lumerical 3200, Tidy3D 4800).')
@@ -410,6 +461,8 @@ def main():
         args.duration_um_c=3200. if args.vendor=='lumerical' else 4800.
     if not 100<=args.duration_um_c<=6000 or not .5<=args.pml_um<=1.2 or not 1.5<=args.aperture_um<=2.5:
         parser.error('Require duration 100–6000 µm/c, PML 0.5–1.2 µm and aperture 1.5–2.5 µm.')
+    if args.ring_interface=='wall-tensor' and args.resolution<16:
+        parser.error('The separated-wall tensor control requires at least 16 cells/µm.')
     if args.ring_material=='palik-ade' and (args.vendor!='lumerical' or args.ring_interface!='exact-area'):
         parser.error('The Palik material control requires the exact-area Lumerical ring.')
     args.output.mkdir(parents=True,exist_ok=True)
@@ -438,6 +491,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         cache=StageCache(args.checkpoint if args.checkpoint and reusable else tmp)
         stages={}
+        acquisitions={}
         for label in ('reference','device'):
             is_reference=label=='reference'
             interval=150. if is_reference else args.duration_um_c
@@ -445,16 +499,20 @@ def main():
             frozen_source=None
             if args.ring_material=='palik-ade':
                 settings['basis']=[1.5,1.525,1.55,1.575,1.6]
-                if not is_reference:
-                    frozen_source=stages['reference'][1]
-                    settings['frozen_source_sha256']={key:fingerprint(frozen_source[key]) for key in
-                        ('source_E','source_H','source_offset_E','source_offset_H')}
+            if not is_reference and (args.ring_material=='palik-ade' or args.ring_interface=='wall-tensor'):
+                frozen_source=stages['reference'][1]
+                settings['frozen_source_sha256']={key:fingerprint(frozen_source[key]) for key in
+                    ('source_E','source_H','source_offset_E','source_offset_H')}
+            calculated_here=False
             def calculate():
+                nonlocal calculated_here
+                calculated_here=True
                 raw,info=stage(runtime,g,interval,is_reference,frozen_source)
                 return info,raw
             stages[label]=cache.acquire(label,settings,calculate)
+            acquisitions[label]='computed_this_invocation' if calculated_here else 'reused_verified_receipt'
             print(label,'complete',stages[label][0]['device'],flush=True)
-        identity = {'persistent_reuse_eligible': reusable, 'provenance': public_fingerprint(provenance)}
+        identity = {'persistent_reuse_eligible': reusable, 'provenance': public_fingerprint(provenance), 'invocation_acquisition': acquisitions}
         result=assemble(g,args.vendor,stages,args.duration_um_c,args.output,versions,identity)
         print('Measured',result['valid_bins'],'of',result['total_bins'],'qualified bins; FSR (nm)',result['measured_drop_fsr_nm'],flush=True)
 

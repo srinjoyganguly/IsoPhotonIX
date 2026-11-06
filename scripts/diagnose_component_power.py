@@ -120,8 +120,9 @@ def diagnose(directory, lumerical_file, names):
         path = directory / (name+'.json')
         report = json.loads(path.read_text())
         raw = directory / report['arrays_file']
-        if not report['passed'] or sha(raw) != report['arrays_sha256']:
-            raise ValueError(f'Unqualified result or changed arrays in {name}.')
+        partial_ring = report['case_id']=='loaded-ring-3d' and report.get('measurement_complete') and report.get('valid_bins',0)>0
+        if (not report['passed'] and not partial_ring) or sha(raw) != report['arrays_sha256']:
+            raise ValueError(f'Incomplete acquisition or changed arrays in {name}.')
         with np.load(raw, allow_pickle=False) as arrays:
             if report['case_id']=='loaded-ring-3d':
                 row = ring_details(report, arrays, reference if report['vendor']=='lumerical' else None)
@@ -132,20 +133,29 @@ def diagnose(directory, lumerical_file, names):
                 row = grating_details(report, arrays)
                 model=report['settings']
                 row['variant'] = model.get('grating_material_model','volume-average') + ' / ' + model.get('grating_spectrum','standard')
+                # Preserve equal-mesh controls as distinct numerical experiments.
+                row['domain'] = model.get('domain', model.get('grating_domain','full'))
+                row['allocator'] = model.get('grating_allocator','default')
                 row['mesh'] = model['resolution']
             else:
                 raise ValueError(f'Unexpected component in {name}.')
         rows[path.name] = {**row, 'vendor':report['vendor'].lower(),
+                           'full_native_gate_passed':report['passed'], 'valid_bins':report.get('valid_bins'),
+                           'total_bins':report.get('total_bins'),
                            'source_report_sha256': sha(path), 'native_arrays_sha256': report['arrays_sha256']}
     return {'target_um': TARGET_UM, 'lumerical_s_parameter_sha256': sha(lumerical_file), 'records': rows}
 
 
 def measured_controls(directory):
-    paths=sorted([*directory.glob('v013-ring3d-*.json'),*directory.glob('v013-grating3d-*.json')])
+    paths=sorted(p for revision in ('v013','v014') for case in ('ring3d','grating3d')
+                 for p in directory.glob(f'{revision}-{case}-*.json'))
     result=[]
     for path in paths:
         report=json.loads(path.read_text())
-        if (report.get('case_id') in ('loaded-ring-3d','finite-grating-3d') and report.get('passed')
+        eligible = report.get('passed') or (path.name.startswith('v014-ring3d-') and report.get('measurement_complete')
+                    and report.get('valid_bins',0)>0 and np.any(np.isclose(np.asarray(report['series'][report['vendor']]['wavelength_um'])
+                        [np.asarray(report['series'][report['vendor']]['valid_bins'])],TARGET_UM,rtol=0,atol=1e-12)))
+        if (report.get('case_id') in ('loaded-ring-3d','finite-grating-3d') and eligible
                 and report.get('arrays_file') and report.get('vendor','').lower() in ('lumerical','tidy3d')):
             result.append(path.stem)
     return result
@@ -169,16 +179,20 @@ def accuracy_gates(diagnosis):
             checks={'target_within_five_points':abs(row['local_at_target']-row['published_at_target'])<=POWER_TOLERANCE,
                     'band_mean_within_five_points':row['mean_absolute_difference']<=POWER_TOLERANCE}
             families.setdefault((row['vendor'],row['variant']),[]).append((name,row))
+        checks['native_full_spectrum_qualified']=row.get('full_native_gate_passed',True)
         results[name]={'criteria':checks,'all_evidenced_and_met':all(value is True for value in checks.values())}
     mesh_controls=[]
     for (vendor,variant), acquisition in families.items():
-        ordered=sorted(acquisition,key=lambda pair:pair[1]['mesh'])
-        for (name1,r1),(name2,r2) in zip(ordered,ordered[1:]):
-            if r1['wavelength_um']!=r2['wavelength_um'] or r1['mesh']==r2['mesh']:
-                raise ValueError('Matched grating mesh changes require identical wavelengths and distinct meshes.')
-            delta=abs(np.subtract(r2['local_power'],r1['local_power']))
-            mesh_controls.append({'vendor':vendor,'variant':variant,'coarse':name1,'fine':name2,
-                                  'max_absolute_change':float(delta.max()),'within_two_points':bool(delta.max()<=.02)})
+        meshes=sorted({row['mesh'] for _,row in acquisition})
+        for coarse,fine in zip(meshes,meshes[1:]):
+            for name1,r1 in ((name,r) for name,r in acquisition if r['mesh']==coarse):
+                for name2,r2 in ((name,r) for name,r in acquisition if r['mesh']==fine):
+                    if r1['wavelength_um']!=r2['wavelength_um']:
+                        raise ValueError('Matched gratings require the same physical wavelengths.')
+                    delta=abs(np.subtract(r2['local_power'],r1['local_power']))
+                    mesh_controls.append({'vendor':vendor,'variant':variant,'coarse':name1,'fine':name2,
+                                          'coarse_domain':r1.get('domain','full'),'fine_domain':r2.get('domain','full'),
+                                          'max_absolute_change':float(delta.max()),'within_two_points':bool(delta.max()<=.02)})
     return {'scope':'Comparison targets from docs/POWER_MISMATCH.md. Unavailable peak assignments are unqualified. '
                     'A grating sampled on one mesh has no mesh-stability determination.',
             'absolute_power_tolerance':POWER_TOLERANCE,'grating_mesh_power_tolerance':.02,

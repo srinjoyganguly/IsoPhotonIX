@@ -1,0 +1,12 @@
+{
+  "qualified": [
+    {
+      "geometry": "lumerical",
+      "domain": "mirror-y",
+      "material": "direct-yee",
+      "resolution": 12,
+      "reference": "v014-grating-mirror-lumerical-r12.json",
+      "run": "v014-grating3d-lumerical-mirror-control-r12.json"
+    }
+  ]
+}

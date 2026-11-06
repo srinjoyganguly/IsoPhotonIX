@@ -1,0 +1,241 @@
+{
+  "scope": "Same mesh, finite geometry, physical gap, wavelength axis, fixed material indices, matched reference and port apertures. Analytic fractions in both; x/y wall normal constitutive response differs. No phase offset or resonance shift fitted.",
+  "pairs": [
+    {
+      "vendor": "lumerical",
+      "mesh_cells_per_um": 16,
+      "edge_gap_nm": 100.0,
+      "cells_across_gap": 1.6,
+      "scalar_report": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
+      "scalar_arrays_sha256": "adf95f50b94eb001d1a9bea588c19e2007b3fbbf8013515efa3fd3cba667c687",
+      "tensor_report": "v014-ring3d-lumerical-r16-t3200-wall-tensor.json",
+      "tensor_report_sha256": "d2cdf57adcba592739a9b01925daee3233c93fe9345e4e94901fecadde76a16a",
+      "tensor_arrays_sha256": "c41cf5bf28f74a52f8238ec508f980c83da1f6746e5c7eceb413dfa20e12c5dc",
+      "source": {
+        "kind": "FDTD text attachment",
+        "input_port": 1,
+        "drop_port": 2,
+        "through_port": 3,
+        "reflection_port": 1,
+        "add_side_port": 4,
+        "attachment_sha256": "497d0ed797b82d5887bd67ee1630712fb5ac38de0eee6a7b99d55e63fc938bd8",
+        "reference_samples": 500
+      },
+      "versions": {
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "fdtdx": "0.6.2",
+        "scipy": "1.17.1",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "launch_mode_neff_at_1550": [
+        1.970622181892395,
+        1.9181034564971924
+      ],
+      "central_drop_pair_um": [
+        [
+          1.5305,
+          1.5565
+        ],
+        [
+          1.538,
+          1.5635000000000001
+        ]
+      ],
+      "fsr_nm": [
+        26.00000000000002,
+        25.500000000000078
+      ],
+      "published_fsr_nm": 25.454899999999945,
+      "all_wavelengths_passed_native_controls": false,
+      "power_agreement": {
+        "through": {
+          "paired_samples": 198,
+          "old_exact_area_mae": 0.16456924879684443,
+          "wall_tensor_mae": 0.13095130703438648,
+          "at_1550": {
+            "scalar": 0.9633589130086524,
+            "tensor": 0.9941467467478083,
+            "published": 0.093915300002907
+          }
+        },
+        "drop": {
+          "paired_samples": 198,
+          "old_exact_area_mae": 0.13545329506562703,
+          "wall_tensor_mae": 0.08478140319313582,
+          "at_1550": {
+            "scalar": 0.03160450528777398,
+            "tensor": 0.0029247998330364845,
+            "published": 0.6744231240959558
+          }
+        },
+        "reflection": {
+          "paired_samples": 198,
+          "old_exact_area_mae": 0.003192645612490893,
+          "wall_tensor_mae": 0.00899836701863766,
+          "at_1550": {
+            "scalar": 4.519063196198244e-06,
+            "tensor": 7.286971932737509e-07,
+            "published": 0.0007615791758866508
+          }
+        },
+        "add_side": {
+          "paired_samples": 198,
+          "old_exact_area_mae": 0.0031718592972042737,
+          "wall_tensor_mae": 0.00899490172332287,
+          "at_1550": {
+            "scalar": 2.3038426161100466e-05,
+            "tensor": 1.0959598572494577e-05,
+            "published": 0.000824536588624558
+          }
+        }
+      },
+      "peak_comparisons": [
+        {
+          "published_nominal_peak_um": 1.52463718,
+          "read_peak_um": 1.5246371801131047,
+          "read_peak_power": 0.316344378025,
+          "loaded_q_half_max": null,
+          "fwhm_nm": 2.176488661230991,
+          "largest_sample_interval_nm": 0.2014686202820304,
+          "number_of_peaks_above_half_height": 2,
+          "nearest_local_peak_um": 1.5135,
+          "nearest_wavelength_difference_nm": -11.137180113104606,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.55009208,
+          "read_peak_um": 1.5500920771652973,
+          "read_peak_power": 0.7153218182890001,
+          "loaded_q_half_max": 1090.9476500617614,
+          "fwhm_nm": 1.4208675155746864,
+          "largest_sample_interval_nm": 0.20060404892752182,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.538,
+          "nearest_wavelength_difference_nm": -12.092077165297255,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.57724075,
+          "read_peak_um": 1.57724074834012,
+          "read_peak_power": 0.6629167548089999,
+          "loaded_q_half_max": 751.8385347623616,
+          "fwhm_nm": 2.097845049720215,
+          "largest_sample_interval_nm": 0.20775134860939737,
+          "number_of_peaks_above_half_height": 1
+        }
+      ],
+      "channels_at_workbench_planes": {
+        "reflection": {
+          "power_min": 2.549905524094248e-08,
+          "power_max": 0.22177093080702492,
+          "p80_window_delta_abs_s_max": 0.01464585939413103,
+          "defined_phase_bins_above_1pct_power": 10,
+          "qualified_bins": 198
+        },
+        "through": {
+          "power_min": 0.014827171827379264,
+          "power_max": 1.00532507414642,
+          "p80_window_delta_abs_s_max": 0.04551477490324724,
+          "defined_phase_bins_above_1pct_power": 198,
+          "qualified_bins": 198
+        },
+        "drop": {
+          "power_min": 0.0007647018523372061,
+          "power_max": 0.773096639412827,
+          "p80_window_delta_abs_s_max": 0.04796401982399776,
+          "defined_phase_bins_above_1pct_power": 80,
+          "qualified_bins": 198
+        },
+        "add_side": {
+          "power_min": 2.5170854771804093e-10,
+          "power_max": 0.2211695552839706,
+          "p80_window_delta_abs_s_max": 0.015096417969829358,
+          "defined_phase_bins_above_1pct_power": 10,
+          "qualified_bins": 198
+        }
+      },
+      "reflection_background_check_at_1550": {
+        "wavelength_um": 1.55,
+        "qualified": true,
+        "straight_background_abs_s": 0.00010155393458389313,
+        "device_before_subtraction_abs_s": 0.0009438977536891123,
+        "background_subtracted_abs_s": 0.0008536376240968712,
+        "late_window_abs_s_change": 0.00026240990725871966,
+        "change_relative_to_final_amplitude": 0.3074019933649753
+      },
+      "matched_scalar_tensor_planes": {
+        "vendor": "lumerical",
+        "first": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
+        "second": "v014-ring3d-lumerical-r16-t3200-wall-tensor.json",
+        "jointly_qualified_wavelengths": 236,
+        "first_resolution": 16,
+        "second_resolution": 16,
+        "first_duration_um_c": 3200.0,
+        "second_duration_um_c": 3200.0,
+        "first_fsr_nm": 26.00000000000002,
+        "second_fsr_nm": 25.500000000000078,
+        "fsr_change_nm": -0.49999999999994316,
+        "nominal_plane_distance_from_center_um": 3.8600000000000003,
+        "first_snapped_plane_um": 3.875,
+        "second_snapped_plane_um": 3.875,
+        "port_differences": {
+          "reflection": {
+            "max_power_difference": 0.22176156114201617,
+            "mean_absolute_power_difference": 0.005159304936026192,
+            "max_complex_amplitude_difference": 0.47120323723567786,
+            "phase_bins_with_both_powers_above_0_01": 0,
+            "max_wrapped_phase_difference_rad": null
+          },
+          "through": {
+            "max_power_difference": 0.9926058110700947,
+            "mean_absolute_power_difference": 0.16912985583073784,
+            "max_complex_amplitude_difference": 1.7455423407834465,
+            "phase_bins_with_both_powers_above_0_01": 233,
+            "max_wrapped_phase_difference_rad": 2.949124902192646
+          },
+          "drop": {
+            "max_power_difference": 0.9018127685358859,
+            "mean_absolute_power_difference": 0.13708147212526564,
+            "max_complex_amplitude_difference": 1.087275691118121,
+            "phase_bins_with_both_powers_above_0_01": 90,
+            "max_wrapped_phase_difference_rad": 3.1236300481790673
+          },
+          "add_side": {
+            "max_power_difference": 0.22116269036654215,
+            "mean_absolute_power_difference": 0.005158407186301941,
+            "max_complex_amplitude_difference": 0.47004980871024205,
+            "phase_bins_with_both_powers_above_0_01": 0,
+            "max_wrapped_phase_difference_rad": null
+          }
+        },
+        "straight_phase_controls": {
+          "first": {
+            "reference_separation_um": 7.75,
+            "straight_group_index_at_1550nm": 4.71518873449413,
+            "straight_group_delay_ring_spacing_estimate_nm": 26.159097300577518,
+            "max_wrapped_continuous_mode_phase_error_rad": 0.7232727391476355,
+            "max_wrapped_discrete_mode_phase_error_rad": 0.07954104477425589,
+            "at_1550nm_continuous_error_rad": 0.5326312047531999,
+            "at_1550nm_discrete_error_rad": -0.07324359979828327
+          },
+          "second": {
+            "reference_separation_um": 7.75,
+            "straight_group_index_at_1550nm": 4.7346898361040495,
+            "straight_group_delay_ring_spacing_estimate_nm": 26.051353977964837,
+            "max_wrapped_continuous_mode_phase_error_rad": 0.6608309355071128,
+            "max_wrapped_discrete_mode_phase_error_rad": 0.08179383358261709,
+            "at_1550nm_continuous_error_rad": 0.4803074920752841,
+            "at_1550nm_discrete_error_rad": -0.07469974925140055
+          }
+        },
+        "phase_correction": "Known distance to common physical planes. The lower bus uses its measured complex straight transmission with phase branch anchored to discrete modal propagation. The unexcited upper bus uses its own discrete modal propagation estimate. No fitted phase or wavelength registration."
+      },
+      "stage_calculation_signatures": {
+        "reference": "2223e228ed15c8d94031b828dfdb618ec03506b51b46147058d1c9ebabb2d3d6",
+        "device": "156e0898cad0f3e9de33da062a765a56a511bb7a2044b78549a31eace2155c05"
+      }
+    }
+  ]
+}

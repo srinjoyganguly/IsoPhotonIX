@@ -1,0 +1,54 @@
+{
+  "source_report": "v014-ring3d-lumerical-r16-t3200-wall-tensor.json",
+  "short_arrays_sha256": "c41cf5bf28f74a52f8238ec508f980c83da1f6746e5c7eceb413dfa20e12c5dc",
+  "short_window": {
+    "nominal_window_um_c": 3200.0,
+    "sampled_stop_um_c": 3199.9368036896317,
+    "total_bins": 241,
+    "qualified_bins": 236,
+    "failed_bins": [
+      {
+        "wavelength_nm": 1490.0,
+        "gates_failed": [
+          "early_window"
+        ],
+        "largest_power_change": 0.09553687564320823,
+        "responsible_port": "through"
+      },
+      {
+        "wavelength_nm": 1490.5,
+        "gates_failed": [
+          "early_window"
+        ],
+        "largest_power_change": 0.05356821336912787,
+        "responsible_port": "through"
+      },
+      {
+        "wavelength_nm": 1511.5,
+        "gates_failed": [
+          "early_window"
+        ],
+        "largest_power_change": 0.06067627529209685,
+        "responsible_port": "through"
+      },
+      {
+        "wavelength_nm": 1512.0,
+        "gates_failed": [
+          "early_window"
+        ],
+        "largest_power_change": 0.07191674739682574,
+        "responsible_port": "through"
+      },
+      {
+        "wavelength_nm": 1514.0,
+        "gates_failed": [
+          "early_window"
+        ],
+        "largest_power_change": 0.061271012319916385,
+        "responsible_port": "through"
+      }
+    ],
+    "maximum_80_percent_power_change": 0.09553687564320823,
+    "early_window_fraction": 0.8
+  }
+}

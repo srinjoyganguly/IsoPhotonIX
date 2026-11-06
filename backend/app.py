@@ -12,8 +12,9 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, Res
 from starlette.background import BackgroundTask
 from fastapi.staticfiles import StaticFiles
 
+from .calibration_performance import stage_rows, timing_csv
 from .calibration_fields import field_plane
-from .calibrations import CASES, calibration_routes, Calibration, design_archive, result_zip
+from .calibrations import CASES, grating_meshes, calibration_routes, Calibration, design_archive, result_zip
 from .capabilities import capabilities
 from .jobs import JobManager
 from .model import WaveguideConfig
@@ -46,7 +47,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.12.0-preview.2", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.13.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -63,7 +64,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.12.0-preview.2", "compute": "local"}
+    return {"status": "ok", "version": "0.13.0-preview.1", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -450,8 +451,24 @@ def calibrated_presets():
         if case in receipts and phase_path.is_file():
             study = json.loads(phase_path.read_text())
             receipts[case]['phase_check'] = {**study['measurements'][-1], 'launch':study['launch'], 'receipt':phase_path.name}
-    return [{'case':key,'name':title,'scope':scope,'routes':calibration_routes(key), 'evidence':receipts.get(key)}
+    grating_options = {name:{domain:{material:grating_meshes(name,domain,material)
+                           for material in ('volume-average','direct-yee')}
+                           for domain in ('full','mirror-y')} for name in ('tidy3d','lumerical')}
+    return [{'case':key,'name':title,'scope':scope,'routes':calibration_routes(key), 'evidence':receipts.get(key),
+             **({'grating_meshes':grating_options} if key=='grating-3d' else {})}
             for key,(title,scope) in CASES.items()]
+
+
+@app.get('/api/calibrations/performance')
+def calibrated_performance(case: str | None = None):
+    ledger = json.loads((ROOT/'docs/verification/v014-gpu-performance.json').read_text())
+    return [row for row in ledger['rows'] if case is None or case == row['case']]
+
+
+@app.get('/api/calibrations/performance.csv')
+def download_performance(case: str | None = None):
+    return Response(timing_csv(calibrated_performance(case)), media_type='text/csv',
+                    headers={'Content-Disposition':'attachment; filename="photonics-gpu-performance.csv"'})
 
 
 @app.get('/api/calibrations/planar-layout-example')
@@ -507,6 +524,11 @@ def calibration_report(job_id: str):
         return json.loads((folder/'calculation/report.json').read_text())
     except (ValueError,OSError) as exc:
         raise HTTPException(409,'No complete calibration report is available.') from exc
+
+
+@app.get('/api/calibrations/jobs/{job_id}/performance')
+def run_performance(job_id: str):
+    return stage_rows(calibration_report(job_id), job_id)
 
 
 @app.get('/api/calibrations/jobs/{job_id}/field')

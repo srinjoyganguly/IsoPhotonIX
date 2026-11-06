@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react';
 import { request } from './api';
 import { PlanarPortLayoutEditor, parsePlanarLayout } from './PlanarPortLayoutEditor';
 import { PhaseSensitivity,type PhaseCheck } from './PhaseSensitivity';
+import { SpatialPhase,type SpatialPhaseStudy } from './SpatialPhase';
 import { SpatialComparison } from './SpatialComparison';
+import { GpuPerformance } from './GpuPerformance';
 import { CalibrationField, type FieldPlane } from './CalibrationField';
 import { CodeExport } from './CodeExport';
 import { CalibrationMeasurement, Spectrum, type Series } from './CalibrationMeasurement';
 import './calibratedComponents.css';
 
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
-  limits: string; phase_check?:PhaseCheck; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
-type Preset = { case: string; name: string; scope: string; routes: string[]; evidence?: Evidence };
+  limits: string; phase_check?:PhaseCheck; phase_studies?:SpatialPhaseStudy[]; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
+type Preset = { case: string; name: string; scope: string; routes: string[]; grating_meshes?: Record<string,Record<string,Record<string,number[]>>>; evidence?: Evidence };
 type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
 
@@ -26,6 +28,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [ringInterface,setRingInterface]=useState('legacy');
   const [ringMaterial,setRingMaterial]=useState('constant');
   const [gratingMaterial,setGratingMaterial]=useState('volume-average');
+  const [gratingDomain,setGratingDomain]=useState('full');
   const [gratingSpectrum,setGratingSpectrum]=useState('standard');
   const [portDistance,setPortDistance]=useState('1.25');
   const [mesh,setMesh]=useState(''),[offset,setOffset]=useState('.125');
@@ -38,9 +41,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const history=jobs.filter(j=>j.config.case===key);
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
-  const denseGrating = key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
+  const denseGrating = gratingDomain==='full' && key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
   const dispersiveRing = key==='ring-3d' && geometry3d==='lumerical' && ringInterface==='exact-area' && (!mesh || mesh==='16');
-  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? (['lumerical','tidy3d'].includes(geometry3d)?[12,14]:[12,16]) :
+  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? (ringInterface==='wall-tensor'?[16,20,24]:[12,16,20,24]) : key==='grating-3d' ? (selected?.grating_meshes?.[geometry3d]?.[gratingDomain]?.[gratingMaterial] ?? [12,16]) :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
     if(!editableLayout || layoutText) return;
@@ -102,6 +105,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
     ring_interface:key==='ring-3d' && ringInterface!=='legacy'?ringInterface:null,
     ring_material:dispersiveRing && ringMaterial==='palik-ade'?'palik-ade':null,
     grating_material_model:key==='grating-3d' && geometry3d==='lumerical' && gratingMaterial!=='volume-average'?gratingMaterial:null,
+    grating_domain:key==='grating-3d' && gratingDomain!=='full'?gratingDomain:null,
     grating_spectrum:denseGrating && gratingSpectrum==='dense'?'dense':null,
     geometry_3d:gpuComponent?geometry3d:null,port_distance_um:key==='multimode-tm'?Number(portDistance):null,
     grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
@@ -131,7 +135,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   function choose(next:string) {
     setKey(next); setRecord(0); setMesh(''); setPortDistance('1.25'); setRingDuration('');
     setGeometry3d(next==='grating-3d'?'compact':'lumerical');
-    setRingInterface('legacy'); setRingMaterial('constant'); setGratingMaterial('volume-average'); setGratingSpectrum('standard');
+    setRingInterface('legacy'); setRingMaterial('constant'); setGratingMaterial('volume-average'); setGratingSpectrum('standard'); setGratingDomain('full');
     setOffset('.125'); setTarget(''); setMaterialGrid('yee-aligned');
     setGratingScope('tidy3d-compact'); setRingScope('lumerical');
     setJobId(''); setError(''); setReport(null); setLocalField(null);
@@ -153,22 +157,28 @@ export function CalibratedComponents({active}:{active:boolean}) {
            target="_blank" rel="noreferrer">Full verification record</a></> :
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
-        <p>{evidence.limits}</p>{evidence.phase_check && <PhaseSensitivity check={evidence.phase_check}/>}</section>}
+        <p>{evidence.limits}</p>{evidence.phase_studies && <SpatialPhase key={key} studies={evidence.phase_studies}/>}
+        {evidence.phase_check && <PhaseSensitivity check={evidence.phase_check}/>}</section>}
+      {selected.routes.includes('fdtdx:gpu') && <GpuPerformance key={key} preset={key}/>}
       <section><h3>Run locally</h3>
         {editableLayout && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}
-        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>{setGeometry3d(e.target.value);setMesh('');}}>
+        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>{setGeometry3d(e.target.value);setGratingDomain('full');setGratingMaterial('volume-average');setMesh('');}}>
           {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
             <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
         </select></label>}
-        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>setRingInterface(e.target.value)}>
-          <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option>
+        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>{setRingInterface(e.target.value);if(e.target.value==='wall-tensor' && mesh==='12')setMesh('16');}}>
+          <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option><option value="wall-tensor">Curved wall tensor · constant materials</option>
         </select></label>}
         {dispersiveRing && <label>Ring material response<select value={ringMaterial} onChange={e=>setRingMaterial(e.target.value)}>
           <option value="constant">Constant index</option><option value="palik-ade">Palik dispersion control · 1500–1600 nm</option>
         </select></label>}
-        {key==='grating-3d' && geometry3d==='lumerical' && <label>Grating material sampling<select value={gratingMaterial} onChange={e=>setGratingMaterial(e.target.value)}>
+        {key==='grating-3d' && geometry3d==='lumerical' && <label>Grating material sampling<select value={gratingMaterial} onChange={e=>{setGratingMaterial(e.target.value);setGratingDomain('full');setMesh('');}}>
           <option value="volume-average">Volume averaging (baseline)</option><option value="direct-yee">Direct electric-field cell integration</option>
         </select></label>}
+        {key==='grating-3d' && Boolean(selected.grating_meshes?.[geometry3d]?.['mirror-y']?.[gratingMaterial]?.length) && <label>Simulation domain
+          <select value={gratingDomain} onChange={e=>{setGratingDomain(e.target.value);setGratingSpectrum('standard');setMesh('');}}>
+            <option value="full">Full width</option><option value="mirror-y">Half width · validated mirror symmetry</option>
+          </select></label>}
         {denseGrating && <label>Grating wavelengths<select value={gratingSpectrum} onChange={e=>setGratingSpectrum(e.target.value)}>
           <option value="standard">5 samples · 25 nm spacing</option><option value="dense">21 samples · 5 nm spacing</option>
         </select></label>}
@@ -201,7 +211,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
           {info && !info.available && <small>{info.reason}</small>}</label>;
       })}</fieldset>
       {solver==='fdtdx' && !gpuComponent && !editableLayout && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
-        <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option>
+        <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option><option value="polygon-area">Integrated polygon area at each electric-field site</option>
       </select></label>}
       <button className="button primary compact" disabled={!available||pending||busy||!offsetValid||!layoutValid} onClick={()=>void run()}>Run calibrated study</button>
       <CodeExport kind="calibration" value={configuration} disabled={!target||!offsetValid||!layoutValid}/>
@@ -217,6 +227,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
         {report!=null&&<CalibrationMeasurement key={'measurement'+job.id} value={report}/>}
         {report!=null && <SpatialComparison key={'compare'+job.id} value={report}/>}
+        {job.config.device==='gpu' && job.status==='completed' && <GpuPerformance key={job.id} preset={key} job={job.id}/>}
         {localField && <CalibrationField key={'field'+job.id} field={localField}/>}
         {report!=null&&<details><summary>Numerical report</summary><pre>{JSON.stringify(report,null,2)}</pre></details>}</>}
       </section></>}

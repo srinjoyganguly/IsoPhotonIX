@@ -1,0 +1,33 @@
+{
+  "scope": "Failed experimental CUDA acquisition attempts on the NVIDIA GeForce RTX 3080 Ti Laptop GPU. These attempts are excluded from all spectra and performance measurements. Successful controls have their own new receipts.",
+  "trials": [
+    {
+      "trial": "lumerical-12-full-control",
+      "geometry": "lumerical",
+      "resolution": 12,
+      "stage": "incident reference",
+      "qualified": false,
+      "completed_reference_checkpoints": 0,
+      "cuda_timing_method": "in-process CUPTI callback kernel activity",
+      "error": "Worker exited with code 1 before a completed 60 fs measurement was reported. The exact first driver status was truncated in the initial process capture.",
+      "source_sha256": {
+        "calibrate_finite_grating.py": "63858f8dfede6a0c2b1ab7ed20eb1bf3a968859329da842369f16cc476102b04",
+        "gpu_timing.py": "8f43dbd263efb179e98ace297620430e9549dd087644f86c4f601896ff238eba"
+      }
+    },
+    {
+      "trial": "lumerical-12-mirror-control",
+      "geometry": "lumerical",
+      "resolution": 12,
+      "stage": "incident reference",
+      "qualified": false,
+      "completed_reference_checkpoints": 0,
+      "cuda_timing_method": "in-process CUPTI callback kernel activity",
+      "error": "First synchronized jit_evolve batch raised CUDA_ERROR_ILLEGAL_ADDRESS. No result checkpoint was published.",
+      "source_sha256": {
+        "calibrate_finite_grating.py": "27c93e256d5874b79635cefc5783c23859b3868f30211104d7781ab83de97376",
+        "gpu_timing.py": "fcdc538f75f769a7d1d504f8064c429f19c5a5fe45a130422908279e9298914a"
+      }
+    }
+  ]
+}
