@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "source_commit": "2c0bcbfc03c8ad1ef6dd49ad876e8970bd344562",
+  "matching_wheel_entries_after_source_rebuild": 127,
+  "wheel_sha256": "488b8bc3e28b60e5e547c050b3826763a46afd68a1bbbc18ae557240096f84fd",
+  "source_sha256": "181d26f4c5355d08817d6fc26c874ade36192845e0d534a2e73617ddfcd85118",
+  "public_tag_commit": "2c0bcbfc03c8ad1ef6dd49ad876e8970bd344562",
+  "verified_at": "2026-11-06T12:45:51.707042+00:00",
+  "release": "https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a2",
+  "signed_out_repository": true,
+  "signed_out_release": true,
+  "sha256_list_sha256": "a40abdc517fbd16ef0001cc96de9c6048b23131fe75763c9f06324ad0d857453",
+  "verified_assets": {
+    "grating-lumerical-dense-direct-yee-3d-gpu-r12-v0.12.0a2.npz": "aa579b3bd55c5bf42faf9c962d523da4d7283c1e572498e4b8d1e3ffd56706b8",
+    "grating-lumerical-dense-direct-yee-3d-gpu-r12-v0.12.0a2.zip": "74fa808da18623c31d2915cbea412d44bf3fa97b93cf3927cd1369ad05077bb0",
+    "grating-lumerical-dense-volume-average-3d-gpu-r12-v0.12.0a2.npz": "47465b36295514dbc433947a72a6ebe8228264989f244dd0bc24d5b6fd7a49bc",
+    "grating-lumerical-dense-volume-average-3d-gpu-r12-v0.12.0a2.zip": "b5cdf9a6897478855ce0fe6714873dbaacff3d24cc0caf3546750f3387e566cd",
+    "grating-lumerical-direct-3d-gpu-r14-v0.12.0a2.zip": "235613c9b7a4e473bf1569cff87d70d9c233be03b454b53a7e514876573c572e",
+    "photonics_workbench-0.12.0a2-py3-none-any.whl": "488b8bc3e28b60e5e547c050b3826763a46afd68a1bbbc18ae557240096f84fd",
+    "photonics_workbench-0.12.0a2.tar.gz": "181d26f4c5355d08817d6fc26c874ade36192845e0d534a2e73617ddfcd85118",
+    "ring-lumerical-palik-ade-3d-gpu-r16-v0.12.0a2.zip": "159d4b19da144deacccff819eba40e6d0cb2c13303b2a362609ecd85b5d268f1"
+  }
+}

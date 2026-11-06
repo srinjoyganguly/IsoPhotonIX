@@ -20,6 +20,8 @@ recorded family case.
 
 The release was rebuilt from the source distribution, installed into a fresh offline Python environment with registered native workers, and checked against its public download hashes. [Installed CPU and GPU runs](verification/v012-wheel-install.json) · [Signed-out release and source hashes](verification/v012-release.json).
 
+The [v0.12.0a2 clean-install receipt](verification/v013-wheel-install.json) verifies the installed interface, solver workers, model-specific program exports and measured CUDA powers. The [public release receipt](verification/v013-release.json) identifies the verified tag commit, wheel, source distribution, four result program archives, two standalone numerical archives and their hashes.
+
 ## Install and launch
 
 Use the wheel from this release, or build one as described below. In a new

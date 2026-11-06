@@ -1,0 +1,171 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-06T12:45:51.745736+00:00",
+  "release": "v0.12.0a2",
+  "scope": "Numerical controls, unchanged notebook replays, program exports, public distribution and current GUI. Commercial agreement and mesh stability are separate per-observable decisions.",
+  "application_tests": {
+    "total": 306,
+    "passed_in_api_environment": 278,
+    "native_only_skips_in_api_environment": 28,
+    "all_skipped_cases_checked_in_native_environments": true,
+    "native_meep_and_scipy": 23,
+    "native_fdtdx_and_scipy": 49,
+    "native_test_names": [
+      "test_calibrated_components.CalibratedComponents.test_independent_straight_interface",
+      "test_dense_grating_spectrum.DenseGratingSpectrum.test_dense_direct_yee_requires_the_larger_memory_admission",
+      "test_dense_grating_spectrum.DenseGratingSpectrum.test_external_dense_reference_is_bound_to_the_published_file",
+      "test_dense_grating_spectrum.DenseGratingSpectrum.test_monitor_band_keeps_the_source_and_five_original_wavelengths",
+      "test_finite_grating3d.FiniteGrating3D.test_angular_projection_recovers_tilted_plane_wave",
+      "test_finite_grating3d.FiniteGrating3D.test_cache_never_reuses_another_gpu_or_scipy_version",
+      "test_finite_grating3d.FiniteGrating3D.test_full_geometry_free_memory_preflight",
+      "test_finite_grating3d.FiniteGrating3D.test_guided_emission_uses_separate_guide_and_beam_power",
+      "test_finite_grating3d.FiniteGrating3D.test_lp01_boundary_and_confinement",
+      "test_finite_grating3d.FiniteGrating3D.test_memory_budget_combines_observations_and_an_actual_cuda_plan",
+      "test_finite_grating3d.FiniteGrating3D.test_narrow_width_changes_teeth_but_preserves_incident_domain",
+      "test_finite_grating3d.FiniteGrating3D.test_polar_power_and_fiber_return_have_consistent_normalization",
+      "test_finite_grating3d.FiniteGrating3D.test_project_material_and_focusing_sector",
+      "test_finite_grating3d.FiniteGrating3D.test_published_uniform_grating_residual_film_extends_beyond_teeth",
+      "test_finite_grating3d.FiniteGrating3D.test_raw_gpu_uuid_stays_private_and_salt_is_bound_to_cache",
+      "test_finite_grating3d.FiniteGrating3D.test_tilted_gaussian_sheet_is_deterministic_and_has_the_requested_direction",
+      "test_grating_source_profile.FiberSourceProfile.test_lp01_sheet_preserves_actual_staggered_material",
+      "test_grating_yee_interfaces.GratingInterfaces.test_filed_complex_vectors_preserve_component_order_and_port_number",
+      "test_grating_yee_interfaces.GratingInterfaces.test_layer_limits_and_tangential_normal_interface_conditions",
+      "test_grating_yee_interfaces.GratingInterfaces.test_material_outside_chip_is_unchanged",
+      "test_grating_yee_interfaces.GratingInterfaces.test_model_selection_preserves_previous_settings",
+      "test_grating_yee_interfaces.GratingInterfaces.test_two_sampling_models_approach_the_independent_continuous_slab",
+      "test_layout_ports3d.LayoutPorts3DTests.test_extrusion_and_attachment_match_at_all_source_and_monitor_slices",
+      "test_layout_ports3d.LayoutPorts3DTests.test_four_displaced_ports_keep_distinct_straight_monitor_sections",
+      "test_layout_ports3d.LayoutPorts3DTests.test_lock_override_and_private_per_user_default",
+      "test_layout_ports3d.LayoutPorts3DTests.test_y_port_uses_positive_ex_and_axial_h_sign",
+      "test_loaded_ring3d.LoadedRing.test_both_finite_stacks_and_measured_leads",
+      "test_loaded_ring3d.LoadedRing.test_decay_and_equal_bus_fit_have_the_same_known_loaded_q",
+      "test_loaded_ring3d.LoadedRing.test_spacing_cannot_jump_an_unqualified_resonance",
+      "test_loaded_ring3d.LoadedRing.test_time_projection_retains_band_dependent_mode_gauge",
+      "test_loaded_ring3d.LoadedRing.test_worker_calls_stage_identity_before_calculating",
+      "test_meep3d_smoke.Meep3DGuardTests.test_gpu_is_rejected_before_import",
+      "test_meep3d_smoke.Meep3DNumericalTests.test_full_volume_materials_propagation_and_thickness_response",
+      "test_meep_ports3d_adapter.MeepModalPortTests.test_real_straight_gap_reciprocity_and_invalid_ringdown",
+      "test_meep_ports3d_adapter.MeepModalPortTests.test_unavailable_device_and_wrong_study_are_rejected_before_import",
+      "test_meep_ports_adapter.MeepPortTests.test_gpu_is_rejected_before_solver_import",
+      "test_meep_ports_adapter.MeepPortTests.test_straight_calibration_gap_response_and_unsettled_results",
+      "test_meep_smoke.MeepDeviceGuardTest.test_explicit_gpu_request_is_rejected",
+      "test_meep_smoke.MeepSmokeTest.test_real_waveguide_and_parameter_response",
+      "test_meep_taper.MeepTaperTests.test_other_targets_cannot_start_the_meep_taper_adapter",
+      "test_meep_taper.MeepTaperTests.test_real_taper_profile_refinement_and_straight_limit",
+      "test_meep_taper_ports.MeepTaperPorts.test_straight_limit_mirrored_taper_refinement_and_mode_normalization",
+      "test_planar_port_layout.PlanarPortLayoutTests.test_a_lead_cannot_join_only_at_one_point",
+      "test_planar_port_layout.PlanarPortLayoutTests.test_crossed_outline_unknown_direction_and_disconnected_lead",
+      "test_planar_port_layout.PlanarPortLayoutTests.test_default_and_reversed_winding_are_canonical",
+      "test_planar_port_layout.PlanarPortLayoutTests.test_polygon_intruding_on_the_monitor_corridor_is_rejected",
+      "test_planar_port_layout.PlanarPortLayoutTests.test_ports_can_move_on_different_axes_and_touch_a_polygon_edge",
+      "test_planar_tm.PlanarTMReferenceTests.test_exact_symmetric_slab_modes",
+      "test_planar_tm.PlanarTMReferenceTests.test_straight_tm_phase_and_normalization",
+      "test_planar_tm.PlanarTMReferenceTests.test_variable_planes_rotate_phase_without_changing_power",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_ansys_total_flux_and_late_window_are_separate_measured_controls",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_canonical_meep_reports_retain_weak_bins_and_actual_fluxes",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_checkpoint_reuse_settings_isolation_and_integrity",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_finest_ring_pair_must_straddle_center_at_adjacent_orders",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_peak_width_resolution_gate",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_percentage_point_comparison_reorders_descending_wavelengths",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_published_grating_power_and_ring_complex_coefficients_reconstruct",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_slab_phase_matching_and_source_project_coordinates",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_straight_vertical_reduction_is_a_guided_root",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_two_vendor_gratings_have_their_own_observable_and_geometry",
+      "test_ring_grating_calibration.ResonatorAndGrating.test_weak_band_edges_are_masked_and_power_gain_fails",
+      "test_ring_interface.RingInterface.test_disk_and_strip_areas_are_conserved_for_displaced_centers",
+      "test_ring_interface.RingInterface.test_legacy_is_default_and_exact_preserves_separate_port_reference",
+      "test_ring_interface.RingInterface.test_partial_disk_cells_against_independent_quadrature",
+      "test_ring_material_control.RingMaterialTests.test_ade_fits_passive_mixed_cells_and_preserves_port_cross_sections",
+      "test_ring_material_control.RingMaterialTests.test_projection_uses_material_basis_wavelengths",
+      "test_ring_palik_dispersion.RingPalikFit.test_cellwise_fit_preserves_air_and_refuses_active_data",
+      "test_ring_palik_dispersion.RingPalikFit.test_held_out_values_and_passivity_on_supported_steps",
+      "test_ring_stage_provenance.StageIdentity.test_every_transported_source_participates_in_identity",
+      "test_ring_stage_provenance.StageIdentity.test_real_dependency_payload_change_invalidates_an_unchanged_version",
+      "test_ring_stage_provenance.StageIdentity.test_same_card_reuses_stage_and_another_same_model_must_calculate",
+      "test_ring_stage_provenance.StageIdentity.test_unknown_card_disables_persistent_cache"
+    ]
+  },
+  "frontend": {
+    "production_build": true,
+    "geometry_tests": 28,
+    "chrome_counts": {
+      "records": 53,
+      "matrix_entries": 618,
+      "spectra": 92,
+      "plotted_samples": 17246,
+      "sample_readouts": 284
+    },
+    "spatial_comparisons": {
+      "passed": true,
+      "checked_at": "2026-11-06T12:28:39.425Z",
+      "matched_vendor_readouts": 138,
+      "native_field_readouts": 28,
+      "qualified_loaded_q_rows": 37,
+      "power_diagnostics": 17,
+      "model_program_exports": [
+        {
+          "case": "ring-3d",
+          "model": "exact-area",
+          "ring_material": "palik-ade",
+          "wavelength_grid": null
+        },
+        {
+          "case": "grating-3d",
+          "model": "direct-yee",
+          "ring_material": null,
+          "wavelength_grid": "dense"
+        }
+      ],
+      "editable_port_position": true,
+      "mobile_width_px": 390,
+      "browser_errors": []
+    },
+    "browser_receipts": [
+      "v013-browser-records.json",
+      "v013-browser-spatial.json"
+    ]
+  },
+  "native_comparisons": {
+    "gpu": "FDTDX running locally on NVIDIA",
+    "executed_grating_notebooks": 2,
+    "notebook_evidence": "v013-grating-notebook-replays.json",
+    "qualified_meshes": {
+      "ring-3d": {
+        "lumerical": [
+          16,
+          20,
+          24
+        ],
+        "tidy3d": [
+          16,
+          20
+        ]
+      },
+      "grating-3d": {
+        "lumerical": [
+          12,
+          14
+        ],
+        "tidy3d": [
+          12,
+          14
+        ]
+      }
+    },
+    "source_array_audit": "v013-receipt-audit.json",
+    "mesh_sensitivity": "v013-ring-interface-comparison.json",
+    "grating_controls": "v013-grating-power-mismatch.json",
+    "dense_spectra": "v013-grating-dense-comparison.json",
+    "dielectric_film_validation": "v013-palik-slab.json",
+    "acceptance_gates": "v013-accuracy-gates.json"
+  },
+  "distribution": {
+    "source_commit": "2c0bcbfc03c8ad1ef6dd49ad876e8970bd344562",
+    "tag_commit": "2c0bcbfc03c8ad1ef6dd49ad876e8970bd344562",
+    "wheel_sha256": "488b8bc3e28b60e5e547c050b3826763a46afd68a1bbbc18ae557240096f84fd",
+    "signed_out_files": 9,
+    "install": "v013-wheel-install.json",
+    "release_receipt": "v013-release.json",
+    "grating_asset_integrity": "v013-study-export-audit.json"
+  }
+}
