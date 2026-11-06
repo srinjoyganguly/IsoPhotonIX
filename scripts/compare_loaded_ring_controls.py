@@ -41,7 +41,12 @@ def read(path):
     # sets the propagation constant for that bus; only the discrete modal estimate is used above.
     yee_beta[:,:2]+=residual[:,None]/length
     phase=(desired-snapped)*(yee_beta[:,0,None]+yee_beta)
+    central=abs(wl-1.55)<=.0051
+    # Group delay is obtained from the measured straight-guide transmission phase slope.
+    ng=float(np.polyfit(1/wl[central],np.unwrap(np.angle(measured_through))[central],1)[0]/(2*np.pi*length))
     control={'reference_separation_um':length,
+             'straight_group_index_at_1550nm':ng,
+             'straight_group_delay_ring_spacing_estimate_nm':1000*1.55**2/(2*np.pi*g['radius_um']*ng),
              'max_wrapped_continuous_mode_phase_error_rad':float(np.max(abs(continuum_residual))),
              'max_wrapped_discrete_mode_phase_error_rad':float(np.max(abs(residual))),
              'at_1550nm_continuous_error_rad':float(continuum_residual[np.argmin(abs(wl-1.55))]),

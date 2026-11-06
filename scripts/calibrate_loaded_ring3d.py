@@ -316,12 +316,14 @@ def main():
     parser.add_argument('--vendor',choices=tuple(CASES),required=True)
     parser.add_argument('--device',choices=['gpu'],required=True)
     parser.add_argument('--resolution',type=int,choices=(12,16,20,24),default=16)
-    parser.add_argument('--duration-um-c',type=float,default=1600.)
+    parser.add_argument('--duration-um-c',type=float,help='Total recording in µm/c (Lumerical 3200, Tidy3D 4800).')
     parser.add_argument('--pml-um',type=float,default=.65)
     parser.add_argument('--aperture-um',type=float,default=1.8)
     parser.add_argument('--checkpoint',type=Path)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
+    if args.duration_um_c is None:
+        args.duration_um_c=3200. if args.vendor=='lumerical' else 4800.
     if not 100<=args.duration_um_c<=6000 or not .5<=args.pml_um<=1.2 or not 1.5<=args.aperture_um<=2.5:
         parser.error('Require duration 100–6000 µm/c, PML 0.5–1.2 µm and aperture 1.5–2.5 µm.')
     args.output.mkdir(parents=True,exist_ok=True)

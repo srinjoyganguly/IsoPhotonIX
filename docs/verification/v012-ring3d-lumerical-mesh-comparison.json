@@ -46,6 +46,8 @@
   "straight_phase_controls": {
     "first": {
       "reference_separation_um": 7.75,
+      "straight_group_index_at_1550nm": 4.697620456767592,
+      "straight_group_delay_ring_spacing_estimate_nm": 26.256927742751703,
       "max_wrapped_continuous_mode_phase_error_rad": 0.7476380972925779,
       "max_wrapped_discrete_mode_phase_error_rad": 0.0782472057864412,
       "at_1550nm_continuous_error_rad": 0.5536815534603995,
@@ -53,6 +55,8 @@
     },
     "second": {
       "reference_separation_um": 7.7,
+      "straight_group_index_at_1550nm": 4.587194444458432,
+      "straight_group_delay_ring_spacing_estimate_nm": 26.889002066443062,
       "max_wrapped_continuous_mode_phase_error_rad": 0.41195787970865044,
       "max_wrapped_discrete_mode_phase_error_rad": 0.049744198535934446,
       "at_1550nm_continuous_error_rad": 0.30238015329611123,

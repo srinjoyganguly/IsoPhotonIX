@@ -71,6 +71,39 @@ def tidy_spectrum(path):
         'scope':'A steep line can cover many y pixels within one column. Readout varies across the plotted linewidth.'}
 
 
+def published_linewidths(wavelength, drop, nominal):
+    """Read half-maximum drop widths, withholding undersampled or mixed doublets."""
+    from scipy.signal import find_peaks
+    valid=np.isfinite(wavelength) & np.isfinite(drop)
+    wave,signal=wavelength[valid],drop[valid]
+    maxima=find_peaks(signal,prominence=.035)[0]
+    result=[]
+    for target in nominal:
+        if not len(maxima):
+            continue
+        peak=int(maxima[np.argmin(abs(wave[maxima]-target))])
+        if abs(wave[peak]-target)>.0015:
+            continue
+        level=signal[peak]/2
+        before=np.flatnonzero(signal[:peak]<level)
+        after=np.flatnonzero(signal[peak+1:]<level)
+        row={'published_nominal_peak_um':float(target),'read_peak_um':float(wave[peak]),
+             'read_peak_power':float(signal[peak]),'loaded_q_half_max':None}
+        if len(before) and len(after):
+            a=int(before[-1]); b=int(after[0]+peak+1)
+            lo=np.interp(level,signal[a:a+2],wave[a:a+2])
+            hi=np.interp(level,signal[b-1:b+1][::-1],wave[b-1:b+1][::-1])
+            width=hi-lo
+            step=float(np.max(np.diff(wave[a:b+1])))
+            interior=maxima[(maxima>a)&(maxima<b)]
+            row.update(fwhm_nm=float(1000*width),largest_sample_interval_nm=1000*step,
+                       number_of_peaks_above_half_height=len(interior))
+            if len(interior)==1 and width>=4*step:
+                row['loaded_q_half_max']=float(wave[peak]/width)
+        result.append(row)
+    return result
+
+
 def compare(report, path):
     vendor=report['vendor']
     wave,through,drop,source=(lumerical_spectrum if vendor=='lumerical' else tidy_spectrum)(path)
@@ -82,6 +115,19 @@ def compare(report, path):
             'passed_numerical_spectrum':report['passed'],'wavelength_shift_applied_nm':0,
             'source_wavelength_band_um':[float(wave.min()),float(wave.max())],'channels':{},
             'measured_drop_fsr_nm':report['measured_drop_fsr_nm'],'published_drop_fsr_nm':report['published_drop_fsr_nm']}
+    lines=published_linewidths(wave,drop,report['published_peaks_um'])
+    for line in lines:
+        peaks=report.get('loaded_loss',{}).get('peaks',[])
+        if not peaks:
+            continue
+        nearest=min(peaks,key=lambda row:abs(row['sampled_drop_peak_um']-line['read_peak_um']))
+        distance=nearest['sampled_drop_peak_um']-line['read_peak_um']
+        if abs(distance)<report['published_drop_fsr_nm']/2000:
+            line['nearest_local_peak_um']=nearest['sampled_drop_peak_um']
+            line['nearest_wavelength_difference_nm']=1000*distance
+            line['local_qualified_loaded_q']=nearest['full_fit']['loaded_q'] if nearest['qualified'] else None
+    result['published_drop_resonances']=lines
+    result['resonance_scope']='Nearest unshifted peak within half a published free spectral range. This assignment does not prove the same angular order. Reference half-height Q requires one peak and at least four source samples across its FWHM.'
     for label,native in [('through',through),('drop',drop)]:
         valid=np.isfinite(native)
         reference=np.interp(wl[ bins],wave[valid],native[valid])

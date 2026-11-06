@@ -71,11 +71,16 @@ def publish(folder, source, output, checkpoint):
     report=validated_report(folder)
     vendor=report['vendor']
     base=f"v012-ring3d-{vendor}-r{report['physical_model']['resolution']}-t{int(report['duration_um_c'])}"
+    g=report['physical_model']
+    if g['pml']!=round(.65*g['resolution']):
+        base+=f"-pml{g['pml']}c"
+    if g['half_ap']!=round(.9*g['resolution']):
+        base+=f"-aperture{2*g['half_ap']}c"
     dest=output/(base+'-arrays.npz')
 
     report['arrays_file']=dest.name
-    report['vendor_comparison']=compare(report,source)
     report['loaded_loss']=measure(folder)
+    report['vendor_comparison']=compare(report,source)
     report['validation_scope']='One physical port launch and its matched unpatterned two-bus reference. Checking the complete output spectrum uses all 241 illuminated bins; partial spectra preserve each wavelength mask.'
     report['native_stage_provenance']=stage_provenance(checkpoint,folder,report)
     report['source_report_sha256']=hashlib.sha256((folder/'report.json').read_bytes()).hexdigest()

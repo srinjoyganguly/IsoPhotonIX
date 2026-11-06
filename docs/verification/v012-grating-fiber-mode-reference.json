@@ -1,0 +1,39 @@
+{
+  "solver": "Local Tidy3D full-vector ModeSolver",
+  "version": "2.11.2",
+  "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/ModalSourcesMonitors/",
+  "geometry": "Circular 9 \u00b5m diameter step-index fiber in a transverse box, using the filed Lumerical material indices.",
+  "rows": [
+    {
+      "cells_per_um": 8,
+      "span_um": 24.0,
+      "wavelength_um": 1.55,
+      "vector_tidy3d_neff": [
+        1.4409838058246063,
+        1.4409838058246063
+      ],
+      "selected_mode": 1,
+      "ey_transverse_fraction": 0.5711441252435356,
+      "weak_guidance_lp01_neff": 1.440997125313867,
+      "vector_minus_scalar_neff": -1.3319489260643635e-05,
+      "ey_squared_shape_overlap": 0.999974698812931,
+      "scope": "Normalized Ey shape on the native component coordinates. This is a transverse field-shape comparison, distinct from full device coupling."
+    },
+    {
+      "cells_per_um": 12,
+      "span_um": 24.0,
+      "wavelength_um": 1.55,
+      "vector_tidy3d_neff": [
+        1.440985451112616,
+        1.4409854511126157
+      ],
+      "selected_mode": 0,
+      "ey_transverse_fraction": 0.999998769392769,
+      "weak_guidance_lp01_neff": 1.440997125313867,
+      "vector_minus_scalar_neff": -1.1674201251032912e-05,
+      "ey_squared_shape_overlap": 0.9999806649808514,
+      "scope": "Normalized Ey shape on the native component coordinates. This is a transverse field-shape comparison, distinct from full device coupling."
+    }
+  ],
+  "passed": true
+}

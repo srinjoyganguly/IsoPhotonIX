@@ -3408,7 +3408,70 @@
       }
     },
     "measured_drop_fsr_nm": 17.50000000000007,
-    "published_drop_fsr_nm": 17.740000000000087
+    "published_drop_fsr_nm": 17.740000000000087,
+    "published_drop_resonances": [
+      {
+        "published_nominal_peak_um": 1.51242,
+        "read_peak_um": 1.5124168514412417,
+        "read_peak_power": 0.734075518832883,
+        "loaded_q_half_max": null,
+        "fwhm_nm": 0.8529101740919476,
+        "largest_sample_interval_nm": 0.22172949002219333,
+        "number_of_peaks_above_half_height": 1,
+        "nearest_local_peak_um": 1.516,
+        "nearest_wavelength_difference_nm": 3.583148558758298,
+        "local_qualified_loaded_q": null
+      },
+      {
+        "published_nominal_peak_um": 1.52927,
+        "read_peak_um": 1.529490022172949,
+        "read_peak_power": 0.6323039952336929,
+        "loaded_q_half_max": 1346.8529225603131,
+        "fwhm_nm": 1.1356028535509655,
+        "largest_sample_interval_nm": 0.22172949002219333,
+        "number_of_peaks_above_half_height": 1,
+        "nearest_local_peak_um": 1.533,
+        "nearest_wavelength_difference_nm": 3.5099778270508697,
+        "local_qualified_loaded_q": null
+      },
+      {
+        "published_nominal_peak_um": 1.54701,
+        "read_peak_um": 1.5467849223946786,
+        "read_peak_power": 0.7994250960446708,
+        "loaded_q_half_max": 1440.6424917136612,
+        "fwhm_nm": 1.0736771484192165,
+        "largest_sample_interval_nm": 0.22172949002219333,
+        "number_of_peaks_above_half_height": 1,
+        "nearest_local_peak_um": 1.5505,
+        "nearest_wavelength_difference_nm": 3.715077605321415,
+        "local_qualified_loaded_q": null
+      },
+      {
+        "published_nominal_peak_um": 1.56475,
+        "read_peak_um": 1.5645232815964523,
+        "read_peak_power": 0.8079926448382959,
+        "loaded_q_half_max": 1264.6385273235003,
+        "fwhm_nm": 1.2371308067828934,
+        "largest_sample_interval_nm": 0.22172949002219333,
+        "number_of_peaks_above_half_height": 1,
+        "nearest_local_peak_um": 1.568,
+        "nearest_wavelength_difference_nm": 3.476718403547796,
+        "local_qualified_loaded_q": null
+      },
+      {
+        "published_nominal_peak_um": 1.58293,
+        "read_peak_um": 1.5827050997782706,
+        "read_peak_power": 0.8613609622059075,
+        "loaded_q_half_max": 1131.2282522726496,
+        "fwhm_nm": 1.3991032283702243,
+        "largest_sample_interval_nm": 0.22172949002219333,
+        "number_of_peaks_above_half_height": 1,
+        "nearest_local_peak_um": 1.5865,
+        "nearest_wavelength_difference_nm": 3.794900221729458,
+        "local_qualified_loaded_q": null
+      }
+    ],
+    "resonance_scope": "Nearest unshifted peak within half a published free spectral range. This assignment does not prove the same angular order. Reference half-height Q requires one peak and at least four source samples across its FWHM."
   },
   "loaded_loss": {
     "vendor": "tidy3d",

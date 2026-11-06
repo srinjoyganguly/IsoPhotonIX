@@ -3761,7 +3761,40 @@
       }
     },
     "measured_drop_fsr_nm": 27.000000000000135,
-    "published_drop_fsr_nm": 25.454899999999945
+    "published_drop_fsr_nm": 25.454899999999945,
+    "published_drop_resonances": [
+      {
+        "published_nominal_peak_um": 1.52463718,
+        "read_peak_um": 1.5246371801131047,
+        "read_peak_power": 0.316344378025,
+        "loaded_q_half_max": null,
+        "fwhm_nm": 2.176488661230991,
+        "largest_sample_interval_nm": 0.2014686202820304,
+        "number_of_peaks_above_half_height": 2,
+        "nearest_local_peak_um": 1.536,
+        "nearest_wavelength_difference_nm": 11.362819886895359,
+        "local_qualified_loaded_q": 907.8547005353225
+      },
+      {
+        "published_nominal_peak_um": 1.55009208,
+        "read_peak_um": 1.5500920771652973,
+        "read_peak_power": 0.7153218182890001,
+        "loaded_q_half_max": 1090.9476500617614,
+        "fwhm_nm": 1.4208675155746864,
+        "largest_sample_interval_nm": 0.20060404892752182,
+        "number_of_peaks_above_half_height": 1
+      },
+      {
+        "published_nominal_peak_um": 1.57724075,
+        "read_peak_um": 1.57724074834012,
+        "read_peak_power": 0.6629167548089999,
+        "loaded_q_half_max": 751.8385347623616,
+        "fwhm_nm": 2.097845049720215,
+        "largest_sample_interval_nm": 0.20775134860939737,
+        "number_of_peaks_above_half_height": 1
+      }
+    ],
+    "resonance_scope": "Nearest unshifted peak within half a published free spectral range. This assignment does not prove the same angular order. Reference half-height Q requires one peak and at least four source samples across its FWHM."
   },
   "validation_scope": "One physical port launch and its matched unpatterned two-bus reference. Checking the complete output spectrum uses all 241 illuminated bins; partial spectra preserve each wavelength mask.",
   "native_stage_provenance": {
