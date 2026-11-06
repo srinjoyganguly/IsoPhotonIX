@@ -19,6 +19,7 @@ from backend.adapters.fdtdx_ports_adapter import _ports_runtime
 from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes, port_basis, canonical_source_profile
 from scripts.grating_angular_spectrum import air_angular_flux
 from scripts import lumerical_grating3d as ansys
+from scripts import grating_cuda_identity as cuda_identity
 
 TIDY_URL = 'https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/'
 ANSYS_URL = 'https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler'
@@ -114,15 +115,10 @@ def digest(a):
     return hashlib.sha256(np.ascontiguousarray(a).tobytes()).hexdigest()
 
 
-def native_stage(m, reference):
-    jax,jnp,fdtdx,target = _ports_runtime('gpu')
+def waist_source_type(m, lp):
+    import jax.numpy as jnp
     from fdtdx.core.jax.pytrees import autoinit, frozen_field
     from fdtdx.objects.sources.linear_polarization import LinearlyPolarizedPlaneSource
-    from fdtdx.fdtd.forward import forward
-
-    fiber = m['geometry']=='lumerical'
-    guided = m['geometry']=='compact-radiation'
-    lp = ansys.lp01(m['fiber_radius'],m['fiber_core_n'],m['fiber_clad_n'],1.55) if fiber else None
 
     @autoinit
     class WaistSource(LinearlyPolarizedPlaneSource):
@@ -132,6 +128,17 @@ def native_stage(m, reference):
 
         def _get_center(self, key):
             return jnp.asarray((self.center_x,self.center_y),dtype=jnp.float32)
+
+        def apply(self, key, inv_permittivities, inv_permeabilities, dispersive_c1=None,
+                  dispersive_c2=None, dispersive_c3=None):
+            if lp is not None:
+                # A single fiber eigenmode has one propagation constant across its entire
+                # transverse profile, including the evanescent tail. The launch sheet's
+                # phase delays and H/E ratio use that neff. Forward() still evolves the
+                # actual tilted core, cladding and physical three-component Yee grid.
+                inv_permittivities=inv_permittivities.at[(slice(None),*self.grid_slice)].set(1/lp[2]**2)
+            return LinearlyPolarizedPlaneSource.apply(self,key,inv_permittivities,inv_permeabilities,
+                                                       dispersive_c1,dispersive_c2,dispersive_c3)
 
         def _get_amplitude_raw(self, center):
             # The source is injected along z. Keep x and y distinct for a rectangular illuminated aperture.
@@ -143,6 +150,23 @@ def native_stage(m, reference):
             x = jnp.arange(self.grid_shape[0])[:,None]-center[0]
             y = jnp.arange(self.grid_shape[1])[None,:]-center[1]
             return jnp.exp(-(x*x+y*y)/self.waist_cells**2)[:,:,None]
+
+    return WaistSource
+
+
+def native_stage(m, reference):
+    jax,jnp,fdtdx,target = _ports_runtime('gpu')
+    from fdtdx.fdtd.forward import forward
+
+    import os
+    hardware=cuda_identity.fingerprint(bytes.fromhex(os.environ['PHOTONICS_GRATING_DEVICE_SALT']))
+    if target.id!=hardware['ordinal'] or target.device_kind!=hardware['name']:
+        raise RuntimeError('The native JAX target differs from the CUDA device selected for the checkpoint.')
+    fiber = m['geometry']=='lumerical'
+    guided = m['geometry']=='compact-radiation'
+    lp = ansys.lp01(m['fiber_radius'],m['fiber_core_n'],m['fiber_clad_n'],1.55) if fiber else None
+
+    WaistSource = waist_source_type(m,lp)
 
     shape,pml,axes = grid(m)
     nx,ny,nz = shape
@@ -238,6 +262,13 @@ def native_stage(m, reference):
     expected=np.array([1.,0.,0.]) if guided else np.array([-np.sin(np.deg2rad(m['angle_deg'])),0.,-np.cos(np.deg2rad(m['angle_deg']))])
     if not np.allclose(direction,expected,atol=2e-4):
         raise RuntimeError(f'Injected beam points in unexpected direction: {direction}, expected {expected}')
+    impedance_error=None
+    if fiber:
+        eabs=np.linalg.norm(electric,axis=0)
+        habs=np.linalg.norm(magnetic,axis=0)
+        impedance_error=float(np.max(abs(habs-lp[2]*eabs))/np.max(habs))
+        if impedance_error>2e-4:
+            raise RuntimeError('Tilted LP01 sheet does not carry its selected modal impedance.')
     basis = None
     if guided or not reference:
         basis,meta = port_basis(arrays.inv_permittivities[:,px:px+1,sy:sy+py,sz:sz+pz], frequencies,
@@ -302,9 +333,9 @@ def native_stage(m, reference):
                 sampled_vertical_um=[float(axes[2][sz]),float(axes[2][sz+pz-1])],
                 port_basis=meta if guided or not reference else None,
                 fiber_mode=None if not fiber else dict(approximation='Weak-guidance LP01 transverse circular-fiber envelope on the tilted source plane',
-                                                        u=lp[0],w=lp[1],neff=lp[2],source_z_um=float(axes[2][at(2,m['source_z'])])),
-                native_worker_sha256=file_hash(__file__),
-                versions={k:importlib.metadata.version(k) for k in ('fdtdx','jax','jaxlib','tidy3d','numpy')})
+                                                        u=lp[0],w=lp[1],neff=lp[2],source_impedance_relative_error=impedance_error,source_z_um=float(axes[2][at(2,m['source_z'])])),
+                native_worker_sha256=file_hash(__file__),cuda_identity=hardware,
+                versions={k:importlib.metadata.version(k) for k in ('fdtdx','jax','jaxlib','tidy3d','numpy','scipy')})
     return detail,data
 
 
@@ -313,14 +344,20 @@ def file_hash(path):
         return hashlib.file_digest(stream,'sha256').hexdigest()
 
 
+def stage_signature(identity):
+    return hashlib.sha256(json.dumps(identity,sort_keys=True,allow_nan=False).encode()).hexdigest()
+
+
 def stage_archive(m, label, cache):
     import os
     import subprocess
+    salt=cuda_identity.cache_salt(cache)
+    hardware=cuda_identity.fingerprint(salt)
     sources=[Path(__file__),ROOT/'backend/adapters/fdtdx_ports_adapter.py',ROOT/'backend/adapters/fdtdx_ports3d_adapter.py',ROOT/'backend/adapters/fdtdx3d_adapter.py',
-             ROOT/'backend/adapters/fdtdx_adapter.py',ROOT/'scripts/grating_angular_spectrum.py',ROOT/'scripts/lumerical_grating3d.py',ROOT/'scripts/grating_emission.py']
-    identity={'settings':m,'stage':label,'sources':{p.name:file_hash(p) for p in sources},
-              'versions':{name:importlib.metadata.version(name) for name in ('fdtdx','jax','jaxlib','numpy','tidy3d')}}
-    signature=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
+             ROOT/'backend/adapters/fdtdx_adapter.py',ROOT/'scripts/grating_angular_spectrum.py',ROOT/'scripts/lumerical_grating3d.py',ROOT/'scripts/grating_emission.py',ROOT/'scripts/grating_cuda_identity.py']
+    identity={'settings':m,'stage':label,'cuda_identity':hardware,'sources':{p.name:file_hash(p) for p in sources},
+              'versions':{name:importlib.metadata.version(name) for name in ('fdtdx','jax','jaxlib','numpy','tidy3d','scipy')}}
+    signature=stage_signature(identity)
     dest=cache/(label+'-'+signature[:20]); cache.mkdir(exist_ok=True,parents=True)
     with (cache/(label+'-'+signature[:20]+'.lock')).open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
@@ -330,18 +367,25 @@ def stage_archive(m, label, cache):
                 cmd=[sys.executable,str(Path(__file__).resolve()),'--device','gpu','--geometry',m['geometry'],
                      '--resolution',str(m['resolution']),'--stage',label,'--output',str(staged)]
                 # Workers are separate processes so native device memory is released after each stage.
+                env={**os.environ,'PHOTONICS_GRATING_DEVICE_SALT':salt.hex()}
                 gpu_lock=os.environ.get('PHOTONICS_GPU_LOCK')
                 if gpu_lock:
-                    with Path(gpu_lock).open('a') as hardware:
-                        fcntl.flock(hardware,fcntl.LOCK_EX); subprocess.run(cmd,check=True)
+                    with Path(gpu_lock).open('a') as hardware_lock:
+                        print(f"Waiting for NVIDIA device: {m['geometry']} {label}",flush=True)
+                        fcntl.flock(hardware_lock,fcntl.LOCK_EX)
+                        print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
+                        subprocess.run(cmd,check=True,env=env)
                 else:
-                    subprocess.run(cmd,check=True)
+                    print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
+                    subprocess.run(cmd,check=True,env=env)
                 receipt=json.loads((staged/'receipt.json').read_text())
+                cuda_identity.validate_worker(hardware,receipt.get('cuda_identity'))
                 receipt['metadata_sha256']=hashlib.sha256(json.dumps(receipt,sort_keys=True,allow_nan=False).encode()).hexdigest()
                 receipt.update(identity=identity,signature=signature,arrays_sha256=file_hash(staged/'arrays.npz'))
                 (staged/'receipt.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
                 staged.rename(dest)
         receipt=json.loads((dest/'receipt.json').read_text())
+        cuda_identity.validate_worker(hardware,receipt.get('cuda_identity'))
         native={k:v for k,v in receipt.items() if k not in ('metadata_sha256','identity','signature','arrays_sha256')}
         measured_metadata=hashlib.sha256(json.dumps(native,sort_keys=True,allow_nan=False).encode()).hexdigest()
         if measured_metadata!=receipt.get('metadata_sha256'):

@@ -11,7 +11,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from scripts.calibrate_finite_grating import WL, file_hash, normal_flux, digest
-from scripts.grating_angular_spectrum import air_angular_flux
+from scripts.grating_angular_spectrum import air_angular_flux, incident_beam_check
 from scripts.lumerical_grating3d import reflected_fiber_amplitude
 from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes
 
@@ -28,6 +28,7 @@ def verify(run):
     with np.load(archive,allow_pickle=False) as data:
         np.testing.assert_array_equal(data['ref_wavelength_um'],WL)
         np.testing.assert_array_equal(data['dev_wavelength_um'],WL)
+        incident_direction=None
         # Verify matched sources, solver archive reproducibility and material maps.
         stages=[(r,'ref'),(d,'dev')]
         if 'beam_reference' in report['stages']:
@@ -74,6 +75,7 @@ def verify(run):
                 np.testing.assert_allclose(refl,data['reflected_fiber_mode'],atol=1e-12)
                 np.testing.assert_allclose(abs(refl)**2,report['radiation']['fiber_return_power'])
             else:
+                incident_direction=incident_beam_check(data['ref_upper'],dx,WL,incident)
                 ang=air_angular_flux(scatter,dx,WL)
                 frac=ang['polar_bin_power']/incident[:,None]
                 np.testing.assert_allclose(frac,data['reflected_angular_fraction'],atol=1e-12)
@@ -88,6 +90,8 @@ def verify(run):
         'angular_or_fiber_return_reconstructed':True,'energy_time_and_last_two_windows_checked':True,
         'field_preview_shape':list(plane.shape),'numerical_archive_entries':len(data.files),
         'captured_program_sha256':d.get('native_worker_sha256',d['identity']['sources']['calibrate_finite_grating.py'])}
+    if incident_direction is not None:
+        report['verification']['incident_beam_direction']=incident_direction
     return report
 
 

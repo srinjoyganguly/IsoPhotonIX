@@ -1,0 +1,80 @@
+{
+  "scope": "Empty-domain numerical Gaussian reference for the full finite-width Tidy3D study. Device coupling requires a separate run.",
+  "solver": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "tidy3d": "2.11.2",
+    "numpy": "2.4.6"
+  },
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "resolution": 12,
+  "shape": [
+    788,
+    168,
+    74
+  ],
+  "steps": 2646,
+  "source_direction": [
+    -0.25037863850593567,
+    0.0,
+    -0.9681479930877686
+  ],
+  "wavelengths_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "incident_power": [
+    45.80029822257478,
+    102.80317170167848,
+    133.11184309491688,
+    104.59894057782371,
+    52.23268087125713
+  ],
+  "angular_measurements": {
+    "mean_x_angle_deg": [
+      -14.500154367796735,
+      -14.500473945021879,
+      -14.500591640663272,
+      -14.500644501125782,
+      -14.50067372931223
+    ],
+    "downward_propagating_to_direct": [
+      0.9997173542648679,
+      0.9995916692253428,
+      0.9995940762638897,
+      0.9996394151143305,
+      0.9997052831694062
+    ],
+    "upward_propagating_to_direct": [
+      7.216088978208995e-05,
+      6.565855210956889e-05,
+      7.749991516284985e-05,
+      9.419497473401829e-05,
+      0.00010835002923252979
+    ],
+    "incident_to_band_max": [
+      0.3440738040860599,
+      0.7723067257687473,
+      1.0,
+      0.785797402739276,
+      0.3923969472349056
+    ]
+  },
+  "native_stage_sha256": "d54cdd4d13d94c24721c19dbc24a89f73c6f7bedbf77461b84e30bc9417d4991",
+  "source_files": {
+    "calibrate_finite_grating.py": "6d0fec4aaac32f318de31d82fd5d6e8c652fbf2c399f3fce7bee8152fa35a88d",
+    "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+    "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+    "grating_angular_spectrum.py": "4ed304986b8aae693574f4bd002c783593e4911d5f41f0ce9d635114c4618686",
+    "lumerical_grating3d.py": "c7607d49b96b2312f5faf1c9d0acc9db71c08e272a0684ea91cbb122be45e567"
+  },
+  "measured_tail_to_peak": 4.955767280989676e-07,
+  "dft_change": 1.252141415992117e-10,
+  "stepping_seconds": 56.65593342899956,
+  "passed": true
+}

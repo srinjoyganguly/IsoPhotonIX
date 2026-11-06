@@ -2,6 +2,8 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
+import tempfile
+from unittest.mock import patch
 
 import numpy as np
 
@@ -80,3 +82,54 @@ class FiniteGrating3D(unittest.TestCase):
         s=ansys.reflected_fiber_amplitude(reverse,plane,inc,.2)
         np.testing.assert_allclose(s,[1.])
         np.testing.assert_allclose(ansys.reflected_fiber_amplitude(plane,plane,inc,.2),[0.])
+
+    def test_guided_emission_uses_separate_guide_and_beam_power(self):
+        from scripts.grating_emission import observables
+        field=np.zeros((5,6,8,8),dtype=complex)
+        field[:,1]=1;field[:,3]=1
+        reverse=field.copy();reverse[:,3:]*=-1
+        r={'upper':field*0,'output_amplitudes':np.tile([2.+0j,0j],(5,1))}
+        d={'upper':.5*reverse,'output_amplitudes':np.tile([2.+0j,.5j],(5,1))}
+        measured=observables(r,d,{'upper':field},5)
+        # Incoming guide carries 4 units; upper receive plane's unit wave carries 1.28.
+        np.testing.assert_allclose(measured['incident_guide'],4.)
+        np.testing.assert_allclose(measured['incident_beam'],1.28)
+        np.testing.assert_allclose(abs(measured['gaussian_channel'])**2,.08)
+        np.testing.assert_allclose(measured['upgoing_fraction'],.08)
+        np.testing.assert_allclose(abs(measured['guide_reflection'])**2,.0625)
+
+    def test_cache_never_reuses_another_gpu_or_scipy_version(self):
+        hardware={'name':'NVIDIA test device','ordinal':0,'driver_version':12090,
+                  'compute_capability':'8.6','per_cache_device_sha256':'gpu-a'}
+        versions={'scipy':'1'}
+        def version(name): return versions.get(name,'test')
+        def stage(cmd, check, env):
+            target=Path(cmd[cmd.index('--output')+1])
+            np.savez(target/'arrays.npz',measured=np.array([1.]))
+            info={'cuda_identity':hardware.copy(),'native_worker_sha256':grating.file_hash(grating.__file__)}
+            (target/'receipt.json').write_text(json.dumps(info))
+        with tempfile.TemporaryDirectory() as temp, patch.dict('os.environ',{'PHOTONICS_GPU_LOCK':str(Path(temp)/'gpu.lock')}), patch.object(grating.cuda_identity,'fingerprint',side_effect=lambda salt:hardware.copy()), patch('importlib.metadata.version',side_effect=version), patch('subprocess.run',side_effect=stage) as native:
+            cache=Path(temp); model=grating.settings('compact',12)
+            first,_=grating.stage_archive(model,'reference',cache)
+            reused,_=grating.stage_archive(model,'reference',cache)
+            self.assertEqual(first,reused);self.assertEqual(native.call_count,1)
+            hardware['per_cache_device_sha256']='gpu-b'
+            other,_=grating.stage_archive(model,'reference',cache)
+            self.assertNotEqual(first,other);self.assertEqual(native.call_count,2)
+            versions['scipy']='2'
+            third,_=grating.stage_archive(model,'reference',cache)
+            self.assertNotEqual(third,other);self.assertEqual(native.call_count,3)
+            report=json.loads((third/'receipt.json').read_text())
+            report['cuda_identity']['per_cache_device_sha256']='gpu-a'
+            (third/'receipt.json').write_text(json.dumps(report))
+            with self.assertRaisesRegex(ValueError,'device'):
+                grating.stage_archive(model,'reference',cache)
+
+    def test_raw_gpu_uuid_stays_private_and_salt_is_bound_to_cache(self):
+        from scripts.grating_cuda_identity import cache_salt,fingerprint
+        raw=b'0123456789abcdef'
+        with tempfile.TemporaryDirectory() as temp, patch('scripts.grating_cuda_identity.driver_device',return_value=(raw,{'name':'test'})):
+            first=cache_salt(Path(temp)/'a')
+            self.assertEqual(first,cache_salt(Path(temp)/'a'))
+            self.assertNotEqual(fingerprint(first),fingerprint(cache_salt(Path(temp)/'b')))
+            self.assertNotIn(raw.decode(),json.dumps(fingerprint(first)))
