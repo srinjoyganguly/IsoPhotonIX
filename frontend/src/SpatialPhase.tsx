@@ -30,8 +30,8 @@ export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
     {study.historical_return_phase && <p>These earlier grating runs retained final return fields only. Their reflected phase comparisons use the amplitude floor. Choose a timed-mesh comparison for phases that also passed an observation-window check.</p>}
     <p>Phase requires both amplitudes to reach {study.amplitude_floor}. Power and complex-amplitude changes remain measurable below that floor.</p>
     {study.samples.map((s,i)=><div key={i}>{!s.passed && <p>At {s.mesh} cells/µm, {s.valid} of {s.total} native wavelength samples passed. The tables use qualified samples.</p>}{s.central_wavelength_um!==null && <div className="cal-time-scroll"><table>
-      <caption>Workbench and Lumerical at {(s.central_wavelength_um*1000).toFixed(3)} nm · {s.mesh} cells/µm</caption>
-      <thead><tr><th>Port</th><th>Workbench power</th><th>Lumerical power</th><th>Signed phase difference (rad)</th></tr></thead>
+      <caption>IsoPhotonIX and Lumerical at {(s.central_wavelength_um*1000).toFixed(3)} nm · {s.mesh} cells/µm</caption>
+      <thead><tr><th>Port</th><th>IsoPhotonIX power</th><th>Lumerical power</th><th>Signed phase difference (rad)</th></tr></thead>
       <tbody>{Object.entries(s.absolute).map(([name,v])=><tr key={name}><th>{name}</th><td>{value(v.native_power)}</td>
         <td>{value(v.vendor_power)}</td><td>{value(v.signed_native_minus_vendor_phase_rad)}</td></tr>)}</tbody></table></div>}
       {Object.keys(s.band).length>0 && <div className="cal-time-scroll"><table><caption>Absolute phase difference across the Lumerical band · {s.mesh} cells/µm</caption>
@@ -47,7 +47,7 @@ export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
         <p>Each increment measures phase change between adjacent qualified wavelengths. Sparse samples can miss full turns.</p></div>}</div>)}
     {study.vendor.toLowerCase()==='tidy3d' && <p>The published Tidy3D example supplies power. The phase changes above compare local GPU runs.</p>}
     <p><a href={'/api/calibrations/phase.csv?receipt='+encodeURIComponent(study.receipt)}>Download registered complex samples (CSV)</a></p>
-    <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+study.receipt}
+    <a href={'https://github.com/srinjoyganguly/IsoPhotonIX/blob/main/docs/verification/'+study.receipt}
        target="_blank" rel="noreferrer">Frequency samples, reference planes and qualification masks</a>
   </details>;
 }

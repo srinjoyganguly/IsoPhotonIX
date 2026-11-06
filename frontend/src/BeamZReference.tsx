@@ -35,7 +35,7 @@ export function BeamZReference() {
               <td>{(100 * mesh.continuum_relative_error).toFixed(4)}%</td></tr>))}</tbody>
         </table></div>
         <a href="/api/beamz-benchmark" download="beamz-references.json">Download field checks and CPU slab-mode comparison</a>
-        <p>Reproduce locally with <code>photonics-workbench benchmark-beamz --device cpu --output beamz-study</code>.</p>
+        <p>Reproduce locally with <code>isophotonix benchmark-beamz --device cpu --output beamz-study</code>.</p>
       </article>}
     </div>
   </details>;

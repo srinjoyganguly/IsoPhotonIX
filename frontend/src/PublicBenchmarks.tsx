@@ -44,7 +44,7 @@ function parseReport(value: unknown): BenchmarkReport {
 function downloadReport(report: BenchmarkReport) {
   const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2) + '\n'], { type: 'application/json' }));
   const link = document.createElement('a');
-  link.href = url; link.download = 'photonics-public-mode-benchmarks.json'; link.click();
+  link.href = url; link.download = 'isophotonix-public-mode-benchmarks.json'; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 

@@ -98,8 +98,13 @@ def copy_payload(destination):
 
 class ApplicationBuild(build_py):
     def run(self):
+        # Remove the previous distribution's modules and payload on incremental
+        # builds. The compatibility package contains only its namespace shim.
+        legacy = Path(self.build_lib) / 'photonics_workbench'
+        if legacy.is_dir() and legacy.resolve() != ROOT / 'src/photonics_workbench':
+            shutil.rmtree(legacy)
         super().run()
-        destination = Path(self.build_lib) / 'photonics_workbench/_app'
+        destination = Path(self.build_lib) / 'isophotonix/_app'
         # Remove stale hashed bundles from previous builds in this build area.
         if destination.exists():
             shutil.rmtree(destination)

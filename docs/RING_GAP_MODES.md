@@ -4,7 +4,7 @@ Ansys publishes an independent check on the geometry that sets the ring coupling
 
 We solved this transverse problem locally on CPU. All runs used the same physical edges, air over oxide and the two permittivities at 1550 nm from the audited Lumerical project. Each pair passed the polarization check and had opposite electric-field parity across the gap. The FDTDX columns use its Tidy3D transverse eigensolver with the same area or wall coefficients used in the native workbench ring. MPB is an independent eigensolver. The last column uses Tidy3D's local geometry and boundary-registered grid with its optional subpixel package disabled. [Material samples](verification/v013-ring-project-audit.json) · [Executable study](../scripts/check_ring_gap_modes.py).
 
-| Cells/µm | Workbench area | Workbench wall | MPB | Tidy3D local geometry |
+| Cells/µm | IsoPhotonIX area | IsoPhotonIX wall | MPB | Tidy3D local geometry |
 | ---: | ---: | ---: | ---: | ---: |
 | 16 | 0.21100 | 0.09563 | — | — |
 | 20 | 0.11803 | 0.11803 | — | — |

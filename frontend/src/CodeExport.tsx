@@ -11,7 +11,7 @@ export function CodeExport({ value, kind = 'study', disabled = false }: { value:
       const response = await fetch(`/api/reproduce/${kind}`,{method:'POST',headers:{'Content-Type':'application/json'},body:snapshot});
       if (!response.ok) { const body=await response.json();throw new Error(typeof body.detail==='string'?body.detail:JSON.stringify(body.detail)); }
       const url=URL.createObjectURL(await response.blob());
-      const link=document.createElement('a');link.href=url;link.download=`photonics-${kind}-python-notebook.zip`;link.click();
+      const link=document.createElement('a');link.href=url;link.download=`isophotonix-${kind}-python-notebook.zip`;link.click();
       setTimeout(()=>URL.revokeObjectURL(url),1000);
     } catch (reason) { setError((reason as Error).message); }
     finally { setBusy(false); }

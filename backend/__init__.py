@@ -1,1 +1,1 @@
-"""Local photonics workbench."""
+"""IsoPhotonIX local simulation service."""

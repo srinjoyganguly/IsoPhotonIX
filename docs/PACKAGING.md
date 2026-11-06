@@ -1,24 +1,24 @@
-# Install Photonics Workbench locally
+# Install IsoPhotonIX locally
 
-The **0.13.0a1 wheel** contains the local service, the compiled React interface,
+The **IsoPhotonIX 0.13.0a2 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
-separate environments. Tagged wheels are distributed through [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases).
+separate environments. Tagged wheels are distributed through [GitHub Releases](https://github.com/srinjoyganguly/IsoPhotonIX/releases).
 
 The v0.13.0a1 prerelease includes the [circuit connection editor](CIRCUIT_CONNECTIONS.md), matched GPU ring and grating measurements, [phase comparisons](COMPLEX_PORT_COMPARISONS.md) and [per-stage GPU costs](GPU_TIMING.md). The wheel contains the local interface and verified configuration choices. The larger result archives include the actual fields, recorded numerical source, editable Python program and notebook. Each design has its own commercial accuracy and mesh-convergence limits. [Measured checklist](CALIBRATED_COMPONENTS.md).
 
-A clean offline installation reproduced the Meep field arrays and all 27 stored complex coefficients of the CUDA splitter. Its corrected mirror-grating replay reproduced the five stored guided powers. The source archive rebuilt all 160 wheel entries byte-for-byte. [Download the wheel and studies](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1) · [Clean-install measurements](verification/v014-wheel-install.json) · [Download hashes and signed-out verification](verification/v014-release.json).
+A clean offline installation of v0.13.0a1 reproduced the Meep field arrays and all 27 stored complex coefficients of the CUDA splitter. Its corrected mirror-grating replay reproduced the five stored guided powers. The source archive rebuilt all 160 wheel entries byte-for-byte. [Download the wheel and studies](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a1) · [Clean-install measurements](verification/v014-wheel-install.json) · [Download hashes and signed-out verification](verification/v014-release.json).
 
 The largest corrected ring and grating configurations use memory profiles measured on the RTX 3080 Ti Laptop GPU. A fresh stage verifies the selected device and available memory before allocation. Other hardware needs its own measured profile for those configurations. The general CPU and NVIDIA worker setup is separate from this model-specific admission step. [Ring memory admission](RECIPROCAL_RING_STABILITY.md) · [Grating admission](GRATING_ETCH_REFINEMENT.md).
 
-The [v0.12.0a1 release](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a1) includes the application wheel, its source archive and five measured programs independently rerun from Python and Jupyter. Use the wheel for installation. The example ZIP contains the exact inputs and reference data for the 3D ring, compact grating, 3D polygon elbow, planar TM joint and planar polygon elbow. [Download the five programs](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/calibration-examples-v0.12.0a1.zip) · [Example verification](verification/v012-example-exports.json).
+The [v0.12.0a1 release](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.12.0a1) includes the application wheel, its source archive and five measured programs independently rerun from Python and Jupyter. Use the wheel for installation. The example ZIP contains the exact inputs and reference data for the 3D ring, compact grating, 3D polygon elbow, planar TM joint and planar polygon elbow. [Download the five programs](https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.12.0a1/calibration-examples-v0.12.0a1.zip) · [Example verification](verification/v012-example-exports.json).
 
-The v0.12.0a2 accuracy update includes the measured ring dispersion and direct-grating result programs, plus both complete 21-wavelength Lumerical grating programs and their raw arrays. The 21-point scans require the captured local FDTDX CUDA environment. [Download v0.12.0a2](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a2) · [Measured results and limitations](POWER_MISMATCH.md).
+The v0.12.0a2 accuracy update includes the measured ring dispersion and direct-grating result programs, plus both complete 21-wavelength Lumerical grating programs and their raw arrays. The 21-point scans require the captured local FDTDX CUDA environment. [Download v0.12.0a2](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.12.0a2) · [Measured results and limitations](POWER_MISMATCH.md).
 
-The two larger 14-cell archives contain the original local full-geometry programs, native reference/device fields and published comparison inputs. The [curved Lumerical grating export](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/grating-lumerical-3d-gpu-r14-v0.12.0a1.zip) uses the tilted fiber; the [Tidy3D uniform grating export](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip) uses the incident Gaussian and finite taper. [Archive and numerical checks](verification/v012-vendor-grating-exports.json).
+The two larger 14-cell archives contain the original local full-geometry programs, native reference/device fields and published comparison inputs. The [curved Lumerical grating export](https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.12.0a1/grating-lumerical-3d-gpu-r14-v0.12.0a1.zip) uses the tilted fiber; the [Tidy3D uniform grating export](https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.12.0a1/grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip) uses the incident Gaussian and finite taper. [Archive and numerical checks](verification/v012-vendor-grating-exports.json).
 
-The [v0.11.0a3 release](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a3) includes the wheel, source and twelve runnable example exports. The [calibration checklist](CALIBRATED_COMPONENTS.md) tracks measured results and remaining work. [Clean install and CPU/CUDA runs](verification/v011-a3-wheel-install.json) · [Signed-out download checks](verification/v011-a3-release.json). The [v0.10 verification summary](verification/v010-checks.json) records the preceding preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
+The [v0.11.0a3 release](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.11.0a3) includes the wheel, source and twelve runnable example exports. The [calibration checklist](CALIBRATED_COMPONENTS.md) tracks measured results and remaining work. [Clean install and CPU/CUDA runs](verification/v011-a3-wheel-install.json) · [Signed-out download checks](verification/v011-a3-release.json). The [v0.10 verification summary](verification/v010-checks.json) records the preceding preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
 offline installation, an installed CLI run of the Lumerical comparison, and
 real simulations of the photonic-crystal line-defect layout on CPU and NVIDIA.
 The installed NVIDIA field bytes and material digest matched the corresponding
@@ -30,24 +30,23 @@ The [v0.12.0a2 clean-install receipt](verification/v013-wheel-install.json) veri
 
 ## Install and launch
 
-Download the [v0.13.0a1 wheel and checksum list](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1), or build from source as described below. In a new
-Python 3.11 environment, run the following commands with the actual wheel path.
+Install the release wheel into a fresh Python 3.11 environment. To verify an offline copy, download the wheel and checksum list from the same release. [IsoPhotonIX v0.13.0a2 downloads](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a2).
 
 ```bash
-python3.11 -m venv .venv-workbench
-source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.13.0a1-py3-none-any.whl
-photonics-workbench doctor
-photonics-workbench web
+python3.11 -m venv .venv-isophotonix
+source .venv-isophotonix/bin/activate
+python -m pip install https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.13.0a2/isophotonix-0.13.0a2-py3-none-any.whl
+isophotonix doctor
+isophotonix web
 ```
 
 Choose the native solvers you want for this machine:
 
 ```bash
-photonics-workbench setup meep
-photonics-workbench setup fdtdx-cpu
-photonics-workbench setup fdtdx-cuda12
-photonics-workbench setup beamz-cpu
+isophotonix setup meep
+isophotonix setup fdtdx-cpu
+isophotonix setup fdtdx-cuda12
+isophotonix setup beamz-cpu
 ```
 
 Meep setup includes MPB. The CUDA12 setup checks the actual NVIDIA target
@@ -57,10 +56,26 @@ and the runtime selection order. The [BeamZ reference guide](BEAMZ_REFERENCE.md)
 
 Open `http://127.0.0.1:8000` in a browser. `web --port 8010` selects another
 loopback port. Node and the source checkout are build-time tools. Installed
-runs, registry and caches live under `$XDG_DATA_HOME/photonics-workbench`
-(default `~/.local/share/photonics-workbench`). Use `--data-dir /path/to/state`
-on any command or set `PHOTONICS_DATA_DIR` to select a different store. A
-second installed server can use a separate store and port.
+runs, registry and caches for a new installation live under
+`$XDG_DATA_HOME/isophotonix` (default `~/.local/share/isophotonix`). Use
+`--data-dir /path/to/state` or set `ISOPHOTONIX_DATA_DIR` to select a different
+store. A second installed server can use a separate store and port.
+
+### Upgrading from Photonics Workbench
+
+IsoPhotonIX is a new Python distribution. A fresh virtual environment is the simplest upgrade. To reuse the same Python environment, **uninstall the old distribution first, then install the new wheel**. Both distributions own the compatibility launcher and import shim. Removing the old distribution after installing IsoPhotonIX can remove those shared files. With the existing virtual environment active, run these commands in order.
+
+```bash
+python -m pip uninstall photonics-workbench
+python -m pip install https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.13.0a2/isophotonix-0.13.0a2-py3-none-any.whl
+isophotonix doctor
+```
+
+User data and managed solver environments live outside the pip installation. The new command is `isophotonix` and the Python import is `isophotonix`. Existing scripts can also use the earlier `photonics-workbench` command and `photonics_workbench` import.
+
+On first launch, the new default store takes precedence if it exists. Otherwise IsoPhotonIX reuses the previous `$XDG_DATA_HOME/photonics-workbench` directory when present, including its saved runs and worker registrations. You can select the old store explicitly if both exist. The precedence for overrides is `--data-dir`, then `ISOPHOTONIX_DATA_DIR`, then `PHOTONICS_DATA_DIR`. Keep using the same browser origin to reopen saved editor drafts.
+
+The v0.13.0a1 and earlier study downloads keep their original asset names, numerical source and checksums. The v0.13.0a1 release contains the original measured GPU programs. [Historical study archives](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a1).
 
 ## Run or export a calibrated preset
 
@@ -69,9 +84,9 @@ Open **Calibrated components** in the web or desktop interface. New FDTDX studie
 The installed command uses the same code:
 
 ```bash
-photonics-workbench calibrate multimode --solver meep --device cpu --resolution 48 --offset-um 0.125 --output joint-results
-photonics-workbench calibrate splitter --solver fdtdx --device gpu --material-model yee-aligned --export-only --output splitter-program
-photonics-workbench calibrate grating --solver meep --device cpu --grating-scope tidy3d-compact --resolution 40 --output beam-results
+isophotonix calibrate multimode --solver meep --device cpu --resolution 48 --offset-um 0.125 --output joint-results
+isophotonix calibrate splitter --solver fdtdx --device gpu --material-model yee-aligned --export-only --output splitter-program
+isophotonix calibrate grating --solver meep --device cpu --grating-scope tidy3d-compact --resolution 40 --output beam-results
 ```
 
 The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. For a ring or grating spectrum, click the curve or choose a measured wavelength to read its power fraction. Wavelengths excluded by the numerical checks are marked unqualified. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. For interrupted calibrated jobs started in the GUI, select the original run and choose **Resume saved study** to continue its captured program. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
@@ -81,11 +96,11 @@ The first command creates a report, raw numerical samples and `python-notebook-r
 Open **Calibrated components** and select **3D bus-loaded ring** or **3D finite-width grating**. Choose a physical geometry and select **FDTDX · GPU**. A passing run records the detected NVIDIA device, normalized spectra and native field coordinates. Runs can take considerably longer than a compact grating on the same device. Click a ring or grating field, or use the arrow keys, to inspect individual numerical samples.
 
 ```bash
-photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --duration-um-c 3200 --output loaded-ring
-photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d compact --resolution 12 --output finite-grating
-photonics-workbench calibrate multimode-tm --solver meep --device cpu --port-distance-um 1.25 --output tm-joint
-photonics-workbench calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --output planar-elbow
-photonics-workbench calibrate layout-ports-3d --solver fdtdx --device gpu --resolution 16 --output finite-elbow
+isophotonix calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --duration-um-c 3200 --output loaded-ring
+isophotonix calibrate grating-3d --solver fdtdx --device gpu --geometry-3d compact --resolution 12 --output finite-grating
+isophotonix calibrate multimode-tm --solver meep --device cpu --port-distance-um 1.25 --output tm-joint
+isophotonix calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --output planar-elbow
+isophotonix calibrate layout-ports-3d --solver fdtdx --device gpu --resolution 16 --output finite-elbow
 ```
 
 For either layout-port study, open **Edit polygons and ports** to inspect or change the layout document. The installed command accepts the same file with `--layout PATH`. Use `--export-only` to get the exact study program and notebook before a solver run, or take the measured bundle from a completed run. The original planar ring and grating programs remain available as `ring` and `grating`. [Bus-loaded ring model and numerical checks](LOADED_RING_3D.md) · [Finite-width grating model](FINITE_GRATING_3D.md).
@@ -95,10 +110,10 @@ For either layout-port study, open **Edit polygons and ports** to inspect or cha
 Select **3D bus-loaded ring** and choose **Ring boundary sampling**, or select **3D finite-width grating** and the **Lumerical curved grating and fiber** geometry to choose its material sampling. The existing baseline remains the default. The 12-cell Lumerical grating can also acquire 21 wavelength samples between 1500 and 1600 nm. Each source program records its selected interface model and spectral grid.
 
 ```bash
-photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --ring-interface exact-area --output ring-area
-photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --ring-interface exact-area --ring-material palik-ade --output ring-dispersion
-photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 14 --grating-material-model direct-yee --output curved-grating
-photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 12 --grating-material-model direct-yee --grating-spectrum dense --output grating-spectrum
+isophotonix calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --ring-interface exact-area --output ring-area
+isophotonix calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --ring-interface exact-area --ring-material palik-ade --output ring-dispersion
+isophotonix calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 14 --grating-material-model direct-yee --output curved-grating
+isophotonix calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 12 --grating-material-model direct-yee --grating-spectrum dense --output grating-spectrum
 ```
 
 Use a fresh output directory for each run or add `--export-only` to get the local Python and notebook programs without starting a solve. The denser measurement uses additional detector memory and checks the free memory on the selected NVIDIA device before acquisition. [Correction experiments, reference planes and accuracy gates](POWER_MISMATCH.md).
@@ -108,8 +123,8 @@ Use a fresh output directory for each run or add `--export-only` to get the loca
 For the supported managed Meep/MPB profile, install Conda and run:
 
 ```bash
-photonics-workbench setup meep --conda /path/to/conda
-photonics-workbench doctor --json
+isophotonix setup meep --conda /path/to/conda
+isophotonix doctor --json
 ```
 
 `setup meep --offline` uses the Conda cache and the bundled Linux x86-64 lock.
@@ -123,7 +138,7 @@ The doctor command probes each execution target and reports its availability.
 To reproduce a saved study through the installed CLI:
 
 ```bash
-photonics-workbench run config.json --output reproduced-run
+isophotonix run config.json --output reproduced-run
 ```
 
 The output directory must be new. Saved-run Python/notebook exports also
@@ -265,7 +280,7 @@ remove research data.
 
 ## Local web and desktop architecture
 
-Run `photonics-workbench desktop` for the dedicated local Chromium application window on the qualified WSL2 host. The port and profile remain stable between launches. See [Desktop window](DESKTOP_WINDOW.md) for browser selection, local storage and shutdown behavior. The following design notes describe possible future native shells.
+Run `isophotonix desktop` for the dedicated local Chromium application window on the qualified WSL2 host. The port and profile remain stable between launches. See [Desktop window](DESKTOP_WINDOW.md) for browser selection, local storage and shutdown behavior. The following design notes describe possible future native shells.
 
 Use the same built React interface and API for both modes. The CLI starts a
 loopback-only service, obtains an available port, waits for health, and opens

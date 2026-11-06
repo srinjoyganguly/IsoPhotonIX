@@ -10,9 +10,9 @@ newer for CUDA 12. Its pip CUDA profile supplies the CUDA libraries.
 [FDTDX quickstart](https://fdtdx.readthedocs.io/en/latest/01_quickstart.html).
 
 ```bash
-photonics-workbench setup fdtdx-cpu
-photonics-workbench setup fdtdx-cuda12
-photonics-workbench doctor --json
+isophotonix setup fdtdx-cpu
+isophotonix setup fdtdx-cuda12
+isophotonix doctor --json
 ```
 
 Each command installs into a new local virtual environment, checks every
@@ -39,7 +39,7 @@ With the corresponding lock from this release, download its wheel artifacts:
 ```bash
 python3.11 -m pip download --require-hashes --only-binary=:all: \
   -r environment-fdtdx-cuda12-linux-64.lock --dest ./fdtdx-wheels
-photonics-workbench setup fdtdx-cuda12 --offline --wheelhouse ./fdtdx-wheels
+isophotonix setup fdtdx-cuda12 --offline --wheelhouse ./fdtdx-wheels
 ```
 
 For CPU use `environment-fdtdx-cpu-linux-64.lock` and `setup fdtdx-cpu`.

@@ -147,11 +147,12 @@ silently project a 3D design into that solver or generate substitute results.
 This format is separate from `waveguide-config.json` and numerical result ZIPs.
 It contains geometry and presentation visibility, not a source, mesh,
 boundary condition, solver selection or simulation result. No code in the file
-is executed.
+is executed. New designs use `isophotonix-geometry`. The importer also accepts
+the earlier `photonics-workbench-geometry` identifier.
 
 ```json
 {
-  "schema": "photonics-workbench-geometry",
+  "schema": "isophotonix-geometry",
   "schema_version": 1,
   "units": "um",
   "name": "Example strip draft",

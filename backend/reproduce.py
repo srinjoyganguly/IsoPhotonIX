@@ -152,9 +152,9 @@ def study_bundle(config, output=None):
                          'A saved reference is compared after execution; changed settings are a new experiment.\n"""\n'
                          'from workbench_runtime import main\n\n' + config_code + '\nif __name__ == "__main__":\n    main(CONFIG)\n').encode()
     files['study.ipynb'] = _notebook([
-        _cell('markdown', '# Reproducible local photonics study\n\nThe exact physical configuration and numerical implementation are included in this bundle. '
+        _cell('markdown', '# Reproducible IsoPhotonIX study\n\nThe exact physical configuration and numerical implementation are included in this bundle. '
               f'Source provenance: **{snapshot_origin}**. Run-time archives identify original solver bytes; export-time compatibility snapshots cannot make that historical claim. '
-              'The notebook uses no running workbench server, cloud solver, or OpenAI API. Install the recorded environments using `README.md` before Run All. '
+              'The notebook uses no running IsoPhotonIX server, cloud solver, or OpenAI API. Install the recorded environments using `README.md` before Run All. '
               'The source under `source/backend/` is readable and retained with its license.\n\n'
               'Changing the settings below creates a new experiment. A saved GUI result is compared only when its configuration is unchanged. '
               'Matching a replay is a software reproducibility check, not a commercial-accuracy or convergence certificate. '
@@ -184,11 +184,11 @@ def study_bundle(config, output=None):
 
 
 def _study_readme(config, has_reference, snapshot_origin):
-    return f'''# Standalone Photonics Workbench study
+    return f'''# Standalone IsoPhotonIX study
 
 This bundle contains editable `study.py` and `study.ipynb`, the exact JSON study,
 and a snapshot of the first-party numerical implementation.
-It needs no running workbench, repository checkout, network solver or API key.
+It needs no running IsoPhotonIX service, repository checkout, network solver or API key.
 Selected execution: **{config['solver']} / {config['device']}**. No GPU-to-CPU retry.
 Source provenance: **{snapshot_origin}**. `run_time` uses the verified source
 archive captured before the original solve; its checksum must match the replay.
@@ -226,7 +226,7 @@ python study.py --solver-python /path/to/selected/solver/python
 
 That path is a placeholder: use your installed solver interpreter. If the
 current Python already contains it, omit `--solver-python`. Alternatively set
-`MEEP_PYTHON` or `FDTDX_PYTHON`. Without an override, the export also checks the local workbench managed solver registry. These variables choose an interpreter, not a
+`MEEP_PYTHON` or `FDTDX_PYTHON`. Without an override, the export also checks the local IsoPhotonIX solver registry. These variables choose an interpreter, not a
 different solver or device. Edit the visible `CONFIG` dictionary in `study.py`
 to create a new experiment. Each run writes a new output directory. Optional
 `--output NEW_DIRECTORY` never overwrites an earlier run. `--timeout` controls
@@ -304,7 +304,7 @@ def geometry_bundle(geometry):
         _cell('markdown', '# Exact local geometry draft\n\nThis notebook preserves boxes, cylinders, rings, polygon contours and holes, positions, dimensions, material definitions, component recipes and ports, '
               'rotations and visibility flags from the editor. Curved surfaces are tessellated only for display; JSON retains their exact radii. '
               'It is a design export, not a solver result. Unsupported CAD is never silently reduced to a straight guide. '
-              'Choose a supported executable study in the workbench to obtain a solver notebook. Install `requirements-notebook.txt` before Run All.', 'introduction'),
+              'Choose a supported executable study in IsoPhotonIX to obtain a solver notebook. Install `requirements-notebook.txt` before Run All.', 'introduction'),
         _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, evaluate_material, regenerate_component, align_ports, connect_ports, disconnect_ports, connection_status, plot_geometry\ncheck_bundle()\n', 'imports'),
         _cell('code', code, 'geometry'),
         _cell('markdown', '## Optional parametric editing\n\nThe original contours remain authoritative. To regenerate a component from changed parameters, use the bundled generator below. This creates a new design and preserves unrelated objects. Leave it commented to reproduce the exact exported geometry.', 'parametric-help'),

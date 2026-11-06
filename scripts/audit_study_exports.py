@@ -17,7 +17,7 @@ from scripts.verify_finite_grating import verify
 
 EVIDENCE = Path(__file__).resolve().parents[1] / 'docs/verification'
 TAG = 'v0.12.0a2'
-BASE_URL = f'https://github.com/srinjoyganguly/photonics-workbench/releases/download/{TAG}/'
+BASE_URL = f'https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/{TAG}/'
 COMMON = {
     'CREDITS.md', 'LICENSE', 'README.md', 'config.json', 'run.py', 'calibration.ipynb',
     'workbench_solver_environment.py', 'environment-fdtdx-cuda12-linux-64.lock',

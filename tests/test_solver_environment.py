@@ -5,10 +5,24 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from backend.solver_environment import solver_interpreter
+from backend.solver_environment import default_user_state, solver_interpreter
 
 
 class SolverSelection(unittest.TestCase):
+    def test_renamed_state_dir_preserves_existing_runs_and_override_precedence(self):
+        with TemporaryDirectory() as tmp, patch.dict(os.environ, {'XDG_DATA_HOME': tmp}, clear=True):
+            canonical = Path(tmp) / 'isophotonix'
+            previous = Path(tmp) / 'photonics-workbench'
+            self.assertEqual(default_user_state(), canonical)
+            previous.mkdir()
+            self.assertEqual(default_user_state(), previous)
+            canonical.mkdir()
+            self.assertEqual(default_user_state(), canonical)
+            with patch.dict(os.environ, {'PHOTONICS_DATA_DIR': str(previous)}):
+                self.assertEqual(default_user_state(), previous)
+                with patch.dict(os.environ, {'ISOPHOTONIX_DATA_DIR': str(canonical)}):
+                    self.assertEqual(default_user_state(), canonical)
+
     def test_cpu_and_cuda_are_independent_and_explicit_override_wins(self):
         with TemporaryDirectory() as tmp, patch.dict(os.environ, {}, clear=True):
             state = Path(tmp) / '.local'

@@ -12,7 +12,7 @@ class Study3DTests(unittest.TestCase):
     def test_default_is_finite_bounded_and_losslessly_roundtrips(self):
         config = self.config()
         self.assertEqual(Waveguide3DConfig.model_validate(config).model_dump(), config)
-        self.assertEqual(config['geometry']['schema'], 'photonics-workbench-geometry')
+        self.assertEqual(config['geometry']['schema'], 'isophotonix-geometry')
         self.assertEqual(example3d().estimate()['grid'], [128, 64, 64])
         self.assertEqual(example3d().estimate()['cells'], 524288)
         self.assertEqual(parse_study(WaveguideConfig().model_dump()).schema_version, 1)

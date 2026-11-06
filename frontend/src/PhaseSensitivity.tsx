@@ -32,6 +32,6 @@ export function PhaseSensitivity({checks}:{checks:PhaseCheck[]}){
         <td>{largestAngle(port.straight_relative_phase_change_rad)}</td>
         <td>{verdict(port)}</td>
       </tr>)}</tbody></table>
-    <p>The forward phase limit is 0.10 rad. A return must change by at most 0.001 in power fraction and 0.01 in complex amplitude. Phase is reported where both amplitudes reach 0.02. <a target="_blank" rel="noreferrer" href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+check.receipt}>Native inputs and values</a>.</p>
+    <p>The forward phase limit is 0.10 rad. A return must change by at most 0.001 in power fraction and 0.01 in complex amplitude. Phase is reported where both amplitudes reach 0.02. <a target="_blank" rel="noreferrer" href={'https://github.com/srinjoyganguly/IsoPhotonIX/blob/main/docs/verification/'+check.receipt}>Native inputs and values</a>.</p>
   </details>;
 }

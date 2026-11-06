@@ -1,3 +1,4 @@
+import { version } from '../package.json';
 import { CalibratedComponents } from './CalibratedComponents';
 import { useEffect, useRef, useState } from 'react';
 import { FieldCanvas, type Field } from './FieldCanvas';
@@ -160,7 +161,7 @@ export default function App() {
   const executionDevice=resultMetadata.device_name || resultMetadata.actual_device;
   const executionVersions=resultMetadata.versions as Record<string,string>|undefined;
   return <div className="app-shell">
-    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><div>photonics<span className="brand-sub">WORKBENCH</span></div></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':workspace==='ports'?'ENGINEERING STUDIES':'EXAMPLE / 01'}</span><strong>{workspace==='calibrated'?'Calibrated component studies':workspace==='design'?'Local geometry workspace':workspace==='ports'?'Reference-normalized port measurements':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v0.11 preview · experimental</span></div></header>
+    <header className="topbar"><div className="brand"><span className="brand-mark"><Symbol kind="wave" size={27}/></span><span>IsoPhotonIX</span></div><div className="header-divider"/><div className="project-heading"><span className="muted">{workspace==='design'?'DESIGN STUDIO':workspace==='ports'?'ENGINEERING STUDIES':'EXAMPLE / 01'}</span><strong>{workspace==='calibrated'?'Calibrated component studies':workspace==='design'?'Local geometry workspace':workspace==='ports'?'Reference-normalized port measurements':'Dielectric slab waveguide'}</strong></div><div className="topbar-right"><span className="local-pill"><i/>Local compute</span><span className="version">v{version} · experimental</span></div></header>
     <nav className="workspace-navigation" aria-label="Workspace"><button aria-pressed={workspace==='design'} onClick={()=>setWorkspace('design')}>3D design</button><button aria-pressed={workspace==='simulation'} onClick={()=>setWorkspace('simulation')}>2D simulation</button><button aria-pressed={workspace==='ports'} onClick={()=>setWorkspace('ports')}>Ports · 2D</button><button aria-pressed={workspace==='calibrated'} onClick={()=>setWorkspace('calibrated')}>Calibrated components</button></nav>
     <div hidden={workspace!=='calibrated'}><CalibratedComponents active={workspace==='calibrated'}/></div>
     <div hidden={workspace!=='design'}><GeometryEditor slabConfig={geometryConfig} onSimulation={()=>setWorkspace('simulation')}/></div>

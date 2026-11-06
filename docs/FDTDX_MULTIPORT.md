@@ -8,7 +8,7 @@ calibration to the edited geometry.
 
 ## Run the numerical worker
 
-Select a Workbench FDTDX CPU or CUDA environment, or the matching interpreter
+Select a IsoPhotonIX FDTDX CPU or CUDA environment, or the matching interpreter
 in a standalone study export. From the source checkout:
 
 ```bash

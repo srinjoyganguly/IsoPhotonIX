@@ -2,7 +2,7 @@
   "schema_version": 4,
   "study_type": "waveguide-ports-3d",
   "geometry": {
-    "schema": "photonics-workbench-geometry",
+    "schema": "isophotonix-geometry",
     "schema_version": 1,
     "units": "um",
     "name": "Finite-height modal two-port guide",

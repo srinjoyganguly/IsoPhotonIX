@@ -52,7 +52,13 @@ def _profile(data, browser):
         raise RuntimeError('Could not find Windows LocalAppData for the desktop browser profile.')
     identity = os.environ['WSL_DISTRO_NAME'] + '\n' + str(data)
     key = hashlib.sha256(identity.encode()).hexdigest()[:24]
-    return str(PureWindowsPath(base, 'Photonics Workbench', 'Profiles', key))
+    local_base = Path(subprocess.check_output(['wslpath', '-u', base], text=True).strip())
+    profile = Path('IsoPhotonIX', 'Profiles', key)
+    previous = Path('Photonics Workbench', 'Profiles', key)
+    # Existing Chromium profiles hold the user's browser-local design drafts.
+    if not (local_base / profile).exists() and (local_base / previous).is_dir():
+        profile = previous
+    return str(PureWindowsPath(base, *profile.parts))
 
 
 def _interrupt(signum, frame):
@@ -67,16 +73,16 @@ def _close_window(window, executable, url, profile):
         # window-close request only to the browser with our exact origin and
         # profile. Values travel in the child environment, never as shell code.
         script = r"""
-$origin = [Environment]::GetEnvironmentVariable('PHOTONICS_DESKTOP_ORIGIN')
-$profilePath = [Environment]::GetEnvironmentVariable('PHOTONICS_DESKTOP_PROFILE')
+$origin = [Environment]::GetEnvironmentVariable('ISOPHOTONIX_DESKTOP_ORIGIN')
+$profilePath = [Environment]::GetEnvironmentVariable('ISOPHOTONIX_DESKTOP_PROFILE')
 $originFlag = '(?:^|\s)"?' + [regex]::Escape('--app=' + $origin) + '"?(?=\s|$)'
 $profileFlag = '(?:^|\s)"?' + [regex]::Escape('--user-data-dir=' + $profilePath) + '"?(?=\s|$)'
 Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' OR Name = 'msedge.exe' OR Name = 'chromium.exe'" |
     Where-Object { $_.CommandLine -match $originFlag -and $_.CommandLine -match $profileFlag } |
     ForEach-Object { $p = Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue; if ($p) { [void]$p.CloseMainWindow() } }
 """
-        env = dict(os.environ, PHOTONICS_DESKTOP_ORIGIN=url, PHOTONICS_DESKTOP_PROFILE=profile)
-        env['WSLENV'] = ':'.join(filter(None, [env.get('WSLENV'), 'PHOTONICS_DESKTOP_ORIGIN', 'PHOTONICS_DESKTOP_PROFILE']))
+        env = dict(os.environ, ISOPHOTONIX_DESKTOP_ORIGIN=url, ISOPHOTONIX_DESKTOP_PROFILE=profile)
+        env['WSLENV'] = ':'.join(filter(None, [env.get('WSLENV'), 'ISOPHOTONIX_DESKTOP_ORIGIN', 'ISOPHOTONIX_DESKTOP_PROFILE']))
         try:
             subprocess.run(['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script],
                            env=env, check=True, timeout=10, stdout=subprocess.DEVNULL)
@@ -117,7 +123,7 @@ def launch_desktop(data, port, browser=None):
         url = f'http://127.0.0.1:{port}'
         from backend.app import app, manager
         server = uvicorn.Server(uvicorn.Config(app, host='127.0.0.1', port=port, log_level='warning'))
-        thread = threading.Thread(target=server.run, kwargs={'sockets': [listener]}, name='photonics-desktop-http')
+        thread = threading.Thread(target=server.run, kwargs={'sockets': [listener]}, name='isophotonix-desktop-http')
         window = None
         previous_signal = signal.signal(signal.SIGTERM, _interrupt)
         thread.start()
@@ -127,7 +133,7 @@ def launch_desktop(data, port, browser=None):
                 if not thread.is_alive() or time.monotonic() > deadline:
                     raise RuntimeError('The local workbench could not start. Check whether another instance owns the run store.')
                 time.sleep(.05)
-            print(f'Opening Photonics Workbench at {url}. Close the application window to finish.', flush=True)
+            print(f'Opening IsoPhotonIX at {url}. Close the application window to finish.', flush=True)
             opened = time.monotonic()
             window = subprocess.Popen([str(executable), f'--app={url}', f'--user-data-dir={profile}',
                                        '--no-first-run', '--no-default-browser-check', '--disable-background-mode',

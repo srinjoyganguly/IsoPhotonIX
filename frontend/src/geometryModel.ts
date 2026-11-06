@@ -41,7 +41,7 @@ export type GeometryObject = {
   component_id?: string;
 };
 export type GeometryDocument = {
-  schema: 'photonics-workbench-geometry';
+  schema: 'isophotonix-geometry' | 'photonics-workbench-geometry';
   schema_version: 1 | 2;
   units: 'um';
   name: string;
@@ -304,9 +304,9 @@ export function removeComponentLinks(document: GeometryDocument, id: string): Pi
 export function validateGeometryDocument(value: unknown): GeometryDocument {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Geometry document must be an object.');
   const version = (value as Record<string, unknown>).schema_version;
-  if (version !== 1 && version !== 2) throw new Error('Expected a photonics-workbench-geometry document with schema_version 1 or 2. Solver configuration JSON is a different format.');
+  if (version !== 1 && version !== 2) throw new Error('Expected an IsoPhotonIX geometry document with schema_version 1 or 2. Solver configuration JSON is a different format.');
   const input = record(value, 'Geometry document', [...documentKeys, ...(version === 2 ? ['materials', 'components'] : [])], version === 2 ? ['connections'] : []);
-  if (input.schema !== 'photonics-workbench-geometry') throw new Error('Expected a photonics-workbench-geometry document. Solver configuration JSON is a different format.');
+  if (input.schema !== 'isophotonix-geometry' && input.schema !== 'photonics-workbench-geometry') throw new Error('Expected an IsoPhotonIX geometry document. Solver configuration JSON is a different format.');
   if (input.units !== 'um') throw new Error('Geometry units must be um (micrometres).');
   if (input.mode !== 'draft-3d' && input.mode !== 'slab-preview') throw new Error('Geometry mode must be draft-3d or slab-preview.');
   const domain = vector(input.domain, 'Domain', GEOMETRY_LIMITS.minDomain, GEOMETRY_LIMITS.maxDomain);
@@ -343,7 +343,7 @@ export function validateGeometryDocument(value: unknown): GeometryDocument {
     return object;
   });
   const components = version === 2 ? validateComponents(input.components, objects, materialById, domain) : [];
-  return { schema: 'photonics-workbench-geometry', schema_version: version, units: 'um', name: name(input.name, 'Document name'), mode: input.mode, domain, objects,
+  return { schema: input.schema, schema_version: version, units: 'um', name: name(input.name, 'Document name'), mode: input.mode, domain, objects,
     ...(version === 2 ? { materials, components } : {}),
     ...(Object.hasOwn(input, 'connections') ? { connections: validateConnections(input.connections, components) } : {}) };
 }
@@ -394,7 +394,7 @@ export function createGeometryObject(kind: GeometryKind, id = uniqueId()): Geome
 
 function draft(name: string, objects: GeometryObject[]): GeometryDocument {
   return validateGeometryDocument({
-    schema: 'photonics-workbench-geometry', schema_version: 1, units: 'um', mode: 'draft-3d',
+    schema: 'isophotonix-geometry', schema_version: 1, units: 'um', mode: 'draft-3d',
     name, domain: { x: 12, y: 8, z: 2.5 }, objects,
   });
 }
@@ -424,7 +424,7 @@ export function createGeometryTemplate(template: GeometryTemplate): GeometryDocu
 /** A visual extrusion only: the existing solver model is uniform along z. */
 export function createSlabPreview(config: { length_um: number; height_um: number; core_width_um: number; core_index: number }): GeometryDocument {
   return validateGeometryDocument({
-    schema: 'photonics-workbench-geometry', schema_version: 1, units: 'um', mode: 'slab-preview',
+    schema: 'isophotonix-geometry', schema_version: 1, units: 'um', mode: 'slab-preview',
     name: '2D slab · illustrative extrusion',
     domain: { x: config.length_um, y: config.height_um, z: 1.2 },
     objects: [{

@@ -161,11 +161,11 @@ export function CalibratedComponents({active}:{active:boolean}) {
           <CalibrationMeasurement key={'measurement'+key+record} value={evidence.recorded[record]?.report}/>
           <SpatialComparison key={'compare'+key+record} value={evidence.recorded[record]?.report}/>
           {evidence.recorded[record]?.field && <CalibrationField key={'field'+key+record} field={evidence.recorded[record].field!}/>}
-          <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+evidence.recorded[record]?.receipt}
+          <a href={'https://github.com/srinjoyganguly/IsoPhotonIX/blob/main/docs/verification/'+evidence.recorded[record]?.receipt}
            target="_blank" rel="noreferrer">Full verification record</a></> :
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
         {evidence.rejected?.map(failure=><details key={failure.receipt} className="cal-runtime"><summary>Rejected spectrum · {failure.label}</summary>
-          <p>{failure.reason}</p><a target="_blank" rel="noreferrer" href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+failure.diagnostic}>Growth measurements and original run</a></details>)}
+          <p>{failure.reason}</p><a target="_blank" rel="noreferrer" href={'https://github.com/srinjoyganguly/IsoPhotonIX/blob/main/docs/verification/'+failure.diagnostic}>Growth measurements and original run</a></details>)}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
         <p>{evidence.limits}</p>{evidence.phase_studies && <SpatialPhase key={key} studies={evidence.phase_studies}/>}
         {evidence.phase_check && <PhaseSensitivity key={key} checks={evidence.phase_checks?.length ? evidence.phase_checks : [evidence.phase_check]}/>}</section>}

@@ -343,8 +343,8 @@ def create_bundle(config, destination):
     (destination/'README.md').write_text(
         '# '+CASES[config.case][0]+'\n\n'+CASES[config.case][1]+'\n\n'
         'Extract the entire ZIP. Use Python 3.11 with NumPy for the controller and a Jupyter kernel to open calibration.ipynb. '
-        'Install the selected native worker with the workbench setup command or use MEEP_PYTHON / FDTDX_PYTHON for an existing environment. '
-        'With a nondefault workbench store, set PHOTONICS_DATA_DIR to that directory. Keep the original export for replay.\n\n'
+        'Install the selected native worker with `isophotonix setup` or use MEEP_PYTHON / FDTDX_PYTHON for an existing environment. '
+        'With a custom IsoPhotonIX store, set ISOPHOTONIX_DATA_DIR to that directory. Older installations can keep their PHOTONICS_DATA_DIR setting. Keep the original export for replay.\n\n'
         'Run `python run.py --output fresh-result` or execute the notebook in this directory. '
         'The program launches its solver afresh. For long studies, run.py accepts --checkpoint PATH to reuse matching completed stages after an interruption. '
         'Set PHOTONICS_CHECKPOINT to the path of a compatible local checkpoint to reuse measured stages in an unmodified notebook. '

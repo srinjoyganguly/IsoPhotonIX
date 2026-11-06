@@ -18,7 +18,7 @@ The [taper study](TAPER_FIELDS.md) has separate access-lead and excitation
 conventions. Published modal comparisons are recorded in the [public
 benchmark guide](PUBLIC_BENCHMARKS.md) and [component reference checks](COMPONENT_REFERENCE_CHECKS.md).
 
-| Example family | Workbench design coverage | Observable required to qualify the corresponding vendor demo |
+| Example family | IsoPhotonIX design coverage | Observable required to qualify the corresponding vendor demo |
 | --- | --- | --- |
 | Straight guides and modes | Strip, rib and slot recipes; finite guide studies | Match cross section, wavelength, index data, polarization and boundaries, then compare effective index or power-normalized modal overlap. A guide-mode comparison does not qualify a driven field volume. [Tidy3D modal reference](https://www.flexcompute.com/tidy3d/examples/notebooks/ModeSolverFemwellBenchmark/) |
 | Transitions and bends | Linear taper, circular bend, S-bend, Euler bend and strip-to-slot transition | Match launch/receive cross sections and compare guided output power and reflection after mesh and access-lead refinement. The Tidy3D Euler example includes a circular section and uses an effective-radius constraint. Our full clothoid uses minimum curvature radius. The Ansys tutorial uses a circular arc. [Tidy3D Euler bend](https://www.flexcompute.com/tidy3d/examples/notebooks/EulerWaveguideBend/) · [Tidy3D strip-to-slot converters](https://www.flexcompute.com/tidy3d/examples/notebooks/StripToSlotConverters/) · [Ansys bend geometry](https://optics.ansys.com/hc/en-us/articles/52523416098835-Getting-Started-with-Lumerical-FDTD-for-Photonic-Integrated-Circuits-Part-1) |

@@ -14,7 +14,7 @@ const { chromium } = require('playwright');
   page.setDefaultTimeout(45000);
   const errors = [];
   page.on('pageerror', err => errors.push(err.message));
-  const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')));
+  const saved = () => page.evaluate(() => JSON.parse(localStorage.getItem('isophotonix.geometry.v1')));
   async function post(url, data) {
     const response = await page.request.post(base + url, { data });
     assert.equal(response.status(), 200, await response.text());

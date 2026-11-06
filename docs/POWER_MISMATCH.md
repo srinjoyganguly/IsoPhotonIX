@@ -14,7 +14,7 @@ The ring panels compare drop power near 1550 nm. The grating panels use actual d
 
 The Lumerical text attachment contains the complex fundamental-mode amplitudes for every port. For excitation at port 1, we square the amplitude magnitudes and interpolate power onto the qualified workbench wavelengths. At 1550 nm the 24-cell/µm workbench ring and the published file give:
 
-| Output | Workbench | Published Lumerical |
+| Output | IsoPhotonIX | Published Lumerical |
 | --- | ---: | ---: |
 | Through | 96.369% | 9.392% |
 | Drop | 2.890% | 67.442% |
@@ -61,7 +61,7 @@ The actual Lumerical receiver mode is also available inside the downloaded proje
 
 Both original v0.12.0a1 14-cell archives were downloaded signed out and checked against the published SHA-256 list. Their original notebook cells ran on the RTX 3080 Ti in fresh working directories with new reference and device stages. All five guided powers and the displayed field were exact in both runs. For Lumerical 43 of 45 arrays were byte-identical; for Tidy3D 49 of 50 were byte-identical. Only integrated-energy traces varied, within the originally declared tolerances. The public executed notebooks redact the local output path. The reproduction receipt distinguishes the original asset digest, original cells, private execution digest and published file digest. [Fresh numerical checks](verification/v013-grating-notebook-replays.json) · [Lumerical notebook](verification/v013-grating-notebook-replays-lumerical.ipynb) · [Tidy3D notebook](verification/v013-grating-notebook-replays-tidy3d.ipynb).
 
-The [v0.12.0a2 release](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a2) also includes source-bound result programs for the dispersive ring, corrected 14-cell grating and both 21-wavelength grating runs. These new programs were verified against their native acquisitions. Independent notebook executions are reported separately for the two original released gratings. [Release hashes](verification/v013-release.json) · [Verification summary](verification/v013-checks.json).
+The [v0.12.0a2 release](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.12.0a2) also includes source-bound result programs for the dispersive ring, corrected 14-cell grating and both 21-wavelength grating runs. These new programs were verified against their native acquisitions. Independent notebook executions are reported separately for the two original released gratings. [Release hashes](verification/v013-release.json) · [Verification summary](verification/v013-checks.json).
 
 ## What would qualify a correction
 

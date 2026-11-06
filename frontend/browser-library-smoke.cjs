@@ -10,11 +10,11 @@ const {chromium}=require('playwright');
   const page=await browser.newPage({viewport:{width:1600,height:1100},acceptDownloads:true});page.setDefaultTimeout(60000);
   const errors=[],checks=[];let jobs=0;page.on('pageerror',e=>errors.push(e.message));
   page.on('request',r=>{if(r.method()==='POST'&&/\/api\/(?:jobs|jobs3d|ports\/jobs|ports3d\/jobs|taper\/jobs)$/.test(r.url()))jobs++;});
-  const library=page.locator('.component-library'),saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')));
+  const library=page.locator('.component-library'),saved=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('isophotonix.geometry.v1')));
   const input=name=>page.getByLabel(name,{exact:true}),button=name=>page.getByRole('button',{name,exact:true});
   async function commit(label,value){await input(label).fill(String(value));await input(label).press('Enter');}
   async function action(name,endpoint){const ready=page.waitForResponse(r=>r.url().endsWith(endpoint)&&r.request().method()==='POST');await library.getByRole('button',{name,exact:true}).click();const response=await ready;return{response,data:await response.json()};}
-  async function waitSaved(geometry){await page.waitForFunction(expected=>{const canonical=v=>JSON.stringify(v,(_k,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.keys(item).sort().map(k=>[k,item[k]])):item);return canonical(JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')))===canonical(expected);},geometry);}
+  async function waitSaved(geometry){await page.waitForFunction(expected=>{const canonical=v=>JSON.stringify(v,(_k,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.keys(item).sort().map(k=>[k,item[k]])):item);return canonical(JSON.parse(localStorage.getItem('isophotonix.geometry.v1')))===canonical(expected);},geometry);}
   async function download(locator,name){const waiting=page.waitForEvent('download');await locator.click();const d=await waiting;const file=path.join(output,name);await d.saveAs(file);assert.ok(fs.statSync(file).size>100);return file;}
   try{
     await page.goto(base);await page.locator('.geometry-3d-host canvas').first().waitFor();
@@ -69,26 +69,26 @@ const {chromium}=require('playwright');
     const outside=await action('Add to layout','/api/library/place');assert.equal(outside.response.status(),422);assert.deepEqual(await saved(),beforeInvalid);
     await library.getByLabel('Enlarge domain to fit when adding or updating',{exact:true}).check();built=await action('Add to layout','/api/library/place');assert.equal(built.response.status(),200,JSON.stringify(built.data));await waitSaved(built.data.geometry);
     const layout=await saved();assert.equal(layout.components.length,2);assert.ok(layout.domain.y>beforeInvalid.domain.y);
-    const selectedId=built.data.component.object_ids[0];await commit('Position X',.1);await page.waitForFunction(()=>JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')).components.length===1);assert.ok(!(await saved()).objects.find(o=>o.id===selectedId).component_id);
+    const selectedId=built.data.component.object_ids[0];await commit('Position X',.1);await page.waitForFunction(()=>JSON.parse(localStorage.getItem('isophotonix.geometry.v1')).components.length===1);assert.ok(!(await saved()).objects.find(o=>o.id===selectedId).component_id);
     await button('Undo').click();await waitSaved(layout);await button('Convert component to editable solids').click();
     checks.push('Component regeneration preserves instance identity; invalid parameters/domain placement retain the scene; explicit domain fit and atomic manual detach/undo work.');
 
     const polygon=page.getByRole('region',{name:'Polygon sketch editor',exact:true});await polygon.waitFor();
     const beforeHole=await saved();await polygon.getByRole('button',{name:'Add hole',exact:true}).click();await polygon.getByRole('button',{name:'Apply polygon sketch',exact:true}).click();
-    await page.waitForFunction(id=>(JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')).objects.find(o=>o.id===id).holes||[]).length===1,selectedId);
+    await page.waitForFunction(id=>(JSON.parse(localStorage.getItem('isophotonix.geometry.v1')).objects.find(o=>o.id===id).holes||[]).length===1,selectedId);
     let current=await saved();assert.equal(current.objects.find(o=>o.id===selectedId).holes.length,1);
     await input('Polygon contour').selectOption('1');const x=await input('Vertex 1 X').inputValue();await input('Vertex 1 X').fill('999');await polygon.getByRole('button',{name:'Apply polygon sketch',exact:true}).click();
     await page.locator('.geometry-editor>.error-banner').waitFor();assert.deepEqual(await saved(),current);await button('Dismiss geometry error').click();await input('Vertex 1 X').fill(x);
     await input('Polygon contour').selectOption('0');await polygon.getByRole('button',{name:'Sketch contour 0 vertex 1',exact:true}).focus();await polygon.getByRole('button',{name:'Sketch contour 0 vertex 1',exact:true}).press('ArrowLeft');await polygon.getByRole('button',{name:'Apply polygon sketch',exact:true}).click();
-    await page.waitForFunction(({id,x})=>JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')).objects.find(o=>o.id===id).vertices[0].x<x,{id:selectedId,x:current.objects.find(o=>o.id===selectedId).vertices[0].x});
+    await page.waitForFunction(({id,x})=>JSON.parse(localStorage.getItem('isophotonix.geometry.v1')).objects.find(o=>o.id===id).vertices[0].x<x,{id:selectedId,x:current.objects.find(o=>o.id===selectedId).vertices[0].x});
     const afterKeyboard=await saved();const sketch=polygon.locator('svg');const point=polygon.getByRole('button',{name:'Sketch contour 0 vertex 2',exact:true});const bounds=await point.boundingBox();await point.scrollIntoViewIfNeeded();const visible=await point.boundingBox();await page.mouse.move(visible.x+visible.width/2,visible.y+visible.height/2);await page.mouse.down();await page.mouse.move(visible.x+visible.width/2-3,visible.y+visible.height/2+3,{steps:4});await page.mouse.up();await polygon.getByRole('button',{name:'Apply polygon sketch',exact:true}).click();
-    await page.waitForFunction(previous=>JSON.stringify(JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')))!==previous,JSON.stringify(afterKeyboard));
+    await page.waitForFunction(previous=>JSON.stringify(JSON.parse(localStorage.getItem('isophotonix.geometry.v1')))!==previous,JSON.stringify(afterKeyboard));
     checks.push('Real polygon hole editing, invalid-hole retention, keyboard vertex movement and pointer dragging update validated geometry.');
 
     const material=page.getByRole('region',{name:'Optical material editor',exact:true});await material.locator('.material-custom>summary').click();await input('Custom material model').selectOption('tabulated-nk');await input('Custom material name').fill('Browser tabulated material');
     await input('Import material CSV').setInputFiles({name:'input-material.csv',mimeType:'text/csv',buffer:Buffer.from('wavelength_um,n,k\n1.45,2,0.01\n1.55,2.1,0.02\n1.65,2.2,0.03\n')});
     await input('Material source').fill('User-supplied browser test samples; not measured material evidence');await material.getByRole('button',{name:'Save as new & assign',exact:true}).click();
-    await page.waitForFunction(id=>JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')).objects.find(o=>o.id===id).refractive_index===2.1,selectedId);
+    await page.waitForFunction(id=>JSON.parse(localStorage.getItem('isophotonix.geometry.v1')).objects.find(o=>o.id===id).refractive_index===2.1,selectedId);
     current=await saved();const materialId=current.objects.find(o=>o.id===selectedId).material_id;assert.deepEqual(current.materials.find(m=>m.id===materialId).k,[.01,.02,.03]);
     await input('Material reference wavelength').fill('2');await material.getByRole('button',{name:'Save as new & assign',exact:true}).click();await material.getByRole('alert').waitFor();assert.deepEqual(await saved(),current);await input('Material reference wavelength').fill('1.55');
     const example=await (await page.request.get(base+'/api/example3d')).json();const unsupported=await page.request.post(base+'/api/validate3d',{data:{...example,geometry:current}});assert.equal(unsupported.status(),422);

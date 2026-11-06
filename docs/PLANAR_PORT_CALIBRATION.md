@@ -63,7 +63,7 @@ At 1.55 µm the native port basis gives n_eff = 2.25540. At 128 cells/µm the lo
 To run the default finite-height example with a registered NVIDIA worker, use the following command. Add `--layout design.json` for a custom polygon study.
 
 ```sh
-photonics-workbench calibrate layout-ports-3d --solver fdtdx --device gpu --resolution 16 --output finite-elbow
+isophotonix calibrate layout-ports-3d --solver fdtdx --device gpu --resolution 16 --output finite-elbow
 ```
 
 Its measured bundle includes Python and Jupyter entry points, source, settings, field samples and reference hashes. Both independent CUDA replays reproduced all complex coefficients and powers exactly. Python reproduced every array byte. The notebook's largest difference was 0.00003052 in the west reference energy trace and passed the recorded tolerance. [3D elbow replay](verification/v012-layout-ports3d-replays.json) · [Download manifest](verification/v012-example-exports.json).
@@ -73,15 +73,15 @@ Its measured bundle includes Python and Jupyter entry points, source, settings, 
 With the workbench CLI and its Meep CPU worker installed, these commands reproduce the measured settings of the two verified exports. Each output directory must be new.
 
 ```sh
-photonics-workbench calibrate multimode-tm --solver meep --device cpu --resolution 48 --offset-um 0.125 --port-distance-um 1.25 --output planar-tm-run
-photonics-workbench calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --output planar-elbow-run
+isophotonix calibrate multimode-tm --solver meep --device cpu --resolution 48 --offset-um 0.125 --port-distance-um 1.25 --output planar-tm-run
+isophotonix calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --output planar-elbow-run
 ```
 
 Select 64 cells/µm for the default TM matrix displayed above. To measure a custom polygon, add `--layout design.json` to the layout command. The verified designs are in each layout receipt's `parameters.design` field. For example, from a source checkout, export the tested crossing as a CLI input.
 
 ```sh
 python -c "import json; from pathlib import Path; d=json.loads(Path('docs/verification/v012-layout-ports.json').read_text()); Path('crossing.json').write_text(json.dumps(d['native_runs']['cross32']['parameters']['design']))"
-photonics-workbench calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --layout crossing.json --output planar-crossing-run
+isophotonix calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --layout crossing.json --output planar-crossing-run
 ```
 
 Each completed study creates `python-notebook-results.zip` with the frozen worker, exact settings, reference report and numerical arrays. To replay the elbow, extract the whole archive and execute either entry point in its extracted directory. The same sequence applies to the TM archive. Set `MEEP_PYTHON` to the Meep interpreter path if using an existing unmanaged installation.

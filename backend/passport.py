@@ -161,8 +161,8 @@ def build_passport(job, output):
     if isinstance(assumptions, str):
         assumptions = [assumptions]
     from .runtime import ROOT
-    installed = ROOT.name == '_app' and ROOT.parent.name == 'photonics_workbench'
-    command = ("photonics-workbench run config.json --output reproduced-run" if installed else
+    installed = ROOT.name == '_app' and ROOT.parent.name == 'isophotonix'
+    command = ("isophotonix run config.json --output reproduced-run" if installed else
                ".venv/bin/python scripts/run_simulation.py config.json --output runs/reproduced-run")
     notes = ["Copy config.json from the export and use the installed CLI." if installed else
              "Run from the repository root after copying config.json from this export.",
@@ -244,7 +244,7 @@ def passport_html(passport):
     return f"""<!doctype html><html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Waveguide run passport</title>
 <style>body{{font:16px/1.6 system-ui,sans-serif;max-width:980px;margin:40px auto;padding:0 24px;color:#172b3a;background:#f7fafb}}h1{{line-height:1.15}}h2{{margin-top:30px}}.tag{{color:#176854;font-weight:bold}}pre,code{{font-family:ui-monospace,monospace;overflow-wrap:anywhere;white-space:pre-wrap}}pre{{background:white;border:1px solid #d7e2e7;border-radius:8px;padding:16px}}table{{width:100%;border-collapse:collapse;font-size:13px}}td,th{{text-align:left;padding:10px;border-bottom:1px solid #d7e2e7}}li{{margin-bottom:10px}}small{{color:#4c6473}}</style>
-<p class="tag">PHOTONICS WORKBENCH · LOCAL COMPUTE</p><h1>Waveguide run passport</h1>
+<p class="tag">IsoPhotonIX · LOCAL COMPUTE</p><h1>Waveguide run passport</h1>
 <p>An inspectable record of actual saved solver output. These checks describe the files, not scientific convergence.</p>
 <p><strong>Run:</strong> {rendered(passport['run_id'])}<br><strong>Solver:</strong> {rendered(passport['solver'])}<br>
 <strong>Requested target:</strong> {rendered(passport['requested_device'])}<br><strong>Recorded actual device:</strong> {rendered(passport['actual_device'])} · {rendered(passport['device_name'])}<br>

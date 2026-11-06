@@ -14,7 +14,7 @@ from scripts.verify_finite_grating import verify
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = 'v0.12.0a2'
-DOWNLOAD = 'https://github.com/srinjoyganguly/photonics-workbench/releases/download/'+RELEASE+'/'
+DOWNLOAD = 'https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/'+RELEASE+'/'
 
 
 def sha(path):

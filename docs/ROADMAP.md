@@ -192,7 +192,7 @@ and [FDTDX documentation](https://fdtdx.readthedocs.io/en/latest/).
 
 ## Solver roles and support accounting
 
-| Solver | Intended role | Workbench baseline | Next evidence required |
+| Solver | Intended role | IsoPhotonIX baseline | Next evidence required |
 | --- | --- | --- | --- |
 | Meep | Time-domain electromagnetics; CPU route | Real 2D slab and finite-height 3D guide on CPU; 3D grid/PML sensitivity recorded | Analytical benchmarks, calibrated sources/monitors, broader geometry and installation qualification |
 | FDTDX / JAX | Time-domain electromagnetics on CPU and NVIDIA GPU; later differentiable studies | Real invariant-z slab and finite-height 3D guide on both targets; explicit device checks and bounded planning memory estimate | Analytical/convergence benchmarks; measured peak memory; clean installation; gradient tests before optimization |

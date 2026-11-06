@@ -2,11 +2,11 @@
 
 Each row is qualified for a named geometry, source, execution target and measurement. The separate layout library has measured field propagation for 27 presets on Meep CPU and FDTDX CPU/NVIDIA. [Layout field verification](LAYOUT_FIELDS.md#verification).
 
-The v0.13.0a1 prerelease includes the measured fields, replay programs and executed grating notebooks. The software verification and optical acceptance criteria have separate records. [Release downloads](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1) · [Installation and replay checks](verification/v014-checks.json) · [Numerical and commercial acceptance criteria](verification/v014-accuracy-gates.json).
+The v0.13.0a1 prerelease includes the measured fields, replay programs and executed grating notebooks. The software verification and optical acceptance criteria have separate records. [Release downloads](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a1) · [Installation and replay checks](verification/v014-checks.json) · [Numerical and commercial acceptance criteria](verification/v014-accuracy-gates.json).
 
 ### Current commercial comparison at 1550 nm
 
-| Matched geometry | Workbench power | Published power | Qualification |
+| Matched geometry | IsoPhotonIX power | Published power | Qualification |
 | --- | ---: | ---: | --- |
 | Lumerical bus-loaded ring, reciprocal 20→24 cells/µm, drop | 2.652% → 1.803% | 67.442% | All 241 numerical bins passed on both meshes. The 24-cell central peak is displaced −5.09 nm. |
 | Tidy3D bus-loaded ring, wall tensor 20 cells/µm, drop | 83.682% | 2.159% | All 201 published-band samples passed. One sample outside the reference band failed settling. |
@@ -56,7 +56,7 @@ The v0.11 backlog's full 3D ring and finite-width grating measurements shipped i
 - [x] Measured a passive dispersion control in 16/48/96-cell films and a full 16-cell loaded ring, with both launching stages source-matched. The fine slab passes. The ring calculation raises 1550 nm drop power to 4.92% against 67.44% published. [Film checks](verification/v013-palik-slab.json) · [Ring control](verification/v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json).
 - [ ] Qualify absolute loaded-ring and grating powers, mesh stability and the open phase/weak-return targets. Each failed or unresolved check is identified in the [numerical criteria](verification/v013-accuracy-gates.json).
 
-- [x] Published [v0.12.0a2](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a2) with the 21-wavelength grating controls, the bounded dispersive ring, the wheel and full native arrays. The clean offline installation completed real Meep and CUDA runs, including the 12-cell corrected grating with exact agreement at all five wavelengths. All eight release payloads and the checksum list were downloaded signed out and verified. [Test counts](verification/v013-checks.json) · [Installed wheel](verification/v013-wheel-install.json) · [Anonymous download checks](verification/v013-release.json).
+- [x] Published [v0.12.0a2](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.12.0a2) with the 21-wavelength grating controls, the bounded dispersive ring, the wheel and full native arrays. The clean offline installation completed real Meep and CUDA runs, including the 12-cell corrected grating with exact agreement at all five wavelengths. All eight release payloads and the checksum list were downloaded signed out and verified. [Test counts](verification/v013-checks.json) · [Installed wheel](verification/v013-wheel-install.json) · [Anonymous download checks](verification/v013-release.json).
 
 | Work item | Implemented and measured | Qualification criteria |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ The WSL worker executed JAX on the RTX 3080 Ti Laptop GPU. Device availability a
 - [x] Ran all five primary examples through independent Python and Jupyter executions. The two additional 14-cell vendor grating result archives have separate source and numerical checks. [Five-example manifest](verification/v012-example-exports.json) · [Full grating export checks](verification/v012-vendor-grating-exports.json).
 - [x] Inspected all eleven presets in Chrome on the usual local address. The checks covered 618 matrix entries, 13,498 plotted samples, 66 vendor readouts and 20 field sample readouts. [All presets](verification/v012-browser-records.json) · [Fields and comparisons](verification/v012-browser-spatial.json).
 
-- [x] Released [v0.12.0a1](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a1) and installed the public wheel in a clean WSL environment. The installed CPU and CUDA runs passed, and the public tag and every downloadable payload were verified signed out. [Wheel installation](verification/v012-wheel-install.json) · [Signed-out hashes](verification/v012-release.json) · [Test and coverage counts](verification/v012-checks.json).
+- [x] Released [v0.12.0a1](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.12.0a1) and installed the public wheel in a clean WSL environment. The installed CPU and CUDA runs passed, and the public tag and every downloadable payload were verified signed out. [Wheel installation](verification/v012-wheel-install.json) · [Signed-out hashes](verification/v012-release.json) · [Test and coverage counts](verification/v012-checks.json).
 
 ## v0.11 measurements
 
@@ -111,12 +111,12 @@ The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coup
 - [x] Opened all six presets in Chrome and compared 546 complex matrix cells and 4,829 plotted spectrum samples against the saved data. Both wavelength selection and masked readouts were exercised. [Browser verification](verification/v011-a3-browser-records.json).
 - [x] Replayed GUI exports as Python and executed notebooks, including bit-identical reproduction of the CUDA splitter's seven numerical archives. [Planar multimode](verification/v011-calibration-replays.json) · [Finite-height multimode](verification/v011-finite-multimode-replays.json) · [Meep ring](verification/v011-ring-loaded-replays.json) · [CUDA splitter](verification/v011-fdtdx-yee-notebook-replay.json).
 - [x] Cancelled a real simulation, resumed its captured worker in the browser and verified that the incident reference was reused. [Resume check](verification/v011-browser-resume.json).
-- [x] Published the [v0.11.0a1 pip wheel and source distribution](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a1) after offline installation and anonymous download verification. [Installed numerical run](verification/v011-a1-wheel-install.json).
-- [x] Published the [updated v0.11.0a2 wheel](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a2) with the qualified FDTDX material defaults. Verified its signed-out downloads, clean installation, and native Meep and NVIDIA runs. [Release checksums](verification/v011-a2-release.json) · [Installed numerical runs](verification/v011-a2-wheel-install.json).
+- [x] Published the [v0.11.0a1 pip wheel and source distribution](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.11.0a1) after offline installation and anonymous download verification. [Installed numerical run](verification/v011-a1-wheel-install.json).
+- [x] Published the [updated v0.11.0a2 wheel](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.11.0a2) with the qualified FDTDX material defaults. Verified its signed-out downloads, clean installation, and native Meep and NVIDIA runs. [Release checksums](verification/v011-a2-release.json) · [Installed numerical runs](verification/v011-a2-wheel-install.json).
 
-- [x] Released [v0.11.0a3](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a3) with the 60-cell far-aperture spectrum and the measured wavelength inspector. Verified the public wheel, source archive, examples and checksum list signed out. [Download verification](verification/v011-a3-release.json) · [Clean CPU/CUDA installation](verification/v011-a3-wheel-install.json).
+- [x] Released [v0.11.0a3](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.11.0a3) with the 60-cell far-aperture spectrum and the measured wavelength inspector. Verified the public wheel, source archive, examples and checksum list signed out. [Download verification](verification/v011-a3-release.json) · [Clean CPU/CUDA installation](verification/v011-a3-wheel-install.json).
 
-[Twelve downloadable Python and notebook result exports](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.11.0a3/calibration-examples-v0.11.0a3.zip) include their native data, exact worker programs, selected targets and hashes. [Archive manifest](verification/v011-a3-example-exports.json) · [Test and coverage summary](verification/v011-checks.json).
+[Twelve downloadable Python and notebook result exports](https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.11.0a3/calibration-examples-v0.11.0a3.zip) include their native data, exact worker programs, selected targets and hashes. [Archive manifest](verification/v011-a3-example-exports.json) · [Test and coverage summary](verification/v011-checks.json).
 
 ## Remaining calibration work
 

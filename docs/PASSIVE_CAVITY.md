@@ -29,7 +29,7 @@ in frequency and 0.00607% in Q. [Measured report](verification/v010-passive-cavi
 With the local workbench and its Meep CPU runtime installed, run
 
 ```bash
-photonics-workbench benchmark-cavity --output cavity-run
+isophotonix benchmark-cavity --output cavity-run
 ```
 
 From a checkout with the prepared environment, the equivalent command is

@@ -45,7 +45,7 @@ export function PassiveCavityReference() {
         </table></div>
         <p><a href={report.source_url} target="_blank" rel="noreferrer">COMSOL model, Table 1</a></p>
         <a href="/api/cavity-benchmark" download="passive-cavity-reference.json">Download mode fits and refinement checks</a>
-        <p>Reproduce locally with <code>photonics-workbench benchmark-cavity --output cavity-study</code>.</p>
+        <p>Reproduce locally with <code>isophotonix benchmark-cavity --output cavity-study</code>.</p>
       </article>}
     </div>
   </details>;

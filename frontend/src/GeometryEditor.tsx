@@ -12,21 +12,23 @@ import { PolygonEditor } from './PolygonEditor';
 import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument, detachComponent, upgradeToV2, GEOMETRY_LIMITS,
   serializeGeometryDocument, validateGeometryDocument, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
 import { commitDesign, deleteSelection, initialHistory, initialSelection, redoDesign, selectObject, undoDesign } from './designHistory';
-import { HISTORY_KEY, packHistory, unpackHistory } from './designRecovery';
+import { DRAFT_KEY, LEGACY_DRAFT_KEY, HISTORY_KEY, LEGACY_HISTORY_KEY, packHistory, unpackHistory } from './designRecovery';
 import './geometryEditor.css';
 
-const STORAGE_KEY = 'photonics-workbench.geometry.v1';
+function savedDraft() {
+  return localStorage.getItem(DRAFT_KEY) ?? localStorage.getItem(LEGACY_DRAFT_KEY);
+}
 type SlabConfig = { length_um: number; height_um: number; core_width_um: number; core_index: number };
 function initialDraft() {
   let stored: string | null = null;
   try {
-    stored = localStorage.getItem(STORAGE_KEY);
+    stored = savedDraft();
     const draft: GeometryDocument = stored ? { ...parseGeometryDocument(stored), mode: 'draft-3d' } : createGeometryTemplate('ring');
     let history = initialHistory(draft);
     try {
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
       // A new tab may receive a copy of its opener's sessionStorage. Only resume this tab on reload.
-      if (navigation?.type === 'reload' && stored) history = unpackHistory(sessionStorage.getItem(HISTORY_KEY), stored, draft);
+      if (navigation?.type === 'reload' && stored) history = unpackHistory(sessionStorage.getItem(HISTORY_KEY) ?? sessionStorage.getItem(LEGACY_HISTORY_KEY), stored, draft);
       else sessionStorage.removeItem(HISTORY_KEY);
     } catch { /* The validated draft remains usable if the tab has no session storage. */ }
     return { history, warning: '', stored };
@@ -98,11 +100,11 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
 
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
-      if (event.key !== STORAGE_KEY && event.key !== null) return;
+      if (event.key !== DRAFT_KEY && event.key !== LEGACY_DRAFT_KEY && event.key !== null) return;
       try {
         if (event.storageArea && event.storageArea !== localStorage) return;
         // Ignore stale events after an explicit save, and unrelated localStorage clears.
-        if (localStorage.getItem(STORAGE_KEY) === lastStored.current) return;
+        if (savedDraft() === lastStored.current) return;
       } catch { /* Conservatively preserve the open design if storage cannot be checked. */ }
       pauseAutosave();
     };
@@ -126,10 +128,10 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
     if (!changed.current || paused.current) return;
     try {
       // Check before writing too: the other tab's storage event may still be queued.
-      const current = localStorage.getItem(STORAGE_KEY);
+      const current = savedDraft();
       if (current !== lastStored.current) { pauseAutosave(); return; }
       const serialized = serializeGeometryDocument(scene);
-      if (serialized !== current) localStorage.setItem(STORAGE_KEY, serialized);
+      if (serialized !== localStorage.getItem(DRAFT_KEY)) localStorage.setItem(DRAFT_KEY, serialized);
       lastStored.current = serialized;
     } catch {
       setSaveState('Browser storage unavailable · export JSON to save this design');
@@ -141,7 +143,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   function resumeSaving() {
     try {
       const serialized = serializeGeometryDocument(scene);
-      localStorage.setItem(STORAGE_KEY, serialized);
+      localStorage.setItem(DRAFT_KEY, serialized);
       lastStored.current = serialized;
       changed.current = true;
       paused.current = false;
@@ -230,7 +232,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   });
   function exportDesign() {
     const url = URL.createObjectURL(new Blob([serializeGeometryDocument(scene)], { type: 'application/json' }));
-    const link = document.createElement('a'); link.href = url; link.download = 'photonics-geometry.json'; link.click();
+    const link = document.createElement('a'); link.href = url; link.download = 'isophotonix-geometry.json'; link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     setMessage('Geometry exported. This file contains a design, not a simulated result.');
   }

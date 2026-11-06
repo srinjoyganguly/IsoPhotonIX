@@ -9,7 +9,7 @@ import zipfile
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog='photonics-workbench')
+    parser = argparse.ArgumentParser(prog='isophotonix', description='IsoPhotonIX local photonics simulation and design')
     commands = parser.add_subparsers(dest='command', required=True)
     web = commands.add_parser('web', help='serve the local workbench on 127.0.0.1')
     web.add_argument('--port', type=int, default=8000)
@@ -67,12 +67,9 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.command in ('web', 'desktop') and not 1 <= args.port <= 65535:
         parser.error('Choose a port from 1 to 65535.')
-    configured = os.environ.get('PHOTONICS_DATA_DIR')
-    default_data = Path(os.environ.get('XDG_DATA_HOME') or Path.home() / '.local/share') / 'photonics-workbench'
-    data = (getattr(args, 'data_dir', None) or Path(configured or default_data)).expanduser().resolve()
     resources = Path(__file__).resolve().parent / '_app'
     if not (resources / 'frontend/dist/index.html').is_file():
-        parser.exit(1, 'The compiled interface is missing. Reinstall the built Photonics Workbench wheel.\n')
+        parser.exit(1, 'The compiled interface is missing. Reinstall the built IsoPhotonIX wheel.\n')
     # The application source lives in a private package resource tree. Numerical
     # subprocesses run with that tree as their cwd and resolve the same sources.
     sys.path.insert(0, str(resources))
@@ -90,7 +87,10 @@ def main(argv=None):
         except (OSError, ValueError, KeyError, TypeError, zipfile.BadZipFile) as error:
             parser.exit(1, f'Could not compare taper meshes: {error}\n')
         return 0
-    os.environ['PHOTONICS_DATA_DIR'] = str(data)
+    from backend.solver_environment import default_user_state
+    data = (args.data_dir or default_user_state()).expanduser().resolve()
+    os.environ['ISOPHOTONIX_DATA_DIR'] = str(data)
+    os.environ['PHOTONICS_DATA_DIR'] = str(data)  # Older workers and exported programs.
     data.mkdir(mode=0o700, parents=True, exist_ok=True)
     if args.command == 'calibrate':
         from backend.calibrations import Calibration, design_archive, run_config

@@ -15,7 +15,7 @@ from scripts.verify_calibration_replays import replay
 from scripts.verify_finite_grating import verify
 
 EVIDENCE = Path(__file__).resolve().parents[1] / 'docs/verification'
-RELEASE = 'https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/'
+RELEASE = 'https://github.com/srinjoyganguly/IsoPhotonIX/releases/download/v0.12.0a1/'
 
 
 def read_json(path):

@@ -58,7 +58,7 @@ permittivity at the centre frequency.
 An installed v0.9 workbench with the Meep/MPB profile can reproduce the cases directly:
 
 ```bash
-photonics-workbench compare-examples --case all --output component-comparisons
+isophotonix compare-examples --case all --output component-comparisons
 ```
 
 Choose a new directory. The command retains each mesh, a larger transverse

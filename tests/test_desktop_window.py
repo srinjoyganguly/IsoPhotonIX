@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from photonics_workbench import desktop
+from isophotonix import desktop
 
 
 class DesktopWindowTests(unittest.TestCase):
@@ -31,14 +31,19 @@ class DesktopWindowTests(unittest.TestCase):
             self.assertNotEqual(first, second)
             self.assertTrue(Path(first).is_dir())
 
-    def test_wsl_linux_filesystem_profile_has_stable_windows_location(self):
-        with patch.dict(os.environ, WSL_DISTRO_NAME='test-distribution'), patch.object(
-                desktop.subprocess, 'check_output', side_effect=[r'\\wsldistro\root\data', r'C:\Users\Example\AppData\Local'] * 2):
+    def test_wsl_profile_is_stable_and_reuses_existing_browser_drafts(self):
+        with tempfile.TemporaryDirectory() as root, patch.dict(os.environ, WSL_DISTRO_NAME='test-distribution'), patch.object(
+                desktop.subprocess, 'check_output', side_effect=[r'\\wsldistro\root\data', r'C:\Users\Example\AppData\Local', root] * 4):
             args = (Path('/meep/data'), Path('/mnt/c/chrome.exe'))
             profile = desktop._profile(*args)
             self.assertEqual(desktop._profile(*args), profile)
-            self.assertTrue(profile.startswith(r'C:\Users\Example\AppData\Local\Photonics Workbench\Profiles' + '\\'))
-            self.assertEqual(len(profile.rsplit('\\', 1)[-1]), 24)
+            self.assertTrue(profile.startswith(r'C:\Users\Example\AppData\Local\IsoPhotonIX\Profiles' + '\\'))
+            key = profile.rsplit('\\', 1)[-1]
+            self.assertEqual(len(key), 24)
+            (Path(root) / 'Photonics Workbench' / 'Profiles' / key).mkdir(parents=True)
+            self.assertEqual(desktop._profile(*args), profile.replace('IsoPhotonIX', 'Photonics Workbench'))
+            (Path(root) / 'IsoPhotonIX' / 'Profiles' / key).mkdir(parents=True)
+            self.assertEqual(desktop._profile(*args), profile)
 
     def test_occupied_store_is_left_alone(self):
         with tempfile.TemporaryDirectory() as root:

@@ -1,8 +1,13 @@
-# Photonics Workbench
+# IsoPhotonIX
 
-A local photonics workbench for students, researchers, and engineers: open a
-dielectric waveguide, edit validated physical parameters, choose a real solver
-and execution device, and inspect the electromagnetic fields it computes.
+IsoPhotonIX lets photonics students, researchers and engineers build a waveguide,
+edit its physical parameters, choose a local solver and execution device, and
+inspect the electromagnetic fields it computes.
+
+Install the IsoPhotonIX wheel for Python 3.11 on Linux x86-64 or WSL2, then
+run `isophotonix web` or `isophotonix desktop`. [Download v0.13.0a2](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a2) · [Installation and upgrade guide](docs/PACKAGING.md#install-and-launch).
+
+![IsoPhotonIX 3D editor with the ring-and-bus waveguide, scene tree and ring dimensions](docs/isophotonix-studio.png)
 
 Built for the DevDay Exchange London Community Hackathon on 1 November 2026.
 The application code was started during the event. Existing numerical libraries
@@ -13,7 +18,7 @@ provide the solvers; [build provenance](docs/PROVENANCE.md) and
 
 **Mesh refinement on NVIDIA.** The 100 nm ring-gap benchmark reports the actual mode splitting under four numerical treatments. The calibrated panel compares power and phase at matched planes, displays weak returns with their validity masks, and exports GPU time by stage alongside cells and steps. The full 3D studies have separate numerical and commercial agreement gates. [100 nm gap](docs/RING_GAP_MODES.md) · [Phase and weak reflections](docs/COMPLEX_PORT_COMPARISONS.md) · [GPU times](docs/GPU_TIMING.md).
 
-**Calibrated components.** The workbench measures directional-coupler and splitter S matrices, multimode conversion, ring spectra and grating coupling in dedicated physical presets. Open **Calibrated components**, select an input, wavelength and local execution target, then inspect the measured data and export the run as Python and a Jupyter notebook. You can export the configured program before running it. In ring and grating plots, click the curve or choose a wavelength to read its measured power fraction. The v0.13.0a1 prerelease includes the measured ring and grating fields, three freshly executed grating notebooks, and a connected-strip design with its before-and-after GPU fields. The checklist identifies which devices, meshes and commercial observables have been verified. [Download the wheel and measured study programs](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1) · [Calibration checklist](docs/CALIBRATED_COMPONENTS.md) · [Lumerical and Tidy3D comparisons](docs/CALIBRATED_VENDOR_CHECKS.md).
+**Calibrated components.** The workbench measures directional-coupler and splitter S matrices, multimode conversion, ring spectra and grating coupling in dedicated physical presets. Open **Calibrated components**, select an input, wavelength and local execution target, then inspect the measured data and export the run as Python and a Jupyter notebook. You can export the configured program before running it. In ring and grating plots, click the curve or choose a wavelength to read its measured power fraction. The v0.13.0a1 prerelease includes the measured ring and grating fields, three freshly executed grating notebooks, and a connected-strip design with its before-and-after GPU fields. The checklist identifies which devices, meshes and commercial observables have been verified. [Download the measured study programs](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a1) · [Calibration checklist](docs/CALIBRATED_COMPONENTS.md) · [Lumerical and Tidy3D comparisons](docs/CALIBRATED_VENDOR_CHECKS.md).
 
 **Power comparison.** In a recorded ring or grating spectrum, choose a wavelength to inspect the local and published values. Lumerical ring records include through, drop, reflection and add-side modes. The power review separates resonance detuning, material sampling and receiver-mode effects. The two released full grating notebooks have now independently reproduced every optical field array on CUDA. [Accuracy review](docs/POWER_MISMATCH.md) · [Replayed full grating notebooks](docs/GRATING_NOTEBOOK_REPLAYS.md).
 
@@ -49,10 +54,10 @@ domain sensitivities and the differences that persist. [Reference checks](docs/C
 · [Commercial example coverage](docs/VENDOR_COMPONENT_COVERAGE.md).
 
 The local wheel bundles the web interface and Python service. On Linux/WSL2
-with Python 3.11, install the wheel with pip, use `photonics-workbench setup meep`
-to provision Meep/MPB through Conda, and launch `photonics-workbench web`.
-Use `setup fdtdx-cpu`, `setup fdtdx-cuda12` or `setup beamz-cpu` to provision a separate local worker. `photonics-workbench desktop` opens the dedicated application window.
-[Download a prebuilt release](https://github.com/srinjoyganguly/photonics-workbench/releases) · [Installation](docs/PACKAGING.md) · [Desktop window](docs/DESKTOP_WINDOW.md) · [BeamZ reference studies](docs/BEAMZ_REFERENCE.md).
+with Python 3.11, install the wheel with pip, use `isophotonix setup meep`
+to provision Meep/MPB through Conda, and launch `isophotonix web`.
+Use `setup fdtdx-cpu`, `setup fdtdx-cuda12` or `setup beamz-cpu` to provision a separate local worker. `isophotonix desktop` opens the dedicated application window.
+[Download a prebuilt release](https://github.com/srinjoyganguly/IsoPhotonIX/releases) · [Installation](docs/PACKAGING.md) · [Desktop window](docs/DESKTOP_WINDOW.md) · [BeamZ reference studies](docs/BEAMZ_REFERENCE.md).
 
 Choose **Open runnable 3D waveguide** to run a finite-height core with an optional
 substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and
@@ -90,16 +95,16 @@ submission and are not part of that entry.
 
 ![Interactive photonic component library and 3D design workspace](docs/verification/component-library-ui.png)
 
-**[Watch the submission demo](https://srinjoyganguly.github.io/photonics-workbench/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/photonics-workbench/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
+**[Watch the submission demo](https://srinjoyganguly.github.io/IsoPhotonIX/submission-demo.mp4)** — the working application with no slides: real local NVIDIA simulation, field playback, run passport and export. The solver wait is shown in real time. [Video page and supplementary materials](https://srinjoyganguly.github.io/IsoPhotonIX/) · [Concrete Codex contribution](CODEX_USAGE.md). Simulations run locally after installation.
 
-The [24-second Blender journey](https://srinjoyganguly.github.io/photonics-workbench/#blender-journey)
+The [24-second Blender journey](https://srinjoyganguly.github.io/IsoPhotonIX/#blender-journey)
 explains the same six steps with an original 3D schematic and actual recorded
 2D fields. [Source assets and reproduction notes](docs/BLENDER.md) distinguish
 the presentation from the numerical simulation.
 
 ![Actual FDTDX GPU field and execution metadata in the workbench](docs/application.png)
 
-[Public source repository](https://github.com/srinjoyganguly/photonics-workbench)
+[Public source repository](https://github.com/srinjoyganguly/IsoPhotonIX)
 
 ## Why this exists
 
@@ -140,11 +145,11 @@ chatbot, cloud solver, or paid commercial solver license is required.
 
 ## Run locally
 
-The [v0.2.0 release bundle](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.2.0)
+The [v0.2.0 release bundle](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.2.0)
 includes source and the built interface. After extracting it, install the API
 and solver environments in the setup guide, then run `bash scripts/start.sh`;
 you can skip the Node build step. Solver binaries and environments are not bundled.
-That release contains the submitted 2D workflow. The post-event calibrated workbench is available as a pip-installable wheel with the compiled interface on [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases). Building the wheel from source requires the frontend build.
+That release contains the submitted 2D workflow. The post-event calibrated workbench is available as a pip-installable wheel with the compiled interface on [GitHub Releases](https://github.com/srinjoyganguly/IsoPhotonIX/releases). Building the wheel from source requires the frontend build.
 
 Use Linux or WSL2, Python 3.11, Conda for Meep, and Node 22.12+ for building the
 interface. Follow [the full setup instructions](docs/SETUP.md) to install the

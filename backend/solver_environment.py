@@ -1,4 +1,4 @@
-"""Select an explicitly configured native worker in the local workbench state."""
+"""Select an explicitly configured native worker in the local IsoPhotonIX state."""
 import json
 import os
 from pathlib import Path
@@ -7,7 +7,11 @@ import sys
 
 def default_user_state():
     base = Path(os.environ.get('XDG_DATA_HOME') or Path.home() / '.local/share')
-    return Path(os.environ.get('PHOTONICS_DATA_DIR') or base / 'photonics-workbench').expanduser()
+    selected = os.environ.get('ISOPHOTONIX_DATA_DIR') or os.environ.get('PHOTONICS_DATA_DIR')
+    if selected:
+        return Path(selected).expanduser()
+    current, previous = base / 'isophotonix', base / 'photonics-workbench'
+    return previous if previous.is_dir() and not current.exists() else current
 
 
 def solver_interpreter(solver, device, data_dir):

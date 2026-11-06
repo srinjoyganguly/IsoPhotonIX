@@ -2,6 +2,7 @@
 import argparse
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from email.parser import BytesParser
 import hashlib
 import io
 import json
@@ -35,12 +36,13 @@ def main():
     meep = args.meep_python.absolute()
     state = target / 'state'
     env = dict(os.environ, PIP_NO_INDEX='1', PIP_DISABLE_PIP_VERSION_CHECK='1',
-               PHOTONICS_DATA_DIR=str(state), MEEP_PYTHON=str(meep), PYTHONNOUSERSITE='1')
+               ISOPHOTONIX_DATA_DIR=str(state), MEEP_PYTHON=str(meep), PYTHONNOUSERSITE='1')
+    env.pop('PHOTONICS_DATA_DIR', None)
     env.pop('PYTHONPATH', None)
     env.pop('FDTDX_PYTHON', None)
     venv.EnvBuilder(with_pip=True).create(target / 'venv')
     python = target / 'venv/bin/python'
-    cli = target / 'venv/bin/photonics-workbench'
+    cli = target / 'venv/bin/isophotonix'
 
     def command(argv, log, timeout=300, **kw):
         with (target / log).open('w') as stream:
@@ -49,6 +51,10 @@ def main():
 
     command([python, '-m', 'pip', 'install', '--no-index', '--find-links', args.wheelhouse.resolve(), wheel], 'install.log')
     command([python, '-m', 'pip', 'check'], 'dependency-check.log')
+    for name in ('isophotonix', 'photonics-workbench'):
+        command([cli.with_name(name), '--help'], f'cli-{name}.log')
+    for name in ('isophotonix', 'photonics_workbench'):
+        command([python, '-m', name, '--help'], f'module-{name}.log')
     command([cli, 'doctor', '--json'], 'doctor.json')
     command([cli,'compare-examples','--case','lumerical-coupler','--resolutions','24','32',
              '--output',target/'component-comparison'],'benchmark-cli.log')
@@ -92,13 +98,17 @@ def main():
 
     with server('web.log'):
         html = get('/', raw=True).decode()
+        assert re.search(r'<title>[^<]*IsoPhotonIX', html)
         assets = re.findall(r'(?:src|href)="(/assets/[^\"]+)"', html)
         assert any(a.endswith('.js') for a in assets) and any(a.endswith('.css') for a in assets)
         with zipfile.ZipFile(wheel) as archive:
             for asset in assets:
-                assert get(asset, raw=True) == archive.read('photonics_workbench/_app/frontend/dist' + asset)
+                assert get(asset, raw=True) == archive.read('isophotonix/_app/frontend/dist' + asset)
             wheel_names = set(archive.namelist())
-            assert all(name.startswith('photonics_workbench/') or '.dist-info/' in name for name in wheel_names)
+            assert all(name.startswith(('isophotonix/', 'photonics_workbench/')) or '.dist-info/' in name for name in wheel_names)
+            assert not any(name.startswith('photonics_workbench/_app/') for name in wheel_names)
+            metadata, = (name for name in wheel_names if name.endswith('.dist-info/METADATA'))
+            assert BytesParser().parsebytes(archive.read(metadata))['Name'] == 'IsoPhotonIX'
             assert not any(set(name.split('/')) & {'.local', 'runs', '.git', '.env', 'node_modules', '__pycache__'} for name in wheel_names)
         assert get('/api/benchmarks')['status'] == 'available'
         presets = get('/api/calibrations')
@@ -323,6 +333,7 @@ def main():
         interface_cuda={'case':'grating-3d','material_model':'direct-yee','domain':'mirror-y','actual_device':direct['actual_device'],
                         'wavelengths':5,'max_coupling_fraction_difference':delta}
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
+              'distribution': 'IsoPhotonIX', 'canonical_command': 'isophotonix', 'legacy_command_and_module_verified': True,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
               'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),'installed_cuda_study':cuda_check,'installed_spatial_cuda':spatial_cuda,'installed_interface_cuda':interface_cuda,'installed_layout_max_complex_difference':layout_delta,
               'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],

@@ -1,9 +1,9 @@
-# Open the workbench in a desktop window
+# Open IsoPhotonIX in a desktop window
 
 After installing the application wheel in Linux or WSL, run:
 
 ```bash
-photonics-workbench desktop
+isophotonix desktop
 ```
 
 This opens the local editor in a dedicated Chromium application window. The
@@ -25,7 +25,7 @@ locate Chrome or Edge in the standard Windows installation directories.
 To use a particular browser or a different port:
 
 ```bash
-photonics-workbench desktop --browser "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" --port 8765
+isophotonix desktop --browser "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe" --port 8765
 ```
 
 Use `--data-dir` for a separate workbench state directory. For a WSL

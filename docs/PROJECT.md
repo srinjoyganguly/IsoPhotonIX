@@ -49,7 +49,7 @@ license.
 | Idea and usefulness | One accessible laptop experiment, with physical validation, explicit hardware choice, and a portable numerical record |
 | Meaningful use of Codex | [The fallback debugging example](../CODEX_USAGE.md): identified FDTDX's automatic CPU fallback, enforced platform selection, and checked actual array placement |
 | Execution | [Verification records](verification/), real Meep CPU, FDTDX CPU, and FDTDX NVIDIA GPU runs, plus complete browser journeys and [exact-frame/checksum checks](verification/run-passport.json) |
-| Demo and clarity | [Public working demonstration](https://srinjoyganguly.github.io/photonics-workbench/), original application captures, visible scientific limitations, and source/setup links |
+| Demo and clarity | [Public working demonstration](https://srinjoyganguly.github.io/IsoPhotonIX/), original application captures, visible scientific limitations, and source/setup links |
 
 The application was built during the event. [Provenance](PROVENANCE.md) and
 [credits](../CREDITS.md) distinguish new work from numerical libraries and other

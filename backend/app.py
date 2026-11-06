@@ -48,7 +48,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.13.0-preview.1", lifespan=lifespan)
+app = FastAPI(title="IsoPhotonIX", version="0.13.0-preview.2", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -65,7 +65,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.13.0-preview.1", "compute": "local"}
+    return {"status": "ok", "version": "0.13.0-preview.2", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -266,9 +266,9 @@ def reproduce_study(config: dict):
     try:
         if config.get('study_type')=='calibrated-component':
             calibrated=Calibration.model_validate(config)
-            return code_archive(design_archive(calibrated), f'workbench-{calibrated.case}-python-notebook.zip')
+            return code_archive(design_archive(calibrated), f'isophotonix-{calibrated.case}-python-notebook.zip')
         study = parse_study(config)
-        return code_archive(study_bundle(study.model_dump()),'photonics-study-python-notebook.zip')
+        return code_archive(study_bundle(study.model_dump()),'isophotonix-study-python-notebook.zip')
     except ValidationError as exc:
         raise HTTPException(422,json.loads(exc.json())) from exc
     except (ValueError,TypeError,KeyError) as exc:
@@ -279,7 +279,7 @@ def reproduce_study(config: dict):
 def reproduce_geometry(geometry: dict):
     from .reproduce import geometry_bundle
     try:
-        return code_archive(geometry_bundle(geometry),'photonics-design-python-notebook.zip')
+        return code_archive(geometry_bundle(geometry),'isophotonix-design-python-notebook.zip')
     except (ValueError,TypeError,KeyError) as exc:
         raise HTTPException(422,str(exc)) from exc
 
@@ -522,7 +522,7 @@ def calibrated_performance(case: str | None = None):
 @app.get('/api/calibrations/performance.csv')
 def download_performance(case: str | None = None):
     return Response(timing_csv(calibrated_performance(case)), media_type='text/csv',
-                    headers={'Content-Disposition':'attachment; filename="photonics-gpu-performance.csv"'})
+                    headers={'Content-Disposition':'attachment; filename="isophotonix-gpu-performance.csv"'})
 
 
 @app.get('/api/calibrations/phase.csv')
@@ -548,7 +548,7 @@ def planar_layout_example():
 
 @app.post('/api/reproduce/calibration')
 def export_calibration_inputs(config: Calibration):
-    return code_archive(design_archive(config), f'workbench-{config.case}-python-notebook.zip')
+    return code_archive(design_archive(config), f'isophotonix-{config.case}-python-notebook.zip')
 
 
 @app.post('/api/calibrations/jobs',status_code=202)
@@ -634,7 +634,7 @@ def calibration_download(job_id):
         path=Path(tmp.name)
     try:
         result_zip(folder,path)
-        return FileResponse(path,media_type='application/zip',filename=f'workbench-{job["config"]["case"]}-{"diagnostic-" if diagnostic else ""}{job_id[:8]}.zip',
+        return FileResponse(path,media_type='application/zip',filename=f'isophotonix-{job["config"]["case"]}-{"diagnostic-" if diagnostic else ""}{job_id[:8]}.zip',
                             background=BackgroundTask(path.unlink,missing_ok=True))
     except BaseException:
         path.unlink(missing_ok=True)
@@ -806,7 +806,7 @@ def reproduce_run(job_id: str):
         if config != job['config'] or json.loads((output/'metadata.json').read_text()).get('config') != config:
             raise ValueError('Saved configuration differs from the immutable run.')
         data = study_bundle(config,output)
-        return code_archive(data,f'photonics-{job_id[:8]}-python-notebook.zip')
+        return code_archive(data,f'isophotonix-{job_id[:8]}-python-notebook.zip')
     except (OSError,ValueError,KeyError,TypeError,zipfile.BadZipFile) as exc:
         raise HTTPException(409,'Saved result files are inconsistent; reproducible code export is unavailable.') from exc
 

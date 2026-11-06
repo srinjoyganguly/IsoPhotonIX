@@ -21,12 +21,12 @@ The browser and CLI use the same calculation.
    taper, material, frequency band, simulation settings and target. Use grids
    that place the port planes, sources, PML and computational boundaries at the
    same physical positions. You can also use completed result directories
-   produced by `photonics-workbench run`.
+   produced by `isophotonix run`.
 3. Supply the coarse and fine result directories in that order. Choose a new
    output filename. Omit `--output` to print the JSON report.
 
 ```bash
-photonics-workbench compare-taper-mesh taper-r16 taper-r20 --output taper-mesh.json
+isophotonix compare-taper-mesh taper-r16 taper-r20 --output taper-mesh.json
 ```
 
 The input directories must contain their original `config.json`,

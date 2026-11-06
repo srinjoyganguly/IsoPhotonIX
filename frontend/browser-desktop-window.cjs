@@ -29,7 +29,7 @@ const { chromium } = require('playwright');
     await field.fill(title);
     await field.press('Enter');
   }
-  await page.waitForFunction(title => JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1') || 'null')?.name === title, title);
+  await page.waitForFunction(title => JSON.parse(localStorage.getItem('isophotonix.geometry.v1') || 'null')?.name === title, title);
   assert.equal(await field.inputValue(), title);
   const canvas = page.locator('.geometry-3d canvas').first();
   await canvas.waitFor({ timeout: 20000 });

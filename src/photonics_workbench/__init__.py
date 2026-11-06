@@ -1,1 +1,2 @@
-"""Installed launcher for the local Photonics Workbench application."""
+"""Compatibility namespace for installations and exports predating IsoPhotonIX."""
+from isophotonix import __path__ as __path__

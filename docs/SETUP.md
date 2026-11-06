@@ -10,9 +10,9 @@ workers in those interpreters, so Meep's native dependencies and JAX's CUDA
 runtime do not need to share one environment. No environment files or secrets
 need to be uploaded anywhere.
 
-For the v0.9 installed preview, use the local wheel, then
-`photonics-workbench setup meep` with Conda to install Meep and MPB.
-`photonics-workbench web` serves the bundled GUI and `photonics-workbench doctor`
+For an installed copy of IsoPhotonIX, use the v0.13.0a2 wheel, then
+`isophotonix setup meep` with Conda to install Meep and MPB.
+`isophotonix web` serves the bundled GUI and `isophotonix doctor`
 checks the solver targets. The [packaging guide](PACKAGING.md) gives the
 installation commands and tested platforms.
 
@@ -33,8 +33,8 @@ installation on a different machine have not been established.
 From the repository root, using Python 3.11:
 
 ```bash
-git clone https://github.com/srinjoyganguly/photonics-workbench.git
-cd photonics-workbench
+git clone https://github.com/srinjoyganguly/IsoPhotonIX.git
+cd IsoPhotonIX
 python3.11 -m venv .venv
 .venv/bin/python -m pip install --no-cache-dir --timeout 120 -r requirements-api.txt
 ```

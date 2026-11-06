@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
-from photonics_workbench import managed_setup
+from isophotonix import managed_setup
 
 
 class ManagedSetupTests(unittest.TestCase):

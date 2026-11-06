@@ -39,7 +39,7 @@ and [animation reproduction notes](docs/BLENDER.md).
 | NumPy | 2.4.6 | Numerical interchange and validation | [BSD-3-Clause and bundled notices](https://github.com/numpy/numpy/blob/main/LICENSE.txt) |
 | BeamZ | 0.6.2 | Isolated time-domain and mode reference studies | [Upstream source and Apache-2.0 license](https://github.com/beamzorg/beamz/tree/v0.6.2) |
 
-The lossless curved-wall update follows the electric-field, absorbing-boundary and source update conventions in FDTDX 0.6.2. Its local specialization is checked against the native implementation. Workbench packages and calibrated FDTDX exports carry the upstream copyright and license. [FDTDX license](docs/licenses/FDTDX-MIT.txt).
+The lossless curved-wall update follows the electric-field, absorbing-boundary and source update conventions in FDTDX 0.6.2. Its local specialization is checked against the native implementation. IsoPhotonIX packages and calibrated FDTDX exports carry the upstream copyright and license. [FDTDX license](docs/licenses/FDTDX-MIT.txt).
 
 Meep's source header explicitly permits GPL version 2 or later. The MIT license
 for this application's own code does not replace the licenses of Meep, its
@@ -155,7 +155,7 @@ and [reference checks](docs/COMPONENT_REFERENCE_CHECKS.md) identify the source
 examples, numerical inputs, reference values and remaining differences.
 The wheel includes the local comparison script and recorded scalar results.
 
-The passive Fabry–Pérot reference uses the published frequencies and Q values in Table 1 of the [COMSOL example](https://doc.comsol.com/5.5/doc/com.comsol.help.models.woptics.fabry_perot/models.woptics.fabry_perot.pdf). Workbench cavity and BeamZ benchmark programs, plots and traces were produced locally.
+The passive Fabry–Pérot reference uses the published frequencies and Q values in Table 1 of the [COMSOL example](https://doc.comsol.com/5.5/doc/com.comsol.help.models.woptics.fabry_perot/models.woptics.fabry_perot.pdf). IsoPhotonIX cavity and BeamZ benchmark programs, plots and traces were produced locally.
 
 The calibrated-component studies use original workbench simulation programs with published geometric parameters and numerical references from Ansys Lumerical and Flexcompute Tidy3D. Meep/MPB supply the time-domain and mode solvers, FDTDX/JAX supply the native CPU/CUDA evolution, and SciPy supplies the linear algebra for the independent planar interface calculation. FDTDX uses local Tidy3D mode routines for its source and port profiles. The calculated field, monitor and spectrum archives are local workbench results. The comparison guides identify the origin and extraction method for each published number. [Commercial references](docs/CALIBRATED_VENDOR_CHECKS.md) · [Ring and grating references](docs/RING_GRATING_CALIBRATION.md) · [Meep mode decomposition](https://meep.readthedocs.io/en/latest/Mode_Decomposition/) · [FDTDX](https://fdtdx.readthedocs.io/).
 

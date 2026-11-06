@@ -17,8 +17,8 @@ registering it. It uses the 27 exact wheels in the CPU lock.
 [Wheel lock](../environment-beamz-cpu-linux-64.lock) · [Offline setup, reuse and rollback checks](verification/v010-beamz-setup.json).
 
 ```bash
-photonics-workbench setup beamz-cpu
-photonics-workbench benchmark-beamz --device cpu --output beamz-cpu-run
+isophotonix setup beamz-cpu
+isophotonix benchmark-beamz --device cpu --output beamz-cpu-run
 ```
 
 For a fresh offline installation, add `--offline --wheelhouse /path/to/wheels`
@@ -35,7 +35,7 @@ on the computed field arrays and stops on a mismatch.
 python3.11 -m venv .beamz-gpu
 .beamz-gpu/bin/python -m pip install 'beamz==0.6.2' 'jax[cuda12]==0.10.2'
 .beamz-gpu/bin/python -m pip check
-BEAMZ_PYTHON="$PWD/.beamz-gpu/bin/python" photonics-workbench benchmark-beamz \
+BEAMZ_PYTHON="$PWD/.beamz-gpu/bin/python" isophotonix benchmark-beamz \
   --device gpu --output beamz-gpu-run
 ```
 

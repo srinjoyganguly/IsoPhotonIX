@@ -29,9 +29,9 @@ A separate local full-vector Tidy3D mode solve also checked the Lumerical fiber 
 With a managed NVIDIA FDTDX worker and the installed workbench command:
 
 ```bash
-photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d compact --resolution 12 --output compact-run
-photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d tidy3d --resolution 12 --output tidy3d-run
-photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 12 --output lumerical-run
+isophotonix calibrate grating-3d --solver fdtdx --device gpu --geometry-3d compact --resolution 12 --output compact-run
+isophotonix calibrate grating-3d --solver fdtdx --device gpu --geometry-3d tidy3d --resolution 12 --output tidy3d-run
+isophotonix calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 12 --output lumerical-run
 ```
 
 Use separate new result directories. The program export includes the solver sources, native environment lock, settings, Python launcher and notebook. The direct numerical worker also supports a persistent `--checkpoint` directory. Reference and device acquisition use separate native CUDA processes, and only complete hash-verified stages are reused.
@@ -42,7 +42,7 @@ New checkpoints bind each native acquisition to solver, SciPy, JAX, numerical so
 
 ## Measured finite-width results
 
-| Geometry | Workbench at 1550 nm | Comparison |
+| Geometry | IsoPhotonIX at 1550 nm | Comparison |
 | --- | ---: | --- |
 | Tidy3D uniform grating, 12 cells/µm | 35.2994% Gaussian to guide | Published 3D curve 38.0189%. The five-wavelength mean absolute difference is 2.5773 percentage points. |
 | Tidy3D uniform grating, 14 cells/µm | 35.6659% Gaussian to guide | Published 3D curve 38.0189%. The five-wavelength mean absolute difference is 2.9480 percentage points. |

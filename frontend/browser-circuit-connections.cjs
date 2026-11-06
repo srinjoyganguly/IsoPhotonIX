@@ -5,7 +5,7 @@ const { createHash } = require('node:crypto');
 const path = require('node:path');
 const { chromium } = require('playwright');
 
-const storageKey = 'photonics-workbench.geometry.v1';
+const storageKey = 'isophotonix.geometry.v1';
 const tolerance = 1e-7;
 
 function endpoints(edge) {
@@ -35,7 +35,7 @@ function withoutLinks(scene) {
 
 (async () => {
   const url = process.env.PHOTONICS_URL;
-  assert.ok(url, 'Set PHOTONICS_URL to the isolated Workbench server.');
+  assert.ok(url, 'Set PHOTONICS_URL to the isolated IsoPhotonIX server.');
   const server = new URL(url);
   assert.ok(['127.0.0.1', 'localhost'].includes(server.hostname) && server.port && server.port !== '8000',
     'Circuit QA requires an explicit local port other than the primary service.');

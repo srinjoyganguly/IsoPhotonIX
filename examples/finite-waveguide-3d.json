@@ -2,7 +2,7 @@
   "schema_version": 2,
   "study_type": "waveguide-3d",
   "geometry": {
-    "schema": "photonics-workbench-geometry",
+    "schema": "isophotonix-geometry",
     "schema_version": 1,
     "units": "um",
     "name": "Runnable finite-height waveguide",

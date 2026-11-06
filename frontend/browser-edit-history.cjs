@@ -15,7 +15,7 @@ const { chromium } = require('playwright');
   page.on('pageerror', error => errors.push(error.message));
   const label = name => page.getByLabel(name, { exact: true });
   const button = name => page.getByRole('button', { name, exact: true });
-  const storageKey = 'photonics-workbench.geometry.v1';
+  const storageKey = 'isophotonix.geometry.v1';
   const saved = () => page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
   const selectedName = () => label('Object name').inputValue();
   async function expectScene(expected) {
@@ -54,6 +54,32 @@ const { chromium } = require('playwright');
     await page.locator('.geometry-3d-host canvas').waitFor();
     assert.ok(await button('Undo').isDisabled() && await button('Redo').isDisabled());
     const slot = await generate('/api/library/build', { component_id: 'slot' });
+    assert.equal(await page.title(), 'IsoPhotonIX · Waveguide study');
+    assert.equal(await page.locator('.brand').innerText(), 'IsoPhotonIX');
+    assert.equal(slot.schema, 'isophotonix-geometry');
+    const legacy = { ...slot, schema: 'photonics-workbench-geometry' };
+    const edited = { ...legacy, name: 'Legacy saved geometry' };
+    await importScene(legacy);
+    await importScene(edited);
+    await page.evaluate(() => {
+      // Simulate the last draft and tab checkpoint written by an earlier installation.
+      for (const [store, suffix] of [[localStorage, 'geometry.v1'], [sessionStorage, 'edit-history.v1']]) {
+        const saved = store.getItem('isophotonix.' + suffix);
+        if (saved === null) throw new Error('Expected a saved document and undo history.');
+        store.setItem('photonics-workbench.' + suffix, saved);
+        store.removeItem('isophotonix.' + suffix);
+      }
+    });
+    await page.reload();
+    await label('Design name').waitFor();
+    assert.equal(await label('Design name').inputValue(), edited.name);
+    await button('Undo').click();
+    await expectScene(legacy);
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('photonics-workbench.geometry.v1')).name), edited.name);
+    await page.reload();
+    await label('Design name').waitFor();
+    assert.equal(await label('Design name').inputValue(), legacy.name);
+    checks.push('IsoPhotonIX recovered the earlier draft and undo history, then saved independently under the new name.');
     const scene = await generate('/api/library/place', {
       component_id: 'directional_coupler', geometry: slot, placement: { y: 2 }, fit_domain: true,
     });
@@ -191,7 +217,7 @@ const { chromium } = require('playwright');
     await page.evaluate(() => {
       const setItem = Storage.prototype.setItem;
       Storage.prototype.setItem = function (key, value) {
-        if (this === sessionStorage && key === 'photonics-workbench.edit-history.v1') throw new DOMException('Quota', 'QuotaExceededError');
+        if (this === sessionStorage && key === 'isophotonix.edit-history.v1') throw new DOMException('Quota', 'QuotaExceededError');
         return setItem.call(this, key, value);
       };
     });

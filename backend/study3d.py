@@ -33,7 +33,7 @@ class Solid(StrictModel):
 
 
 class Geometry(StrictModel):
-    schema_name: Literal["photonics-workbench-geometry"] = Field(alias="schema")
+    schema_name: Literal["isophotonix-geometry", "photonics-workbench-geometry"] = Field(alias="schema")
     schema_version: Literal[1]
     units: Literal["um"]
     name: str = Field(min_length=1, max_length=80)
@@ -144,7 +144,7 @@ def example3d():
                     position=dict(zip("xyz", position)), radius=1., inner_radius=.6,
                     rotation_deg=0., refractive_index=index)
     return Waveguide3DConfig(geometry=Geometry.model_validate({
-        "schema": "photonics-workbench-geometry", "schema_version": 1, "units": "um",
+        "schema": "isophotonix-geometry", "schema_version": 1, "units": "um",
         "name": "Runnable finite-height waveguide", "mode": "draft-3d",
         "domain": {"x": 8., "y": 4., "z": 4.},
         "objects": [solid("substrate", "Substrate", (8., 4., 1.75), (0., 0., -1.125), 1.44),

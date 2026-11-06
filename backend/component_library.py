@@ -20,7 +20,7 @@ def _material(identifier, name, n, source, notes):
 
 
 MATERIALS = [
-    _material('generic-core', 'Generic dielectric · n = 2', 2., 'Original workbench design preset.',
+    _material('generic-core', 'Generic dielectric · n = 2', 2., 'Original IsoPhotonIX design preset.',
               'Illustrative lossless constant index, not a measured material dataset.'),
     _material('air', 'Air approximation · n = 1', 1., 'Vacuum-like design approximation.',
               'Constant n = 1; atmospheric dispersion and absorption are omitted.'),
@@ -576,7 +576,7 @@ def build_component(component_id, parameters=None, placement=None, material_id='
     domain={axis:max(2.,2*(max(abs(v[i]) for v in bounds for i in (2*j,2*j+1))+1.)) for j,axis in enumerate('xyz')}
     component=dict(id=b.id,family=component_id,generator_version=GENERATOR_VERSION,parameters=params,
                    object_ids=[obj['id'] for obj in b.objects],placement=placement,material_id=material_id,ports=b.ports)
-    geometry=dict(schema='photonics-workbench-geometry',schema_version=2,units='um',name=recipe['name'],mode='draft-3d',
+    geometry=dict(schema='isophotonix-geometry',schema_version=2,units='um',name=recipe['name'],mode='draft-3d',
                   domain=domain,objects=b.objects,materials=[deepcopy(material)],components=[component])
     from .geometry_draft import validate_geometry
     geometry=validate_geometry(geometry)

@@ -37,15 +37,15 @@ function PowerExplanation({data,vendor}:{data:PowerDiagnostic;vendor:string}) {
     const line=data.nearest_published_drop_line;
     return <section aria-label="Ring detuning"><h3>Why the power at 1550 nm differs</h3>
       <p>{vendor}’s nearest published drop peak is at {(line.published_sampled_center_um*1000).toFixed(2)} nm.
-        {line.local_sampled_center_um!==undefined && <> The nearest measured workbench peak is at {(line.local_sampled_center_um*1000).toFixed(2)} nm.</>}</p>
+        {line.local_sampled_center_um!==undefined && <> The nearest measured IsoPhotonIX peak is at {(line.local_sampled_center_um*1000).toFixed(2)} nm.</>}</p>
       {line.local_target_distance_in_linewidths!==undefined && line.published_target_distance_in_linewidths!==undefined &&
-        <p>1550 nm lies {line.local_target_distance_in_linewidths.toFixed(2)} linewidths from the fitted workbench peak
+        <p>1550 nm lies {line.local_target_distance_in_linewidths.toFixed(2)} linewidths from the fitted IsoPhotonIX peak
         and {line.published_target_distance_in_linewidths.toFixed(2)} from the published peak.
         Their widths are {line.local_fwhm_nm?.toFixed(2)} and {line.published_fwhm_nm?.toFixed(2)} nm respectively.</p>}
     </section>;
   }
   return <section aria-label="Grating power difference"><h3>Coupling across the measured band</h3>
-    <p>Across {data.wavelength_um.length} sampled wavelengths, the strongest workbench coupling is at {(data.local_best_sample_um*1000).toFixed(0)} nm
+    <p>Across {data.wavelength_um.length} sampled wavelengths, the strongest IsoPhotonIX coupling is at {(data.local_best_sample_um*1000).toFixed(0)} nm
       and the strongest published coupling is at {(data.published_best_sample_um*1000).toFixed(0)} nm.
       The mean absolute difference is {(100*data.mean_absolute_difference).toFixed(2)} percentage points.</p>
     {!data.gain_only.feasible && <p>A single power multiplier cannot bring all samples within
@@ -71,7 +71,7 @@ function PairedSpectrum({series,vendor}: {series:Record<string,Paired>;vendor:st
     <h3>Published spectrum comparison</h3>
     <label>Compared output<select value={channel} onChange={e=>{setSelection(e.target.value);setSample(null);}}>
       {labels.map(name=><option key={name}>{name}</option>)}</select></label>
-    <p><span className="cal-native-key">● Workbench</span> · <span className="cal-reference-key">● {vendor}</span></p>
+    <p><span className="cal-native-key">● IsoPhotonIX</span> · <span className="cal-reference-key">● {vendor}</span></p>
     <svg viewBox="0 0 528 152" role="img" aria-label={channel+' power on the same wavelength axis'}>
       <path d="M38 12V122H500" stroke="#65808c" fill="none"/>
       <line x1={x(waves[i])} x2={x(waves[i])} y1={12} y2={122} stroke="#b6c5cb" strokeDasharray="3 3"/>
@@ -82,7 +82,7 @@ function PairedSpectrum({series,vendor}: {series:Record<string,Paired>;vendor:st
     </svg>
     <label>Compared wavelength<select value={i} onChange={e=>setSample(Number(e.target.value))}>
       {waves.map((w,j)=><option key={j} value={j}>{w.toFixed(5)} µm</option>)}</select></label>
-    <p><output aria-label="Compared powers">Workbench {(100*local[i]).toFixed(3)}% · {vendor} {(100*reference[i]).toFixed(3)}% · Difference {(100*(local[i]-reference[i])).toFixed(3)} percentage points</output></p>
+    <p><output aria-label="Compared powers">IsoPhotonIX {(100*local[i]).toFixed(3)}% · {vendor} {(100*reference[i]).toFixed(3)}% · Difference {(100*(local[i]-reference[i])).toFixed(3)} percentage points</output></p>
   </section>;
 }
 

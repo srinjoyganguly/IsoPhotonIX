@@ -1,7 +1,10 @@
 import { serializeGeometryDocument, validateGeometryDocument, type GeometryDocument } from './geometryModel.ts';
 import { initialHistory, type DesignHistory } from './designHistory.ts';
 
-export const HISTORY_KEY = 'photonics-workbench.edit-history.v1';
+export const DRAFT_KEY = 'isophotonix.geometry.v1';
+export const LEGACY_DRAFT_KEY = 'photonics-workbench.geometry.v1';
+export const HISTORY_KEY = 'isophotonix.edit-history.v1';
+export const LEGACY_HISTORY_KEY = 'photonics-workbench.edit-history.v1';
 // Web Storage holds UTF-16 strings. Keep this tab's checkpoint below 2 MiB.
 export const HISTORY_BYTES = 2 * 1024 * 1024;
 

@@ -3,8 +3,8 @@ requires = ["setuptools>=77,<81"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "photonics-workbench"
-version = "0.13.0a1"
+name = "IsoPhotonIX"
+version = "0.13.0a2"
 description = "Local photonics design, electromagnetic simulation and reproducible exports"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
@@ -12,11 +12,17 @@ license = "MIT"
 license-files = ["LICENSE"]
 dynamic = ["dependencies"]
 
+[project.urls]
+Repository = "https://github.com/srinjoyganguly/IsoPhotonIX"
+Documentation = "https://github.com/srinjoyganguly/IsoPhotonIX/blob/main/docs/PACKAGING.md"
+
 [project.scripts]
-photonics-workbench = "photonics_workbench.cli:main"
+isophotonix = "isophotonix.cli:main"
+# Keep existing launch scripts and exported command lines operational.
+photonics-workbench = "isophotonix.cli:main"
 
 [tool.setuptools]
-packages = ["photonics_workbench"]
+packages = ["isophotonix", "photonics_workbench"]
 package-dir = {"" = "src"}
 include-package-data = false
 

@@ -203,7 +203,7 @@ def validate_geometry(value):
     version = value['schema_version']
     _record(value, BASE_KEYS | ({'materials', 'components'} if version == 2 else set()),
             ('connections',) if version == 2 else (), label='Geometry document')
-    if value['schema'] != 'photonics-workbench-geometry' or value['units'] != 'um' or value['mode'] not in ('draft-3d', 'slab-preview'):
+    if value['schema'] not in ('isophotonix-geometry', 'photonics-workbench-geometry') or value['units'] != 'um' or value['mode'] not in ('draft-3d', 'slab-preview'):
         raise ValueError('Expected a micrometre geometry draft, not a solver configuration.')
     domain = _vector(value['domain'], .1, 1000, 'Domain')
     materials = []
@@ -252,7 +252,7 @@ def validate_geometry(value):
         if any(bounds['min'][a] < -domain[a] / 2 - EPS or bounds['max'][a] > domain[a] / 2 + EPS for a in 'xyz'):
             raise ValueError(f'{solid["name"]} extends outside the domain.')
         objects.append(solid)
-    result = {'schema': 'photonics-workbench-geometry', 'schema_version': version, 'units': 'um', 'name': _name(value['name'], 'Document name'),
+    result = {'schema': value['schema'], 'schema_version': version, 'units': 'um', 'name': _name(value['name'], 'Document name'),
               'mode': value['mode'], 'domain': domain, 'objects': objects}
     if version == 2:
         result.update(materials=materials, components=_components(value['components'], objects, material_by_id, domain))

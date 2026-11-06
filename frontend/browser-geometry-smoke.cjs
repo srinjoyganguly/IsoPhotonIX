@@ -21,7 +21,7 @@ const { chromium } = require('playwright');
   const canvas = page.locator('.geometry-3d-host canvas');
   const button = name => page.getByRole('button', { name, exact: true });
   const input = name => page.getByLabel(name, { exact: true });
-  const storageKey = 'photonics-workbench.geometry.v1';
+  const storageKey = 'isophotonix.geometry.v1';
   const saved = () => page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
   async function edit(name, value) { await input(name).fill(String(value)); await input(name).press('Enter'); }
   async function select(name) { await page.locator('.geo-object-select').filter({ hasText: name }).click(); }

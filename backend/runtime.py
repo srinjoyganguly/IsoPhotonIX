@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def data_root():
     """Installed launchers set an explicit per-user location for mutable data."""
-    selected = os.environ.get("PHOTONICS_DATA_DIR")
+    selected = os.environ.get("ISOPHOTONIX_DATA_DIR") or os.environ.get("PHOTONICS_DATA_DIR")
     return Path(selected).expanduser().resolve() if selected else ROOT
 
 
