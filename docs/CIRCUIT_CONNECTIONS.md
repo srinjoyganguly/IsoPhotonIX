@@ -25,6 +25,8 @@ Two 2 µm strips were driven by the same Ey point current on NVIDIA. The first s
 
 The planned and aligned device stepping times were 0.435 s and 0.694 s on the GPU event clock. Fresh executions of the aligned result’s Python program and unchanged notebook on NVIDIA reproduced all eleven field, material and coordinate arrays byte-for-byte. The saved connection also matched in both offline design programs. These dipole fields measure the response of the two layouts. Guided-port transmission requires a separate calibrated port measurement. [Field and timing verification](verification/v015-circuit-gpu-fields.json).
 
+Unpack the design archive and import `geometry.json` in the editor to inspect the named ports. Each field archive includes the measured arrays and an editable program and notebook so you can repeat the run locally. [Connected design](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.13.0a1/connected-strip-design-v0.13.0a1.zip) · [Separated-strip field study](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.13.0a1/planned-strip-gpu-fields-v0.13.0a1.zip) · [Aligned-strip field study](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.13.0a1/connected-strip-gpu-fields-v0.13.0a1.zip).
+
 ## Work with an exported design
 
 The Python program contains the full editable design in `GEOMETRY`. From the unpacked design archive, use the bundled helpers to inspect a saved pair or align it. The same helpers are included in finite-layout field study exports.

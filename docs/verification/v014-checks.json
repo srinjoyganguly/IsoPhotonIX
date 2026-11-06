@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-06T18:17:47.589307+00:00",
+  "release": "v0.13.0a1",
+  "source_commit": "d77374dd431704ab2529b4174a0b747baa16fa1e",
+  "application_tests": {
+    "total": 351,
+    "passed_in_application_environment": 319,
+    "optional_solver_tests": 32,
+    "all_optional_cases_exercised_in_registered_environments": true,
+    "scientific_suite_counts": {
+      "meep": 23,
+      "scientific": 62,
+      "reciprocal_operator": 4
+    }
+  },
+  "frontend": {
+    "circuit_browser_checks": 7,
+    "circuit_receipt": "v015-circuit-browser.json",
+    "geometry_and_sketch_tests_passed": 32,
+    "installed_wheel_circuit_browser": {
+      "passed": true,
+      "checks": 7,
+      "new_solver_jobs": 0
+    }
+  },
+  "calibrated_meshes": "v014-receipt-audit.json",
+  "numerical_and_commercial_gates": "v014-accuracy-gates.json",
+  "original_study_archives": {
+    "ring": "v014-ring-result-export.json",
+    "full16": "v014-grating-lumerical-full-r16-export.json",
+    "mirror20": "v014-grating-lumerical-mirror-r20-export.json",
+    "mirror16": "v014-grating-tidy3d-mirror-r16-export.json"
+  },
+  "fresh_full_matrix_notebook": "v014-splitter-gui-notebook.json",
+  "connected_fields_and_fresh_replays": "v015-circuit-gpu-fields.json",
+  "gpu_timing": "v014-gpu-performance.csv",
+  "timed_acquisition_totals": {
+    "distinct_timed_acquisitions": 91,
+    "distinct_acquisitions_with_kernel_time": 0,
+    "synchronized_step_seconds": 13687.540413509094,
+    "distinct_acquisitions_with_cuda_event_time": 70,
+    "available_cuda_event_elapsed_seconds": 12849.900213689802,
+    "available_kernel_active_seconds": null
+  },
+  "installed_wheel": "v014-wheel-install.json",
+  "anonymous_release": "v014-release.json",
+  "scope": "The tested program, numerical quality and agreement with a particular published observable have separate checks. A failed commercial or mesh criterion remains visible.",
+  "fresh_grating_notebooks": [
+    "v014-grating-lumerical-r20-return-notebook.json",
+    "v014-grating-tidy3d-r16-return-notebook.json"
+  ],
+  "extended_tidy3d_observation": "v014-grating-tidy3d-r16-extended-duration.json",
+  "registered_phase_comparison": "v014-grating-phase-tidy3d-extended-duration.json"
+}

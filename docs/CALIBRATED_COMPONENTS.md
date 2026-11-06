@@ -2,6 +2,8 @@
 
 Each row is qualified for a named geometry, source, execution target and measurement. The separate layout library has measured field propagation for 27 presets on Meep CPU and FDTDX CPU/NVIDIA. [Layout field verification](LAYOUT_FIELDS.md#verification).
 
+The v0.13.0a1 prerelease includes the measured fields, replay programs and executed grating notebooks. The software verification and optical acceptance criteria have separate records. [Release downloads](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1) · [Installation and replay checks](verification/v014-checks.json) · [Numerical and commercial acceptance criteria](verification/v014-accuracy-gates.json).
+
 ### Current commercial comparison at 1550 nm
 
 | Matched geometry | Workbench power | Published power | Qualification |

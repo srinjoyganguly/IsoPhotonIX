@@ -1,0 +1,78 @@
+{
+  "checked_at": "2026-11-06T18:11:55.428967+00:00",
+  "passed": true,
+  "wheel": "photonics_workbench-0.13.0a1-py3-none-any.whl",
+  "wheel_sha256": "0a323ca36822fbdcac9c07e4350201bb8e3fd6d22fb2c27cf5233765e6fed2fc",
+  "wheel_bytes": 9191168,
+  "installed_from_offline_wheelhouse": true,
+  "calibrated_program_exports": 11,
+  "installed_cuda_study": {
+    "timed_stages": 6,
+    "case": "splitter",
+    "actual_device": "cuda:0",
+    "resolution": 12,
+    "material_model": "yee-aligned",
+    "compared_complex_coefficients": 27,
+    "maximum_complex_difference": 0.0
+  },
+  "installed_spatial_cuda": {
+    "geometry": "compact",
+    "actual_device": "cuda:0",
+    "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "wavelengths": 5,
+    "max_coupling_fraction_difference": 1.725320178391776e-08
+  },
+  "installed_interface_cuda": {
+    "case": "grating-3d",
+    "material_model": "direct-yee",
+    "domain": "mirror-y",
+    "actual_device": "cuda:0",
+    "wavelengths": 5,
+    "max_coupling_fraction_difference": 0.0
+  },
+  "installed_layout_max_complex_difference": 7.662456412643984e-11,
+  "installed_grating_coupling": 0.5823413109784932,
+  "recorded_same_mesh_coupling": 0.5823413109784932,
+  "calibrated_cli_result_bundle_verified": true,
+  "generic_calibration_config_coupling": 0.5823413109784932,
+  "export_found_registered_interpreter": true,
+  "cavity_four_modes_equal_to_packaged_reference": true,
+  "installed_port_alignment": true,
+  "installed_planned_aligned_disconnected_and_exported": true,
+  "installed_reciprocal_exports": [
+    {
+      "geometry": "lumerical",
+      "resolution": 20
+    },
+    {
+      "geometry": "lumerical",
+      "resolution": 24
+    }
+  ],
+  "pip_check": true,
+  "doctor_meep_ready": true,
+  "served_frontend_assets": [
+    "/assets/index-DvQJcX6B.js",
+    "/assets/index-DKeGUwLR.css"
+  ],
+  "catalog_families": 27,
+  "benchmark_data": true,
+  "job_id": "f9580130f89a4a6ba2e98c527ae45ef8",
+  "actual_device": "CPU",
+  "field_shape_zyx": [
+    42,
+    72,
+    118
+  ],
+  "state_separate_from_package": true,
+  "exclusive_store": true,
+  "saved_run_after_restart": true,
+  "cli_run_all_arrays_exact": true,
+  "standalone_python_all_arrays_exact": true,
+  "solver_versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "state": "Fresh disposable user state and virtual environment."
+}

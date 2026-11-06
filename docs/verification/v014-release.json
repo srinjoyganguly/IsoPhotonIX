@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "source_commit": "d77374dd431704ab2529b4174a0b747baa16fa1e",
+  "matching_wheel_entries_after_source_rebuild": 160,
+  "wheel_sha256": "0a323ca36822fbdcac9c07e4350201bb8e3fd6d22fb2c27cf5233765e6fed2fc",
+  "source_sha256": "fff4334cdf4363fb6e4bdcd065273e1897118afe488eef279fe10084f53800cd",
+  "public_tag_commit": "d77374dd431704ab2529b4174a0b747baa16fa1e",
+  "verified_at": "2026-11-06T18:17:36.458711+00:00",
+  "release": "https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1",
+  "signed_out_repository": true,
+  "signed_out_release": true,
+  "sha256_list_sha256": "85caca6d1dd96168fe8972618eb732abbffd3ae89847882f0511482ab724db91",
+  "verified_assets": {
+    "connected-strip-design-v0.13.0a1.zip": "a5cbfb733b0376a29b9c5c43dcabd94ef9d3b8624feb611188779b5081872b3c",
+    "connected-strip-gpu-fields-v0.13.0a1.zip": "fbd34c220e3f37a8c2c0ae09a5ccf275fa751e7038af2af56c61ca2e939a5b2d",
+    "grating-lumerical-mirror-y-r20-time-history-executed.ipynb": "606211afce9c3386c6564d2875f7158386a642776bcadb8324d9a5e5555a4aaa",
+    "grating-lumerical-mirror-y-r20-time-history.zip": "58557de927e1c365cdbc5daf9fe1b897275620f7407ebd63deb8b6fac019b26b",
+    "grating-tidy3d-mirror-y-r16-resolved-return-executed.ipynb": "03c402e6c025c46ed9a50927ed9e1759015b5865b517fe42ad2795a8cf3b54cd",
+    "grating-tidy3d-mirror-y-r16-resolved-return.zip": "f43f51a4b782ed9bc1f615653a294782edf3d60a3303bc673983c73c82879e9a",
+    "grating-tidy3d-mirror-y-r16-time-history-executed.ipynb": "eb433a9b800cf9a24d6793a7ad3be4156420333e8a6a2e330fa57f107f3748c6",
+    "grating-tidy3d-mirror-y-r16-time-history.zip": "b71871372ab8cabffd7b8ee7e6e0c81ec313030a2ed350fc8f69adb3150dddc1",
+    "lumerical-grating-full-r16-results-v0.13.0a1.zip": "0c6de206eb15a34ed8d585839464996d0fe3442daaab89e6ecc31dcc58c22506",
+    "lumerical-grating-mirror-r20-results-v0.13.0a1.zip": "7bea8690d1c106d2d6f04c7c2b1371ed312972ff60d9d231d86a922126655290",
+    "lumerical-reciprocal-ring-r24-results-v0.13.0a1.zip": "8a41408870aa85124542db65cc3fa4967da8c542f89ede39f99465b1bf2cc372",
+    "lumerical-ring-wall-r20-results-v0.13.0a1.zip": "b37587d9e3bdb97dd5c28ba662c0b32d876674b0b5fbadce9b97cdc677d23b22",
+    "photonics_workbench-0.13.0a1-py3-none-any.whl": "0a323ca36822fbdcac9c07e4350201bb8e3fd6d22fb2c27cf5233765e6fed2fc",
+    "photonics_workbench-0.13.0a1.tar.gz": "fff4334cdf4363fb6e4bdcd065273e1897118afe488eef279fe10084f53800cd",
+    "planned-strip-gpu-fields-v0.13.0a1.zip": "341e85876f5df98e9ece654cd6b4e14feb408eae2b59aaba36ca15384d3726a4",
+    "splitter-polygon-area-3d-gpu-r16-v0.13.0a1.zip": "d970c9dc6f7ae0c7505e6ff91ff37a24353706421cdca183c9d5854810aad66b",
+    "tidy3d-grating-mirror-r16-results-v0.13.0a1.zip": "247b948e9d48c792d8141468e6611fe3af49ed5d165481dc3e809daa59cba213"
+  }
+}
