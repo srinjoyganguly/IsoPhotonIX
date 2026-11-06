@@ -25,11 +25,26 @@ def measured_observables(report):
     """Numerical fields which the GUI renders; wall times and run dates vary."""
     result = {key: report[key] for key in ('wavelength_um','s','s_real','s_imag','power','modal_power','ports','port_order','channels')
               if key in report}
-    if report.get('case_id')=='grating-gaussian-profile':
+    if report.get('case_id') in ('grating-gaussian-profile','finite-grating-3d'):
         beam=report['result']
-        for key in ('wavelength_um','beam_to_guide','valid_beam_bins','direct_output_fraction','valid_direct_bins'):
+        for key in ('wavelength_um','beam_to_guide','valid_beam_bins','direct_output_fraction','valid_direct_bins','guide_to_beam','guide_radiation_up','valid_energy_bins'):
             if key in beam:
                 result['beam/'+key]=beam[key]
+    for key,value in report.get('radiation',{}).items():
+        if isinstance(value,list):
+            result['radiation/'+key]=value
+    for key in ('array','index','axis_order','component','horizontal_axis','vertical_axis','horizontal_um','vertical_um','wavelength_um','time_um_c'):
+        if key in report.get('field_preview',{}):
+            result['field/'+key]=report['field_preview'][key]
+    if report.get('measured_drop_fsr_nm') is not None:
+        result['measured_drop_fsr_nm']=report['measured_drop_fsr_nm']
+    for i,peak in enumerate(report.get('loaded_loss',{}).get('peaks',[])):
+        result[f'pole/{i}/qualified']=bool(peak['qualified'])
+        if peak['qualified']:
+            result[f'pole/{i}/wavelength_um']=peak['sampled_drop_peak_um']
+            for key,value in peak['qualified_equal_bus_loss'].items():
+                if value is not None:
+                    result[f'pole/{i}/'+key]=value
     for name, data in report.get('series', {}).items():
         for key in ('wavelength_um','through','drop','reflection','add_side','valid_bins'):
             if key in data:
@@ -86,9 +101,9 @@ def compare(original, output):
     if not first or first.keys()!=fresh.keys():
         raise ValueError('The replay has different reported observables.')
     for key,value in first.items():
-        if key in ('ports','port_order','channels'):
+        if key in ('ports','port_order','channels') or isinstance(value,str):
             if value!=fresh[key]:
-                raise ValueError(f'Displayed channel order changed in {key}.')
+                raise ValueError(f'Displayed label or channel order changed in {key}.')
             continue
         a,b=np.asarray(value,dtype=float),np.asarray(fresh[key],dtype=float)
         if a.shape!=b.shape or not within_precision(a, b):
@@ -122,7 +137,9 @@ def run(root, output, checkpoint=None):
             if cache==output or output in cache.parents:
                 raise ValueError('Choose a checkpoint folder outside the result directory.')
             option={'scripts.calibrate_ring':'--checkpoint','scripts.calibrate_grating':'--checkpoint',
-                    'scripts.calibrate_multimode':'--checkpoint-dir'}.get(manifest['worker'])
+                    'scripts.calibrate_multimode':'--checkpoint-dir','scripts.calibrate_planar_tm':'--checkpoint-dir',
+                    'scripts.calibrate_layout_ports':'--checkpoint-dir',
+                    'scripts.calibrate_loaded_ring3d':'--checkpoint','scripts.calibrate_finite_grating':'--checkpoint'}.get(manifest['worker'])
             if option:
                 arguments += [option,str(cache)]
             elif manifest['worker'] in ('scripts.calibrate_multiport','scripts.calibrate_fdtdx_multiport'):

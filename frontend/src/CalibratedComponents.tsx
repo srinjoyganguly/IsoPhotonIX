@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { request } from './api';
+import { PlanarPortLayoutEditor, parsePlanarLayout } from './PlanarPortLayoutEditor';
+import { SpatialComparison } from './SpatialComparison';
+import { CalibrationField, type FieldPlane } from './CalibrationField';
 import { CodeExport } from './CodeExport';
 import { CalibrationMeasurement, Spectrum, type Series } from './CalibrationMeasurement';
 import './calibratedComponents.css';
 
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
-  limits: string; recorded?: {label:string; receipt:string;report:unknown}[]; comparisons: {vendor: string; description: string; url: string}[] };
+  limits: string; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
 type Preset = { case: string; name: string; scope: string; routes: string[]; evidence?: Evidence };
 type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
@@ -16,14 +19,29 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [materialGrid,setMaterialGrid]=useState('yee-aligned');
   const [gratingScope,setGratingScope]=useState('tidy3d-compact');
   const [ringScope,setRingScope]=useState('lumerical');
+  const [layoutText,setLayoutText]=useState('');
+  const [geometry3d,setGeometry3d]=useState('lumerical');
+  const [ringDuration,setRingDuration]=useState('');
+  const [portDistance,setPortDistance]=useState('1.25');
   const [mesh,setMesh]=useState(''),[offset,setOffset]=useState('.125');
   const [targets,setTargets]=useState<Target[]>([]),[jobs,setJobs]=useState<Job[]>([]),[jobId,setJobId]=useState('');
+  const [localField,setLocalField]=useState<FieldPlane|null>(null);
   const [log,setLog]=useState('');
   const [error,setError]=useState(''),[pending,setPending]=useState(false),[report,setReport]=useState<unknown>(null);
   const selected=catalog.find(p=>p.case===key), evidence=selected?.evidence;
   const job=jobs.find(j=>j.id===jobId), busy=jobs.some(j=>j.status==='running'||j.status==='queued');
   const history=jobs.filter(j=>j.config.case===key);
-  const meshes = key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
+  const gpuComponent = key==='ring-3d' || key==='grating-3d';
+  const meshes = key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? [12,16] :
+    key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
+  useEffect(()=>{
+    if(key!=='layout-ports-2d' || layoutText) return;
+    let live=true;
+    request('/api/calibrations/planar-layout-example').then(data=>{if(live)setLayoutText(JSON.stringify(data,null,2));})
+      .catch(e=>{if(live)setError(e.message);});
+    return ()=>{live=false;};
+  },[key,layoutText]);
+  const layoutValid=key!=='layout-ports-2d' || parsePlanarLayout(layoutText)!==null;
   const offsetValid = !key.startsWith('multimode') || (offset.trim()!=='' && Number.isFinite(Number(offset)) && +offset>=0 && +offset<=.25);
   useEffect(()=>{
     if(!active)return;
@@ -43,9 +61,16 @@ export function CalibratedComponents({active}:{active:boolean}) {
     return ()=>{live=false;clearInterval(timer);};
   },[active]);
   useEffect(()=>{
-    let live=true;setReport(null);
+    let live=true;setReport(null);setLocalField(null);
     if(job?.status==='completed'||job?.status==='failed') {
-      request('/api/calibrations/jobs/'+job.id+'/report').then(data=>{if(live)setReport(data);})
+      request('/api/calibrations/jobs/'+job.id+'/report').then(async data=>{
+          if (!live) return;
+          setReport(data);
+          if (data && typeof data === 'object' && ('field_preview' in data || ['layout-ports-2d','multimode-tm'].includes(job.config.case))) {
+            const field = await request<FieldPlane>('/api/calibrations/jobs/'+job.id+'/field');
+            if (live) setLocalField(field);
+          }
+        })
         .catch(e=>{if(live && job.status==='completed')setError(e.message);});
     }
     return ()=>{live=false;};
@@ -63,7 +88,10 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [solver,device]=target.split(':');
   const available=targets.some(t=>t.solver===solver && t.device===device && t.available);
   const configuration={revision:2,case:key,solver,device,resolution:mesh?Number(mesh):null,
-    offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'?materialGrid:null,
+    offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'&&!gpuComponent?materialGrid:null,
+    planar_layout:key==='layout-ports-2d'?parsePlanarLayout(layoutText):null,
+    duration_um_c:key==='ring-3d'&&ringDuration?Number(ringDuration):null,
+    geometry_3d:gpuComponent?geometry3d:null,port_distance_um:key==='multimode-tm'?Number(portDistance):null,
     grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
   async function run(){
     if(!selected||!target)return;
@@ -88,7 +116,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
       setJobs(rows=>rows.map(j=>j.id===updated.id?updated:j));
     }catch(e){setError((e as Error).message);}finally{setPending(false);}
   }
-  function choose(next:string){setKey(next);setRecord(0);setMesh('');setOffset('.125');setTarget('');setMaterialGrid('yee-aligned');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);}
+  function choose(next:string){setKey(next);setRecord(0);setMesh('');setPortDistance('1.25');setRingDuration('');setGeometry3d(next==='grating-3d'?'compact':'lumerical');setOffset('.125');setTarget('');setMaterialGrid('yee-aligned');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);setLocalField(null);}
   return <section className="cal-lab" aria-label="Calibrated components">
     <header><h1>Calibrated components</h1><p>Inspect measured reference results or run the same physical study on this machine.</p></header>
     <div className="cal-columns"><aside aria-label="Calibrated presets">{catalog.map(p=><button key={p.case} aria-pressed={key===p.case} onClick={()=>choose(p.case)}>{p.name}</button>)}</aside>
@@ -98,13 +126,27 @@ export function CalibratedComponents({active}:{active:boolean}) {
 
         {evidence.recorded?.length ? <><label>Recorded result<select value={record} onChange={e=>setRecord(+e.target.value)}>
           {evidence.recorded.map((r,i)=><option key={r.label} value={i}>{r.label}</option>)}</select></label>
+          {evidence.recorded[record]?.qualification && <p>{evidence.recorded[record].qualification}</p>}
           <CalibrationMeasurement key={key+record} value={evidence.recorded[record]?.report}/>
+          <SpatialComparison key={'compare'+key+record} value={evidence.recorded[record]?.report}/>
+          {evidence.recorded[record]?.field && <CalibrationField key={key+record} field={evidence.recorded[record].field!}/>}
           <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+evidence.recorded[record]?.receipt}
            target="_blank" rel="noreferrer">Full verification record</a></> :
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
         <p>{evidence.limits}</p></section>}
-      <section><h3>Run locally</h3>{key==='ring' && <label>Measurement<select aria-label="Measurement" value={ringScope} onChange={e=>setRingScope(e.target.value)}>
+      <section><h3>Run locally</h3>
+        {key==='layout-ports-2d' && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}
+        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>setGeometry3d(e.target.value)}>
+          {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
+            <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
+        </select></label>}
+        {key==='ring-3d' && <label>Observation duration<select value={ringDuration} onChange={e=>setRingDuration(e.target.value)}>
+          <option value="">Preset duration</option>{[160,1600,2700,3200,4800,6000].map(t=><option value={t} key={t}>{t} µm/c</option>)}
+        </select></label>}
+        {key==='multimode-tm' && <label>Port distance from joint<select value={portDistance} onChange={e=>setPortDistance(e.target.value)}>
+          {[.75,1,1.25,1.5,1.75].map(d=><option key={d} value={String(d)}>{d.toFixed(2)} µm</option>)}
+        </select></label>}{key==='ring' && <label>Measurement<select aria-label="Measurement" value={ringScope} onChange={e=>setRingScope(e.target.value)}>
         <option value="lumerical">Lumerical loaded ring spectrum</option><option value="tidy3d">Tidy3D loaded ring spectrum</option>
         <option value="full">Both loaded rings, finite-height poles and all controls</option></select></label>}
       {key==='grating'  && <label>Measurement<select aria-label="Measurement" value={gratingScope}
@@ -127,11 +169,11 @@ export function CalibratedComponents({active}:{active:boolean}) {
           onChange={()=>{setTarget(route);if(mesh==='12' && !route.startsWith('fdtdx:'))setMesh('');}}/>{route.replace(':',' · ').toUpperCase()}
           {info && !info.available && <small>{info.reason}</small>}</label>;
       })}</fieldset>
-      {solver==='fdtdx' && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
+      {solver==='fdtdx' && !gpuComponent && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
         <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option>
       </select></label>}
-      <button className="button primary compact" disabled={!available||pending||busy||!offsetValid} onClick={()=>void run()}>Run calibrated study</button>
-      <CodeExport kind="calibration" value={configuration} disabled={!target||!offsetValid}/>
+      <button className="button primary compact" disabled={!available||pending||busy||!offsetValid||!layoutValid} onClick={()=>void run()}>Run calibrated study</button>
+      <CodeExport kind="calibration" value={configuration} disabled={!target||!offsetValid||!layoutValid}/>
       {busy&&<p role="status">A local calibration is running.</p>}</section>
       <section><h3>Local runs</h3>{history.length>0?<label>Saved run<select value={jobId} onChange={e=>setJobId(e.target.value)}>
         <option value="">Select a run</option>{history.map(j=><option key={j.id} value={j.id}>{j.id.slice(0,8)} · {j.config.solver}/{j.config.device} · {j.status}</option>)}</select></label>:<p>No saved runs for this preset.</p>}
@@ -143,6 +185,8 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {job.error && <p role="alert">{job.error}</p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
         {report!=null&&<CalibrationMeasurement key={job.id} value={report}/>}
+        {report!=null && <SpatialComparison key={'compare'+job.id} value={report}/>}
+        {localField && <CalibrationField key={job.id} field={localField}/>}
         {report!=null&&<details><summary>Numerical report</summary><pre>{JSON.stringify(report,null,2)}</pre></details>}</>}
       </section></>}
       {error && <p role="alert">{error}</p>}

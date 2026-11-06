@@ -102,9 +102,10 @@ def main():
             assert not any(set(name.split('/')) & {'.local', 'runs', '.git', '.env', 'node_modules', '__pycache__'} for name in wheel_names)
         assert get('/api/benchmarks')['status'] == 'available'
         presets = get('/api/calibrations')
-        assert len(presets)==6 and {p['case'] for p in presets}=={'coupler','splitter','ring','grating','multimode','multimode-3d'}
+        assert len(presets)==10 and {p['case'] for p in presets}=={'coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d'}
         for preset in presets:
-            config={'case':preset['case'],'solver':'meep','device':'cpu'}
+            solver, device = preset['routes'][0].split(':')
+            config={'case':preset['case'],'solver':solver,'device':device}
             with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
                 assert {'config.json','calibration.ipynb','run.py'} <= set(source.namelist())
         command([cli,'calibrate','coupler','--solver','fdtdx','--device','gpu','--export-only',

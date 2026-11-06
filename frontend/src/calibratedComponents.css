@@ -23,3 +23,13 @@
 .cal-spectrum .inspectable{cursor:crosshair}
 .cal-sample{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0}
 .cal-sample output{font-size:13px;font-variant-numeric:tabular-nums;color:#ffcf86}
+
+.cal-field canvas{width:100%;max-width:650px;height:auto;display:block;background:#0e0e0e;cursor:crosshair;image-rendering:pixelated}
+.cal-field-scale{display:flex;align-items:center;gap:6px}.cal-field-scale span{width:82px;height:5px;background:linear-gradient(90deg,#52cbff,#0e0e0e,#ffbc64)}
+.cal-field output{font-variant-numeric:tabular-nums}
+
+.planar-layout-input textarea{color:#d6e8ed;background:#0c1b25;border:1px solid #375361;width:100%;min-height:160px;box-sizing:border-box;padding:9px;font:12px monospace}
+.planar-layout-input input[type=number]{width:6em;color:#d6e8ed;background:#122c39;border:1px solid #375361;padding:5px;max-width:100%}
+.planar-layout-input details{margin:9px 0}
+@media(max-width:600px){.planar-layout-input input[type=number]{width:3.5em}}
+.cal-native-key{color:#6de2c4}.cal-reference-key{color:#ffbf78}

@@ -12,7 +12,8 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, Res
 from starlette.background import BackgroundTask
 from fastapi.staticfiles import StaticFiles
 
-from .calibrations import CASES, Calibration, design_archive, result_zip
+from .calibration_fields import field_plane
+from .calibrations import CASES, calibration_routes, Calibration, design_archive, result_zip
 from .capabilities import capabilities
 from .jobs import JobManager
 from .model import WaveguideConfig
@@ -45,7 +46,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.11.0-preview.3", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.12.0-preview.1", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -62,7 +63,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.11.0-preview.3", "compute": "local"}
+    return {"status": "ok", "version": "0.12.0-preview.1", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):
@@ -441,9 +442,17 @@ def compare_taper_mesh_runs(config: TaperMeshRequest):
 def calibrated_presets():
     index = ROOT/'docs/verification/v011-calibrated-index.json'
     receipts = json.loads(index.read_text()) if index.is_file() else {}
-    return [{'case':key,'name':title,'scope':scope,'routes':(['meep:cpu','fdtdx:cpu','fdtdx:gpu']
-             if key in ('coupler','splitter') else ['meep:cpu']), 'evidence':receipts.get(key)}
+    next_index = ROOT/'docs/verification/v012-calibrated-index.json'
+    if next_index.is_file():
+        receipts.update(json.loads(next_index.read_text()))
+    return [{'case':key,'name':title,'scope':scope,'routes':calibration_routes(key), 'evidence':receipts.get(key)}
             for key,(title,scope) in CASES.items()]
+
+
+@app.get('/api/calibrations/planar-layout-example')
+def planar_layout_example():
+    from .planar_port_layout import default_planar_port_layout
+    return default_planar_port_layout()
 
 
 @app.post('/api/reproduce/calibration')
@@ -493,6 +502,19 @@ def calibration_report(job_id: str):
         return json.loads((folder/'calculation/report.json').read_text())
     except (ValueError,OSError) as exc:
         raise HTTPException(409,'No complete calibration report is available.') from exc
+
+
+@app.get('/api/calibrations/jobs/{job_id}/field')
+def calibration_field(job_id: str):
+    job, folder = calibration_directory(job_id)
+    if job['status'] not in ('completed', 'failed'):
+        raise HTTPException(409, 'Wait until the field measurement completes.')
+    try:
+        calculation = folder / 'calculation'
+        report = json.loads((calculation / 'report.json').read_text())
+        return field_plane(report, calculation / 'arrays.npz')
+    except (OSError, KeyError, IndexError, ValueError) as exc:
+        raise HTTPException(409, 'The saved field or its physical coordinates could not be read.') from exc
 
 
 def calibration_download(job_id):

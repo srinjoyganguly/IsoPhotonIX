@@ -1,6 +1,6 @@
 # Install Photonics Workbench locally
 
-The **0.11.0a3 wheel** contains the local service, the compiled React interface,
+The **0.12.0a1 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
@@ -20,7 +20,7 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.11.0a3-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.12.0a1-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
@@ -59,6 +59,19 @@ photonics-workbench calibrate grating --solver meep --device cpu --grating-scope
 ```
 
 The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. For a ring or grating spectrum, click the curve or choose a measured wavelength to read its power fraction. Wavelengths excluded by the numerical checks are marked unqualified. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. For interrupted calibrated jobs started in the GUI, select the original run and choose **Resume saved study** to continue its captured program. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
+
+## Full spatial calibration studies
+
+Open **Calibrated components** and select **3D bus-loaded ring** or **3D finite-width grating**. Choose a physical geometry and select **FDTDX · GPU**. A passing run records the detected NVIDIA device, normalized spectra and native field coordinates. Runs can take considerably longer than a compact grating on the same device. Click a ring or grating field, or use the arrow keys, to inspect individual numerical samples.
+
+```bash
+photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --duration-um-c 3200 --output loaded-ring
+photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d compact --resolution 12 --output finite-grating
+photonics-workbench calibrate multimode-tm --solver meep --device cpu --port-distance-um 1.25 --output tm-joint
+photonics-workbench calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --output planar-elbow
+```
+
+For the planar layout, open **Edit polygons and ports** to inspect or change the layout document. The installed command accepts the same file with `--layout PATH`. Use `--export-only` to get the exact study program and notebook before a solver run, or take the measured bundle from a completed run. The original planar ring and grating programs remain available as `ring` and `grating`. [Bus-loaded ring model and numerical checks](LOADED_RING_3D.md) · [Finite-width grating model](FINITE_GRATING_3D.md).
 
 ## Set up the numerical runtimes
 

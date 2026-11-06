@@ -31,11 +31,15 @@ def main(argv=None):
     beamz.add_argument('--device', required=True, choices=['cpu', 'gpu'])
     beamz.add_argument('--output', required=True, type=Path, help='new folder for the numerical reference study')
     calibration = commands.add_parser('calibrate',help='run a calibrated component preset and export its exact program and measurements')
-    calibration.add_argument('case',choices=['coupler','splitter','ring','grating','multimode','multimode-3d'])
+    calibration.add_argument('case',choices=['coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d'])
     calibration.add_argument('--solver',choices=['meep','fdtdx'],required=True)
     calibration.add_argument('--device',choices=['cpu','gpu'],required=True)
     calibration.add_argument('--resolution',type=int,help='cells per µm on supported matrix presets')
     calibration.add_argument('--offset-um',type=float,help='lateral offset for a multimode joint, in µm')
+    calibration.add_argument('--geometry-3d',choices=['lumerical','tidy3d','compact','compact-narrow','compact-radiation'],help='3D ring or grating geometry')
+    calibration.add_argument('--layout',type=Path,help='planar model JSON with polygon vertices and port positions')
+    calibration.add_argument('--port-distance-um',type=float,help='distance from the TM joint to its port planes')
+    calibration.add_argument('--duration-um-c',type=float,help='observation duration for a loaded 3D ring in µm/c')
     calibration.add_argument('--ring-scope',choices=['full','lumerical','tidy3d'])
     calibration.add_argument('--grating-scope',choices=['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'])
     calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned'],help='FDTDX permittivity placement')
@@ -84,7 +88,8 @@ def main(argv=None):
     if args.command == 'calibrate':
         from backend.calibrations import Calibration, design_archive, run_config
         try:
-            model=Calibration(revision=2,case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope)
+            model=Calibration(revision=2,case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope,geometry_3d=args.geometry_3d,port_distance_um=args.port_distance_um,duration_um_c=args.duration_um_c,
+                              planar_layout=json.loads(args.layout.read_text()) if args.layout is not None else None)
             if args.export_only:
                 archive = design_archive(model)
                 args.output.mkdir(parents=True, exist_ok=False)

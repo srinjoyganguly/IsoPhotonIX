@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if (ROOT / 'backend').is_dir():
     sys.path.insert(0, str(ROOT))
 from backend.adapters.fdtdx_ports_adapter import _ports_runtime
-from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes, port_basis
+from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes, port_basis, canonical_source_profile
 from scripts.grating_angular_spectrum import air_angular_flux
 from scripts import lumerical_grating3d as ansys
 
@@ -30,7 +30,7 @@ def settings(name, resolution):
     if name == 'lumerical' and resolution in (12,16):
         return ansys.model(resolution)
     matched = name == 'tidy3d'
-    if name not in ('tidy3d', 'compact', 'compact-narrow') or resolution not in (12, 16):
+    if name not in ('tidy3d', 'compact', 'compact-narrow', 'compact-radiation') or resolution not in (12, 16):
         raise ValueError('Choose a supported grating and mesh.')
     return dict(geometry=name, resolution=resolution, period=.62, fill=.8, teeth=20 if matched else 8,
                 width=10.8 if matched else (2. if name == 'compact-narrow' else 3.),
@@ -121,6 +121,7 @@ def native_stage(m, reference):
     from fdtdx.fdtd.forward import forward
 
     fiber = m['geometry']=='lumerical'
+    guided = m['geometry']=='compact-radiation'
     lp = ansys.lp01(m['fiber_radius'],m['fiber_core_n'],m['fiber_clad_n'],1.55) if fiber else None
 
     @autoinit
@@ -175,7 +176,8 @@ def native_stage(m, reference):
               temporal_profile=fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=bandwidth),
                                                           center_wave=fdtdx.WaveCharacter(frequency=center)),
               switch=fdtdx.OnOffSwitch(end_time=pulse_end*1e-15))
-    add(source,(xmin,pml,at(2,m['source_z'])))
+    if not guided:
+        add(source,(xmin,pml,at(2,m['source_z'])))
     waves=tuple(fdtdx.WaveCharacter(frequency=float(f*299792458e6)) for f in frequencies)
     def detector(name, size, start, wave=waves):
         add(fdtdx.PhasorDetector(name=name, partial_grid_shape=size, wave_characters=wave,
@@ -190,8 +192,16 @@ def native_stage(m, reference):
     py=int(round((2.5 if fiber else 2)/dx)); pz=int(round((2.25 if fiber else 6*m['height'])/dx))
     px=at(0,m['output_x'] if fiber else -m['taper']-m['buffer']/2)
     sy=(ny-py)//2; sz=at(2,(.05 if fiber else m['height']/2)-pz*dx/2+dx/2)
-    if not reference:
+    if guided:
+        source=fdtdx.ModePlaneSource(name='guide',partial_grid_shape=(1,py,pz),mode_index=0,filter_pol='te',
+                    direction='+', wave_character=fdtdx.WaveCharacter(frequency=center),
+                    temporal_profile=fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=bandwidth),
+                                                                center_wave=fdtdx.WaveCharacter(frequency=center)),
+                    switch=fdtdx.OnOffSwitch(end_time=pulse_end*1e-15))
+        add(source,(at(0,-m['taper']-.8),sy,sz))
+    if guided or not reference:
         detector('output',(1,py,pz),(px,sy,sz))
+    if not reference:
         detector('center',(nx-2*pml,1,nz-2*pml),(pml,ny//2,pml),(waves[2],))
     energy = fdtdx.EnergyDetector(name='energy',partial_grid_shape=tuple(n-2*pml for n in shape),
                 reduce_volume=True,exact_interpolation=True,plot=False,
@@ -199,7 +209,9 @@ def native_stage(m, reference):
     add(energy,(pml,pml,pml))
     key = jax.random.PRNGKey(0)
     obj,arrays,params,sim,_=fdtdx.place_objects(object_list=items,config=sim,constraints=constraints,key=key)
-    eps = material(m,reference)
+    eps = material(m,reference and not guided)
+    if reference and guided:
+        eps = np.broadcast_to(eps[px:px+1],shape).copy()
     eps_hash=digest(eps)
     staggered=aligned(eps)
     arrays=arrays.aset('inv_permittivities',jax.device_put(1/staggered,target))
@@ -207,15 +219,27 @@ def native_stage(m, reference):
     if arrays.fields.E.device!=target or not np.allclose(np.asarray(arrays.inv_permittivities),1/staggered,rtol=2e-6):
         raise RuntimeError('Grid placement or material assignment differs from requested NVIDIA study.')
     del staggered
-    source=obj['beam']
-    electric,magnetic=np.asarray(source._E),np.asarray(source._H)
+    if guided:
+        from fdtdx.core.physics.modes import compute_mode
+        source=obj['guide']
+        e,h,n=compute_mode(frequency=center,inv_permittivities=source._inv_permittivity,
+                          inv_permeabilities=source._inv_permeability,resolution=dx*1e-6,
+                          direction='+',mode_index=0,filter_pol='te',dtype=jnp.float32)
+        if not m['n_oxide']<np.real(n)<m['n_si']:
+            raise ValueError('The guided source mode is outside the physical index interval.')
+        electric,magnetic,_=canonical_source_profile(e,h)
+        source=source.aset('_E',jax.device_put(electric,target)).aset('_H',jax.device_put(magnetic,target))
+        obj=obj.aset('object_list',[source if item.name=='guide' else item for item in obj.object_list])
+    else:
+        source=obj['beam']
+        electric,magnetic=np.asarray(source._E),np.asarray(source._H)
     vector=np.cross(electric.squeeze().transpose(1,2,0),magnetic.squeeze().transpose(1,2,0)).sum(axis=(0,1))
     direction=vector/np.linalg.norm(vector)
-    expected=np.array([-np.sin(np.deg2rad(m['angle_deg'])),0.,-np.cos(np.deg2rad(m['angle_deg']))])
+    expected=np.array([1.,0.,0.]) if guided else np.array([-np.sin(np.deg2rad(m['angle_deg'])),0.,-np.cos(np.deg2rad(m['angle_deg']))])
     if not np.allclose(direction,expected,atol=2e-4):
         raise RuntimeError(f'Injected beam points in unexpected direction: {direction}, expected {expected}')
     basis = None
-    if not reference:
+    if guided or not reference:
         basis,meta = port_basis(arrays.inv_permittivities[:,px:px+1,sy:sy+py,sz:sz+pz], frequencies,
                                 frequencies*299792458e6, dx,sim.time_step_duration,m['n_oxide'],m['n_si'])
     def evolve(state,end):
@@ -235,11 +259,15 @@ def native_stage(m, reference):
         state=compiled(state,jnp.asarray(end,dtype=jnp.int32)); step, final=state
         jax.block_until_ready(final)
         upper=np.asarray(final.detector_states['upper']['phasor'])[0,:,:,:,:,0]
-        if reference:
+        if reference and not guided:
             measure=-normal_flux(upper,dx)
         else:
             port=np.asarray(final.detector_states['output']['phasor'])[0]
-            measure=modal_amplitudes(port,basis['mode_e'],basis['mode_h'],dx**2)[0][:,1]
+            amplitudes=modal_amplitudes(port,basis['mode_e'],basis['mode_h'],dx**2)[0]
+            measure=amplitudes[:,0] if guided else amplitudes[:,1]
+            if guided and not reference:
+                # Track the radiated aperture independently of the straight incoming wave.
+                measure=normal_flux(upper,dx)
         times = schedule[schedule<end]*dt
         energy_trace = np.asarray(final.detector_states['energy']['energy'])[:len(times),0]
         if not np.isfinite(measure).all() or not np.isfinite(energy_trace).all():
@@ -261,17 +289,18 @@ def native_stage(m, reference):
           'energy':energy_trace,'energy_time_fs':times,
           'material_yz':eps[px],'material_xy':eps[:,:,at(2,.18)],'material_xz':eps[:,ny//2,:],
           'grid_x_um':axes[0],'grid_y_um':axes[1],'grid_z_um':axes[2]}
-    if not reference:
+    if guided or not reference:
         data.update(output=port,mode_e=basis['mode_e'],mode_h=basis['mode_h'],mode_neff=basis['mode_neff'],
-                    center_fields=np.asarray(final.detector_states['center']['phasor'])[0,0,:,:,0,:],
                     output_amplitudes=modal_amplitudes(port,basis['mode_e'],basis['mode_h'],dx**2)[0])
+    if not reference:
+        data['center_fields']=np.asarray(final.detector_states['center']['phasor'])[0,0,:,:,0,:]
     detail=dict(stage='reference' if reference else 'device',actual_device=str(final.fields.E.device),device_name=target.device_kind,
                 shape=list(shape),grid_resolution=m['resolution'],pml_cells=pml,time_steps=int(step),settled=consecutive>=2,
                 history=history,compile_seconds=compile_seconds,stepping_seconds=time.monotonic()-start,source_direction=direction.tolist(),
                 source_eh_sha256=digest(np.stack([electric,magnetic])),scalar_permittivity_sha256=eps_hash,
                 sample_plane_z_um=float(axes[2][az]),output_plane_x_um=float(axes[0][px]),
                 sampled_vertical_um=[float(axes[2][sz]),float(axes[2][sz+pz-1])],
-                port_basis=None if reference else meta,
+                port_basis=meta if guided or not reference else None,
                 fiber_mode=None if not fiber else dict(approximation='Weak-guidance LP01 transverse circular-fiber envelope on the tilted source plane',
                                                         u=lp[0],w=lp[1],neff=lp[2],source_z_um=float(axes[2][at(2,m['source_z'])])),
                 native_worker_sha256=file_hash(__file__),
@@ -288,7 +317,7 @@ def stage_archive(m, label, cache):
     import os
     import subprocess
     sources=[Path(__file__),ROOT/'backend/adapters/fdtdx_ports_adapter.py',ROOT/'backend/adapters/fdtdx_ports3d_adapter.py',ROOT/'backend/adapters/fdtdx3d_adapter.py',
-             ROOT/'backend/adapters/fdtdx_adapter.py',ROOT/'scripts/grating_angular_spectrum.py',ROOT/'scripts/lumerical_grating3d.py']
+             ROOT/'backend/adapters/fdtdx_adapter.py',ROOT/'scripts/grating_angular_spectrum.py',ROOT/'scripts/lumerical_grating3d.py',ROOT/'scripts/grating_emission.py']
     identity={'settings':m,'stage':label,'sources':{p.name:file_hash(p) for p in sources},
               'versions':{name:importlib.metadata.version(name) for name in ('fdtdx','jax','jaxlib','numpy','tidy3d')}}
     signature=hashlib.sha256(json.dumps(identity,sort_keys=True).encode()).hexdigest()
@@ -308,10 +337,15 @@ def stage_archive(m, label, cache):
                 else:
                     subprocess.run(cmd,check=True)
                 receipt=json.loads((staged/'receipt.json').read_text())
+                receipt['metadata_sha256']=hashlib.sha256(json.dumps(receipt,sort_keys=True,allow_nan=False).encode()).hexdigest()
                 receipt.update(identity=identity,signature=signature,arrays_sha256=file_hash(staged/'arrays.npz'))
                 (staged/'receipt.json').write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
                 staged.rename(dest)
         receipt=json.loads((dest/'receipt.json').read_text())
+        native={k:v for k,v in receipt.items() if k not in ('metadata_sha256','identity','signature','arrays_sha256')}
+        measured_metadata=hashlib.sha256(json.dumps(native,sort_keys=True,allow_nan=False).encode()).hexdigest()
+        if measured_metadata!=receipt.get('metadata_sha256'):
+            raise ValueError('Native FDTDX stage metadata changed.')
         if receipt.get('native_worker_sha256')!=identity['sources']['calibrate_finite_grating.py']:
             raise ValueError('The worker changed during native acquisition.')
         if receipt['identity']!=identity or receipt['signature']!=signature or file_hash(dest/'arrays.npz')!=receipt['arrays_sha256']:
@@ -327,6 +361,12 @@ def run(m, output, cache):
     dev,dr=stage_archive(m,'device',cache)
     if rr['source_eh_sha256']!=dr['source_eh_sha256'] or rr['device_name']!=dr['device_name'] or rr['actual_device']!=dr['actual_device']:
         raise ValueError('Reference and device acquisitions differ in source or hardware.')
+    if m['geometry']=='compact-radiation':
+        from scripts.grating_emission import publish
+        beam,br=stage_archive(settings('compact',m['resolution']),'reference',cache)
+        if br['actual_device']!=dr['actual_device'] or br['device_name']!=dr['device_name']:
+            raise ValueError('The receiving Gaussian basis must be measured on the selected hardware.')
+        return publish(m,output,ref,rr,dev,dr,beam,br)
     with np.load(ref/'arrays.npz',allow_pickle=False) as r,np.load(dev/'arrays.npz',allow_pickle=False) as d:
         stored={**{f'ref_{k}':r[k] for k in r.files},**{f'dev_{k}':d[k] for k in d.files}}
         incident=-normal_flux(r['upper'],1/m['resolution'])
@@ -386,7 +426,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--device',choices=['gpu'],required=True)
     parser.add_argument('--resolution',type=int,choices=(12,16),default=12)
-    parser.add_argument('--geometry',choices=('compact','compact-narrow','tidy3d','lumerical'),default='compact')
+    parser.add_argument('--geometry',choices=('compact','compact-narrow','tidy3d','lumerical','compact-radiation'),default='compact')
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--checkpoint',type=Path)
     parser.add_argument('--stage',choices=('reference','device'),help=argparse.SUPPRESS)

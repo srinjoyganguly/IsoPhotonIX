@@ -29,6 +29,7 @@ const spectrumKeys = {
   'Drop': ['drop', 'valid_bins'],
   'Reflection': ['reflection', 'valid_bins'],
   'Add-side outgoing': ['add_side', 'valid_bins'],
+  'TE guide to Gaussian': ['guide_to_beam','valid_energy_bins'],
   'Gaussian to TE guide': ['beam_to_guide', 'valid_beam_bins'],
   'Total output aperture flux': ['direct_output_fraction', 'valid_direct_bins'],
   'Upward radiation fraction': ['guide_radiation_up', 'valid_energy_bins'],

@@ -10,7 +10,7 @@ import sys
 import tempfile
 import zipfile
 
-from pydantic import ConfigDict, BaseModel, model_validator
+from pydantic import ConfigDict, BaseModel, Field, model_validator
 from typing import Literal
 
 from .runtime import ROOT, interpreter
@@ -21,15 +21,30 @@ CASES = {
     'ring': ('Add/drop ring', 'Calibrated bus and drop spectra in a planar effective-index ring.'),
     'grating': ('Grating radiation', 'Guided input, upward radiation and Gaussian coupling in a planar grating.'),
     'multimode': ('Multimode slab joint', 'Two TE modes on each side of a planar offset joint, checked against independent mode matching.'),
+    'ring-3d': ('3D bus-loaded ring', 'A full-vector, finite-height ring with two bus guides and a separate incident reference.'),
+    'grating-3d': ('3D finite-width grating', 'A finite-width grating and taper with Gaussian illumination and a calibrated guided output.'),
+    'layout-ports-2d': ('Planar layout ports', 'Excite user-positioned ports on a lossless polygon layout and measure its complex fundamental-mode matrix.'),
+    'multimode-tm': ('TM multimode slab joint', 'Two independently launched transverse-magnetic modes on each side of a planar joint.'),
     'multimode-3d': ('Finite-height multimode joint', 'Two quasi-TE modes on each side of a finite-height offset silicon strip.'),
 }
+
+
+GPU_COMPONENTS = ('ring-3d', 'grating-3d')
+
+
+def calibration_routes(case):
+    if case in GPU_COMPONENTS:
+        return ['fdtdx:gpu']
+    if case in ('coupler', 'splitter'):
+        return ['meep:cpu', 'fdtdx:cpu', 'fdtdx:gpu']
+    return ['meep:cpu']
 
 
 class Calibration(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     study_type: Literal['calibrated-component'] = 'calibrated-component'
     revision: Literal[1,2] = 2
-    case: Literal['coupler','splitter','ring','grating','multimode','multimode-3d']
+    case: Literal['coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d']
     solver: Literal['meep','fdtdx']
     device: Literal['cpu','gpu']
     resolution: int | None = None
@@ -37,6 +52,12 @@ class Calibration(BaseModel):
     material_model: Literal['legacy-x','yee-aligned'] | None = None
     ring_scope: Literal['full','lumerical','tidy3d'] | None = None
     grating_scope: Literal['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'] | None = None
+
+    # Omit new optional keys from historical specifications and captured job settings.
+    geometry_3d: Literal['compact','compact-narrow','compact-radiation','lumerical','tidy3d'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    port_distance_um: float | None = Field(default=None, exclude_if=lambda v: v is None)
+    planar_layout: dict | None = Field(default=None, exclude_if=lambda v: v is None)
+    duration_um_c: float | None = Field(default=None, exclude_if=lambda v: v is None)
 
     @model_validator(mode='before')
     @classmethod
@@ -49,6 +70,40 @@ class Calibration(BaseModel):
 
     @model_validator(mode='after')
     def available_route(self):
+        if self.planar_layout is not None and self.case != 'layout-ports-2d':
+            raise ValueError('A planar layout belongs to the planar layout ports preset.')
+        if self.case == 'layout-ports-2d':
+            from .planar_port_layout import default_planar_port_layout, validate_planar_port_layout
+            document = default_planar_port_layout() if self.planar_layout is None else self.planar_layout
+            self.planar_layout = validate_planar_port_layout(document)
+        if self.case in (*GPU_COMPONENTS, 'multimode-tm', 'layout-ports-2d') and self.revision != 2:
+            raise ValueError('New calibrated components require revision 2.')
+        if self.geometry_3d is not None and self.case not in GPU_COMPONENTS:
+            raise ValueError('Choose a full 3D ring or grating for the reference geometry.')
+        if self.port_distance_um is not None and self.case != 'multimode-tm':
+            raise ValueError('Movable port planes are supported on the planar TM joint.')
+        if self.duration_um_c is not None and self.case != 'ring-3d':
+            raise ValueError('Choose the 3D ring to set an observation duration.')
+        if self.case in GPU_COMPONENTS:
+            if f'{self.solver}:{self.device}' not in calibration_routes(self.case):
+                raise ValueError('This 3D preset requires explicit FDTDX NVIDIA execution.')
+            if any(value is not None for value in (self.offset_um, self.ring_scope, self.grating_scope, self.material_model)):
+                raise ValueError('The 3D component worker uses its directly specified geometry and material sampling.')
+            ring = self.case == 'ring-3d'
+            geometries = ('lumerical','tidy3d') if ring else ('compact','compact-narrow','compact-radiation','tidy3d','lumerical')
+            self.geometry_3d = self.geometry_3d or geometries[0]
+            if self.geometry_3d not in geometries:
+                raise ValueError(f'Available {self.case} geometries: {", ".join(geometries)}.')
+            meshes = (12,16,20,24) if ring else (12,16)
+            if self.resolution is None:
+                self.resolution = 16 if ring else 12
+            if self.resolution not in meshes:
+                raise ValueError(f'Available {self.case} meshes: {meshes} cells/µm.')
+            if ring and self.duration_um_c is None:
+                self.duration_um_c = 3200 if self.geometry_3d=='lumerical' else 4800
+            if self.duration_um_c is not None and not 100 <= self.duration_um_c <= 6000:
+                raise ValueError('Choose a ring observation duration between 100 and 6,000 µm/c.')
+            return self
         if self.revision==2:
             if self.solver=='fdtdx' and self.material_model is None:
                 self.material_model='yee-aligned'
@@ -57,7 +112,7 @@ class Calibration(BaseModel):
             if self.case=='grating' and self.grating_scope is None:
                 self.grating_scope='tidy3d-compact'
             if self.resolution is None:
-                default_mesh={'coupler':16,'splitter':16,'multimode':48,'multimode-3d':20}
+                default_mesh={'coupler':16,'splitter':16,'multimode':48,'multimode-3d':20,'multimode-tm':64,'layout-ports-2d':32}
                 if self.case=='grating' and self.grating_scope!='full':
                     default_mesh['grating']=40
                 self.resolution=default_mesh.get(self.case)
@@ -71,7 +126,7 @@ class Calibration(BaseModel):
             raise ValueError('Choose a ring preset for a loaded spectrum.')
         if self.grating_scope is not None and self.case != 'grating':
             raise ValueError('Choose a grating preset for beam comparison.')
-        meshes = {'coupler':(16,20,24),'splitter':(16,20,24),'multimode':(32,48,64),'multimode-3d':(16,20,24)}
+        meshes = {'coupler':(16,20,24),'splitter':(16,20,24),'multimode':(32,48,64),'multimode-3d':(16,20,24),'multimode-tm':(48,64,80),'layout-ports-2d':(24,32,40)}
         if self.case=='grating' and self.grating_scope not in (None,'full'):
             meshes['grating']=(28,40,60)
         if self.solver=='fdtdx':
@@ -80,10 +135,51 @@ class Calibration(BaseModel):
             raise ValueError('Choose a supported mesh for this preset.')
         if self.offset_um is not None and (not self.case.startswith('multimode') or not 0 <= self.offset_um <= .25):
             raise ValueError('The offset is available only for multimode joints, between 0 and 0.25 µm.')
+        if self.case == 'layout-ports-2d':
+            for port in self.planar_layout['ports']:
+                axis = 0 if port['outward'].endswith('x') else 1
+                cells = port['center_um'][axis] * self.resolution
+                if abs(cells - round(cells)) > 1e-8:
+                    raise ValueError(f"Place the {port['name']} port plane on the selected mesh.")
+        if self.case == 'multimode-tm':
+            if self.port_distance_um is None:
+                self.port_distance_um = 1.25
+            if self.offset_um is None:
+                self.offset_um = .125
+            distance = self.port_distance_um
+            if not .75 <= distance <= 1.75:
+                raise ValueError('Choose port planes 0.75–1.75 µm from the TM joint.')
+            cells = distance * self.resolution
+            if abs(cells - round(cells)) > 1e-8:
+                raise ValueError('Choose a TM port plane on the selected mesh.')
         return self
 
 
 def specification(config):
+    if config.case in GPU_COMPONENTS:
+        ring = config.case == 'ring-3d'
+        worker = 'calibrate_loaded_ring3d' if ring else 'calibrate_finite_grating'
+        flag = '--vendor' if ring else '--geometry'
+        args = ['--device', 'gpu', flag, config.geometry_3d, '--resolution', str(config.resolution)]
+        if config.duration_um_c is not None:
+            args += ['--duration-um-c', str(config.duration_um_c)]
+        helpers = ['backend/__init__.py', *['backend/adapters/' + n + '.py' for n in (
+            'fdtdx_adapter', 'fdtdx3d_adapter', 'fdtdx_ports_adapter', 'fdtdx_ports3d_adapter')]]
+        if ring:
+            helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py']
+        else:
+            helpers += ['scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json']
+        return worker, args, helpers
+    if config.case == 'layout-ports-2d':
+        helpers = ['backend/__init__.py','backend/planar_port_layout.py','backend/geometry_draft.py','scripts/calibration_checkpoint.py']
+        return 'calibrate_layout_ports', ['--design','layout.json','--resolution',str(config.resolution)], helpers
+    if config.case == 'multimode-tm':
+        args = ['--resolution', str(config.resolution)]
+        if config.offset_um is not None:
+            args += ['--offset', str(config.offset_um)]
+        if config.port_distance_um is not None:
+            args += ['--port-distance', str(config.port_distance_um)]
+        return 'calibrate_planar_tm', args, ['scripts/calibration_checkpoint.py']
     multiport=config.case in ('coupler','splitter')
     if multiport:
         name='calibrate_fdtdx_multiport' if config.solver=='fdtdx' else 'calibrate_multiport'
@@ -125,6 +221,8 @@ def create_bundle(config, destination):
         target=destination/'source'/filename
         target.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(ROOT/filename,target)
+    if config.planar_layout is not None:
+        (destination/'source/layout.json').write_text(json.dumps(config.planar_layout,indent=2,allow_nan=False)+'\n')
     for filename in ('CREDITS.md','LICENSE'):
         shutil.copyfile(ROOT/filename,destination/filename)
     requirements=['environment-meep.yml','environment-meep-linux-64.lock'] if config.solver=='meep' else [
