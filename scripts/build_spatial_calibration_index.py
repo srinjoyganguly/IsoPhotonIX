@@ -65,9 +65,12 @@ def spatial_index():
                 panel={'series':{vendor:subset(series,('wavelength_um','through','drop','reflection','add_side','valid_bins'))},
                        **subset(data,('case_id','vendor','vendor_comparison','loaded_loss'))}
                 mesh=data['physical_model']['resolution']
-                label=f"{vendor.capitalize()} · {mesh} cells/µm · {data['duration_um_c']:g} µm/c"
+                model=data['physical_model']
+                label=(f"{vendor.capitalize()} · {mesh} cells/µm · {data['duration_um_c']:g} µm/c · "
+                       f"{model['pml']} PML cells · {model['aperture_um']:g} µm port")
                 measurement=f"{data['valid_bins']} of {data['total_bins']} samples passed the observation-window checks."
-                key=(data['passed'], mesh, data['duration_um_c'])
+                nominal=path.name.endswith(f"-t{int(data['duration_um_c'])}.json")
+                key=(data['passed'], mesh, data['duration_um_c'], nominal)
                 if data.get('measured_drop_fsr_nm') is not None and (vendor not in best_ring or key>best_ring[vendor][0]):
                     best_ring[vendor]=(key,data)
             else:

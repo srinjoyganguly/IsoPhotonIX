@@ -127,7 +127,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         <p>{evidence.dimension} · {evidence.routes.join(' / ')}</p>
 
         {evidence.recorded?.length ? <><label>Recorded result<select value={record} onChange={e=>setRecord(+e.target.value)}>
-          {evidence.recorded.map((r,i)=><option key={r.label} value={i}>{r.label}</option>)}</select></label>
+          {evidence.recorded.map((r,i)=><option key={r.receipt} value={i}>{r.label}</option>)}</select></label>
           {evidence.recorded[record]?.qualification && <p>{evidence.recorded[record].qualification}</p>}
           <CalibrationMeasurement key={'measurement'+key+record} value={evidence.recorded[record]?.report}/>
           <SpatialComparison key={'compare'+key+record} value={evidence.recorded[record]?.report}/>
