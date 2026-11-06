@@ -94,9 +94,59 @@
               0.9748803360748716
             ]
           }
+        },
+        "128": {
+          "x": {
+            "neff": [
+              2.2319195799254476,
+              2.2985206956793336,
+              2.364264188285295
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9649755135184299,
+              0.9693008615637344,
+              0.9734036144406756
+            ]
+          },
+          "y": {
+            "neff": [
+              2.2319195799254476,
+              2.2985206956793336,
+              2.364264188285295
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9649755135184299,
+              0.9693008615637344,
+              0.9734036144406756
+            ]
+          }
         }
       },
-      "max_axis_neff_delta": 0.0
+      "max_axis_neff_delta": 0.0,
+      "mesh_diagnostic": {
+        "model": "n(mesh) = limit + A / mesh^p",
+        "assumed_p": 1,
+        "fitted_meshes": [
+          64,
+          96
+        ],
+        "predicted_128": [
+          2.231948104240721,
+          2.2985766205172458,
+          2.36433756474155
+        ],
+        "measured_minus_predicted_128": [
+          -2.852431527333721e-05,
+          -5.592483791216907e-05,
+          -7.337645625504763e-05
+        ],
+        "conditional_limit": [
+          2.1856943722372613,
+          2.253850616264682,
+          2.3213420436406915
+        ],
+        "scope": "A mesh-trend estimate for lead effective index only. The held-out 128-cell sample tests the trend."
+      }
     },
     "mpb": {
       "engine": "mpb",
@@ -192,9 +242,59 @@
               0.9693888211656475
             ]
           }
+        },
+        "128": {
+          "x": {
+            "neff": [
+              2.1845377011277765,
+              2.252403792784942,
+              2.3197025552924755
+            ],
+            "inplane_transverse_e_fraction": [
+              0.960117454237711,
+              0.9647291748042499,
+              0.9692043207298882
+            ]
+          },
+          "y": {
+            "neff": [
+              2.1845377011278173,
+              2.2524037927848433,
+              2.319702555292942
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9601174559382076,
+              0.9647291731735634,
+              0.9692043172690799
+            ]
+          }
         }
       },
-      "max_axis_neff_delta": 5.977422556924239e-09
+      "max_axis_neff_delta": 5.977422556924239e-09,
+      "mesh_diagnostic": {
+        "model": "n(mesh) = limit + A / mesh^p",
+        "assumed_p": 2,
+        "fitted_meshes": [
+          64,
+          96
+        ],
+        "predicted_128": [
+          2.184540682355564,
+          2.2524061085620626,
+          2.319704265710325
+        ],
+        "measured_minus_predicted_128": [
+          -2.9812277877461213e-06,
+          -2.3157771207316102e-06,
+          -1.7104178495763733e-06
+        ],
+        "conditional_limit": [
+          2.185638340155349,
+          2.2535474431096274,
+          2.320879322978524
+        ],
+        "scope": "A mesh-trend estimate for lead effective index only. The held-out 128-cell sample tests the trend."
+      }
     }
   },
   "local_tidy3d_documentation": "https://docs.flexcompute.com/projects/tidy3d/en/latest/faq/docs/faq/how-do-i-run-the-mode-solver-locally.html",

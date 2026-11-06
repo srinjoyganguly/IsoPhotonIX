@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from backend.planar_port_layout import default_planar_port_layout
+from backend.planar_port_layout import default_planar_port_layout, validate_planar_port_layout
 from scripts.calibrate_layout_ports3d import frame, gpu_lock_path, grid, local_phasors, modal_amplitudes, permittivity
 
 
@@ -42,6 +42,23 @@ class LayoutPorts3DTests(unittest.TestCase):
             expected = np.zeros(2)
             expected[int(sign<0)] = np.sqrt(power[0])
             np.testing.assert_allclose(amplitudes[0],expected)
+
+    def test_four_displaced_ports_keep_distinct_straight_monitor_sections(self):
+        ports = [{'name':name,'outward':direction,'center_um':center,'width_um':width}
+                 for name,direction,center,width in (
+                     ('west','-x',[-1.79,-.23],.375),('east','+x',[1.84,.31],.43),
+                     ('south','-y',[-.29,-1.88],.32),('north','+y',[.14,1.82],.50))]
+        design = validate_planar_port_layout({'version':1,'name':'Four displaced leads','ports':ports,
+            'polygons':[[[-1.,-1.],[1.,-1.],[1.,1.],[-1.,1.]]]})
+        mesh = 12
+        _,physical = grid(design,mesh)
+        body = permittivity(design,mesh,0,False)
+        for i,p in enumerate(physical):
+            reference = permittivity(design,mesh,i,True)
+            self.assertLessEqual(abs(p['sampled_center_um'][p['axis']]-p['center_um'][p['axis']]),.5/mesh)
+            for name in ('source','start'):
+                crop = (slice(None),*tuple(slice(s,s+n) for s,n in zip(p[name],p['shape'])))
+                np.testing.assert_array_equal(body[crop],reference[crop])
 
     def test_extrusion_and_attachment_match_at_all_source_and_monitor_slices(self):
         design = default_planar_port_layout()

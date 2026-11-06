@@ -48,17 +48,34 @@ def mode_controls(folder, worker_source=ROOT):
     result = {}
     for engine in ('tidy3d','mpb'):
         first = json.loads((folder/f'{engine}.json').read_text())
-        last = json.loads((folder/f'{engine}96.json').read_text())
         worker = ROOT/'scripts/compare_layout_ports3d_modes.py'
-        if first['source_sha256']!=file_digest(worker) or last['source_sha256']!=first['source_sha256']:
+        rows = dict(first['rows'])
+        if first['source_sha256']!=file_digest(worker):
             raise ValueError('Unmatched transverse solver source.')
-        if {k:v for k,v in first.items() if k!='rows'}!={k:v for k,v in last.items() if k!='rows'}:
-            raise ValueError('The two transverse studies have different physical settings.')
-        rows = dict(first['rows'],**last['rows'])
+        for mesh in (96,128):
+            path = folder/f'{engine}{mesh}.json'
+            if mesh==128 and not path.is_file():
+                continue
+            refined = json.loads(path.read_text())
+            if {k:v for k,v in first.items() if k!='rows'}!={k:v for k,v in refined.items() if k!='rows'}:
+                raise ValueError('The transverse studies have different physical settings or source.')
+            rows.update(refined['rows'])
         residual = max(float(np.max(abs(np.subtract(x['x']['neff'],x['y']['neff'])))) for x in rows.values())
         if residual>1e-6:
             raise ValueError('Orthogonal lead eigenmodes have inconsistent indices.')
         result[engine] = dict(first,rows=rows,max_axis_neff_delta=residual)
+        if '128' in rows:
+            order = 1 if engine=='tidy3d' else 2
+            # Fit only 64 and 96, then test the predicted index against an unused finer mesh.
+            n64,n96,n128 = (np.asarray(rows[str(m)]['x']['neff']) for m in (64,96,128))
+            limit = (96**order*n96-64**order*n64)/(96**order-64**order)
+            predicted = limit+(n96-limit)*(96/128)**order
+            result[engine]['mesh_diagnostic'] = {
+                'model':'n(mesh) = limit + A / mesh^p','assumed_p':order,
+                'fitted_meshes':[64,96],'predicted_128':predicted.tolist(),
+                'measured_minus_predicted_128':(n128-predicted).tolist(),'conditional_limit':limit.tolist(),
+                'scope':'A mesh-trend estimate for lead effective index only. The held-out 128-cell sample tests the trend.'}
+
     frame_check = json.loads((folder/'frames.json').read_text())
     if any(file_digest((worker_source if name in SOURCES else ROOT)/name)!=expected
            for name,expected in frame_check['sources'].items()):
@@ -78,8 +95,8 @@ def verify_run(path, checkpoints, worker_source):
     if (report['case']!='layout-ports-3d' or report['actual_device'].split(':')[0] not in ('gpu','cuda')
             or not report['passed'] or any(not p['settled'] for p in report['stages'])):
         raise ValueError(f'Native setup or stage qualification failed in {path.name}.')
-    if report['sources']!={name:file_digest(worker_source/name) for name in SOURCES}:
-        raise ValueError('The recorded native source differs from the exported implementation.')
+    if report['sources'] not in ({name:file_digest(source/name) for name in SOURCES} for source in (worker_source,ROOT)):
+        raise ValueError('The recorded native source differs from the captured and current implementations.')
     res = report['parameters']['resolution']
     ports = report['sampled_ports']
     stages = {s['label']:s for s in report['stages']}
@@ -149,7 +166,8 @@ def publish(folder, destination, worker_source=ROOT):
         report, data = verify_run(folder/name,folder/'checkpoint',worker_source)
         records[name] = report
         studies[name] = {**{key:report[key] for key in ('checks','channels','reference_through_power','actual_device','native_report_sha256','native_arrays_sha256')},
-                         'complete_native_stages':len(report['stages']),'resolution':report['parameters']['resolution']}
+                         'complete_native_stages':len(report['stages']),'resolution':report['parameters']['resolution'],
+                         'worker_sha256':report['sources']['scripts/calibrate_layout_ports3d.py']}
         prefix = '' if name=='elbow-r16' else name+'_'
         combined.update({prefix+k:v for k,v in data.items()})
     if 'elbow-r16' not in records:
@@ -199,7 +217,9 @@ def publish(folder, destination, worker_source=ROOT):
             'straight_reference_phase_neff':(beta_fdtd*waves[:,None]/(2*np.pi)).tolist()}
     lead = np.asarray(report['stages'][1]['mode_neff'][report['channels'][0]])
     for engine,control in references['local_transverse_modes'].items():
-        checks[f'lead_neff_vs_{engine}_96'] = {'native_minus_reference':(lead-np.array(control['rows']['96']['x']['neff'])).tolist()}
+        for mesh in (96,128):
+            if str(mesh) in control['rows']:
+                checks[f'lead_neff_vs_{engine}_{mesh}'] = {'native_minus_reference':(lead-np.array(control['rows'][str(mesh)]['x']['neff'])).tolist()}
     rawfile = destination.with_name(destination.stem+'-arrays.npz')
     tmp = rawfile.with_suffix('.tmp')
     with tmp.open('wb') as stream:
