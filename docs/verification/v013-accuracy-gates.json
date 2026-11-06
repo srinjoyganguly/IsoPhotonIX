@@ -1,0 +1,131 @@
+{
+  "scope": "Comparison targets from docs/POWER_MISMATCH.md. Unavailable peak assignments are unqualified. A grating sampled on one mesh has no mesh-stability determination.",
+  "absolute_power_tolerance": 0.05,
+  "grating_mesh_power_tolerance": 0.02,
+  "records": {
+    "v012-ring3d-lumerical-r16-t3200.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-ring3d-lumerical-r20-t3200.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": null,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-ring3d-lumerical-r24-t3200.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-ring3d-tidy3d-r16-t4800.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-ring3d-tidy3d-r20-t4800.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": true,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": true,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-grating3d-lumerical-r12.json": {
+      "criteria": {
+        "target_within_five_points": false,
+        "band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-grating3d-lumerical-r14.json": {
+      "criteria": {
+        "target_within_five_points": false,
+        "band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v012-grating3d-tidy3d-r12.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true
+      },
+      "all_evidenced_and_met": true
+    },
+    "v012-grating3d-tidy3d-r14.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true
+      },
+      "all_evidenced_and_met": true
+    },
+    "v013-ring3d-lumerical-r16-t3200-exact-area.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v013-ring3d-lumerical-r20-t3200-exact-area.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": null,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v013-grating3d-lumerical-direct-r12.json": {
+      "criteria": {
+        "target_within_five_points": false,
+        "band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    }
+  },
+  "grating_mesh_controls": [
+    {
+      "vendor": "lumerical",
+      "variant": "volume-average / standard",
+      "coarse": "v012-grating3d-lumerical-r12.json",
+      "fine": "v012-grating3d-lumerical-r14.json",
+      "max_absolute_change": 0.02698602937327521,
+      "within_two_points": false
+    },
+    {
+      "vendor": "tidy3d",
+      "variant": "volume-average / standard",
+      "coarse": "v012-grating3d-tidy3d-r12.json",
+      "fine": "v012-grating3d-tidy3d-r14.json",
+      "max_absolute_change": 0.03756317924524741,
+      "within_two_points": false
+    }
+  ],
+  "diagnosis_sha256": "a3dd8740d4abf6fc06e837dd108c54944d82f76aa900791113a58ea0e1b6ac94"
+}

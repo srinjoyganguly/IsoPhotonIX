@@ -135,8 +135,43 @@ def diagnose(directory, lumerical_file, names):
                 row['mesh'] = model['resolution']
             else:
                 raise ValueError(f'Unexpected component in {name}.')
-        rows[path.name] = {**row, 'source_report_sha256': sha(path), 'native_arrays_sha256': report['arrays_sha256']}
+        rows[path.name] = {**row, 'vendor':report['vendor'].lower(),
+                           'source_report_sha256': sha(path), 'native_arrays_sha256': report['arrays_sha256']}
     return {'target_um': TARGET_UM, 'lumerical_s_parameter_sha256': sha(lumerical_file), 'records': rows}
+
+
+def accuracy_gates(diagnosis):
+    """Evaluate the project targets separately from native field/settling acceptance."""
+    results, families = {}, {}
+    for name, row in diagnosis['records'].items():
+        if row['observable']=='ring':
+            line=row['nearest_published_drop_line']
+            width=line['published_fwhm_nm']
+            shift=line.get('nearest_sampled_center_difference_nm')
+            checks={'nearest_drop_center_within_one_published_linewidth':
+                    abs(shift)<=width if width is not None and shift is not None else None}
+            for port in ('through','drop'):
+                channel=row['channels_at_target'][port]
+                checks[f'{port}_at_target_within_five_points']=abs(channel['local']-channel['published'])<=POWER_TOLERANCE
+                checks[f'{port}_band_mean_within_five_points']=channel['mean_absolute_difference']<=POWER_TOLERANCE
+        else:
+            checks={'target_within_five_points':abs(row['local_at_target']-row['published_at_target'])<=POWER_TOLERANCE,
+                    'band_mean_within_five_points':row['mean_absolute_difference']<=POWER_TOLERANCE}
+            families.setdefault((row['vendor'],row['variant']),[]).append((name,row))
+        results[name]={'criteria':checks,'all_evidenced_and_met':all(value is True for value in checks.values())}
+    mesh_controls=[]
+    for (vendor,variant), acquisition in families.items():
+        ordered=sorted(acquisition,key=lambda pair:pair[1]['mesh'])
+        for (name1,r1),(name2,r2) in zip(ordered,ordered[1:]):
+            if r1['wavelength_um']!=r2['wavelength_um'] or r1['mesh']==r2['mesh']:
+                raise ValueError('Matched grating mesh changes require identical wavelengths and distinct meshes.')
+            delta=abs(np.subtract(r2['local_power'],r1['local_power']))
+            mesh_controls.append({'vendor':vendor,'variant':variant,'coarse':name1,'fine':name2,
+                                  'max_absolute_change':float(delta.max()),'within_two_points':bool(delta.max()<=.02)})
+    return {'scope':'Comparison targets from docs/POWER_MISMATCH.md. Unavailable peak assignments are unqualified. '
+                    'A grating sampled on one mesh has no mesh-stability determination.',
+            'absolute_power_tolerance':POWER_TOLERANCE,'grating_mesh_power_tolerance':.02,
+            'records':results,'grating_mesh_controls':mesh_controls}
 
 
 if __name__ == '__main__':
@@ -145,6 +180,11 @@ if __name__ == '__main__':
     parser.add_argument('--lumerical-ring', type=Path, required=True, help='Original FDTDtoINTERCONNECT.txt attachment')
     parser.add_argument('--extra-record', action='append', default=[], help='Additional verified receipt stem')
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--gates-output',type=Path)
     args = parser.parse_args()
     result = diagnose(args.directory, args.lumerical_ring, [*NOMINAL, *args.extra_record])
     args.output.write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
+    if args.gates_output:
+        gates = accuracy_gates(result)
+        gates['diagnosis_sha256']=sha(args.output)
+        args.gates_output.write_text(json.dumps(gates, indent=2, allow_nan=False)+'\n')

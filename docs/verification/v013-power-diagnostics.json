@@ -1269,6 +1269,7 @@
       },
       "variant": "legacy / fixed",
       "mesh": 16,
+      "vendor": "lumerical",
       "source_report_sha256": "f85d46da0f1da19ce504568a940af52f17461db9f223c2982474b2698214dee8",
       "native_arrays_sha256": "b792e3c8bd3be09921d2fb5fd78593e44873020a137046cc28aedff338388ab1"
     },
@@ -2533,6 +2534,7 @@
       },
       "variant": "legacy / fixed",
       "mesh": 20,
+      "vendor": "lumerical",
       "source_report_sha256": "bf75664b808d5c37c8265ecbe66fd100d62e6736fd49b82befae8ee43ddd66e2",
       "native_arrays_sha256": "39d2549a62f1191e340ba8faef4e4f2b7fef6fbff926111656ad05bb24a1e77f"
     },
@@ -3803,6 +3805,7 @@
       },
       "variant": "legacy / fixed",
       "mesh": 24,
+      "vendor": "lumerical",
       "source_report_sha256": "5ba8e7e5107e2e9f96357d749f979d6fba5121f9ffa3178c1e50f15278aa896c",
       "native_arrays_sha256": "eed5ae97b83f67346dcb5cd66c6eef355c8b6dad472f57bf65ba7c309f56b2ac"
     },
@@ -3840,6 +3843,7 @@
       },
       "variant": "legacy / fixed",
       "mesh": 16,
+      "vendor": "tidy3d",
       "source_report_sha256": "3cc9e9cd4d5549885354d26d2b7f899f748ef94000b681d7828cefbea5517407",
       "native_arrays_sha256": "e313e264c02f058e3e9eb9c3f4d72d05d7d6e7b45bd7e332807fa4cb04c9c154"
     },
@@ -3877,6 +3881,7 @@
       },
       "variant": "legacy / fixed",
       "mesh": 20,
+      "vendor": "tidy3d",
       "source_report_sha256": "241b9b5ca0e8b795c187c8ce818f6f17029d508b9979dd74df0b3fc7c5d0227b",
       "native_arrays_sha256": "b68e412bdae7373222e74298a9eda1e58916990aee1cc3b6b7eb2249f8c5922c"
     },
@@ -3920,6 +3925,7 @@
       },
       "variant": "volume-average / standard",
       "mesh": 12,
+      "vendor": "lumerical",
       "source_report_sha256": "dc1f378fb95a4ef17ba1f5bbab81f8469959d61fa54856bb68e3e7f3167edad5",
       "native_arrays_sha256": "99ed493d7746c0a996b018e9a3fb0ca31a9669c26a95b6acdd4b18d0a6cc5992"
     },
@@ -3963,6 +3969,7 @@
       },
       "variant": "volume-average / standard",
       "mesh": 14,
+      "vendor": "lumerical",
       "source_report_sha256": "819a0b2fce954c4d85a523156637889f273f73a01a08d8fbaddc04a160d817b8",
       "native_arrays_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f"
     },
@@ -4006,6 +4013,7 @@
       },
       "variant": "volume-average / standard",
       "mesh": 12,
+      "vendor": "tidy3d",
       "source_report_sha256": "d54da556061a54c7dd4f364510ae879ecf8e9f013fa9d9f137b2461b58283b10",
       "native_arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c"
     },
@@ -4049,6 +4057,7 @@
       },
       "variant": "volume-average / standard",
       "mesh": 14,
+      "vendor": "tidy3d",
       "source_report_sha256": "c00abb7004c283dce09a4b9290dbe11642c7108ab3eb01c6d43d5bd1dc041808",
       "native_arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9"
     },
@@ -4096,6 +4105,7 @@
       },
       "variant": "exact-area / fixed",
       "mesh": 16,
+      "vendor": "lumerical",
       "source_report_sha256": "76165fd74e0d29dfe8ffbd4439347fbe34c7a2f2ef28b8a0d1662c0b5eefe30e",
       "native_arrays_sha256": "adf95f50b94eb001d1a9bea588c19e2007b3fbbf8013515efa3fd3cba667c687"
     },
@@ -4137,6 +4147,7 @@
       },
       "variant": "exact-area / fixed",
       "mesh": 20,
+      "vendor": "lumerical",
       "source_report_sha256": "c130c36f38d2739475dfc122a3e1d226eb94a9b2ea9dc9d993882b552051f3f0",
       "native_arrays_sha256": "b6a3af4430e24dfca00e5ab6e92eb2d2b8d949b740a14e886b39aa47577eed9a"
     },
@@ -4180,6 +4191,7 @@
       },
       "variant": "direct-yee / standard",
       "mesh": 12,
+      "vendor": "lumerical",
       "source_report_sha256": "f6b3adcbd03f8bb8febb96bbb7e5f37246d89e3cc0f656ca8599d15088c09800",
       "native_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903"
     }

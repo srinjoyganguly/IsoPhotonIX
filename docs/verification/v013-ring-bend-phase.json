@@ -1,0 +1,508 @@
+{
+  "method": "Local Tidy3D transverse mode solver, curved coordinate system, no time-domain or cloud solve.",
+  "version": "2.11.2",
+  "bend_radius_um": 3.1,
+  "material_input": "v013-ring-project-audit.json",
+  "scope": "Isolated bend phase model. Sampling and aperture sensitivity are shown; the two buses, coupler phase, backscatter and loaded lineshapes require full time evolution.",
+  "program_sha256": "dda83d647550b53b3f08b8cb3e45f0455e9262ecf1b688c9585609563850b89a",
+  "controls": [
+    {
+      "mesh_cells_per_um": 64,
+      "aperture_um": 2.6,
+      "interface_registered": false,
+      "modes": [
+        {
+          "wavelength_um": 1.5,
+          "n_real": 2.0477041302986434,
+          "n_imag": 5.173161788588572e-08,
+          "te_fraction": 0.9591284575450292,
+          "core_ey_intensity_fraction": 0.5259156280623138,
+          "mode_index": 1,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 26.589949310216337
+        },
+        {
+          "wavelength_um": 1.525,
+          "n_real": 2.004119761334904,
+          "n_imag": 1.65088517064256e-08,
+          "te_fraction": 0.9556635181456891,
+          "core_ey_intensity_fraction": 0.49925893517045616,
+          "mode_index": 2,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 25.597372523651124
+        },
+        {
+          "wavelength_um": 1.55,
+          "n_real": 1.9592980763451175,
+          "n_imag": 4.172038837787807e-06,
+          "te_fraction": 0.9520670279390822,
+          "core_ey_intensity_fraction": 0.4710041238649086,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 24.62126577135374
+        },
+        {
+          "wavelength_um": 1.575,
+          "n_real": 1.9140672140356347,
+          "n_imag": 2.3914795838543614e-05,
+          "te_fraction": 0.9484181184846756,
+          "core_ey_intensity_fraction": 0.44138028636047083,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 23.671086278201194
+        },
+        {
+          "wavelength_um": 1.6,
+          "n_real": 1.86902097598431,
+          "n_imag": 8.146376958168411e-05,
+          "te_fraction": 0.9447986307638294,
+          "core_ey_intensity_fraction": 0.41058981950948475,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 22.75284744928544
+        }
+      ],
+      "isolated_ring_estimates": [
+        {
+          "integer_order": 23,
+          "wavelength_um": 1.5932710166753024
+        },
+        {
+          "integer_order": 24,
+          "wavelength_um": 1.5663460108282403
+        },
+        {
+          "integer_order": 25,
+          "wavelength_um": 1.5402998768383975
+        },
+        {
+          "integer_order": 26,
+          "wavelength_um": 1.5148590345402355
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "aperture_um": 2.6,
+      "interface_registered": false,
+      "modes": [
+        {
+          "wavelength_um": 1.5,
+          "n_real": 1.9984947000911855,
+          "n_imag": 5.4573425074562095e-08,
+          "te_fraction": 0.9542135435723649,
+          "core_ey_intensity_fraction": 0.489666021691637,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 25.950952574584367
+        },
+        {
+          "wavelength_um": 1.525,
+          "n_real": 1.9551596984789767,
+          "n_imag": 5.251273717829187e-06,
+          "te_fraction": 0.9505425523213245,
+          "core_ey_intensity_fraction": 0.46191152558378357,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 24.972036158088923
+        },
+        {
+          "wavelength_um": 1.55,
+          "n_real": 1.9108417050112325,
+          "n_imag": 2.6372778133631264e-05,
+          "te_fraction": 0.946782611396116,
+          "core_ey_intensity_fraction": 0.43260075009783794,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 24.012345050545132
+        },
+        {
+          "wavelength_um": 1.575,
+          "n_real": 1.8663998034780434,
+          "n_imag": 8.580010223571058e-05,
+          "te_fraction": 0.9430256551664596,
+          "core_ey_intensity_fraction": 0.40201332247228716,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 23.08158796816631
+        },
+        {
+          "wavelength_um": 1.6,
+          "n_real": 1.8224627565282234,
+          "n_imag": 0.0002253217168911968,
+          "te_fraction": 0.939362518662034,
+          "core_ey_intensity_fraction": 0.3704160296744588,
+          "mode_index": 3,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 22.18606297848152
+        }
+      ],
+      "isolated_ring_estimates": [
+        {
+          "integer_order": 23,
+          "wavelength_um": 1.5772776574943774
+        },
+        {
+          "integer_order": 24,
+          "wavelength_um": 1.5503315862639901
+        },
+        {
+          "integer_order": 25,
+          "wavelength_um": 1.5242858470488423
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "aperture_um": 3.2,
+      "interface_registered": false,
+      "modes": [
+        {
+          "wavelength_um": 1.55,
+          "n_real": 1.9082528475467258,
+          "n_imag": 3.2067529369273355e-05,
+          "te_fraction": 0.9465572115244668,
+          "core_ey_intensity_fraction": 0.4309467616133899,
+          "mode_index": 2,
+          "source_grid_interface_registered": false,
+          "round_trip_cycles": 23.979812508178387
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "aperture_um": 2.6,
+      "interface_registered": true,
+      "modes": [
+        {
+          "wavelength_um": 1.5,
+          "n_real": 2.1366157176709972,
+          "n_imag": 4.54602063756383e-08,
+          "te_fraction": 0.9654782070428417,
+          "core_ey_intensity_fraction": 0.5023010700546652,
+          "mode_index": 0,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 27.744488467676046
+        },
+        {
+          "wavelength_um": 1.525,
+          "n_real": 2.0954039901857398,
+          "n_imag": 2.0480112124322257e-07,
+          "te_fraction": 0.9624055835511043,
+          "core_ey_intensity_fraction": 0.47985003951776045,
+          "mode_index": 1,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 26.763289080390564
+        },
+        {
+          "wavelength_um": 1.55,
+          "n_real": 2.0528161344987086,
+          "n_imag": 1.3574851210760115e-07,
+          "te_fraction": 0.9591525067017275,
+          "core_ey_intensity_fraction": 0.4561869155921682,
+          "mode_index": 1,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 25.79644834924696
+        },
+        {
+          "wavelength_um": 1.575,
+          "n_real": 2.0096092250283233,
+          "n_imag": -9.327466238066265e-08,
+          "te_fraction": 0.9557683090889161,
+          "core_ey_intensity_fraction": 0.43150480133118313,
+          "mode_index": 2,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 24.852645195681653
+        },
+        {
+          "wavelength_um": 1.6,
+          "n_real": 1.966295889561608,
+          "n_imag": 3.979966015805416e-06,
+          "te_fraction": 0.9523060651292048,
+          "core_ey_intensity_fraction": 0.40592921344703153,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 23.937040295543397
+        }
+      ],
+      "isolated_ring_estimates": [
+        {
+          "integer_order": 24,
+          "wavelength_um": 1.5982809259636146
+        },
+        {
+          "integer_order": 25,
+          "wavelength_um": 1.571096781310761
+        },
+        {
+          "integer_order": 26,
+          "wavelength_um": 1.5447366809186795
+        },
+        {
+          "integer_order": 27,
+          "wavelength_um": 1.518968837458605
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "aperture_um": 2.6,
+      "interface_registered": true,
+      "modes": [
+        {
+          "wavelength_um": 1.5,
+          "n_real": 2.091229827357401,
+          "n_imag": -1.0812454499999149e-07,
+          "te_fraction": 0.9599629155306673,
+          "core_ey_intensity_fraction": 0.4934379968136441,
+          "mode_index": 2,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 27.15514135205463
+        },
+        {
+          "wavelength_um": 1.525,
+          "n_real": 2.0490728500943067,
+          "n_imag": -1.698228751463391e-07,
+          "te_fraction": 0.9565796013607405,
+          "core_ey_intensity_fraction": 0.46913579255807775,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 26.171530306665414
+        },
+        {
+          "wavelength_um": 1.55,
+          "n_real": 2.0056309594211315,
+          "n_imag": -2.3834286701970876e-07,
+          "te_fraction": 0.9530406513205428,
+          "core_ey_intensity_fraction": 0.44353284688655725,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 25.203501951718696
+        },
+        {
+          "wavelength_um": 1.575,
+          "n_real": 1.961691901240716,
+          "n_imag": 4.908228139618058e-06,
+          "te_fraction": 0.9494125843568594,
+          "core_ey_intensity_fraction": 0.4168368611979668,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 24.26005623261933
+        },
+        {
+          "wavelength_um": 1.6,
+          "n_real": 1.9178017082966734,
+          "n_imag": 2.716917508949228e-05,
+          "te_fraction": 0.9457635550204491,
+          "core_ey_intensity_fraction": 0.38922875256350303,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 23.34668806157879
+        }
+      ],
+      "isolated_ring_estimates": [
+        {
+          "integer_order": 24,
+          "wavelength_um": 1.582118056027808
+        },
+        {
+          "integer_order": 25,
+          "wavelength_um": 1.5553925188169004
+        },
+        {
+          "integer_order": 26,
+          "wavelength_um": 1.5294298884890323
+        },
+        {
+          "integer_order": 27,
+          "wavelength_um": 1.5039431580394982
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 128,
+      "aperture_um": 2.6,
+      "interface_registered": true,
+      "modes": [
+        {
+          "wavelength_um": 1.5,
+          "n_real": 2.0685423254805415,
+          "n_imag": -1.4151989314919315e-07,
+          "te_fraction": 0.9571495419551613,
+          "core_ey_intensity_fraction": 0.4891308716204513,
+          "mode_index": 2,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 26.86053847659276
+        },
+        {
+          "wavelength_um": 1.525,
+          "n_real": 2.0259357180945003,
+          "n_imag": -5.443160165615322e-07,
+          "te_fraction": 0.9536250135128637,
+          "core_ey_intensity_fraction": 0.46385027496947323,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 25.876014141237533
+        },
+        {
+          "wavelength_um": 1.55,
+          "n_real": 1.9821021467886046,
+          "n_imag": 7.372988164939201e-07,
+          "te_fraction": 0.9499635717566055,
+          "core_ey_intensity_fraction": 0.437213770678908,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 24.90783017206255
+        },
+        {
+          "wavelength_um": 1.575,
+          "n_real": 1.9378462691239133,
+          "n_imag": 1.217306093186095e-05,
+          "te_fraction": 0.9462401807054649,
+          "core_ey_intensity_fraction": 0.40945871303063247,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 23.965159579536298
+        },
+        {
+          "wavelength_um": 1.6,
+          "n_real": 1.893735032247638,
+          "n_imag": 5.046229913187058e-05,
+          "te_fraction": 0.9425321284452676,
+          "core_ey_intensity_fraction": 0.3807859690618715,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 23.053708252474888
+        }
+      ],
+      "isolated_ring_estimates": [
+        {
+          "integer_order": 24,
+          "wavelength_um": 1.5740760181568214
+        },
+        {
+          "integer_order": 25,
+          "wavelength_um": 1.5476200332046401
+        },
+        {
+          "integer_order": 26,
+          "wavelength_um": 1.521851630419127
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 160,
+      "aperture_um": 2.6,
+      "interface_registered": true,
+      "modes": [
+        {
+          "wavelength_um": 1.5,
+          "n_real": 2.054840066374558,
+          "n_imag": -1.284393068087358e-07,
+          "te_fraction": 0.9553828697064478,
+          "core_ey_intensity_fraction": 0.48601810295305264,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 26.68261122154033
+        },
+        {
+          "wavelength_um": 1.525,
+          "n_real": 2.0119733135423377,
+          "n_imag": -6.328863066804752e-07,
+          "te_fraction": 0.9517769967708775,
+          "core_ey_intensity_fraction": 0.4601428895066444,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 25.697681050799076
+        },
+        {
+          "wavelength_um": 1.55,
+          "n_real": 1.9679191269079845,
+          "n_imag": 2.408138995789774e-06,
+          "te_fraction": 0.9480477831690032,
+          "core_ey_intensity_fraction": 0.43288403849352863,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 24.729601087811854
+        },
+        {
+          "wavelength_um": 1.575,
+          "n_real": 1.923493649010376,
+          "n_imag": 1.9428950402298335e-05,
+          "te_fraction": 0.9442758258590228,
+          "core_ey_intensity_fraction": 0.40449461889759786,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 23.787662098499844
+        },
+        {
+          "wavelength_um": 1.6,
+          "n_real": 1.8792775529135115,
+          "n_imag": 7.116148422085637e-05,
+          "te_fraction": 0.9405440141646861,
+          "core_ey_intensity_fraction": 0.3751897500144435,
+          "mode_index": 3,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 22.877707647871002
+        }
+      ],
+      "isolated_ring_estimates": [
+        {
+          "integer_order": 23,
+          "wavelength_um": 1.5966401518217619
+        },
+        {
+          "integer_order": 24,
+          "wavelength_um": 1.5693643403683915
+        },
+        {
+          "integer_order": 25,
+          "wavelength_um": 1.543017133849311
+        },
+        {
+          "integer_order": 26,
+          "wavelength_um": 1.5173263862205226
+        }
+      ]
+    },
+    {
+      "mesh_cells_per_um": 128,
+      "aperture_um": 3.2,
+      "interface_registered": true,
+      "modes": [
+        {
+          "wavelength_um": 1.55,
+          "n_real": 1.982264964006112,
+          "n_imag": 7.188254691869252e-06,
+          "te_fraction": 0.9499892317985752,
+          "core_ey_intensity_fraction": 0.43729966188906494,
+          "mode_index": 1,
+          "source_grid_interface_registered": true,
+          "round_trip_cycles": 24.909876193560148
+        }
+      ]
+    }
+  ],
+  "conditional_mesh_extrapolation": [
+    {
+      "coarse_mesh": 64,
+      "fine_mesh": 96,
+      "heldout_mesh": 128,
+      "order": 24,
+      "linear_spacing_limit_um": 1.549792316156195,
+      "heldout_prediction_um": 1.5740366210599048,
+      "heldout_measured_um": 1.5740760181568214,
+      "heldout_difference_nm": -0.03939709691658244
+    },
+    {
+      "coarse_mesh": 96,
+      "fine_mesh": 128,
+      "heldout_mesh": 160,
+      "order": 24,
+      "linear_spacing_limit_um": 1.5499499045438614,
+      "heldout_prediction_um": 1.5692507954342294,
+      "heldout_measured_um": 1.5693643403683915,
+      "heldout_difference_nm": -0.11354493416204647
+    }
+  ]
+}
