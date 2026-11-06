@@ -1,0 +1,53 @@
+{
+  "scope": "Approximate first-order phase matching of two symmetric oxide-supported TE slab sections, including the Yee temporal and longitudinal dispersion relations. The model omits curved-tooth scattering, the 3D taper, fiber overlap, finite substrate and transverse radiation. It supplies a mesh-sensitivity diagnostic, not the 3D coupling spectrum.",
+  "physical_continuous_slabs": {
+    "mesh_cells_per_um": null,
+    "rib_te_neff_1550": 2.8481578567840424,
+    "film_te_neff_1550": 2.3452709706929786,
+    "estimated_first_order_wavelength_um": 1.5434719819252285
+  },
+  "sampled_slabs": [
+    {
+      "mesh_cells_per_um": 12,
+      "rib_te_neff_1550": 2.864817513044042,
+      "film_te_neff_1550": 2.262428105374951,
+      "estimated_first_order_wavelength_um": 1.5227201977682399
+    },
+    {
+      "mesh_cells_per_um": 14,
+      "rib_te_neff_1550": 2.8611762383711086,
+      "film_te_neff_1550": 2.2632722485505856,
+      "estimated_first_order_wavelength_um": 1.5219013351359405
+    },
+    {
+      "mesh_cells_per_um": 16,
+      "rib_te_neff_1550": 2.843246235765301,
+      "film_te_neff_1550": 2.30166366569241,
+      "estimated_first_order_wavelength_um": 1.5297292255733017
+    },
+    {
+      "mesh_cells_per_um": 24,
+      "rib_te_neff_1550": 2.8531959848694997,
+      "film_te_neff_1550": 2.314817691128585,
+      "estimated_first_order_wavelength_um": 1.5354286802429464
+    },
+    {
+      "mesh_cells_per_um": 48,
+      "rib_te_neff_1550": 2.8471627855283503,
+      "film_te_neff_1550": 2.334772097955477,
+      "estimated_first_order_wavelength_um": 1.540140526636674
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "rib_te_neff_1550": 2.8478110093876174,
+      "film_te_neff_1550": 2.343080763727069,
+      "estimated_first_order_wavelength_um": 1.5427501057520907
+    }
+  ],
+  "measured_12_cell_device": {
+    "strongest_tested_wavelength_um": 1.525,
+    "power": 0.31902785446514464
+  },
+  "published_lumerical_peak_um": 1.557615894039735,
+  "fine_root_check_passed": true
+}

@@ -292,7 +292,8 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         from jax.sharding import SingleDeviceSharding
         sharding=SingleDeviceSharding(gpu)
         def abstract(a):
-            return jax.ShapeDtypeStruct(a.shape,a.dtype,sharding=sharding)
+            array=jnp.asarray(a)
+            return jax.ShapeDtypeStruct(array.shape,array.dtype,sharding=sharding,weak_type=array.weak_type)
         spec=jax.tree.map(abstract,state)
         end_spec=jax.ShapeDtypeStruct((),jnp.int32,sharding=sharding)
         jax.config.update('jax_default_device',gpu)

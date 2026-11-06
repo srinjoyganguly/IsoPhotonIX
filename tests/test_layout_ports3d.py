@@ -1,13 +1,29 @@
 """Regression checks for signed cardinal-port frames and exact straight corridors."""
+import os
+from pathlib import Path
+import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 
 from backend.planar_port_layout import default_planar_port_layout
-from scripts.calibrate_layout_ports3d import frame, grid, local_phasors, modal_amplitudes, permittivity
+from scripts.calibrate_layout_ports3d import frame, gpu_lock_path, grid, local_phasors, modal_amplitudes, permittivity
 
 
 class LayoutPorts3DTests(unittest.TestCase):
+    def test_lock_override_and_private_per_user_default(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            with patch.dict(os.environ,{'PHOTONICS_GPU_LOCK':str(root/'shared.lock'),'XDG_RUNTIME_DIR':tmp}):
+                self.assertEqual(gpu_lock_path(),root/'shared.lock')
+            with patch.dict(os.environ,{'PHOTONICS_GPU_LOCK':'','XDG_RUNTIME_DIR':tmp}):
+                self.assertEqual(gpu_lock_path(),root/'photonics-workbench-gpu.lock')
+            with patch.dict(os.environ,{'PHOTONICS_GPU_LOCK':'','XDG_RUNTIME_DIR':''}), patch('tempfile.gettempdir',return_value=tmp):
+                lock = gpu_lock_path()
+                self.assertEqual(lock.parent,root/f'photonics-workbench-{os.getuid()}')
+                self.assertEqual(lock.parent.stat().st_mode & 0o077,0)
+
     def test_y_port_uses_positive_ex_and_axial_h_sign(self):
         # A +y wave with +Ex has -Hz. Its backward partner keeps Ex and reverses H.
         electric = np.zeros((3,5,1,4))

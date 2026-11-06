@@ -1163,6 +1163,11 @@
     "file": "v012-layout-ports3d-arrays.npz",
     "sha256": "b96dd2e022b7d11b3557b1f2856bd7d2e6181b059dc121fe401279ce5ac742ed"
   },
+  "worker_compatibility": {
+    "captured_worker_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+    "shipping_worker_sha256": "dc15ee759fd13c7ec17edc4dbdbc655615511596f4d249e0d32847e5e85651c8",
+    "change": "Only the GPU coordination lock selection and its helper/import changed. Numerical functions, settings and dependencies match the captured source."
+  },
   "material_sampling": "Eight by eight lateral quadrature points per Yee component cell, exact slab thickness overlap. Ex/Ey use arithmetic volume mixing. Ez uses harmonic mixing across the flat vertical interface and an arithmetic lateral area average.",
   "qualification": "All published matrices were reconstructed from native E/H phasors and signed reciprocal overlaps. Mesh and reference-plane differences are reported separately."
 }

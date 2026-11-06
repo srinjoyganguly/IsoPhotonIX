@@ -1,5 +1,6 @@
 """Verify native fields and collect finite-height polygon-port controls."""
 import argparse
+import ast
 import json
 from pathlib import Path
 import sys
@@ -15,7 +16,35 @@ TIDY = 'https://docs.flexcompute.com/projects/tidy3d/en/latest/faq/docs/faq/how-
 RUNS = ('elbow-r16','straight-x-r12','straight-y-r12','elbow-r12','elbow-shifted-r12')
 
 
-def mode_controls(folder):
+def source_compatibility(worker_source):
+    name = 'scripts/calibrate_layout_ports3d.py'
+    current, captured = ROOT/name, worker_source/name
+    result = {'captured_worker_sha256':file_digest(captured),'shipping_worker_sha256':file_digest(current)}
+    if any(file_digest(ROOT/p)!=file_digest(worker_source/p) for p in SOURCES if p!=name):
+        raise ValueError('Transported solver dependencies differ between the measured and current sources.')
+    if result['shipping_worker_sha256']==result['captured_worker_sha256']:
+        return dict(result,change='Identical captured and shipping workers.')
+    def normalized(path, shipping):
+        tree = ast.parse(path.read_text())
+        nodes = []
+        for node in tree.body:
+            if shipping and isinstance(node,ast.FunctionDef) and node.name=='gpu_lock_path':
+                continue
+            if shipping and isinstance(node,ast.Import) and node.names[0].name=='stat':
+                continue
+            if not shipping and isinstance(node,ast.Assign) and ast.unparse(node.targets[0])=='GPU_LOCK':
+                continue
+            if isinstance(node,ast.FunctionDef) and node.name=='native_stage':
+                # Compare the complete body after normalizing just the lock-path expression.
+                node = ast.parse(ast.unparse(node).replace("gpu_lock_path().open('a')","GPU_LOCK.open('a')")).body[0]
+            nodes.append(ast.dump(node))
+        return nodes
+    if normalized(current,True)!=normalized(captured,False):
+        raise ValueError('The shipping worker includes changes beyond selecting its GPU coordination lock.')
+    return dict(result,change='Only the GPU coordination lock selection and its helper/import changed. Numerical functions, settings and dependencies match the captured source.')
+
+
+def mode_controls(folder, worker_source=ROOT):
     result = {}
     for engine in ('tidy3d','mpb'):
         first = json.loads((folder/f'{engine}.json').read_text())
@@ -31,7 +60,8 @@ def mode_controls(folder):
             raise ValueError('Orthogonal lead eigenmodes have inconsistent indices.')
         result[engine] = dict(first,rows=rows,max_axis_neff_delta=residual)
     frame_check = json.loads((folder/'frames.json').read_text())
-    if any(file_digest(ROOT/name)!=expected for name,expected in frame_check['sources'].items()):
+    if any(file_digest((worker_source if name in SOURCES else ROOT)/name)!=expected
+           for name,expected in frame_check['sources'].items()):
         raise ValueError('The signed native frame source differs from its receipt.')
     if len(frame_check['rows'])!=8 or max(row['reciprocal_projection_wrong_direction_ratio'] for row in frame_check['rows'])>1e-5:
         raise ValueError('The signed native source projection did not qualify on both meshes and axes.')
@@ -43,12 +73,12 @@ def mode_controls(folder):
                 'scope':'Published circular bend and two straight/bent mode junctions. The Workbench default is an abrupt polygon elbow. The published loss estimate has a different geometry and observable.'}}
 
 
-def verify_run(path, checkpoints):
+def verify_run(path, checkpoints, worker_source):
     report = json.loads((path/'report.json').read_text())
     if (report['case']!='layout-ports-3d' or report['actual_device'].split(':')[0] not in ('gpu','cuda')
             or not report['passed'] or any(not p['settled'] for p in report['stages'])):
         raise ValueError(f'Native setup or stage qualification failed in {path.name}.')
-    if report['sources']!={name:file_digest(ROOT/name) for name in SOURCES}:
+    if report['sources']!={name:file_digest(worker_source/name) for name in SOURCES}:
         raise ValueError('The recorded native source differs from the exported implementation.')
     res = report['parameters']['resolution']
     ports = report['sampled_ports']
@@ -109,14 +139,14 @@ def delta(a,b):
             'phase_delta_rad_max':float(np.max(abs(np.angle(a[visible]*b[visible].conj())))) if np.any(visible) else None}
 
 
-def publish(folder, destination):
+def publish(folder, destination, worker_source=ROOT):
     destination.parent.mkdir(parents=True,exist_ok=True)
-    references = mode_controls(folder)
+    references = mode_controls(folder,worker_source)
     studies, combined, records = {},{},{}
     for name in RUNS:
         if not (folder/name/'report.json').exists():
             continue
-        report, data = verify_run(folder/name,folder/'checkpoint')
+        report, data = verify_run(folder/name,folder/'checkpoint',worker_source)
         records[name] = report
         studies[name] = {**{key:report[key] for key in ('checks','channels','reference_through_power','actual_device','native_report_sha256','native_arrays_sha256')},
                          'complete_native_stages':len(report['stages']),'resolution':report['parameters']['resolution']}
@@ -177,6 +207,7 @@ def publish(folder, destination):
     tmp.replace(rawfile)
     source = {'file':rawfile.name,'sha256':file_digest(rawfile)}
     report.update(studies=studies,controls=checks,references=references,source_arrays=source,
+                  worker_compatibility=source_compatibility(worker_source),
                   material_sampling='Eight by eight lateral quadrature points per Yee component cell, exact slab thickness overlap. Ex/Ey use arithmetic volume mixing. Ez uses harmonic mixing across the flat vertical interface and an arithmetic lateral area average.',
                   qualification='All published matrices were reconstructed from native E/H phasors and signed reciprocal overlaps. Mesh and reference-plane differences are reported separately.')
     tmp = destination.with_suffix('.tmp')
@@ -188,6 +219,7 @@ def publish(folder, destination):
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('measurements',type=Path)
+    parser.add_argument('--worker-source',type=Path,default=ROOT,help='Root of the captured worker files matching the native receipts.')
     parser.add_argument('--output',type=Path,required=True)
     args = parser.parse_args()
-    publish(args.measurements,args.output)
+    publish(args.measurements,args.output,args.worker_source)

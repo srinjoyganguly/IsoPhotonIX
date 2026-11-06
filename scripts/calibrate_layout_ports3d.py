@@ -8,6 +8,7 @@ import importlib.metadata
 import json
 import math
 import os
+import stat
 from pathlib import Path
 import subprocess
 import sys
@@ -36,7 +37,24 @@ WAVELENGTHS = np.array([1.60, 1.55, 1.50])
 FREQ = 1 / WAVELENGTHS
 LIGHT = 299792458.
 PULSE_WIDTH, PULSE_END, AFTER = .16, 62.5, 80.
-GPU_LOCK = Path('/tmp/photonics-v012-gpu.lock')
+
+def gpu_lock_path():
+    override = os.environ.get('PHOTONICS_GPU_LOCK')
+    if override:
+        return Path(override).expanduser()
+    uid = os.getuid()
+    runtime = os.environ.get('XDG_RUNTIME_DIR')
+    fallback = Path(tempfile.gettempdir())/f'photonics-workbench-{uid}'
+    for directory in ([Path(runtime),fallback] if runtime else [fallback]):
+        if directory==fallback:
+            directory.mkdir(mode=0o700,exist_ok=True)
+        try:
+            info = directory.lstat()
+        except FileNotFoundError:
+            continue
+        if stat.S_ISDIR(info.st_mode) and info.st_uid==uid and info.st_mode & 0o077==0:
+            return directory/'photonics-workbench-gpu.lock'
+    raise PermissionError('A private per-user directory is required for the GPU lock.')
 
 
 def file_digest(path):
@@ -274,7 +292,7 @@ def acquire_child(spec, checkpoint, destination):
 
 def native_stage(checkpoint, destination, label):
     spec = json.load(sys.stdin)
-    with GPU_LOCK.open('a') as lock:
+    with gpu_lock_path().open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         expected = stage_spec(spec['design'],spec['resolution'],spec['launch'],spec['reference'],checkpoint)
         if spec!=expected or json_digest(expected)!=label:

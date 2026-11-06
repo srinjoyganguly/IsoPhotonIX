@@ -56,6 +56,10 @@ def runtime_files():
         raise RuntimeError('The compiled interface requires a local script and stylesheet.')
     selected = {*FILES, *assets.paths, *(f'backend/{m}.py' for m in MODULES),
                 *(f'backend/adapters/{m}.py' for m in ADAPTERS)}
+    for case in ('coupler','splitter'):
+        phase_file = f'docs/verification/v012-{case}-phase.json'
+        if (ROOT / phase_file).is_file():
+            selected.add(phase_file)
     for name in sorted(selected):
         source = ROOT / name
         if not source.is_file() or source.resolve() != source:
