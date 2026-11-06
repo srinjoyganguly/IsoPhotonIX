@@ -77,6 +77,8 @@ On first launch, the new default store takes precedence if it exists. Otherwise 
 
 The v0.13.0a1 and earlier study downloads keep their original asset names, numerical source and checksums. The v0.13.0a1 release contains the original measured GPU programs. [Historical study archives](https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a1).
 
+The tested upgrade reopened a completed 3D study from v0.13.0a1 with identical field data and the same registered solver locations. The new source archive also rebuilt the published wheel byte-for-byte. [Upgrade, clean-install and public download checks](verification/isophotonix-rename.json).
+
 ## Run or export a calibrated preset
 
 Open **Calibrated components** in the web or desktop interface. New FDTDX studies use electric-field-aligned permittivity by default. The original grid remains selectable, and imported revision-1 configurations retain their original numerical defaults. New ring and grating commands default to one bounded measurement; choose the full scope explicitly to run the full sensitivity campaign. Select an execution target. **Export Python + notebook** saves the preset before simulation. After a successful local run, the result export includes its measured arrays and a reference manifest. Both Python and Jupyter execute the captured numerical source in the chosen worker.

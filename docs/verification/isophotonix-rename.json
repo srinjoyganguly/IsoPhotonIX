@@ -1,0 +1,120 @@
+{
+  "product": "IsoPhotonIX",
+  "release": {
+    "passed": true,
+    "checked_at": "2026-11-06T18:47:29.920361+00:00",
+    "source_commit": "4b2b6697bbdcf4e6448aa8f2541d91482a6141c2",
+    "wheel": "isophotonix-0.13.0a2-py3-none-any.whl",
+    "wheel_sha256": "8f83c2411c3e1accd6043fa7087d4f6fd11b47146982fd1d1a36e5861015db5a",
+    "sdist": "isophotonix-0.13.0a2.tar.gz",
+    "sdist_sha256": "2fe0a8d561c7bc90ac5b46076f1524dff07a137c2914ba8ccc80e233d03446c0",
+    "reproduced_wheel_members": 161,
+    "reproduced_entire_wheel": true,
+    "public_repo": "https://github.com/srinjoyganguly/IsoPhotonIX",
+    "release": "https://github.com/srinjoyganguly/IsoPhotonIX/releases/tag/v0.13.0a2",
+    "site": "https://srinjoyganguly.github.io/IsoPhotonIX/",
+    "downloads": {
+      "isophotonix-0.13.0a2-py3-none-any.whl": "8f83c2411c3e1accd6043fa7087d4f6fd11b47146982fd1d1a36e5861015db5a",
+      "isophotonix-0.13.0a2.tar.gz": "2fe0a8d561c7bc90ac5b46076f1524dff07a137c2914ba8ccc80e233d03446c0"
+    },
+    "verified_signed_out": true,
+    "prior_release_checksums_preserved": true
+  },
+  "upgrade": {
+    "passed": true,
+    "distribution": "IsoPhotonIX",
+    "previous": "0.13.0-preview.1",
+    "current": "0.13.0-preview.2",
+    "existing_store_reused": true,
+    "registered_solver_locations_preserved": true,
+    "saved_job_state": "completed",
+    "stored_volume_exact": true,
+    "field_array_sha256": "9064d989d90f97aed329d6025f50b4eff6f9b4cc0eea0e221a118ba835db86af"
+  },
+  "local_service": {
+    "passed": true,
+    "served_product": "IsoPhotonIX",
+    "version": "0.13.0-preview.2",
+    "retained_run_ids": 30,
+    "changed_statuses": 0
+  },
+  "installed_wheel": {
+    "checked_at": "2026-11-06T18:45:59.893153+00:00",
+    "passed": true,
+    "wheel": "isophotonix-0.13.0a2-py3-none-any.whl",
+    "distribution": "IsoPhotonIX",
+    "canonical_command": "isophotonix",
+    "legacy_command_and_module_verified": true,
+    "wheel_sha256": "8f83c2411c3e1accd6043fa7087d4f6fd11b47146982fd1d1a36e5861015db5a",
+    "wheel_bytes": 9189312,
+    "installed_from_offline_wheelhouse": true,
+    "calibrated_program_exports": 11,
+    "installed_cuda_study": null,
+    "installed_spatial_cuda": null,
+    "installed_interface_cuda": null,
+    "installed_layout_max_complex_difference": 7.595388588089954e-11,
+    "installed_grating_coupling": 0.5823413109784932,
+    "recorded_same_mesh_coupling": 0.5823413109784932,
+    "calibrated_cli_result_bundle_verified": true,
+    "generic_calibration_config_coupling": 0.5823413109784932,
+    "export_found_registered_interpreter": true,
+    "cavity_four_modes_equal_to_packaged_reference": true,
+    "installed_port_alignment": true,
+    "installed_planned_aligned_disconnected_and_exported": true,
+    "installed_reciprocal_exports": [
+      {
+        "geometry": "lumerical",
+        "resolution": 20
+      },
+      {
+        "geometry": "lumerical",
+        "resolution": 24
+      }
+    ],
+    "pip_check": true,
+    "doctor_meep_ready": true,
+    "served_frontend_assets": [
+      "/assets/index-C-adythV.js",
+      "/assets/index-DKeGUwLR.css"
+    ],
+    "catalog_families": 27,
+    "benchmark_data": true,
+    "job_id": "1d68a273bd004f82958644a753ffcd10",
+    "actual_device": "CPU",
+    "field_shape_zyx": [
+      42,
+      72,
+      118
+    ],
+    "state_separate_from_package": true,
+    "exclusive_store": true,
+    "saved_run_after_restart": true,
+    "cli_run_all_arrays_exact": true,
+    "standalone_python_all_arrays_exact": true,
+    "solver_versions": {
+      "meep": "1.35.0",
+      "numpy": "2.4.6",
+      "python": "3.11.18"
+    },
+    "state": "Fresh disposable user state and virtual environment."
+  },
+  "checks": {
+    "application_suite": {
+      "passed": 320,
+      "optional_solver_skips": 32
+    },
+    "frontend_tests_passed": 32,
+    "browser_checks": [
+      "IsoPhotonIX recovered the earlier draft and undo history, then saved independently under the new name.",
+      "Native text undo and delete retained the design and component selection.",
+      "Selected hidden member deleted its complete recipe and all ports, preserved interleaved solids and shared material, exported exact geometry, and restored original selection.",
+      "Delete and both redo shortcuts worked in XY; a committed rename after undo discarded the obsolete redo branch.",
+      "Explicit detachment permitted a single-solid delete; two undos restored first the solid and then its parametric membership and ports.",
+      "Delete to an empty scene and undo/redo both survived same-tab reloads. The restored selection and subsequent new geometry remained editable.",
+      "A fresh tab ignored inherited undo history; external draft conflict paused autosave and reload rejected the old checkpoint.",
+      "A full tab history store preserved the separately saved draft and in-memory undo, and prevented recovery of stale history."
+    ],
+    "additional_nvidia_acquisitions": 0
+  },
+  "scope": "Package, public name and backward compatibility. The published calibration measurements remain attached to their original version."
+}
