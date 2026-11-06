@@ -6,6 +6,7 @@ import { PublicBenchmarks } from './PublicBenchmarks';
 import { ModalPorts } from './ModalPorts';
 import { CodeExport } from './CodeExport';
 import { ComponentLibrary } from './ComponentLibrary';
+import { PortAlignment } from './PortAlignment';
 import { MaterialEditor } from './MaterialEditor';
 import { PolygonEditor } from './PolygonEditor';
 import { createGeometryObject, createGeometryTemplate, createSlabPreview, parseGeometryDocument, detachComponent, upgradeToV2, GEOMETRY_LIMITS,
@@ -162,6 +163,11 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
       return true;
     } catch (reason) { setError((reason as Error).message); return false; }
   }
+  function applyLayout(document: GeometryDocument, text: string, selection: string | null, fit: boolean) {
+    if (!apply(document, text, selection)) return false;
+    if (fit) setResetKey(key => key + 1);
+    return true;
+  }
   function editObject(patch: Partial<GeometryObject>) {
     if (!selected) return false;
     const detached = detachComponent(scene, selected.id);
@@ -208,7 +214,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
       if (!editor || editor.closest('[hidden]') || event.defaultPrevented || event.isComposing || event.repeat || event.altKey) return;
       if (!(target instanceof Element)) return;
       if (target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], .polygon-editor, .material-editor, [data-sketch-history="active"]')) return;
-      if (target !== window.document.body && (!editor.contains(target) || !target.closest('.geo-workspace, .geo-document-bar'))) return;
+      if (target !== window.document.body && (!editor.contains(target) || !target.closest('.geo-workspace, .geo-document-bar, .port-alignment'))) return;
       const mod = event.ctrlKey || event.metaKey;
       const key = event.key.toLowerCase();
       if (mod && key === 'z' && !event.shiftKey && history.past.length) {
@@ -241,13 +247,14 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   }
   return <div className="geometry-editor" ref={editorRef}>
     <div className="geo-intro"><div><span className="eyebrow">YOUR LOCAL PHOTONICS STUDIO</span><h1>Design in three dimensions.</h1><p>Build, inspect, and keep your geometry. Every dimension is in micrometres.</p></div><span className="geo-stage">GEOMETRY WORKSPACE · PREVIEW</span></div>
-    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onFamilies={setFamilyNames} onStudy={inspectFieldStudy} onApply={(document,text,selection,fit)=>{if(!apply(document,text,selection))return false;if(fit)setResetKey(key=>key+1);return true;}}/>
+    <ComponentLibrary document={scene} selectedId={selectedId} editRequest={libraryEdit} onFamilies={setFamilyNames} onStudy={inspectFieldStudy} onApply={applyLayout}/>
     <div className="geo-document-bar">
       <label className="geo-document-name"><span>DESIGN</span><TextInput label="Design name" value={scene.name} onCommit={name => apply({ ...scene, name })}/></label>
       <div className="geo-file-actions"><button className="button secondary compact" onClick={() => importRef.current?.click()}>Import geometry</button><button className="button primary compact" onClick={exportDesign}>Export geometry</button><CodeExport value={scene} kind="geometry"/><button className="button secondary compact" onClick={()=>{setStudyMode('modal');setTimeout(()=>document.getElementById('geometry-studies')?.scrollIntoView({behavior:'smooth'}),0);}}>3D ports &amp; S-matrix</button><input ref={importRef} type="file" hidden aria-label="Import geometry file" accept=".json,application/json" onChange={e => importDesign(e.target.files?.[0])}/></div>
     </div>
     {autosavePaused && <div className="geo-message error-banner" role="alert"><span>Another tab changed the saved draft. Your current design is still open. Export it or choose Save this draft to resume saving.</span><button className="button secondary compact" onClick={resumeSaving}>Save this draft</button></div>}
     {error && <div className="geo-message error-banner" role="alert"><span>{error} The last valid geometry is retained.</span><button aria-label="Dismiss geometry error" onClick={() => setError('')}>×</button></div>}
+    <PortAlignment scene={scene} selected={component} selectedId={selectedId} names={familyNames} onApply={applyLayout}/>
     <div className="geo-workspace">
       <aside className="panel geo-tree-panel">
         <div className="panel-heading"><h2>Scene</h2><span className="tag">{scene.objects.length} objects</span></div>

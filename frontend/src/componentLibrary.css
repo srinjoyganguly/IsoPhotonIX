@@ -42,3 +42,7 @@
 .connection-metrics dt {color:#adbdc6}
 .connection-metrics dd {margin:0;color:#e2edf1;font-variant-numeric:tabular-nums}
 .port-alignment .connection-hint {color:#f1d598}
+@media(min-width:960px) {
+  .connection-body:has(.connection-list) {display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:18px;align-items:start}
+  .connection-body .connection-list {max-height:205px;overflow:auto;margin:0;scrollbar-gutter:stable}
+}

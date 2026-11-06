@@ -2,6 +2,10 @@
 
 A connection saves two named component ports in the design. Each port belongs to at most one connection. The saved endpoints follow their component IDs through regeneration, save, import and export. A connection can be planned while the ports are still physically apart.
 
+![A saved connection between separated, perpendicular strips in the local 3D editor](verification/v015-circuit-planned.png)
+
+The two strips above are 5 µm apart with a 90° facing error. **Align connection** moves the selected strip so its port meets the fixed one at x = 4 µm. The same saved ID follows the joint through undo, redo, disconnect, reload and JSON reimport. Seven Chromium scenarios verified this workflow with the library collapsed. [Aligned editor view](verification/v015-circuit-aligned.png) · [Import the planned design](verification/v015-circuit-planned-design.json) · [Import the aligned design](verification/v015-circuit-aligned-design.json) · [Browser verification](verification/v015-circuit-browser.json).
+
 ## Connect two strips in the editor
 
 1. Open a strip in the 3D editor. Place a second strip from the component library.

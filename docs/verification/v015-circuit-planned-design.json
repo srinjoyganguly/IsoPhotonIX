@@ -1,0 +1,161 @@
+{
+  "schema": "photonics-workbench-geometry",
+  "schema_version": 2,
+  "units": "um",
+  "name": "Strip waveguide",
+  "mode": "draft-3d",
+  "domain": {
+    "x": 17,
+    "y": 22.5,
+    "z": 2.22
+  },
+  "objects": [
+    {
+      "id": "component-5dda23d8e8a74a89-1",
+      "name": "Strip core",
+      "visible": true,
+      "kind": "box",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "size": {
+        "x": 8,
+        "y": 0.5,
+        "z": 0.22
+      },
+      "radius": 1,
+      "inner_radius": 0.6,
+      "rotation_deg": 0,
+      "refractive_index": 2,
+      "material_id": "generic-core",
+      "component_id": "component-5dda23d8e8a74a89"
+    },
+    {
+      "id": "component-f4262edeff4741b5-1",
+      "name": "Strip core",
+      "visible": true,
+      "kind": "box",
+      "position": {
+        "x": 8,
+        "y": 7,
+        "z": 0
+      },
+      "size": {
+        "x": 8,
+        "y": 0.5,
+        "z": 0.22
+      },
+      "radius": 1,
+      "inner_radius": 0.6,
+      "rotation_deg": 90,
+      "refractive_index": 2,
+      "material_id": "generic-core",
+      "component_id": "component-f4262edeff4741b5"
+    }
+  ],
+  "materials": [
+    {
+      "id": "generic-core",
+      "name": "Generic dielectric · n = 2",
+      "reference_wavelength_um": 1.55,
+      "source": "Original workbench design preset.",
+      "notes": "Illustrative lossless constant index, not a measured material dataset.",
+      "model": "constant-nk",
+      "n": 2,
+      "k": 0
+    }
+  ],
+  "components": [
+    {
+      "id": "component-5dda23d8e8a74a89",
+      "family": "strip",
+      "generator_version": 1,
+      "parameters": {
+        "length_um": 8,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "object_ids": [
+        "component-5dda23d8e8a74a89-1"
+      ],
+      "placement": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "rotation_deg": 0
+      },
+      "material_id": "generic-core",
+      "ports": [
+        {
+          "name": "in",
+          "x": -4,
+          "y": 0,
+          "z": 0,
+          "angle_deg": 180,
+          "width_um": 0.5
+        },
+        {
+          "name": "out",
+          "x": 4,
+          "y": 0,
+          "z": 0,
+          "angle_deg": 0,
+          "width_um": 0.5
+        }
+      ]
+    },
+    {
+      "id": "component-f4262edeff4741b5",
+      "family": "strip",
+      "generator_version": 1,
+      "parameters": {
+        "length_um": 8,
+        "width_um": 0.5,
+        "height_um": 0.22
+      },
+      "object_ids": [
+        "component-f4262edeff4741b5-1"
+      ],
+      "placement": {
+        "x": 8,
+        "y": 7,
+        "z": 0,
+        "rotation_deg": 90
+      },
+      "material_id": "generic-core",
+      "ports": [
+        {
+          "name": "in",
+          "x": 8,
+          "y": 3,
+          "z": 0,
+          "angle_deg": 270,
+          "width_um": 0.5
+        },
+        {
+          "name": "out",
+          "x": 8,
+          "y": 11,
+          "z": 0,
+          "angle_deg": 90,
+          "width_um": 0.5
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "connection-fa7c1e3134fc47b2",
+      "a": {
+        "component_id": "component-f4262edeff4741b5",
+        "port": "in"
+      },
+      "b": {
+        "component_id": "component-5dda23d8e8a74a89",
+        "port": "out"
+      }
+    }
+  ]
+}

@@ -20,6 +20,8 @@ The current calibration runs and the next Circuit Layout milestone have separate
 
 ## Order of the next physics work
 
+The fixed-dimension GPU studies now have measured outcomes for both grating geometries. The 50 nm Lumerical grating meets the five-point absolute and band-mean power targets. Its 3.08-point change from the preceding mesh exceeds the two-point mesh limit. On the Tidy3D grating, the 16-cell result has a five-point mean error of 6.27 percentage points. The original 24-cell curved-wall ring has a whole-run stability rejection. The replacement wall update passed bounded energy and wave-propagation checks. Each full-device mesh must pass a separate field-stability and spectral check. [Grating refinement](GRATING_ETCH_REFINEMENT.md) · [Ring stability](RECIPROCAL_RING_STABILITY.md) · [Commercial phase and weak returns](COMPLEX_PORT_COMPARISONS.md).
+
 1. Extend the [calibrated component measurements](CALIBRATED_COMPONENTS.md) with additional reference spectra, paired mesh studies for weak signals and modes beyond the current presets.
 2. Further refine the loaded ring’s absolute pole wavelengths and external versus intrinsic Q estimates on the same resonance across mesh, boundary and observation-time controls. Use the [1D cavity benchmark](PASSIVE_CAVITY.md) as a numerical
    control for the fitting method.

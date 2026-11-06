@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "checks": [
+    "Two strip instances placed through the public geometry library, with distinct IDs, positions and orientations.",
+    "Geometry-only alignment still moves the real solids without creating a connection.",
+    "A planned connection preserves every solid and placement; UI and API report the independently calculated gap and angular error with the component library collapsed.",
+    "All three connection/alignment actions reject a port already owned by a different link; the existing design stays intact.",
+    "Aligning the same pair preserves its link ID, fixes only the moving instance, co-locates anti-parallel equal-width ports, and treats reversed endpoint order as the same link. Reload/export preserve the complete scene.",
+    "Disconnect changes link metadata alone, and undo/redo restore the exact linked/unlinked designs.",
+    "Deleting a component removes its incident link and solids atomically; undo, reload/redo and reimport retain exact component/port IDs and geometry."
+  ],
+  "connection_id": "connection-fa7c1e3134fc47b2",
+  "browser_version": "156.0.8078.81",
+  "component_ids": [
+    "component-5dda23d8e8a74a89",
+    "component-f4262edeff4741b5"
+  ],
+  "diagnostics": {
+    "planned": {
+      "id": "connection-fa7c1e3134fc47b2",
+      "a": {
+        "component_id": "component-f4262edeff4741b5",
+        "port": "in"
+      },
+      "b": {
+        "component_id": "component-5dda23d8e8a74a89",
+        "port": "out"
+      },
+      "state": "needs_route",
+      "distance_um": 5,
+      "angle_error_deg": 90,
+      "width_difference_um": 0,
+      "widths_match": true
+    },
+    "aligned": {
+      "id": "connection-fa7c1e3134fc47b2",
+      "a": {
+        "component_id": "component-f4262edeff4741b5",
+        "port": "in"
+      },
+      "b": {
+        "component_id": "component-5dda23d8e8a74a89",
+        "port": "out"
+      },
+      "state": "aligned",
+      "distance_um": 0,
+      "angle_error_deg": 0,
+      "width_difference_um": 0,
+      "widths_match": true
+    }
+  },
+  "json_sha256": {
+    "planned": "126bcc1e1d77e04f748a32d17f5d6ce107b8ce270bbba011c70def70ed841e5b",
+    "aligned": "8a1e979f12e867f90ca728d6611a387a636586e73a09e389b515b11338b9845a"
+  },
+  "coordinates": {
+    "fixed": {
+      "name": "out",
+      "x": 4,
+      "y": 0,
+      "z": 0,
+      "angle_deg": 0,
+      "width_um": 0.5
+    },
+    "moving": {
+      "name": "in",
+      "x": 4,
+      "y": 0,
+      "z": 0,
+      "angle_deg": 180,
+      "width_um": 0.5
+    }
+  },
+  "new_solver_jobs": 0,
+  "tested_input_sha256": {
+    "backend/geometry_draft.py": "6d3ffcb2127ea1050ccad41f2bda041bcb4400c9adda2c8ff28117f05cb2f318",
+    "backend/app.py": "affee50f5fc3f3a9123b53a1bafc24600c5e9cdce8ca36e61e17f4925a90d6df",
+    "backend/library_layout.py": "bb3e942dcf62516dceab4cc6e348236d32f064c310baeb2fb070f18c80ad2fed",
+    "frontend/src/GeometryEditor.tsx": "01100c918193bb18711a7f2d952b18eff1722854443d7c28301afb137db24d1d",
+    "frontend/src/ComponentLibrary.tsx": "941b4dcfae2eab523e0882b63c2282d0e0b94bdcfe5c658ab8fdf1f891e3ee51",
+    "frontend/src/PortAlignment.tsx": "3b4abdc05071b7eafc49772c4df00168e52f75a461212c1342d52e1352e02cf4",
+    "frontend/src/GeometryViewport.tsx": "87d6d109563c76f7b437fe21f14f0d89bd5bc48f262c9c67a7650a0bece4fef0",
+    "frontend/src/geometryModel.ts": "4fe1af354603aa4495bf2d969b75816520f7da129f0ae98a29c7b031d4452d1e",
+    "frontend/src/designHistory.ts": "58a171ca53c88e3d1c89ec142c7ba25e8c778aa97f9c5876485332bfa0dd5c70",
+    "frontend/src/geometryEditor.css": "f0ed52ace079d8d7e418882268ec9fe645a694b1a1f8c32b2b88d0e049d96047",
+    "frontend/src/componentLibrary.css": "3d2fc2ba76db985a83b3a0e5e31ebba7b274cc057fe4b1c6e276d08913c94090",
+    "frontend/src/GeometryViewport.css": "164abb4b882561e367d307cc5bc229c9909f15408a2bac52ff1b8142f1f998f2",
+    "frontend/browser-circuit-connections.cjs": "06c0983d66a8e1fa9523a2242c7113cb9af221dbfbb469172c112c804be1ffe0",
+    "frontend/dist/index.html": "ddab4e7210100a1a94d29cea7c4c9d309c2153203a25524b28abb59d9ed33ba8",
+    "frontend/dist/assets/index-C5wlI14c.js": "934136b472cc2e2b4bb174e835be4d7900e9cd037116c18a65f1f0b14cf7d81d",
+    "frontend/dist/assets/index-DKeGUwLR.css": "4110a73ea43fe967eadca3ac7736f937b46e8396e555becf842daf996d3c4f0f"
+  },
+  "artifacts": {
+    "planned": {
+      "screenshot": "v015-circuit-planned.png",
+      "screenshot_sha256": "d3176b83ad6a4723db29e9433a1afaae8c57b598859b08f3a748e23a9752385a",
+      "screenshot_px": [
+        1468,
+        1115
+      ],
+      "exported_geometry": "v015-circuit-planned-design.json",
+      "exported_geometry_sha256": "126bcc1e1d77e04f748a32d17f5d6ce107b8ce270bbba011c70def70ed841e5b"
+    },
+    "aligned": {
+      "screenshot": "v015-circuit-aligned.png",
+      "screenshot_sha256": "e4238364db40def1c0c66a4f52d027ba9826fcfa9d4a657be2181fcd684ef3c9",
+      "screenshot_px": [
+        1468,
+        1115
+      ],
+      "exported_geometry": "v015-circuit-aligned-design.json",
+      "exported_geometry_sha256": "8a1e979f12e867f90ca728d6611a387a636586e73a09e389b515b11338b9845a"
+    }
+  },
+  "scope": "Original Chromium views of the local circuit editor and its exported geometry. Each image is a continuous capture of the port status and 3D geometry editor with the component library collapsed. The checks exercised layout and export without starting an optical solver."
+}

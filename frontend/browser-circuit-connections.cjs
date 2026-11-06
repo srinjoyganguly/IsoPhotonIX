@@ -79,7 +79,6 @@ function withoutLinks(scene) {
     return data.geometry;
   }
   async function choosePorts(moving, movingPort, fixed, fixedPort) {
-    await openDetails(library);
     await openDetails(panel);
     await label('Moving component').selectOption(moving);
     await label('Moving port').selectOption(movingPort);
@@ -107,7 +106,6 @@ function withoutLinks(scene) {
     } else {
       assert.ok(distance > .1 || error > 1);
     }
-    await openDetails(library);
     await openDetails(panel);
     await rows.first().getByText(state === 'aligned' ? 'Aligned' : 'Needs route', { exact: true }).waitFor();
     assert.equal(await rows.count(), 1);
@@ -119,7 +117,7 @@ function withoutLinks(scene) {
     // Capture one continuous region of the real editor with no CSS/DOM edits.
     // Both its saved-port status and the complete 3D canvas are inside the crop.
     await button('Fit view').click();
-    for (let i = 0; i < 4; i++) await button('Zoom in').click();
+    for (let i = 0; i < 2; i++) await button('Zoom in').click();
     const domain = button('Domain');
     if ((await domain.getAttribute('aria-pressed')) === 'true') await domain.click();
     const clip = await page.evaluate(() => {
@@ -132,7 +130,9 @@ function withoutLinks(scene) {
       const bottom = Math.ceil(canvas.bottom + scrollY + 44);
       return { x, y, width: right - x, height: bottom - y };
     });
-    assert.ok(clip.width > 800 && clip.height > 400);
+    assert.equal(await library.evaluate(element => element.open), false);
+    assert.ok(clip.width > 800 && clip.height > 400 && clip.height <= 1350,
+      'Connection status and geometry must share the same editor region with the library closed');
     await page.screenshot({ path: path.join(output, name), fullPage: true, clip, animations: 'disabled' });
   }
   async function exportGeometry(file) {
@@ -159,8 +159,8 @@ function withoutLinks(scene) {
     const placed = await action(button('Add to layout', library), '/api/library/place');
     assert.equal(placed.components.length, 2);
     const moving = placed.components.find(c => c.id !== fixed).id;
-    await library.locator('.library-placement > summary').click();
-    await label('Search photonic components').fill('Strip waveguide');
+    await library.locator(':scope > summary').click();
+    assert.equal(await library.evaluate(element => element.open), false);
     assert.equal(placed.components.find(c => c.id === moving).placement.rotation_deg, 90);
     assert.ok(separation(port(placed, fixed, 'out'), port(placed, moving, 'in')) > 1);
     assert.equal((placed.connections ?? []).length, 0);
@@ -190,7 +190,7 @@ function withoutLinks(scene) {
     await captureCircuit('circuit-planned.png');
     const plannedFile = await exportGeometry('planned-circuit.json');
     assert.deepEqual(plannedFile.geometry, planned);
-    checks.push('A planned connection preserves every solid and placement; UI and API report the independently calculated gap and angular error.');
+    checks.push('A planned connection preserves every solid and placement; UI and API report the independently calculated gap and angular error with the component library collapsed.');
 
     await label('Fixed port').selectOption('in');
     for (const command of ['Connect without moving', 'Connect and align', 'Align ports']) {
