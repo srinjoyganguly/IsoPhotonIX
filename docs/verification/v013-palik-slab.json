@@ -1,0 +1,399 @@
+{
+  "passed_fine_mesh": true,
+  "scope": "Normal-incidence 0.50 \u00b5m film in air; power and transmitted phase compared against Fresnel with the filed held-out material samples. Each mesh has a fresh native air reference. Coarse failures remain visible. This validation does not establish convergence of the ring.",
+  "admission_gates": {
+    "max_absolute_transmission_error": 0.015,
+    "max_transmission_phase_error_rad": 0.1,
+    "max_balance_error": 0.01,
+    "max_prefix_power_change": 0.001,
+    "max_heldout_index_error": 0.001
+  },
+  "fits": {
+    "material": "Si and SiO2 from the Lumerical ring project",
+    "input_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+    "pole_wavelength_um": 0.5,
+    "loss_model": "Undamped Lorentz oscillator restricted to the filed lossless 1500\u20131600 nm band",
+    "training_wavelength_um": [
+      1.5,
+      1.55,
+      1.6
+    ],
+    "heldout_wavelength_um": [
+      1.525,
+      1.575
+    ]
+  },
+  "meshes": {
+    "16": {
+      "resolution": 16,
+      "thickness_um": 0.5,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "dt_seconds": 1.1916092934568783e-16,
+      "measurements": {
+        "silicon": {
+          "transmitted_power": [
+            0.24998899301726232,
+            0.27255141966483654,
+            0.30473618133114566,
+            0.34836865537990896,
+            0.40578240997692716
+          ],
+          "reflected_power": [
+            0.7502061355763184,
+            0.7275730165548486,
+            0.6953135187548279,
+            0.6516172333979596,
+            0.5941599056068466
+          ],
+          "amplitude_real": [
+            0.3912012778797581,
+            0.39475941325139374,
+            0.40006122776071223,
+            0.4048538634825992,
+            0.4058219957840267
+          ],
+          "amplitude_imag": [
+            -0.31136883787962244,
+            -0.3416378569688259,
+            -0.38037770094175766,
+            -0.42949040106051495,
+            -0.49101009940203527
+          ],
+          "target_power": [
+            0.3546667708879279,
+            0.3966358563727091,
+            0.4517283554616687,
+            0.5212517829402095,
+            0.605352190059713
+          ],
+          "max_transmission_power_error": 0.1995697800827858,
+          "max_transmission_phase_error_rad": 0.24744121232830513,
+          "max_energy_balance_error": 0.00019512859358084,
+          "max_prefix_power_change": 5.634915306584887e-08,
+          "fit_epsilon": [
+            12.115731519413645,
+            12.097899316453045,
+            12.081054114450325,
+            12.06512232536979,
+            12.050037258397653
+          ],
+          "max_heldout_index_error": 0.0006449910751644694
+        },
+        "oxide": {
+          "transmitted_power": [
+            0.9984993219425419,
+            0.9966176883700691,
+            0.9941221495150752,
+            0.9911139813938769,
+            0.9876875034907935
+          ],
+          "reflected_power": [
+            0.0014970654462179327,
+            0.0033783444497628313,
+            0.0058754175521094736,
+            0.008887155637198524,
+            0.0123190249981374
+          ],
+          "amplitude_real": [
+            0.593035280656449,
+            0.6084571137506618,
+            0.622755412818434,
+            0.6359905658824948,
+            0.6482271968191955
+          ],
+          "amplitude_imag": [
+            0.8042440412208652,
+            0.7914528596804002,
+            0.7786512989268154,
+            0.7659177380778831,
+            0.7533186608565603
+          ],
+          "target_power": [
+            0.9981073876612407,
+            0.9961458747959858,
+            0.993624163432371,
+            0.9906338443617377,
+            0.9872598525350065
+          ],
+          "max_transmission_power_error": 0.0004979860827041271,
+          "max_transmission_phase_error_rad": 0.012095311395686882,
+          "max_energy_balance_error": 6.528488930790388e-06,
+          "max_prefix_power_change": 2.2952484801663786e-08,
+          "fit_epsilon": [
+            2.0869303822390792,
+            2.0859674490004636,
+            2.0850578134969058,
+            2.084197501998088,
+            2.0833829132214627
+          ],
+          "max_heldout_index_error": 3.2939510500984426e-05
+        }
+      },
+      "source_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+      "fit_source_sha256": "c4022b31af93243b2c6951c5bbf0d1e7dfcfddb2f1b46475ec66087a508aab0e",
+      "program_sha256": "efaf1d2c2398be932da295cde79d6b5b2a81bb17aac0c7914cb33e7814b9c348",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "arrays_sha256": "7a489035da39f5ac0104fb742d9a524e1e00fab3f4f41ab45001f83ae1d1867a",
+      "passed": false,
+      "arrays_file": "v013-palik-slab-r16-arrays.npz"
+    },
+    "48": {
+      "resolution": 48,
+      "thickness_um": 0.5,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "dt_seconds": 3.972030978189595e-17,
+      "measurements": {
+        "silicon": {
+          "transmitted_power": [
+            0.3410620434703706,
+            0.3815021147133312,
+            0.4341016986075068,
+            0.5004924477815681,
+            0.5815361679035244
+          ],
+          "reflected_power": [
+            0.6589416073702493,
+            0.6185003405675213,
+            0.5658994066529439,
+            0.49950748100282655,
+            0.4184629679947001
+          ],
+          "amplitude_real": [
+            0.3953880682371079,
+            0.39382527805560225,
+            0.38832210576545534,
+            0.3746914866663242,
+            0.3472178000968496
+          ],
+          "amplitude_imag": [
+            -0.4298026511855163,
+            -0.475819046568923,
+            -0.532266512925047,
+            -0.6000822756933819,
+            -0.6789521096509152
+          ],
+          "target_power": [
+            0.3546667708879279,
+            0.3966358563727091,
+            0.4517283554616687,
+            0.5212517829402095,
+            0.605352190059713
+          ],
+          "max_transmission_power_error": 0.02381602215618861,
+          "max_transmission_phase_error_rad": 0.029474635220097096,
+          "max_energy_balance_error": 3.6508406200397303e-06,
+          "max_prefix_power_change": 6.475664116045721e-09,
+          "fit_epsilon": [
+            12.1157325451547,
+            12.097897267850986,
+            12.081051391049575,
+            12.065120956135576,
+            12.050038956057598
+          ],
+          "max_heldout_index_error": 0.0006452855665837198
+        },
+        "oxide": {
+          "transmitted_power": [
+            0.9981518864016778,
+            0.996195084739835,
+            0.9936755186363523,
+            0.9906843997071066,
+            0.9873067646206494
+          ],
+          "reflected_power": [
+            0.0018480288487792388,
+            0.003804815486060344,
+            0.006324403281368822,
+            0.00931558972961958,
+            0.012693339133694026
+          ],
+          "amplitude_real": [
+            0.6015430041065777,
+            0.6162320389540284,
+            0.6298715823339133,
+            0.6425171781591,
+            0.6542278950935615
+          ],
+          "amplitude_imag": [
+            0.7976828320906196,
+            0.7851453106950305,
+            0.7726171810182093,
+            0.7601684520404498,
+            0.747858693806589
+          ],
+          "target_power": [
+            0.9981073876612407,
+            0.9961458747959858,
+            0.993624163432371,
+            0.9906338443617377,
+            0.9872598525350065
+          ],
+          "max_transmission_power_error": 5.1355203981251485e-05,
+          "max_transmission_phase_error_rad": 0.0013437877502272234,
+          "max_energy_balance_error": 1.0375434333909084e-07,
+          "max_prefix_power_change": 9.534161460322821e-09,
+          "fit_epsilon": [
+            2.0869304465180294,
+            2.0859673425273604,
+            2.0850576661092437,
+            2.084197423502555,
+            2.0833829963302146
+          ],
+          "max_heldout_index_error": 3.297637057131375e-05
+        }
+      },
+      "source_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+      "fit_source_sha256": "c4022b31af93243b2c6951c5bbf0d1e7dfcfddb2f1b46475ec66087a508aab0e",
+      "arrays_sha256": "d4874c4fd89ee2cde5f2613e6a09f94dcb1029be60473d37de4d8ae6a8a3c69d",
+      "passed": false,
+      "arrays_file": "v013-palik-slab-r48-arrays.npz"
+    },
+    "96": {
+      "resolution": 96,
+      "thickness_um": 0.5,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "dt_seconds": 1.9860154890947974e-17,
+      "measurements": {
+        "silicon": {
+          "transmitted_power": [
+            0.35106700969315385,
+            0.39328584060077265,
+            0.44783568178993793,
+            0.5162181618607635,
+            0.5989829647838294
+          ],
+          "reflected_power": [
+            0.6489357957799402,
+            0.6067167118885088,
+            0.5521662169136715,
+            0.48378293845994824,
+            0.40101742076794916
+          ],
+          "amplitude_real": [
+            0.3944498469929122,
+            0.39185101335439837,
+            0.384652270700648,
+            0.3684809410171946,
+            0.3374704780764774
+          ],
+          "amplitude_imag": [
+            -0.4421270495009574,
+            -0.48963111005521665,
+            -0.54761146119742,
+            -0.6167981501008626,
+            -0.6964887947488194
+          ],
+          "target_power": [
+            0.3546667708879279,
+            0.3966358563727091,
+            0.4517283554616687,
+            0.5212517829402095,
+            0.605352190059713
+          ],
+          "max_transmission_power_error": 0.006369225275883572,
+          "max_transmission_phase_error_rad": 0.007942779125806244,
+          "max_energy_balance_error": 2.8054730940585415e-06,
+          "max_prefix_power_change": 2.7886182141223514e-08,
+          "fit_epsilon": [
+            12.115732641215907,
+            12.097897075940626,
+            12.081051135954327,
+            12.065120827902248,
+            12.05003911509156
+          ],
+          "max_heldout_index_error": 0.0006453131541555024
+        },
+        "oxide": {
+          "transmitted_power": [
+            0.9981191770889012,
+            0.996156208576285,
+            0.993634907699678,
+            0.9906456503638197,
+            0.9872727164671163
+          ],
+          "reflected_power": [
+            0.001880818367075704,
+            0.0038437469535977787,
+            0.006365033153254893,
+            0.009354311389620364,
+            0.012727301060239832
+          ],
+          "amplitude_real": [
+            0.6023198679921185,
+            0.616942975900994,
+            0.6305231598789852,
+            0.6431155282875631,
+            0.654778677725702
+          ],
+          "amplitude_imag": [
+            0.7970758770097476,
+            0.7845620262686122,
+            0.7720592286579427,
+            0.7596367998189847,
+            0.7473537312831839
+          ],
+          "target_power": [
+            0.9981073876612407,
+            0.9961458747959858,
+            0.993624163432371,
+            0.9906338443617377,
+            0.9872598525350065
+          ],
+          "max_transmission_power_error": 1.2863932109863363e-05,
+          "max_transmission_phase_error_rad": 0.00035714746375230434,
+          "max_energy_balance_error": 5.9147067132947484e-08,
+          "max_prefix_power_change": 6.1402092299545075e-09,
+          "fit_epsilon": [
+            2.0869304525379797,
+            2.0859673325529995,
+            2.085057652303668,
+            2.0841974161510683,
+            2.0833830041158166
+          ],
+          "max_heldout_index_error": 3.2979823608947356e-05
+        }
+      },
+      "source_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+      "fit_source_sha256": "c4022b31af93243b2c6951c5bbf0d1e7dfcfddb2f1b46475ec66087a508aab0e",
+      "program_sha256": "efaf1d2c2398be932da295cde79d6b5b2a81bb17aac0c7914cb33e7814b9c348",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "numpy": "2.4.6"
+      },
+      "arrays_sha256": "59666581b0cff1e8ee2ebad0f78af3ca3c2e85f98108673003e11cc575dbda25",
+      "passed": true,
+      "arrays_file": "v013-palik-slab-r96-arrays.npz"
+    }
+  }
+}
