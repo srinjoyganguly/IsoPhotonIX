@@ -45,7 +45,7 @@ async def lifespan(app):
         manager.shutdown()
 
 
-app = FastAPI(title="Photonics Workbench", version="0.11.0-preview.2", lifespan=lifespan)
+app = FastAPI(title="Photonics Workbench", version="0.11.0-preview.3", lifespan=lifespan)
 
 
 @app.middleware("http")
@@ -62,7 +62,7 @@ async def local_browser_only(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "version": "0.11.0-preview.2", "compute": "local"}
+    return {"status": "ok", "version": "0.11.0-preview.3", "compute": "local"}
 
 
 class LibraryPlacement(BaseModel):

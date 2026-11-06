@@ -22,6 +22,8 @@ def verify_archives():
         source = record.get("source_arrays", {})
         name = source.get("file") or record.get("arrays_file")
         expected = source.get("sha256") or record.get("arrays_sha256")
+        if not name and expected and file.with_suffix(".npz").is_file():
+            name = file.with_suffix(".npz").name
         if not name or not expected:
             continue
         path = BASE / name
@@ -38,6 +40,9 @@ def verify_archives():
                 if data[key].dtype.hasobject:
                     raise ValueError(f"Unexpected object payload: {name}/{key}")
         archives[name] = actual
+    unreferenced = {file.name for file in BASE.glob("v011-*.npz")} - archives.keys()
+    if unreferenced:
+        raise ValueError(f"Public numerical archives without a verified hash: {sorted(unreferenced)}")
     return archives
 
 

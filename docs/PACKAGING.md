@@ -1,6 +1,6 @@
 # Install Photonics Workbench locally
 
-The **0.11.0a2 wheel** contains the local service, the compiled React interface,
+The **0.11.0a3 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
@@ -20,7 +20,7 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.11.0a2-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.11.0a3-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
@@ -58,7 +58,7 @@ photonics-workbench calibrate splitter --solver fdtdx --device gpu --material-mo
 photonics-workbench calibrate grating --solver meep --device cpu --grating-scope tidy3d-compact --resolution 40 --output beam-results
 ```
 
-The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. For interrupted calibrated jobs started in the GUI, select the original run and choose **Resume saved study** to continue its captured program. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
+The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. For a ring or grating spectrum, click the curve or choose a measured wavelength to read its power fraction. Wavelengths excluded by the numerical checks are marked unqualified. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. For interrupted calibrated jobs started in the GUI, select the original run and choose **Resume saved study** to continue its captured program. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
 
 ## Set up the numerical runtimes
 

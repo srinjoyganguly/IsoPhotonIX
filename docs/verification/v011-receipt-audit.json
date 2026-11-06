@@ -4,6 +4,7 @@
     "v011-grating-ansys-article-r28-arrays.npz": "ef1947bcbe3420acf877e1edeaf0192abce217d4444245b51d1c5c701f2aadbe",
     "v011-grating-ansys-article-r40-arrays.npz": "e7fcdbfad5b510c8559b62964ecd836395f7658b512eb47b6d77d25a89a261db",
     "v011-grating-ansys-output-r40-arrays.npz": "92ed96d1d54225ea39a1a4015b71ffd5ef4108f290eeabf2efa249e137f315b5",
+    "v011-grating-ansys-output-r60-arrays.npz": "c693365a5a833a9315fe292374a758e91d8333f0f29667a41b606c186d6ab332",
     "v011-grating-ansys-project-r40-arrays.npz": "bfd9bcdc45457be3c8c4f11d6c8fb77d25ab008166ad56986be36cc6f94a0516",
     "v011-grating-ansys-project-r60-arrays.npz": "1be6dbe6b603c1f62abe852a097a56d3976dfae0ed49fec823d42f9d057a84e6",
     "v011-grating-compact-gui.npz": "1f545012226e9fe36e4ca24511d0591e3c21802c5f5aca4305e24dcc20039c03",
@@ -15,6 +16,7 @@
     "v011-multimode-finite.npz": "621f797a75969f159f75938d12b313fdb13bbc3d2842e6a4ea222bc6bd0d0ae9",
     "v011-multimode-planar.npz": "9f2277baeeb575ed943e05bed6c0a698c7a5a28925ce7d66b36fa4ba4509f628",
     "v011-published-splitter.npz": "42752ec86ecb826adfa386c0a8094d86ceaf81127e31b9f0185cb23f53763b54",
+    "v011-published-y-photonforge-r20.npz": "602022f091b989cde75ff79f7a85c735392d86719f46e51e6a69550274706f67",
     "v011-ring-aligned-lumerical-r50-arrays.npz": "e2c487ab3a7bdf6f620bb4cc37042b38bea118e4e01542e21c22eae59c6b31b1",
     "v011-ring-aligned-tidy3d-r100-arrays.npz": "439f852c655ea2f86ccf60745516ddaf94b05105d04227fd1d6f1a6fcdfa5966",
     "v011-ring-aligned-tidy3d-r50-arrays.npz": "9fdc03afe966b3208563e8f930d85df2e34d7c12e9ac078827799da92650463c",
@@ -52,6 +54,6 @@
     "multimode": 1,
     "multimode-3d": 1,
     "ring": 2,
-    "grating": 8
+    "grating": 9
   }
 }

@@ -20,3 +20,6 @@
 .cal-lab th,.cal-lab td {padding:7px 4px;text-align:right;border-bottom:1px solid #2b414c}
 .cal-lab th:first-child {text-align:left}
 .cal-offset{display:inline-flex;align-items:center;gap:6px;margin:7px 10px}.cal-offset input{width:6em;color:#d6e8ed;background:#122c39;border:1px solid #375361;padding:6px}
+.cal-spectrum .inspectable{cursor:crosshair}
+.cal-sample{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0}
+.cal-sample output{font-size:13px;font-variant-numeric:tabular-nums;color:#ffcf86}

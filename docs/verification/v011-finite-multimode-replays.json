@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-06T02:18:47.658378+00:00",
+  "export_sha256": "93d5b2aa119a7777e2b39d1586d2e14e8a29bb364effa7b2b4d09ad701fe8637",
+  "python": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:s": 1.3365896365283547e-07,
+      "arrays.npz:reference_0": 6.105892324880669e-07,
+      "arrays.npz:device_0": 3.306508607641094e-07,
+      "arrays.npz:reference_neff_0": 2.204458837695711e-12,
+      "arrays.npz:device_neff_0": 2.071098847977737e-10,
+      "arrays.npz:final_Ey_0": 4.214355681032679e-13,
+      "arrays.npz:reference_1": 3.634739765176322e-08,
+      "arrays.npz:device_1": 1.4566566450465773e-07,
+      "arrays.npz:reference_neff_1": 8.615330671091215e-14,
+      "arrays.npz:device_neff_1": 1.8687273950490635e-12,
+      "arrays.npz:reference_2": 6.86436423653251e-10,
+      "arrays.npz:device_2": 4.809923609426714e-07,
+      "arrays.npz:reference_neff_2": 9.521272659185342e-13,
+      "arrays.npz:device_neff_2": 4.4497738826976274e-12,
+      "arrays.npz:final_Ey_2": 1.6356140086265325e-12,
+      "arrays.npz:reference_3": 1.0993782302324398e-08,
+      "arrays.npz:device_3": 2.359272933438768e-06,
+      "arrays.npz:reference_neff_3": 1.20534693337504e-11,
+      "arrays.npz:device_neff_3": 4.475211312637839e-10
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power",
+      "channels"
+    ]
+  },
+  "notebook": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:s": 1.3365896365283547e-07,
+      "arrays.npz:reference_0": 6.105892324880669e-07,
+      "arrays.npz:device_0": 3.306508607641094e-07,
+      "arrays.npz:reference_neff_0": 2.204458837695711e-12,
+      "arrays.npz:device_neff_0": 2.071098847977737e-10,
+      "arrays.npz:final_Ey_0": 4.214355681032679e-13,
+      "arrays.npz:reference_1": 3.634739765176322e-08,
+      "arrays.npz:device_1": 1.4566566450465773e-07,
+      "arrays.npz:reference_neff_1": 8.615330671091215e-14,
+      "arrays.npz:device_neff_1": 1.8687273950490635e-12,
+      "arrays.npz:reference_2": 6.113990630458954e-10,
+      "arrays.npz:device_2": 4.809923609426714e-07,
+      "arrays.npz:reference_neff_2": 9.521272659185342e-13,
+      "arrays.npz:device_neff_2": 4.4497738826976274e-12,
+      "arrays.npz:final_Ey_2": 1.6356140086265325e-12,
+      "arrays.npz:reference_3": 1.0993782302324398e-08,
+      "arrays.npz:device_3": 2.359272933438768e-06,
+      "arrays.npz:reference_neff_3": 1.20534693337504e-11,
+      "arrays.npz:device_neff_3": 4.475211312637839e-10
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power",
+      "channels"
+    ]
+  }
+}

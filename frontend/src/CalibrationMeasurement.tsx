@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 
 type Complex = [number, number];
 export type Series = {label:string;values:(number|null)[]};
@@ -11,35 +11,80 @@ type GratingRow = {wavelength_um:number[];beam_to_guide?:number[];guide_radiatio
 type RingRow = {wavelength_um:number[];through:number[];drop:number[];reflection:number[];add_side?:number[];valid_bins?:boolean[]};
 type Report = MatrixReport & {case_id?:string;vendor?:string;result?:GratingRow;series?:Record<string,RingRow>;studies?:Record<string,Record<string,GratingRow>>;compact_tidy_domain?:GratingRow;isolated_finite_height_ring?:Record<string,{measured_bare_ring_fsr_nm:number;published_loaded_ring_fsr_nm:number}>};
 
-export function Spectrum({wavelengths,series}:{wavelengths:number[];series:Series[]}) {
-  const [line,setLine]=useState(0);
-  const data=series[line] ?? series[0];
-  if (!data || wavelengths.length!==data.values.length || !wavelengths.length) return null;
-  const lo=Math.min(...wavelengths), hi=Math.max(...wavelengths);
-  const valid=data.values.filter((v):v is number=>v!==null && Number.isFinite(v));
-  const top=Math.max(.01,...valid), bottom=Math.min(0,...valid);
-  const segments:number[][][]=[];
-  let current:number[][]=[];
-  wavelengths.forEach((w,i)=>{
-    const value=data.values[i];
-    if(value===null || !Number.isFinite(value)){
-      current=[];
+export function Spectrum({wavelengths, series, inspect = false}: {
+  wavelengths: number[];
+  series: Series[];
+  inspect?: boolean;
+}) {
+  const [line, setLine] = useState(0);
+  const [sample, setSample] = useState(() => Math.floor(wavelengths.length / 2));
+  const data = series[line] ?? series[0];
+  if (!data || wavelengths.length !== data.values.length || !wavelengths.length) return null;
+
+  const left = 36, plotWidth = 466;
+  const lo = Math.min(...wavelengths), hi = Math.max(...wavelengths);
+  const valid = data.values.filter((v): v is number => v !== null && Number.isFinite(v));
+  const top = Math.max(.01, ...valid), bottom = Math.min(0, ...valid);
+  const getX = (w: number) => left + plotWidth * (w - lo) / (hi - lo || 1);
+  const getY = (v: number) => 125 - 110 * (v - bottom) / (top - bottom);
+  const index = Math.min(sample, wavelengths.length - 1);
+  const value = data.values[index];
+  const qualified = value !== null && Number.isFinite(value);
+  const segments: number[][][] = [];
+  let current: number[][] = [];
+  wavelengths.forEach((w, i) => {
+    const v = data.values[i];
+    if (v === null || !Number.isFinite(v)) {
+      current = [];
       return;
     }
-    if(!current.length)segments.push(current);
-    current.push([36+466*(w-lo)/(hi-lo || 1),125-110*(value-bottom)/(top-bottom)]);
+    if (!current.length) segments.push(current);
+    current.push([getX(w), getY(v)]);
   });
-  return <div className="cal-spectrum"><label>Observable<select value={series.indexOf(data)} onChange={e=>setLine(Number(e.target.value))}>
-    {series.map((s,i)=><option key={s.label} value={i}>{s.label}</option>)}</select></label>
-    {valid.length===0?<p>No qualified samples for {data.label}.</p>:<svg viewBox="0 0 528 156" role="img" aria-label={data.label+' versus vacuum wavelength'}>
-      <path d="M36 12V125H506" stroke="#65808c" fill="none"/>
-      {segments.map((line,i)=><g key={i}>
-        <polyline points={line.map(p=>p.join(',')).join(' ')} stroke="#6de2c4" strokeWidth="2" fill="none"/>
-        {(valid.length<20 || line.length===1) && line.map(([x,y],j)=><circle key={j} cx={x} cy={y} r="3" fill="#a2f6dd"/>)}
-      </g>)}
-      <g fill="#a9c0cb" fontSize="10"><text x="0" y="15">{top.toPrecision(3)}</text><text x="17" y="127">{bottom===0?'0':bottom.toPrecision(3)}</text>
-        <text x="36" y="146">{lo.toFixed(3)} µm</text><text x="453" y="146">{hi.toFixed(3)} µm</text></g>
-    </svg>}{valid.length>0 && valid.length<data.values.length && <small>{valid.length} of {data.values.length} wavelength samples qualified.</small>}</div>;
+
+  function pickWavelength(event: MouseEvent<SVGSVGElement>) {
+    const transform = event.currentTarget.getScreenCTM();
+    if (!transform) return;
+    const point = new DOMPoint(event.clientX, event.clientY).matrixTransform(transform.inverse());
+    const target = lo + (hi - lo) * (point.x - left) / plotWidth;
+    const nearest = wavelengths.reduce((best, w, i) =>
+      Math.abs(w - target) < Math.abs(wavelengths[best] - target) ? i : best, 0);
+    setSample(nearest);
+  }
+
+  return <div className="cal-spectrum">
+    <label>Observable<select value={series.indexOf(data)} onChange={e => setLine(Number(e.target.value))}>
+      {series.map((s, i) => <option key={s.label} value={i}>{s.label}</option>)}
+    </select></label>
+    {valid.length === 0 ? <p>No qualified samples for {data.label}.</p> :
+      <svg viewBox="0 0 528 156" role="img" aria-label={data.label + ' versus vacuum wavelength'}
+        className={inspect ? 'inspectable' : undefined} onClick={inspect ? pickWavelength : undefined}>
+        <path d="M36 12V125H506" stroke="#65808c" fill="none"/>
+        {segments.map((segment, i) => <g key={i}>
+          <polyline points={segment.map(p => p.join(',')).join(' ')} stroke="#6de2c4" strokeWidth="2" fill="none"/>
+          {(valid.length < 20 || segment.length === 1) && segment.map(([x, y], j) =>
+            <circle key={j} cx={x} cy={y} r="3" fill="#a2f6dd"/>)}
+        </g>)}
+        {inspect && <g stroke="#ffcf86">
+          <line x1={getX(wavelengths[index])} x2={getX(wavelengths[index])} y1="12" y2="125" strokeDasharray="3 3"/>
+          {qualified && <circle cx={getX(wavelengths[index])} cy={getY(value)} r="4" fill="#ffcf86"/>}
+        </g>}
+        <g fill="#a9c0cb" fontSize="10">
+          <text x="0" y="15">{top.toPrecision(3)}</text>
+          <text x="17" y="127">{bottom === 0 ? '0' : bottom.toPrecision(3)}</text>
+          <text x="36" y="146">{lo.toFixed(3)} µm</text>
+          <text x="453" y="146">{hi.toFixed(3)} µm</text>
+        </g>
+      </svg>}
+    {inspect && <div className="cal-sample">
+      <label>Wavelength sample<select value={index} onChange={e => setSample(Number(e.target.value))}>
+        {wavelengths.map((w, i) => <option value={i} key={i}>{w.toFixed(5)} µm</option>)}
+      </select></label>
+      <span>Power fraction</span><output aria-label="Measured power fraction">{qualified ? value.toPrecision(7) : 'Unqualified'}</output>
+    </div>}
+    {valid.length > 0 && valid.length < data.values.length &&
+      <small>{valid.length} of {data.values.length} wavelength samples qualified.</small>}
+  </div>;
 }
 
 export function CalibrationMeasurement({value}:{value:unknown}) {
@@ -80,7 +125,7 @@ export function CalibrationMeasurement({value}:{value:unknown}) {
     grating?{wavelengths:grating.wavelength_um,series:[...(grating.beam_to_guide?[{label:'Gaussian to TE guide',values:qualified(grating.beam_to_guide,grating.valid_beam_bins)}]:[]),...(grating.direct_output_fraction?[{label:'Total output aperture flux',values:qualified(grating.direct_output_fraction,grating.valid_direct_bins)}]:[]),...(grating.guide_radiation_up?[{label:'Upward radiation fraction',values:qualified(grating.guide_radiation_up,grating.valid_energy_bins)}]:[]),...(grating.guide_radiation_down?[{label:'Downward radiation fraction',values:qualified(grating.guide_radiation_down,grating.valid_energy_bins)}]:[])]}:null;
   return spectrum && <section aria-label="Measured spectrum"><h3>Measured spectrum</h3>
     <label>Reference geometry<select value={selected} onChange={e=>setVendor(e.target.value)}>{options.map(v=><option key={v}>{v}</option>)}</select></label>
-    <Spectrum key={selected} {...spectrum}/>
+    <Spectrum key={selected} {...spectrum} inspect/>
     {pole && <p>Finite-height isolated-ring mode spacing {pole.measured_bare_ring_fsr_nm.toFixed(3)} nm.
       The published loaded-ring spacing is {pole.published_loaded_ring_fsr_nm.toFixed(3)} nm.</p>}
     </section>;

@@ -1,0 +1,539 @@
+{
+  "passed": true,
+  "release": "v0.11.0a3",
+  "asset": "calibration-examples-v0.11.0a3.zip",
+  "url": "https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.11.0a3/calibration-examples-v0.11.0a3.zip",
+  "sha256": "8af9470be55d3d6bfaf2258feb2ff68390dfd2c72b0236c53e4f9bcac757445b",
+  "size_bytes": 50382512,
+  "example_count": 12,
+  "retained_from_a2": 11,
+  "verified_a2_asset_sha256": "50b0de615883a090048f1f6506f849553370f612dba7ae63e21880b423c21e46",
+  "new_example": "meep-finite-multimode.zip",
+  "exports_index_sha256": "81b980828f4d0aa97ef240cfc4553527788dd194c166066f37ec42fb97c4f7c6",
+  "checks": {
+    "archive_crc_and_safe_member_names": true,
+    "all_inner_archives_and_members_hashed": true,
+    "all_declared_source_and_reference_hashes_matched": true,
+    "worker_sources_and_python_notebook_code_parse": true,
+    "all_numpy_arrays_loaded_without_pickle": true,
+    "privacy_scan_passed": true,
+    "privacy_scan_scope": "Archive paths, text, notebooks, source, reports, lockfiles, and decompressed NumPy array/header bytes; known machine paths, private handoff/capture names, known personal contact data and credential formats.",
+    "historical_planar_notebook_bound_by_outer_manifest": true,
+    "native_replays": "The twelve exports retain their original measured programs. This archive assembly performs static and integrity verification. The new finite-height Python/notebook replay is evidenced separately.",
+    "independent_staged_asset_readback": true
+  },
+  "inspection_counts": {
+    "inner_files": 349,
+    "text_members": 279,
+    "parsed_notebooks": 13,
+    "npz": 70,
+    "parsed_python": 86,
+    "declared_sources": 182,
+    "declared_results": 145,
+    "numeric_arrays": 620
+  },
+  "runs": {
+    "coupler-yee-aligned-cpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "cpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "5ee097714352f6c0c505ddcc3cd6f129c6142d6e449f494a5e04ab39321d1046",
+      "notebooks_sha256": {
+        "calibration.ipynb": "6ab4a96777b9fec07aef1a20d0075eb2a5fe17e4da11b4388f6247853fc66fbd"
+      },
+      "manifest_sha256": "9ab5f6917215382b6cf7dd767675a58545eb4b8995e952c6f3e0a061006bc892",
+      "reference_manifest_sha256": "97f0722dc8ac7e157697dd2218018a8894d28868f560ed6e4cb14fdc5a26c0ae",
+      "measured_files": 19,
+      "source_files": 16,
+      "archive_entries": 37,
+      "numerical_arrays": 78,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "92c30a3b8b6fe09ca76664fb1b087e1ce5b1fe133b10cc8b1dccdfe208f684e2",
+      "size_bytes": 2512906,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cpu:0",
+        "device_name": "cpu",
+        "material_model": "yee-aligned"
+      }
+    },
+    "coupler-yee-aligned-cpu16.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 1,
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "cpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "5ee097714352f6c0c505ddcc3cd6f129c6142d6e449f494a5e04ab39321d1046",
+      "notebooks_sha256": {
+        "calibration.ipynb": "6ab4a96777b9fec07aef1a20d0075eb2a5fe17e4da11b4388f6247853fc66fbd"
+      },
+      "manifest_sha256": "5eaeb7077bc509ad1c19514ef9460310db16ab860aadf8fd37cbc1564b4bd84b",
+      "reference_manifest_sha256": "2f4ede5c95d2d15b3efadf63d22cd0370b269da274bb263c9b75551def91ed79",
+      "measured_files": 19,
+      "source_files": 16,
+      "archive_entries": 37,
+      "numerical_arrays": 78,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "f73c8a8e666d2384dd9046c7f2cd84e2b1dad653550d0a5d80a424b920088d2e",
+      "size_bytes": 4248298,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cpu:0",
+        "device_name": "cpu",
+        "material_model": "yee-aligned"
+      }
+    },
+    "coupler-yee-aligned-gpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "64330919f49845831afddcd8ac8945c9bc3b1b1b20611be96bbd5d3138274e03",
+      "notebooks_sha256": {
+        "calibration.ipynb": "6ab4a96777b9fec07aef1a20d0075eb2a5fe17e4da11b4388f6247853fc66fbd"
+      },
+      "manifest_sha256": "fa124696af83bce93d78afab44db84114f0381cc3b07fac5d2c371a0124bd371",
+      "reference_manifest_sha256": "7f02c94a09a5b2faeee24277ee5dfb3d1617d54a3899ed23871a75977061f882",
+      "measured_files": 19,
+      "source_files": 17,
+      "archive_entries": 38,
+      "numerical_arrays": 78,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "839c0593bc3eda93547e53d3bc8aff346fc56c183c53eaede01a4e57ba23722e",
+      "size_bytes": 2513791,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cuda:0",
+        "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "material_model": "yee-aligned"
+      }
+    },
+    "coupler-yee-aligned-gpu16.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "069e02430bba6c2eb66489ab519c2a34a0901784384fec9248e7d20407fc11be",
+      "notebooks_sha256": {
+        "calibration.ipynb": "6ab4a96777b9fec07aef1a20d0075eb2a5fe17e4da11b4388f6247853fc66fbd"
+      },
+      "manifest_sha256": "9c81d1f5851351212ed2eba4f4861cf3e50db168cf1b79664d821c42439f63f6",
+      "reference_manifest_sha256": "7330ac1f30a296e60a8aee18e1e9dcfb0a70232760ac9ad5ceaa5fb3ee3f714f",
+      "measured_files": 19,
+      "source_files": 17,
+      "archive_entries": 38,
+      "numerical_arrays": 78,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "c37f11dc772433fa91dc58d875a52681f1104c12f8ecd96984ecf9ee00c983fd",
+      "size_bytes": 4243201,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cuda:0",
+        "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "material_model": "yee-aligned"
+      }
+    },
+    "meep-compact-grating.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "grating",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 40,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": "tidy3d-compact"
+      },
+      "worker": "scripts.calibrate_grating",
+      "worker_source_sha256": "da024e3f372520c433d73ea58739d050aed274f06cb9cf4bc55cc4552b6ae689",
+      "controller_sha256": "713baa4819ed72e64a043a2775131421ddb6e84e183a9e0f96743c10a8f7ccd3",
+      "notebooks_sha256": {
+        "calibration.ipynb": "25796a46ed40fabb53ac7be6b1bc634da246e3bdc9af1a4acb8ff483e20cec4b"
+      },
+      "manifest_sha256": "1871c5ae4c20c0a129ce24b904a49e0c059b93dc28924b279394c74c2b0009f9",
+      "reference_manifest_sha256": "dcf7c8af86b6e391a665b5202cd7b795b1daff424f99c32887f92a8d265d08e9",
+      "measured_files": 2,
+      "source_files": 11,
+      "archive_entries": 15,
+      "numerical_arrays": 2,
+      "qualified_report_checks": {
+        "passed": true
+      },
+      "archive_sha256": "3f72526e2526cc845b95aec465dd1f28a9f14254281f2b7add956ce08d6ce196",
+      "size_bytes": 27481,
+      "reported_native_metadata": {
+        "solver": "Meep CPU"
+      }
+    },
+    "meep-finite-multimode.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "multimode-3d",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 20,
+        "offset_um": 0.125,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_multimode",
+      "worker_source_sha256": "a227ed808897cf0f15855c19fea5d24961b7d6494443c426fa943ad83d842a39",
+      "controller_sha256": "706f37323337f874c857c93902b1987898329377ee20d23c41cf4318bda3067d",
+      "notebooks_sha256": {
+        "calibration.ipynb": "c6eb8c302531887f7e7d10a0188c1712637464e0cfc96be60fbd98ea2d8d00f8"
+      },
+      "manifest_sha256": "0b4c7d555a364a69b1f6a7454ada03683f1692f89fa1e9155cbe55fb842678ed",
+      "reference_manifest_sha256": "55da2f9d3a834050e2241746c199164190d4b2422edfb52efe48f158dbbf4646",
+      "measured_files": 2,
+      "source_files": 10,
+      "archive_entries": 14,
+      "numerical_arrays": 30,
+      "qualified_report_checks": {
+        "passed": true
+      },
+      "archive_sha256": "93d5b2aa119a7777e2b39d1586d2e14e8a29bb364effa7b2b4d09ad701fe8637",
+      "size_bytes": 23306712,
+      "reported_native_metadata": {
+        "solver": "Meep",
+        "version": "1.35.0",
+        "actual_device": "CPU",
+        "dimension": "3D finite-height silicon in oxide. Two quasi-TE guided channels per port.",
+        "phase_convention_version": 2
+      }
+    },
+    "meep-loaded-ring.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "ring",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": null,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": "lumerical",
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_ring",
+      "worker_source_sha256": "a1b23ccf3290de2d887489441228e0b8cbe1765b4b77be101152cec5d1b876ea",
+      "controller_sha256": "5ee097714352f6c0c505ddcc3cd6f129c6142d6e449f494a5e04ab39321d1046",
+      "notebooks_sha256": {
+        "calibration.ipynb": "36f234f7ca69fb6047a6aafbe62417d993322edda59a2f47b974a86744db6fdd",
+        "captured-ring.ipynb": "76e168947e3f32b67f5c73414a1497f6f727c83e537149c86276941059d10878"
+      },
+      "manifest_sha256": "00ca28bd31dc5a288aedd0eefd54d312719ed6e3a1e62bb6db02c36b1aef0fa8",
+      "reference_manifest_sha256": "8dd66ffc6d9574d1e32cbf68f379a216aee22c873b06ddadf664737089445704",
+      "measured_files": 2,
+      "source_files": 20,
+      "archive_entries": 21,
+      "numerical_arrays": 14,
+      "qualified_report_checks": {
+        "passed": true
+      },
+      "archive_sha256": "6fa0ac716252e9568379ed3af026d9d17c36b43089ac169119b72e141a75ff0d",
+      "size_bytes": 580724,
+      "reported_native_metadata": {
+        "solver": "Meep CPU",
+        "versions": {
+          "meep": "1.35.0",
+          "numpy": "2.4.6"
+        }
+      }
+    },
+    "meep-planar-multimode.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "multimode",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 48,
+        "offset_um": 0.125
+      },
+      "worker": "scripts.calibrate_multimode",
+      "worker_source_sha256": "767a93228a0b4e204217c2bc9464200a4995b38b85c077d550d25686d06985df",
+      "controller_sha256": "8314928d84b2703b0c813f38e137c47c776927e5df7ca7157d3fc3b51c69f874",
+      "notebooks_sha256": {
+        "calibration.ipynb": "ecce6165088ec17128eb5457f8846f539464375b011e430e1655c0ee9e14d75e"
+      },
+      "manifest_sha256": "222f5b48011d5264dc5d258d6667c86fae049cd9517846e727d696757b89e2c1",
+      "reference_manifest_sha256": "5604acde3825f36e24715eb166362290bed9a46d7fa9ac3acc7be70375ab8247",
+      "measured_files": 3,
+      "source_files": 9,
+      "archive_entries": 15,
+      "numerical_arrays": 34,
+      "qualified_report_checks": {
+        "passed": true
+      },
+      "archive_sha256": "ce0fe32cf10e20af0b82bc0d1d53ea1bd8dcc99d9d9e72564e6daa75a0ed45d0",
+      "size_bytes": 4300566,
+      "reported_native_metadata": {
+        "solver": "Meep",
+        "version": "1.35.0",
+        "actual_device": "CPU",
+        "dimension": "2D planar, invariant in z. Ez, two guided TE modes per side.",
+        "phase_convention_version": 2
+      }
+    },
+    "splitter-yee-aligned-cpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "cpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "5ee097714352f6c0c505ddcc3cd6f129c6142d6e449f494a5e04ab39321d1046",
+      "notebooks_sha256": {
+        "calibration.ipynb": "7911fb3e5ca03ea44c9817ded09a9128929cc87c0decbaf6fe9a3bed7f282b3f"
+      },
+      "manifest_sha256": "e8e40a3a81e0ecd85a7cf1b07bdb1d79dd30de43136964740f8795a280e4ce50",
+      "reference_manifest_sha256": "cf5cf9933b7ded8eb7c4957903c45af0288493b49529d12f5c21df718d685c4e",
+      "measured_files": 15,
+      "source_files": 16,
+      "archive_entries": 33,
+      "numerical_arrays": 57,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "021477bd3ad4312a646afbe1386d2559ccd3ba27b6c4564e90e922c157b90ee0",
+      "size_bytes": 1612221,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cpu:0",
+        "device_name": "cpu",
+        "material_model": "yee-aligned"
+      }
+    },
+    "splitter-yee-aligned-cpu16.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 1,
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "cpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "5ee097714352f6c0c505ddcc3cd6f129c6142d6e449f494a5e04ab39321d1046",
+      "notebooks_sha256": {
+        "calibration.ipynb": "7911fb3e5ca03ea44c9817ded09a9128929cc87c0decbaf6fe9a3bed7f282b3f"
+      },
+      "manifest_sha256": "0f983a3097971308858f0134e271b9fec3dd8d682366612829a9c94958732652",
+      "reference_manifest_sha256": "3506e86eb17ac16fd82a4f2fa3a84de60e3587305abe0bc40de69477f2651fa3",
+      "measured_files": 15,
+      "source_files": 16,
+      "archive_entries": 33,
+      "numerical_arrays": 57,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "010e63d55820903d68903d831c16d748e50ec5cbd65c4278455b9d37ebfa6ad5",
+      "size_bytes": 2685781,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cpu:0",
+        "device_name": "cpu",
+        "material_model": "yee-aligned"
+      }
+    },
+    "splitter-yee-aligned-gpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "713baa4819ed72e64a043a2775131421ddb6e84e183a9e0f96743c10a8f7ccd3",
+      "notebooks_sha256": {
+        "calibration.ipynb": "7911fb3e5ca03ea44c9817ded09a9128929cc87c0decbaf6fe9a3bed7f282b3f"
+      },
+      "manifest_sha256": "6cfa76db656000d9d08976da38b18fa8058a2dc314c1e92de92f20e161384102",
+      "reference_manifest_sha256": "b33427a84f038300681abd9b343fcf7730d0105f9f2b6e7d086c4e36e4fb5ca0",
+      "measured_files": 15,
+      "source_files": 17,
+      "archive_entries": 34,
+      "numerical_arrays": 57,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "5f0ce469eca0f3f0a446c8b545229cf953cc724ca0e3fbd5fba1cb1d5936dd9e",
+      "size_bytes": 1613259,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cuda:0",
+        "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "material_model": "yee-aligned"
+      }
+    },
+    "splitter-yee-aligned-gpu16.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": "yee-aligned"
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+      "controller_sha256": "12ff003813630c9adaa119ae715aea9a65a865cce7f60e99e83e637e8ce1b8ad",
+      "notebooks_sha256": {
+        "calibration.ipynb": "7911fb3e5ca03ea44c9817ded09a9128929cc87c0decbaf6fe9a3bed7f282b3f"
+      },
+      "manifest_sha256": "a8a6563d5da231e7a009ae20161666aff6153339a465d833aa44d8508f7445f0",
+      "reference_manifest_sha256": "e7839c9c5fe43711f9c1a676cf2153ba84b6fbf1d1b8a3ddf3ec029117fadeaf",
+      "measured_files": 15,
+      "source_files": 17,
+      "archive_entries": 34,
+      "numerical_arrays": 57,
+      "qualified_report_checks": {
+        "settled": true,
+        "sampled_setup_checks_passed": true
+      },
+      "archive_sha256": "30dda891e5b1fce8de29fc407885741a92e810f56197b4483cd5ef58c909efc2",
+      "size_bytes": 2683325,
+      "reported_native_metadata": {
+        "solver": "fdtdx",
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        },
+        "actual_device": "cuda:0",
+        "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "material_model": "yee-aligned"
+      }
+    }
+  },
+  "staged_readback": {
+    "all_inner_files_rehashed": 349,
+    "native_fdtdx_stage_archive_hashes_verified": 56,
+    "native_fdtdx_incident_E_H_profile_hashes_recomputed": 56,
+    "native_reports_with_array_file_hashes_verified": 2,
+    "ring_worker_notebook_and_embedded_replay_array_links_verified": 3
+  }
+}

@@ -33,3 +33,8 @@ For a long native study, `--checkpoint-dir DIR` preserves each measured referenc
 A browser started the 48-cell planar study, checked the four displayed complex outputs and powers against the local solver report, and downloaded its result ZIP. A fresh Python process and an executed notebook ran the packaged source separately outside the checkout. Every numerical array and displayed observable was compared. The largest raw differences were 5.76 × 10⁻⁸ (Python) and 2.12 × 10⁻⁸ (notebook). The exports include elementwise tolerances and the differences for all nonidentical arrays. [Browser and replay record](verification/v011-calibration-replays.json).
 
 All six recorded presets were opened in Chrome. The verification selected every input and wavelength of the stored matrices and compared each displayed real part, imaginary part and power to its recorded value. It also inspected the ring and grating charts, the bare-ring table and the mobile layout. [Browser verification](verification/v011-browser-records.json) · [Native Meep regressions and JAX target checks](verification/v011-native-regressions.json).
+
+
+## Finite-height Python and notebook exports
+
+A 20 cells/µm export was replayed in two fresh directories. The Python program and executed Jupyter notebook each repeated all four input modes, including an independent straight reference and a device run for each input. Both passed the saved numerical checks for every array, channel, wavelength, power and complex coefficient. The largest difference in the complex S matrix from the saved run was 1.34 × 10⁻⁷. The largest absolute raw-monitor difference was 2.36 × 10⁻⁶, within the recorded per-array tolerance. [Both replay results and tolerances](verification/v011-finite-multimode-replays.json).

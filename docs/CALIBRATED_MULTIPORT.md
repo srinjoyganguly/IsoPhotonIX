@@ -318,5 +318,5 @@ or convergence to a continuum phase. The receipts retain every complex
 coefficient for the excited column. [Coupler](verification/v011-multiport-refined-coupler24.json) ·
 [Splitter](verification/v011-multiport-refined-splitter24.json) ·
 [CUDA interface audit](verification/v011-fdtdx-coupler-boundary-ties.json).
-For example, the lower-port power remained 0.40414 for Meep versus 0.36595
+At 16 cells/µm the lower-port power was 0.40414 for Meep versus 0.36595
 for the corrected FDTDX run.

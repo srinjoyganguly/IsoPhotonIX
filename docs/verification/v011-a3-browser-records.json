@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-06T02:19:18.984Z",
+  "cases": {
+    "coupler": {
+      "records": 6,
+      "matrix_entries": 288,
+      "spectra": 0,
+      "plotted_samples": 0,
+      "sample_readouts": 0,
+      "bare_ring_pairs": 0
+    },
+    "splitter": {
+      "records": 6,
+      "matrix_entries": 162,
+      "spectra": 0,
+      "plotted_samples": 0,
+      "sample_readouts": 0,
+      "bare_ring_pairs": 0
+    },
+    "ring": {
+      "records": 2,
+      "matrix_entries": 0,
+      "spectra": 8,
+      "plotted_samples": 4488,
+      "sample_readouts": 24,
+      "bare_ring_pairs": 2
+    },
+    "grating": {
+      "records": 9,
+      "matrix_entries": 0,
+      "spectra": 19,
+      "plotted_samples": 341,
+      "sample_readouts": 57,
+      "bare_ring_pairs": 0
+    },
+    "multimode": {
+      "records": 1,
+      "matrix_entries": 48,
+      "spectra": 0,
+      "plotted_samples": 0,
+      "sample_readouts": 0,
+      "bare_ring_pairs": 0
+    },
+    "multimode-3d": {
+      "records": 1,
+      "matrix_entries": 48,
+      "spectra": 0,
+      "plotted_samples": 0,
+      "sample_readouts": 0,
+      "bare_ring_pairs": 0
+    }
+  },
+  "no_browser_errors": true,
+  "mobile_width": 390
+}

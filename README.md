@@ -9,7 +9,7 @@ The application code was started during the event. Existing numerical libraries
 provide the solvers; [build provenance](docs/PROVENANCE.md) and
 [credits](CREDITS.md) distinguish that reuse from new work.
 
-**Calibrated components.** The workbench measures directional-coupler and splitter S matrices, multimode conversion, ring spectra and grating coupling in dedicated physical presets. Open **Calibrated components**, select an input, wavelength and local execution target, then inspect the measured data and export the run as Python and a Jupyter notebook. You can export the configured program before running it. The checklist identifies which devices, meshes and commercial observables have been verified. [Calibration checklist](docs/CALIBRATED_COMPONENTS.md) · [Lumerical and Tidy3D comparisons](docs/CALIBRATED_VENDOR_CHECKS.md).
+**Calibrated components.** The workbench measures directional-coupler and splitter S matrices, multimode conversion, ring spectra and grating coupling in dedicated physical presets. Open **Calibrated components**, select an input, wavelength and local execution target, then inspect the measured data and export the run as Python and a Jupyter notebook. You can export the configured program before running it. In ring and grating plots, click the curve or choose a wavelength to read its measured power fraction. The checklist identifies which devices, meshes and commercial observables have been verified. [Calibration checklist](docs/CALIBRATED_COMPONENTS.md) · [Lumerical and Tidy3D comparisons](docs/CALIBRATED_VENDOR_CHECKS.md).
 
 **v0.10 preview.** Select an object in 3D or XY to delete a component and
 its ports in one edit, undo it or redo it. You can also join two components
@@ -136,7 +136,7 @@ The [v0.2.0 release bundle](https://github.com/srinjoyganguly/photonics-workbenc
 includes source and the built interface. After extracting it, install the API
 and solver environments in the setup guide, then run `bash scripts/start.sh`;
 you can skip the Node build step. Solver binaries and environments are not bundled.
-That release contains the submitted 2D workflow. The post-event preview is available as a locally built wheel with the compiled interface. Building the wheel from source requires the frontend build.
+That release contains the submitted 2D workflow. The post-event calibrated workbench is available as a pip-installable wheel with the compiled interface on [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases). Building the wheel from source requires the frontend build.
 
 Use Linux or WSL2, Python 3.11, Conda for Meep, and Node 22.12+ for building the
 interface. Follow [the full setup instructions](docs/SETUP.md) to install the
