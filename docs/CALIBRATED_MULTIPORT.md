@@ -109,6 +109,30 @@ relevant symmetry check. Absolute loss and scattering phase require matched
 geometry, material, mode normalization and plane positions. In particular, an
 equal arm ratio can coexist with substantial radiation in an unoptimized Y.
 
+The published Tidy3D notebook describes a sinusoidal bend in its prose, then
+creates the actual bend with PhotonForge's `Path.s_bend`. Two distinct
+reconstructions test those choices. For the software-generated outline, the
+workbench replayed the original path and polygon-union calls locally with
+PhotonForge Community 2.0.0. The resulting 52-vertex arms matched the original
+notebook geometry illustration within 0.00988 µm over eleven transverse cuts.
+One pixel spans 0.01452 µm in that illustration. The notebook does not record
+the generating PhotonForge version. The checked-in vertices let Meep run
+without PhotonForge. [Generated polygons and illustration measurements](verification/v011-published-y-photonforge-outline.json) · [PhotonForge Community](https://docs.flexcompute.com/projects/photonforge/en/latest/getting_started.html).
+
+Run this separate model from the checkout in a Meep environment:
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python scripts/measure_published_y_outline.py run \
+    --vertices docs/verification/v011-published-y-photonforge-outline.json \
+    --resolution 20 --output published-y-photonforge
+```
+
+The model measures a straight incident reference with the same source and
+mirror symmetries as its device. It records the upper-arm guided power and
+compares `−10 log10(2 P_upper)` with the published curve. The lower port in
+this run is symmetry-related. The sinusoidal reconstruction measures both
+arms without a transverse mirror and retains their independent powers.
+
 Compare one measured numerical control to its baseline, for example:
 
 ```bash
