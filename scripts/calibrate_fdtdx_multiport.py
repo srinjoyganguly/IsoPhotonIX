@@ -53,6 +53,11 @@ def grid(model, resolution):
     if pml < 6:
         raise ValueError('Need at least six cells across each PML.')
     axes = [(np.arange(n) + .5 - n/2) * dx for n in shape]
+    # Optional benchmark registration translates the computational lattice,
+    # including PML faces and finite apertures. Physical polygons/core stay fixed.
+    z_origin = model.get('z_grid_origin_um',0.)
+    if z_origin:
+        axes[2] += z_origin
     sy, sz = (round(size * resolution) for size in model['aperture'])
     ports = []
     for port in model['ports']:
@@ -64,6 +69,8 @@ def grid(model, resolution):
         ports.append({**port, 'start':start, 'source_ix':to_x(port['source_x']),
                       'shape':(1,sy,sz), 'actual_x':(start[0]-shape[0]/2)*dx,
                       'actual_y':(start[1]+sy/2-shape[1]/2)*dx})
+        if 'z_grid_origin_um' in model:
+            ports[-1]['actual_z']=(start[2]+sz/2-shape[2]/2)*dx+z_origin
     return shape, pml, axes, ports
 
 
@@ -376,6 +383,8 @@ def reference_cache_key(plan,launch):
     if ref['material_model'] == 'polygon-area':
         ref['straight_polygon_um'] = straight_polygon(model,launch)
         ref['physical_height_um'] = model['height']
+        if 'z_grid_origin_um' in model:
+            ref['z_grid_origin_um'] = model['z_grid_origin_um']
     return hashlib.sha256(json.dumps(ref,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 

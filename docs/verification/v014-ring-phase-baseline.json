@@ -20,7 +20,8 @@
         "substrate_index": 1.44,
         "silicon_index": 3.48,
         "ring_material": null,
-        "ring_interface": "exact-area"
+        "ring_interface": "exact-area",
+        "electric_update": null
       },
       "total_wavelengths": 241,
       "resolution": 16,
@@ -12603,7 +12604,8 @@
         "substrate_index": 1.44,
         "silicon_index": 3.48,
         "ring_material": null,
-        "ring_interface": "exact-area"
+        "ring_interface": "exact-area",
+        "electric_update": null
       },
       "total_wavelengths": 241,
       "resolution": 20,

@@ -360,5 +360,17 @@
   ],
   "vendor_absolute_phase_basis": null,
   "vendor_sfile_sha256": null,
-  "vendor_project_sha256": null
+  "vendor_project_sha256": null,
+  "native_phase_evidence": {
+    "guide": {
+      "minimum_amplitude": 0.02,
+      "verified_final_phase_intervals": 2,
+      "phase_change_limit_rad": 0.05
+    },
+    "reflection": {
+      "minimum_amplitude": 0.02,
+      "verified_final_phase_intervals": 0,
+      "scope": "Final source-subtracted E/H projection; an independent return-phase duration history is unavailable."
+    }
+  }
 }

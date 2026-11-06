@@ -3,6 +3,7 @@ import argparse
 import fcntl
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 import subprocess
@@ -90,17 +91,23 @@ def gpu_preflight(case, resolution):
 
 
 def measure(case, device, resolution, destination, baselines, resume=False, launch_port=None,
-            reference_cache=None, device_cache=None, material_model="yee-aligned"):
-    preflight = gpu_preflight(case, resolution) if device=='gpu' and resolution>24 else None
+            reference_cache=None, device_cache=None, material_model="yee-aligned", z_grid_origin_cells=None):
+    if z_grid_origin_cells is not None and (material_model!='polygon-area' or z_grid_origin_cells not in (0.,.5)):
+        raise ValueError('The origin control requires polygon-area sampling at zero or one half z cell.')
+    preflight = gpu_preflight(case, resolution) if device=='gpu' and (resolution>24 or z_grid_origin_cells is not None) else None
     runtime = _ports_runtime(device)
     target = runtime[-1]
     model = multiport_model(case)
+    if z_grid_origin_cells is not None:
+        model['z_grid_origin_um']=z_grid_origin_cells/resolution
     names = [port["name"] for port in model["ports"]]
     launch_port = launch_port or names[0]
     if launch_port not in names:
         raise ValueError("Choose a port from " + ", ".join(names))
     launch = names.index(launch_port)
     plan = build_plan(model, device, resolution, 80., target, material_model)
+    if z_grid_origin_cells is not None:
+        plan['requested_gpu_allocator']=os.environ.get('XLA_PYTHON_CLIENT_ALLOCATOR','default')
     if resume and not destination.is_dir():
         raise ValueError("There is no mesh-control directory to resume.")
     destination.mkdir(parents=True, exist_ok=resume)
@@ -187,6 +194,8 @@ def main():
     parser.add_argument("--case", choices=("coupler", "splitter"), required=True)
     parser.add_argument("--resolution", type=int, choices=(12, 16, 20, 24, 28), default=24)
     parser.add_argument("--material-model", choices=("yee-aligned","polygon-area"), default="yee-aligned")
+    parser.add_argument("--z-grid-origin-cells",type=float,choices=(0.,.5),
+                        help="Benchmark only: translate the z mesh, PML and finite port apertures; keep the physical Silicon fixed.")
     parser.add_argument("--device", choices=("cpu", "gpu"), required=True)
     parser.add_argument("--launch-port", help="Named physical input to measure; defaults to the first port.")
     parser.add_argument("--reference-cache", type=Path, help="Share physically identical measured straight references.")
@@ -196,7 +205,7 @@ def main():
     parser.add_argument("--resume", action="store_true", help="Reuse verified stages from this exact mesh control.")
     args = parser.parse_args()
     result = measure(args.case, args.device, args.resolution, args.output, args.compare, args.resume,
-                     args.launch_port, args.reference_cache, args.device_cache, args.material_model)
+                     args.launch_port, args.reference_cache, args.device_cache, args.material_model, args.z_grid_origin_cells)
     if not result["passed"]:
         raise SystemExit("The measured column failed its sampled checks.")
 

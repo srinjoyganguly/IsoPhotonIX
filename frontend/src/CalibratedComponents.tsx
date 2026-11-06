@@ -11,8 +11,9 @@ import { CalibrationMeasurement, Spectrum, type Series } from './CalibrationMeas
 import './calibratedComponents.css';
 
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
+  rejected?: {receipt:string;label:string;reason:string;diagnostic:string}[];
   limits: string; phase_check?:PhaseCheck;phase_checks?:PhaseCheck[]; phase_studies?:SpatialPhaseStudy[]; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
-type Preset = { case: string; name: string; scope: string; routes: string[]; grating_meshes?: Record<string,Record<string,Record<string,number[]>>>; evidence?: Evidence };
+type Preset = { case: string; name: string; scope: string; routes: string[]; ring_meshes?:Record<string,number[]>;grating_meshes?: Record<string,Record<string,Record<string,number[]>>>; evidence?: Evidence };
 type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
 
@@ -37,14 +38,15 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [log,setLog]=useState('');
   const [error,setError]=useState(''),[pending,setPending]=useState(false),[report,setReport]=useState<unknown>(null);
   const selected=catalog.find(p=>p.case===key), evidence=selected?.evidence;
-  const measuredDiagnostic=report!==null && typeof report==='object' && 'measurement_complete' in report && report.measurement_complete===true && 'valid_bins' in report && Number(report.valid_bins)>0;
+  const rejection=report!==null && typeof report==='object' && 'spectrum_rejection' in report ? String(report.spectrum_rejection) : null;
+  const measuredDiagnostic=!rejection && report!==null && typeof report==='object' && 'measurement_complete' in report && report.measurement_complete===true && 'valid_bins' in report && Number(report.valid_bins)>0;
   const job=jobs.find(j=>j.id===jobId), busy=jobs.some(j=>j.status==='running'||j.status==='queued');
   const history=jobs.filter(j=>j.config.case===key);
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
   const denseGrating = gratingDomain==='full' && key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
   const dispersiveRing = key==='ring-3d' && geometry3d==='lumerical' && ringInterface==='exact-area' && (!mesh || mesh==='16');
-  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? (ringInterface==='wall-tensor'?[16,20,24]:[12,16,20,24]) : key==='grating-3d' ? (selected?.grating_meshes?.[geometry3d]?.[gratingDomain]?.[gratingMaterial] ?? [12,16]) :
+  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? (selected?.ring_meshes?.[ringInterface] ?? []) : key==='grating-3d' ? (selected?.grating_meshes?.[geometry3d]?.[gratingDomain]?.[gratingMaterial] ?? [12,16]) :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
     if(!editableLayout || layoutText) return;
@@ -78,7 +80,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
       request('/api/calibrations/jobs/'+job.id+'/report').then(async data=>{
           if (!live) return;
           setReport(data);
-          if (data && typeof data === 'object' && ('field_preview' in data || ['layout-ports-2d','multimode-tm'].includes(job.config.case))) {
+          if (data && typeof data === 'object' && !('spectrum_rejection' in data) && ('field_preview' in data || ['layout-ports-2d','multimode-tm'].includes(job.config.case))) {
             const field = await request<FieldPlane>('/api/calibrations/jobs/'+job.id+'/field');
             if (live) setLocalField(field);
           }
@@ -157,6 +159,8 @@ export function CalibratedComponents({active}:{active:boolean}) {
           <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+evidence.recorded[record]?.receipt}
            target="_blank" rel="noreferrer">Full verification record</a></> :
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
+        {evidence.rejected?.map(failure=><details key={failure.receipt} className="cal-runtime"><summary>Rejected spectrum · {failure.label}</summary>
+          <p>{failure.reason}</p><a target="_blank" rel="noreferrer" href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+failure.diagnostic}>Growth measurements and original run</a></details>)}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
         <p>{evidence.limits}</p>{evidence.phase_studies && <SpatialPhase key={key} studies={evidence.phase_studies}/>}
         {evidence.phase_check && <PhaseSensitivity key={key} checks={evidence.phase_checks?.length ? evidence.phase_checks : [evidence.phase_check]}/>}</section>}
@@ -167,7 +171,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
           {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
             <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
         </select></label>}
-        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>{setRingInterface(e.target.value);if(e.target.value==='wall-tensor' && mesh==='12')setMesh('16');}}>
+        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>{setRingInterface(e.target.value);if(mesh && !selected?.ring_meshes?.[e.target.value]?.includes(+mesh))setMesh('');}}>
           <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option><option value="wall-tensor">Curved wall tensor · constant materials</option>
         </select></label>}
         {dispersiveRing && <label>Ring material response<select value={ringMaterial} onChange={e=>setRingMaterial(e.target.value)}>
@@ -227,10 +231,11 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {job.error && <p role="alert">{job.error}</p>}
         {job.status==='failed' && job.config.case==='ring-3d' && measuredDiagnostic && <p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export diagnostic spectrum, validity mask and replay</a></p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
-        {report!=null&&<CalibrationMeasurement key={'measurement'+job.id} value={report}/>}
-        {report!=null && <SpatialComparison key={'compare'+job.id} value={report}/>}
-        {job.config.device==='gpu' && job.status==='completed' && <GpuPerformance key={job.id} preset={key} job={job.id}/>}
-        {localField && <CalibrationField key={'field'+job.id} field={localField}/>}
+        {rejection && <p role="alert">Spectrum rejected. {rejection}</p>}
+        {report!=null && !rejection && <CalibrationMeasurement key={'measurement'+job.id} value={report}/>}
+        {report!=null && !rejection && <SpatialComparison key={'compare'+job.id} value={report}/>}
+        {job.config.device==='gpu' && report!=null && <GpuPerformance key={job.id} preset={key} job={job.id}/>}
+        {localField && !rejection && <CalibrationField key={'field'+job.id} field={localField}/>}
         {report!=null&&<details><summary>Numerical report</summary><pre>{JSON.stringify(report,null,2)}</pre></details>}</>}
       </section></>}
       {error && <p role="alert">{error}</p>}

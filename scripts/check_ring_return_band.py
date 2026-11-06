@@ -51,6 +51,11 @@ def peak_summary(wl,power,duration,wavelength=1.55):
 
 
 def measure(path,reference_path=None):
+    from scripts.diagnose_ring_stability import rejection_for
+    rejected=rejection_for(path)
+    if rejected:
+        return dict(source_report=path.name,arrays_sha256=rejected['source_arrays_sha256'],
+                    usable_spectrum=False,reason=rejected['reason'],windows=[],published=None)
     report=json.loads(path.read_text()); raw=path.parent/report['arrays_file']
     if digest(raw)!=report['arrays_sha256']:
         raise ValueError('Unexpected field archive.')

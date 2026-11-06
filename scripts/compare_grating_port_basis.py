@@ -111,6 +111,15 @@ def basis_check(receipt, vendor, axes, fields):
         y,z=y[sy:sy+py]-.5*dx,z[sz:sz+pz]
         matched=np.interp(vendor['wavelength_um'],wavelengths,native['dev_mode_neff'].real)
         interpolator=RegularGridInterpolator(axes,fields.transpose(2,3,0,1),bounds_error=False,fill_value=0.)
+        # The guided mode's overall phase is arbitrary. Anchor the FILED mode
+        # to positive Ey in the strip centre, before examining any scattered
+        # amplitude. The native fundamental already uses a positive-Ey gauge.
+        anchor=interpolator([[0.,row['settings']['height']/2]])[0,0,1]
+        if abs(anchor)<.2*abs(fields[0,1]).max():
+            raise ValueError('The filed strip Ey phase anchor is too close to a node.')
+        native_out=native['output_mode'][band]
+        if abs(native_out)/np.sqrt(native['incident_power'][band])<.02:
+            raise ValueError('Need a resolved output guide amplitude for the phase diagnostic.')
         results=[]
         for y_shift in (-.5,0.,.5):
             for z_shift in (-.5,0.,.5):
@@ -120,8 +129,12 @@ def basis_check(receipt, vendor, axes, fields):
                 shape_overlap=abs(np.vdot(local,e[1]))**2/(np.vdot(local,local).real*np.vdot(e[1],e[1]).real)
                 a=modal_amplitudes(phasors,e[None],h[None],dx**2)[0][0,1]
                 work=abs(a)**2/native['incident_power'][band]
+                # Overlap is conjugate-linear in the basis fields.
+                aligned=a*anchor/abs(anchor)
+                receiver_phase=float(np.angle(aligned*native_out.conj()))
                 results.append({'y_offset_cells':y_shift,'z_offset_cells':z_shift,
-                                'ey_shape_overlap':float(shape_overlap),'reprojected_power_fraction':float(work)})
+                                'ey_shape_overlap':float(shape_overlap),'reprojected_power_fraction':float(work),
+                                'reprojected_minus_native_receiver_phase_rad':receiver_phase})
         native_amps=modal_amplitudes(phasors,native['dev_mode_e'][band:band+1],local_h[None],dx**2)[0][0,1]
         own=float(abs(native_amps)**2/native['incident_power'][band])
         np.testing.assert_allclose(own,row['result']['center_beam_to_guide'],rtol=2e-7)
@@ -131,6 +144,8 @@ def basis_check(receipt, vendor, axes, fields):
             'local_detector_coordinate':'FDTDX E_z co-location (i,j,k+1/2)',
             'local_detector_x_um':row['stages']['device']['output_plane_x_um']-.5*dx,
             'native_power_fraction_at_1550':own,'registered_grid_diagnostic':results[4],
+            'filed_mode_ey_anchor_phase_rad':float(np.angle(anchor)),
+            'max_abs_receiver_phase_change_over_half_cell_offsets_rad':max(abs(x['reprojected_minus_native_receiver_phase_rad']) for x in results),
             'half_cell_axis_uncertainty_power_fraction':[min(x['reprojected_power_fraction'] for x in results),
                                                         max(x['reprojected_power_fraction'] for x in results)]}
 

@@ -1,0 +1,119 @@
+{
+  "scope": "Full intended material volumes on the staggered Ex/Ey/Ez lattices, prior to selecting the positive-y half. This is a geometry audit with zero electromagnetic timesteps.",
+  "examples": [
+    {
+      "geometry": "lumerical",
+      "mesh": 20,
+      "full_shape": [
+        866,
+        426,
+        76
+      ],
+      "stages": {
+        "reference": {
+          "scalar_permittivity_sha256": "4f950e2269b20ea8f20eaa995cde795e6f68cefd3fa9378db0d70ec9cc2b7778",
+          "components": [
+            {
+              "component": "x",
+              "component_permittivity_sha256": "0f0dcfb24ecde505df6a330d92ec7ecc702f43027b9f4732ae7729531b12e898",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "y",
+              "component_permittivity_sha256": "2be7c4d86f8b07aff6e8f7903598192688c6b050b2f1c828da1b93a8e6adb6ec",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "z",
+              "component_permittivity_sha256": "004cdbb2190411d469c454e8b791b4ff466810c2e704031eea90e69bbb5f4214",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            }
+          ]
+        },
+        "device": {
+          "scalar_permittivity_sha256": "a87f3fe5e2071f63af7ddf140a8fe037784057d7237c17ea4fec41fd6f512065",
+          "components": [
+            {
+              "component": "x",
+              "component_permittivity_sha256": "397a63924753b0f7c15724d0c26e042aee0c0ba97d582b43b51930825d23b044",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "y",
+              "component_permittivity_sha256": "8239e52f214d138950ceeaade392be6358385af312b49d735b3af14bd716f2ee",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "z",
+              "component_permittivity_sha256": "7d731b6bc9e8172f1bd2e10aef88299a42102dd319bae6e332348d7c5059df4c",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "geometry": "tidy3d",
+      "mesh": 16,
+      "full_shape": [
+        1051,
+        226,
+        99
+      ],
+      "stages": {
+        "reference": {
+          "scalar_permittivity_sha256": "5a90fbcf0de702af916adaebc5e1f5c02ce4ab72280495b7a0f39c1cc637d168",
+          "components": [
+            {
+              "component": "x",
+              "component_permittivity_sha256": "5a90fbcf0de702af916adaebc5e1f5c02ce4ab72280495b7a0f39c1cc637d168",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "y",
+              "component_permittivity_sha256": "5a90fbcf0de702af916adaebc5e1f5c02ce4ab72280495b7a0f39c1cc637d168",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "z",
+              "component_permittivity_sha256": "5a90fbcf0de702af916adaebc5e1f5c02ce4ab72280495b7a0f39c1cc637d168",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            }
+          ]
+        },
+        "device": {
+          "scalar_permittivity_sha256": "e5e527ecd358f908852fdbb540b9328f7cc5021c530fb6d5ac39cb521257184c",
+          "components": [
+            {
+              "component": "x",
+              "component_permittivity_sha256": "d8620fa79bd860be0a09a1da9009a518c8fb805fed38efa52cd8701e70d91ddd",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "y",
+              "component_permittivity_sha256": "8fbc14ae55461af502f960f391428a1266c530f03e43dc27dfeb0041f5505336",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            },
+            {
+              "component": "z",
+              "component_permittivity_sha256": "6f5334a260f8749d7968c1d51684d64bcbd9f6bcc5e2f40874315b6438866df0",
+              "maximum_absolute_epsilon_difference": 0.0,
+              "relative_l2_difference": 0.0
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

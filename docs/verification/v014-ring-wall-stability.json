@@ -1,0 +1,48 @@
+{
+  "source_receipt": "v014-ring3d-lumerical-r24-t3200-wall-tensor.json",
+  "source_report_sha256": "07bd8a82732d5ebddefe167d3f95b6296013a47dbc7d740e4f9087cfb655574b",
+  "source_arrays_sha256": "ba326ba00e420a180e86239ebf7e78085515e16318338ebdd89b6bc4a69b930a",
+  "usable_spectrum": false,
+  "reason": "After source shutoff all three ring probes grow by over eight times their first-half peaks, and collected power exceeds the passivity limit across over 10% of the band.",
+  "original_mask_qualified": 1,
+  "original_qualified_wavelengths_um": [
+    1.5270000000000001
+  ],
+  "native_gate_failure_counts": {
+    "collected_port_power": 127,
+    "early_window": 224,
+    "launch_magnitude": 147,
+    "launch_phase": 118
+  },
+  "first_to_fourth_quarter_probe_peak_abs_Hz": [
+    [
+      0.19293244183063507,
+      0.15966357290744781,
+      0.1883389949798584
+    ],
+    [
+      0.03988204896450043,
+      0.03793586790561676,
+      0.0406007319688797
+    ],
+    [
+      1.8002395629882812,
+      1.008051872253418,
+      1.6520936489105225
+    ],
+    [
+      418.0560302734375,
+      771.5482788085938,
+      336.05859375
+    ]
+  ],
+  "fourth_to_first_half_peak_per_probe": [
+    2166.8519109939334,
+    4832.337550505882,
+    1784.3282735258263
+  ],
+  "max_collected_power": 1.7407471996501898,
+  "source_shutoff_um_c": 57.14285714285714,
+  "window_um_c": 3200.0,
+  "limits": "A global rejection overrides even an isolated nominally valid bin. Absence of this severe growth signal does not establish vendor agreement or convergence."
+}

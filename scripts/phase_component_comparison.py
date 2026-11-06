@@ -10,6 +10,7 @@ import numpy as np
 from scripts.compare_loaded_ring3d import ANSYS_SHA
 from scripts.lumerical_grating3d import lp01, reflected_fiber_amplitude
 from scripts.grating_angular_spectrum import angular_components
+from scripts.phase_stability_check import growth_diagnostic, inspect as inspect_stability
 
 CHANNELS = {'ring': ('reflection','through','drop','add_side'), 'grating': ('reflection','guide')}
 PORTS = {'ring': (1,3,2,4), 'grating': (1,2)}
@@ -31,6 +32,9 @@ def native_data(path, allow_partial_ring=False):
     if (not report['passed'] and not partial) or report['actual_device']!='cuda:0' or file_sha(archive)!=report['arrays_sha256']:
         raise ValueError('Require a source-bound native NVIDIA measurement with its original numeric archive.')
     data=np.load(archive,allow_pickle=False)
+    if report.get('case_id')=='loaded-ring-3d' and growth_diagnostic(report,data)['reject_scattering']:
+        data.close()
+        raise ValueError('The passive ring has runaway late fields and excess collected power. Withhold all scattering, including nominally qualified bins.')
     if not report['passed']:
         mask=data['valid_bins']
         if (mask.dtype!=np.bool_ or mask.shape!=(report['total_bins'],) or not 0<mask.sum()<len(mask)
@@ -150,8 +154,11 @@ def ring_measurement(path, project=None, allow_partial=False):
             fixed=(fs,fvalid,fstable)
         else:
             central,fixed=None,None
-        return {'central':central,'fixed':fixed,'native_passed':r['passed'],'duration':r['duration_um_c'],'case_key':{k:model.get(k) for k in
-                    ('vendor','radius_um','width_um','height_um','edge_gap_um','bus_y_um','top_index','substrate_index','silicon_index','ring_material','ring_interface')},'vendor':r['vendor'],'r':model['resolution'],'w':w,'s':s*shift,'valid':a['valid_bins'],
+        case_key={k:model.get(k) for k in ('vendor','radius_um','width_um','height_um','edge_gap_um','bus_y_um',
+                  'top_index','substrate_index','silicon_index','ring_material','ring_interface')}
+        case_key['electric_update']=r['stages']['device'].get('electric_update')
+        return {'central':central,'fixed':fixed,'native_passed':r['passed'],'duration':r['duration_um_c'],'case_key':case_key,
+                'vendor':r['vendor'],'r':model['resolution'],'w':w,'s':s*shift,'valid':a['valid_bins'],
                 'phase_ok':stable,'transient_abs':abs(s-early),'sha':r['arrays_sha256'],
                 'info':{'native_port_x_um':p.tolist(),'target_abs_x_um':target,'input_plus_output_lead_um':lengths.tolist(),
                         'straight_beta_range_rad_um': [float(beta.min()),float(beta.max())],
@@ -396,7 +403,7 @@ def compare_mesh(component,previous,row,vendor_file):
             previous['phase_ok'][ia]&row['phase_ok'][ib],wavelengths=w[ib])}
 
 
-def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False):
+def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False, rejected_rings=()):
     if not paths:
         raise ValueError('At least one native receipt is required.')
     if vendor_project and (component!='ring' or not vendor_file):
@@ -416,6 +423,22 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
               'native_samples':[],'mesh_pairs':[],'vendor_absolute_phase_basis':'Matched fixed central ring profile and qualified samples' if project else None,
               'vendor_sfile_sha256':file_sha(vendor_file) if vendor_file else None,
               'vendor_project_sha256':file_sha(vendor_project) if vendor_project else None}
+    if component=='grating':
+        result['native_phase_evidence']={
+            'guide':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':2,'phase_change_limit_rad':.05},
+            'reflection':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':0,
+                          'scope':'Final source-subtracted E/H projection; an independent return-phase duration history is unavailable.'}}
+    if rejected_rings:
+        if component!='ring':
+            raise ValueError('A rejected ring can only accompany a ring study.')
+        result['rejected_acquisitions']=[]
+        for path in rejected_rings:
+            bad=inspect_stability(path)
+            if not bad['diagnostic']['reject_scattering']:
+                raise ValueError('Only verified unstable acquisitions can be excluded with this flag.')
+            result['rejected_acquisitions'].append({'native_receipt':bad['receipt'],'native_arrays_sha256':bad['native_arrays_sha256'],
+                'original_valid_wavelength_um':bad['nominal_qualified_wavelength_um'],'phase_reportable_bins':0,
+                'diagnostic':bad['diagnostic'],'reason':bad['interpretation']})
     previous = None
     for source,row in zip(paths,measurements):
         w,s = row['w'],row['s']
@@ -447,7 +470,8 @@ if __name__=='__main__':
     p.add_argument('--vendor-sfile',type=Path)
     p.add_argument('--vendor-ring-project',type=Path)
     p.add_argument('--include-partial-rings',action='store_true',help='Use qualified bins of source-bound, complete ring acquisitions; preserve the original run status.')
+    p.add_argument('--record-rejected-ring',action='append',default=[],type=Path,help='Keep a verified runaway acquisition visible without publishing S from it.')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('receipts',type=Path,nargs='+')
     args=p.parse_args()
-    args.output.write_text(json.dumps(analyze(args.component,args.receipts,args.vendor_sfile,args.vendor_ring_project,args.include_partial_rings),indent=2,allow_nan=False)+'\n')
+    args.output.write_text(json.dumps(analyze(args.component,args.receipts,args.vendor_sfile,args.vendor_ring_project,args.include_partial_rings,args.record_rejected_ring),indent=2,allow_nan=False)+'\n')

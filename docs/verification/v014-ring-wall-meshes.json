@@ -319,6 +319,25 @@
       "published_fsr_nm": 25.454899999999945
     },
     {
+      "vendor": "lumerical",
+      "meshes": [
+        20,
+        24
+      ],
+      "source_reports": [
+        "v014-ring3d-lumerical-r20-t3200-wall-tensor.json",
+        "v014-ring3d-lumerical-r24-t3200-wall-tensor.json"
+      ],
+      "usable_mesh_comparison": false,
+      "qualified_comparison_bins": 0,
+      "channels": {},
+      "original_native_bins": [
+        241,
+        1
+      ],
+      "reason": "After source shutoff all three ring probes grow by over eight times their first-half peaks, and collected power exceeds the passivity limit across over 10% of the band."
+    },
+    {
       "vendor": "tidy3d",
       "meshes": [
         16,

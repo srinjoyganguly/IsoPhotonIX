@@ -46,9 +46,9 @@ class PhaseRegistrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
             data=root/'arrays.npz'
-            np.savez(data,valid_bins=[True,False,True])
+            np.savez(data,valid_bins=[True,False,True],device_ring_Hz=np.ones((12,3)),device_time_um_c=np.arange(12.))
             record={'case_id':'loaded-ring-3d','passed':False,'measurement_complete':True,'actual_device':'cuda:0',
-                    'arrays_sha256':hashlib.sha256(data.read_bytes()).hexdigest(),'total_bins':3,'valid_bins':2,
+                    'arrays_sha256':hashlib.sha256(data.read_bytes()).hexdigest(),'max_collected_port_power':1.,'total_bins':3,'valid_bins':2,
                     'checkpoint_identity':{'persistent_reuse_eligible':True},
                     'stages':{'reference':{'device':'cuda:0'},'device':{'device':'cuda:0'}}}
             path=root/'report.json';path.write_text(json.dumps(record))
@@ -61,6 +61,13 @@ class PhaseRegistrationTests(unittest.TestCase):
             record['valid_bins']=3;path.write_text(json.dumps(record))
             with self.assertRaises(ValueError):
                 native_data(path,allow_partial_ring=True)
+
+    def test_runaway_field_acquisition_with_nominal_valid_bin_is_rejected(self):
+        from scripts.phase_stability_check import growth_diagnostic
+        field=np.repeat([.2,.02,.5,16.],3)[:,None]*np.ones((1,3))
+        record={'max_collected_port_power':1.74}
+        arrays={'device_ring_Hz':field,'device_time_um_c':np.arange(12.)}
+        self.assertTrue(growth_diagnostic(record,arrays)['reject_scattering'])
 
     def test_sparse_return_power_integral_skips_unqualified_gaps(self):
         w=np.array([1.5,1.51,1.52,1.55,1.60])

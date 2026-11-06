@@ -135,10 +135,28 @@ def compare(original, output):
             'reported_observables_checked':list(first)}
 
 
+def ring_rejection(report):
+    if report.get('case_id')!='loaded-ring-3d':
+        return None
+    current=report.get('stability')
+    if isinstance(current,dict) and current.get('usable_spectrum') is False:
+        return current['reason']
+    # Source bundles execute this file as run.py. Installed workers load it from backend/.
+    module=Path(__file__).resolve()
+    base=module.parent/'source' if module.name=='run.py' else module.parents[1]
+    proof_path=base/'docs/verification/v014-ring-wall-stability.json'
+    if proof_path.is_file():
+        proof=json.loads(proof_path.read_bytes())
+        if proof['usable_spectrum'] is False and proof['source_arrays_sha256']==report.get('arrays_sha256'):
+            return proof['reason']
+    return None
+
+
 def diagnostic_ring(report, folder):
     """A complete acquired spectrum with a verified mask may be exported for diagnosis."""
     if (report.get('case_id') != 'loaded-ring-3d' or report.get('passed') is not False
-            or report.get('measurement_complete') is not True or report.get('arrays_file') != 'arrays.npz'):
+            or report.get('measurement_complete') is not True or report.get('arrays_file') != 'arrays.npz'
+            or ring_rejection(report)):
         return False
     import numpy as np
     path=folder/'arrays.npz'

@@ -57,7 +57,11 @@ const { chromium } = require('playwright');
       await lab.getByLabel('3D geometry').selectOption('lumerical');
       if (preset==='ring-3d') {
         await lab.getByLabel('Ring boundary sampling').selectOption('wall-tensor');
-        assert(!(await lab.getByLabel('Mesh resolution').locator('option').allTextContents()).includes('12 cells/µm'));
+        const options=await lab.getByLabel('Mesh resolution').locator('option').allTextContents();
+        assert(!options.includes('12 cells/µm') && !options.includes('24 cells/µm'));
+        const rejection=lab.getByText('Rejected spectrum · Lumerical · 24 cells/µm · wall-tensor',{exact:true});
+        await rejection.click();
+        assert(await lab.getByRole('link',{name:'Growth measurements and original run'}).isVisible());
       } else {
         await lab.getByLabel('Grating material sampling').selectOption('direct-yee');
         await lab.getByLabel('Simulation domain').selectOption('mirror-y');

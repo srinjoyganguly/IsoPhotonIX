@@ -32,6 +32,11 @@ CASES = {
 
 GPU_COMPONENTS = ('ring-3d', 'grating-3d')
 
+RING_MESHES = {
+    'legacy': (12,16,20,24),
+    'exact-area': (12,16,20,24),
+    'wall-tensor': (16,20),
+}
 
 LAYOUT_CASES = ('layout-ports-2d','layout-ports-3d')
 
@@ -136,14 +141,14 @@ class Calibration(BaseModel):
                 raise ValueError('Direct Yee-cell material sampling requires the Lumerical curved grating.')
             if self.geometry_3d not in geometries:
                 raise ValueError(f'Available {self.case} geometries: {", ".join(geometries)}.')
-            meshes = (12,16,20,24) if ring else grating_meshes(self.geometry_3d,self.grating_domain or 'full',
+            meshes = RING_MESHES[self.ring_interface or 'legacy'] if ring else grating_meshes(self.geometry_3d,self.grating_domain or 'full',
                                                               self.grating_material_model or 'volume-average')
             if self.grating_domain=='mirror-y' and self.grating_spectrum=='dense':
                 raise ValueError('Mirror symmetry is qualified only for the standard grating spectrum.')
             if self.resolution is None:
                 self.resolution = 16 if ring else 12
-            if self.ring_interface=='wall-tensor' and self.resolution<16:
-                raise ValueError('The ring wall tensor requires at least 16 cells/µm.')
+            if self.ring_interface=='wall-tensor' and self.resolution not in meshes:
+                raise ValueError('Choose 16 or 20 cells/µm for wall-tensor. The 24-cell Lumerical evolution failed its stability check.')
             if self.ring_material=='palik-ade' and (self.geometry_3d!='lumerical' or self.ring_interface!='exact-area' or self.resolution!=16):
                 raise ValueError('The measured dispersive ring uses the Lumerical geometry, exact area and 16 cells/µm.')
             if self.grating_spectrum=='dense' and (self.geometry_3d!='lumerical' or self.resolution!=12):
@@ -222,13 +227,15 @@ def specification(config):
             args += ['--ring-material',config.ring_material]
         if config.grating_material_model is not None:
             args += ['--grating-material-model',config.grating_material_model]
-        if config.grating_domain is not None:
+        # Full width is the default in every worker, including the original 16-cell acquisition.
+        if config.grating_domain=='mirror-y':
             args += ['--grating-domain',config.grating_domain]
         if config.grating_spectrum is not None:
             args += ['--grating-spectrum',config.grating_spectrum]
         helpers = ['backend/__init__.py', 'scripts/gpu_timing.py', *['backend/adapters/' + n + '.py' for n in (
             'fdtdx_adapter', 'fdtdx3d_adapter', 'fdtdx_ports_adapter', 'fdtdx_ports3d_adapter')]]
         if ring:
+            helpers += ['docs/verification/v014-ring-wall-stability.json']
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py',
                         'scripts/ring_stage_provenance.py','scripts/ring_wall_tensor.py']
             if config.ring_material=='palik-ade':

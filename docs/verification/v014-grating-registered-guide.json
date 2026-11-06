@@ -35,8 +35,11 @@
         "y_offset_cells": 0.0,
         "z_offset_cells": 0.0,
         "ey_shape_overlap": 0.9979859976273315,
-        "reprojected_power_fraction": 0.25383288224833983
+        "reprojected_power_fraction": 0.25383288224833983,
+        "reprojected_minus_native_receiver_phase_rad": 0.00469333139312335
       },
+      "filed_mode_ey_anchor_phase_rad": 0.0,
+      "max_abs_receiver_phase_change_over_half_cell_offsets_rad": 0.00469333139312335,
       "half_cell_axis_uncertainty_power_fraction": [
         0.23100329027229072,
         0.25383288224833983
@@ -56,8 +59,11 @@
         "y_offset_cells": 0.0,
         "z_offset_cells": 0.0,
         "ey_shape_overlap": 0.9945584386825,
-        "reprojected_power_fraction": 0.3387911990695513
+        "reprojected_power_fraction": 0.3387911990695513,
+        "reprojected_minus_native_receiver_phase_rad": 0.0029228689482916296
       },
+      "filed_mode_ey_anchor_phase_rad": 0.0,
+      "max_abs_receiver_phase_change_over_half_cell_offsets_rad": 0.003151687184386829,
       "half_cell_axis_uncertainty_power_fraction": [
         0.3175276927804793,
         0.3387911990695513
@@ -77,8 +83,11 @@
         "y_offset_cells": 0.0,
         "z_offset_cells": 0.0,
         "ey_shape_overlap": 0.9992503928536334,
-        "reprojected_power_fraction": 0.3609535106434315
+        "reprojected_power_fraction": 0.3609535106434315,
+        "reprojected_minus_native_receiver_phase_rad": 0.001310038627537619
       },
+      "filed_mode_ey_anchor_phase_rad": 0.0,
+      "max_abs_receiver_phase_change_over_half_cell_offsets_rad": 0.0016838701013401195,
       "half_cell_axis_uncertainty_power_fraction": [
         0.3432454403462815,
         0.3609535106434315

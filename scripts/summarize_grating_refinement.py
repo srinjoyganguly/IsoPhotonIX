@@ -56,6 +56,7 @@ def vendor_grid_cost(evidence):
 
 def summarize(paths):
     groups = {}
+    designs = {}
     evidence = Path(__file__).resolve().parents[1]/"docs/verification/v012-grating-commercial-references.json"
     references = json.loads(evidence.read_text())
     for path in paths:
@@ -64,6 +65,10 @@ def summarize(paths):
         geometry = config["geometry"]
         if geometry not in ("lumerical", "tidy3d"):
             raise ValueError("Only a geometry-matched published benchmark is comparable.")
+        design={k:v for k,v in config.items() if k not in ("grating_domain","grating_allocator","resolution")}
+        if geometry in designs and designs[geometry]!=design:
+            raise ValueError(f"Mesh trend requires one physical design and material model for {geometry}.")
+        designs[geometry]=design
         reference = next(v for v in row["comparisons"] if v["geometry_matched"])
         waves = np.array(reference["wavelength_um"])
         published = np.asarray(reference["published_s21_power"] if geometry == "lumerical" else reference["published_power"])
@@ -98,6 +103,8 @@ def summarize(paths):
         groups.setdefault(geometry,[]).append(sample)
     for runs in groups.values():
         runs.sort(key=lambda r:r["mesh"])
+        if len({r["mesh"] for r in runs})!=len(runs):
+            raise ValueError("Each physical mesh may appear only once in a trend.")
         for r1, r2 in zip(runs,runs[1:]):
             np.testing.assert_array_equal(r1["wavelength_um"],r2["wavelength_um"])
             d=100*(np.asarray(r2["power"])-r1["power"])
@@ -136,9 +143,10 @@ def plot_curves(report, path):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    fig,axes=plt.subplots(2,2,figsize=(10,6.6),sharex=True,layout="constrained")
+    geometries=[v for v in ("lumerical","tidy3d") if v in report["groups"]]
+    fig,axes=plt.subplots(2,len(geometries),figsize=(5*len(geometries),6.6),squeeze=False,sharex=True,layout="constrained")
     palette={12:"#737e8c",14:"#0072b2",16:"#d55e00",18:"#994a88",20:"#13846d"}
-    for column,geometry in enumerate(("lumerical","tidy3d")):
+    for column,geometry in enumerate(geometries):
         runs=report["groups"][geometry]
         waves=1000*np.array(runs[0]["wavelength_um"])
         power,delta=axes[:,column]

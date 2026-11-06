@@ -81,6 +81,8 @@ def spatial_index():
     if gates and gates['diagnosis_sha256'] != hashlib.sha256(diagnostics_file.read_bytes()).hexdigest():
         raise ValueError('Accuracy gates belong to a different power comparison.')
     paths = {*BASE.glob('v012-*.json'), *BASE.glob('v013-ring3d-*.json'), *BASE.glob('v013-grating3d-*.json'), *BASE.glob('v014-ring3d-*.json'), *BASE.glob('v014-grating3d-*.json')}
+    stability_path=BASE/'v014-ring-wall-stability.json'
+    stability=json.loads(stability_path.read_bytes())
     for path in sorted(paths):
         if path.name == 'v012-calibrated-index.json':
             continue
@@ -99,6 +101,15 @@ def spatial_index():
             if hashlib.sha256(raw.read_bytes()).hexdigest() != data['arrays_sha256']:
                 raise ValueError(f'Numerical archive changed for {path.name}')
             if case=='ring-3d':
+                if path.name==stability['source_receipt'] and stability['usable_spectrum'] is False:
+                    if (stability['source_report_sha256']!=hashlib.sha256(path.read_bytes()).hexdigest()
+                            or stability['source_arrays_sha256']!=data['arrays_sha256']):
+                        raise ValueError('Invalid whole-run stability rejection.')
+                    model=data['physical_model']
+                    label=f"{data['vendor'].capitalize()} · {model['resolution']} cells/µm · {model['ring_interface']}"
+                    index[case].setdefault('rejected',[]).append({'receipt':path.name,'diagnostic':stability_path.name,
+                        'label':label,'reason':stability['reason']})
+                    continue
                 if not data.get('measurement_complete') or not data['valid_bins']:
                     continue
                 vendor=data['vendor']

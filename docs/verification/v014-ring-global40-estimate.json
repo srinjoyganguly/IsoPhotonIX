@@ -1,10 +1,9 @@
 {
-  "scope": "A planning-only extrapolation for a uniform four-cell representation of the 100 nm gap. The 40-cell grid was never allocated or executed. Apply the existing ring admission rule to the actual 16-cell baseline measurements: maximum of board delta and allocator peak, scaled by the ratio of total grid cells, times 1.4, plus 2048 MiB. The conservative figure is a capacity estimate, not a measured minimum or time.",
+  "scope": "A planning-only extrapolation for a uniform four-cell-width representation of the 100 nm gap. The 40-cell grid was never allocated or executed. Apply the existing ring admission rule to the actual 16-cell baseline measurements: maximum of board delta and allocator peak, scaled by the ratio of total grid cells, times 1.4, plus 2048 MiB. The conservative figure is a capacity estimate, not a measured minimum or time.",
   "estimates": [
     {
       "vendor": "lumerical",
       "mesh_cells_per_um": 40,
-      "gap_cells": 4,
       "shape": [
         472,
         436,
@@ -19,12 +18,12 @@
       },
       "required_free_with_reserve_mib": 28334.099745916516,
       "reference_free_mib": 12456,
-      "executed_40_cell_steps": 0
+      "executed_40_cell_steps": 0,
+      "gap_width_over_spacing": 4
     },
     {
       "vendor": "tidy3d",
       "mesh_cells_per_um": 40,
-      "gap_cells": 4,
       "shape": [
         624,
         590,
@@ -39,7 +38,8 @@
       },
       "required_free_with_reserve_mib": 55458.96799999999,
       "reference_free_mib": 12470,
-      "executed_40_cell_steps": 0
+      "executed_40_cell_steps": 0,
+      "gap_width_over_spacing": 4
     }
   ]
 }

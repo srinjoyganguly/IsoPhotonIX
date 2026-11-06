@@ -1,0 +1,8 @@
+{
+  "source_report": "v014-ring3d-lumerical-r24-t3200-wall-tensor.json",
+  "arrays_sha256": "ba326ba00e420a180e86239ebf7e78085515e16318338ebdd89b6bc4a69b930a",
+  "usable_spectrum": false,
+  "reason": "After source shutoff all three ring probes grow by over eight times their first-half peaks, and collected power exceeds the passivity limit across over 10% of the band.",
+  "windows": [],
+  "published": null
+}

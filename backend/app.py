@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from .calibration_phase import registered_csv
 from .calibration_performance import stage_rows, timing_csv
 from .calibration_fields import field_plane
-from .calibrations import CASES, grating_meshes, calibration_routes, Calibration, design_archive, result_zip
+from .calibrations import CASES, RING_MESHES, grating_meshes, calibration_routes, Calibration, design_archive, result_zip
 from .capabilities import capabilities
 from .jobs import JobManager
 from .model import WaveguideConfig
@@ -467,7 +467,8 @@ def calibrated_presets():
                            for material in ('volume-average','direct-yee')}
                            for domain in ('full','mirror-y')} for name in ('tidy3d','lumerical')}
     return [{'case':key,'name':title,'scope':scope,'routes':calibration_routes(key), 'evidence':receipts.get(key),
-             **({'grating_meshes':grating_options} if key=='grating-3d' else {})}
+             **({'grating_meshes':grating_options} if key=='grating-3d' else {}),
+             **({'ring_meshes':RING_MESHES} if key=='ring-3d' else {})}
             for key,(title,scope) in CASES.items()]
 
 
@@ -548,7 +549,10 @@ def calibration_report(job_id: str):
     if job['status'] not in ('completed','failed'):
         raise HTTPException(409,'The numerical measurement has not finished.')
     try:
-        return json.loads((folder/'calculation/report.json').read_text())
+        from .calibration_replay import ring_rejection
+        data=json.loads((folder/'calculation/report.json').read_text())
+        reason=ring_rejection(data)
+        return {**data,'spectrum_rejection':reason} if reason else data
     except (ValueError,OSError) as exc:
         raise HTTPException(409,'No complete calibration report is available.') from exc
 
@@ -565,7 +569,9 @@ def calibration_field(job_id: str):
         raise HTTPException(409, 'Wait until the field measurement completes.')
     try:
         calculation = folder / 'calculation'
-        report = json.loads((calculation / 'report.json').read_text())
+        report=calibration_report(job_id)
+        if report.get('spectrum_rejection'):
+            raise HTTPException(409,report['spectrum_rejection'])
         return field_plane(report, calculation / 'arrays.npz')
     except (OSError, KeyError, IndexError, ValueError) as exc:
         raise HTTPException(409, 'The saved field or its physical coordinates could not be read.') from exc

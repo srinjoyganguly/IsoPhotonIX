@@ -29,6 +29,19 @@ class PolygonMaterialTests(unittest.TestCase):
                 np.testing.assert_allclose(fraction[x > 2].sum(axis=1)/16, 1., atol=1e-11)
 
 
+    def test_half_cell_grid_registration_moves_z_boundaries_and_apertures_only(self):
+        m=multiport_model('coupler')
+        r=24
+        base=grid(dict(m,z_grid_origin_um=0.),r)
+        shifted=grid(dict(m,z_grid_origin_um=.5/r),r)
+        self.assertEqual(base[:2],shifted[:2])
+        np.testing.assert_array_equal(base[2][0],shifted[2][0])
+        np.testing.assert_array_equal(base[2][1],shifted[2][1])
+        np.testing.assert_allclose(shifted[2][2]-base[2][2],.5/r)
+        for a,b in zip(base[3],shifted[3]):
+            self.assertEqual((a['start'],a['actual_x'],a['actual_y']),(b['start'],b['actual_x'],b['actual_y']))
+            self.assertEqual(b['actual_z']-a['actual_z'],.5/r)
+
     def test_diagnostic_mode_section_reproduces_the_full_device_port(self):
         model=multiport_model('coupler')
         _,_,axes,ports=grid(model,16)

@@ -39,7 +39,11 @@ def plot(directory,lumerical,tidy,output):
     axes[1].plot(l_w*1000,100*l_values['reflection'],color='#222222',lw=2.2,label='Filed Lumerical')
     axes[2].plot(t_w*1000,100*t_drop,color='#222222',lw=2.2,label='Digitized Tidy3D')
     for mesh in (16,20,24):
-        w,power=curve(directory,'lumerical',mesh,6000 if mesh==16 else 3200)
+        from scripts.diagnose_ring_stability import rejection_for
+        duration=6000 if mesh==16 else 3200
+        if rejection_for(directory/f'v014-ring3d-lumerical-r{mesh}-t{duration}-wall-tensor.json'):
+            continue
+        w,power=curve(directory,'lumerical',mesh,duration)
         axes[0].plot(w,power[:,2],color=colors[mesh],lw=1.35,label=f'{mesh} cells/µm')
         axes[1].plot(w,np.where(power[:,0]>0,power[:,0],np.nan),color=colors[mesh],lw=1.45,label=f'{mesh} cells/µm')
     for mesh in (16,20):

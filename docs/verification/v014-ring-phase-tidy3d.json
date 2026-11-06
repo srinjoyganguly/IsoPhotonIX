@@ -20,7 +20,8 @@
         "substrate_index": 1.44,
         "silicon_index": 3.48,
         "ring_material": null,
-        "ring_interface": "wall-tensor"
+        "ring_interface": "wall-tensor",
+        "electric_update": "FDTDX lossless xy block, native CPML and H update"
       },
       "total_wavelengths": 241,
       "resolution": 16,
@@ -4899,7 +4900,8 @@
         "substrate_index": 1.44,
         "silicon_index": 3.48,
         "ring_material": null,
-        "ring_interface": "wall-tensor"
+        "ring_interface": "wall-tensor",
+        "electric_update": "FDTDX lossless xy block, native CPML and H update"
       },
       "total_wavelengths": 241,
       "resolution": 20,

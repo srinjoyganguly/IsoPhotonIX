@@ -13,6 +13,13 @@ def compare(directory,vendor,first,last):
     duration=3200 if vendor=='lumerical' else 4800
     files=[directory/f'v014-ring3d-{vendor}-r{m}-t{duration}-wall-tensor.json' for m in (first,last)]
     reports=[check_record(path,vendor,m,duration,'wall-tensor') for path,m in zip(files,(first,last))]
+    from scripts.diagnose_ring_stability import rejection_for
+    rejected=[check for path in files if (check:=rejection_for(path))]
+    if rejected:
+        return dict(vendor=vendor,meshes=[first,last],source_reports=[p.name for p in files],
+                    usable_mesh_comparison=False,qualified_comparison_bins=0,channels={},
+                    original_native_bins=[r['valid_bins'] for r in reports],
+                    reason=rejected[0]['reason'])
     physical=('radius_um','width_um','height_um','edge_gap_um','bus_y_um','top_index','silicon_index','substrate_index')
     if any(reports[0]['physical_model'][k]!=reports[1]['physical_model'][k] for k in physical):
         raise ValueError('Physical ring dimensions or indices changed across meshes.')

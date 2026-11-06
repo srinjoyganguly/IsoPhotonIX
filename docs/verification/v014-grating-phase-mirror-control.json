@@ -1,6 +1,13 @@
 {
-  "metric": "Full versus mirror-reconstructed solver at 12 cells/\u00b5m. Same physical source, output planes and wavelengths.",
-  "full_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+  "metric": "Fresh full versus mirror-reconstructed solver at one mesh with identical impressed source fields/delays, registered planes and wavelengths.",
+  "full_receipt": "report.json",
+  "mirror_receipt": "v014-grating3d-lumerical-mirror-control-r12.json",
+  "mesh": 12,
+  "verified_identical_source": {
+    "source_eh_sha256": "4a187c93e2e38cf21e784cdc2eec8c36d6dd5be1bc7a7221aa8a2f94a34783d6",
+    "source_time_offsets_sha256": "7522644faa80fa0256a6cedb4b307134395a1c550f9e05c9f0f01e8bdeed342d"
+  },
+  "full_arrays_sha256": "8cb50cbc377155bbbba667ec5663fc3956a44e02df75ba8e6dd3f750b1b505e4",
   "mirror_arrays_sha256": "5121f0f82599afcf0d538301cdc4110b687f37939bfbb561ae99b65cc6603ef8",
   "registered_planes": {
     "center_x_um": 2.8937385420962913,
@@ -12,6 +19,18 @@
     "target_guide_x_um": -25.5,
     "fiber_lead_um": 0.15074858248950854,
     "guide_lead_um": -3.552713678800501e-15,
+    "guide_translation_sensitivity": {
+      "guide_length_um": -3.552713678800501e-15,
+      "time_step_seconds": 1.588812391275838e-16,
+      "estimated_yee_minus_continuous_rad": [
+        -1.197218082363143e-15,
+        -1.0960000806621166e-15,
+        -1.0037966588771323e-15,
+        -9.197134341549938e-16,
+        -8.44303269728729e-16
+      ],
+      "max_abs_rad": 1.197218082363143e-15
+    },
     "phase_convention": "Native DFT +i\u03c9t; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid."
   },
   "channels": {
@@ -37,6 +56,12 @@
         "count": 5,
         "rms": 1.4760425207011694e-06,
         "max_abs": 2.9538623960782025e-06
+      },
+      "sampled_frequency_average": {
+        "covered_frequency_hz": 12491352416666.656,
+        "adjacent_intervals": 4,
+        "mean_power_a": 0.00283755014046794,
+        "mean_power_b": 0.002837551216512438
       },
       "peak_power_a": 0.0072146474852264,
       "peak_power_b": 0.007214664235967494
