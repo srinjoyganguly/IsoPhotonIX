@@ -37,6 +37,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [log,setLog]=useState('');
   const [error,setError]=useState(''),[pending,setPending]=useState(false),[report,setReport]=useState<unknown>(null);
   const selected=catalog.find(p=>p.case===key), evidence=selected?.evidence;
+  const measuredDiagnostic=report!==null && typeof report==='object' && 'measurement_complete' in report && report.measurement_complete===true && 'valid_bins' in report && Number(report.valid_bins)>0;
   const job=jobs.find(j=>j.id===jobId), busy=jobs.some(j=>j.status==='running'||j.status==='queued');
   const history=jobs.filter(j=>j.config.case===key);
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
@@ -224,6 +225,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {log && <details><summary>Solver progress</summary><pre>{log}</pre></details>}
         {job.can_resume && <button className="button secondary compact" disabled={pending||busy} onClick={()=>void resume()}>Resume saved study</button>}
         {job.error && <p role="alert">{job.error}</p>}
+        {job.status==='failed' && job.config.case==='ring-3d' && measuredDiagnostic && <p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export diagnostic spectrum, validity mask and replay</a></p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
         {report!=null&&<CalibrationMeasurement key={'measurement'+job.id} value={report}/>}
         {report!=null && <SpatialComparison key={'compare'+job.id} value={report}/>}

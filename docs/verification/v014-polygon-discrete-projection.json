@@ -1,0 +1,444 @@
+{
+  "method": "First reconstruct the original port amplitudes from the stored full E/H planes. Evaluate transverse eigenprofiles at the temporal Yee symbol and collocate each with the discrete longitudinal propagation angle and original physical temporal angle. Normalize to the independently measured straight run. No phase alignment or fitted correction is used.",
+  "scope": "Diagnostic reprojection of the same 3D GPU measurements; it does not change the native solver or production S matrix.",
+  "samples": [
+    {
+      "case": "coupler",
+      "resolution": 16,
+      "launch": "left_lower",
+      "native_archive_sha256": {
+        "left_lower-reference.npz": "f772616c1eab995f886706ce3f8a485e94c8af1e25fb2ed3c852b7a4271dfdf3",
+        "left_lower-device.npz": "aa20bea1cd6b6d4acf2c99288adf3fc69b057ab7239b6ace9ade90b5566ca45d",
+        "arrays.npz": "f35ff9e819f67da5ab7cf9e9d3c4611af0f11da6487b6ca7b1cb2f0fb6b163b4"
+      },
+      "native_source_and_evolution": "Identical measured FDTDX CUDA phasors; only the diagnostic modal projection changes.",
+      "reference_reflected_amplitude": {
+        "original": [
+          0.0007272973430710141,
+          0.0008830913509344558,
+          0.0010844045726928413
+        ],
+        "discrete": [
+          2.7558086370959067e-05,
+          1.8686347810137542e-06,
+          1.6495838206561994e-05
+        ]
+      },
+      "ports": [
+        {
+          "port": "left_lower",
+          "original_power": [
+            0.00021858632634987946,
+            0.00019788024709075446,
+            9.878688835159197e-06
+          ],
+          "discrete_power": [
+            0.0002185686275818008,
+            0.0001978430178370141,
+            9.873732846325428e-06
+          ],
+          "discrete_complex_real": [
+            0.013482500150476018,
+            -0.010445355162039807,
+            -0.0012264420223889261
+          ],
+          "discrete_complex_imag": [
+            0.0060655434442607814,
+            0.009420062280890849,
+            0.002893021398476684
+          ],
+          "complex_change": [
+            1.252412458941743e-06,
+            1.6360234786212247e-06,
+            8.788770182261344e-07
+          ],
+          "phase_change_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "left_upper",
+          "original_power": [
+            2.2182240619271228e-05,
+            1.8314675157141336e-05,
+            8.160215633726532e-06
+          ],
+          "discrete_power": [
+            2.2174954881459664e-05,
+            1.8313722994527984e-05,
+            8.168700713580586e-06
+          ],
+          "discrete_complex_real": [
+            -0.003398371752854027,
+            -0.0008613309650737311,
+            -0.0011710069767395222
+          ],
+          "discrete_complex_imag": [
+            0.00325975832092864,
+            -0.00419187690219228,
+            -0.00260719070533936
+          ],
+          "complex_change": [
+            9.595454171232378e-07,
+            2.956125559783253e-07,
+            1.5665621529132151e-06
+          ],
+          "phase_change_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "right_lower",
+          "original_power": [
+            0.8392523233644661,
+            0.8717296957247485,
+            0.9043549774968923
+          ],
+          "discrete_power": [
+            0.8392244714669622,
+            0.8717022758636501,
+            0.9043509417650497
+          ],
+          "discrete_complex_real": [
+            -0.3859268910440452,
+            0.49837785766213616,
+            0.9509489798221413
+          ],
+          "discrete_complex_imag": [
+            0.8308338619941051,
+            0.7895073063979521,
+            0.006854162259426482
+          ],
+          "complex_change": [
+            1.520255031213119e-05,
+            1.5030137673176865e-05,
+            4.7525367214098965e-06
+          ],
+          "phase_change_rad": [
+            -2.0864786194494972e-07,
+            3.4343753183357555e-06,
+            4.47177982218957e-06
+          ]
+        },
+        {
+          "port": "right_upper",
+          "original_power": [
+            0.11393467155497443,
+            0.07645565811565108,
+            0.05570427120941848
+          ],
+          "discrete_power": [
+            0.11393921910183204,
+            0.07645286438125609,
+            0.05569637982891527
+          ],
+          "discrete_complex_real": [
+            -0.31024252473944847,
+            -0.22906350896686628,
+            -0.0034223379739258997
+          ],
+          "discrete_complex_imag": [
+            -0.13299922911477627,
+            0.1548637247422471,
+            0.23597598909996645
+          ],
+          "complex_change": [
+            7.460743009732632e-06,
+            1.4684699056070865e-05,
+            1.7110283948629645e-05
+          ],
+          "phase_change_rad": [
+            9.501617339786954e-06,
+            -4.9866814394475387e-05,
+            1.5427830114238087e-05
+          ]
+        }
+      ]
+    },
+    {
+      "case": "splitter",
+      "resolution": 16,
+      "launch": "left_center",
+      "native_archive_sha256": {
+        "left_center-reference.npz": "869eb572c0e43be1af2236408e05c5b43581f5f46793f19dbff353c7cf7b1a0c",
+        "left_center-device.npz": "bb76852b5a6b23bdbbb0cbeae76e70463106ca5130b58bb036f425c966e54583",
+        "arrays.npz": "b7f46e0c1fd3fd5e49bac1c1fd5dab2d68b4a4e5ad0f7fdedeee51b6e51528ab"
+      },
+      "native_source_and_evolution": "Identical measured FDTDX CUDA phasors; only the diagnostic modal projection changes.",
+      "reference_reflected_amplitude": {
+        "original": [
+          0.0007273027938730977,
+          0.0008830770543954101,
+          0.0010843959816933463
+        ],
+        "discrete": [
+          2.7553991176697757e-05,
+          1.871004058032208e-06,
+          1.6494824090833695e-05
+        ]
+      },
+      "ports": [
+        {
+          "port": "left_center",
+          "original_power": [
+            0.005620153456409441,
+            0.005516667521987607,
+            0.0038113691739696627
+          ],
+          "discrete_power": [
+            0.005619614521695003,
+            0.005516425259727989,
+            0.0038116754017903194
+          ],
+          "discrete_complex_real": [
+            0.05885590795559285,
+            -0.0661913189164565,
+            0.006402396212725356
+          ],
+          "discrete_complex_imag": [
+            -0.04642840316463389,
+            -0.033691758040030155,
+            0.061405901381916046
+          ],
+          "complex_change": [
+            3.6298095151303616e-06,
+            3.981738469284648e-06,
+            3.984004805370412e-06
+          ],
+          "phase_change_rad": [
+            6.7340707435498666e-06,
+            4.890602214602994e-05,
+            5.0503040548607706e-05
+          ]
+        },
+        {
+          "port": "right_lower",
+          "original_power": [
+            0.38618808842219715,
+            0.3779866429293264,
+            0.3721590871311168
+          ],
+          "discrete_power": [
+            0.3862147187068656,
+            0.37798815325892055,
+            0.3721278254172456
+          ],
+          "discrete_complex_real": [
+            -0.39910814280144924,
+            0.2417981209335725,
+            0.6090715405910551
+          ],
+          "discrete_complex_imag": [
+            0.4763689841461591,
+            0.5652626132798046,
+            0.034054131310082926
+          ],
+          "complex_change": [
+            2.4076530511691107e-05,
+            2.5585988067780833e-05,
+            2.5703409565543844e-05
+          ],
+          "phase_change_rad": [
+            1.7671998716807782e-05,
+            -4.1568323604772406e-05,
+            3.333094763548138e-06
+          ]
+        },
+        {
+          "port": "right_upper",
+          "original_power": [
+            0.38619098993337175,
+            0.37798060197713185,
+            0.3721568795881959
+          ],
+          "discrete_power": [
+            0.3862176517582519,
+            0.37798204089833365,
+            0.3721255898033116
+          ],
+          "discrete_complex_real": [
+            -0.3991040823087439,
+            0.24179859215347657,
+            0.6090695465171442
+          ],
+          "discrete_complex_imag": [
+            0.4763754645683878,
+            0.5652570050259708,
+            0.034056971514095404
+          ],
+          "complex_change": [
+            2.406276914740736e-05,
+            2.5614775667007972e-05,
+            2.5729378935893633e-05
+          ],
+          "phase_change_rad": [
+            1.7543475749835544e-05,
+            -4.1619962580704715e-05,
+            3.3938926595040583e-06
+          ]
+        }
+      ]
+    },
+    {
+      "case": "coupler",
+      "resolution": 20,
+      "launch": "left_lower",
+      "native_archive_sha256": {
+        "left_lower-reference.npz": "d9da6a3137ef290de2c9e58cfad7a26354de5988e451e341bbe8a4df9b68ca81",
+        "left_lower-device.npz": "d940845f310a0fde8352636d7e6630c768963886dfea20525b342c1ae7fa7f5a",
+        "arrays.npz": "83e28d2eda3c23ab5165795a0c2697bcda967d51aede1848d3eb48032c081a99"
+      },
+      "native_source_and_evolution": "Identical measured FDTDX CUDA phasors; only the diagnostic modal projection changes.",
+      "reference_reflected_amplitude": {
+        "original": [
+          0.00030870691187057607,
+          0.00036764381396646006,
+          0.00044973601558198466
+        ],
+        "discrete": [
+          2.048630018677965e-05,
+          1.657166483999341e-07,
+          1.4284833254832232e-05
+        ]
+      },
+      "ports": [
+        {
+          "port": "left_lower",
+          "original_power": [
+            2.3314560863687257e-05,
+            0.0001792825562884783,
+            4.812160455151881e-05
+          ],
+          "discrete_power": [
+            2.3309966687959336e-05,
+            0.0001792817475060284,
+            4.812095719325592e-05
+          ],
+          "discrete_complex_real": [
+            0.0010805667197889767,
+            0.011628477027763848,
+            -0.005427194209808978
+          ],
+          "discrete_complex_imag": [
+            0.004705565030051527,
+            0.006637791012136254,
+            0.004320476848945244
+          ],
+          "complex_change": [
+            4.817708398788395e-07,
+            1.0407690448877681e-07,
+            2.2961438233627874e-07
+          ],
+          "phase_change_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "left_upper",
+          "original_power": [
+            2.654581429014408e-06,
+            6.758204465417868e-06,
+            2.178424618923998e-06
+          ],
+          "discrete_power": [
+            2.6550462871967004e-06,
+            6.7563837627715695e-06,
+            2.1772084674811583e-06
+          ],
+          "discrete_complex_real": [
+            -0.0015775605014443663,
+            -0.0014881678186594576,
+            -0.0012493613864932608
+          ],
+          "discrete_complex_imag": [
+            0.00040785922997928995,
+            0.002131135919240704,
+            -0.0007850506948094469
+          ],
+          "complex_change": [
+            2.637937057335847e-07,
+            6.122967970864566e-07,
+            4.1473913809003946e-07
+          ],
+          "phase_change_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "right_lower",
+          "original_power": [
+            0.8860187617720171,
+            0.9048081515939019,
+            0.9254402409453729
+          ],
+          "discrete_power": [
+            0.8860088988391038,
+            0.9047960430957162,
+            0.92543241756397
+          ],
+          "discrete_complex_real": [
+            -0.9334657283383768,
+            -0.4100259180209587,
+            0.516938018760259
+          ],
+          "discrete_complex_imag": [
+            0.1210397986482447,
+            0.858297611348643,
+            0.8112998843363581
+          ],
+          "complex_change": [
+            5.311410484889438e-06,
+            6.3970777762929675e-06,
+            4.2815687884450824e-06
+          ],
+          "phase_change_rad": [
+            9.279998088944204e-07,
+            6.749283717329806e-07,
+            -1.3937353907726193e-06
+          ]
+        },
+        {
+          "port": "right_upper",
+          "original_power": [
+            0.06888258391588231,
+            0.04447260035876581,
+            0.03334040482039193
+          ],
+          "discrete_power": [
+            0.06888392519280168,
+            0.04446758438581298,
+            0.03333846819166067
+          ],
+          "discrete_complex_real": [
+            -0.043841921445871714,
+            -0.1891310677737741,
+            -0.15990236139434383
+          ],
+          "discrete_complex_imag": [
+            -0.2587698033324903,
+            -0.09325783392597668,
+            0.08814591886283413
+          ],
+          "complex_change": [
+            7.068585957728407e-06,
+            1.2266763552108856e-05,
+            1.2794188160755045e-05
+          ],
+          "phase_change_rad": [
+            -2.5111136797614642e-05,
+            -1.4249992065481395e-05,
+            6.376737448186838e-05
+          ]
+        }
+      ]
+    }
+  ]
+}

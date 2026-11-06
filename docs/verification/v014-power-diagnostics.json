@@ -4672,6 +4672,105 @@
       "total_bins": 241,
       "source_report_sha256": "d2cdf57adcba592739a9b01925daee3233c93fe9345e4e94901fecadde76a16a",
       "native_arrays_sha256": "c41cf5bf28f74a52f8238ec508f980c83da1f6746e5c7eceb413dfa20e12c5dc"
+    },
+    "v014-ring3d-lumerical-r16-t6000-wall-tensor.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "reflection": {
+          "local": 6.098153858129284e-08,
+          "published": 0.0007615791758866508,
+          "mean_absolute_difference": 0.009060576249294162
+        },
+        "through": {
+          "local": 0.9952656223857297,
+          "published": 0.093915300002907,
+          "mean_absolute_difference": 0.1296344796119061
+        },
+        "drop": {
+          "local": 0.0028773774078179257,
+          "published": 0.6744231240959558,
+          "mean_absolute_difference": 0.08450090811114712
+        },
+        "add_side": {
+          "local": 9.798765773833569e-06,
+          "published": 0.000824536588624558,
+          "mean_absolute_difference": 0.009058200822251498
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5500920771652973,
+        "published_peak_power": 0.7153218182890001,
+        "published_fwhm_nm": 1.4208675155746864,
+        "local_sampled_center_um": 1.538,
+        "local_sampled_peak_power": 0.6129130383194156,
+        "nearest_sampled_center_difference_nm": -12.092077165297255,
+        "local_fitted_center_um": 1.5382479178631048,
+        "local_fwhm_nm": 0.8318625221200316,
+        "local_target_distance_in_linewidths": 14.12743310871208,
+        "published_target_distance_in_linewidths": 0.06480348398985136
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 25.500000000000078,
+        "published": 25.454899999999945
+      },
+      "variant": "wall-tensor / fixed",
+      "mesh": 16,
+      "vendor": "lumerical",
+      "full_native_gate_passed": true,
+      "valid_bins": 241,
+      "total_bins": 241,
+      "source_report_sha256": "363509fc2da7c51d75f247a584f17b361366907172734e145bb95419a23529e4",
+      "native_arrays_sha256": "a4824eb537fd83aa85bbba08c27e47e27d5f8c17fa95b9ec0166d2a98fe3d2f3"
+    },
+    "v014-ring3d-lumerical-r20-t3200-wall-tensor.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "reflection": {
+          "local": 0.07574088700810637,
+          "published": 0.0007615791758866508,
+          "mean_absolute_difference": 0.004767946443679811
+        },
+        "through": {
+          "local": 0.19318915614952425,
+          "published": 0.093915300002907,
+          "mean_absolute_difference": 0.020625815078299393
+        },
+        "drop": {
+          "local": 0.5018350840758439,
+          "published": 0.6744231240959558,
+          "mean_absolute_difference": 0.018226057387013682
+        },
+        "add_side": {
+          "local": 0.07547708408212676,
+          "published": 0.000824536588624558,
+          "mean_absolute_difference": 0.0047880800050964884
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5500920771652973,
+        "published_peak_power": 0.7153218182890001,
+        "published_fwhm_nm": 1.4208675155746864,
+        "local_sampled_center_um": 1.5505,
+        "local_sampled_peak_power": 0.5392801021850794,
+        "nearest_sampled_center_difference_nm": 0.40792283470270085,
+        "published_target_distance_in_linewidths": 0.06480348398985136
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 26.499999999999968,
+        "published": 25.454899999999945
+      },
+      "variant": "wall-tensor / fixed",
+      "mesh": 20,
+      "vendor": "lumerical",
+      "full_native_gate_passed": true,
+      "valid_bins": 241,
+      "total_bins": 241,
+      "source_report_sha256": "63abd780a641cc8b9add92bcc08d0648d34025a7fd91a73dc0fccbef584d515d",
+      "native_arrays_sha256": "962f0c1571fc9bb268b600615b34d0d00b175e8e210f043faa30593ffcf543e4"
     }
   }
 }

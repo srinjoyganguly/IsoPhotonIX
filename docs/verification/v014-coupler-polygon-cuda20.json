@@ -1,0 +1,403 @@
+{
+  "case": "coupler",
+  "resolution": 20,
+  "material_model": "polygon-area",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "launch": "left_lower",
+  "port_order": [
+    "left_lower",
+    "left_upper",
+    "right_lower",
+    "right_upper"
+  ],
+  "s": [
+    [
+      [
+        0.0010805992375549408,
+        0.004706045703310661
+      ],
+      [
+        -0.001577366835276208,
+        0.00040803834401017945
+      ],
+      [
+        -0.9334708114720474,
+        0.12104133862564334
+      ],
+      [
+        -0.04383499654162153,
+        -0.2587683848973585
+      ]
+    ],
+    [
+      [
+        0.011628453879079868,
+        0.006637892484368268
+      ],
+      [
+        -0.001487956465366658,
+        0.00213171058358666
+      ],
+      [
+        -0.4100280822099232,
+        0.8583036308642888
+      ],
+      [
+        -0.18914040571691287,
+        -0.09326578881791729
+      ]
+    ],
+    [
+      [
+        -0.005427370736787153,
+        0.004320330012943827
+      ],
+      [
+        -0.0012497353744465205,
+        -0.0007852299641153549
+      ],
+      [
+        0.5169390729881194,
+        0.8113040340351619
+      ],
+      [
+        -0.15990138434784099,
+        0.08815867572464953
+      ]
+    ]
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port"
+  ],
+  "full_matrix": false,
+  "modal_power": [
+    [
+      2.3314560873853052e-05,
+      2.654581423211849e-06,
+      0.8860187615265704,
+      0.06888258394419144
+    ],
+    [
+      0.00017928255625192038,
+      6.7582044550018166e-06,
+      0.904808150955569,
+      0.04447260043858676
+    ],
+    [
+      4.812160453527674e-05,
+      2.1784246026875865e-06,
+      0.9254402408235436,
+      0.03334040482187989
+    ]
+  ],
+  "sum_observed_power": [
+    0.9549273146130589,
+    0.9494667921548627,
+    0.9588309456745614
+  ],
+  "reference_through_power": [
+    0.9998328823909995,
+    0.9999991062879009,
+    0.999993478246045
+  ],
+  "checks": {
+    "both_stages_settled": true,
+    "straight_reference_power_within_0_03": true,
+    "measured_column_total_guided_power_at_most_1_05": true,
+    "requested_native_device": true
+  },
+  "passed": true,
+  "sampled_ports": [
+    {
+      "name": "left_lower",
+      "x": -4.75,
+      "y": -1.25,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        45,
+        25,
+        15
+      ],
+      "source_ix": 30,
+      "shape": [
+        1,
+        40,
+        50
+      ],
+      "actual_x": -4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "left_upper",
+      "x": -4.75,
+      "y": 1.25,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        45,
+        75,
+        15
+      ],
+      "source_ix": 30,
+      "shape": [
+        1,
+        40,
+        50
+      ],
+      "actual_x": -4.75,
+      "actual_y": 1.25
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        235,
+        25,
+        15
+      ],
+      "source_ix": 250,
+      "shape": [
+        1,
+        40,
+        50
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        235,
+        75,
+        15
+      ],
+      "source_ix": 250,
+      "shape": [
+        1,
+        40,
+        50
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "reference_source_relative_difference": 0.0,
+  "numerical_sha256": "117b1a4ca6d3dc46f43b0f8b71f1965c865817f4631da1388aebcc73eb60dd55",
+  "source_sha256": "aef1818391246f83b07a7f248e07e3e90dcdfcc8df7938e2abd26aad62f8daa5",
+  "stage_sha256": {
+    "reference": "d9da6a3137ef290de2c9e58cfad7a26354de5988e451e341bbe8a4df9b68ca81",
+    "device": "d940845f310a0fde8352636d7e6630c768963886dfea20525b342c1ae7fa7f5a"
+  },
+  "stage_step_counts": {
+    "reference": 4305,
+    "device": 4305
+  },
+  "stage_final_convergence": {
+    "reference": [
+      {
+        "time_fs": 383.69819249311485,
+        "energy_ratio": 3.1528115869150497e-06,
+        "amplitude_change": 1.3688692688589371e-05
+      },
+      {
+        "time_fs": 410.39024066654895,
+        "energy_ratio": 3.1257482713265006e-10,
+        "amplitude_change": 3.0681591209190264e-07
+      }
+    ],
+    "device": [
+      {
+        "time_fs": 383.69819249311485,
+        "energy_ratio": 2.9523702323785983e-05,
+        "amplitude_change": 0.0011365824171306713
+      },
+      {
+        "time_fs": 410.39024066654895,
+        "energy_ratio": 1.0226019185211044e-05,
+        "amplitude_change": 0.0012391900096477403
+      }
+    ]
+  },
+  "mesh_comparisons": [],
+  "scope": "One independently measured input column. Full-matrix reciprocity and passivity require launching every other input port.",
+  "arrays_sha256": "83e28d2eda3c23ab5165795a0c2697bcda967d51aede1848d3eb48032c081a99",
+  "independent_meep_comparisons": [
+    {
+      "meep_resolution": 16,
+      "meep_version": "1.35.0",
+      "meep_source": "v011-meep-multiport-coupler-electric.json",
+      "meep_arrays_sha256": "7d0d1d3f261308a5b9ba4c432c70a72b7c30bd8f8f2a0523811386d1e06e0e26",
+      "scope": "Independent electric-gauge Meep column on the same layout and planes; this finite mesh is a control, not a continuum reference.",
+      "ports": {
+        "left_lower": {
+          "max_abs_power_delta": 0.0014939418152146134,
+          "max_abs_complex_delta": 0.05112274883402975,
+          "phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        "left_upper": {
+          "max_abs_power_delta": 0.00015042835986818544,
+          "max_abs_complex_delta": 0.014010855323247686,
+          "phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        "right_lower": {
+          "max_abs_power_delta": 0.04521581393358276,
+          "max_abs_complex_delta": 0.6549917562156363,
+          "phase_delta_rad": [
+            0.7069639628598869,
+            0.7091479501660805,
+            0.6977901006419656
+          ]
+        },
+        "right_upper": {
+          "max_abs_power_delta": 0.04001040353099443,
+          "max_abs_complex_delta": 0.21352695166332908,
+          "phase_delta_rad": [
+            0.7026848463070875,
+            0.7451353081009139,
+            0.74841011788248
+          ]
+        }
+      }
+    },
+    {
+      "meep_resolution": 24,
+      "meep_version": "1.35.0",
+      "meep_source": "v011-multiport-refined-coupler24.json",
+      "meep_arrays_sha256": "7156f1c807efc077e4c5569c8cea6f0f361e6d397e2c289167b971e23acbbc1c",
+      "scope": "Independent electric-gauge Meep column on the same layout and planes; this finite mesh is a control, not a continuum reference.",
+      "ports": {
+        "left_lower": {
+          "max_abs_power_delta": 0.0001643473105767302,
+          "max_abs_complex_delta": 0.013586702931980058,
+          "phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        "left_upper": {
+          "max_abs_power_delta": 1.6542691723121757e-05,
+          "max_abs_complex_delta": 0.00546032900770894,
+          "phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        "right_lower": {
+          "max_abs_power_delta": 0.013853281006234175,
+          "max_abs_complex_delta": 1.2957253114951526,
+          "phase_delta_rad": [
+            1.2502216233811314,
+            1.366846112714099,
+            1.4827147408135153
+          ]
+        },
+        "right_upper": {
+          "max_abs_power_delta": 0.01763192255857357,
+          "max_abs_complex_delta": 0.3251192401664973,
+          "phase_delta_rad": [
+            1.2430929725909199,
+            1.3904216386161332,
+            1.50863516006726
+          ]
+        }
+      }
+    }
+  ],
+  "stage_performance": {
+    "reference": {
+      "schema": 1,
+      "acquisition_id": "ff498341ecc247fba7008a100155172f",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        280,
+        140,
+        80
+      ],
+      "cells": 3136000,
+      "spacing_um": 0.05,
+      "pml_cells": 15,
+      "steps": 4305,
+      "dt_seconds": 9.532874347655028e-17,
+      "simulated_time_fs": 410.390240666549,
+      "compile_seconds": 0.7868183040118311,
+      "synchronized_step_seconds": 27.339094812981784,
+      "step_batches": 6,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "CUPTI disabled by environment",
+      "stage_through_steps_seconds": 36.31339456200658,
+      "million_cell_steps_per_second": 493.8159105980857
+    },
+    "device": {
+      "schema": 1,
+      "acquisition_id": "d1eb0b3398d1408cb525c4ec0bf784d9",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        280,
+        140,
+        80
+      ],
+      "cells": 3136000,
+      "spacing_um": 0.05,
+      "pml_cells": 15,
+      "steps": 4305,
+      "dt_seconds": 9.532874347655028e-17,
+      "simulated_time_fs": 410.390240666549,
+      "compile_seconds": 0.9326912480028113,
+      "synchronized_step_seconds": 30.885217150003882,
+      "step_batches": 6,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "CUPTI disabled by environment",
+      "stage_through_steps_seconds": 39.81426895399636,
+      "million_cell_steps_per_second": 437.11785915024086
+    }
+  },
+  "stage_acquisition": {
+    "reference": "fresh",
+    "device": "fresh"
+  },
+  "arrays_file": "v014-coupler-polygon-cuda20-arrays.npz"
+}

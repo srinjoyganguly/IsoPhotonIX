@@ -1,0 +1,65 @@
+{
+  "metric": "Full versus mirror-reconstructed solver at 12 cells/\u00b5m. Same physical Gaussian source, guide planes and wavelengths.",
+  "full_arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c",
+  "mirror_arrays_sha256": "80b4a4ae94b4af1102101f910e225ace4dffb6e2d0b680ec1e0cf5b5e75a2ef3",
+  "registered_planes": {
+    "sample_z_um": 0.9283333333333341,
+    "target_beam_z_um": 0.93,
+    "target_beam_x_um": 3.6,
+    "guide_x_um": -50.46666666666666,
+    "target_guide_x_um": -50.465,
+    "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
+  },
+  "channels": {
+    "reflection": {
+      "power_delta": {
+        "count": 5,
+        "rms": 1.610209372337296e-08,
+        "max_abs": 2.6033649482698484e-08
+      },
+      "phase_increment_delta_rad": {
+        "count": 1,
+        "rms": 5.286106883328755e-07,
+        "max_abs": 5.286106883328755e-07
+      },
+      "strong_samples": 4,
+      "bins_below_amplitude_floor": 1,
+      "same_gauge_complex_delta": {
+        "count": 5,
+        "rms": 1.972581638132967e-07,
+        "max_abs": 2.961511162196714e-07
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 4,
+        "rms": 1.6253852951018896e-06,
+        "max_abs": 2.3642639265433278e-06
+      },
+      "peak_power_a": 0.010966388825755053,
+      "peak_power_b": 0.010966364710454368
+    },
+    "guide": {
+      "power_delta": {
+        "count": 5,
+        "rms": 5.7625959618191015e-08,
+        "max_abs": 9.400656958424847e-08
+      },
+      "phase_increment_delta_rad": {
+        "count": 2,
+        "rms": 1.2318228746923953e-07,
+        "max_abs": 1.2719614850276173e-07
+      },
+      "strong_samples": 5,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 5,
+        "rms": 9.187074330681562e-08,
+        "max_abs": 1.2208448615975612e-07
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 5,
+        "rms": 1.6689539884713735e-07,
+        "max_abs": 3.0093379297566165e-07
+      }
+    }
+  }
+}

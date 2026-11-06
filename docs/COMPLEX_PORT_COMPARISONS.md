@@ -1,5 +1,7 @@
 # Complex port measurements
 
+For the finite-height directional coupler and splitter, see the separate [polygon ports, lead propagation and same-layout Meep controls](POLYGON_PORT_CONVERGENCE.md).
+
 ## What the comparison measures
 
 We report power as a fraction of incident power. A phase difference is in radians. Ring reflection is S11, through is S31, drop is S21, and the add-side return is S41 in the Lumerical file. The grating uses S11 for reflection into the reciprocal incident beam and S21 for the fundamental output guide. Scattered radiation outside that beam does not contribute to S11.
@@ -52,3 +54,7 @@ python -m scripts.phase_component_comparison --component grating \
 For the 16-cell/µm wall-tensor run over 3200 µm/c, 236 of 241 acquired wavelengths qualified. Its whole-run status is false. Three of the excluded samples lie within the filed wavelength band. At 1548.387 nm the native-minus-filed through and drop phase residuals are +0.178 and +0.240 rad. The full-band fixed-profile RMS residual is 0.337 rad for through (197 phase-qualified bins), and 1.924 rad for drop (148 bins). Neither weak-return channel has a jointly phase-qualified bin in this run. The power traces and their differences remain available through those nulls. [Window, per-bin gates and all four ports](verification/v014-ring-phase-wall.json)
 
 ![Through and drop phase residuals, and independently measured input reflection power, at the filed port planes](verification/v014-ring-registered-phase.png)
+
+The 20-cell/µm, 3200 µm/c wall run qualifies on all 241 samples. At the saved central mode its through/drop residuals are −0.424 and −0.416 rad. Across the filed band the fixed-profile RMS values are 0.429 rad (200 through samples) and 0.396 rad (199 drop samples). Input reflection differs between r16 and r20 by up to 0.471 in complex amplitude. At 1550 nm the r20 input reflection power is 7.574%, versus 0.0762% filed. Extending a lossless port changes phase only, so a reference-plane offset cannot account for that power error. [Same-plane mesh comparison](verification/v014-ring-phase-wall.json)
+
+A longer r16 acquisition at 6000 µm/c qualifies on all 241 samples. We independently checked exact equality of the 17,915-sample prefix in the short/long device time, projected E/H and Hz records, and equality of the straight references. Across the 198 already qualified common in-band samples, the longer observation changes the complex reflected amplitude by up to 0.0377 and its strong-signal phase by 0.132 rad. The fixed-mode Lumerical through and drop RMS differences remain 0.335 and 2.035 rad across 201 samples each. Resolving late cavity energy is necessary to characterize weak returns. Here duration alone leaves substantial drop disagreement. [Duration control](verification/v014-ring-phase-duration.json) · [Long run at the filed planes](verification/v014-ring-phase-wall-r16-t6000.json)

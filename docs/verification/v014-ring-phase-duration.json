@@ -1,0 +1,127 @@
+{
+  "vendor": "lumerical",
+  "resolution": 16,
+  "native_durations_um_c": [
+    3200.0,
+    6000.0
+  ],
+  "native_run_passed": [
+    false,
+    true
+  ],
+  "native_arrays_sha256": [
+    "c41cf5bf28f74a52f8238ec508f980c83da1f6746e5c7eceb413dfa20e12c5dc",
+    "a4824eb537fd83aa85bbba08c27e47e27d5f8c17fa95b9ec0166d2a98fe3d2f3"
+  ],
+  "verified_exact_prefix_samples": 17915,
+  "common_qualified_inband_bins": 198,
+  "newly_qualified_wavelength_um": [
+    1.49,
+    1.4905,
+    1.5115,
+    1.512,
+    1.514
+  ],
+  "channels": {
+    "reflection": {
+      "power_delta": {
+        "count": 198,
+        "rms": 0.0022925760304498537,
+        "max_abs": 0.02948820212008396
+      },
+      "phase_increment_delta_rad": {
+        "count": 7,
+        "rms": 0.022496307396031506,
+        "max_abs": 0.03386076099818724
+      },
+      "strong_samples": 13,
+      "bins_below_amplitude_floor": 174,
+      "same_gauge_complex_delta": {
+        "count": 198,
+        "rms": 0.004199857900216099,
+        "max_abs": 0.03770195915390018
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 13,
+        "rms": 0.046567590526825256,
+        "max_abs": 0.13199994515551852
+      },
+      "peak_power_a": 0.22177093080702484,
+      "peak_power_b": 0.21083943465719115
+    },
+    "through": {
+      "power_delta": {
+        "count": 198,
+        "rms": 0.006403244541696758,
+        "max_abs": 0.04401089857446272
+      },
+      "phase_increment_delta_rad": {
+        "count": 192,
+        "rms": 0.005136332178034348,
+        "max_abs": 0.03385075028474827
+      },
+      "strong_samples": 197,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 198,
+        "rms": 0.005887388284579562,
+        "max_abs": 0.03831319802856966
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 197,
+        "rms": 0.003788530434160335,
+        "max_abs": 0.025275655972429683
+      }
+    },
+    "drop": {
+      "power_delta": {
+        "count": 198,
+        "rms": 0.0040379868676859955,
+        "max_abs": 0.04022001956317367
+      },
+      "phase_increment_delta_rad": {
+        "count": 131,
+        "rms": 0.032222266229988604,
+        "max_abs": 0.16977032000168366
+      },
+      "strong_samples": 148,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 198,
+        "rms": 0.006181978428659227,
+        "max_abs": 0.04040464930686655
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 148,
+        "rms": 0.022581853506169442,
+        "max_abs": 0.1036381931884667
+      }
+    },
+    "add_side": {
+      "power_delta": {
+        "count": 198,
+        "rms": 0.0022860527803699546,
+        "max_abs": 0.029413325363357723
+      },
+      "phase_increment_delta_rad": {
+        "count": 10,
+        "rms": 0.03626147273136957,
+        "max_abs": 0.07444239579223508
+      },
+      "strong_samples": 15,
+      "bins_below_amplitude_floor": 175,
+      "same_gauge_complex_delta": {
+        "count": 198,
+        "rms": 0.004170229631407822,
+        "max_abs": 0.03722794447855295
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 15,
+        "rms": 0.040965611852037905,
+        "max_abs": 0.11159183055383129
+      },
+      "peak_power_a": 0.2211695552839706,
+      "peak_power_b": 0.21045362989434713
+    }
+  }
+}

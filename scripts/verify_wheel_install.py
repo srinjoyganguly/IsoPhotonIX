@@ -108,7 +108,13 @@ def main():
             config={'case':preset['case'],'solver':solver,'device':device}
             with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
                 assert {'config.json','calibration.ipynb','run.py'} <= set(source.namelist())
+        stage_log = get('/api/calibrations/performance?case=ring-3d')
+        assert any(row.get('synchronized_step_seconds') and row.get('cuda_event_elapsed_seconds') for row in stage_log)
+        csv = get('/api/calibrations/performance.csv?case=ring-3d',raw=True)
+        assert b'acquisition_id' in csv and b'synchronized_step_seconds' in csv
         for case, options in [('ring-3d', {'ring_interface':'exact-area','ring_material':'palik-ade'}),
+                              ('ring-3d', {'ring_interface':'wall-tensor'}),
+                              ('grating-3d', {'grating_material_model':'direct-yee','grating_domain':'mirror-y'}),
                               ('grating-3d', {'grating_material_model':'direct-yee','grating_spectrum':'dense'})]:
             config={'case':case,'solver':'fdtdx','device':'gpu','geometry_3d':'lumerical',**options}
             with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
@@ -129,6 +135,8 @@ def main():
             gpu_config=json.loads(archive.read('config.json'))
             assert gpu_config['device']=='gpu' and gpu_config['material_model']=='yee-aligned'
             assert gpu_config['revision']==2 and gpu_config['resolution']==16
+            assert 'source/scripts/gpu_timing.py' in archive.namelist()
+            assert 'source/scripts/phase_polygon_material.py' in archive.namelist()
         cavity = get('/api/cavity-benchmark')
         assert cavity['passed'] and len(cavity['reference_comparison']) == 4
         command([cli, 'benchmark-cavity', '--output', target/'cavity-study'], 'cavity.log')
@@ -243,7 +251,12 @@ def main():
         assert len(measured)==len(original)==27
         maximum=max(abs(a-b) for a,b in zip(original,measured))
         assert maximum<2e-5 and (folder/'python-notebook-results.zip').is_file()
-        cuda_check={'case':'splitter','actual_device':cuda['actual_device'],'resolution':12,'material_model':cfg['material_model'],
+        assert all(stage['performance']['synchronized_step_seconds']>0 and
+                   stage['performance']['cuda_event_elapsed_seconds']>0 for stage in cuda['stages'].values())
+        with zipfile.ZipFile(folder/'python-notebook-results.zip') as saved_export:
+            times=saved_export.read('reference/gpu-performance.csv')
+            assert hashlib.sha256(times).hexdigest()==json.loads(saved_export.read('reference-sha256.json'))['gpu-performance.csv']
+        cuda_check={'timed_stages':len(cuda['stages']),'case':'splitter','actual_device':cuda['actual_device'],'resolution':12,'material_model':cfg['material_model'],
                     'compared_complex_coefficients':len(measured),'maximum_complex_difference':maximum}
     if args.fdtdx_gpu_python:
         folder=target/'finite-grating-cuda'
@@ -263,18 +276,19 @@ def main():
                       'wavelengths':5,'max_coupling_fraction_difference':maximum}
         interface_folder=target/'direct-grating-cuda'
         command([cli,'calibrate','grating-3d','--solver','fdtdx','--device','gpu','--geometry-3d','lumerical',
-                 '--resolution','12','--grating-material-model','direct-yee','--output',interface_folder],
+                 '--resolution','12','--grating-material-model','direct-yee','--grating-domain','mirror-y','--output',interface_folder],
                 'direct-grating-cuda.log',timeout=7200)
         direct=json.loads((interface_folder/'calculation/report.json').read_text())
         saved=next(row['report'] for row in grating['evidence']['recorded']
                    if row['report']['settings'].get('grating_material_model')=='direct-yee'
+                   and row['report']['settings'].get('grating_domain')=='mirror-y'
                    and row['report']['settings']['resolution']==12 and len(row['report']['result']['wavelength_um'])==5)
         assert direct['passed'] and direct['actual_device']==cuda['actual_device']
         assert direct['result']['wavelength_um']==saved['result']['wavelength_um']
         delta=max(abs(observed-archived) for observed,archived in
                   zip(direct['result']['beam_to_guide'],saved['result']['beam_to_guide'],strict=True))
         assert delta<2e-6
-        interface_cuda={'case':'grating-3d','material_model':'direct-yee','actual_device':direct['actual_device'],
+        interface_cuda={'case':'grating-3d','material_model':'direct-yee','domain':'mirror-y','actual_device':direct['actual_device'],
                         'wavelengths':5,'max_coupling_fraction_difference':delta}
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,

@@ -39,6 +39,8 @@ and [animation reproduction notes](docs/BLENDER.md).
 | NumPy | 2.4.6 | Numerical interchange and validation | [BSD-3-Clause and bundled notices](https://github.com/numpy/numpy/blob/main/LICENSE.txt) |
 | BeamZ | 0.6.2 | Isolated time-domain and mode reference studies | [Upstream source and Apache-2.0 license](https://github.com/beamzorg/beamz/tree/v0.6.2) |
 
+The lossless curved-wall update follows the electric-field, absorbing-boundary and source update conventions in FDTDX 0.6.2. Its local specialization is checked against the native implementation. Workbench packages and calibrated FDTDX exports carry the upstream copyright and license. [FDTDX license](docs/licenses/FDTDX-MIT.txt).
+
 Meep's source header explicitly permits GPL version 2 or later. The MIT license
 for this application's own code does not replace the licenses of Meep, its
 dependencies, or any other external component. Solver environments and vendor

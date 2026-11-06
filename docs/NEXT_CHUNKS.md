@@ -1,10 +1,12 @@
 # What works and what remains
 
-This is the product backlog through the v0.12 calibration work. For each piece, the
+This is the product backlog through the current GPU mesh-refinement campaign. For each piece, the
 release gate describes a result that a user could independently reproduce.
 Previous evidence for the [27-family library](verification/v09-checks.json),
 [finite-layout fields](LAYOUT_FIELDS.md) and [taper ports](TAPER_PORTS.md) has
 a narrower scope than commercial coverage.
+
+The current calibration runs and the next Circuit Layout milestone have separate acceptance criteria. Once the ring and grating measurements are evaluated and published, persistent named-port connections can proceed while failed power and phase gates remain open. [Measured checklist](CALIBRATED_COMPONENTS.md) · [Per-stage GPU costs](GPU_TIMING.md).
 
 | Chunk | Already usable | Remaining implementation and evidence |
 | --- | --- | --- |

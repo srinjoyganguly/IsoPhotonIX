@@ -4,6 +4,7 @@ import numpy as np
 from backend.calibrated_geometry import multiport_model, straight_polygon
 from scripts.calibrate_fdtdx_multiport import grid
 from scripts.phase_polygon_material import extruded_yee, polygon_fraction
+from scripts.phase_lead_dispersion import section
 
 
 class PolygonMaterialTests(unittest.TestCase):
@@ -27,6 +28,16 @@ class PolygonMaterialTests(unittest.TestCase):
                 np.testing.assert_allclose(fraction[x < -2].sum(axis=1)/16, .5, atol=1e-11)
                 np.testing.assert_allclose(fraction[x > 2].sum(axis=1)/16, 1., atol=1e-11)
 
+
+    def test_diagnostic_mode_section_reproduces_the_full_device_port(self):
+        model=multiport_model('coupler')
+        _,_,axes,ports=grid(model,16)
+        full=extruded_yee(model,16,axes,model['polygons'])
+        for i,port in enumerate(ports):
+            x,y,z=port['start']
+            _,ny,nz=port['shape']
+            measured=full[:,x:x+1,y:y+ny,z:z+nz]
+            np.testing.assert_array_equal(section(model,16,i),measured)
 
     def test_straight_vertical_and_sidewall_mixing(self):
         model = multiport_model('splitter')

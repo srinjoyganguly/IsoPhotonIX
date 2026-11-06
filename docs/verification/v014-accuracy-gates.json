@@ -184,6 +184,28 @@
         "native_full_spectrum_qualified": false
       },
       "all_evidenced_and_met": false
+    },
+    "v014-ring3d-lumerical-r16-t6000-wall-tensor.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": false
+    },
+    "v014-ring3d-lumerical-r20-t3200-wall-tensor.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": true,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": true,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": true,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": false
     }
   },
   "grating_mesh_controls": [
@@ -228,5 +250,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "6c1ae744184910ff5679a07863812e0dace2263184e9a4602f5292874c12498f"
+  "diagnosis_sha256": "da618802100a4dc8cd8ff02db2d89d81c55039420e14e2a268f99f4f3b443007"
 }

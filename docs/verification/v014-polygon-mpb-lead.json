@@ -1,0 +1,51 @@
+{
+  "engine": "mpb",
+  "versions": {
+    "meep": "1.35.0",
+    "mpb": "1.12.0"
+  },
+  "source_sha256": {
+    "phase_lead_reference.py": "024020dad9977425620ca530fbc01ec624bdbccb61bbde31eac64bfcf5aae784",
+    "compare_multiport_modes.py": "9f81f0e33c78c896512442b86a54f3d8d6a28dafa56daf5ece2e0de655228bbd"
+  },
+  "wavelength_um": 1.55,
+  "geometry": {
+    "name": "isolated-lead",
+    "centers": [
+      0.0
+    ],
+    "width": 0.5,
+    "height": 0.25,
+    "core": 3.48,
+    "upper": 1.45,
+    "lower": 1.45,
+    "span_yz": [
+      6.0,
+      3.0
+    ]
+  },
+  "transverse_execution": "local CPU eigensolve",
+  "measurements": [
+    {
+      "mesh": 96,
+      "neff": 2.5494636887963735,
+      "ey_fraction": 0.7598482809291698,
+      "mirror_overlap": 1.0,
+      "residual": 2.5124347047267294e-14
+    },
+    {
+      "mesh": 128,
+      "neff": 2.550150667479545,
+      "ey_fraction": 0.7599151508616,
+      "mirror_overlap": 0.9999999999999997,
+      "residual": 6.556422071923863e-14
+    },
+    {
+      "mesh": 160,
+      "neff": 2.5504683360171203,
+      "ey_fraction": 0.759960864946606,
+      "mirror_overlap": 1.0,
+      "residual": 4.990452495690079e-15
+    }
+  ]
+}

@@ -134,6 +134,25 @@ def compare(original, output):
             'reported_observables_checked':list(first)}
 
 
+def diagnostic_ring(report, folder):
+    """A complete acquired spectrum with a verified mask may be exported for diagnosis."""
+    if (report.get('case_id') != 'loaded-ring-3d' or report.get('passed') is not False
+            or report.get('measurement_complete') is not True or report.get('arrays_file') != 'arrays.npz'):
+        return False
+    import numpy as np
+    path=folder/'arrays.npz'
+    try:
+        with path.open('rb') as data:
+            if hashlib.file_digest(data,'sha256').hexdigest()!=report.get('arrays_sha256'):
+                return False
+        with np.load(path,allow_pickle=False) as arrays:
+            mask=arrays['valid_bins']
+            return (mask.dtype==np.bool_ and mask.ndim==1 and len(mask)==report.get('total_bins')
+                    and 0<int(mask.sum())==report.get('valid_bins') and arrays['s'].shape==(len(mask),4))
+    except (OSError,KeyError,ValueError):
+        return False
+
+
 def run(root, output, checkpoint=None):
     if checkpoint is None:
         checkpoint = os.environ.get('PHOTONICS_CHECKPOINT') or None
@@ -206,8 +225,14 @@ def run(root, output, checkpoint=None):
         if platform not in allowed:
             raise ValueError('The measured field device differs from the requested execution target.')
     reference=root/'reference'
+    # A measured diagnostic export can reproduce its known gate failure. An
+    # ordinary study or a different mask must still fail the numerical contract.
+    expected_diagnostic=False
+    if reference.is_dir() and (root/'diagnostic.json').is_file() and diagnostic_ring(report,output):
+        original=json.loads((reference/'report.json').read_text())
+        expected_diagnostic=diagnostic_ring(original,reference)
     for key in ('passed','all_stages_settled','settled'):
-        if key in report and report[key] is False:
+        if key in report and report[key] is False and not (key=='passed' and expected_diagnostic):
             raise ValueError(f'The numerical report failed {key}; inspect its measurements.')
     if reference.is_dir():
         hashes=json.loads((root/'reference-sha256.json').read_text())
@@ -216,7 +241,12 @@ def run(root, output, checkpoint=None):
                 measured = hashlib.file_digest(stream,'sha256').hexdigest()
             if measured!=digest:
                 raise ValueError(f'Saved reference changed: {name}')
+        original=json.loads((reference/'report.json').read_text())
+        if 'passed' in original and original['passed']!=report.get('passed'):
+            raise ValueError('The replay changed the captured numerical qualification.')
         checks=compare(reference,output)
+        if expected_diagnostic:
+            checks.update(numerical_gate_passed=False,qualified_wavelengths=report['valid_bins'],total_wavelengths=report['total_bins'])
         (output/'reproduction.json').write_text(json.dumps(checks,indent=2)+'\n')
     return report
 

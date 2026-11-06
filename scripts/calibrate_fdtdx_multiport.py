@@ -488,13 +488,15 @@ def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=
                 archive,record=output/(key+'.npz'),output/(key+'.json')
                 if resume and record.exists():
                     details=load_stage(record,archive)
+                    origin='reused_verified_receipt'
                 else:
                     print(f'{case} {device} {key}: calibrating',flush=True)
                     details=measured_stage(runtime,plan,i,kind=='reference',archive,bases,reference_cache,device_cache)
                     save_record(record,details)
+                    origin='reused_verified_receipt' if details.get('reuse_existing_'+kind) else 'computed_this_invocation'
                     print(key,details['settled'],details['history'][-1],f"{details['seconds']:.1f}s",flush=True)
                     jax.clear_caches()
-                stages[key]=details
+                stages[key]={**details,'invocation_acquisition':origin}
         report=assemble(model,device,resolution,after_time,output,stages)
         report.update(material_model=material_model,
                       material_sampling={'yee-aligned':'Adjacent-cell tangential averaging on both transverse axes at each electric component.',

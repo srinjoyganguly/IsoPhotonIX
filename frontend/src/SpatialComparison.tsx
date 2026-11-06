@@ -9,10 +9,21 @@ type PowerDiagnostic =
   | {observable:'grating';wavelength_um:number[];local_best_sample_um:number;published_best_sample_um:number; mean_absolute_difference:number;
       gain_only:{feasible:boolean;tolerance_power_fraction:number}};
 type SpatialReport = {vendor?:string;case_id?:string;settings?:{geometry:string};result?:{wavelength_um:number[];beam_to_guide:number[]};
-  power_diagnostic?:PowerDiagnostic;
+  power_diagnostic?:PowerDiagnostic;accuracy_criteria?:Record<string,boolean|null>;
   vendor_comparison?:{channels:Record<string,{paired_spectrum:Paired}>}; loaded_loss?:{peaks:LossPeak[]};
   comparisons?:{vendor:string;geometry_matched?:boolean;wavelength_um?:number[];published_power?:number[];published_s21_power?:number[]}[];
   radiation?:{polar_edges_deg?:number[];fraction_of_incident?:number[][];fiber_return_power?:number[]};
+};
+
+const criteriaLabels:Record<string,string>={
+  native_full_spectrum_qualified:'Numerical checks over the full measured spectrum',
+  nearest_drop_center_within_one_published_linewidth:'Drop peak within one published linewidth',
+  through_at_target_within_five_points:'Through power at 1550 nm within 5 percentage points',
+  drop_at_target_within_five_points:'Drop power at 1550 nm within 5 percentage points',
+  through_band_mean_within_five_points:'Mean through-power difference within 5 percentage points',
+  drop_band_mean_within_five_points:'Mean drop-power difference within 5 percentage points',
+  target_within_five_points:'Guided power at 1550 nm within 5 percentage points',
+  band_mean_within_five_points:'Mean guided-power difference within 5 percentage points',
 };
 
 function PowerExplanation({data,vendor}:{data:PowerDiagnostic;vendor:string}) {
@@ -88,7 +99,9 @@ export function SpatialComparison({value}:{value:unknown}) {
   const angles=r.radiation;
   const wavelengths=r.result?.wavelength_um || [];
   const angleIndex=Math.min(angleSample,wavelengths.length-1);
-  return <>
+  return <>{r.accuracy_criteria && <details className="cal-runtime"><summary>Numerical and commercial-reference checks</summary>
+    <table><thead><tr><th>Criterion</th><th>Result</th></tr></thead><tbody>{Object.entries(r.accuracy_criteria).map(([key,pass])=>
+      <tr key={key}><th>{criteriaLabels[key] || key}</th><td>{pass===null?'Unresolved':pass?'Passed':'Outside limit'}</td></tr>)}</tbody></table></details>}
     <PairedSpectrum series={pairs} vendor={vendor}/>
     {r.power_diagnostic && <PowerExplanation data={r.power_diagnostic} vendor={vendor}/>}
     {qualified && <section aria-label="Loaded resonance measurements"><h3>Loaded resonances</h3>

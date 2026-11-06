@@ -546,13 +546,21 @@ def calibration_field(job_id: str):
 
 def calibration_download(job_id):
     job, folder = calibration_directory(job_id)
-    if job['status'] != 'completed':
-        raise HTTPException(409,'Complete the study before downloading its numerical export.')
+    diagnostic=False
+    if job['status']=='failed' and job['config']['case']=='ring-3d':
+        from .calibration_replay import diagnostic_ring
+        try:
+            folder_data=folder/'calculation'
+            diagnostic=diagnostic_ring(json.loads((folder_data/'report.json').read_text()),folder_data)
+        except (OSError,ValueError):
+            pass
+    if job['status']!='completed' and not diagnostic:
+        raise HTTPException(409,'A complete acquired study with verified numerical arrays is required to export.')
     with tempfile.NamedTemporaryFile(suffix='.zip',delete=False) as tmp:
         path=Path(tmp.name)
     try:
         result_zip(folder,path)
-        return FileResponse(path,media_type='application/zip',filename=f'workbench-{job["config"]["case"]}-{job_id[:8]}.zip',
+        return FileResponse(path,media_type='application/zip',filename=f'workbench-{job["config"]["case"]}-{"diagnostic-" if diagnostic else ""}{job_id[:8]}.zip',
                             background=BackgroundTask(path.unlink,missing_ok=True))
     except BaseException:
         path.unlink(missing_ok=True)

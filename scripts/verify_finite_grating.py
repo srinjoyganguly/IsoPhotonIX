@@ -13,7 +13,28 @@ sys.path.insert(0,str(ROOT))
 from scripts.calibrate_finite_grating import monitoring_wavelengths, file_hash, normal_flux, digest
 from scripts.grating_angular_spectrum import air_angular_flux, incident_beam_check
 from scripts.lumerical_grating3d import reflected_fiber_amplitude
+from scripts.grating_mirror import PARITY
 from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes
+
+
+def verify_mirror_archive(data, stage, prefix):
+    full = [len(data[prefix + '_grid_' + axis + '_um']) for axis in 'xyz']
+    native = [full[0], full[1]//2, full[2]]
+    if full[1] % 2 or full != stage['full_shape'] or native != stage['shape']:
+        raise ValueError('Grating represented and allocated mirror grids differ.')
+    if stage['performance']['cells'] != int(np.prod(native)):
+        raise ValueError('Grating timing counts a different native grid.')
+    planes=[(data[prefix+'_upper'], stage['pml_cells'])]
+    if prefix+'_output' in data:
+        port=data[prefix+'_output']
+        planes.append((port,(full[1]-port.shape[3])//2))
+    for plane, first in planes:
+        center=full[1]//2-first
+        pairs=min(center,plane.shape[3]-center-1)
+        left=np.take(plane,center-np.arange(1,pairs+1),axis=3)
+        right=np.take(plane,center+np.arange(1,pairs+1),axis=3)
+        signs=PARITY.reshape((1,6,*([1]*(right.ndim-2))))
+        np.testing.assert_array_equal(left,right*signs)
 
 
 def verify(run):
@@ -35,6 +56,8 @@ def verify(run):
         if 'beam_reference' in report['stages']:
             stages.append((report['stages']['beam_reference'],'beam'))
         for stage,prefix in stages:
+            if m.get('grating_domain')=='mirror-y':
+                verify_mirror_archive(data,stage,prefix)
             profile=np.stack([data[prefix+'_source_E'],data[prefix+'_source_H']])
             if digest(profile)!=stage['source_eh_sha256']:
                 raise ValueError('Source fields changed.')

@@ -14,7 +14,7 @@ from backend.calibrations import Calibration, create_bundle, result_zip
 from backend.calibration_replay import verify_source
 from scripts.verify_calibration_replays import replay
 from scripts.verify_finite_grating import verify
-from scripts.verify_vendor_grating_notebooks import check_executed_notebook
+from scripts.verify_vendor_grating_notebooks import check_executed_notebook, publish_notebook
 
 
 def sha(file):
@@ -54,6 +54,10 @@ def verify_export(run, checkpoint, output):
     with zipfile.ZipFile(archive) as handle:
         if handle.testzip() is not None:
             raise ValueError("Result export archive is damaged.")
+        notice="docs/licenses/FDTDX-MIT.txt"
+        license_sha256=hashlib.sha256(handle.read(notice)).hexdigest()
+        if license_sha256!=sha(Path(__file__).resolve().parents[1]/notice):
+            raise ValueError("Exported FDTDX license differs from the distribution notice.")
         hashes=json.loads(handle.read("reference-sha256.json"))
         for name,digest in hashes.items():
             if hashlib.sha256(handle.read(f"reference/{name}")).hexdigest()!=digest:
@@ -87,10 +91,11 @@ def verify_export(run, checkpoint, output):
         checks[runner]={"stage_acquisition":stages,"matched_field_and_result_arrays":count,
                         "archive_sha256":sha(result/"arrays.npz"),"reproduction":reproduction}
     check_executed_notebook(output/"notebook")
+    executed=publish_notebook(output/"notebook", output/f"{stem}-executed.ipynb")
     return {"passed":True,"geometry":m["geometry"],"domain":m.get("grating_domain","full"),
             "mesh":m["resolution"],"archive":archive.name,"size_bytes":archive.stat().st_size,
-            "sha256":sha(archive),"reference_arrays_sha256":measured["arrays_sha256"],
-            "reference_report_sha256":sha(run/"report.json"),"source_sha256":native_hashes,
+            "sha256":sha(archive),"fdtdx_license_sha256":license_sha256,"reference_arrays_sha256":measured["arrays_sha256"],
+            "reference_report_sha256":sha(run/"report.json"),"source_sha256":native_hashes,"executed_notebook":executed,
             "original_stages":{k:v["performance"] for k,v in measured["stages"].items()},
             "replays":checks,"scope":"Original measurement was fresh. Python and unmodified Jupyter replay validate the exact source, archived arrays, field planes and native cache. Zero new electromagnetic steps were requested by the replays."}
 

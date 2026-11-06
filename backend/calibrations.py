@@ -37,6 +37,8 @@ LAYOUT_CASES = ('layout-ports-2d','layout-ports-3d')
 
 
 def grating_meshes(geometry, domain, material):
+    if material=='direct-yee' and geometry!='lumerical':
+        return []
     if geometry not in ('lumerical','tidy3d'):
         return [] if domain=='mirror-y' else [12,16]
     if domain=='mirror-y' and geometry=='lumerical' and material!='direct-yee':
@@ -297,6 +299,10 @@ def create_bundle(config, destination):
         shutil.copyfile(ROOT/filename,target)
     if config.planar_layout is not None:
         (destination/'source/layout.json').write_text(json.dumps(config.planar_layout,indent=2,allow_nan=False)+'\n')
+    if config.solver=='fdtdx':
+        notices=destination/'docs/licenses'
+        notices.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(ROOT/'docs/licenses/FDTDX-MIT.txt',notices/'FDTDX-MIT.txt')
     for filename in ('CREDITS.md','LICENSE'):
         shutil.copyfile(ROOT/filename,destination/filename)
     requirements=['environment-meep.yml','environment-meep-linux-64.lock'] if config.solver=='meep' else [
@@ -380,7 +386,7 @@ def run_job(config, directory, checkpoint=None):
 
 
 def result_zip(directory, target):
-    from .calibration_replay import verify_source
+    from .calibration_replay import diagnostic_ring, verify_source
     verify_source(directory/'replay')
     reference_hashes={}
     with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_DEFLATED,allowZip64=True) as archive:
@@ -395,7 +401,11 @@ def result_zip(directory, target):
         report_path=directory/'calculation/report.json'
         if report_path.is_file() and 'gpu-performance.csv' not in reference_hashes:
             from .calibration_performance import stage_rows, timing_csv
-            rows=stage_rows(json.loads(report_path.read_text()),'report.json')
+            report=json.loads(report_path.read_text())
+            if diagnostic_ring(report,report_path.parent):
+                archive.writestr('diagnostic.json',json.dumps({'numerical_gate_passed':False,'qualified_wavelengths':report['valid_bins'],
+                    'total_wavelengths':report['total_bins'],'scope':'Read the wavelength validity mask when using these measured fields.'},indent=2))
+            rows=stage_rows(report,'report.json')
             if rows:
                 timing=timing_csv(rows).encode()
                 archive.writestr('reference/gpu-performance.csv',timing)

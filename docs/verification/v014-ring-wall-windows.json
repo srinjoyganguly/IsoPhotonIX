@@ -50,5 +50,34 @@
     ],
     "maximum_80_percent_power_change": 0.09553687564320823,
     "early_window_fraction": 0.8
-  }
+  },
+  "long_report": "v014-ring3d-lumerical-r16-t6000-wall-tensor.json",
+  "long_arrays_sha256": "a4824eb537fd83aa85bbba08c27e47e27d5f8c17fa95b9ec0166d2a98fe3d2f3",
+  "long_acquisitions": {
+    "reference": "reused_verified_receipt",
+    "device": "computed_this_invocation"
+  },
+  "maximum_shared_prefix_projection_discrepancy_relative_to_peak": 0.0,
+  "maximum_shared_prefix_probe_discrepancy": 0.0,
+  "same_reused_reference": "2223e228ed15c8d94031b828dfdb618ec03506b51b46147058d1c9ebabb2d3d6",
+  "long_windows": [
+    {
+      "nominal_window_um_c": 4800.0,
+      "sampled_stop_um_c": 4799.994514404213,
+      "total_bins": 241,
+      "qualified_bins": 241,
+      "failed_bins": [],
+      "maximum_80_percent_power_change": 0.016742056181270115,
+      "early_window_fraction": 0.8
+    },
+    {
+      "nominal_window_um_c": 6000.0,
+      "sampled_stop_um_c": 5999.948488570383,
+      "total_bins": 241,
+      "qualified_bins": 241,
+      "failed_bins": [],
+      "maximum_80_percent_power_change": 0.01028388669306235,
+      "early_window_fraction": 0.8
+    }
+  ]
 }

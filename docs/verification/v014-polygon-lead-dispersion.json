@@ -1,0 +1,164 @@
+{
+  "method": "Independent transverse eigenmodes on the identical port section. For f in cycles/\u00b5m use f_eff = f sinc(f c \u0394t), solve n_eff(f_eff), and \u03b2_Yee = 2 asin(\u03c0 f_eff n_eff \u0394x)/\u0394x. Compare the measured forward transfer with exp(i\u03b2L). No fitted constant or change to the device scattering matrix.",
+  "transverse_execution": "FDTDX local CPU 2D mode calculation",
+  "native_execution": "Fully time-stepped 3D FDTDX on NVIDIA",
+  "scope": "Uniform nondispersive straight leads. This control does not estimate junction radiation or resonant scattering.",
+  "samples": [
+    {
+      "case": "coupler",
+      "resolution": 16,
+      "straight_plane_distance_um": 9.5,
+      "dt_seconds": 1.1916092934568783e-16,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "effective_temporal_frequency_per_um": [
+        0.6246485151285267,
+        0.6445977192052957,
+        0.664543675719788
+      ],
+      "continuous_longitudinal_mode_neff": [
+        2.490126371383667,
+        2.5382046699523926,
+        2.582671880722046
+      ],
+      "effective_frequency_mode_neff": [
+        2.4888429641723633,
+        2.5369009971618652,
+        2.5813491344451904
+      ],
+      "yee_longitudinal_neff": [
+        2.527137221461002,
+        2.580391809432017,
+        2.630387266455121
+      ],
+      "measured_straight_transfer_real": [
+        0.9983065462867606,
+        0.3989014571962435,
+        -0.7226997099887886
+      ],
+      "measured_straight_transfer_imag": [
+        0.05519463712427348,
+        -0.9169920364344545,
+        -0.6911987651319148
+      ],
+      "measured_minus_continuous_phase_rad": [
+        1.3813558068695964,
+        1.6246183294716925,
+        1.894177852939455
+      ],
+      "measured_minus_yee_phase_rad": [
+        0.00025743670608248794,
+        -1.8910689422396313e-06,
+        -0.00029715233385195104
+      ],
+      "native_reference_sha256": "f772616c1eab995f886706ce3f8a485e94c8af1e25fb2ed3c852b7a4271dfdf3"
+    },
+    {
+      "case": "splitter",
+      "resolution": 16,
+      "straight_plane_distance_um": 9.5,
+      "dt_seconds": 1.1916092934568783e-16,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "effective_temporal_frequency_per_um": [
+        0.6246485151285267,
+        0.6445977192052957,
+        0.664543675719788
+      ],
+      "continuous_longitudinal_mode_neff": [
+        2.490126371383667,
+        2.5382046699523926,
+        2.582671880722046
+      ],
+      "effective_frequency_mode_neff": [
+        2.4888429641723633,
+        2.5369009971618652,
+        2.5813491344451904
+      ],
+      "yee_longitudinal_neff": [
+        2.527137221461002,
+        2.580391809432017,
+        2.630387266455121
+      ],
+      "measured_straight_transfer_real": [
+        0.9983065573875421,
+        0.3989014234478523,
+        -0.7226996781259191
+      ],
+      "measured_straight_transfer_imag": [
+        0.05519465014700077,
+        -0.9169920021335561,
+        -0.6911987646554517
+      ],
+      "measured_minus_continuous_phase_rad": [
+        1.3813558192617499,
+        1.6246183122073083,
+        1.894177874617595
+      ],
+      "measured_minus_yee_phase_rad": [
+        0.000257449098236129,
+        -1.908333326460622e-06,
+        -0.0002971306557120709
+      ],
+      "native_reference_sha256": "869eb572c0e43be1af2236408e05c5b43581f5f46793f19dbff353c7cf7b1a0c"
+    },
+    {
+      "case": "coupler",
+      "resolution": 20,
+      "straight_plane_distance_um": 9.5,
+      "dt_seconds": 9.532874347655028e-17,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "effective_temporal_frequency_per_um": [
+        0.624833085118281,
+        0.6448005707689204,
+        0.6647659773253145
+      ],
+      "continuous_longitudinal_mode_neff": [
+        2.5285558700561523,
+        2.577519655227661,
+        2.62272572517395
+      ],
+      "effective_frequency_mode_neff": [
+        2.5277187824249268,
+        2.5766711235046387,
+        2.621866226196289
+      ],
+      "yee_longitudinal_neff": [
+        2.553053419720677,
+        2.605397537975127,
+        2.6541980766732034
+      ],
+      "measured_straight_transfer_real": [
+        0.5214213878642212,
+        0.9805565501901377,
+        0.1373785646629799
+      ],
+      "measured_straight_transfer_imag": [
+        0.853201393967889,
+        -0.19623444694323394,
+        -0.9905153245746299
+      ],
+      "measured_minus_continuous_phase_rad": [
+        0.9143164551303228,
+        1.0735650908583583,
+        1.249382829722099
+      ],
+      "measured_minus_yee_phase_rad": [
+        0.00016490649042964311,
+        -7.86469291222577e-06,
+        -0.00018441900668148128
+      ],
+      "native_reference_sha256": "d9da6a3137ef290de2c9e58cfad7a26354de5988e451e341bbe8a4df9b68ca81"
+    }
+  ]
+}

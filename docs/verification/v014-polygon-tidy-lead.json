@@ -1,0 +1,53 @@
+{
+  "engine": "tidy3d",
+  "wavelength_um": 1.55,
+  "geometry": {
+    "name": "isolated-lead",
+    "centers": [
+      0.0
+    ],
+    "width": 0.5,
+    "height": 0.25,
+    "core": 3.48,
+    "upper": 1.45,
+    "lower": 1.45,
+    "span_yz": [
+      6.0,
+      3.0
+    ]
+  },
+  "transverse_execution": "local CPU eigensolve",
+  "tidy3d_version": "2.11.2",
+  "measurements": [
+    {
+      "mesh": 64,
+      "neff": 2.615591160279397,
+      "te_fraction": 0.9900385979343238,
+      "max_abs_imag_neff": 7.865822495684538e-14,
+      "section_cells_yz": [
+        384,
+        192
+      ]
+    },
+    {
+      "mesh": 96,
+      "neff": 2.5942253033588996,
+      "te_fraction": 0.9888281820025053,
+      "max_abs_imag_neff": 9.09359622673015e-13,
+      "section_cells_yz": [
+        576,
+        288
+      ]
+    },
+    {
+      "mesh": 128,
+      "neff": 2.5834781495241996,
+      "te_fraction": 0.9881793693136343,
+      "max_abs_imag_neff": 2.966551193203328e-13,
+      "section_cells_yz": [
+        768,
+        384
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "lumerical": {
+    "source": "https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler",
+    "project_sha256": "422335a903fe187c99910efca2eb38c1e85dbb7bbae021954fa1109e71a6e60f",
+    "grid": "Stored FDTD simulation grid after GUIboundary",
+    "grid_boundary_bounds_um": [
+      [
+        -26.333333333333332,
+        16.344755970920733
+      ],
+      [
+        -0.04291845493562232,
+        10.343347639484534
+      ],
+      [
+        -1.5447796593720011,
+        2.1263332281121743
+      ]
+    ],
+    "sampled_cell_counts": [
+      992,
+      242,
+      54
+    ],
+    "step_nm_at_beam_x": 43.09449636552465,
+    "step_nm_at_center_y": 42.918454935622314,
+    "ridge_section": {
+      "physical_bounds_um": [
+        0.0,
+        0.22
+      ],
+      "fractional_cell_count": 5.104709492450193,
+      "intersected_steps_nm": [
+        43.09745742150013,
+        43.097457421500174,
+        43.097457421500174,
+        43.09745742150019,
+        43.0974574215002,
+        43.097457421500145
+      ]
+    },
+    "etched_part": {
+      "physical_bounds_um": [
+        0.12,
+        0.22
+      ],
+      "fractional_cell_count": 2.3203224965682696,
+      "intersected_steps_nm": [
+        43.09745742150019,
+        43.0974574215002,
+        43.097457421500145
+      ]
+    }
+  },
+  "tidy3d": {
+    "source": "https://raw.githubusercontent.com/flexcompute/tidy3d-notebooks/18fd47f8bd87ad89582b507c20bf4997f79d55c0/GratingCoupler.ipynb",
+    "notebook_sha256": "d90e91b8a4b83e616e9661679908e715a020253ae76d75c1139bf2e21d4c692a",
+    "grid": "Local reconstruction of the 3D example with symmetry (0,-1,0) and 15 minimum steps per wavelength; no cloud solve",
+    "sdk_version": "2.11.2",
+    "grid_boundary_bounds_um": [
+      [
+        -51.28719462302746,
+        13.681333333348395
+      ],
+      [
+        -6.678750000000109,
+        6.678750000000109
+      ],
+      [
+        -3.278750000000003,
+        3.109999999999994
+      ]
+    ],
+    "sampled_cell_counts": [
+      2184,
+      452,
+      117
+    ],
+    "step_nm_at_beam_x": 29.72397094431045,
+    "step_nm_at_center_y": 29.67032967032967,
+    "ridge_section": {
+      "physical_bounds_um": [
+        0.0,
+        0.26
+      ],
+      "fractional_cell_count": 9.999999999999968,
+      "intersected_steps_nm": [
+        24.99999999999991,
+        24.99999999999991,
+        24.99999999999991,
+        24.99999999999991,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684
+      ]
+    },
+    "etched_part": {
+      "physical_bounds_um": [
+        0.1,
+        0.26
+      ],
+      "fractional_cell_count": 5.99999999999996,
+      "intersected_steps_nm": [
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684,
+        26.66666666666684
+      ]
+    }
+  }
+}

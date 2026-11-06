@@ -73,6 +73,10 @@ def spatial_index():
     if not diagnostics_file.is_file():
         diagnostics_file = BASE/'v013-power-diagnostics.json'
     diagnostics = json.loads(diagnostics_file.read_text())['records']
+    gates_path = BASE/'v014-accuracy-gates.json'
+    gates = json.loads(gates_path.read_text()) if gates_path.is_file() else {}
+    if gates and gates['diagnosis_sha256'] != hashlib.sha256(diagnostics_file.read_bytes()).hexdigest():
+        raise ValueError('Accuracy gates belong to a different power comparison.')
     paths = {*BASE.glob('v012-*.json'), *BASE.glob('v013-ring3d-*.json'), *BASE.glob('v013-grating3d-*.json'), *BASE.glob('v014-ring3d-*.json'), *BASE.glob('v014-grating3d-*.json')}
     for path in sorted(paths):
         if path.name == 'v012-calibrated-index.json':
@@ -110,9 +114,9 @@ def spatial_index():
                 nominal=path.name.endswith(f"-t{int(data['duration_um_c'])}.json")
                 # The first record opens in the GUI. Start with the qualified default
                 # geometry and mesh; keep the shortened time-window diagnostics accessible.
-                ring_order[path.name]=(not data['passed'], not nominal, vendor != 'lumerical',
-                                       mesh != 16, -mesh, -data['duration_um_c'])
-                key=(data['passed'], mesh, data['duration_um_c'], nominal)
+                wall=model.get('ring_interface')=='wall-tensor'
+                ring_order[path.name]=(not data['passed'],vendor!='lumerical',not wall,not nominal,-mesh,-data['duration_um_c'])
+                key=(data['passed'],mesh,wall,data['duration_um_c'],nominal)
                 if data.get('measured_drop_fsr_nm') is not None and (vendor not in best_ring or key>best_ring[vendor][0]):
                     best_ring[vendor]=(key,data)
             else:
@@ -140,9 +144,16 @@ def spatial_index():
                 if detail.get('additional_spectra'):
                     panel['vendor_comparison']['channels'].update(
                         {name:{'paired_spectrum':series} for name,series in detail['additional_spectra'].items()})
+            qualification=gates.get('records',{}).get(path.name)
+            if qualification:
+                panel['accuracy_criteria']=qualification['criteria']
             clocks = data.get('stages',{})
             time_key = 'elapsed_s' if case=='ring-3d' else 'stepping_seconds'
-            if all(time_key in clocks.get(role,{}) for role in ('reference','device')):
+            if all(clocks.get(role,{}).get('performance') for role in ('reference','device')):
+                ref_time=clocks['reference']['performance']['synchronized_step_seconds']
+                dev_time=clocks['device']['performance']['synchronized_step_seconds']
+                measurement+=f" Synchronized GPU stepping took {ref_time:.1f} s for the reference and {dev_time:.1f} s for the device."
+            elif all(time_key in clocks.get(role,{}) for role in ('reference','device')):
                 reference_s=clocks['reference'][time_key]
                 device_s=clocks['device'][time_key]
                 basis='acquisition' if case=='ring-3d' else 'time stepping'
