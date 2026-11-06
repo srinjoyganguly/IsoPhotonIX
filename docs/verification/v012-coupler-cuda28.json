@@ -1,0 +1,276 @@
+{
+  "case": "coupler",
+  "resolution": 28,
+  "material_model": "yee-aligned",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "launch": "left_lower",
+  "port_order": [
+    "left_lower",
+    "left_upper",
+    "right_lower",
+    "right_upper"
+  ],
+  "s": [
+    [
+      [
+        0.002845953628360233,
+        0.003826983117411786
+      ],
+      [
+        0.0035404948366072877,
+        0.0019563121656068446
+      ],
+      [
+        -0.12744042209923942,
+        0.9205630493045194
+      ],
+      [
+        -0.2695319283574585,
+        -0.022245445460290454
+      ]
+    ],
+    [
+      [
+        -0.009728425547261952,
+        0.010237182308853354
+      ],
+      [
+        -0.01209791623547305,
+        0.0076741118279417125
+      ],
+      [
+        0.7850818165079811,
+        0.5059057985757761
+      ],
+      [
+        -0.1086860255941702,
+        0.17602714776089987
+      ]
+    ],
+    [
+      [
+        -0.016489419830797526,
+        -0.02772819357700137
+      ],
+      [
+        0.003955595321886905,
+        -0.005033063642000546
+      ],
+      [
+        0.7879366900297263,
+        -0.5164676816863347
+      ],
+      [
+        0.08272029159462775,
+        0.14990492635284258
+      ]
+    ]
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port"
+  ],
+  "full_matrix": false,
+  "modal_power": [
+    [
+      2.2745251835731603e-05,
+      1.6362260977344204e-05,
+      0.8636773889296673,
+      0.0731423202478169
+    ],
+    [
+      0.00019944216525331906,
+      0.0002052515695882773,
+      0.8722941356440652,
+      0.0427982089082943
+    ],
+    [
+      0.0010407536853999585,
+      4.0978463974961376e-05,
+      0.8875830937214582,
+      0.029314133586351397
+    ]
+  ],
+  "sum_observed_power": [
+    0.9368588166902972,
+    0.9154970382872012,
+    0.9179789594571844
+  ],
+  "reference_through_power": [
+    0.9998806326857601,
+    1.0000013035381679,
+    1.0000368203229215
+  ],
+  "checks": {
+    "both_stages_settled": true,
+    "straight_reference_power_within_0_03": true,
+    "measured_column_total_guided_power_at_most_1_05": true,
+    "requested_native_device": true
+  },
+  "passed": true,
+  "sampled_ports": [
+    {
+      "name": "left_lower",
+      "x": -4.75,
+      "y": -1.25,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        63,
+        35,
+        21
+      ],
+      "source_ix": 42,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": -4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "left_upper",
+      "x": -4.75,
+      "y": 1.25,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        63,
+        105,
+        21
+      ],
+      "source_ix": 42,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": -4.75,
+      "actual_y": 1.25
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        329,
+        35,
+        21
+      ],
+      "source_ix": 350,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        329,
+        105,
+        21
+      ],
+      "source_ix": 350,
+      "shape": [
+        1,
+        56,
+        70
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "reference_source_relative_difference": 0.0,
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "source_sha256": "dd6f648ecd6f5759659b710da9ab77deee7c4a4a68438fe6e506a573134e9c85",
+  "stage_sha256": {
+    "reference": "17815798d4992cbdd570c871ef1ab87f6112951fc0a72140b4876a376b590230",
+    "device": "0bc517becdd642887fef34c99c7bfa3d2e900c4bea3fdfc6b287df648986809f"
+  },
+  "stage_step_counts": {
+    "reference": 6026,
+    "device": 6810
+  },
+  "stage_final_convergence": {
+    "reference": [
+      {
+        "time_fs": 383.63010053348876,
+        "energy_ratio": 9.379028256262245e-07,
+        "amplitude_change": 5.8795311408152464e-06
+      },
+      {
+        "time_fs": 410.3221487069228,
+        "energy_ratio": 3.636247553062688e-11,
+        "amplitude_change": 4.613167518157967e-09
+      }
+    ],
+    "device": [
+      {
+        "time_fs": 437.0141968803569,
+        "energy_ratio": 2.677250449778512e-05,
+        "amplitude_change": 0.0006092038817617476
+      },
+      {
+        "time_fs": 463.706245053791,
+        "energy_ratio": 8.266425766123575e-07,
+        "amplitude_change": 5.833428674971384e-05
+      }
+    ]
+  },
+  "mesh_comparisons": [
+    {
+      "baseline_resolution": 16,
+      "max_complex_difference": 0.9386807598395689,
+      "complex_relative_l2_to_baseline": 0.8946271195144891,
+      "max_port_power_difference": 0.09319681572103222,
+      "baseline_center_guided_power": [
+        0.011013033046424635,
+        0.0011429565449616779,
+        0.7917707889355374,
+        0.07670412186653465
+      ],
+      "baseline_arrays_sha256": "8eaea3d5192ddd662c4feac7147f415b5a1ffb838e77060a15d10106c9deb78c"
+    }
+  ],
+  "scope": "One independently measured input column. Full-matrix reciprocity and passivity require launching every other input port.",
+  "arrays_sha256": "b60811f0119503203807cdf10b85922be515d500c60c5a2b1d0a8bc614fbc0bc",
+  "memory_preflight": {
+    "cell_shape": [
+      392,
+      196,
+      112
+    ],
+    "free_mib": 12461,
+    "required_free_mib": 12424.375
+  },
+  "arrays_file": "v012-coupler-cuda28-arrays.npz"
+}

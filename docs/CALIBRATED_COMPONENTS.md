@@ -11,18 +11,21 @@ Each row is qualified for a named geometry, source, execution target and measure
 | Grating radiation and coupling | Both grating geometries have guided-input and Gaussian-input studies. The compact Tidy3D-domain calculation gives 58.23% vs 56.23% published. Upward and downward flux, incident reference, energy balance and wavelength validity masks accompany the spectra. [Full study](verification/v011-grating.json) · [Inspector at 1310 nm](verification/v011-spectrum-inspector.png). | At 1310 nm the 60-cell Lumerical-project near-port TE0 projection gives 55.62% vs the published 55.7%, with a 9.39-point seven-wavelength mean discrepancy. At the filed **total output aperture**, the 60-cell measurement gives 50.86% vs 55.7%, with a 12.77-point seven-wavelength mean discrepancy. [Near-port spectrum](verification/v011-grating-ansys-project-r60.json) · [Aperture spectrum](verification/v011-grating-ansys-output-r60.json). |
 | Planar and finite-height multimode joints | Complete 4 × 4 matrices from two modes launched separately on each side. The finest planar matrix differs from independent open-boundary mode matching by at most 0.001243 in power fraction. The finite-height 16→20 cells/µm change is at most 0.01126 in power fraction and 0.14754 in complex amplitude. [Mesh and monitor controls](CALIBRATED_MULTIMODE.md). | Local Tidy3D measured the same cross-sectional modes. The published Lumerical and Tidy3D EME examples provide method comparisons for other devices. The custom step's full complex reference is the independent planar calculation. |
 
-## Execution targets
+## Execution targets by physical model
 
 | Study | Meep CPU | FDTDX CPU | FDTDX NVIDIA |
 | --- | --- | --- | --- |
 | Directional coupler | Complete nominal 4-port matrix | Complete at 12 and 16 cells/µm | Complete at 12 and 16 cells/µm |
 | Y splitter | Complete nominal 3-port matrix | Complete at 12 and 16 cells/µm | Complete at 12 and 16 cells/µm |
 | Multimode slab and strip | Complete matrices | Outside the validated preset routes | Outside the validated preset routes |
-| Rings and gratings | Published-geometry spectra and stated controls | Outside the validated preset routes | Outside the validated preset routes |
+| Planar loaded rings and gratings | Published-geometry spectra and controls | — | — |
+| Full 3D, two-bus loaded rings | — | — | Native bus and drop spectra on both published geometries; time and mesh checks tracked below |
+| Full 3D, finite-width gratings | — | — | Compact Gaussian pilot complete; stage-by-stage qualification of reference geometries tracked below |
+| TM0/TM1 joint and polygon layouts with freely placed planar ports | Measured complex matrices, independent wave-equation checks and native field samples | — | — |
 
 The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coupler) and 6.4e-08 (splitter). Both comparisons verify the numerical stage archives, six-component fields, materials, excitation profiles and step counts. [Coupler, 16](verification/v011-fdtdx-yee-coupler-cpu-cuda16.json) · [Splitter, 16](verification/v011-fdtdx-yee-splitter-cpu-cuda16.json) · [Coupler, 12](verification/v011-fdtdx-yee-coupler-cpu-cuda12.json) · [Splitter, 12](verification/v011-fdtdx-yee-splitter-cpu-cuda12.json).
 
-## Delivery checklist
+## v0.11 delivery checklist
 
 - [x] Measured per-input matrices, ring spectra, grating radiation and multimode conversion. All eight primary Meep multiport controls completed. [Sensitivity table](CALIBRATED_MULTIPORT.md).
 - [x] Compared each preset with published Lumerical and Tidy3D observables or identified where the geometry or available data differ. [Commercial reference guide](CALIBRATED_VENDOR_CHECKS.md).
@@ -36,21 +39,22 @@ The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coup
 
 [Twelve downloadable Python and notebook result exports](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.11.0a3/calibration-examples-v0.11.0a3.zip) include their native data, exact worker programs, selected targets and hashes. [Archive manifest](verification/v011-a3-example-exports.json) · [Test and coverage summary](verification/v011-checks.json).
 
-## Current 3D qualification
+## v0.12 calibrated component qualification
 
 | Work item | Status | Evidence required for completion |
 | --- | --- | --- |
-| Bus-loaded ring in 3D | Lumerical geometry at 16 cells/µm and 3200 µm/c qualifies all 241 bins. Its 26.0 nm FSR compares with 25.455 nm published. At the published central drop peak the shorter run shows a large absolute-power difference. The matched Tidy3D geometry at 2700 µm/c measures 17.5 nm vs 17.74 nm; the mesh and longer-time controls are in progress. [Lumerical measurement](verification/v012-ring3d-lumerical-r16-t3200.json) · [Tidy3D control](verification/v012-ring3d-tidy3d-r16-t2700.json). | Separate straight-input calibration, finite-height ring and both bus guides, through/drop spectra, observation-time sensitivity and comparison with the published Lumerical and Tidy3D loaded spectra. |
+| Bus-loaded ring in 3D | Lumerical at 3200 µm/c qualifies all 241 bins on 16 and 20 cells/µm grids. FSR changes from 26.0 to 27.0 nm, versus 25.455 nm published. The 20-cell mean absolute drop-power difference is 0.1357. Tidy3D at 16 cells/µm and 2700 µm/c gives 17.5 vs 17.74 nm. Further mesh and observation-time controls are in progress. [Lumerical measurement](verification/v012-ring3d-lumerical-r16-t3200.json) · [Tidy3D control](verification/v012-ring3d-tidy3d-r16-t2700.json) · [Common-plane mesh comparison](verification/v012-ring3d-lumerical-mesh-comparison.json). | Separate straight-input calibration, finite-height ring and both bus guides, through/drop spectra, observation-time sensitivity and comparison with the published Lumerical and Tidy3D loaded spectra. |
 | Finite-width grating in 3D | Compact CUDA pilot measured 18.28% at 1550 nm on the 3 µm-wide device. The full vendor geometry is a separate test. | Separate incident calibration, finite transverse geometry, measured radiation or Gaussian-mode coupling, mesh or width sensitivity, and each vendor's detector definition. |
-| Additional mode and port placement | Meep measured TM0/TM1 from both sides. User-defined polygon ports have passed x/y straight and right-angle-elbow controls; independent and replay checks are in progress. | Independent transverse-magnetic mode matching, native excitation from both sides, and explicit reference-plane checks. |
+| Additional mode and port placement | Meep CPU measured TM0/TM1 from both sides across three meshes. At the 80-cell mesh the largest difference from independent mode matching is 0.003762 in power fraction. User-defined planar ports passed straight x/y, bend, displaced planes, tee and crossing controls, plus independent wave-equation and Python/notebook checks. [Native evidence](PLANAR_PORT_CALIBRATION.md). | Independent transverse-magnetic mode matching, native excitation from both sides, and explicit reference-plane checks. |
 
 The WSL worker executed JAX on the RTX 3080 Ti Laptop GPU. Device availability and numerical acceptance of each electromagnetic study are recorded separately. [Device check](verification/v012-cuda-probe.json) · [First GPU measurements](verification/v012-first-gpu-runs.json).
 
 ## Remaining calibration work
 
-- [ ] Measure finite-height **bus-loaded** ring spectra and separate intrinsic and coupling loss. The current full 3D check measures the isolated ring.
+- [x] Measure finite-height **bus-loaded** ring spectra and test loss separation at resolved resonances. Each reported intrinsic or external Q estimate carries the equal-bus assumption and observation-window criteria. [Qualification details](LOADED_RING_3D.md).
 - [ ] Measure laterally finite 3D gratings and resolve the broadband output-aperture discrepancy against the Lumerical reference.
-- [ ] Qualify accumulated phase and weak reflections under further mesh refinement. The 20→24 cells/µm Meep control changes forward phase by up to 1.74 rad.
-- [ ] Extend arbitrary port placement, polarizations and additional modes beyond the named presets. Qualify additional backend routes separately where requested.
+- [ ] Qualify accumulated phase and weak reflections under further mesh refinement. On the 24→28 cells/µm NVIDIA coupler control, straight-relative forward phase changes by at most 0.016 rad. Absolute forward phase changes by up to 0.171 rad, outside the 0.10 rad gate. One weak return passes the amplitude and power limits and the other does not. [Native phase and reflection checks](verification/v012-coupler-phase.json).
+- [x] Add polygon layouts with freely positioned cardinal-axis ports and a separate TM0/TM1 joint with movable planes. [Geometry and accuracy bounds](PLANAR_PORT_CALIBRATION.md).
+- [ ] Qualify oblique or higher-order ports in arbitrary 3D layouts. The current custom polygon solver measures fundamental planar ports.
 
 [Remaining product chunks](NEXT_CHUNKS.md) · [Detailed solver and convergence limits](FDTDX_MULTIPORT.md).

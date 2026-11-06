@@ -1,0 +1,110 @@
+"""Verify a completed native 3D grating run and optionally publish its numerical evidence."""
+import argparse
+import json
+from pathlib import Path
+import shutil
+import sys
+import tempfile
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from scripts.calibrate_finite_grating import WL, file_hash, normal_flux, digest
+from scripts.grating_angular_spectrum import air_angular_flux
+from scripts.lumerical_grating3d import reflected_fiber_amplitude
+from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes
+
+
+def verify(run):
+    report=json.loads((run/'report.json').read_text())
+    archive=run/'arrays.npz'
+    if file_hash(archive)!=report['arrays_sha256']:
+        raise ValueError('Grating numerical archive digest mismatch.')
+    m=report['settings']; dx=1/m['resolution']
+    d=report['stages']['device']; r=report['stages']['reference']
+    if not d['actual_device'].startswith('cuda:') or d['actual_device']!=r['actual_device']:
+        raise ValueError('Reference and device must identify the same CUDA device.')
+    with np.load(archive,allow_pickle=False) as data:
+        np.testing.assert_array_equal(data['ref_wavelength_um'],WL)
+        np.testing.assert_array_equal(data['dev_wavelength_um'],WL)
+        # Verify matched sources, solver archive reproducibility and material maps.
+        stages=[(r,'ref'),(d,'dev')]
+        if 'beam_reference' in report['stages']:
+            stages.append((report['stages']['beam_reference'],'beam'))
+        for stage,prefix in stages:
+            profile=np.stack([data[prefix+'_source_E'],data[prefix+'_source_H']])
+            if digest(profile)!=stage['source_eh_sha256']:
+                raise ValueError('Source fields changed.')
+            energies=data[prefix+'_energy'];times=data[prefix+'_energy_time_fs']
+            if not len(energies) or len(times)!=len(energies) or np.any(np.diff(times)<=0):
+                raise ValueError('Invalid time trace.')
+            final_window=energies[times>=times[-1]-60.]
+            np.testing.assert_allclose(final_window.max()/energies.max(),stage['history'][-1]['energy_ratio'])
+            if stage['settled']:
+                for row in stage['history'][-2:]:
+                    if row['energy_ratio']>=1e-4 or row['relative_spectral_change']>=.002:
+                        raise ValueError('Settling metadata contradicts its measurements.')
+        if r['source_eh_sha256']!=d['source_eh_sha256']:raise ValueError('Reference source differs from device.')
+        if m['geometry']=='compact-radiation':
+            from scripts.grating_emission import observables
+            archives=[{key[len(prefix):]:data[key] for key in data.files if key.startswith(prefix)}
+                      for prefix in ('ref_','dev_','beam_')]
+            derived=observables(*archives,m['resolution'])
+            for key,value in derived.items(): np.testing.assert_allclose(data[key],value,rtol=1e-7,atol=1e-12)
+            efficiency=abs(derived['gaussian_channel'])**2
+            np.testing.assert_allclose(efficiency,report['result']['guide_to_beam'])
+            np.testing.assert_allclose(derived['upgoing_fraction'],report['result']['guide_radiation_up'])
+            np.testing.assert_array_equal(data['valid'],report['result']['valid_energy_bins'])
+            if report['passed']!=bool(np.all(data['valid'])):raise ValueError('Incorrect angular validity mask.')
+        else:
+            incident=-normal_flux(data['ref_upper'],dx)
+            modes=modal_amplitudes(data['dev_output'],data['dev_mode_e'],data['dev_mode_h'],dx**2)[0]
+            np.testing.assert_allclose(modes[:,1],data['output_mode'],rtol=2e-7)
+            np.testing.assert_allclose(incident,data['incident_power'],rtol=1e-7)
+            efficiency=abs(modes[:,1])**2/incident
+            np.testing.assert_allclose(efficiency,report['result']['beam_to_guide'],rtol=1e-7)
+            valid=(incident>=.01*max(incident))&(efficiency>=0.)&(efficiency<=1.02)&d['settled']&r['settled']
+            np.testing.assert_array_equal(valid,data['valid'])
+            np.testing.assert_array_equal(valid,report['result']['valid_beam_bins'])
+            if report['passed']!=bool(valid.all()):raise ValueError('Incorrect qualification flag.')
+            scatter=data['dev_upper']-data['ref_upper']
+            if m['geometry']=='lumerical':
+                refl=reflected_fiber_amplitude(scatter,data['ref_upper'],incident,dx)
+                np.testing.assert_allclose(refl,data['reflected_fiber_mode'],atol=1e-12)
+                np.testing.assert_allclose(abs(refl)**2,report['radiation']['fiber_return_power'])
+            else:
+                ang=air_angular_flux(scatter,dx,WL)
+                frac=ang['polar_bin_power']/incident[:,None]
+                np.testing.assert_allclose(frac,data['reflected_angular_fraction'],atol=1e-12)
+                np.testing.assert_allclose(frac,report['radiation']['fraction_of_incident'])
+        preview=report['field_preview']; plane=data[preview['array']][tuple(preview['index'])]
+        if plane.shape!=(len(preview['horizontal_um']),len(preview['vertical_um'])) or not np.any(plane):
+            raise ValueError('Missing measured x–z field preview.')
+        for key in data.files:
+            if not np.isfinite(data[key]).all():
+                raise ValueError(f'Nonfinite values in {key}.')
+    report['verification']={'source_eh_checked':True,'incident_and_mode_power_reconstructed':True,
+        'angular_or_fiber_return_reconstructed':True,'energy_time_and_last_two_windows_checked':True,
+        'field_preview_shape':list(plane.shape),'numerical_archive_entries':len(data.files),
+        'captured_program_sha256':d.get('native_worker_sha256',d['identity']['sources']['calibrate_finite_grating.py'])}
+    return report
+
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('run',type=Path)
+    parser.add_argument('--receipt',type=Path)
+    args=parser.parse_args()
+    report=verify(args.run)
+    if args.receipt:
+        companion=args.receipt.with_name(args.receipt.stem+'-arrays.npz')
+        with tempfile.NamedTemporaryFile(dir=companion.parent,delete=False) as f:
+            temp=Path(f.name)
+            with (args.run/'arrays.npz').open('rb') as source:shutil.copyfileobj(source,f)
+        temp.replace(companion)
+        report['arrays_file']=companion.name
+        with tempfile.NamedTemporaryFile(dir=companion.parent,mode='w',delete=False) as f:
+            temp=Path(f.name);f.write(json.dumps(report,indent=2,allow_nan=False)+'\n')
+        temp.replace(args.receipt)
+    print(report['settings']['geometry'],report['result'].get('center_beam_to_guide',report['result'].get('center_guide_to_beam')),report['passed'])
