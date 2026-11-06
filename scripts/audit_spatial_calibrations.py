@@ -17,6 +17,7 @@ def audit(require_qualified=False):
     if read(BASE/'v012-calibrated-index.json') != index:
         raise ValueError('Regenerate the spatial index from the native results.')
     cases = {}
+    vendor_meshes = {case: {} for case in ('ring-3d', 'grating-3d')}
     for case, entry in index.items():
         records = []
         for view in entry['recorded']:
@@ -39,18 +40,40 @@ def audit(require_qualified=False):
                         np.testing.assert_allclose(abs(data['gaussian_channel'])**2,row[key],rtol=1e-10)
                     mask = row.get('valid_beam_bins',row.get('valid_energy_bins'))
                     np.testing.assert_array_equal(data['valid'], mask)
+                    for comparison in src['comparisons']:
+                        if comparison.get('geometry_matched') and key == 'beam_to_guide':
+                            published = comparison.get('published_power', comparison.get('published_s21_power'))
+                            np.testing.assert_array_equal(row['wavelength_um'], comparison['wavelength_um'])
+                            delta = 100 * (np.asarray(row[key]) - np.asarray(published))
+                            np.testing.assert_allclose(delta, comparison['local_minus_published_percentage_points'])
+                            np.testing.assert_allclose(np.abs(delta).mean(), comparison['mean_absolute_difference_percentage_points'])
                 else:
                     s = np.asarray(src['s_real']) + 1j*np.asarray(src['s_imag'])
                     np.testing.assert_allclose(abs(s)**2,src['power'],atol=1e-12)
                     mesh = src['parameters']['resolution']
                     native = data[f'mesh{mesh}_s'][0] if case=='multimode-tm' else data['s']
                     np.testing.assert_allclose(native,s,atol=1e-12,rtol=1e-12)
+            if case in vendor_meshes and src['passed']:
+                if case == 'ring-3d':
+                    vendor, resolution = src['vendor'], src['physical_model']['resolution']
+                else:
+                    vendor, resolution = src['settings']['geometry'], src['settings']['resolution']
+                if vendor in ('lumerical', 'tidy3d'):
+                    vendor_meshes[case].setdefault(vendor, set()).add(resolution)
             records.append({'receipt':view['receipt'],'passed':src['passed'],
                             'actual_device':src['actual_device'],'has_native_field':bool(view.get('field'))})
         if require_qualified and not any(r['passed'] for r in records):
             raise ValueError(f'No numerically qualified public record for {case}.')
         cases[case]=records
-    return {'passed':True,'cases':cases,'scope':'All included records are re-read; diagnostic ring spectra retain their original pass flag and wavelength mask.'}
+    if require_qualified:
+        for case, vendors in vendor_meshes.items():
+            for vendor in ('lumerical', 'tidy3d'):
+                if len(vendors.get(vendor, ())) < 2:
+                    raise ValueError(f'{case} needs two qualified meshes for the {vendor} geometry.')
+    meshes = {case: {vendor: sorted(values) for vendor, values in vendors.items()}
+              for case, vendors in vendor_meshes.items()}
+    return {'passed':True,'cases':cases,'qualified_vendor_meshes':meshes,
+            'scope':'All included records are re-read. Diagnostic ring spectra retain their original pass flag and wavelength mask.'}
 
 
 if __name__=='__main__':

@@ -124,8 +124,12 @@ def spatial_index():
         note='Published finite grating geometry and guided-output comparison.'
         if result:
             r=result[1]
-            j=min(range(len(r['result']['wavelength_um'])),key=lambda i:abs(r['result']['wavelength_um'][i]-1.55))
-            note=f"At 1.55 µm the native guided output is {r['result']['beam_to_guide'][j]*100:.2f}% of measured incident power."
+            reference=next(c for c in r['comparisons'] if c.get('geometry_matched') and c['vendor']==brand)
+            j=r['result']['wavelength_um'].index(1.55)
+            published=reference.get('published_power',reference.get('published_s21_power'))
+            note=(f"At 1.55 µm on the {result[0]} cells/µm mesh, the measured guided output is "
+                  f"{r['result']['beam_to_guide'][j]*100:.2f}% versus {published[j]*100:.2f}% published. "
+                  f"The five-wavelength mean absolute difference is {reference['mean_absolute_difference_percentage_points']:.2f} percentage points.")
         index['grating-3d']['comparisons'].append(dict(vendor=brand,url=url,description=note))
     for case in ('multimode-tm','layout-ports-2d','layout-ports-3d'):
         index[case]['comparisons'] = [

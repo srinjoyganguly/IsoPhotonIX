@@ -5,6 +5,19 @@ comparison. A transmission coefficient is comparable only when both studies
 use the same structure, materials, launch mode, reference planes, normalization
 and collection aperture.
 
+## Full 3D ring and grating comparisons
+
+The workbench runs each reference geometry on local NVIDIA hardware. The four comparisons below use the originating vendor's own observable. For rings we compare both the spacing between successive drop resonances and the through/drop powers at the original wavelengths. A correct spacing can coexist with a large error at an individual wavelength when the resonances shift.
+
+| Published design | Compared observable | Origin of the reference |
+| --- | --- | --- |
+| Lumerical two-bus silicon ring | Through and drop power spectra and central resonance spacing | Numerical sweep accompanying the [Ansys 3D parameter-extraction example](https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction) |
+| Tidy3D two-bus silicon ring | Through and drop spectra and central resonance spacing | Digitized curves in the [Flexcompute add/drop notebook](https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/) |
+| Lumerical curved grating | Power transferred from the tilted polished fiber into the output guide, compared with the published S21 power | Numerical port data with the [Ansys grating example](https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler) |
+| Tidy3D uniform grating | Coupling from a tilted Gaussian beam through the finite grating and taper into the output guide | Digitized coupling curve in the [Flexcompute 3D grating notebook](https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/) |
+
+Each grating comparison uses the same five wavelengths from 1500 to 1600 nm. Each mesh has its own simulated incident reference. In **Calibrated components**, select a measured record, then a wavelength to inspect the local value and its difference from the published curve. Compare the mesh records separately before using an absolute power or peak position in a design. [Measurement checklist](CALIBRATED_COMPONENTS.md) · [Ring modes, meshes and losses](LOADED_RING_3D.md) · [Grating geometry, source and field checks](FINITE_GRATING_3D.md).
+
 ## Matched Lumerical and Tidy3D cross sections
 
 The published Lumerical SOI evanescent coupler has two 0.5 µm wide,
