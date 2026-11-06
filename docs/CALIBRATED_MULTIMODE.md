@@ -31,3 +31,5 @@ For a long native study, `--checkpoint-dir DIR` preserves each measured referenc
 ## Replaying the GUI
 
 A browser started the 48-cell planar study, checked the four displayed complex outputs and powers against the local solver report, and downloaded its result ZIP. A fresh Python process and an executed notebook ran the packaged source separately outside the checkout. Every numerical array and displayed observable was compared. The largest raw differences were 5.76 × 10⁻⁸ (Python) and 2.12 × 10⁻⁸ (notebook). The exports include elementwise tolerances and the differences for all nonidentical arrays. [Browser and replay record](verification/v011-calibration-replays.json).
+
+All six recorded presets were opened in Chrome. The verification selected every input and wavelength of the stored matrices and compared each displayed real part, imaginary part and power to its recorded value. It also inspected the ring and grating charts, the bare-ring table and the mobile layout. [Browser verification](verification/v011-browser-records.json) · [Native Meep regressions and JAX target checks](verification/v011-native-regressions.json).

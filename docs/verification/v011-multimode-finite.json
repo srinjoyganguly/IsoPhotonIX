@@ -124,6 +124,18 @@
       "scope": "One separately measured left TE0 input column.",
       "max_power_fraction_change": 6.105069931816587e-06,
       "max_complex_through_change": 1.526592832871808e-05
+    },
+    {
+      "control": "time",
+      "resolution": 16,
+      "pml_um": 1.0,
+      "aperture_um": 3.0,
+      "after_source_um_over_c": 110.0,
+      "original_sha256": "8da009ad91bca14ec035c21955c9ff9ce077e6f7a30c9b0bb99edc65a20f98c9",
+      "native_phase_version": 2,
+      "scope": "One separately measured left TE0 input column.",
+      "max_power_fraction_change": 1.0345133608979928e-05,
+      "max_complex_through_change": 1.4115315751973658e-05
     }
   ],
   "s_real": [
@@ -368,7 +380,7 @@
   ],
   "source_arrays": {
     "file": "v011-multimode-finite.npz",
-    "sha256": "583f5d11e6eaf12abbe2bdcd95fd73a04430c76340184e9491fa5dbd8f547bda",
+    "sha256": "621f797a75969f159f75938d12b313fdb13bbc3d2842e6a4ea222bc6bd0d0ae9",
     "contents": "Original measured modal arrays, corrected electric-basis S, available single-launch controls and independent matrices. All four input columns are independently simulated."
   },
   "vendor_sources": {

@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "native_meep_tests": 11,
+  "test_names": [
+    "test_explicit_gpu_request_is_rejected",
+    "test_full_volume_materials_propagation_and_thickness_response",
+    "test_gpu_is_rejected_before_import",
+    "test_gpu_is_rejected_before_solver_import",
+    "test_other_targets_cannot_start_the_meep_taper_adapter",
+    "test_real_straight_gap_reciprocity_and_invalid_ringdown",
+    "test_real_taper_profile_refinement_and_straight_limit",
+    "test_real_waveguide_and_parameter_response",
+    "test_straight_calibration_gap_response_and_unsettled_results",
+    "test_straight_limit_mirrored_taper_refinement_and_mode_normalization",
+    "test_unavailable_device_and_wrong_study_are_rejected_before_import"
+  ],
+  "meep": "1.35.0",
+  "execution": "Native Meep CPU interpreter; the taper-port test was rerun in a temporary service after the first process was interrupted.",
+  "solver_target_probe": {
+    "elapsed_seconds": 105.98116123899672,
+    "targets": [
+      {
+        "solver": "meep",
+        "device": "cpu",
+        "available": true,
+        "version": "1.35.0",
+        "device_name": "CPU",
+        "actual_platform": "cpu"
+      },
+      {
+        "solver": "fdtdx",
+        "device": "cpu",
+        "available": true,
+        "version": "0.6.2",
+        "jax_version": "0.10.2",
+        "device_name": "cpu",
+        "actual_platform": "cpu"
+      },
+      {
+        "solver": "fdtdx",
+        "device": "gpu",
+        "available": true,
+        "version": "0.6.2",
+        "jax_version": "0.10.2",
+        "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "actual_platform": "gpu"
+      }
+    ]
+  }
+}

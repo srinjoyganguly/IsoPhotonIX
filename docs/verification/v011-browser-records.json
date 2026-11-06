@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-06T00:37:45.061Z",
+  "cases": {
+    "coupler": {
+      "records": 5,
+      "matrix_entries": 240,
+      "spectra": 0,
+      "bare_ring_pairs": 0
+    },
+    "splitter": {
+      "records": 5,
+      "matrix_entries": 135,
+      "spectra": 0,
+      "bare_ring_pairs": 0
+    },
+    "ring": {
+      "records": 2,
+      "matrix_entries": 0,
+      "spectra": 8,
+      "bare_ring_pairs": 2
+    },
+    "grating": {
+      "records": 6,
+      "matrix_entries": 0,
+      "spectra": 8,
+      "bare_ring_pairs": 0
+    },
+    "multimode": {
+      "records": 1,
+      "matrix_entries": 48,
+      "spectra": 0,
+      "bare_ring_pairs": 0
+    },
+    "multimode-3d": {
+      "records": 1,
+      "matrix_entries": 48,
+      "spectra": 0,
+      "bare_ring_pairs": 0
+    }
+  },
+  "no_browser_errors": true,
+  "mobile_width": 390
+}
