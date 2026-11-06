@@ -133,6 +133,20 @@ compares `−10 log10(2 P_upper)` with the published curve. The lower port in
 this run is symmetry-related. The sinusoidal reconstruction measures both
 arms without a transverse mirror and retains their independent powers.
 
+At 20 cells/µm the regenerated outline sent 0.481595 of the incident power
+to its upper arm at 1.55 µm. The upper-arm loss was 0.162878 dB, compared
+with 0.131757 dB digitized from the Tidy3D curve. Across the five sampled
+wavelengths, the mean absolute difference was 0.035403 dB and the largest
+was 0.045624 dB. The plot readout uncertainty is about 0.004 dB. The
+sinusoidal model gave a smaller 0.013469 dB mean difference at the same
+mesh despite its larger geometric difference. Both records retain the
+measured discrepancy. The largest late field increment across the regenerated
+outline's two output planes and five bins was 0.0000912 relative. The
+straight-through control returned 1.00093–1.00308 fundamental-mode power.
+[Regenerated-outline run](verification/v011-published-y-photonforge-r20.json) ·
+[Raw upper/lower and straight modes](verification/v011-published-y-photonforge-r20.npz) ·
+[Independent sinusoidal reconstruction](verification/v011-published-splitter.json).
+
 Compare one measured numerical control to its baseline, for example:
 
 ```bash

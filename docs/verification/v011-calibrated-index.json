@@ -1501,6 +1501,11 @@
         "vendor": "Tidy3D Y reconstruction",
         "url": "https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/",
         "description": "The published-width sine-path model at 24 cells/\u00b5m measures 0.158 dB at 1.55 \u00b5m, versus 0.132 dB read from the plot. The notebook uses a different bend construction."
+      },
+      {
+        "vendor": "Tidy3D notebook footprint",
+        "url": "https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/",
+        "description": "Using the regenerated notebook contour at 20 cells/\u00b5m gives 0.163 dB at 1.55 \u00b5m. The digitized value is 0.132 dB."
       }
     ],
     "recorded": [

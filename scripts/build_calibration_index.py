@@ -58,6 +58,10 @@ def build():
                 measured=replica['rows'][-1]
                 comparisons.append(vendor('Tidy3D Y reconstruction',replica['source_url'],
                     f"The published-width sine-path model at {measured['resolution']} cells/µm measures {measured['published_observable_loss_db'][2]:.3f} dB at 1.55 µm, versus {measured['vendor_loss_db'][2]:.3f} dB read from the plot. The notebook uses a different bend construction."))
+            footprint=read('v011-published-y-photonforge-r20.json')
+            if footprint and footprint.get('passed'):
+                comparisons.append(vendor('Tidy3D notebook footprint',footprint['source_url'],
+                    f"Using the regenerated notebook contour at 20 cells/µm gives {footprint['upper_times_two_loss_db'][2]:.3f} dB at 1.55 µm. The digitized value is {footprint['vendor_plot_loss_db'][2]:.3f} dB."))
         entry=add_matrix_case(key,refs,summary,'Finite-height 3D',
                 'Fundamental quasi-TE mode at each port. Radiation and higher modes are excluded from the reported guided power sum. Material-grid differences affect weak reflection, phase and arm symmetry.',comparisons)
         if entry:index[key]=entry

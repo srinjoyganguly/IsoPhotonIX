@@ -1,0 +1,152 @@
+{
+  "model_id": "published-y-photonforge-outline-v1",
+  "geometry_sha256": "24e6312e91bb66fe9994ba5f33dcc46be63fc30efa24239e9cb981180a8d1f62",
+  "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/YJunction/",
+  "notebook_sha256": "bc049b36b9b0e04cd83d79fd73550a2fe1a6e5b10562683957b0d3a9f21f95e9",
+  "photonforge_geometry_version": "2.0.0",
+  "solver": {
+    "protocol": 1,
+    "worker_sha256": "41a207f81c0c7681bd2fbb5cc5a621ff571303a9a6b085662e096badc94118ce",
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "python": "3.11.18",
+    "architecture": "x86_64"
+  },
+  "resolution": 20,
+  "passed": true,
+  "checks": {
+    "valid_stages": true,
+    "straight_through_power": true,
+    "mirror_power": true,
+    "upper_arm_passive": true
+  },
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "upper_power_fraction": [
+    0.46855320351509244,
+    0.4774836151316296,
+    0.48159521778005326,
+    0.4803445092283881,
+    0.4802938633857339
+  ],
+  "lower_mirrored_power_fraction": [
+    0.46855296132386454,
+    0.4774838483428605,
+    0.48159543488076634,
+    0.4803445251698134,
+    0.4802938447332663
+  ],
+  "upper_times_two_loss_db": [
+    0.2821109282375347,
+    0.20011530992188814,
+    0.16287838590498596,
+    0.17417173648168893,
+    0.1746296655139553
+  ],
+  "measured_sum_loss_db": [
+    0.28211205065358763,
+    0.2001142493374501,
+    0.16287740701620557,
+    0.1741716644159856,
+    0.1746297498442418
+  ],
+  "vendor_plot_loss_db": [
+    0.2364864865,
+    0.1594594595,
+    0.1317567568,
+    0.1371621622,
+    0.152027027
+  ],
+  "difference_from_vendor_db": [
+    0.04562444173753469,
+    0.04065585042188813,
+    0.03112162910498595,
+    0.03700957428168894,
+    0.022602638513955303
+  ],
+  "vendor_readout_uncertainty_db": 0.004,
+  "reference": {
+    "planes_um": [
+      [
+        -4.1,
+        0.0
+      ],
+      [
+        4.5,
+        0.0
+      ]
+    ],
+    "guided": true,
+    "late_increment_per_plane_per_frequency": [
+      [
+        4.508463008105834e-08,
+        2.8911414828764875e-08,
+        2.5867833759100538e-08,
+        3.047580246486427e-08,
+        4.524240642486177e-08
+      ],
+      [
+        2.2174851207238228e-08,
+        1.596975602086731e-08,
+        1.3753890564748342e-08,
+        1.4050793773745263e-08,
+        1.677325879967525e-08
+      ]
+    ],
+    "settled": true,
+    "timesteps": 6734,
+    "reused_native_reference_sha256": "ac3ebf67f046cb60f57d4a9eda4de1147827dde73d4c7386d807df7557055096",
+    "reused_reference_worker_sha256": "7171c3fe37b8f81d21e60062305ebb06ab3f07ea7760333e6b31078c583417dd"
+  },
+  "device": {
+    "planes_um": [
+      [
+        4.5,
+        2.35
+      ],
+      [
+        4.5,
+        -2.35
+      ]
+    ],
+    "guided": true,
+    "late_increment_per_plane_per_frequency": [
+      [
+        9.111601823168652e-05,
+        5.8494239897872895e-05,
+        4.804700612768607e-05,
+        4.965910400751866e-05,
+        6.315765462246074e-05
+      ],
+      [
+        9.11160182316865e-05,
+        5.8494239897872895e-05,
+        4.804700612768607e-05,
+        4.9659104007518676e-05,
+        6.315765462246074e-05
+      ]
+    ],
+    "settled": true,
+    "timesteps": 6734
+  },
+  "symmetry_xyz": [
+    0,
+    -1,
+    1
+  ],
+  "straight_through_power": [
+    1.0030840823401908,
+    1.002457934824029,
+    1.0020946208196524,
+    1.0015919616534428,
+    1.0009276788465384
+  ],
+  "arrays_sha256": "602022f091b989cde75ff79f7a85c735392d86719f46e51e6a69550274706f67",
+  "scope": "One centred fundamental TE input and its physical upper output; mirror symmetry yields the lower port. Positive loss is -10log10(2Pupper), normalized to an independent straight run in the same solver, geometry of the source region and symmetries. Vendor geometry regenerated from the named PhotonForge Community release. Meep freezes indices at 1.55 \u00b5m, has a broader reference-normalized pulse, centres the finite z cell on the core and uses a uniform mesh."
+}
