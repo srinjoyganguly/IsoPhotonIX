@@ -1,0 +1,2689 @@
+{
+  "schema_version": 1,
+  "case": "layout-ports-2d",
+  "solver": "Meep",
+  "actual_device": "CPU",
+  "version": "1.35.0",
+  "passed": true,
+  "parameters": {
+    "design": {
+      "version": 1,
+      "name": "Silicon right-angle elbow",
+      "polygons": [
+        [
+          [
+            -1.0,
+            -0.1875
+          ],
+          [
+            0.1875,
+            -0.1875
+          ],
+          [
+            0.1875,
+            1.0
+          ],
+          [
+            -0.1875,
+            1.0
+          ],
+          [
+            -0.1875,
+            0.1875
+          ],
+          [
+            -1.0,
+            0.1875
+          ]
+        ]
+      ],
+      "ports": [
+        {
+          "name": "west",
+          "outward": "-x",
+          "center_um": [
+            -1.75,
+            0.0
+          ],
+          "width_um": 0.375
+        },
+        {
+          "name": "north",
+          "outward": "+y",
+          "center_um": [
+            0.0,
+            1.75
+          ],
+          "width_um": 0.375
+        }
+      ]
+    },
+    "resolution": 32,
+    "post_source_um_c": 100.0,
+    "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+  },
+  "channels": [
+    "west",
+    "north"
+  ],
+  "wavelength_um": [
+    1.6,
+    1.55,
+    1.5
+  ],
+  "s_real": [
+    [
+      [
+        -0.17403348380891942,
+        -0.00016081918965585708
+      ],
+      [
+        -0.00016081922033486126,
+        -0.17403348383524628
+      ]
+    ],
+    [
+      [
+        0.36947511991534104,
+        -0.02853162219065248
+      ],
+      [
+        -0.02853162210169153,
+        0.3694751199342799
+      ]
+    ],
+    [
+      [
+        -0.054128882764082405,
+        0.03413011762584933
+      ],
+      [
+        0.034130117739053084,
+        -0.05412888274108037
+      ]
+    ]
+  ],
+  "s_imag": [
+    [
+      [
+        -0.3291032438314679,
+        0.026182454248087055
+      ],
+      [
+        0.02618245415598973,
+        -0.3291032438360156
+      ]
+    ],
+    [
+      [
+        -0.08794024868081249,
+        -0.01662346209706672
+      ],
+      [
+        -0.016623462103357415,
+        -0.08794024871895513
+      ]
+    ],
+    [
+      [
+        0.38307710132080036,
+        -0.02392174978226708
+      ],
+      [
+        -0.02392174968351813,
+        0.3830771013426548
+      ]
+    ]
+  ],
+  "power": [
+    [
+      [
+        0.13859659858706402,
+        0.0006855467732649332
+      ],
+      [
+        0.0006855467684521332,
+        0.13859659859922088
+      ]
+    ],
+    [
+      [
+        0.1442453515744988,
+        0.001090392956922747
+      ],
+      [
+        0.0010903929520554925,
+        0.14424535159520224
+      ]
+    ],
+    [
+      [
+        0.14967800150563454,
+        0.0017371150417997065
+      ],
+      [
+        0.0017371150448025254,
+        0.14967800151988828
+      ]
+    ]
+  ],
+  "checks": {
+    "max_collected_power": 0.151415116561688,
+    "power_reciprocity_residual_max": 4.867254385990116e-12,
+    "complex_reciprocity_residual_max": 1.5022131864209424e-10,
+    "early_late_complex_change_max": 1.52886225759401e-09
+  },
+  "limits": {
+    "max_collected_power": 1.03,
+    "power_reciprocity_residual_max": 0.04,
+    "complex_reciprocity_residual_max": 0.1,
+    "early_late_complex_change_max": 0.025
+  },
+  "core_index": 3.48,
+  "cladding_index": 1.44,
+  "port_aperture_um": 2.0,
+  "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+  "native_report_sha256": "025a00b3358b3b11ce508c84e8d38cd3b9a4266dc233e78998e70e371a45349c",
+  "native_arrays_sha256": "4e3add16405c9ef260913a1da068cded00dc91813d22fce57f73c72de118f6d2",
+  "stage_digests": [
+    {
+      "launch_stage": "port0-device",
+      "settings_hash": "474bb3f2055deb5565ca0a3cee4fbda2439b80eefa0d6535874c1a79044fa621",
+      "arrays_sha256": "4436275e9a6c7421860b6015f6a53b493009ef023ebe9b96b34275c38e391053",
+      "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+    },
+    {
+      "launch_stage": "port0-reference",
+      "settings_hash": "42b64f1b13dcc20852f358af53ad1e8d2135b4c693ecc855446068e6fbb57651",
+      "arrays_sha256": "6c531c3369db09bd828070457d9588503e4ee9951c0b9f0ef25f9f59d4583aea",
+      "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+    },
+    {
+      "launch_stage": "port1-device",
+      "settings_hash": "c23885e5a505fd5539e21f261c1e91a345e625c1dcf74adf06e3b3f890133ea2",
+      "arrays_sha256": "bbd93a07de9e8a9c6acc35e1dd38ff0841fc99f7686f857b084d8dab018fc3ed",
+      "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+    },
+    {
+      "launch_stage": "port1-reference",
+      "settings_hash": "f65d042579f8e27b0bfca6453091b37f1f410e3e5a9d12cbb219550687f085ff",
+      "arrays_sha256": "bf639eb36baceb0a3a3a882a2de7b13141c982520f1702a6cdfbdc0f6a49944a",
+      "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+    }
+  ],
+  "native_runs": {
+    "elbow32": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "Silicon right-angle elbow",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 32,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "west",
+        "north"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            -0.17403348380891942,
+            -0.00016081918965585708
+          ],
+          [
+            -0.00016081922033486126,
+            -0.17403348383524628
+          ]
+        ],
+        [
+          [
+            0.36947511991534104,
+            -0.02853162219065248
+          ],
+          [
+            -0.02853162210169153,
+            0.3694751199342799
+          ]
+        ],
+        [
+          [
+            -0.054128882764082405,
+            0.03413011762584933
+          ],
+          [
+            0.034130117739053084,
+            -0.05412888274108037
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.3291032438314679,
+            0.026182454248087055
+          ],
+          [
+            0.02618245415598973,
+            -0.3291032438360156
+          ]
+        ],
+        [
+          [
+            -0.08794024868081249,
+            -0.01662346209706672
+          ],
+          [
+            -0.016623462103357415,
+            -0.08794024871895513
+          ]
+        ],
+        [
+          [
+            0.38307710132080036,
+            -0.02392174978226708
+          ],
+          [
+            -0.02392174968351813,
+            0.3830771013426548
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.13859659858706402,
+            0.0006855467732649332
+          ],
+          [
+            0.0006855467684521332,
+            0.13859659859922088
+          ]
+        ],
+        [
+          [
+            0.1442453515744988,
+            0.001090392956922747
+          ],
+          [
+            0.0010903929520554925,
+            0.14424535159520224
+          ]
+        ],
+        [
+          [
+            0.14967800150563454,
+            0.0017371150417997065
+          ],
+          [
+            0.0017371150448025254,
+            0.14967800151988828
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.151415116561688,
+        "power_reciprocity_residual_max": 4.867254385990116e-12,
+        "complex_reciprocity_residual_max": 1.5022131864209424e-10,
+        "early_late_complex_change_max": 1.52886225759401e-09
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "025a00b3358b3b11ce508c84e8d38cd3b9a4266dc233e78998e70e371a45349c",
+      "native_arrays_sha256": "4e3add16405c9ef260913a1da068cded00dc91813d22fce57f73c72de118f6d2",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "474bb3f2055deb5565ca0a3cee4fbda2439b80eefa0d6535874c1a79044fa621",
+          "arrays_sha256": "4436275e9a6c7421860b6015f6a53b493009ef023ebe9b96b34275c38e391053",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "42b64f1b13dcc20852f358af53ad1e8d2135b4c693ecc855446068e6fbb57651",
+          "arrays_sha256": "6c531c3369db09bd828070457d9588503e4ee9951c0b9f0ef25f9f59d4583aea",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "c23885e5a505fd5539e21f261c1e91a345e625c1dcf74adf06e3b3f890133ea2",
+          "arrays_sha256": "bbd93a07de9e8a9c6acc35e1dd38ff0841fc99f7686f857b084d8dab018fc3ed",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "f65d042579f8e27b0bfca6453091b37f1f410e3e5a9d12cbb219550687f085ff",
+          "arrays_sha256": "bf639eb36baceb0a3a3a882a2de7b13141c982520f1702a6cdfbdc0f6a49944a",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    },
+    "elbow40": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "Silicon right-angle elbow",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 40,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "west",
+        "north"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            -0.19069578072886875,
+            -0.007366841582105993
+          ],
+          [
+            -0.007366841487978611,
+            -0.1906957807704637
+          ]
+        ],
+        [
+          [
+            0.3765119984422517,
+            -0.02877975645354958
+          ],
+          [
+            -0.028779756366910315,
+            0.3765119984355657
+          ]
+        ],
+        [
+          [
+            -0.023460144407841346,
+            0.0360454778592885
+          ],
+          [
+            0.036045477852092375,
+            -0.02346014441061258
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.33531432146624973,
+            0.030061534724239686
+          ],
+          [
+            0.03006153449233549,
+            -0.335314321469174
+          ]
+        ],
+        [
+          [
+            -0.1132785142990055,
+            -0.022657451696760617
+          ],
+          [
+            -0.02265745169429127,
+            -0.11327851431941705
+          ]
+        ],
+        [
+          [
+            0.39825717704151703,
+            -0.022584290359920153
+          ],
+          [
+            -0.02258429037050567,
+            0.39825717703805313
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.14880057496816426,
+            0.0009579662248725145
+          ],
+          [
+            0.0009579662095428796,
+            0.14880057498598934
+          ]
+        ],
+        [
+          [
+            0.15459330677276817,
+            0.0013416344989166694
+          ],
+          [
+            0.001341634493817857,
+            0.15459330677235775
+          ]
+        ],
+        [
+          [
+            0.15915915744071502,
+            0.0018093266451656399
+          ],
+          [
+            0.0018093266451249972,
+            0.15915915743808598
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.16096848408584002,
+        "power_reciprocity_residual_max": 1.532963491389372e-11,
+        "complex_reciprocity_residual_max": 2.502788856322881e-10,
+        "early_late_complex_change_max": 3.6785843136521504e-08
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "f45875f9ccc2580d9eb661ba9479653ea88ab49959e8d9f1e1614e4c44c8b931",
+      "native_arrays_sha256": "09e0b1abc73a2c4c28d9ef700ce7373b2031146923edb0cffa9bdde976bc13b9",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "7884e6d3ca59ac61a1ef24e57776bd1c7a3950ebaf05f603b0c2b6e8939857cb",
+          "arrays_sha256": "cd88855c60e6d37e432b6f417a74175ecf290f1c7b1c11402c95b9c623cf5d6b",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "f71a749d1aa27f5e8b8bf1f053b22191c23f8e549469810000c56890b723b187",
+          "arrays_sha256": "4020e36cb69c1231a14ebb14e834d17a61840163401eddf0da517b3113fada7f",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "7248ebf2c95597c3b25d63c2478a401f917c1ac9baa04c95d1727f2597ac4bf0",
+          "arrays_sha256": "249e49039d48ad04ab5da956a81cdbf3b9ecf53e98a81e12accaa62170284511",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "fc8f462ffdb03da8739d322b7266ac3c3f89381c33506b4e132e99cef8721bc2",
+          "arrays_sha256": "82dcd0157efa313d8b1b0cc541e0bff58ca866bced5b6b31c8952728ffe35225",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    },
+    "shifted32": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "Silicon right-angle elbow",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -2.0,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.5
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 32,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "west",
+        "north"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            -0.18688306215559242,
+            -0.005007863432630394
+          ],
+          [
+            -0.004982735272175919,
+            -0.1504911999356133
+          ]
+        ],
+        [
+          [
+            0.37436059337118516,
+            -0.023865571511758166
+          ],
+          [
+            -0.02409692958532868,
+            0.343223377137425
+          ]
+        ],
+        [
+          [
+            -0.20325226809222244,
+            0.031143936236049333
+          ],
+          [
+            0.03138738362174619,
+            0.1114964237955533
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.31883447920201174,
+            0.026801638432880907
+          ],
+          [
+            0.026728678649424388,
+            -0.3336914492104529
+          ]
+        ],
+        [
+          [
+            -0.018670033532087026,
+            -0.019354422343854198
+          ],
+          [
+            -0.01963763048717379,
+            -0.1520780245952906
+          ]
+        ],
+        [
+          [
+            0.3248541209346066,
+            -0.018097476261008768
+          ],
+          [
+            -0.018874137848249435,
+            0.36832945719262655
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.1365807040486691,
+            0.0007434065188467558
+          ],
+          [
+            0.0007392499131367811,
+            0.13399758453423305
+          ]
+        ],
+        [
+          [
+            0.14049442402131507,
+            0.0009441591678471256
+          ],
+          [
+            0.0009662985465910662,
+            0.14093001217842485
+          ]
+        ],
+        [
+          [
+            0.14684168437282866,
+            0.0012974634112928828
+          ],
+          [
+            0.001341400930133383,
+            0.14809804155501255
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.14939550496630544,
+        "power_reciprocity_residual_max": 4.393751884050026e-05,
+        "complex_reciprocity_residual_max": 0.0008139225090251683,
+        "early_late_complex_change_max": 1.5733137854421097e-09
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "d3469b9b2ed55b42421729efa01b217ce99e313d0139b755a57168d76febf4ef",
+      "native_arrays_sha256": "c13987d0c164165a5f4c9016ef522545da59977244c72118b5d9363067faf31f",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "b1cfaac97e8aa84259051915334f2717844152bfc103fe925be155dc85c556f1",
+          "arrays_sha256": "f9d9938211daa23269f7468a59075939810abbcca1192fd68ec92c78b6be426c",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "722429d0491bcfd268121285342c982472b1c97c9b6ce3b9fd8a694740d6037e",
+          "arrays_sha256": "581b90b1db0c01640cb590102d6c93b0125c50c7d6843835e4bbb11b31ba4ee4",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "4d3993574c95dce05d1e61586662f037000547179f3b721a65fb4c3845212dcd",
+          "arrays_sha256": "b5c8406fce09a1b1b6622ddbb4feceec51847b4015bc63851254e5e2099bbb4d",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "fd7084eadbf154bd849056f24eaf5d4de827323541da0769c249c944def900bc",
+          "arrays_sha256": "6c59830950b45a6483a0ddc0a7e3300e002866cbec9283637932e09eb968330b",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    },
+    "straight-x": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "x straight",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                1.0,
+                -0.1875
+              ],
+              [
+                1.0,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "input",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "output",
+              "outward": "+x",
+              "center_um": [
+                1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 32,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "input",
+        "output"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            0.0039856181542774986,
+            0.9115636190896773
+          ],
+          [
+            0.9115636190896936,
+            0.003985618154284974
+          ]
+        ],
+        [
+          [
+            -0.008137395195230776,
+            0.3533811298173624
+          ],
+          [
+            0.3533811298173733,
+            -0.008137395193895674
+          ]
+        ],
+        [
+          [
+            -0.0005192757896395336,
+            -0.982196955762899
+          ],
+          [
+            -0.9821969559323813,
+            -0.0005192757896006719
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            0.008969603889185093,
+            -0.4109188864853119
+          ],
+          [
+            -0.41091888648530334,
+            0.008969603889177754
+          ]
+        ],
+        [
+          [
+            0.002994411933481586,
+            0.9353507481349619
+          ],
+          [
+            0.935350748133596,
+            0.0029944119334700883
+          ]
+        ],
+        [
+          [
+            -0.0029442673434062856,
+            0.187153151743616
+          ],
+          [
+            0.18715315082841374,
+            -0.002944267343434617
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            9.633894600059071e-05,
+            0.9998025629181989
+          ],
+          [
+            0.9998025629182218,
+            9.633894600051865e-05
+          ]
+        ],
+        [
+          [
+            7.518370339074185e-05,
+            0.9997592449476282
+          ],
+          [
+            0.9997592449450808,
+            7.518370336894448e-05
+          ]
+        ],
+        [
+          [
+            8.938357535154467e-06,
+            0.9997371621174749
+          ],
+          [
+            0.9997371621078395,
+            8.938357535280941e-06
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.9998989018642224,
+        "power_reciprocity_residual_max": 9.635403586116809e-12,
+        "complex_reciprocity_residual_max": 9.307628104405696e-10,
+        "early_late_complex_change_max": 4.0571037810694815e-09
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "2a9110ea3c0cf3c07386546c3eafacaa7bf4a06e2ec8ecfbd125e790c873756b",
+      "native_arrays_sha256": "b6bf71c7cc9305fc8875ce8975d0d7e53515bca753cb384696caa11b8d762a1f",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "59b2c443dfec385ef39c2344355ad9f58f7fb37a166230e973ecc28052d01748",
+          "arrays_sha256": "ee07d797444b49bb033fd5be38b5f2c169d24da3d25b69acf79c7ee0fefbca52",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "0570d7adaa831682879124058cbc65b7c804ec215b3593f3b23933c2f629b05e",
+          "arrays_sha256": "174d7fa05925bafa877d88874e13c35901c4b06dc134065688c706d1a218034c",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "adf5315e4a5b535908ae8bd2b198c3381b29a5325e91384fee182d928ea77ae2",
+          "arrays_sha256": "695973bc29b6c6da091f9b66205c9556a87d97097c93527b380f7b802907d8c8",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "3a3d294a2ef4e4eba5d3721881bcd85614d10774397fa48f32d3d7e4b446597a",
+          "arrays_sha256": "37e244679a585c4c80fc78fcf0b18874518443c53bf9b681b2ab842c0a31f850",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    },
+    "straight-y": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "y straight",
+          "polygons": [
+            [
+              [
+                0.1875,
+                -1.0
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                -1.0
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "input",
+              "outward": "-y",
+              "center_um": [
+                0.0,
+                -1.75
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "output",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 32,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "input",
+        "output"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            0.003985618135375048,
+            0.9115636190896392
+          ],
+          [
+            0.9115636190896695,
+            0.003985618154296616
+          ]
+        ],
+        [
+          [
+            -0.008137395193529927,
+            0.35338112981876774
+          ],
+          [
+            0.3533811298187678,
+            -0.008137395193529894
+          ]
+        ],
+        [
+          [
+            -0.0005192757901533471,
+            -0.9821969559392145
+          ],
+          [
+            -0.982196955959069,
+            -0.0005192757895929073
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            0.008969603888587164,
+            -0.41091888648539465
+          ],
+          [
+            -0.4109188864852968,
+            0.00896960388917538
+          ]
+        ],
+        [
+          [
+            0.0029944119319503734,
+            0.935350748133034
+          ],
+          [
+            0.935350748133034,
+            0.0029944119319501197
+          ]
+        ],
+        [
+          [
+            -0.002944267340258631,
+            0.18715315081791373
+          ],
+          [
+            0.18715315071373856,
+            -0.0029442673434252743
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            9.633894583918844e-05,
+            0.9998025629181976
+          ],
+          [
+            0.9998025629181725,
+            9.63389460005689e-05
+          ]
+        ],
+        [
+          [
+            7.518370335389073e-05,
+            0.9997592449450151
+          ],
+          [
+            0.9997592449450151,
+            7.518370335388868e-05
+          ]
+        ],
+        [
+          [
+            8.938357517153018e-06,
+            0.9997371621173319
+          ],
+          [
+            0.9997371621173405,
+            8.938357535217859e-06
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.9998989018641982,
+        "power_reciprocity_residual_max": 2.5091040356528538e-14,
+        "complex_reciprocity_residual_max": 1.0605029453657035e-10,
+        "early_late_complex_change_max": 3.70065973159168e-09
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "3bd2511871fabf7f9fd9fd83e2363257ee6866dfeda4770c38d5437934099911",
+      "native_arrays_sha256": "cde538b8986c2e125c2838d187f87a51baa2a25309664109abbd43d26778f7cd",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "af6e6505ec7e0ca9fdfb2cfa23763efa738b90a193bade48caede55878ef8571",
+          "arrays_sha256": "1ca1542d25fe0d130235f01777b05a2d25257eefad1d6100e97f775f45ebc9a3",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "b83ce4a4593b8a38e87e1fb0fcd3d858dd5b2ba41c0023fd0789067efd9cd3cb",
+          "arrays_sha256": "235ece95e1dad4de57fffcab0b3fc7f6aac5f26cb920a2f7a3355851abebea2c",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "08ae1df5728a4b445f8303384b7299b6eaf4b3f753b2775a045ef18e9e9188fd",
+          "arrays_sha256": "0eff9c3aefb5f5d01b90fec2b93d09579f0d1087c526cc6d4e4d28215f1f5c0c",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "0370aa5e0b56fd92879883f6a5cb40221407f36ca1d535c18d8d5d77021bf47a",
+          "arrays_sha256": "8354fa67440d0838051b3bbb8baa16c4967cb111bf5a62f87e0b6c27fb83dc85",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    },
+    "tee32": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "Three-port silicon tee",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                1.0,
+                -0.1875
+              ],
+              [
+                1.0,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ],
+            [
+              [
+                -0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "east",
+              "outward": "+x",
+              "center_um": [
+                1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 32,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "west",
+        "north",
+        "east"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            0.030411193500878488,
+            -0.04539229820485404,
+            0.8925843372864855
+          ],
+          [
+            -0.045378437048719245,
+            -0.0235306061925125,
+            -0.045378437048238005
+          ],
+          [
+            0.8925843372864865,
+            -0.04539229824843118,
+            0.030411193500878387
+          ]
+        ],
+        [
+          [
+            0.003176879943838782,
+            0.07390824585609167,
+            0.24348049486086182
+          ],
+          [
+            0.07398111410008175,
+            0.3260158994663146,
+            0.07398111410310654
+          ],
+          [
+            0.24348049486103943,
+            0.07390824586877695,
+            0.003176879942499364
+          ]
+        ],
+        [
+          [
+            -0.028799257105758855,
+            0.024799576963223588,
+            -0.9415388463925928
+          ],
+          [
+            0.025021238374271535,
+            -0.16847123117334104,
+            0.025021238389532897
+          ],
+          [
+            -0.9415388463925932,
+            0.024799577063092833,
+            -0.028799257105760232
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.010355913005232748,
+            -0.08031644769716202,
+            -0.2970739141681817
+          ],
+          [
+            -0.08030742147040427,
+            -0.3197228893706563,
+            -0.08030742147248701
+          ],
+          [
+            -0.29707391416818174,
+            -0.08031644770635303,
+            -0.010355913005232592
+          ]
+        ],
+        [
+          [
+            0.030916439857596154,
+            -0.03901758139293746,
+            0.9112507506480604
+          ],
+          [
+            -0.039078987657821924,
+            0.05250664161755818,
+            -0.03907898765597581
+          ],
+          [
+            0.9112507506480138,
+            -0.03901758143610437,
+            0.03091643985760158
+          ]
+        ],
+        [
+          [
+            -0.003642924467045007,
+            0.06815267524062803,
+            0.08433101706754637
+          ],
+          [
+            0.06821806402616842,
+            0.29372496963675554,
+            0.06821806402329349
+          ],
+          [
+            0.08433101706754664,
+            0.0681526752609607,
+            -0.003642924467030251
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.001032085624319823,
+            0.00851119250700936,
+            0.8849597096483587
+          ],
+          [
+            0.008508484492209725,
+            0.10277641541530805,
+            0.00850848449250057
+          ],
+          [
+            0.8849597096483602,
+            0.008511192512441871,
+            0.0010320856243198132
+          ]
+        ],
+        [
+          [
+            0.0009659188196459252,
+            0.006984800463278992,
+            0.8896606819343439
+          ],
+          [
+            0.007000372519849513,
+            0.10904331411878483,
+            0.007000372520152777
+          ],
+          [
+            0.8896606819343451,
+            0.006984800468522623,
+            0.0009659188196377502
+          ]
+        ],
+        [
+          [
+            0.0008426681085161969,
+            0.005259806160009362,
+            0.8936071197059412
+          ],
+          [
+            0.005279766629260533,
+            0.11465691352117431,
+            0.0052797666296320045
+          ],
+          [
+            0.8936071197059421,
+            0.005259806167734243,
+            0.0008426681085161687
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.8997295544440894,
+        "power_reciprocity_residual_max": 1.9960469251171196e-05,
+        "complex_reciprocity_residual_max": 0.0002311048991739788,
+        "early_late_complex_change_max": 3.4523945204509137e-09
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "4d7a846222554a5117823a7dc3a92ab550b7606b302fb65336a98589e9875870",
+      "native_arrays_sha256": "f3f2f9b6b86a261a0f8e08048e8350fdc8bd293e47db1e4b027d7e2b487234be",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "2d0cd925d06729ed4ff3742106b3cbab01ca9675a50c995464f3007762c8b21f",
+          "arrays_sha256": "f518b63261dcb4075f8bc0930f6a98c4b4fe3c1afe15fbab396babef0acaf85a",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "6ab4cae20af332de1f2fcea9cf939a34b2729bfaf0474031d33d29a11b05da5f",
+          "arrays_sha256": "266580765beb58c3acd903296475c19c05fbda58becf310eaef67f3152b2d63d",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "45eb1c26b944dac2a5955fed6be460ccf812a05bfe6ea2b25b061d39b754c45f",
+          "arrays_sha256": "6d423fb4539a2e62637910d121a507995d38af3939cea89af1b2c7b851563de4",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "4a6a0a870da6e24ee0c05b70e6f2bc78cf6e0bcf71bb7a2ddf34a7194afdc5d3",
+          "arrays_sha256": "6487314ff61172181638e0d9ae6be8a4d998d574280e01932d9ab55347322b85",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port2-device",
+          "settings_hash": "087ff1f100ac756a7995865537e42e05b89f068326514a56a3f5b4285e541175",
+          "arrays_sha256": "ec711dedda6a75ab319c45440122c617c73a4bfd82cbc983b0a967e1b2ed965b",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port2-reference",
+          "settings_hash": "fde3d01793ce2106c29f687f15e4de9fa330c9ed8de54788a05e604cf96cc5f2",
+          "arrays_sha256": "eafbd52c22499e0bae334e31237a22bb63d2e3d3257c8a919fba9bf4f9dc82fb",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    },
+    "cross32": {
+      "schema_version": 1,
+      "case": "layout-ports-2d",
+      "solver": "Meep",
+      "actual_device": "CPU",
+      "version": "1.35.0",
+      "passed": true,
+      "parameters": {
+        "design": {
+          "version": 1,
+          "name": "Four-port silicon crossing",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                1.0,
+                -0.1875
+              ],
+              [
+                1.0,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ],
+            [
+              [
+                -0.1875,
+                -1.0
+              ],
+              [
+                0.1875,
+                -1.0
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "east",
+              "outward": "+x",
+              "center_um": [
+                1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "south",
+              "outward": "-y",
+              "center_um": [
+                0.0,
+                -1.75
+              ],
+              "width_um": 0.375
+            }
+          ]
+        },
+        "resolution": 32,
+        "post_source_um_c": 100.0,
+        "geometry_helper_sha256": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4"
+      },
+      "channels": [
+        "west",
+        "north",
+        "east",
+        "south"
+      ],
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "s_real": [
+        [
+          [
+            0.06494242534895714,
+            -0.037742155812335976,
+            0.8590936500891283,
+            -0.037742155813945216
+          ],
+          [
+            -0.037742155864053516,
+            0.06494242534917252,
+            -0.03774215586223273,
+            0.8590936500915414
+          ],
+          [
+            0.8590936500891287,
+            -0.03774215587530702,
+            0.06494242534896165,
+            -0.037742155876916206
+          ],
+          [
+            -0.037742155824379675,
+            0.8590936500892328,
+            -0.03774215582490384,
+            0.06494242533050153
+          ]
+        ],
+        [
+          [
+            0.0307288553130959,
+            0.11044622624412687,
+            0.1303676120721795,
+            0.1104462262401457
+          ],
+          [
+            0.11044622626719647,
+            0.030728855320069807,
+            0.11044622627155312,
+            0.1303676120893746
+          ],
+          [
+            0.13036761207235104,
+            0.11044622626227607,
+            0.030728855313081282,
+            0.11044622625829499
+          ],
+          [
+            0.11044622625662136,
+            0.13036761208937478,
+            0.11044622626097808,
+            0.030728855320069862
+          ]
+        ],
+        [
+          [
+            -0.07589643119835769,
+            0.010136279559326762,
+            -0.8847606085740563,
+            0.010136279562520296
+          ],
+          [
+            0.01013627957940635,
+            -0.07589643119596576,
+            0.01013627960281363,
+            -0.8847606085748004
+          ],
+          [
+            -0.8847606085740564,
+            0.010136279613617818,
+            -0.07589643114670538,
+            0.010136279616811452
+          ],
+          [
+            0.0101362795743738,
+            -0.8847606085748007,
+            0.010136279571179805,
+            -0.07589643118172552
+          ]
+        ]
+      ],
+      "s_imag": [
+        [
+          [
+            -0.04727590688376832,
+            -0.12836317969871752,
+            -0.17744390955907205,
+            -0.1283631796954833
+          ],
+          [
+            -0.12836317970348843,
+            -0.04727590688383085,
+            -0.12836317970743508,
+            -0.1774439095578535
+          ],
+          [
+            -0.17744390955907208,
+            -0.12836317970910502,
+            -0.04727590688376844,
+            -0.1283631797058708
+          ],
+          [
+            -0.12836317971183625,
+            -0.1774439095583577,
+            -0.12836317970264272,
+            -0.0472759068844625
+          ]
+        ],
+        [
+          [
+            0.07167640030908334,
+            -0.027239928843092776,
+            0.8720487857112632,
+            -0.027239928845495264
+          ],
+          [
+            -0.02723992888527504,
+            0.07167640030288304,
+            -0.027239928882632262,
+            0.8720487857373738
+          ],
+          [
+            0.8720487857112388,
+            -0.02723992890420447,
+            0.07167640030908938,
+            -0.02723992890660689
+          ],
+          [
+            -0.027239928849667173,
+            0.8720487857373738,
+            -0.02723992884702441,
+            0.07167640030288325
+          ]
+        ],
+        [
+          [
+            0.0064516956883716925,
+            0.09209278326452697,
+            -0.016634240352146328,
+            0.09209278326127954
+          ],
+          [
+            0.09209278329462922,
+            0.006451695676828045,
+            0.09209278329034404,
+            -0.016634240352506324
+          ],
+          [
+            -0.016634240352146414,
+            0.09209278329706382,
+            0.006451695682805642,
+            0.09209278329381633
+          ],
+          [
+            0.09209278326813806,
+            -0.016634240352506324,
+            0.09209278327138593,
+            0.0064516956867855775
+          ]
+        ]
+      ],
+      "power": [
+        [
+          [
+            0.006452529981887604,
+            0.017901576227727894,
+            0.7695282406630697,
+            0.017901576227019055
+          ],
+          [
+            0.01790157623285657,
+            0.0064525299819214905,
+            0.01790157623373234,
+            0.7695282406667832
+          ],
+          [
+            0.7695282406630705,
+            0.017901576235147963,
+            0.006452529981888199,
+            0.017901576234439116
+          ],
+          [
+            0.017901576232004928,
+            0.7695282406629959,
+            0.017901576229684267,
+            0.006452529979556136
+          ]
+        ],
+        [
+          [
+            0.0060817689101211455,
+            0.012940382614945619,
+            0.777464798937891,
+            0.012940382614197094
+          ],
+          [
+            0.012940382622339599,
+            0.006081768909660916,
+            0.012940382623157975,
+            0.7774647989879138
+          ],
+          [
+            0.7774647989378929,
+            0.012940382622283997,
+            0.006081768910121112,
+            0.012940382621535488
+          ],
+          [
+            0.01294038261806373,
+            0.7774647989879138,
+            0.012940382618882118,
+            0.006081768909660948
+          ]
+        ],
+        [
+          [
+            0.005801892645902397,
+            0.008583824892711964,
+            0.7830780324364274,
+            0.008583824892178576
+          ],
+          [
+            0.008583824898663429,
+            0.005801892645390364,
+            0.008583824898348684,
+            0.7830780324377562
+          ],
+          [
+            0.7830780324364276,
+            0.0085838248998054,
+            0.0058018926379901255,
+            0.008583824899272003
+          ],
+          [
+            0.008583824893682118,
+            0.7830780324377566,
+            0.008583824894215575,
+            0.005801892643357286
+          ]
+        ]
+      ],
+      "checks": {
+        "max_collected_power": 0.8117839231098196,
+        "power_reciprocity_residual_max": 7.393979525871508e-12,
+        "complex_reciprocity_residual_max": 5.964286252559427e-11,
+        "early_late_complex_change_max": 3.2645649742397007e-09
+      },
+      "limits": {
+        "max_collected_power": 1.03,
+        "power_reciprocity_residual_max": 0.04,
+        "complex_reciprocity_residual_max": 0.1,
+        "early_late_complex_change_max": 0.025
+      },
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "port_aperture_um": 2.0,
+      "scope": "Finite monitor-aperture, fundamental Ez modes. Positive-real Ez gauge at each physical plane. Each input has an independent native straight reference. Uncollected power includes radiation, unmeasured modes and finite-domain error.",
+      "native_report_sha256": "476c89150de7a94b890d467bd7bcb8429cccde1b1a4a5c32709909b6d0d628fe",
+      "native_arrays_sha256": "4b9df71a431afd3acfbb25d07103e2e6a2920991d26ad5397addda3bc1750b1a",
+      "stage_digests": [
+        {
+          "launch_stage": "port0-device",
+          "settings_hash": "9513bc600e618ff8d811876c2f5b0f03d580fc63894eaf2e2c3c20dab1c2eb35",
+          "arrays_sha256": "57c0b346d52b83150610a696166f10fac2e039f88228f7a6460248bce2651313",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port0-reference",
+          "settings_hash": "c7eb3609fe704e047acf726ff67c8a1771de57d11969abc914d387d0abbc6e66",
+          "arrays_sha256": "4ade927859e42bb0aa4d20902ae02437f83c4451bc7d9ea61243aa1b4cd69ddb",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-device",
+          "settings_hash": "f6e619f860b1bf4f081bd986b0324ae5baa03bc551a8de1c9f2c493c4a9ffd42",
+          "arrays_sha256": "06887ae36084392785de439a21f3a427277550c9b986cb9bf01481cb5180cfcf",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port1-reference",
+          "settings_hash": "aa3bf9a29ffaa6d6a538b98d59d67acd408e68ea2b330d9c4e9e65592ab1b216",
+          "arrays_sha256": "4dd5e09af379f8b6c369a7898546ff6b23aa6ce68ce6c4647403dfd79a8e3ab1",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port2-device",
+          "settings_hash": "6fef15ae9a171be1415867f027b24ce220ed2b9fa80339f147a673daa92470e3",
+          "arrays_sha256": "99cb19e62659036c3cb6dfb08328c1d7e5080c0f3c34cbef0444f272744a5587",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port2-reference",
+          "settings_hash": "1c9dca54aba77a1cf23620c2a161c566e2b16b39c1e6c488360c629b69f78c88",
+          "arrays_sha256": "e2ab7dd88e0718b09cc658a9ac0137e7cd9cf28acbc7881098165a464252f32f",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port3-device",
+          "settings_hash": "3ab2a28a44c6acec89fe8a9aab5b0ef86d60ea321e7e6e7f73b4fb40cfbf60a5",
+          "arrays_sha256": "4c0bbb72fa79cdad97612c1b127c791d77a81cba89444a76a57475b48ec51835",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        },
+        {
+          "launch_stage": "port3-reference",
+          "settings_hash": "ac5c130d7094ca1466e88db39248d1466a0ce6c2f66ebf3fb419175a84c5dc14",
+          "arrays_sha256": "53cab0cb3bcc96e469556af5fb62910632230ec1a06f1f98977048d3fdcb39f4",
+          "source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1"
+        }
+      ]
+    }
+  },
+  "controls": {
+    "same_layout_mesh_32_to_40": {
+      "complex_amplitude_error_max": 0.03421996801942198,
+      "power_fraction_error_max": 0.010347955198269365,
+      "phase_amplitude_floor": 0.01,
+      "phase_coefficients_included": 12,
+      "phase_error_rad_max": 0.23418050514610478
+    },
+    "independent_helmholtz": {
+      "32": {
+        "complex_amplitude_error_max": 0.007525481818318833,
+        "power_fraction_error_max": 0.002012705040341317,
+        "phase_amplitude_floor": 0.01,
+        "phase_coefficients_included": 12,
+        "phase_error_rad_max": 0.09948618395222412,
+        "solver": "independent 2D scalar Ez frequency-domain Helmholtz",
+        "source_json_sha256": "6fe4c2d0569b6b855a917845b4c747644e7c34a996bf6a46ff3d8798094af63f"
+      },
+      "40": {
+        "complex_amplitude_error_max": 0.002707541460709712,
+        "power_fraction_error_max": 4.697013882853929e-05,
+        "phase_amplitude_floor": 0.01,
+        "phase_coefficients_included": 12,
+        "phase_error_rad_max": 0.011699277279892163,
+        "solver": "independent 2D scalar Ez frequency-domain Helmholtz",
+        "source_json_sha256": "065d1237d88e21e2932504f53b3475271a99f310d6bca1149965bb917177a513"
+      }
+    },
+    "independent_mesh_32_to_40": {
+      "complex_amplitude_error_max": 0.026559306221696492,
+      "power_fraction_error_max": 0.01154083109736756,
+      "phase_amplitude_floor": 0.01,
+      "phase_coefficients_included": 12,
+      "phase_error_rad_max": 0.1463935973034752
+    },
+    "shifted_planes": {
+      "outward_displacement_um": [
+        0.25,
+        -0.25
+      ],
+      "model": "Multiply by exp[i(beta_i delta_i + beta_j delta_j)] using native straight-lead eigenmode indices.",
+      "complex_amplitude_error_max": 0.025028353364715775,
+      "power_fraction_error_max": 0.004599014064987833,
+      "phase_amplitude_floor": 0.01,
+      "phase_coefficients_included": 12,
+      "phase_error_rad_max": 0.17857695977055846
+    },
+    "straight_lines": {
+      "x": {
+        "plane_separation_um": 3.5,
+        "min_transmitted_power": 0.9997371621078395,
+        "max_reflected_power": 9.633894600059071e-05,
+        "phase_residual_vs_native_modal_index_rad": [
+          0.2976952879379298,
+          0.32935189435924456,
+          0.3657366634474467
+        ]
+      },
+      "y": {
+        "plane_separation_um": 3.5,
+        "min_transmitted_power": 0.9997371621173405,
+        "max_reflected_power": 9.63389460005689e-05,
+        "phase_residual_vs_native_modal_index_rad": [
+          0.2976952879379259,
+          0.3293518943577342,
+          0.3657366635650989
+        ]
+      },
+      "rotation_equivalence": {
+        "complex_amplitude_error_max": 9.423438039965439e-10,
+        "power_fraction_error_max": 9.501066600137165e-12,
+        "phase_amplitude_floor": 0.01,
+        "phase_coefficients_included": 6,
+        "phase_error_rad_max": 9.424676560654237e-10
+      }
+    }
+  },
+  "tidy3d_straight_port_comparison": {
+    "solver": "Tidy3D local ModeSolver",
+    "version": "2.11.2",
+    "actual_device": "CPU",
+    "scope": "Bound fundamental Ez index of each straight elbow lead. Full polygon scattering is independently checked with a frequency-domain Helmholtz solve.",
+    "width_um": 0.375,
+    "port_aperture_um": 2.0,
+    "core_index": 3.48,
+    "cladding_index": 1.44,
+    "wavelength_um": [
+      1.6,
+      1.55,
+      1.5
+    ],
+    "neff_by_mesh_and_axis": {
+      "32": {
+        "x": [
+          3.1906943100206906,
+          3.203921268688389,
+          3.217065538993475
+        ],
+        "y": [
+          3.1906943100206906,
+          3.203921268688389,
+          3.217065538993475
+        ]
+      },
+      "40": {
+        "x": [
+          3.1542754967293694,
+          3.1687857659402066,
+          3.1832322667039503
+        ],
+        "y": [
+          3.1542754967293694,
+          3.1687857659402066,
+          3.1832322667039503
+        ]
+      },
+      "128": {
+        "x": [
+          3.1614783313200507,
+          3.175658319401724,
+          3.189771812453685
+        ],
+        "y": [
+          3.1614783313200507,
+          3.175658319401724,
+          3.189771812453685
+        ]
+      }
+    },
+    "worker_sha256": "827ec81d5c647ba0cb464884a76b005f7266b35849688cef4e2e946e52f43227",
+    "sampling": "Uniform mesh, local mode solver, local subpixel averaging disabled.",
+    "native_neff_by_mesh_and_axis": {
+      "32": {
+        "x": [
+          3.1475278675793374,
+          3.162040177505597,
+          3.1764960787825505
+        ],
+        "y": [
+          3.1475278675793383,
+          3.162040177505598,
+          3.1764960787825514
+        ]
+      },
+      "40": {
+        "x": [
+          3.153131992599072,
+          3.167646863802508,
+          3.1820992915661304
+        ],
+        "y": [
+          3.153131992599072,
+          3.1676468638025077,
+          3.18209929156613
+        ]
+      }
+    },
+    "max_same_mesh_neff_error": {
+      "32": 0.04316644244135315,
+      "40": 0.0011435041302974014
+    },
+    "analytic_isolated_slab_neff": [
+      3.151755972635409,
+      3.166269505744187,
+      3.1807219925234036
+    ]
+  },
+  "reference_worker_sha256": "a680d6e7d74ebe13a2898eab7b132187d882f2645280681f432bf0b22e18d13c",
+  "source_arrays": {
+    "file": "v012-layout-ports-arrays.npz",
+    "sha256": "cfb1403674301af8c4c21e009ae3f07489faa92bcc8a1981fd1c89a53221dc78"
+  },
+  "source_arrays_scope": "All native modal projections, indices and early/late complex matrices on all seven runs; one full final-time nominal device Ez plane. Prefix-free keys describe the default 32-cell elbow.",
+  "field_preview": {
+    "array": "port0-device_final_Ez",
+    "index": [],
+    "axis_order": "xy",
+    "component": "Ez",
+    "horizontal_axis": "x",
+    "vertical_axis": "y",
+    "horizontal_um": [
+      -3.984375,
+      -3.953125,
+      -3.921875,
+      -3.890625,
+      -3.859375,
+      -3.828125,
+      -3.796875,
+      -3.765625,
+      -3.734375,
+      -3.703125,
+      -3.671875,
+      -3.640625,
+      -3.609375,
+      -3.578125,
+      -3.546875,
+      -3.515625,
+      -3.484375,
+      -3.453125,
+      -3.421875,
+      -3.390625,
+      -3.359375,
+      -3.328125,
+      -3.296875,
+      -3.265625,
+      -3.234375,
+      -3.203125,
+      -3.171875,
+      -3.140625,
+      -3.109375,
+      -3.078125,
+      -3.046875,
+      -3.015625,
+      -2.984375,
+      -2.953125,
+      -2.921875,
+      -2.890625,
+      -2.859375,
+      -2.828125,
+      -2.796875,
+      -2.765625,
+      -2.734375,
+      -2.703125,
+      -2.671875,
+      -2.640625,
+      -2.609375,
+      -2.578125,
+      -2.546875,
+      -2.515625,
+      -2.484375,
+      -2.453125,
+      -2.421875,
+      -2.390625,
+      -2.359375,
+      -2.328125,
+      -2.296875,
+      -2.265625,
+      -2.234375,
+      -2.203125,
+      -2.171875,
+      -2.140625,
+      -2.109375,
+      -2.078125,
+      -2.046875,
+      -2.015625,
+      -1.984375,
+      -1.953125,
+      -1.921875,
+      -1.890625,
+      -1.859375,
+      -1.828125,
+      -1.796875,
+      -1.765625,
+      -1.734375,
+      -1.703125,
+      -1.671875,
+      -1.640625,
+      -1.609375,
+      -1.578125,
+      -1.546875,
+      -1.515625,
+      -1.484375,
+      -1.453125,
+      -1.421875,
+      -1.390625,
+      -1.359375,
+      -1.328125,
+      -1.296875,
+      -1.265625,
+      -1.234375,
+      -1.203125,
+      -1.171875,
+      -1.140625,
+      -1.109375,
+      -1.078125,
+      -1.046875,
+      -1.015625,
+      -0.984375,
+      -0.953125,
+      -0.921875,
+      -0.890625,
+      -0.859375,
+      -0.828125,
+      -0.796875,
+      -0.765625,
+      -0.734375,
+      -0.703125,
+      -0.671875,
+      -0.640625,
+      -0.609375,
+      -0.578125,
+      -0.546875,
+      -0.515625,
+      -0.484375,
+      -0.453125,
+      -0.421875,
+      -0.390625,
+      -0.359375,
+      -0.328125,
+      -0.296875,
+      -0.265625,
+      -0.234375,
+      -0.203125,
+      -0.171875,
+      -0.140625,
+      -0.109375,
+      -0.078125,
+      -0.046875,
+      -0.015625,
+      0.015625,
+      0.046875,
+      0.078125,
+      0.109375,
+      0.140625,
+      0.171875,
+      0.203125,
+      0.234375,
+      0.265625,
+      0.296875,
+      0.328125,
+      0.359375,
+      0.390625,
+      0.421875,
+      0.453125,
+      0.484375,
+      0.515625,
+      0.546875,
+      0.578125,
+      0.609375,
+      0.640625,
+      0.671875,
+      0.703125,
+      0.734375,
+      0.765625,
+      0.796875,
+      0.828125,
+      0.859375,
+      0.890625,
+      0.921875,
+      0.953125,
+      0.984375,
+      1.015625,
+      1.046875,
+      1.078125,
+      1.109375,
+      1.140625,
+      1.171875,
+      1.203125,
+      1.234375,
+      1.265625,
+      1.296875,
+      1.328125,
+      1.359375,
+      1.390625,
+      1.421875,
+      1.453125,
+      1.484375,
+      1.515625,
+      1.546875,
+      1.578125,
+      1.609375,
+      1.640625,
+      1.671875,
+      1.703125,
+      1.734375,
+      1.765625,
+      1.796875,
+      1.828125,
+      1.859375,
+      1.890625,
+      1.921875,
+      1.953125,
+      1.984375,
+      2.015625,
+      2.046875,
+      2.078125,
+      2.109375,
+      2.140625,
+      2.171875,
+      2.203125,
+      2.234375,
+      2.265625,
+      2.296875,
+      2.328125,
+      2.359375,
+      2.390625,
+      2.421875,
+      2.453125,
+      2.484375,
+      2.515625,
+      2.546875,
+      2.578125,
+      2.609375,
+      2.640625,
+      2.671875,
+      2.703125,
+      2.734375,
+      2.765625,
+      2.796875,
+      2.828125,
+      2.859375,
+      2.890625,
+      2.921875,
+      2.953125,
+      2.984375,
+      3.015625,
+      3.046875,
+      3.078125,
+      3.109375,
+      3.140625,
+      3.171875,
+      3.203125,
+      3.234375,
+      3.265625,
+      3.296875,
+      3.328125,
+      3.359375,
+      3.390625,
+      3.421875,
+      3.453125,
+      3.484375,
+      3.515625,
+      3.546875,
+      3.578125,
+      3.609375,
+      3.640625,
+      3.671875,
+      3.703125,
+      3.734375,
+      3.765625,
+      3.796875,
+      3.828125,
+      3.859375,
+      3.890625,
+      3.921875,
+      3.953125,
+      3.984375
+    ],
+    "vertical_um": [
+      -3.984375,
+      -3.953125,
+      -3.921875,
+      -3.890625,
+      -3.859375,
+      -3.828125,
+      -3.796875,
+      -3.765625,
+      -3.734375,
+      -3.703125,
+      -3.671875,
+      -3.640625,
+      -3.609375,
+      -3.578125,
+      -3.546875,
+      -3.515625,
+      -3.484375,
+      -3.453125,
+      -3.421875,
+      -3.390625,
+      -3.359375,
+      -3.328125,
+      -3.296875,
+      -3.265625,
+      -3.234375,
+      -3.203125,
+      -3.171875,
+      -3.140625,
+      -3.109375,
+      -3.078125,
+      -3.046875,
+      -3.015625,
+      -2.984375,
+      -2.953125,
+      -2.921875,
+      -2.890625,
+      -2.859375,
+      -2.828125,
+      -2.796875,
+      -2.765625,
+      -2.734375,
+      -2.703125,
+      -2.671875,
+      -2.640625,
+      -2.609375,
+      -2.578125,
+      -2.546875,
+      -2.515625,
+      -2.484375,
+      -2.453125,
+      -2.421875,
+      -2.390625,
+      -2.359375,
+      -2.328125,
+      -2.296875,
+      -2.265625,
+      -2.234375,
+      -2.203125,
+      -2.171875,
+      -2.140625,
+      -2.109375,
+      -2.078125,
+      -2.046875,
+      -2.015625,
+      -1.984375,
+      -1.953125,
+      -1.921875,
+      -1.890625,
+      -1.859375,
+      -1.828125,
+      -1.796875,
+      -1.765625,
+      -1.734375,
+      -1.703125,
+      -1.671875,
+      -1.640625,
+      -1.609375,
+      -1.578125,
+      -1.546875,
+      -1.515625,
+      -1.484375,
+      -1.453125,
+      -1.421875,
+      -1.390625,
+      -1.359375,
+      -1.328125,
+      -1.296875,
+      -1.265625,
+      -1.234375,
+      -1.203125,
+      -1.171875,
+      -1.140625,
+      -1.109375,
+      -1.078125,
+      -1.046875,
+      -1.015625,
+      -0.984375,
+      -0.953125,
+      -0.921875,
+      -0.890625,
+      -0.859375,
+      -0.828125,
+      -0.796875,
+      -0.765625,
+      -0.734375,
+      -0.703125,
+      -0.671875,
+      -0.640625,
+      -0.609375,
+      -0.578125,
+      -0.546875,
+      -0.515625,
+      -0.484375,
+      -0.453125,
+      -0.421875,
+      -0.390625,
+      -0.359375,
+      -0.328125,
+      -0.296875,
+      -0.265625,
+      -0.234375,
+      -0.203125,
+      -0.171875,
+      -0.140625,
+      -0.109375,
+      -0.078125,
+      -0.046875,
+      -0.015625,
+      0.015625,
+      0.046875,
+      0.078125,
+      0.109375,
+      0.140625,
+      0.171875,
+      0.203125,
+      0.234375,
+      0.265625,
+      0.296875,
+      0.328125,
+      0.359375,
+      0.390625,
+      0.421875,
+      0.453125,
+      0.484375,
+      0.515625,
+      0.546875,
+      0.578125,
+      0.609375,
+      0.640625,
+      0.671875,
+      0.703125,
+      0.734375,
+      0.765625,
+      0.796875,
+      0.828125,
+      0.859375,
+      0.890625,
+      0.921875,
+      0.953125,
+      0.984375,
+      1.015625,
+      1.046875,
+      1.078125,
+      1.109375,
+      1.140625,
+      1.171875,
+      1.203125,
+      1.234375,
+      1.265625,
+      1.296875,
+      1.328125,
+      1.359375,
+      1.390625,
+      1.421875,
+      1.453125,
+      1.484375,
+      1.515625,
+      1.546875,
+      1.578125,
+      1.609375,
+      1.640625,
+      1.671875,
+      1.703125,
+      1.734375,
+      1.765625,
+      1.796875,
+      1.828125,
+      1.859375,
+      1.890625,
+      1.921875,
+      1.953125,
+      1.984375,
+      2.015625,
+      2.046875,
+      2.078125,
+      2.109375,
+      2.140625,
+      2.171875,
+      2.203125,
+      2.234375,
+      2.265625,
+      2.296875,
+      2.328125,
+      2.359375,
+      2.390625,
+      2.421875,
+      2.453125,
+      2.484375,
+      2.515625,
+      2.546875,
+      2.578125,
+      2.609375,
+      2.640625,
+      2.671875,
+      2.703125,
+      2.734375,
+      2.765625,
+      2.796875,
+      2.828125,
+      2.859375,
+      2.890625,
+      2.921875,
+      2.953125,
+      2.984375,
+      3.015625,
+      3.046875,
+      3.078125,
+      3.109375,
+      3.140625,
+      3.171875,
+      3.203125,
+      3.234375,
+      3.265625,
+      3.296875,
+      3.328125,
+      3.359375,
+      3.390625,
+      3.421875,
+      3.453125,
+      3.484375,
+      3.515625,
+      3.546875,
+      3.578125,
+      3.609375,
+      3.640625,
+      3.671875,
+      3.703125,
+      3.734375,
+      3.765625,
+      3.796875,
+      3.828125,
+      3.859375,
+      3.890625,
+      3.921875,
+      3.953125,
+      3.984375
+    ],
+    "description": "Final-time Ez from the west-port launch on the 32-cell/\u00b5m elbow after the source and 100 \u00b5m/c of observation."
+  }
+}

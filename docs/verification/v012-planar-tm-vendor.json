@@ -1,0 +1,135 @@
+{
+  "case": "planar TM port comparisons",
+  "lambda_um": 1.55,
+  "meep_mpb": {
+    "solver": "meep",
+    "version": "1.35.0",
+    "platform": "local CPU",
+    "case_settings": {
+      "lumerical_asymmetric": {
+        "width": 5.0,
+        "core": 1.44,
+        "lower": 1.33,
+        "upper": 1.0,
+        "span": 36.0,
+        "modes": 4
+      },
+      "workbench_joint": {
+        "width": 0.375,
+        "core": 3.48,
+        "lower": 1.44,
+        "upper": 1.44,
+        "span": 8.0,
+        "modes": 2
+      }
+    },
+    "wavelength_um": 1.55,
+    "indices_by_mesh": {
+      "lumerical_asymmetric": {
+        "64": [
+          1.4330974626023847,
+          1.4124416096623738,
+          1.3784634145781691,
+          1.334809384185606
+        ],
+        "128": [
+          1.4330979457089479,
+          1.41244341626643,
+          1.3784669062179196,
+          1.3348128829719992
+        ]
+      },
+      "workbench_joint": {
+        "64": [
+          2.9137063900574804,
+          1.5412920347839454
+        ],
+        "128": [
+          2.9156388188736067,
+          1.5415764132941536
+        ]
+      }
+    },
+    "lumerical_analytic_reference": [
+      1.433098106928464,
+      1.412444019217784,
+      1.378468071822638,
+      1.334814055288823
+    ],
+    "sources": [
+      "https://optics.ansys.com/hc/en-us/articles/360042304134-Asymmetric-slab-dielectric-waveguide",
+      "https://optics.ansys.com/hc/en-us/article_attachments/360056405454",
+      "https://optics.ansys.com/hc/en-us/article_attachments/360057294573",
+      "https://www.flexcompute.com/tidy3d/examples/notebooks/ModalSourcesMonitors/"
+    ]
+  },
+  "tidy3d_local": {
+    "solver": "tidy3d",
+    "version": "2.11.2",
+    "platform": "local CPU",
+    "case_settings": {
+      "lumerical_asymmetric": {
+        "width": 5.0,
+        "core": 1.44,
+        "lower": 1.33,
+        "upper": 1.0,
+        "span": 36.0,
+        "modes": 4
+      },
+      "workbench_joint": {
+        "width": 0.375,
+        "core": 3.48,
+        "lower": 1.44,
+        "upper": 1.44,
+        "span": 8.0,
+        "modes": 2
+      }
+    },
+    "wavelength_um": 1.55,
+    "indices_by_mesh": {
+      "lumerical_asymmetric": {
+        "64": [
+          1.4331057971695897,
+          1.4124761286254477,
+          1.378544272006125,
+          1.3349272574462205
+        ],
+        "128": [
+          1.433101868982396,
+          1.4124596352641303,
+          1.3785048502456376,
+          1.3348683692192909
+        ]
+      },
+      "workbench_joint": {
+        "64": [
+          2.9171641742877226,
+          1.5432343058134663
+        ],
+        "128": [
+          2.9164891619636637,
+          1.5420603712469714
+        ]
+      }
+    },
+    "lumerical_analytic_reference": [
+      1.433098106928464,
+      1.412444019217784,
+      1.378468071822638,
+      1.334814055288823
+    ],
+    "sources": [
+      "https://optics.ansys.com/hc/en-us/articles/360042304134-Asymmetric-slab-dielectric-waveguide",
+      "https://optics.ansys.com/hc/en-us/article_attachments/360056405454",
+      "https://optics.ansys.com/hc/en-us/article_attachments/360057294573",
+      "https://www.flexcompute.com/tidy3d/examples/notebooks/ModalSourcesMonitors/"
+    ]
+  },
+  "lumerical_scope": "The linked publisher text file contains analytically derived TM indices for the same 5 \u00b5m asymmetric slab used in the MODE example. No proprietary process was run. The silicon offset junction is a separate geometry.",
+  "finest_max_absolute_error_vs_lumerical_analytic": {
+    "meep_mpb": 1.1723168238386705e-06,
+    "tidy3d_local": 5.431393046784194e-05
+  },
+  "program_sha256": "e957607f5d32c611a9f44c12ba65f0344ad750efe73f62b3d24544c873dd03bc",
+  "passed": true
+}

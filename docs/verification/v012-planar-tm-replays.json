@@ -1,0 +1,77 @@
+{
+  "python": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:0-reference_coefficients": 7.044421308846594e-13,
+      "arrays.npz:0-reference_neff": 1.9984014443252818e-15,
+      "arrays.npz:0-device_coefficients": 5.024244334145375e-12,
+      "arrays.npz:1-reference_coefficients": 1.2015142609308414e-12,
+      "arrays.npz:1-reference_neff": 4.440892098500626e-16,
+      "arrays.npz:1-device_coefficients": 1.873885891557075e-09,
+      "arrays.npz:1-device_neff": 1.5543122344752192e-15,
+      "arrays.npz:1-device_final_Hz": 4.869410751667566e-15,
+      "arrays.npz:2-reference_coefficients": 8.888031445319508e-13,
+      "arrays.npz:2-reference_neff": 1.5543122344752192e-15,
+      "arrays.npz:2-device_coefficients": 1.6701024255300994e-10,
+      "arrays.npz:2-device_neff": 8.881784197001252e-16,
+      "arrays.npz:3-reference_coefficients": 2.0629403892252955e-10,
+      "arrays.npz:3-reference_neff": 1.3322676295501878e-15,
+      "arrays.npz:3-device_coefficients": 1.2580414789458302e-12,
+      "arrays.npz:3-device_neff": 8.881784197001252e-16,
+      "arrays.npz:s": 4.2426433172973976e-10,
+      "reference.npz:plane_shift_prediction": 4.2426432553782133e-10
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power",
+      "channels"
+    ]
+  },
+  "notebook": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:0-reference_coefficients": 6.9259747632126e-13,
+      "arrays.npz:0-reference_neff": 6.661338147750939e-16,
+      "arrays.npz:1-reference_coefficients": 3.7044642436367e-13,
+      "arrays.npz:1-reference_neff": 4.440892098500626e-16,
+      "arrays.npz:1-device_coefficients": 1.873885891557075e-09,
+      "arrays.npz:1-device_neff": 1.5543122344752192e-15,
+      "arrays.npz:1-device_final_Hz": 4.869410751667566e-15,
+      "arrays.npz:2-reference_coefficients": 1.3397440690081e-13,
+      "arrays.npz:2-reference_neff": 1.5543122344752192e-15,
+      "arrays.npz:2-device_coefficients": 1.6701024255300994e-10,
+      "arrays.npz:2-device_neff": 8.881784197001252e-16,
+      "arrays.npz:3-reference_coefficients": 8.538172226956117e-11,
+      "arrays.npz:3-device_coefficients": 1.2580414789458302e-12,
+      "arrays.npz:3-device_neff": 8.881784197001252e-16,
+      "arrays.npz:s": 4.2426433172973976e-10,
+      "reference.npz:plane_shift_prediction": 4.2426432553782133e-10
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power",
+      "channels"
+    ]
+  },
+  "case": "multimode-tm",
+  "execution": "Fresh independent native Meep CPU stages, each replay outside the checkout, no checkpoints.",
+  "mesh": 48,
+  "export_sha256": "eb589abae45c4ba67a0479f91b23bc4107fb09d8bdb1a7b7b62c3d3f96b43259",
+  "passed": true
+}

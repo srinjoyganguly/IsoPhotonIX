@@ -1,0 +1,73 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-06T02:59:15.156627+00:00",
+  "export_sha256": "6708e1c8a9b0c5f34499dbb0f403fe53211719f55632fc6f3d58c87b6d3b39d6",
+  "python": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:s": 5.1919355308151315e-11,
+      "arrays.npz:s_early": 7.787471530497242e-11,
+      "arrays.npz:port0-reference_coefficients": 2.365972732778472e-10,
+      "arrays.npz:port0-reference_early_coefficients": 1.871702120083117e-10,
+      "arrays.npz:port0-reference_neff": 2.6645352591003757e-15,
+      "arrays.npz:port0-device_coefficients": 3.0314275426016094e-10,
+      "arrays.npz:port0-device_early_coefficients": 3.609588339661351e-10,
+      "arrays.npz:port0-device_neff": 8.881784197001252e-16,
+      "arrays.npz:port1-reference_coefficients": 5.771560785472642e-13,
+      "arrays.npz:port1-reference_early_coefficients": 2.746620581717362e-12,
+      "arrays.npz:port1-reference_neff": 8.881784197001252e-16,
+      "arrays.npz:port1-device_coefficients": 2.62770152153657e-10,
+      "arrays.npz:port1-device_early_coefficients": 3.492319519060039e-10,
+      "arrays.npz:port1-device_neff": 1.3322676295501878e-15
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power",
+      "channels"
+    ]
+  },
+  "notebook": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:s": 7.662456412643984e-11,
+      "arrays.npz:s_early": 1.8329267359866481e-10,
+      "arrays.npz:port0-reference_early_coefficients": 8.428302860422876e-12,
+      "arrays.npz:port0-device_coefficients": 2.7737281139371646e-10,
+      "arrays.npz:port0-device_early_coefficients": 3.608945820174516e-10,
+      "arrays.npz:port0-device_neff": 8.881784197001252e-16,
+      "arrays.npz:port0-device_final_Ez": 4.001961544292469e-16,
+      "arrays.npz:port1-reference_coefficients": 8.484400341884083e-11,
+      "arrays.npz:port1-reference_early_coefficients": 2.3668158334436423e-10,
+      "arrays.npz:port1-reference_neff": 1.3322676295501878e-15,
+      "arrays.npz:port1-device_coefficients": 3.491792878468878e-10,
+      "arrays.npz:port1-device_early_coefficients": 1.0610432598490477e-09,
+      "arrays.npz:port1-device_neff": 1.3322676295501878e-15
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s_real",
+      "s_imag",
+      "power",
+      "channels"
+    ]
+  },
+  "case": "layout-ports-2d",
+  "mesh": 32,
+  "native_reference_arrays_sha256": "4e3add16405c9ef260913a1da068cded00dc91813d22fce57f73c72de118f6d2",
+  "execution": "Separate native Meep CPU runs from the identical exported polygon and physical port planes, outside the checkout, without checkpoints.",
+  "executed_notebook_sha256": "c0866021cc6df52b3dfc287f9b864f6ece137815e29467dc8a374a74b3986231"
+}
