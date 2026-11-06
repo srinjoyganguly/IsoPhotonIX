@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-06T04:23:29.867Z",
+  "matched_vendor_readouts": 36,
+  "native_field_readouts": 14,
+  "qualified_loaded_q_rows": 9,
+  "editable_port_position": true,
+  "mobile_width_px": 390,
+  "browser_errors": []
+}

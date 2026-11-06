@@ -129,9 +129,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {evidence.recorded?.length ? <><label>Recorded result<select value={record} onChange={e=>setRecord(+e.target.value)}>
           {evidence.recorded.map((r,i)=><option key={r.label} value={i}>{r.label}</option>)}</select></label>
           {evidence.recorded[record]?.qualification && <p>{evidence.recorded[record].qualification}</p>}
-          <CalibrationMeasurement key={key+record} value={evidence.recorded[record]?.report}/>
+          <CalibrationMeasurement key={'measurement'+key+record} value={evidence.recorded[record]?.report}/>
           <SpatialComparison key={'compare'+key+record} value={evidence.recorded[record]?.report}/>
-          {evidence.recorded[record]?.field && <CalibrationField key={key+record} field={evidence.recorded[record].field!}/>}
+          {evidence.recorded[record]?.field && <CalibrationField key={'field'+key+record} field={evidence.recorded[record].field!}/>}
           <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+evidence.recorded[record]?.receipt}
            target="_blank" rel="noreferrer">Full verification record</a></> :
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
@@ -186,9 +186,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {job.can_resume && <button className="button secondary compact" disabled={pending||busy} onClick={()=>void resume()}>Resume saved study</button>}
         {job.error && <p role="alert">{job.error}</p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
-        {report!=null&&<CalibrationMeasurement key={job.id} value={report}/>}
+        {report!=null&&<CalibrationMeasurement key={'measurement'+job.id} value={report}/>}
         {report!=null && <SpatialComparison key={'compare'+job.id} value={report}/>}
-        {localField && <CalibrationField key={job.id} field={localField}/>}
+        {localField && <CalibrationField key={'field'+job.id} field={localField}/>}
         {report!=null&&<details><summary>Numerical report</summary><pre>{JSON.stringify(report,null,2)}</pre></details>}</>}
       </section></>}
       {error && <p role="alert">{error}</p>}

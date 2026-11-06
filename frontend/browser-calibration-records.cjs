@@ -38,6 +38,7 @@ const spectrumKeys = {
 };
 
 async function checkSpectra(view, report, entry) {
+  assert.equal(await view.count(),1,'A selection must show exactly one measured spectrum.');
   const geometry = view.getByLabel('Reference geometry');
   const options = await geometry.locator('option').allTextContents();
   for (const name of options) {
