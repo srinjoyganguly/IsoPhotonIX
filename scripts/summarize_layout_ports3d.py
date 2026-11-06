@@ -20,8 +20,22 @@ def source_compatibility(worker_source):
     name = 'scripts/calibrate_layout_ports3d.py'
     current, captured = ROOT/name, worker_source/name
     result = {'captured_worker_sha256':file_digest(captured),'shipping_worker_sha256':file_digest(current)}
-    if any(file_digest(ROOT/p)!=file_digest(worker_source/p) for p in SOURCES if p!=name):
-        raise ValueError('Transported solver dependencies differ between the measured and current sources.')
+    extras = []
+    for dependency in SOURCES:
+        if dependency==name or file_digest(ROOT/dependency)==file_digest(worker_source/dependency):
+            continue
+        if dependency!='scripts/grating_cuda_identity.py':
+            raise ValueError(f'Unexpected solver dependency difference: {dependency}')
+        original = ast.parse((worker_source/dependency).read_text()).body
+        updated = ast.parse((ROOT/dependency).read_text()).body
+        additions = updated[len(original):]
+        if ([ast.dump(n) for n in updated[:len(original)]]!=[ast.dump(n) for n in original] or
+                len(additions)!=1 or not isinstance(additions[0],ast.FunctionDef) or
+                additions[0].name!='available_mib' or 'available_mib' in current.read_text()):
+            raise ValueError('The captured and shipping CUDA identity routines differ.')
+        extras.append({'dependency':dependency,'captured_sha256':file_digest(worker_source/dependency),
+                       'shipping_sha256':file_digest(ROOT/dependency),'change':'The grating helper gained a memory query. The layout worker uses its original cache salt and hardware fingerprint routines.'})
+    result['dependency_updates'] = extras
     if result['shipping_worker_sha256']==result['captured_worker_sha256']:
         return dict(result,change='Identical captured and shipping workers.')
     def normalized(path, shipping):
@@ -41,7 +55,7 @@ def source_compatibility(worker_source):
         return nodes
     if normalized(current,True)!=normalized(captured,False):
         raise ValueError('The shipping worker includes changes beyond selecting its GPU coordination lock.')
-    return dict(result,change='Only the GPU coordination lock selection and its helper/import changed. Numerical functions, settings and dependencies match the captured source.')
+    return dict(result,change='Only GPU coordination lock selection changed within the layout worker. Numerical functions and settings match the captured source. Any separate dependency additions are listed.')
 
 
 def mode_controls(folder, worker_source=ROOT):
@@ -90,13 +104,16 @@ def mode_controls(folder, worker_source=ROOT):
                 'scope':'Published circular bend and two straight/bent mode junctions. The Workbench default is an abrupt polygon elbow. The published loss estimate has a different geometry and observable.'}}
 
 
-def verify_run(path, checkpoints, worker_source):
+def verify_run(path, checkpoints, worker_source, source_store=None):
     report = json.loads((path/'report.json').read_text())
     if (report['case']!='layout-ports-3d' or report['actual_device'].split(':')[0] not in ('gpu','cuda')
             or not report['passed'] or any(not p['settled'] for p in report['stages'])):
         raise ValueError(f'Native setup or stage qualification failed in {path.name}.')
-    if report['sources'] not in ({name:file_digest(source/name) for name in SOURCES} for source in (worker_source,ROOT)):
-        raise ValueError('The recorded native source differs from the captured and current implementations.')
+    sources = [worker_source,ROOT]
+    if source_store is not None:
+        sources.insert(0,source_store/json_digest(report['sources']))
+    if not any(source.is_dir() and report['sources']=={name:file_digest(source/name) for name in SOURCES} for source in sources):
+        raise ValueError('The recorded source closure differs from the supplied, pinned or shipping implementation.')
     res = report['parameters']['resolution']
     ports = report['sampled_ports']
     stages = {s['label']:s for s in report['stages']}
@@ -156,18 +173,48 @@ def delta(a,b):
             'phase_delta_rad_max':float(np.max(abs(np.angle(a[visible]*b[visible].conj())))) if np.any(visible) else None}
 
 
-def publish(folder, destination, worker_source=ROOT):
+def control_gates(checks):
+    """Evaluate each measured control independently of native excitation validity."""
+    result = {}
+    def gate(name, value, limit, unit):
+        result[name] = {'status':'pass' if value<=limit else 'fail','observed':float(value),'limit':limit,'unit':unit}
+    for name in ('straight-x-r12','straight-y-r12'):
+        if name in checks:
+            s = checks[name]
+            gate(name+'_reference_subtracted_reflection',s['straight_reflection_power_max'],.001,'power fraction')
+            gate(name+'_through_power',s['transmission_power_error_max'],.03,'power fraction from unity')
+            gate(name+'_absolute_phase_vs_section_mode',s['through_phase_vs_mode_index_rad_max'],.10,'rad')
+    if 'x_y_straight_exchange' in checks:
+        gate('signed_x_y_matrix_exchange',checks['x_y_straight_exchange']['complex_abs_delta_max'],.01,'complex amplitude difference')
+    if 'elbow_mesh_12_to_16' in checks:
+        mesh = checks['elbow_mesh_12_to_16']
+        gate('elbow_mesh_power',mesh['power_abs_delta_max'],.02,'power-fraction difference')
+        gate('elbow_mesh_phase',mesh['phase_delta_rad_max'],.10,'rad')
+    if 'shifted_planes' in checks:
+        for name,d in (('section_mode','transverse_mode_index_prediction'),('measured_straight','straight_reference_phase_prediction')):
+            shift = checks['shifted_planes'][d]
+            gate('shift_'+name+'_power',shift['power_abs_delta_max'],.02,'power-fraction difference')
+            gate('shift_'+name+'_phase',shift['phase_delta_rad_max'],.10,'rad')
+    return result
+
+
+def publish(folder, destination, worker_source=ROOT, source_store=None):
+    if source_store is None and (folder/'sources').is_dir():
+        source_store = folder/'sources'
     destination.parent.mkdir(parents=True,exist_ok=True)
     references = mode_controls(folder,worker_source)
     studies, combined, records = {},{},{}
     for name in RUNS:
         if not (folder/name/'report.json').exists():
             continue
-        report, data = verify_run(folder/name,folder/'checkpoint',worker_source)
+        report, data = verify_run(folder/name,folder/'checkpoint',worker_source,source_store)
         records[name] = report
         studies[name] = {**{key:report[key] for key in ('checks','channels','reference_through_power','actual_device','native_report_sha256','native_arrays_sha256')},
                          'complete_native_stages':len(report['stages']),'resolution':report['parameters']['resolution'],
-                         'worker_sha256':report['sources']['scripts/calibrate_layout_ports3d.py']}
+                         'worker_sha256':report['sources']['scripts/calibrate_layout_ports3d.py'],'source_closure_sha256':json_digest(report['sources']),
+                         'design':report['parameters']['design'],'sampled_centres_um':[p['sampled_center_um'] for p in report['sampled_ports']],
+                         'stage_digests':[{**{k:stage[k] for k in ('label','stage_key','archive_sha256','field_device','settled')},
+                                           'last_window':stage['history'][-1]} for stage in report['stages']]}
         prefix = '' if name=='elbow-r16' else name+'_'
         combined.update({prefix+k:v for k,v in data.items()})
     if 'elbow-r16' not in records:
@@ -226,7 +273,8 @@ def publish(folder, destination, worker_source=ROOT):
         np.savez_compressed(stream,**combined)
     tmp.replace(rawfile)
     source = {'file':rawfile.name,'sha256':file_digest(rawfile)}
-    report.update(studies=studies,controls=checks,references=references,source_arrays=source,
+    report.update(studies=studies,controls=checks,control_gates=control_gates(checks),
+                  completed_control_studies=len(studies),expected_control_studies=len(RUNS),references=references,source_arrays=source,
                   worker_compatibility=source_compatibility(worker_source),
                   material_sampling='Eight by eight lateral quadrature points per Yee component cell, exact slab thickness overlap. Ex/Ey use arithmetic volume mixing. Ez uses harmonic mixing across the flat vertical interface and an arithmetic lateral area average.',
                   qualification='All published matrices were reconstructed from native E/H phasors and signed reciprocal overlaps. Mesh and reference-plane differences are reported separately.')
@@ -240,6 +288,7 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('measurements',type=Path)
     parser.add_argument('--worker-source',type=Path,default=ROOT,help='Root of the captured worker files matching the native receipts.')
+    parser.add_argument('--source-store',type=Path,help='Optional content-addressed captured worker directories for control studies.')
     parser.add_argument('--output',type=Path,required=True)
     args = parser.parse_args()
-    publish(args.measurements,args.output,args.worker_source)
+    publish(args.measurements,args.output,args.worker_source,args.source_store)

@@ -1,6 +1,6 @@
-# Planar port calibration
+# Planar and finite-height port calibration
 
-These two Meep CPU studies measure complex scattering amplitudes at physical port planes. Columns are independently launched input modes and rows are collected output modes. Power fractions are squared amplitude magnitudes relative to each input's straight-guide reference. Both studies use 1.50, 1.55 and 1.60 µm wavelengths, fixed lossless silicon and oxide indices of 3.48 and 1.44, and an invariant out-of-plane dimension.
+The two planar Meep CPU studies measure complex scattering amplitudes at physical port planes. Columns are independently launched input modes and rows are collected output modes. Power fractions are squared amplitude magnitudes relative to each input's straight-guide reference. Both studies use 1.50, 1.55 and 1.60 µm wavelengths, fixed lossless silicon and oxide indices of 3.48 and 1.44, and an invariant out-of-plane dimension.
 
 ## Two TM modes on each side of an offset joint
 
@@ -32,7 +32,43 @@ The Helmholtz solver supplies the independent same-device S matrix. The local Ti
 
 Use one to eight simple silicon polygon outlines with 3–64 vertices per outline, each coordinate within ±2.5 µm. Place two to four ports, each with a unique name and one distinct outward direction from −x, +x, −y and +y. The normal coordinate must lie 1.25–2.25 µm outward from the origin, on a native mesh plane. The transverse coordinate may be up to ±1.5 µm. Supported widths are 0.25–0.50 µm. Each port needs a full-width silicon attachment 1 µm inward from its plane. Keep each polygon at least 0.25 µm inward from each plane and other leads clear of the 2 µm source and monitor corridor. The solver adds straight leads through the absorbing boundary. The layout route accepts 24, 32 and 40 cells/µm. [Model schema and default layout](../backend/planar_port_layout.py).
 
-## Run and replay
+## Finite-height silicon polygon ports on NVIDIA
+
+The **3D layout ports** study extrudes the editable polygons through 0.25 µm of silicon centred on z = 0 in a uniform oxide background. Its 8 × 8 × 4 µm domain has 1 µm absorbing layers on all six sides. Each physical port has a 2 × 2 µm aperture and an independently excited straight reference. The 3D worker accepts 12 or 16 cells/µm and reports each snapped port centre. The planar polygon and corridor bounds above also apply. The hardware controls in this section use two ports. A four-port regression also checks the source and monitor material slices of displaced leads. Available port normals are ±x and ±y. An oblique port would require a tilted source plane, corresponding field sampling and a separately checked modal projection. [Layout validator](../backend/planar_port_layout.py) · [3D worker](../scripts/calibrate_layout_ports3d.py).
+
+For the default 0.375 µm-wide abrupt elbow at 1.55 µm and 16 cells/µm, west-to-north guided power is 23.2218% and north-to-west is 23.2174%. The corresponding reflected powers are 5.3071% and 5.3065%. Each launch observes the fundamental quasi-TE mode. Radiation, additional modes and discretisation error all contribute to the uncollected fraction. The complex amplitudes refer to the physical planes, with positive Ey for x-normal ports and positive Ex for y-normal ports under the exp(−iωt) convention. Only the launched-port reference backwave is subtracted. [Native gates, physical planes and complex matrix](verification/v012-layout-ports3d.json) · [Signed data and measured midplane field](verification/v012-layout-ports3d-arrays.npz).
+
+Each stage must pass two successive energy and spectral checks. The most recent 8 µm/c of energy must fall to at most 10⁻⁴ of peak energy, and the largest modal amplitude increment divided by the current peak must be at most 0.002. All bins must receive more than 10⁻⁶ of the peak incident power for their launch. The matrix gates require straight-reference power within 0.03 of unity, complex reciprocity residual at most 0.05, maximum squared singular value at most 1.05 and total collected power per launch at most 1.03. Across the three wavelengths the nominal reference-power error was 0.00161 or less and the complex reciprocity residual was 0.000173 or less. The raw port phasors, signed projections and checkpoint hashes are checked before publishing. [Receipt verifier](../scripts/summarize_layout_ports3d.py).
+
+### Finite-height control results
+
+Each gate uses the maximum error across the three sampled wavelengths and applicable ports. Power is a fraction of incident guided power. Matrix phase comparisons use coefficients with magnitude at least 0.02 on both sides. Each pass or fail applies to the stated observable and tolerance.
+
+| Control | Measured | Maximum allowed | Result |
+| --- | ---: | ---: | --- |
+| Straight reflected power, x / y | 0 / 0 | 0.001 | Pass / Pass |
+| Straight through-power error, x / y | 0.002724 / 0.002724 | 0.03 | Pass / Pass |
+| Straight phase error vs transverse index, x / y (rad) | 1.054 / 1.054 | 0.1 | Fail / Fail |
+| Complex S difference after exchanging x and y | 1.592e-08 | 0.01 | Pass |
+| Elbow 12→16 power change | 0.04384 | 0.02 | Fail |
+| Elbow 12→16 physical-plane phase change (rad) | 2.421 | 0.1 | Fail |
+| Shifted-plane power change | 0.002455 | 0.02 | Pass |
+| Shifted-plane phase error vs transverse index (rad) | 0.1552 | 0.1 | Fail |
+| Shifted-plane phase error vs measured straight propagation (rad) | 0.0191 | 0.1 | Pass |
+
+At 1.55 µm, west-to-north transmission changes from 20.64% at 12 cells/µm to 23.22% at 16. The shifted design moves the west plane 0.25 µm outward and the north plane 0.25 µm inward. Its straight-guide prediction uses the phase measured over a known propagation length on the same mesh. [Per-study bounds and source identities](verification/v012-layout-ports3d.json) · [Complex matrices and straight-reference amplitudes](verification/v012-layout-ports3d-arrays.npz).
+
+At 1.55 µm the native port basis gives n_eff = 2.25540. At 128 cells/µm the locally configured Tidy3D mode solver gives 2.29852 and the independent MPB solver gives 2.25240. The local Tidy3D calculation used a uniform grid with subpixel averaging disabled. Extrapolations fitted at 64 and 96 cells/µm give conditional limits of 2.25385 with a linear mesh-spacing term for Tidy3D and 2.25355 with a quadratic term for MPB. The predicted 128-cell indices differ from their held-out measurements by 0.000056 and 0.0000024, respectively. These comparisons concern the uniform straight leads. Ansys Lumerical's published estimate of 0.107 dB combines curved-mode propagation with two straight-to-bend coupling overlaps for a 1.5 µm-radius circular bend. Its geometry and loss observable differ from the abrupt elbow's measured S matrix. [Raw lead-mode meshes and source profiles](verification/v012-layout-ports3d-modes.json) · [Ansys bent-waveguide analysis](https://optics.ansys.com/hc/en-us/articles/360042799933-Bent-waveguide-analysis).
+
+To run the default finite-height example with a registered NVIDIA worker, use the following command. Add `--layout design.json` for a custom polygon study.
+
+```sh
+photonics-workbench calibrate layout-ports-3d --solver fdtdx --device gpu --resolution 16 --output finite-elbow
+```
+
+Its measured bundle includes Python and Jupyter entry points, source, settings, field samples and reference hashes. Both independent CUDA replays reproduced all complex coefficients and powers exactly. Python reproduced every array byte. The notebook's largest difference was 0.00003052 in the west reference energy trace and passed the recorded tolerance. [3D elbow replay](verification/v012-layout-ports3d-replays.json) · [Download manifest](verification/v012-example-exports.json).
+
+## Run and replay the planar studies
 
 With the workbench CLI and its Meep CPU worker installed, these commands reproduce the measured settings of the two verified exports. Each output directory must be new.
 

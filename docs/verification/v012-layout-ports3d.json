@@ -787,10 +787,753 @@
       "native_arrays_sha256": "5aa95ec8a38fd7f65236e0032c73e253f585b87936b5f74f9aa79e6d15d7f25f",
       "complete_native_stages": 4,
       "resolution": 16,
-      "worker_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f"
+      "worker_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+      "source_closure_sha256": "9fba5ae07d945c85d0ba8a35f799f7fdb0a9094649b82acfe239064c94c95d14",
+      "design": {
+        "version": 1,
+        "name": "Silicon right-angle elbow",
+        "polygons": [
+          [
+            [
+              -1.0,
+              -0.1875
+            ],
+            [
+              0.1875,
+              -0.1875
+            ],
+            [
+              0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              0.1875
+            ],
+            [
+              -1.0,
+              0.1875
+            ]
+          ]
+        ],
+        "ports": [
+          {
+            "name": "west",
+            "outward": "-x",
+            "center_um": [
+              -1.75,
+              0.0
+            ],
+            "width_um": 0.375
+          },
+          {
+            "name": "north",
+            "outward": "+y",
+            "center_um": [
+              0.0,
+              1.75
+            ],
+            "width_um": 0.375
+          }
+        ]
+      },
+      "sampled_centres_um": [
+        [
+          -1.75,
+          0.0
+        ],
+        [
+          0.0,
+          1.75
+        ]
+      ],
+      "stage_digests": [
+        {
+          "label": "port0-reference",
+          "stage_key": "3e9b41693b4c698c196e330c0cac840e0cb97a2a00ed372f6516169d575e88fb",
+          "archive_sha256": "0c81ba532e55cff83cb99f7c24a18e5a7c84d153cd8615155e2cb571254f9267",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.29981904869,
+            "tail_energy_ratio": 1.7268906304934717e-09,
+            "relative_amplitude_change": 2.3930830976463315e-06
+          }
+        },
+        {
+          "label": "port0-device",
+          "stage_key": "be5b85c83d06575a1f12cef4614e5dafec8c524471b9ec313a1bb139fd758e0f",
+          "archive_sha256": "da9e5b73edf746b2f735b20f1009c08a5c4f87197b57c3f61512d432f52bdd65",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.29981904869,
+            "tail_energy_ratio": 1.8531908230201566e-09,
+            "relative_amplitude_change": 7.183491559544009e-07
+          }
+        },
+        {
+          "label": "port1-reference",
+          "stage_key": "6898fae3ca5fc643f8bcd288acec2c9f319918d2f8b007199ba02ba110ef70f2",
+          "archive_sha256": "c6e96e0c37b6c986e15bf95e20c6a79e9927b271be72fec605892f23ab5322b2",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.29981904869,
+            "tail_energy_ratio": 1.6995866936042603e-09,
+            "relative_amplitude_change": 2.4328538114223034e-06
+          }
+        },
+        {
+          "label": "port1-device",
+          "stage_key": "9b7ba27680b80a5b4c13444d9dec2d68f0532309105cf2840ab80168947d5eb0",
+          "archive_sha256": "b417f12cc22b2a2c0eec69f6b07c57cddd39f26dc8e581aa78d4d3b8b67bc08a",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.29981904869,
+            "tail_energy_ratio": 1.71848402175101e-09,
+            "relative_amplitude_change": 6.819099294101678e-07
+          }
+        }
+      ]
+    },
+    "straight-x-r12": {
+      "checks": {
+        "reference_power_error": 0.002723761108100131,
+        "max_complex_reciprocity_residual": 2.1069794231817434e-05,
+        "largest_squared_singular_value": 1.0027237611081006,
+        "max_collected_port_power": 1.0027237611081001
+      },
+      "channels": [
+        "input",
+        "output"
+      ],
+      "reference_through_power": [
+        [
+          0.9976498588403068,
+          0.9976078049542512
+        ],
+        [
+          0.9998854975122147,
+          0.9998791299980964
+        ],
+        [
+          1.0027237611081001,
+          1.0027175127470511
+        ]
+      ],
+      "actual_device": "cuda:0",
+      "native_report_sha256": "a6a3d75c59d1b09a101fb3a5aeaa861f4b83cdbd95e670056750a15f22393dfe",
+      "native_arrays_sha256": "3fd36a8224d25408b3d692ca679234f9556c938e9c5c30998e63021614a4e2ae",
+      "complete_native_stages": 4,
+      "resolution": 12,
+      "worker_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+      "source_closure_sha256": "9fba5ae07d945c85d0ba8a35f799f7fdb0a9094649b82acfe239064c94c95d14",
+      "design": {
+        "version": 1,
+        "name": "x straight",
+        "polygons": [
+          [
+            [
+              -1.0,
+              -0.1875
+            ],
+            [
+              1.0,
+              -0.1875
+            ],
+            [
+              1.0,
+              0.1875
+            ],
+            [
+              -1.0,
+              0.1875
+            ]
+          ]
+        ],
+        "ports": [
+          {
+            "name": "input",
+            "outward": "-x",
+            "center_um": [
+              -1.75,
+              0.0
+            ],
+            "width_um": 0.375
+          },
+          {
+            "name": "output",
+            "outward": "+x",
+            "center_um": [
+              1.75,
+              0.0
+            ],
+            "width_um": 0.375
+          }
+        ]
+      },
+      "sampled_centres_um": [
+        [
+          -1.75,
+          0.0
+        ],
+        [
+          1.75,
+          0.0
+        ]
+      ],
+      "stage_digests": [
+        {
+          "label": "port0-reference",
+          "stage_key": "bde08026909fe917defa47261afc17502e3e30c6a3bc54c00a0959c589876850",
+          "archive_sha256": "700fdb9bf6828e5a71e09e7c0294e70ee36d2c92c60754920e8f249d72737997",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.13218359132361e-08,
+            "relative_amplitude_change": 1.87401237889098e-05
+          }
+        },
+        {
+          "label": "port0-device",
+          "stage_key": "ad6a1d7292d7dafa37d4885213e34533f36921b7a6cb152026683bb9abd913f4",
+          "archive_sha256": "529fa8782ba2a1c3384a4795f36148dc138570892f1ead4a6aff95baeddaa084",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.13218359132361e-08,
+            "relative_amplitude_change": 1.87401237889098e-05
+          }
+        },
+        {
+          "label": "port1-reference",
+          "stage_key": "3a0d234f25e3e5693a803e2a51ddf26ef332fd0c791b460d3442f18eac910607",
+          "archive_sha256": "93000a49e23df7d608737cf7de8161510fea0f25ef455712942ec26df70e5c57",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 1.7368928517669247e-09,
+            "relative_amplitude_change": 4.736418980666657e-06
+          }
+        },
+        {
+          "label": "port1-device",
+          "stage_key": "239caa76c4beee64472027146c98f8c76fc96a227d1390dcb98dd0d597c8cf05",
+          "archive_sha256": "dc767db27acabec8d03d6dfe535a670ae4820fdcdc45dd9db902e5498a6316b3",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 1.7368928517669247e-09,
+            "relative_amplitude_change": 4.736418980666657e-06
+          }
+        }
+      ]
+    },
+    "straight-y-r12": {
+      "checks": {
+        "reference_power_error": 0.0027237712104675182,
+        "max_complex_reciprocity_residual": 2.104354106663981e-05,
+        "largest_squared_singular_value": 1.0027237712104675,
+        "max_collected_port_power": 1.0027237712104675
+      },
+      "channels": [
+        "input",
+        "output"
+      ],
+      "reference_through_power": [
+        [
+          0.9976498375922292,
+          0.9976078355675884
+        ],
+        [
+          0.9998855082786908,
+          0.9998791617776097
+        ],
+        [
+          1.0027237712104675,
+          1.0027175151787624
+        ]
+      ],
+      "actual_device": "cuda:0",
+      "native_report_sha256": "0f8f42172008f7cdd644625ecaab97ea8b0b5a8f6a2b06aa19777fc9e7237036",
+      "native_arrays_sha256": "f58636f3db994b883f42f8e5ae7936b3e3683c537563b0a2577e2e8b1df143f5",
+      "complete_native_stages": 4,
+      "resolution": 12,
+      "worker_sha256": "dc15ee759fd13c7ec17edc4dbdbc655615511596f4d249e0d32847e5e85651c8",
+      "source_closure_sha256": "839eda7ae786e8d4c13b4b6c54acc15842bee693a51f688697cb76c948cb75cd",
+      "design": {
+        "version": 1,
+        "name": "y straight",
+        "polygons": [
+          [
+            [
+              0.1875,
+              -1.0
+            ],
+            [
+              0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              -1.0
+            ]
+          ]
+        ],
+        "ports": [
+          {
+            "name": "input",
+            "outward": "-y",
+            "center_um": [
+              0.0,
+              -1.75
+            ],
+            "width_um": 0.375
+          },
+          {
+            "name": "output",
+            "outward": "+y",
+            "center_um": [
+              0.0,
+              1.75
+            ],
+            "width_um": 0.375
+          }
+        ]
+      },
+      "sampled_centres_um": [
+        [
+          0.0,
+          -1.75
+        ],
+        [
+          0.0,
+          1.75
+        ]
+      ],
+      "stage_digests": [
+        {
+          "label": "port0-reference",
+          "stage_key": "88fac5e903cae123b6cac06706feb6de23c3d65e9644c3e2886a9e780360433f",
+          "archive_sha256": "46025449ec8a32e851e60bce6d4884c64dc1179facdd708a0334d5a2cd1a9bd5",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.132183502505768e-08,
+            "relative_amplitude_change": 1.874012371915243e-05
+          }
+        },
+        {
+          "label": "port0-device",
+          "stage_key": "3f40da3850efbc3ab21ba8689c3952dbbb8f14ecbe09b288dddaf7d49e7f0074",
+          "archive_sha256": "ad5e8713931628cc028dc1564022d70c4ebd280d7bdbedee7f30bef847b57a08",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.132183413687926e-08,
+            "relative_amplitude_change": 1.874012371915243e-05
+          }
+        },
+        {
+          "label": "port1-reference",
+          "stage_key": "d218cdef215e0decc32386e640c9d8475008d4bb8605be552fdf8287e415f83f",
+          "archive_sha256": "498a4ef51f1a1ee259618cc296573423a55804cf7ca49285136321cef6f31aba",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 1.7368928517669247e-09,
+            "relative_amplitude_change": 4.7364190145432215e-06
+          }
+        },
+        {
+          "label": "port1-device",
+          "stage_key": "dfe824a40e25bd7707132c11e6f7817a28f3bb078a1e43c92e7381253536c536",
+          "archive_sha256": "f9f57c975bc5ac94266b975ec312e2e2cb1f6b33cb4d8520cd7e03c9ab36df44",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 1.7368928517669247e-09,
+            "relative_amplitude_change": 4.7364190145432215e-06
+          }
+        }
+      ]
+    },
+    "elbow-r12": {
+      "checks": {
+        "reference_power_error": 0.002723761108100131,
+        "max_complex_reciprocity_residual": 0.00028708074666344244,
+        "largest_squared_singular_value": 0.2865880363322117,
+        "max_collected_port_power": 0.2724378882646041
+      },
+      "channels": [
+        "west",
+        "north"
+      ],
+      "reference_through_power": [
+        [
+          0.9976498588403068,
+          0.9976078355675884
+        ],
+        [
+          0.9998854975122147,
+          0.9998791617776097
+        ],
+        [
+          1.0027237611081001,
+          1.0027175151787624
+        ]
+      ],
+      "actual_device": "cuda:0",
+      "native_report_sha256": "517776a9e4529f17225b4ac2c1e6156406f8aaae3163b95bf39e75f6d48b4a15",
+      "native_arrays_sha256": "e3e4f141bf7caa4c67426d19fb590d1cc936961ad17c65d3ada872f4a7446ba3",
+      "complete_native_stages": 4,
+      "resolution": 12,
+      "worker_sha256": "dc15ee759fd13c7ec17edc4dbdbc655615511596f4d249e0d32847e5e85651c8",
+      "source_closure_sha256": "75ef90eb72501cc370deb0502c37eab7cca2790680080bb7a1f8a18185502df0",
+      "design": {
+        "version": 1,
+        "name": "Silicon right-angle elbow",
+        "polygons": [
+          [
+            [
+              -1.0,
+              -0.1875
+            ],
+            [
+              0.1875,
+              -0.1875
+            ],
+            [
+              0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              0.1875
+            ],
+            [
+              -1.0,
+              0.1875
+            ]
+          ]
+        ],
+        "ports": [
+          {
+            "name": "west",
+            "outward": "-x",
+            "center_um": [
+              -1.75,
+              0.0
+            ],
+            "width_um": 0.375
+          },
+          {
+            "name": "north",
+            "outward": "+y",
+            "center_um": [
+              0.0,
+              1.75
+            ],
+            "width_um": 0.375
+          }
+        ]
+      },
+      "sampled_centres_um": [
+        [
+          -1.75,
+          0.0
+        ],
+        [
+          0.0,
+          1.75
+        ]
+      ],
+      "stage_digests": [
+        {
+          "label": "port0-reference",
+          "stage_key": "07f77f58a98f69bc7dbe2d7cf71a21a4b0376c095c86d0b8a935d6d184dfdce9",
+          "archive_sha256": "2b24ee0bc23b4d738588a10e10c84c853ba9ba3a9b365025e0bf069710076ab7",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.13218359132361e-08,
+            "relative_amplitude_change": 1.87401237889098e-05
+          }
+        },
+        {
+          "label": "port0-device",
+          "stage_key": "b6238c953bd21ecdf808225a065dd96c90afdb9ccf35dad4ebf3de072bc8b166",
+          "archive_sha256": "925c92ae1e3c3b85eeca8fb7dd0e0e5f808e5a16d0f8136c8612db21ae1f032f",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.1249819742431555e-08,
+            "relative_amplitude_change": 4.114796563609991e-06
+          }
+        },
+        {
+          "label": "port1-reference",
+          "stage_key": "673cd008e670fa2a226f8410181fe343cfd4d3cfe236c78543777ad979277040",
+          "archive_sha256": "54b2d7259132a676706d4918dd8072b31967d5d48ec7079c4b24fc9029688cbd",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 1.7368928517669247e-09,
+            "relative_amplitude_change": 4.7364190145432215e-06
+          }
+        },
+        {
+          "label": "port1-device",
+          "stage_key": "6a64e713cc420bf73584c6282d06be1c49207808967db3dd8803ffb6715899da",
+          "archive_sha256": "9e2772654a6a0fa9a2d394d0633dcf6bfe666c098706c4084d1fb98a272f39be",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 1.147075856522406e-08,
+            "relative_amplitude_change": 4.667646730712688e-06
+          }
+        }
+      ]
+    },
+    "elbow-shifted-r12": {
+      "checks": {
+        "reference_power_error": 0.0026643384991383856,
+        "max_complex_reciprocity_residual": 0.011179581414769614,
+        "largest_squared_singular_value": 0.2842706678447334,
+        "max_collected_port_power": 0.27111895266116526
+      },
+      "channels": [
+        "west",
+        "north"
+      ],
+      "reference_through_power": [
+        [
+          0.9973356615008616,
+          0.9975209344657483
+        ],
+        [
+          0.9998773011903533,
+          0.9999069367142118
+        ],
+        [
+          1.0023560041318793,
+          1.0026439300585972
+        ]
+      ],
+      "actual_device": "cuda:0",
+      "native_report_sha256": "a2ca2aad71018f72f8dbbf740d89af12a106b6e96586a5b504c22e7e18d7e4a9",
+      "native_arrays_sha256": "3ada765e3e3af4580357f7ea4f9a2b80c4481d7cbbd344afaaf4148862365301",
+      "complete_native_stages": 4,
+      "resolution": 12,
+      "worker_sha256": "dc15ee759fd13c7ec17edc4dbdbc655615511596f4d249e0d32847e5e85651c8",
+      "source_closure_sha256": "75ef90eb72501cc370deb0502c37eab7cca2790680080bb7a1f8a18185502df0",
+      "design": {
+        "version": 1,
+        "name": "Silicon right-angle elbow",
+        "polygons": [
+          [
+            [
+              -1.0,
+              -0.1875
+            ],
+            [
+              0.1875,
+              -0.1875
+            ],
+            [
+              0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              1.0
+            ],
+            [
+              -0.1875,
+              0.1875
+            ],
+            [
+              -1.0,
+              0.1875
+            ]
+          ]
+        ],
+        "ports": [
+          {
+            "name": "west",
+            "outward": "-x",
+            "center_um": [
+              -2.0,
+              0.0
+            ],
+            "width_um": 0.375
+          },
+          {
+            "name": "north",
+            "outward": "+y",
+            "center_um": [
+              0.0,
+              1.5
+            ],
+            "width_um": 0.375
+          }
+        ]
+      },
+      "sampled_centres_um": [
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.5
+        ]
+      ],
+      "stage_digests": [
+        {
+          "label": "port0-reference",
+          "stage_key": "bfc5388a697c7d5a973871da151ac55177ede37d2cdb83a572bc1d1e7141fc5c",
+          "archive_sha256": "b147fbc8f7d5f80ab8eac6b093846679ca4d9aef4d9fae672193fd209ab76e8c",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 2.483667493891062e-09,
+            "relative_amplitude_change": 7.681787153265053e-06
+          }
+        },
+        {
+          "label": "port0-device",
+          "stage_key": "b956f76a889ff0c259083b445866a8ab4a51ab78f0dc01f6689e1605af60840d",
+          "archive_sha256": "369a22c041239b6258ef735fa178b773adb07c95c5d3a77f268aeaf838daacf9",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 342.0713078416879,
+            "tail_energy_ratio": 1.4521081004303937e-09,
+            "relative_amplitude_change": 1.9674999680467707e-06
+          }
+        },
+        {
+          "label": "port1-reference",
+          "stage_key": "a449142c175f24b72e76e2c8890d3488bc7ef8de6f931a91fc0d3a4d5df020ac",
+          "archive_sha256": "c72ba4df4523a8d36a753798dddee2a7ae4d1300e23d488d3290879f5e5f8693",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 5.427903904120512e-09,
+            "relative_amplitude_change": 1.5140239748030042e-05
+          }
+        },
+        {
+          "label": "port1-device",
+          "stage_key": "86fe5739bfd698cf488f0cf298ec18c99450965deb8c80d6ca05a6c4d6eaba07",
+          "archive_sha256": "18119149891635a02b949ad499309b86c080d04bf4d5b3170566e0a134728a25",
+          "field_device": "cuda:0",
+          "settled": true,
+          "last_window": {
+            "time_fs": 315.37925966825384,
+            "tail_energy_ratio": 3.2580655950908977e-09,
+            "relative_amplitude_change": 4.058441379206768e-06
+          }
+        }
+      ]
     }
   },
   "controls": {
+    "straight-x-r12": {
+      "straight_reflection_power_max": 0.0,
+      "through_vs_reference": {
+        "power_abs_delta_max": 0.0,
+        "complex_abs_delta_max": 0.0,
+        "phase_floor": 0.02,
+        "phase_delta_rad_max": 2.0436231112060352e-17
+      },
+      "transmission_power_error_max": 0.002723761108100131,
+      "through_phase_vs_mode_index_rad_max": 1.0541821869923014
+    },
+    "straight-y-r12": {
+      "straight_reflection_power_max": 0.0,
+      "through_vs_reference": {
+        "power_abs_delta_max": 0.0,
+        "complex_abs_delta_max": 0.0,
+        "phase_floor": 0.02,
+        "phase_delta_rad_max": 2.7010602057711513e-17
+      },
+      "transmission_power_error_max": 0.0027237712104675182,
+      "through_phase_vs_mode_index_rad_max": 1.0541821809869254
+    },
+    "x_y_straight_exchange": {
+      "power_abs_delta_max": 3.177951335420204e-08,
+      "complex_abs_delta_max": 1.59188814935303e-08,
+      "phase_floor": 0.02,
+      "phase_delta_rad_max": 8.5470147345634e-09
+    },
+    "elbow_mesh_12_to_16": {
+      "power_abs_delta_max": 0.04383620707982727,
+      "complex_abs_delta_max": 0.8111925074517471,
+      "phase_floor": 0.02,
+      "phase_delta_rad_max": 2.421449415297611
+    },
+    "shifted_planes": {
+      "displacements_um": [
+        0.25,
+        -0.25
+      ],
+      "transverse_mode_index_prediction": {
+        "power_abs_delta_max": 0.0024546440801782865,
+        "complex_abs_delta_max": 0.03686649046101938,
+        "phase_floor": 0.02,
+        "phase_delta_rad_max": 0.15522481127467583
+      },
+      "straight_reference_phase_prediction": {
+        "power_abs_delta_max": 0.0024546440801782032,
+        "complex_abs_delta_max": 0.008049333429022773,
+        "phase_floor": 0.02,
+        "phase_delta_rad_max": 0.01910383508865703
+      },
+      "straight_reference_phase_neff": [
+        [
+          2.356275861842964,
+          2.356275798566319
+        ],
+        [
+          2.4306236333641476,
+          2.4306235815092716
+        ],
+        [
+          2.505570979106289,
+          2.505570198404622
+        ]
+      ]
+    },
     "lead_neff_vs_tidy3d_96": {
       "native_minus_reference": [
         -0.05804640431283792,
@@ -820,6 +1563,88 @@
       ]
     }
   },
+  "control_gates": {
+    "straight-x-r12_reference_subtracted_reflection": {
+      "status": "pass",
+      "observed": 0.0,
+      "limit": 0.001,
+      "unit": "power fraction"
+    },
+    "straight-x-r12_through_power": {
+      "status": "pass",
+      "observed": 0.002723761108100131,
+      "limit": 0.03,
+      "unit": "power fraction from unity"
+    },
+    "straight-x-r12_absolute_phase_vs_section_mode": {
+      "status": "fail",
+      "observed": 1.0541821869923014,
+      "limit": 0.1,
+      "unit": "rad"
+    },
+    "straight-y-r12_reference_subtracted_reflection": {
+      "status": "pass",
+      "observed": 0.0,
+      "limit": 0.001,
+      "unit": "power fraction"
+    },
+    "straight-y-r12_through_power": {
+      "status": "pass",
+      "observed": 0.0027237712104675182,
+      "limit": 0.03,
+      "unit": "power fraction from unity"
+    },
+    "straight-y-r12_absolute_phase_vs_section_mode": {
+      "status": "fail",
+      "observed": 1.0541821809869254,
+      "limit": 0.1,
+      "unit": "rad"
+    },
+    "signed_x_y_matrix_exchange": {
+      "status": "pass",
+      "observed": 1.59188814935303e-08,
+      "limit": 0.01,
+      "unit": "complex amplitude difference"
+    },
+    "elbow_mesh_power": {
+      "status": "fail",
+      "observed": 0.04383620707982727,
+      "limit": 0.02,
+      "unit": "power-fraction difference"
+    },
+    "elbow_mesh_phase": {
+      "status": "fail",
+      "observed": 2.421449415297611,
+      "limit": 0.1,
+      "unit": "rad"
+    },
+    "shift_section_mode_power": {
+      "status": "pass",
+      "observed": 0.0024546440801782865,
+      "limit": 0.02,
+      "unit": "power-fraction difference"
+    },
+    "shift_section_mode_phase": {
+      "status": "fail",
+      "observed": 0.15522481127467583,
+      "limit": 0.1,
+      "unit": "rad"
+    },
+    "shift_measured_straight_power": {
+      "status": "pass",
+      "observed": 0.0024546440801782032,
+      "limit": 0.02,
+      "unit": "power-fraction difference"
+    },
+    "shift_measured_straight_phase": {
+      "status": "pass",
+      "observed": 0.01910383508865703,
+      "limit": 0.1,
+      "unit": "rad"
+    }
+  },
+  "completed_control_studies": 5,
+  "expected_control_studies": 5,
   "references": {
     "local_transverse_modes": {
       "tidy3d": {
@@ -1276,12 +2101,20 @@
   },
   "source_arrays": {
     "file": "v012-layout-ports3d-arrays.npz",
-    "sha256": "b96dd2e022b7d11b3557b1f2856bd7d2e6181b059dc121fe401279ce5ac742ed"
+    "sha256": "cec8fda0b52744e0f3973864b513cff607d2273098529a3545e745879cbed390"
   },
   "worker_compatibility": {
     "captured_worker_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
     "shipping_worker_sha256": "dc15ee759fd13c7ec17edc4dbdbc655615511596f4d249e0d32847e5e85651c8",
-    "change": "Only the GPU coordination lock selection and its helper/import changed. Numerical functions, settings and dependencies match the captured source."
+    "dependency_updates": [
+      {
+        "dependency": "scripts/grating_cuda_identity.py",
+        "captured_sha256": "be8d811f485b8822afba80370464ac1a62d7276039539f863a3f7bfb3a71cb28",
+        "shipping_sha256": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "change": "The grating helper gained a memory query. The layout worker uses its original cache salt and hardware fingerprint routines."
+      }
+    ],
+    "change": "Only GPU coordination lock selection changed within the layout worker. Numerical functions and settings match the captured source. Any separate dependency additions are listed."
   },
   "material_sampling": "Eight by eight lateral quadrature points per Yee component cell, exact slab thickness overlap. Ex/Ey use arithmetic volume mixing. Ez uses harmonic mixing across the flat vertical interface and an arithmetic lateral area average.",
   "qualification": "All published matrices were reconstructed from native E/H phasors and signed reciprocal overlaps. Mesh and reference-plane differences are reported separately."
