@@ -140,6 +140,17 @@ def diagnose(directory, lumerical_file, names):
     return {'target_um': TARGET_UM, 'lumerical_s_parameter_sha256': sha(lumerical_file), 'records': rows}
 
 
+def measured_controls(directory):
+    paths=sorted([*directory.glob('v013-ring3d-*.json'),*directory.glob('v013-grating3d-*.json')])
+    result=[]
+    for path in paths:
+        report=json.loads(path.read_text())
+        if (report.get('case_id') in ('loaded-ring-3d','finite-grating-3d') and report.get('passed')
+                and report.get('arrays_file') and report.get('vendor','').lower() in ('lumerical','tidy3d')):
+            result.append(path.stem)
+    return result
+
+
 def accuracy_gates(diagnosis):
     """Evaluate the project targets separately from native field/settling acceptance."""
     results, families = {}, {}
@@ -182,7 +193,8 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--gates-output',type=Path)
     args = parser.parse_args()
-    result = diagnose(args.directory, args.lumerical_ring, [*NOMINAL, *args.extra_record])
+    names = dict.fromkeys([*NOMINAL,*measured_controls(args.directory),*args.extra_record])
+    result = diagnose(args.directory, args.lumerical_ring, names)
     args.output.write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
     if args.gates_output:
         gates = accuracy_gates(result)

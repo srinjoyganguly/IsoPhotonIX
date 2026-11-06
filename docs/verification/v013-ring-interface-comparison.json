@@ -228,6 +228,120 @@
           "max_wrapped_phase_difference_rad": null
         }
       }
+    },
+    {
+      "vendor": "tidy3d",
+      "mesh": 16,
+      "legacy_report": "v012-ring3d-tidy3d-r16-t4800.json",
+      "exact_report": "v013-ring3d-tidy3d-r16-t4800-exact-area.json",
+      "legacy_arrays_sha256": "e313e264c02f058e3e9eb9c3f4d72d05d7d6e7b45bd7e332807fa4cb04c9c154",
+      "exact_arrays_sha256": "a4b3df34ed864bec5ee5866cb0c5b48ace574d5d58f2080c653989531a95780c",
+      "exact_report_sha256": "419d252779eabcf2f3920984ffaad18777e5fb52007d923f1af6ecf6cdaa1d3b",
+      "local_source_sha256": {
+        "scripts/calibrate_loaded_ring3d.py": "56380f9c7fec5c2032a0fbe7d45126ace2a58be8a63904a8a23ec60b64979d92",
+        "scripts/calibrate_ring.py": "50b544c7d7ea35efd7c826925ba435b4a25412e9a259b177b36d4fe13b245b8e",
+        "scripts/measure_loaded_ring_losses.py": "82437d514e203760a84c84bea376ded18eb75ad857972f84acf82940ce05effa",
+        "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+        "scripts/ring_stage_provenance.py": "97f201028a1b262eaf28f9eb01cae9a7b4e97bd9bcfa6ff1a133752dbd77665c",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661"
+      },
+      "versions": {
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "fdtdx": "0.6.2",
+        "scipy": "1.17.1",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "legacy_and_exact_pass": [
+        true,
+        true
+      ],
+      "qualified_bins": [
+        241,
+        241
+      ],
+      "effective_guide_width_um": [
+        0.4375,
+        0.4299999999999997
+      ],
+      "fsr_nm": [
+        17.50000000000007,
+        17.50000000000007
+      ],
+      "published_fsr_nm": 17.740000000000087,
+      "measured_peaks_um": [
+        [
+          1.533,
+          1.5505
+        ],
+        [
+          1.533,
+          1.5505
+        ]
+      ],
+      "neff_at_1550": [
+        2.3363595008850098,
+        2.318988800048828
+      ],
+      "power": {
+        "through": {
+          "common_vendor_wavelengths": 201,
+          "legacy_mae": 0.15600739915097483,
+          "exact_mae": 0.16373938982047698,
+          "at_1550": {
+            "legacy": 0.26051454388047307,
+            "exact": 0.28839371115982937,
+            "published": 0.9893965015048625
+          }
+        },
+        "drop": {
+          "common_vendor_wavelengths": 201,
+          "legacy_mae": 0.1298391296933564,
+          "exact_mae": 0.13786440116665485,
+          "at_1550": {
+            "legacy": 0.7197564098586228,
+            "exact": 0.6939047561780669,
+            "published": 0.021588430572647196
+          }
+        }
+      },
+      "fixed_plane_sensitivity": {
+        "reflection": {
+          "max_power_difference": 0.040799403175800476,
+          "mean_absolute_power_difference": 0.0003856841466400274,
+          "max_complex_amplitude_difference": 0.16772114432836796,
+          "phase_bins_with_both_powers_above_0_01": 3,
+          "max_wrapped_phase_difference_rad": 0.8089105237832644
+        },
+        "through": {
+          "max_power_difference": 0.10424252807351808,
+          "mean_absolute_power_difference": 0.01232621105068296,
+          "max_complex_amplitude_difference": 0.8171583462569498,
+          "phase_bins_with_both_powers_above_0_01": 238,
+          "max_wrapped_phase_difference_rad": 0.869607629005406
+        },
+        "drop": {
+          "max_power_difference": 0.10604218517562447,
+          "mean_absolute_power_difference": 0.012822062937009687,
+          "max_complex_amplitude_difference": 0.7343470128055283,
+          "phase_bins_with_both_powers_above_0_01": 207,
+          "max_wrapped_phase_difference_rad": 0.8694519033230036
+        },
+        "add_side": {
+          "max_power_difference": 0.04111967673097192,
+          "mean_absolute_power_difference": 0.0003879294413400418,
+          "max_complex_amplitude_difference": 0.1671278862124713,
+          "phase_bins_with_both_powers_above_0_01": 3,
+          "max_wrapped_phase_difference_rad": 0.7926901305772394
+        }
+      }
     }
   ]
 }

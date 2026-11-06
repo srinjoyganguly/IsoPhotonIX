@@ -4061,6 +4061,50 @@
       "source_report_sha256": "c00abb7004c283dce09a4b9290dbe11642c7108ab3eb01c6d43d5bd1dc041808",
       "native_arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9"
     },
+    "v013-grating3d-lumerical-direct-r12.json": {
+      "observable": "grating",
+      "target_um": 1.55,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "local_power": [
+        0.04602741644313781,
+        0.12411395474052811,
+        0.2514941337844058,
+        0.34357045115220763,
+        0.305873723461999
+      ],
+      "published_power": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "local_at_target": 0.2514941337844058,
+      "published_at_target": 0.4002656827642284,
+      "mean_absolute_difference": 0.10651741999833726,
+      "max_absolute_difference": 0.17043192387547246,
+      "local_best_sample_um": 1.575,
+      "published_best_sample_um": 1.55,
+      "gain_only": {
+        "tolerance_power_fraction": 0.05,
+        "minimum_required": 2.1859376096376395,
+        "maximum_allowed": 0.8949078342725878,
+        "feasible": false,
+        "minimum_set_by_index": 0,
+        "maximum_set_by_index": 4
+      },
+      "variant": "direct-yee / standard",
+      "mesh": 12,
+      "vendor": "lumerical",
+      "source_report_sha256": "f6b3adcbd03f8bb8febb96bbb7e5f37246d89e3cc0f656ca8599d15088c09800",
+      "native_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903"
+    },
     "v013-ring3d-lumerical-r16-t3200-exact-area.json": {
       "observable": "ring",
       "target_um": 1.55,
@@ -4151,49 +4195,43 @@
       "source_report_sha256": "c130c36f38d2739475dfc122a3e1d226eb94a9b2ea9dc9d993882b552051f3f0",
       "native_arrays_sha256": "b6a3af4430e24dfca00e5ab6e92eb2d2b8d949b740a14e886b39aa47577eed9a"
     },
-    "v013-grating3d-lumerical-direct-r12.json": {
-      "observable": "grating",
+    "v013-ring3d-tidy3d-r16-t4800-exact-area.json": {
+      "observable": "ring",
       "target_um": 1.55,
-      "wavelength_um": [
-        1.5,
-        1.525,
-        1.55,
-        1.575,
-        1.6
-      ],
-      "local_power": [
-        0.04602741644313781,
-        0.12411395474052811,
-        0.2514941337844058,
-        0.34357045115220763,
-        0.305873723461999
-      ],
-      "published_power": [
-        0.15061306067750885,
-        0.29454587861600057,
-        0.4002656827642284,
-        0.37022350201649884,
-        0.2237287914242699
-      ],
-      "local_at_target": 0.2514941337844058,
-      "published_at_target": 0.4002656827642284,
-      "mean_absolute_difference": 0.10651741999833726,
-      "max_absolute_difference": 0.17043192387547246,
-      "local_best_sample_um": 1.575,
-      "published_best_sample_um": 1.55,
-      "gain_only": {
-        "tolerance_power_fraction": 0.05,
-        "minimum_required": 2.1859376096376395,
-        "maximum_allowed": 0.8949078342725878,
-        "feasible": false,
-        "minimum_set_by_index": 0,
-        "maximum_set_by_index": 4
+      "channels_at_target": {
+        "through": {
+          "local": 0.28839371115982937,
+          "published": 0.9893965015048625,
+          "mean_absolute_difference": 0.16373938982047698
+        },
+        "drop": {
+          "local": 0.6939047561780669,
+          "published": 0.021588430572647196,
+          "mean_absolute_difference": 0.13786440116665485
+        }
       },
-      "variant": "direct-yee / standard",
-      "mesh": 12,
-      "vendor": "lumerical",
-      "source_report_sha256": "f6b3adcbd03f8bb8febb96bbb7e5f37246d89e3cc0f656ca8599d15088c09800",
-      "native_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903"
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5467849223946786,
+        "published_peak_power": 0.7994250960446708,
+        "published_fwhm_nm": 1.0736771484192165,
+        "local_sampled_center_um": 1.5505,
+        "local_sampled_peak_power": 0.9588532533018117,
+        "nearest_sampled_center_difference_nm": 3.715077605321415,
+        "local_fitted_center_um": 1.550428791401137,
+        "local_fwhm_nm": 1.3570105667235541,
+        "local_target_distance_in_linewidths": 0.3159823597927023,
+        "published_target_distance_in_linewidths": 2.9944547204483722
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 17.50000000000007,
+        "published": 17.740000000000087
+      },
+      "variant": "exact-area / fixed",
+      "mesh": 16,
+      "vendor": "tidy3d",
+      "source_report_sha256": "419d252779eabcf2f3920984ffaad18777e5fb52007d923f1af6ecf6cdaa1d3b",
+      "native_arrays_sha256": "a4b3df34ed864bec5ee5866cb0c5b48ace574d5d58f2080c653989531a95780c"
     }
   }
 }
