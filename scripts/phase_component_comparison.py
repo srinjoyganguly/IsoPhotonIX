@@ -474,7 +474,7 @@ def published_power_summary(native,published,valid):
             'max_abs_difference_pp':float(np.max(abs(delta[mask]))) if mask.any() else None}
 
 
-def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False, rejected_rings=(), tidy_ring_notebook=None):
+def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False, rejected_rings=(), tidy_ring_notebook=None, require_return_windows=False):
     if not paths:
         raise ValueError('At least one native receipt is required.')
     if vendor_project and (component!='ring' or not vendor_file):
@@ -485,6 +485,14 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
     else:
         project = None
     measurements = [ring_measurement(p,project,allow_partial) if component=='ring' else grating_measurement(p) for p in paths]
+    if require_return_windows:
+        if component!='grating':
+            raise ValueError('Return-window registration applies to grating studies.')
+        for row in measurements:
+            if row['return_windows'] is None:
+                # Preserve every complex field and power; an unsampled duration
+                # cannot qualify a weak reflection phase on this mesh.
+                row['phase_ok'][:,0]=False
     if vendor_file and any(row['vendor']!='lumerical' for row in measurements):
         raise ValueError('The Lumerical S file applies only to that physical geometry.')
     if len({row['vendor'] for row in measurements})!=1:
@@ -502,6 +510,7 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
         result['native_phase_evidence']={
             'guide':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':2,'phase_change_limit_rad':.05},
             'reflection':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':min(window_counts),
+                          'requires_per_mesh_return_history':require_return_windows,
                           'scope':'The final source-subtracted E/H projection defines the port return. Native samples with a registered return history also require the reported per-bin temporal phase gate.'}}
     if rejected_rings:
         if component!='ring':
@@ -563,7 +572,8 @@ if __name__=='__main__':
     p.add_argument('--tidy-ring-notebook',type=Path,help='Pinned Tidy3D ring notebook for published through/drop power only.')
     p.add_argument('--include-partial-rings',action='store_true',help='Use qualified bins of source-bound, complete ring acquisitions; preserve the original run status.')
     p.add_argument('--record-rejected-ring',action='append',default=[],type=Path,help='Keep a verified runaway acquisition visible without publishing S from it.')
+    p.add_argument('--require-return-windows',action='store_true',help='Withhold grating reflection phase on any mesh without its own measured temporal return history.')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('receipts',type=Path,nargs='+')
     args=p.parse_args()
-    args.output.write_text(json.dumps(analyze(args.component,args.receipts,args.vendor_sfile,args.vendor_ring_project,args.include_partial_rings,args.record_rejected_ring,args.tidy_ring_notebook),indent=2,allow_nan=False)+'\n')
+    args.output.write_text(json.dumps(analyze(args.component,args.receipts,args.vendor_sfile,args.vendor_ring_project,args.include_partial_rings,args.record_rejected_ring,args.tidy_ring_notebook,args.require_return_windows),indent=2,allow_nan=False)+'\n')
