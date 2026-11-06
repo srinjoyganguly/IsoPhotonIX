@@ -16,6 +16,8 @@ real simulations of the photonic-crystal line-defect layout on CPU and NVIDIA.
 The installed NVIDIA field bytes and material digest matched the corresponding
 recorded family case.
 
+The release was rebuilt from the source distribution, installed into a fresh offline Python environment with registered native workers, and checked against its public download hashes. [Installed CPU and GPU runs](verification/v012-wheel-install.json) · [Signed-out release and source hashes](verification/v012-release.json).
+
 ## Install and launch
 
 Use the wheel from this release, or build one as described below. In a new

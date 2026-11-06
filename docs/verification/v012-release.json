@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "source_commit": "af60ce65444229c215a00bad9b0808753d59bba4",
+  "matching_wheel_entries_after_source_rebuild": 122,
+  "wheel_sha256": "7a99c97bff2bb2cb48437d3920435937e49fcbf24e61a46f6e93d3899c8a283a",
+  "source_sha256": "dd0877d4d00bbd7bd45d208a47cc6dc5965ac194264747b2dde20fd9ee59cf8f",
+  "public_tag_commit": "af60ce65444229c215a00bad9b0808753d59bba4",
+  "verified_at": "2026-11-06T06:07:09.769174+00:00",
+  "release": "https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a1",
+  "signed_out_repository": true,
+  "signed_out_release": true,
+  "sha256_list_sha256": "a5f6910ecd33a0d262ee3bbe410679dfc7fdae256945efaf6412bf4ef5ada4fe",
+  "verified_assets": {
+    "calibration-examples-v0.12.0a1.zip": "fd9075063ef5ec96c84c7cdd63d0386c7aab2008d38fbe6386c8a045233204aa",
+    "grating-lumerical-3d-gpu-r14-v0.12.0a1.zip": "85b505d90ae363d3fc263cb79fae1ba4e025f47d1aa2b8b42f7f575c995f98ba",
+    "grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip": "a52f1a1975602e5842a5392dcac5d80eb5d2270241b5d6574081d2808a7a5c12",
+    "photonics_workbench-0.12.0a1-py3-none-any.whl": "7a99c97bff2bb2cb48437d3920435937e49fcbf24e61a46f6e93d3899c8a283a",
+    "photonics_workbench-0.12.0a1.tar.gz": "dd0877d4d00bbd7bd45d208a47cc6dc5965ac194264747b2dde20fd9ee59cf8f"
+  }
+}

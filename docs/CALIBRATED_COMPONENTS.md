@@ -22,6 +22,8 @@ The WSL worker executed JAX on the RTX 3080 Ti Laptop GPU. Device availability a
 - [x] Ran all five primary examples through independent Python and Jupyter executions. The two additional 14-cell vendor grating result archives have separate source and numerical checks. [Five-example manifest](verification/v012-example-exports.json) · [Full grating export checks](verification/v012-vendor-grating-exports.json).
 - [x] Inspected all eleven presets in Chrome on the usual local address. The checks covered 618 matrix entries, 13,498 plotted samples, 66 vendor readouts and 20 field sample readouts. [All presets](verification/v012-browser-records.json) · [Fields and comparisons](verification/v012-browser-spatial.json).
 
+- [x] Released [v0.12.0a1](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a1) and installed the public wheel in a clean WSL environment. The installed CPU and CUDA runs passed, and the public tag and every downloadable payload were verified signed out. [Wheel installation](verification/v012-wheel-install.json) · [Signed-out hashes](verification/v012-release.json) · [Test and coverage counts](verification/v012-checks.json).
+
 ## v0.11 measurements
 
 | Chunk | Measured local result | Commercial comparison and limits |
