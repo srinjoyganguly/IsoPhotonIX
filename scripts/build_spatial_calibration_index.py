@@ -42,7 +42,10 @@ def spatial_index():
     }
     best_ring, best_grating = {}, {}
     ring_order = {}
-    for path in sorted(BASE.glob('v012-*.json')):
+    diagnostics_file = BASE/'v013-power-diagnostics.json'
+    diagnostics = json.loads(diagnostics_file.read_text())['records']
+    paths = {*BASE.glob('v012-*.json'), *BASE.glob('v013-ring3d-*.json'), *BASE.glob('v013-grating3d-*.json')}
+    for path in sorted(paths):
         if path.name == 'v012-calibrated-index.json':
             continue
         data = json.loads(path.read_text())
@@ -70,6 +73,8 @@ def spatial_index():
                 model=data['physical_model']
                 label=(f"{vendor.capitalize()} · {mesh} cells/µm · {data['duration_um_c']:g} µm/c · "
                        f"{model['pml']} PML cells · {model['aperture_um']:g} µm port")
+                if model.get('ring_interface','legacy') != 'legacy':
+                    label += f" · {model['ring_interface']}"
                 measurement=f"{data['valid_bins']} of {data['total_bins']} samples passed the observation-window checks."
                 nominal=path.name.endswith(f"-t{int(data['duration_um_c'])}.json")
                 # The first record opens in the GUI. Start with the qualified default
@@ -85,10 +90,21 @@ def spatial_index():
                 settings=data['settings']
                 geometry,mesh=settings['geometry'],settings['resolution']
                 label=f'{geometry} · {mesh} cells/µm'
+                if settings.get('grating_material_model','volume-average') != 'volume-average':
+                    label += f" · {settings['grating_material_model']}"
                 panel=subset(data,('case_id','vendor','result','radiation','comparisons','settings'))
                 measurement=f"Measured input and output powers on {data['device_name']}."
                 if geometry in ('lumerical','tidy3d') and (geometry not in best_grating or mesh>best_grating[geometry][0]):
                     best_grating[geometry]=(mesh,data)
+            detail = diagnostics.get(path.name)
+            if detail:
+                if (detail['source_report_sha256'] != hashlib.sha256(path.read_bytes()).hexdigest() or
+                        detail['native_arrays_sha256'] != data['arrays_sha256']):
+                    raise ValueError(f'Regenerate power diagnostics for {path.name}.')
+                panel['power_diagnostic'] = {key:value for key,value in detail.items() if key!='additional_spectra'}
+                if detail.get('additional_spectra'):
+                    panel['vendor_comparison']['channels'].update(
+                        {name:{'paired_spectrum':series} for name,series in detail['additional_spectra'].items()})
             clocks = data.get('stages',{})
             time_key = 'elapsed_s' if case=='ring-3d' else 'stepping_seconds'
             if all(time_key in clocks.get(role,{}) for role in ('reference','device')):

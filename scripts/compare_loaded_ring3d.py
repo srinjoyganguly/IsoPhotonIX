@@ -14,20 +14,29 @@ TIDY_SHA = 'b1dac0b3a47518cc5461c5457511748f5435eaea53703d9fdff1236adbd24908'
 PLOT_SHA = 'a9fc0b553c3e597bc4726063db06fb62d49523da06f0fe46b5c17d7ae1d56878'
 
 
-def lumerical_spectrum(path):
+def lumerical_port_spectra(path):
     if hashlib.sha256(path.read_bytes()).hexdigest()!=ANSYS_SHA:
         raise ValueError('Unexpected Lumerical attachment revision.')
     # The S-parameter file gives scattering magnitude (not power) as its second column.
     lines=path.read_text().splitlines()
-    def rows(receive,launch):
-        row=next(i for i,s in enumerate(lines) if s.strip()==f'("port {receive}", "TE", 1, "port {launch}", 1, "transmission")')
+    spectra = {}
+    wave = None
+    for receive, name in ((3, 'through'), (2, 'drop'), (1, 'reflection'), (4, 'add_side')):
+        row=next(i for i,s in enumerate(lines) if s.strip()==f'("port {receive}", "TE", 1, "port 1", 1, "transmission")')
         count=int(re.fullmatch(r'\((\d+), 3\)',lines[row+1]).group(1))
         f,amp,_=np.loadtxt(lines[row+2:row+2+count]).T
-        return 299792458e6/f[::-1],amp[::-1]**2
-    wave,drop=rows(2,1)
-    _,through=rows(3,1)
-    return wave,through,drop,{'kind':'FDTD text attachment','input_port':1,'drop_port':2,
-        'through_port':3,'attachment_sha256':ANSYS_SHA,'reference_samples':len(wave)}
+        grid = 299792458e6/f[::-1]
+        if not np.all(np.diff(grid)>0) or (wave is not None and not np.array_equal(grid,wave)):
+            raise ValueError('The four Lumerical port grids must agree and increase in wavelength.')
+        wave = grid
+        spectra[name] = amp[::-1]**2
+    return wave,spectra,{'kind':'FDTD text attachment','input_port':1,'drop_port':2,
+        'through_port':3,'reflection_port':1,'add_side_port':4,'attachment_sha256':ANSYS_SHA,'reference_samples':len(wave)}
+
+
+def lumerical_spectrum(path):
+    wave, channels, source = lumerical_port_spectra(path)
+    return wave, channels['through'], channels['drop'], source
 
 
 def tidy_spectrum(path):
@@ -106,7 +115,11 @@ def published_linewidths(wavelength, drop, nominal):
 
 def compare(report, path):
     vendor=report['vendor']
-    wave,through,drop,source=(lumerical_spectrum if vendor=='lumerical' else tidy_spectrum)(path)
+    if vendor == 'lumerical':
+        wave, channels, source = lumerical_port_spectra(path)
+    else:
+        wave, through, drop, source = tidy_spectrum(path)
+        channels = {'through':through, 'drop':drop}
     row=report['series'][vendor]
     wl=np.array(row['wavelength_um'])
     bins=np.array(row['valid_bins']) & (wl>=max(1.5,wave.min())) & (wl<=min(1.6,wave.max()))
@@ -115,7 +128,7 @@ def compare(report, path):
             'passed_numerical_spectrum':report['passed'],'wavelength_shift_applied_nm':0,
             'source_wavelength_band_um':[float(wave.min()),float(wave.max())],'channels':{},
             'measured_drop_fsr_nm':report['measured_drop_fsr_nm'],'published_drop_fsr_nm':report['published_drop_fsr_nm']}
-    lines=published_linewidths(wave,drop,report['published_peaks_um'])
+    lines=published_linewidths(wave,channels['drop'],report['published_peaks_um'])
     for line in lines:
         peaks=report.get('loaded_loss',{}).get('peaks',[])
         if not peaks:
@@ -128,7 +141,7 @@ def compare(report, path):
             line['local_qualified_loaded_q']=nearest['full_fit']['loaded_q'] if nearest['qualified'] else None
     result['published_drop_resonances']=lines
     result['resonance_scope']='Nearest unshifted peak within half a published free spectral range. This assignment does not prove the same angular order. Reference half-height Q requires one peak and at least four source samples across its FWHM.'
-    for label,native in [('through',through),('drop',drop)]:
+    for label,native in channels.items():
         valid=np.isfinite(native)
         reference=np.interp(wl[ bins],wave[valid],native[valid])
         local=np.array(row[label])[bins]

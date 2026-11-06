@@ -4,6 +4,12 @@ Each row is qualified for a named geometry, source, execution target and measure
 
 ## Current v0.12 calibrated component checklist
 
+### Power-mismatch follow-up
+
+- [x] Reconstruct all four Lumerical ring port powers at 1550 nm and compare resonance position and width separately. Compare both grating meshes and test whether a constant power scale could explain all five wavelengths. [Measurements, interpretation and acceptance targets](POWER_MISMATCH.md).
+- [ ] Execute the two original full vendor grating notebooks independently on NVIDIA and compare fresh fields, ports and numerical arrays with the released data.
+- [ ] Test controlled changes to ring boundary coverage and etched-grating material sampling against their original meshes, keeping source and detector definitions fixed. Report failed accuracy checks as well as improvements.
+
 | Work item | Implemented and measured | Qualification criteria |
 | --- | --- | --- |
 | Bus-loaded ring in 3D | Lumerical at 3200 µm/c qualifies all 241 bins on the 16, 20 and 24 cells/µm grids. The resonance spacing is 26.0, 27.0 and 27.0 nm respectively, versus 25.455 nm published. From 20 to 24 cells/µm both central peaks move −4.5 nm. The average drop-power difference from the published spectrum increases from 0.1357 to 0.1602. [Third mesh and same-wavelength powers](verification/v012-ring3d-lumerical-20to24-comparison.json). Tidy3D at 4800 µm/c qualifies all 241 bins at both meshes. Its measured spacing changes from 17.5 to 18.0 nm, versus 17.74 nm published. At 20 cells/µm its mean drop-power difference is 0.1751. At 16 cells/µm, separately widening the Lumerical absorbing boundary and port aperture preserved 26.0 nm spacing; the maximum port-power changes were 0.000039 and 0.000449 respectively. [Tidy ring mesh and phase sensitivity](verification/v012-ring3d-tidy3d-mesh-comparison.json) · [Port-aperture control](verification/v012-ring3d-lumerical-aperture-comparison.json). [Lumerical measurement](verification/v012-ring3d-lumerical-r16-t3200.json) · [Tidy3D measurement](verification/v012-ring3d-tidy3d-r16-t4800.json) · [Common-plane mesh comparison](verification/v012-ring3d-lumerical-mesh-comparison.json). | Separate straight-input calibration, finite-height ring and both bus guides, through/drop spectra, observation-time sensitivity and comparison with the published Lumerical and Tidy3D loaded spectra. |

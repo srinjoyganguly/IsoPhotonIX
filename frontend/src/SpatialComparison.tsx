@@ -3,11 +3,38 @@ import { useState } from 'react';
 type Paired = {wavelength_um:number[];local_power:number[];published_power:number[]};
 type LossPeak = {qualified:boolean;sampled_drop_peak_um:number;field_decay?:{loaded_q?:number};
   qualified_equal_bus_loss?:{loaded_q?:number;apparent_external_q_each_bus?:number;apparent_internal_q?:number;apparent_internal_q_lower_bound?:number}};
+type PowerDiagnostic =
+  | {observable:'ring'; nearest_published_drop_line:{published_sampled_center_um:number;local_sampled_center_um?:number;
+      local_fwhm_nm?:number;published_fwhm_nm?:number|null;local_target_distance_in_linewidths?:number;published_target_distance_in_linewidths?:number}}
+  | {observable:'grating';local_best_sample_um:number;published_best_sample_um:number; mean_absolute_difference:number;
+      gain_only:{feasible:boolean;tolerance_power_fraction:number}};
 type SpatialReport = {vendor?:string;case_id?:string;settings?:{geometry:string};result?:{wavelength_um:number[];beam_to_guide:number[]};
+  power_diagnostic?:PowerDiagnostic;
   vendor_comparison?:{channels:Record<string,{paired_spectrum:Paired}>}; loaded_loss?:{peaks:LossPeak[]};
   comparisons?:{vendor:string;geometry_matched?:boolean;wavelength_um?:number[];published_power?:number[];published_s21_power?:number[]}[];
   radiation?:{polar_edges_deg?:number[];fraction_of_incident?:number[][];fiber_return_power?:number[]};
 };
+
+function PowerExplanation({data,vendor}:{data:PowerDiagnostic;vendor:string}) {
+  if(data.observable==='ring') {
+    const line=data.nearest_published_drop_line;
+    return <section aria-label="Ring detuning"><h3>Why the power at 1550 nm differs</h3>
+      <p>{vendor}’s nearest published drop peak is at {(line.published_sampled_center_um*1000).toFixed(2)} nm.
+        {line.local_sampled_center_um!==undefined && <> The nearest measured workbench peak is at {(line.local_sampled_center_um*1000).toFixed(2)} nm.</>}</p>
+      {line.local_target_distance_in_linewidths!==undefined && line.published_target_distance_in_linewidths!==undefined &&
+        <p>1550 nm lies {line.local_target_distance_in_linewidths.toFixed(2)} linewidths from the fitted workbench peak
+        and {line.published_target_distance_in_linewidths.toFixed(2)} from the published peak.
+        Their widths are {line.local_fwhm_nm?.toFixed(2)} and {line.published_fwhm_nm?.toFixed(2)} nm respectively.</p>}
+    </section>;
+  }
+  return <section aria-label="Grating power difference"><h3>Coupling across the measured band</h3>
+    <p>Across the five sampled wavelengths, the strongest workbench coupling is at {(data.local_best_sample_um*1000).toFixed(0)} nm
+      and the strongest published coupling is at {(data.published_best_sample_um*1000).toFixed(0)} nm.
+      The mean absolute difference is {(100*data.mean_absolute_difference).toFixed(2)} percentage points.</p>
+    {!data.gain_only.feasible && <p>A single power multiplier cannot bring all five samples within
+      {' '}{(100*data.gain_only.tolerance_power_fraction).toFixed(0)} percentage points of {vendor}.</p>}
+  </section>;
+}
 
 function PairedSpectrum({series,vendor}: {series:Record<string,Paired>;vendor:string}) {
   const [selection,setSelection]=useState('');
@@ -63,6 +90,7 @@ export function SpatialComparison({value}:{value:unknown}) {
   const angleIndex=Math.min(angleSample,wavelengths.length-1);
   return <>
     <PairedSpectrum series={pairs} vendor={vendor}/>
+    {r.power_diagnostic && <PowerExplanation data={r.power_diagnostic} vendor={vendor}/>}
     {qualified && <section aria-label="Loaded resonance measurements"><h3>Loaded resonances</h3>
       {qualified.length ? <><table><thead><tr><th>Peak (µm)</th><th>Loaded Q from linewidth</th><th>Loaded Q from decay</th><th>External Q per bus</th><th>Apparent internal Q</th></tr></thead>
         <tbody>{qualified.map(p=><tr key={p.sampled_drop_peak_um}><th>{p.sampled_drop_peak_um.toFixed(4)}</th>
