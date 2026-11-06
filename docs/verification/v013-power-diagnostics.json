@@ -1267,6 +1267,8 @@
         "local": 26.00000000000002,
         "published": 25.454899999999945
       },
+      "variant": "legacy / fixed",
+      "mesh": 16,
       "source_report_sha256": "f85d46da0f1da19ce504568a940af52f17461db9f223c2982474b2698214dee8",
       "native_arrays_sha256": "b792e3c8bd3be09921d2fb5fd78593e44873020a137046cc28aedff338388ab1"
     },
@@ -2529,6 +2531,8 @@
         "local": 27.000000000000135,
         "published": 25.454899999999945
       },
+      "variant": "legacy / fixed",
+      "mesh": 20,
       "source_report_sha256": "bf75664b808d5c37c8265ecbe66fd100d62e6736fd49b82befae8ee43ddd66e2",
       "native_arrays_sha256": "39d2549a62f1191e340ba8faef4e4f2b7fef6fbff926111656ad05bb24a1e77f"
     },
@@ -3797,6 +3801,8 @@
         "local": 26.999999999999915,
         "published": 25.454899999999945
       },
+      "variant": "legacy / fixed",
+      "mesh": 24,
       "source_report_sha256": "5ba8e7e5107e2e9f96357d749f979d6fba5121f9ffa3178c1e50f15278aa896c",
       "native_arrays_sha256": "eed5ae97b83f67346dcb5cd66c6eef355c8b6dad472f57bf65ba7c309f56b2ac"
     },
@@ -3832,6 +3838,8 @@
         "local": 17.50000000000007,
         "published": 17.740000000000087
       },
+      "variant": "legacy / fixed",
+      "mesh": 16,
       "source_report_sha256": "3cc9e9cd4d5549885354d26d2b7f899f748ef94000b681d7828cefbea5517407",
       "native_arrays_sha256": "e313e264c02f058e3e9eb9c3f4d72d05d7d6e7b45bd7e332807fa4cb04c9c154"
     },
@@ -3867,6 +3875,8 @@
         "local": 18.000000000000014,
         "published": 17.740000000000087
       },
+      "variant": "legacy / fixed",
+      "mesh": 20,
       "source_report_sha256": "241b9b5ca0e8b795c187c8ce818f6f17029d508b9979dd74df0b3fc7c5d0227b",
       "native_arrays_sha256": "b68e412bdae7373222e74298a9eda1e58916990aee1cc3b6b7eb2249f8c5922c"
     },
@@ -3908,6 +3918,8 @@
         "minimum_set_by_index": 4,
         "maximum_set_by_index": 0
       },
+      "variant": "volume-average / standard",
+      "mesh": 12,
       "source_report_sha256": "dc1f378fb95a4ef17ba1f5bbab81f8469959d61fa54856bb68e3e7f3167edad5",
       "native_arrays_sha256": "99ed493d7746c0a996b018e9a3fb0ca31a9669c26a95b6acdd4b18d0a6cc5992"
     },
@@ -3949,6 +3961,8 @@
         "minimum_set_by_index": 4,
         "maximum_set_by_index": 0
       },
+      "variant": "volume-average / standard",
+      "mesh": 14,
       "source_report_sha256": "819a0b2fce954c4d85a523156637889f273f73a01a08d8fbaddc04a160d817b8",
       "native_arrays_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f"
     },
@@ -3990,6 +4004,8 @@
         "minimum_set_by_index": 1,
         "maximum_set_by_index": 3
       },
+      "variant": "volume-average / standard",
+      "mesh": 12,
       "source_report_sha256": "d54da556061a54c7dd4f364510ae879ecf8e9f013fa9d9f137b2461b58283b10",
       "native_arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c"
     },
@@ -4031,8 +4047,57 @@
         "minimum_set_by_index": 1,
         "maximum_set_by_index": 3
       },
+      "variant": "volume-average / standard",
+      "mesh": 14,
       "source_report_sha256": "c00abb7004c283dce09a4b9290dbe11642c7108ab3eb01c6d43d5bd1dc041808",
       "native_arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9"
+    },
+    "v013-ring3d-lumerical-r16-t3200-exact-area.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "reflection": {
+          "local": 4.519063196198244e-06,
+          "published": 0.0007615791758866508,
+          "mean_absolute_difference": 0.003145098165033267
+        },
+        "through": {
+          "local": 0.9633589130086524,
+          "published": 0.093915300002907,
+          "mean_absolute_difference": 0.16221373076288514
+        },
+        "drop": {
+          "local": 0.03160450528777398,
+          "published": 0.6744231240959558,
+          "mean_absolute_difference": 0.13359539375650134
+        },
+        "add_side": {
+          "local": 2.3038426161100466e-05,
+          "published": 0.000824536588624558,
+          "mean_absolute_difference": 0.0031246262418958676
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5500920771652973,
+        "published_peak_power": 0.7153218182890001,
+        "published_fwhm_nm": 1.4208675155746864,
+        "local_sampled_center_um": 1.5565,
+        "local_sampled_peak_power": 0.8689541341459934,
+        "nearest_sampled_center_difference_nm": 6.407922834702706,
+        "local_fitted_center_um": 1.556317306309592,
+        "local_fwhm_nm": 2.3663986061521354,
+        "local_target_distance_in_linewidths": 2.669586726922667,
+        "published_target_distance_in_linewidths": 0.06480348398985136
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 26.00000000000002,
+        "published": 25.454899999999945
+      },
+      "variant": "exact-area / fixed",
+      "mesh": 16,
+      "source_report_sha256": "76165fd74e0d29dfe8ffbd4439347fbe34c7a2f2ef28b8a0d1662c0b5eefe30e",
+      "native_arrays_sha256": "adf95f50b94eb001d1a9bea588c19e2007b3fbbf8013515efa3fd3cba667c687"
     }
   }
 }

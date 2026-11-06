@@ -1,0 +1,97 @@
+{
+  "scope": "Local two-dimensional transverse mode solves through the actual FDTDX/Tidy3D port routine. The normal-wall column is a straight-lead experiment only; curved off-diagonal tensors, triple-interface corners and 3D device propagation require separate validation.",
+  "vendor_mode_wavelength_um": 1.5483870967741937,
+  "vendor_neff": 1.9325164936753623,
+  "rows": [
+    {
+      "mesh": 16,
+      "method": "legacy",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.993175745010376,
+        "1.55": 1.990504503250122
+      },
+      "equivalent_strip_width_um": 0.40625,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 16,
+      "method": "exact-area",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.973336100578308,
+        "1.55": 1.970622181892395
+      },
+      "equivalent_strip_width_um": 0.40000000000000036,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 16,
+      "method": "normal-wall",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9209010601043701,
+        "1.55": 1.9181034564971924
+      },
+      "equivalent_strip_width_um": 0.40000000000000036,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 20,
+      "method": "legacy",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9175333976745605,
+        "1.55": 1.9148337841033936
+      },
+      "equivalent_strip_width_um": 0.4,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 20,
+      "method": "exact-area",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9175333976745605,
+        "1.55": 1.9148337841033936
+      },
+      "equivalent_strip_width_um": 0.3999999999999986,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 20,
+      "method": "normal-wall",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9175333976745605,
+        "1.55": 1.9148337841033936
+      },
+      "equivalent_strip_width_um": 0.3999999999999986,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 24,
+      "method": "legacy",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9135894775390625,
+        "1.55": 1.9109300374984741
+      },
+      "equivalent_strip_width_um": 0.3958333333333333,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 24,
+      "method": "exact-area",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9294885396957397,
+        "1.55": 1.9268558025360107
+      },
+      "equivalent_strip_width_um": 0.4000000000000008,
+      "cpu_platform": "cpu"
+    },
+    {
+      "mesh": 24,
+      "method": "normal-wall",
+      "wavelength_neff": {
+        "1.5483870967741937": 1.9057955741882324,
+        "1.55": 1.9030818939208984
+      },
+      "equivalent_strip_width_um": 0.4000000000000008,
+      "cpu_platform": "cpu"
+    }
+  ]
+}

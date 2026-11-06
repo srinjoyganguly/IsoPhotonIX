@@ -125,8 +125,14 @@ def diagnose(directory, lumerical_file, names):
         with np.load(raw, allow_pickle=False) as arrays:
             if report['case_id']=='loaded-ring-3d':
                 row = ring_details(report, arrays, reference if report['vendor']=='lumerical' else None)
+                model=report['physical_model']
+                row['variant'] = model.get('ring_interface','legacy') + ' / ' + model.get('ring_material','fixed')
+                row['mesh'] = model['resolution']
             elif report['case_id']=='finite-grating-3d':
                 row = grating_details(report, arrays)
+                model=report['settings']
+                row['variant'] = model.get('grating_material_model','volume-average') + ' / ' + model.get('grating_spectrum','standard')
+                row['mesh'] = model['resolution']
             else:
                 raise ValueError(f'Unexpected component in {name}.')
         rows[path.name] = {**row, 'source_report_sha256': sha(path), 'native_arrays_sha256': report['arrays_sha256']}

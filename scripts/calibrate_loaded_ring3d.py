@@ -32,7 +32,7 @@ PULSE_END = 2 * 4 / .14
 PORTS = ("reflection", "through", "drop", "add_side")
 
 
-def geometry(vendor, resolution, pml, aperture):
+def geometry(vendor, resolution, pml, aperture, interface='legacy'):
     case = CASES[vendor]
     radius, width = case['radius'], case['width']
     center = radius + width + case['gap']
@@ -49,36 +49,74 @@ def geometry(vendor, resolution, pml, aperture):
                 vendor=vendor, resolution=resolution, radius_um=radius, width_um=width,
                 height_um=case['height'], edge_gap_um=case['gap'], bus_y_um=center,
                 top_index=1. if vendor=='lumerical' else OXIDE, substrate_index=OXIDE,
-                silicon_index=SILICON, aperture_um=2*half_ap/resolution, pml_um=pml)
+                silicon_index=SILICON, aperture_um=2*half_ap/resolution, pml_um=pml,
+                ring_interface=interface)
+
+
+def disk_fractions(xs, ys, dx, radius):
+    """Area of a disk inside each square, from its analytic quadrant integral."""
+    def integral(x, y):
+        a = np.minimum(abs(x), radius)
+        b = np.minimum(abs(y), radius)
+        corner = np.minimum(a, np.sqrt(np.maximum(0., radius**2-b*b)))
+        def circular_segment(t):
+            return .5*(t*np.sqrt(np.maximum(0., radius**2-t*t)) + radius**2*np.arcsin(t/radius))
+        return np.sign(x)*np.sign(y)*(b*corner + circular_segment(a)-circular_segment(corner))
+
+    left = xs[:, None]-dx/2
+    right = xs[:, None]+dx/2
+    bottom = ys[None, :]-dx/2
+    top = ys[None, :]+dx/2
+    area = integral(right,top)-integral(left,top)-integral(right,bottom)+integral(left,bottom)
+    return np.clip(area/(dx*dx), 0., 1.)
+
+
+def lateral_fraction(xs, ys, dx, radius, width, bus, reference, interface):
+    if interface=='exact-area':
+        lo, hi = ys-dx/2, ys+dx/2
+        straight = np.zeros_like(ys)
+        for center in (-bus, bus):
+            straight += np.maximum(0., np.minimum(hi, center+width/2)-np.maximum(lo, center-width/2))/dx
+        fill = np.broadcast_to(straight, (len(xs),len(ys)))
+        if not reference:
+            outer = disk_fractions(xs, ys, dx, radius+width/2)
+            inner = disk_fractions(xs, ys, dx, radius-width/2)
+            fill = fill+outer-inner
+        # The disjoint waveguides can share a cell. Roundoff on fully covered
+        # or empty cells is the only reason to clamp their summed area.
+        return np.clip(fill, 0., 1.)
+    if interface!='legacy':
+        raise ValueError('Unknown ring interface sampling method.')
+    offsets = (np.arange(6)+.5)/6-.5
+    fill = np.zeros((len(xs),len(ys)))
+    for a in offsets:
+        x = xs[:,None]+a*dx
+        for b in offsets:
+            y = ys[None,:]+b*dx
+            inside = (abs(abs(y)-bus)<=width/2)
+            if not reference:
+                rho2 = x*x+y*y
+                inside = inside | ((rho2 >= (radius-width/2)**2) & (rho2 <= (radius+width/2)**2))
+            fill += inside
+    return fill / len(offsets)**2
 
 
 def permittivity(g, reference):
     """Sample actual component-centred Yee cells, including the substrate under the Si.
 
-    Lateral area fractions use 6×6 quadrature; the z overlaps are analytic.
+    Lateral area fractions use the selected 6×6 quadrature or analytic disk/strip intersection.
     Vertical series averaging for Ez and parallel averaging for Ex/Ey preserve planar interfaces.
     Lateral curved interfaces use scalar area averaging and remain mesh sensitive.
     """
     dx = 1/g['resolution']
     nx, ny, nz = g['shape']
     radius,width,height,bus = [g[k] for k in ('radius_um','width_um','height_um','bus_y_um')]
-    offsets = (np.arange(6)+.5)/6-.5
     eps = np.empty((3,nx,ny,nz), np.float32)
     for component in range(3):
         xs = (np.arange(nx)-nx/2+.5*(component==0))*dx
         ys = (np.arange(ny)-ny/2+.5*(component==1))*dx
         zs = (np.arange(nz)-nz/2+.5*(component==2))*dx
-        fill = np.zeros((nx,ny))
-        for a in offsets:
-            x = xs[:,None]+a*dx
-            for b in offsets:
-                y = ys[None,:]+b*dx
-                inside = (abs(abs(y)-bus)<=width/2)
-                if not reference:
-                    rho2 = x*x+y*y
-                    inside = inside | ((rho2 >= (radius-width/2)**2) & (rho2 <= (radius+width/2)**2))
-                fill += inside
-        fill /= len(offsets)**2
+        fill = lateral_fraction(xs,ys,dx,radius,width,bus,reference,g.get('ring_interface','legacy'))
         z0,z1 = zs-dx/2,zs+dx/2
         slab = (np.minimum(z1,height/2)-np.maximum(z0,-height/2)).clip(0,dx)/dx
         below = ((-height/2-z0)/dx).clip(0,1)
@@ -317,6 +355,8 @@ def main():
     parser.add_argument('--vendor',choices=tuple(CASES),required=True)
     parser.add_argument('--device',choices=['gpu'],required=True)
     parser.add_argument('--resolution',type=int,choices=(12,16,20,24),default=16)
+    parser.add_argument('--ring-interface', choices=('legacy','exact-area'), default='legacy',
+                        help='How the ring and straight guides occupy the lateral Yee cells.')
     parser.add_argument('--duration-um-c',type=float,help='Total recording in µm/c (Lumerical 3200, Tidy3D 4800).')
     parser.add_argument('--pml-um',type=float,default=.65)
     parser.add_argument('--aperture-um',type=float,default=1.8)
@@ -332,7 +372,7 @@ def main():
         parser.error('Choose an empty result directory.')
     runtime=_ports_runtime(args.device)
     versions={k:importlib.metadata.version(k) for k in ('jax','jaxlib','fdtdx','scipy','numpy','tidy3d')}
-    g=geometry(args.vendor,args.resolution,args.pml_um,args.aperture_um)
+    g=geometry(args.vendor,args.resolution,args.pml_um,args.aperture_um,args.ring_interface)
     provenance, reusable = stage_fingerprint(ROOT, runtime, versions)
     if args.checkpoint and not reusable:
         print('Persistent checkpoint reuse disabled. ' + provenance['reuse_disabled_reason'], flush=True)
