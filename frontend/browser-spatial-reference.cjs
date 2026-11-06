@@ -14,7 +14,8 @@ const {chromium} = require('playwright');
     await page.goto(origin);await page.getByRole('button',{name:'Calibrated components',exact:true}).click();
     const panel=page.getByRole('region',{name:'Calibrated components',exact:true});
     const api=await (await page.request.get(origin+'/api/calibrations')).json();
-    let pairs=0, fields=0, qRows=0;
+    let pairs=0, fields=0, qRows=0, powerDiagnostics=0;
+    const modelExports=[];
     for(const key of ['ring-3d','grating-3d','multimode-tm','layout-ports-2d','layout-ports-3d']){
       const preset=api.find(p=>p.case===key);
       if(!preset)continue;
@@ -22,6 +23,17 @@ const {chromium} = require('playwright');
       const records=panel.getByRole('region',{name:'Recorded evidence'});
       for(const [i,r] of (preset.evidence?.recorded||[]).entries()){
         await records.getByLabel('Recorded result').selectOption(String(i));
+        if(r.report.power_diagnostic){
+          const detail=r.report.power_diagnostic;
+          if(detail.observable==='ring'){
+            const note=await records.getByRole('region',{name:'Ring detuning'}).textContent();
+            assert(note.includes((1000*detail.nearest_published_drop_line.published_sampled_center_um).toFixed(2)));
+          }else{
+            const note=await records.getByRole('region',{name:'Grating power difference'}).textContent();
+            assert(note.includes((100*detail.mean_absolute_difference).toFixed(2)));
+          }
+          powerDiagnostics++;
+        }
         const view=records.getByRole('region',{name:'Commercial spectrum comparison'});
         const series={};
         for(const [name,value] of Object.entries(r.report.vendor_comparison?.channels||{})){
@@ -55,6 +67,20 @@ const {chromium} = require('playwright');
           fields++;
         }
       }
+      if(key==='ring-3d'||key==='grating-3d'){
+        await panel.getByLabel('3D geometry').selectOption('lumerical');
+        const ring=key==='ring-3d';
+        const model=ring?'exact-area':'direct-yee';
+        await panel.getByLabel(ring?'Ring boundary sampling':'Grating material sampling').selectOption(model);
+        await panel.getByRole('radio',{name:/FDTDX · GPU/i}).check();
+        const post=page.waitForRequest(request=>request.url().endsWith('/api/reproduce/calibration')&&request.method()==='POST');
+        const download=page.waitForEvent('download');
+        await panel.getByRole('button',{name:'Export Python + notebook',exact:true}).click();
+        const config=(await post).postDataJSON();
+        assert.equal(config[ring?'ring_interface':'grating_material_model'],model);
+        await (await download).saveAs(path.join(out,key+'-program.zip'));
+        modelExports.push({case:key,model});
+      }
       if(key==='layout-ports-2d'){
         const input=panel.getByLabel('west x',{exact:true});
         await input.fill('-2');await input.press('Tab');
@@ -66,7 +92,8 @@ const {chromium} = require('playwright');
     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1));
     assert.deepEqual(errors,[]);
     fs.writeFileSync(path.join(out,'report.json'),JSON.stringify({passed:true,checked_at:new Date().toISOString(),
-      matched_vendor_readouts:pairs,native_field_readouts:fields,qualified_loaded_q_rows:qRows,
+      matched_vendor_readouts:pairs,native_field_readouts:fields,qualified_loaded_q_rows:qRows,power_diagnostics:powerDiagnostics,
+      model_program_exports:modelExports,
       editable_port_position:true,mobile_width_px:390,browser_errors:errors},null,2)+'\n');
   }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

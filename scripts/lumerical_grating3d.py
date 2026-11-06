@@ -96,6 +96,40 @@ def epsilon(m, axes, reference):
     return eps
 
 
+def silicon_on_yee_grid(m, axes, staggered):
+    """Integrate the etched chip directly on the electric-component control volumes.
+
+    The existing background, fiber and substrate are retained. Each new sample below
+    the cover oxide comes from the same continuous silicon sector and taper. Horizontal
+    interfaces use the parallel (Ex/Ey) or series (Ez) dielectric mixture. A lateral
+    average combines the ridge, residual-film and oxide columns within the Yee cell.
+    """
+    dx=1/m['resolution']
+    silicon, oxide = m['n_si']**2, m['n_oxide']**2
+    film_height=m['height']-m['etch']
+
+    def fraction(z, height):
+        return np.clip((min(z+dx/2,height)-max(z-dx/2,0.))/dx,0.,1.)
+
+    for component in range(3):
+        # FDTDX's Ex/Ey/Ez lie on the negative half-step of their two transverse
+        # axes relative to the scalar cell centers (the convention used by aligned).
+        xs, ys, zs=(axis-(0. if i==component else .5*dx) for i,axis in enumerate(axes))
+        base, ridge=xy_coverage(m,xs,ys)
+        for k in np.flatnonzero((zs>=-1.5*dx)&(zs<=m['height']+1.5*dx)):
+            z=zs[k]
+            ridge_fraction=fraction(z,m['height'])
+            film_fraction=fraction(z,film_height)
+            if component==2:
+                ridge_eps=1/(ridge_fraction/silicon+(1-ridge_fraction)/oxide)
+                film_eps=1/(film_fraction/silicon+(1-film_fraction)/oxide)
+            else:
+                ridge_eps=oxide+ridge_fraction*(silicon-oxide)
+                film_eps=oxide+film_fraction*(silicon-oxide)
+            staggered[component,:,:,k] = oxide + (base-ridge)*(film_eps-oxide) + ridge*(ridge_eps-oxide)
+    return staggered
+
+
 def reflected_fiber_amplitude(scattered, incoming, incident_power, dx):
     # The reciprocal upward basis on the same horizontal plane is (E*,−H*).
     # Its flux equals the absolute incident downward flux. The result is a complex S11 estimate.

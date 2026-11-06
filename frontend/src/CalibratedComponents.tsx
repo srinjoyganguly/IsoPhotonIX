@@ -23,6 +23,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [layoutText,setLayoutText]=useState('');
   const [geometry3d,setGeometry3d]=useState('lumerical');
   const [ringDuration,setRingDuration]=useState('');
+  const [ringInterface,setRingInterface]=useState('legacy');
+  const [gratingMaterial,setGratingMaterial]=useState('volume-average');
+  const [gratingSpectrum,setGratingSpectrum]=useState('standard');
   const [portDistance,setPortDistance]=useState('1.25');
   const [mesh,setMesh]=useState(''),[offset,setOffset]=useState('.125');
   const [targets,setTargets]=useState<Target[]>([]),[jobs,setJobs]=useState<Job[]>([]),[jobId,setJobId]=useState('');
@@ -34,6 +37,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const history=jobs.filter(j=>j.config.case===key);
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
+  const denseGrating = key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
   const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? (['lumerical','tidy3d'].includes(geometry3d)?[12,14]:[12,16]) :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
@@ -93,6 +97,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
     offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'&&!gpuComponent&&!editableLayout?materialGrid:null,
     planar_layout:editableLayout?parsePlanarLayout(layoutText):null,
     duration_um_c:key==='ring-3d'&&ringDuration?Number(ringDuration):null,
+    ring_interface:key==='ring-3d' && ringInterface!=='legacy'?ringInterface:null,
+    grating_material_model:key==='grating-3d' && geometry3d==='lumerical' && gratingMaterial!=='volume-average'?gratingMaterial:null,
+    grating_spectrum:denseGrating && gratingSpectrum==='dense'?'dense':null,
     geometry_3d:gpuComponent?geometry3d:null,port_distance_um:key==='multimode-tm'?Number(portDistance):null,
     grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
   async function run(){
@@ -118,7 +125,14 @@ export function CalibratedComponents({active}:{active:boolean}) {
       setJobs(rows=>rows.map(j=>j.id===updated.id?updated:j));
     }catch(e){setError((e as Error).message);}finally{setPending(false);}
   }
-  function choose(next:string){setKey(next);setRecord(0);setMesh('');setPortDistance('1.25');setRingDuration('');setGeometry3d(next==='grating-3d'?'compact':'lumerical');setOffset('.125');setTarget('');setMaterialGrid('yee-aligned');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);setLocalField(null);}
+  function choose(next:string) {
+    setKey(next); setRecord(0); setMesh(''); setPortDistance('1.25'); setRingDuration('');
+    setGeometry3d(next==='grating-3d'?'compact':'lumerical');
+    setRingInterface('legacy'); setGratingMaterial('volume-average'); setGratingSpectrum('standard');
+    setOffset('.125'); setTarget(''); setMaterialGrid('yee-aligned');
+    setGratingScope('tidy3d-compact'); setRingScope('lumerical');
+    setJobId(''); setError(''); setReport(null); setLocalField(null);
+  }
   return <section className="cal-lab" aria-label="Calibrated components">
     <header><h1>Calibrated components</h1><p>Inspect measured reference results or run the same physical study on this machine.</p></header>
     <div className="cal-columns"><aside aria-label="Calibrated presets">{catalog.map(p=><button key={p.case} aria-pressed={key===p.case} onClick={()=>choose(p.case)}>{p.name}</button>)}</aside>
@@ -142,6 +156,15 @@ export function CalibratedComponents({active}:{active:boolean}) {
         {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>{setGeometry3d(e.target.value);setMesh('');}}>
           {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
             <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
+        </select></label>}
+        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>setRingInterface(e.target.value)}>
+          <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option>
+        </select></label>}
+        {key==='grating-3d' && geometry3d==='lumerical' && <label>Grating material sampling<select value={gratingMaterial} onChange={e=>setGratingMaterial(e.target.value)}>
+          <option value="volume-average">Volume averaging (baseline)</option><option value="direct-yee">Direct electric-field cell integration</option>
+        </select></label>}
+        {denseGrating && <label>Grating wavelengths<select value={gratingSpectrum} onChange={e=>setGratingSpectrum(e.target.value)}>
+          <option value="standard">5 samples · 25 nm spacing</option><option value="dense">21 samples · 5 nm spacing</option>
         </select></label>}
         {key==='ring-3d' && <label>Observation duration<select value={ringDuration} onChange={e=>setRingDuration(e.target.value)}>
           <option value="">Preset duration</option>{[160,1600,2700,3200,4800,6000].map(t=><option value={t} key={t}>{t} µm/c</option>)}

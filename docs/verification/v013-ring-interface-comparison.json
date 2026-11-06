@@ -1,0 +1,233 @@
+{
+  "source": "Full-vector FDTDX on explicitly selected CUDA; fixed materials and identical geometry, aperture and duration within each pair. The Tidy3D device is a held-out example. No wavelength shifting or fitting to vendor transmission.",
+  "pairs": [
+    {
+      "vendor": "lumerical",
+      "mesh": 16,
+      "legacy_report": "v012-ring3d-lumerical-r16-t3200.json",
+      "exact_report": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
+      "legacy_arrays_sha256": "b792e3c8bd3be09921d2fb5fd78593e44873020a137046cc28aedff338388ab1",
+      "exact_arrays_sha256": "adf95f50b94eb001d1a9bea588c19e2007b3fbbf8013515efa3fd3cba667c687",
+      "exact_report_sha256": "76165fd74e0d29dfe8ffbd4439347fbe34c7a2f2ef28b8a0d1662c0b5eefe30e",
+      "local_source_sha256": {
+        "scripts/calibrate_loaded_ring3d.py": "56380f9c7fec5c2032a0fbe7d45126ace2a58be8a63904a8a23ec60b64979d92",
+        "scripts/calibrate_ring.py": "50b544c7d7ea35efd7c826925ba435b4a25412e9a259b177b36d4fe13b245b8e",
+        "scripts/measure_loaded_ring_losses.py": "82437d514e203760a84c84bea376ded18eb75ad857972f84acf82940ce05effa",
+        "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+        "scripts/ring_stage_provenance.py": "97f201028a1b262eaf28f9eb01cae9a7b4e97bd9bcfa6ff1a133752dbd77665c",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661"
+      },
+      "versions": {
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "fdtdx": "0.6.2",
+        "scipy": "1.17.1",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "legacy_and_exact_pass": [
+        true,
+        true
+      ],
+      "qualified_bins": [
+        241,
+        241
+      ],
+      "effective_guide_width_um": [
+        0.40625,
+        0.40000000000000036
+      ],
+      "fsr_nm": [
+        26.00000000000002,
+        26.00000000000002
+      ],
+      "published_fsr_nm": 25.454899999999945,
+      "measured_peaks_um": [
+        [
+          1.5305,
+          1.5565
+        ],
+        [
+          1.5305,
+          1.5565
+        ]
+      ],
+      "neff_at_1550": [
+        1.990504503250122,
+        1.970622181892395
+      ],
+      "power": {
+        "through": {
+          "common_vendor_wavelengths": 201,
+          "legacy_mae": 0.15527859715069173,
+          "exact_mae": 0.16221373076288514,
+          "at_1550": {
+            "legacy": 0.9699269306795802,
+            "exact": 0.9633589130086524,
+            "published": 0.093915300002907
+          }
+        },
+        "drop": {
+          "common_vendor_wavelengths": 201,
+          "legacy_mae": 0.12413277871431372,
+          "exact_mae": 0.13359539375650134,
+          "at_1550": {
+            "legacy": 0.02562977035761073,
+            "exact": 0.03160450528777398,
+            "published": 0.6744231240959558
+          }
+        }
+      },
+      "fixed_plane_sensitivity": {
+        "reflection": {
+          "max_power_difference": 0.05489632795677166,
+          "mean_absolute_power_difference": 0.0007292609696813218,
+          "max_complex_amplitude_difference": 0.23572956952393337,
+          "phase_bins_with_both_powers_above_0_01": 0,
+          "max_wrapped_phase_difference_rad": null
+        },
+        "through": {
+          "max_power_difference": 0.11296200219353242,
+          "mean_absolute_power_difference": 0.013249988102336331,
+          "max_complex_amplitude_difference": 0.6360044786830517,
+          "phase_bins_with_both_powers_above_0_01": 238,
+          "max_wrapped_phase_difference_rad": 0.7645163689955042
+        },
+        "drop": {
+          "max_power_difference": 0.12725741889277709,
+          "mean_absolute_power_difference": 0.013134392940607005,
+          "max_complex_amplitude_difference": 0.6802618209466683,
+          "phase_bins_with_both_powers_above_0_01": 203,
+          "max_wrapped_phase_difference_rad": 0.737863555613219
+        },
+        "add_side": {
+          "max_power_difference": 0.05288160843996369,
+          "mean_absolute_power_difference": 0.0007390501145244333,
+          "max_complex_amplitude_difference": 0.2339801093546682,
+          "phase_bins_with_both_powers_above_0_01": 0,
+          "max_wrapped_phase_difference_rad": null
+        }
+      }
+    },
+    {
+      "vendor": "lumerical",
+      "mesh": 20,
+      "legacy_report": "v012-ring3d-lumerical-r20-t3200.json",
+      "exact_report": "v013-ring3d-lumerical-r20-t3200-exact-area.json",
+      "legacy_arrays_sha256": "39d2549a62f1191e340ba8faef4e4f2b7fef6fbff926111656ad05bb24a1e77f",
+      "exact_arrays_sha256": "b6a3af4430e24dfca00e5ab6e92eb2d2b8d949b740a14e886b39aa47577eed9a",
+      "exact_report_sha256": "c130c36f38d2739475dfc122a3e1d226eb94a9b2ea9dc9d993882b552051f3f0",
+      "local_source_sha256": {
+        "scripts/calibrate_loaded_ring3d.py": "56380f9c7fec5c2032a0fbe7d45126ace2a58be8a63904a8a23ec60b64979d92",
+        "scripts/calibrate_ring.py": "50b544c7d7ea35efd7c826925ba435b4a25412e9a259b177b36d4fe13b245b8e",
+        "scripts/measure_loaded_ring_losses.py": "82437d514e203760a84c84bea376ded18eb75ad857972f84acf82940ce05effa",
+        "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+        "scripts/ring_stage_provenance.py": "97f201028a1b262eaf28f9eb01cae9a7b4e97bd9bcfa6ff1a133752dbd77665c",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661"
+      },
+      "versions": {
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "fdtdx": "0.6.2",
+        "scipy": "1.17.1",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "legacy_and_exact_pass": [
+        true,
+        true
+      ],
+      "qualified_bins": [
+        241,
+        241
+      ],
+      "effective_guide_width_um": [
+        0.4,
+        0.3999999999999986
+      ],
+      "fsr_nm": [
+        27.000000000000135,
+        27.000000000000135
+      ],
+      "published_fsr_nm": 25.454899999999945,
+      "measured_peaks_um": [
+        [
+          1.536,
+          1.5630000000000002
+        ],
+        [
+          1.536,
+          1.5630000000000002
+        ]
+      ],
+      "neff_at_1550": [
+        1.9148337841033936,
+        1.9148337841033936
+      ],
+      "power": {
+        "through": {
+          "common_vendor_wavelengths": 201,
+          "legacy_mae": 0.17297329422878857,
+          "exact_mae": 0.17232982571733826,
+          "at_1550": {
+            "legacy": 0.9854364724839674,
+            "exact": 0.985352923598394,
+            "published": 0.093915300002907
+          }
+        },
+        "drop": {
+          "common_vendor_wavelengths": 201,
+          "legacy_mae": 0.1357225811738778,
+          "exact_mae": 0.1364609661298045,
+          "at_1550": {
+            "legacy": 0.011313120041325462,
+            "exact": 0.011224665288729013,
+            "published": 0.6744231240959558
+          }
+        }
+      },
+      "fixed_plane_sensitivity": {
+        "reflection": {
+          "max_power_difference": 0.027130913919455837,
+          "mean_absolute_power_difference": 0.00048009217158386127,
+          "max_complex_amplitude_difference": 0.10526811164874801,
+          "phase_bins_with_both_powers_above_0_01": 0,
+          "max_wrapped_phase_difference_rad": null
+        },
+        "through": {
+          "max_power_difference": 0.13572115911121096,
+          "mean_absolute_power_difference": 0.00975737080809461,
+          "max_complex_amplitude_difference": 0.18417517648037277,
+          "phase_bins_with_both_powers_above_0_01": 237,
+          "max_wrapped_phase_difference_rad": 0.11656559523654707
+        },
+        "drop": {
+          "max_power_difference": 0.11882419511107878,
+          "mean_absolute_power_difference": 0.008244751583449698,
+          "max_complex_amplitude_difference": 0.18416684276829404,
+          "phase_bins_with_both_powers_above_0_01": 190,
+          "max_wrapped_phase_difference_rad": 0.19984026838728544
+        },
+        "add_side": {
+          "max_power_difference": 0.026228648038240612,
+          "mean_absolute_power_difference": 0.00047781942651087413,
+          "max_complex_amplitude_difference": 0.10472672465575,
+          "phase_bins_with_both_powers_above_0_01": 0,
+          "max_wrapped_phase_difference_rad": null
+        }
+      }
+    }
+  ]
+}

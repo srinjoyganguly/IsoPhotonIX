@@ -62,6 +62,9 @@ class Calibration(BaseModel):
     port_distance_um: float | None = Field(default=None, exclude_if=lambda v: v is None)
     planar_layout: dict | None = Field(default=None, exclude_if=lambda v: v is None)
     duration_um_c: float | None = Field(default=None, exclude_if=lambda v: v is None)
+    ring_interface: Literal['legacy','exact-area'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    grating_material_model: Literal['volume-average','direct-yee'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    grating_spectrum: Literal['standard','dense'] | None = Field(default=None, exclude_if=lambda v: v is None)
 
     @model_validator(mode='before')
     @classmethod
@@ -88,6 +91,10 @@ class Calibration(BaseModel):
             raise ValueError('Movable port planes are supported on the planar TM joint.')
         if self.duration_um_c is not None and self.case != 'ring-3d':
             raise ValueError('Choose the 3D ring to set an observation duration.')
+        if self.ring_interface is not None and self.case != 'ring-3d':
+            raise ValueError('The ring interface setting requires a full 3D ring.')
+        if (self.grating_material_model is not None or self.grating_spectrum is not None) and self.case != 'grating-3d':
+            raise ValueError('Grating material or spectrum settings require a full 3D grating.')
         if self.case == 'layout-ports-3d':
             if f'{self.solver}:{self.device}' not in calibration_routes(self.case):
                 raise ValueError('Select the NVIDIA FDTDX target for finite-height layout ports.')
@@ -106,11 +113,15 @@ class Calibration(BaseModel):
             ring = self.case == 'ring-3d'
             geometries = ('lumerical','tidy3d') if ring else ('compact','compact-narrow','compact-radiation','tidy3d','lumerical')
             self.geometry_3d = self.geometry_3d or geometries[0]
+            if self.grating_material_model=='direct-yee' and self.geometry_3d!='lumerical':
+                raise ValueError('Direct Yee-cell material sampling requires the Lumerical curved grating.')
             if self.geometry_3d not in geometries:
                 raise ValueError(f'Available {self.case} geometries: {", ".join(geometries)}.')
             meshes = (12,16,20,24) if ring else ((12,14) if self.geometry_3d in ('lumerical','tidy3d') else (12,16))
             if self.resolution is None:
                 self.resolution = 16 if ring else 12
+            if self.grating_spectrum=='dense' and (self.geometry_3d!='lumerical' or self.resolution!=12):
+                raise ValueError('The 21-sample spectrum requires the Lumerical grating at 12 cells/µm.')
             if self.resolution not in meshes:
                 raise ValueError(f'Available {self.case} meshes: {meshes} cells/µm.')
             if ring and self.duration_um_c is None:
@@ -177,6 +188,12 @@ def specification(config):
         args = ['--device', 'gpu', flag, config.geometry_3d, '--resolution', str(config.resolution)]
         if config.duration_um_c is not None:
             args += ['--duration-um-c', str(config.duration_um_c)]
+        if config.ring_interface is not None:
+            args += ['--ring-interface',config.ring_interface]
+        if config.grating_material_model is not None:
+            args += ['--grating-material-model',config.grating_material_model]
+        if config.grating_spectrum is not None:
+            args += ['--grating-spectrum',config.grating_spectrum]
         helpers = ['backend/__init__.py', *['backend/adapters/' + n + '.py' for n in (
             'fdtdx_adapter', 'fdtdx3d_adapter', 'fdtdx_ports_adapter', 'fdtdx_ports3d_adapter')]]
         if ring:
@@ -184,6 +201,8 @@ def specification(config):
                         'scripts/ring_stage_provenance.py']
         else:
             helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json']
+            if config.grating_spectrum=='dense':
+                helpers += ['docs/verification/v013-grating-dense-reference.json','docs/verification/v013-grating-dense-memory.json']
         return worker, args, helpers
     if config.case == 'layout-ports-3d':
         helpers = ['backend/__init__.py','backend/planar_port_layout.py','backend/geometry_draft.py','backend/calibrated_geometry.py',

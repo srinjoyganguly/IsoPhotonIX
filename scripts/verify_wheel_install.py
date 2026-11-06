@@ -108,6 +108,18 @@ def main():
             config={'case':preset['case'],'solver':solver,'device':device}
             with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
                 assert {'config.json','calibration.ipynb','run.py'} <= set(source.namelist())
+        for case, options in [('ring-3d', {'ring_interface':'exact-area'}),
+                              ('grating-3d', {'grating_material_model':'direct-yee','grating_spectrum':'dense'})]:
+            config={'case':case,'solver':'fdtdx','device':'gpu','geometry_3d':'lumerical',**options}
+            with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
+                captured=json.loads(source.read('config.json'))
+                assert all(captured[k]==v for k,v in options.items())
+                arguments=json.loads(source.read('manifest.json'))['arguments']
+                for key,val in options.items():
+                    assert arguments[arguments.index('--'+key.replace('_','-'))+1]==val
+                if 'grating_spectrum' in options:
+                    assert {'source/docs/verification/v013-grating-dense-reference.json',
+                            'source/docs/verification/v013-grating-dense-memory.json'} <= set(source.namelist())
         command([cli,'calibrate','coupler','--solver','fdtdx','--device','gpu','--export-only',
                  '--output',target/'calibrated-gpu-program'],'calibrated-cli.log')
         with zipfile.ZipFile(target/'calibrated-gpu-program/python-notebook.zip') as archive:
@@ -210,6 +222,7 @@ def main():
     assert layout_delta<2e-6
     cuda_check=None
     spatial_cuda=None
+    interface_cuda=None
     if args.fdtdx_gpu_python:
         folder=target/'calibrated-cuda-splitter'
         command([cli,'calibrate','splitter','--solver','fdtdx','--device','gpu','--resolution','12',
@@ -245,9 +258,23 @@ def main():
         assert maximum<2e-6 and (folder/'python-notebook-results.zip').is_file()
         spatial_cuda={'geometry':'compact','actual_device':cuda['actual_device'],'device_name':cuda['device_name'],
                       'wavelengths':5,'max_coupling_fraction_difference':maximum}
+        interface_folder=target/'direct-grating-cuda'
+        command([cli,'calibrate','grating-3d','--solver','fdtdx','--device','gpu','--geometry-3d','lumerical',
+                 '--resolution','12','--grating-material-model','direct-yee','--output',interface_folder],
+                'direct-grating-cuda.log',timeout=7200)
+        direct=json.loads((interface_folder/'calculation/report.json').read_text())
+        saved=next(row['report'] for row in grating['evidence']['recorded']
+                   if row['report']['settings'].get('grating_material_model')=='direct-yee'
+                   and row['report']['settings']['resolution']==12 and len(row['report']['result']['wavelength_um'])==5)
+        assert direct['passed'] and direct['actual_device']==cuda['actual_device']
+        assert direct['result']['wavelength_um']==saved['result']['wavelength_um']
+        delta=float(np.max(np.abs(np.subtract(direct['result']['beam_to_guide'],saved['result']['beam_to_guide']))))
+        assert delta<2e-6
+        interface_cuda={'case':'grating-3d','material_model':'direct-yee','actual_device':direct['actual_device'],
+                        'wavelengths':5,'max_coupling_fraction_difference':delta}
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
-              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),'installed_cuda_study':cuda_check,'installed_spatial_cuda':spatial_cuda,'installed_layout_max_complex_difference':layout_delta,
+              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),'installed_cuda_study':cuda_check,'installed_spatial_cuda':spatial_cuda,'installed_interface_cuda':interface_cuda,'installed_layout_max_complex_difference':layout_delta,
               'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],
               'calibrated_cli_result_bundle_verified':True,
               'generic_calibration_config_coupling':repeated['result']['center_beam_to_guide'], 'export_found_registered_interpreter': True,

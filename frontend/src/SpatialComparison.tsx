@@ -6,7 +6,7 @@ type LossPeak = {qualified:boolean;sampled_drop_peak_um:number;field_decay?:{loa
 type PowerDiagnostic =
   | {observable:'ring'; nearest_published_drop_line:{published_sampled_center_um:number;local_sampled_center_um?:number;
       local_fwhm_nm?:number;published_fwhm_nm?:number|null;local_target_distance_in_linewidths?:number;published_target_distance_in_linewidths?:number}}
-  | {observable:'grating';local_best_sample_um:number;published_best_sample_um:number; mean_absolute_difference:number;
+  | {observable:'grating';wavelength_um:number[];local_best_sample_um:number;published_best_sample_um:number; mean_absolute_difference:number;
       gain_only:{feasible:boolean;tolerance_power_fraction:number}};
 type SpatialReport = {vendor?:string;case_id?:string;settings?:{geometry:string};result?:{wavelength_um:number[];beam_to_guide:number[]};
   power_diagnostic?:PowerDiagnostic;
@@ -28,10 +28,10 @@ function PowerExplanation({data,vendor}:{data:PowerDiagnostic;vendor:string}) {
     </section>;
   }
   return <section aria-label="Grating power difference"><h3>Coupling across the measured band</h3>
-    <p>Across the five sampled wavelengths, the strongest workbench coupling is at {(data.local_best_sample_um*1000).toFixed(0)} nm
+    <p>Across {data.wavelength_um.length} sampled wavelengths, the strongest workbench coupling is at {(data.local_best_sample_um*1000).toFixed(0)} nm
       and the strongest published coupling is at {(data.published_best_sample_um*1000).toFixed(0)} nm.
       The mean absolute difference is {(100*data.mean_absolute_difference).toFixed(2)} percentage points.</p>
-    {!data.gain_only.feasible && <p>A single power multiplier cannot bring all five samples within
+    {!data.gain_only.feasible && <p>A single power multiplier cannot bring all samples within
       {' '}{(100*data.gain_only.tolerance_power_fraction).toFixed(0)} percentage points of {vendor}.</p>}
   </section>;
 }

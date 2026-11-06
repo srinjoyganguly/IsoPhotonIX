@@ -1,0 +1,68 @@
+{
+  "source": "https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler",
+  "published_ports": {
+    "project_sha256": "422335a903fe187c99910efca2eb38c1e85dbb7bbae021954fa1109e71a6e60f",
+    "frequency_hz": 193615962458333.3,
+    "wavelength_um": 1.5483870967741937,
+    "fiber_neff": 1.4409918443078993,
+    "guide_neff": 2.4527933297367293,
+    "stored_mode_valid_flags": {
+      "fiber": false,
+      "guide": true
+    },
+    "guide_plane_x_um": -25.5,
+    "guide_samples_yz": [
+      59,
+      34
+    ],
+    "core_interval_step_nm": {
+      "y": 42.918454935622314,
+      "z": 43.09745742150019
+    }
+  },
+  "comparisons": [
+    {
+      "receipt": "v012-grating3d-lumerical-r12.json",
+      "received_arrays_sha256": "99ed493d7746c0a996b018e9a3fb0ca31a9669c26a95b6acdd4b18d0a6cc5992",
+      "resolution": 12,
+      "material_model": "volume-average",
+      "guide_neff_interpolated_to_filed_frequency": 2.370134784329322,
+      "guide_neff_minus_published": -0.08265854540740714,
+      "local_detector_coordinate": "FDTDX E_z co-location (i,j,k+1/2)",
+      "local_detector_x_um": -25.500000000000004,
+      "native_power_fraction_at_1550": 0.22210307731559442,
+      "registered_grid_diagnostic": {
+        "y_offset_cells": 0.0,
+        "z_offset_cells": 0.0,
+        "ey_shape_overlap": 0.9938122906929786,
+        "reprojected_power_fraction": 0.2238820325155036
+      },
+      "half_cell_axis_uncertainty_power_fraction": [
+        0.2063430762724969,
+        0.2238820325155036
+      ]
+    },
+    {
+      "receipt": "v012-grating3d-lumerical-r14.json",
+      "received_arrays_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f",
+      "resolution": 14,
+      "material_model": "volume-average",
+      "guide_neff_interpolated_to_filed_frequency": 2.391198096736785,
+      "guide_neff_minus_published": -0.061595232999944294,
+      "local_detector_coordinate": "FDTDX E_z co-location (i,j,k+1/2)",
+      "local_detector_x_um": -25.57142857142857,
+      "native_power_fraction_at_1550": 0.24908304350250732,
+      "registered_grid_diagnostic": {
+        "y_offset_cells": 0.0,
+        "z_offset_cells": 0.0,
+        "ey_shape_overlap": 0.9929640251972659,
+        "reprojected_power_fraction": 0.2518378702526796
+      },
+      "half_cell_axis_uncertainty_power_fraction": [
+        0.23633610808242236,
+        0.2518378702526796
+      ]
+    }
+  ],
+  "scope": "A diagnostic reprojects the unchanged 1550 nm local output phasors on the filed lossless strip E/H basis from the nearby stored frequency. It retains the native incident-power normalization and uses bilinear interpolation and vacuum-impedance-scaled H. The offset range covers \u00b1half a native cell on both transverse axes; it is a registration sensitivity, not a vendor rerun or an error bar. No commercial field arrays are distributed."
+}

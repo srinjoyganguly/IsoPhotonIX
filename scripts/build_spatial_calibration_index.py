@@ -75,6 +75,8 @@ def spatial_index():
                        f"{model['pml']} PML cells · {model['aperture_um']:g} µm port")
                 if model.get('ring_interface','legacy') != 'legacy':
                     label += f" · {model['ring_interface']}"
+                if model.get('ring_material') == 'palik-ade':
+                    label += ' · dispersive Palik fit'
                 measurement=f"{data['valid_bins']} of {data['total_bins']} samples passed the observation-window checks."
                 nominal=path.name.endswith(f"-t{int(data['duration_um_c'])}.json")
                 # The first record opens in the GUI. Start with the qualified default
@@ -92,6 +94,8 @@ def spatial_index():
                 label=f'{geometry} · {mesh} cells/µm'
                 if settings.get('grating_material_model','volume-average') != 'volume-average':
                     label += f" · {settings['grating_material_model']}"
+                if settings.get('grating_spectrum') == 'dense':
+                    label += ' · 21 wavelengths'
                 panel=subset(data,('case_id','vendor','result','radiation','comparisons','settings'))
                 measurement=f"Measured input and output powers on {data['device_name']}."
                 if geometry in ('lumerical','tidy3d') and (geometry not in best_grating or mesh>best_grating[geometry][0]):

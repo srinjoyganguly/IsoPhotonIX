@@ -22,14 +22,19 @@ def continuous_te(m,height,wavelength):
     return math.sqrt(m['n_si']**2-(2*u/(height*k))**2)
 
 
-def sampled_te(m,height,wavelength,mesh):
+def sampled_te(m,height,wavelength,mesh, material_model='volume-average'):
     """Infinite symmetric oxide cladding, using the device's actual z-grid origin."""
     dx=1/mesh
     zs=grid(dict(m,resolution=mesh))[2][2]
     z=zs[0]+np.arange(-5*mesh,len(zs)+5*mesh)*dx
+    if material_model=='direct-yee':
+        z-=dx/2  # Ey's vertical half step relative to the supplied scalar-cell centers.
+    elif material_model!='volume-average':
+        raise ValueError('Unknown slab sampling model.')
     fraction=np.clip((np.minimum(height,z+dx/2)-np.maximum(0.,z-dx/2))/dx,0.,1.)
     epsilon=m['n_oxide']**2+fraction*(m['n_si']**2-m['n_oxide']**2)
-    epsilon=.5*(epsilon+np.r_[epsilon[0],epsilon[:-1]])
+    if material_model=='volume-average':
+        epsilon=.5*(epsilon+np.r_[epsilon[0],epsilon[:-1]])
     k=2*np.pi/wavelength
     cdt=.99*dx/math.sqrt(3.)
     k_time=2*math.sin(k*cdt/2)/cdt
@@ -40,18 +45,27 @@ def sampled_te(m,height,wavelength,mesh):
     return 2*math.asin(math.sqrt(beta_grid_sq)*dx/2)/(k*dx)
 
 
-def screen(mesh):
+def screen(mesh,material_model='volume-average', material_samples=None):
     m=settings('lumerical',12)
     def index(height,wavelength):
-        if mesh is None: return continuous_te(m,height,wavelength)
-        return sampled_te(m,height,wavelength,mesh)
+        medium=m
+        if material_samples is not None:
+            waves=material_samples['wavelength_um']
+            if not waves[0]<=wavelength<=waves[-1]:
+                raise ValueError('Wavelength is outside the published Palik samples.')
+            perms=material_samples['material_epsilon']
+            medium={**m,**{name:math.sqrt(np.interp(wavelength,waves,perms[key]['real'])) for name,key in
+                          (('n_si','Si (Silicon) - Palik'),('n_oxide','SiO2 (Glass) - Palik'))}}
+        if mesh is None: return continuous_te(medium,height,wavelength)
+        return sampled_te(medium,height,wavelength,mesh,material_model)
     def equation(wavelength):
         rib=index(m['height'],wavelength)
         film=index(m['height']-m['etch'],wavelength)
         fiber=lp01(m['fiber_radius'],m['fiber_core_n'],m['fiber_clad_n'],wavelength)[2]
         return m['fill']*rib+(1-m['fill'])*film-fiber*math.sin(math.radians(m['angle_deg']))-wavelength/m['period']
+    bracket=(1.5,1.6) if material_samples is not None else (1.2,1.9)
     return {'mesh_cells_per_um':mesh,'rib_te_neff_1550':index(.22,1.55),'film_te_neff_1550':index(.12,1.55),
-            'estimated_first_order_wavelength_um':brentq(equation,1.2,1.9)}
+            'estimated_first_order_wavelength_um':brentq(equation,*bracket)}
 
 
 if __name__=='__main__':

@@ -10,7 +10,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from scripts.calibrate_finite_grating import WL, file_hash, normal_flux, digest
+from scripts.calibrate_finite_grating import monitoring_wavelengths, file_hash, normal_flux, digest
 from scripts.grating_angular_spectrum import air_angular_flux, incident_beam_check
 from scripts.lumerical_grating3d import reflected_fiber_amplitude
 from backend.adapters.fdtdx_ports3d_adapter import modal_amplitudes
@@ -22,12 +22,13 @@ def verify(run):
     if file_hash(archive)!=report['arrays_sha256']:
         raise ValueError('Grating numerical archive digest mismatch.')
     m=report['settings']; dx=1/m['resolution']
+    wavelengths=monitoring_wavelengths(m)
     d=report['stages']['device']; r=report['stages']['reference']
     if not d['actual_device'].startswith('cuda:') or d['actual_device']!=r['actual_device']:
         raise ValueError('Reference and device must identify the same CUDA device.')
     with np.load(archive,allow_pickle=False) as data:
-        np.testing.assert_array_equal(data['ref_wavelength_um'],WL)
-        np.testing.assert_array_equal(data['dev_wavelength_um'],WL)
+        np.testing.assert_array_equal(data['ref_wavelength_um'],wavelengths)
+        np.testing.assert_array_equal(data['dev_wavelength_um'],wavelengths)
         incident_direction=None
         # Verify matched sources, solver archive reproducibility and material maps.
         stages=[(r,'ref'),(d,'dev')]
@@ -81,8 +82,8 @@ def verify(run):
                 np.testing.assert_allclose(refl,data['reflected_fiber_mode'],atol=1e-12)
                 np.testing.assert_allclose(abs(refl)**2,report['radiation']['fiber_return_power'])
             else:
-                incident_direction=incident_beam_check(data['ref_upper'],dx,WL,incident)
-                ang=air_angular_flux(scatter,dx,WL)
+                incident_direction=incident_beam_check(data['ref_upper'],dx,wavelengths,incident)
+                ang=air_angular_flux(scatter,dx,wavelengths)
                 frac=ang['polar_bin_power']/incident[:,None]
                 np.testing.assert_allclose(frac,data['reflected_angular_fraction'],atol=1e-12)
                 np.testing.assert_allclose(frac,report['radiation']['fraction_of_incident'])

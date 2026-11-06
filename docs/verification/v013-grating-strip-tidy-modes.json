@@ -1,0 +1,97 @@
+{
+  "solver": "Local Tidy3D ModeSolver",
+  "version": "2.11.2",
+  "geometry": "Straight output strip, 500 \u00d7 220 nm; 1 \u00b5m buried oxide over substrate, 0.70 \u00b5m top oxide, air cover.",
+  "scope": "Independent continuous geometry and meshes with local subpixel averaging disabled. FDTDX also calls Tidy3D for transverse port modes. The mode window is finite; this experiment does not propagate the curved 3D device.",
+  "wavelength_um": 1.5483870967741937,
+  "filed_neff": 2.4527933297367293,
+  "filed_project_sha256": "422335a903fe187c99910efca2eb38c1e85dbb7bbae021954fa1109e71a6e60f",
+  "medium_permittivities": [
+    12.086305916251337,
+    2.085201101125313
+  ],
+  "aperture_um": [
+    2.5,
+    2.25
+  ],
+  "rows": [
+    {
+      "cells_per_um": 32,
+      "guide_neff": 2.4921537556842455,
+      "squared_Ey_overlap": 0.9979593410183127,
+      "core_window_Ey_fraction": 0.9522632594231673,
+      "edge_Ey_fraction": 1.5815747657916976e-08,
+      "aperture_um": [
+        2.5,
+        2.25
+      ],
+      "mode_index": 0,
+      "neff_minus_filed": 0.03936042594751621
+    },
+    {
+      "cells_per_um": 48,
+      "guide_neff": 2.50983381912228,
+      "squared_Ey_overlap": 0.9962714323095738,
+      "core_window_Ey_fraction": 0.9563696397180648,
+      "edge_Ey_fraction": 8.247669636038715e-09,
+      "aperture_um": [
+        2.5,
+        2.25
+      ],
+      "mode_index": 0,
+      "neff_minus_filed": 0.05704048938555095
+    },
+    {
+      "cells_per_um": 72,
+      "guide_neff": 2.4751238553313537,
+      "squared_Ey_overlap": 0.9946475654435085,
+      "core_window_Ey_fraction": 0.9537609034762354,
+      "edge_Ey_fraction": 7.812497987700528e-09,
+      "aperture_um": [
+        2.5,
+        2.25
+      ],
+      "mode_index": 0,
+      "neff_minus_filed": 0.02233052559462445
+    },
+    {
+      "cells_per_um": 96,
+      "guide_neff": 2.4571288380309237,
+      "squared_Ey_overlap": 0.9935210866028371,
+      "core_window_Ey_fraction": 0.9531235926667683,
+      "edge_Ey_fraction": 7.0219595876410435e-09,
+      "aperture_um": [
+        2.5,
+        2.25
+      ],
+      "mode_index": 0,
+      "neff_minus_filed": 0.00433550829419449
+    },
+    {
+      "cells_per_um": 128,
+      "guide_neff": 2.4533709703344577,
+      "squared_Ey_overlap": 0.9926466028568955,
+      "core_window_Ey_fraction": 0.9547868134974599,
+      "edge_Ey_fraction": 5.48093500652492e-09,
+      "aperture_um": [
+        2.5,
+        2.25
+      ],
+      "mode_index": 0,
+      "neff_minus_filed": 0.0005776405977284682
+    }
+  ],
+  "larger_window": {
+    "cells_per_um": 96,
+    "guide_neff": 2.4546033940376173,
+    "squared_Ey_overlap": 0.9935518416923729,
+    "core_window_Ey_fraction": 0.956062512160063,
+    "edge_Ey_fraction": 5.899710220170901e-10,
+    "aperture_um": [
+      3.0,
+      2.7
+    ],
+    "mode_index": 2,
+    "neff_minus_filed": 0.0018100643008880368
+  }
+}

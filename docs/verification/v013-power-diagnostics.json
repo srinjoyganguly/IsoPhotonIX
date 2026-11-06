@@ -4098,6 +4098,90 @@
       "mesh": 16,
       "source_report_sha256": "76165fd74e0d29dfe8ffbd4439347fbe34c7a2f2ef28b8a0d1662c0b5eefe30e",
       "native_arrays_sha256": "adf95f50b94eb001d1a9bea588c19e2007b3fbbf8013515efa3fd3cba667c687"
+    },
+    "v013-ring3d-lumerical-r20-t3200-exact-area.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "reflection": {
+          "local": 5.814831637930935e-06,
+          "published": 0.0007615791758866508,
+          "mean_absolute_difference": 0.0032233032382029876
+        },
+        "through": {
+          "local": 0.985352923598394,
+          "published": 0.093915300002907,
+          "mean_absolute_difference": 0.17232982571733826
+        },
+        "drop": {
+          "local": 0.011224665288729013,
+          "published": 0.6744231240959558,
+          "mean_absolute_difference": 0.1364609661298045
+        },
+        "add_side": {
+          "local": 7.853265105692897e-06,
+          "published": 0.000824536588624558,
+          "mean_absolute_difference": 0.0032159351638962395
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5500920771652973,
+        "published_peak_power": 0.7153218182890001,
+        "published_fwhm_nm": 1.4208675155746864,
+        "published_target_distance_in_linewidths": 0.06480348398985136
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 27.000000000000135,
+        "published": 25.454899999999945
+      },
+      "variant": "exact-area / fixed",
+      "mesh": 20,
+      "source_report_sha256": "c130c36f38d2739475dfc122a3e1d226eb94a9b2ea9dc9d993882b552051f3f0",
+      "native_arrays_sha256": "b6a3af4430e24dfca00e5ab6e92eb2d2b8d949b740a14e886b39aa47577eed9a"
+    },
+    "v013-grating3d-lumerical-direct-r12.json": {
+      "observable": "grating",
+      "target_um": 1.55,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "local_power": [
+        0.04602741644313781,
+        0.12411395474052811,
+        0.2514941337844058,
+        0.34357045115220763,
+        0.305873723461999
+      ],
+      "published_power": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "local_at_target": 0.2514941337844058,
+      "published_at_target": 0.4002656827642284,
+      "mean_absolute_difference": 0.10651741999833726,
+      "max_absolute_difference": 0.17043192387547246,
+      "local_best_sample_um": 1.575,
+      "published_best_sample_um": 1.55,
+      "gain_only": {
+        "tolerance_power_fraction": 0.05,
+        "minimum_required": 2.1859376096376395,
+        "maximum_allowed": 0.8949078342725878,
+        "feasible": false,
+        "minimum_set_by_index": 0,
+        "maximum_set_by_index": 4
+      },
+      "variant": "direct-yee / standard",
+      "mesh": 12,
+      "source_report_sha256": "f6b3adcbd03f8bb8febb96bbb7e5f37246d89e3cc0f656ca8599d15088c09800",
+      "native_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903"
     }
   }
 }

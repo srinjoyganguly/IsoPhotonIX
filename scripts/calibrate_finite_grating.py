@@ -27,9 +27,28 @@ WL = np.array([1.5, 1.525, 1.55, 1.575, 1.6])
 C = .299792458  # µm/fs
 
 
-def settings(name, resolution):
+def monitoring_wavelengths(model):
+    if model.get('grating_spectrum', 'standard') == 'dense':
+        return np.arange(1500, 1601, 5, dtype=np.float64)/1000
+    return WL
+
+
+def settings(name, resolution, grating_material_model='volume-average', grating_spectrum='standard'):
+    if grating_spectrum not in ('standard', 'dense'):
+        raise ValueError('Choose a standard or dense grating spectrum.')
+    if grating_spectrum=='dense' and (name!='lumerical' or resolution!=12):
+        raise ValueError('The dense spectrum has a memory profile for the 12-cell Lumerical geometry only.')
+    if grating_material_model not in ('volume-average','direct-yee'):
+        raise ValueError('Unknown grating material model.')
+    if grating_material_model=='direct-yee' and name!='lumerical':
+        raise ValueError('Direct Yee-cell integration is supported for the Lumerical curved grating.')
     if name == 'lumerical' and resolution in (12,14,16):
-        return ansys.model(resolution)
+        model=ansys.model(resolution)
+        if grating_spectrum=='dense':
+            model['grating_spectrum']='dense'
+        if grating_material_model!='volume-average':
+            model['grating_material_model']=grating_material_model
+        return model
     matched = name == 'tidy3d'
     allowed=(12,14,16) if matched else (12,16)
     if name not in ('tidy3d', 'compact', 'compact-narrow', 'compact-radiation') or resolution not in allowed:
@@ -185,6 +204,11 @@ def memory_admission(m, available_mib):
         required=1024.+1.2*samples[0]['baseline_native_peak_mib']
     else:
         required=next(v['required_free_with_reserve_mib'] for v in samples if v['resolution']==m['resolution'])
+    if m.get('grating_spectrum')=='dense':
+        profile=json.loads((ROOT/'docs/verification/v013-grating-dense-memory.json').read_text())
+        if profile['resolution']!=m['resolution'] or profile['wavelength_um']!=monitoring_wavelengths(m).tolist():
+            raise ValueError('Dense GPU memory profile differs from the requested native monitors.')
+        required=max(required,profile['required_free_with_reserve_mib'])
     if available_mib<required:
         raise ValueError(f"{m['geometry']} at {m['resolution']} cells/µm requires {math.ceil(required)} MiB free "
                          f"under the measured GPU budget, but {available_mib} MiB is available. Choose a smaller mesh or free GPU memory.")
@@ -217,7 +241,9 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     nx,ny,nz = shape
     dx = 1/m['resolution']
     at = lambda axis,value: int(np.argmin(abs(axes[axis]-value)))
-    frequencies = 1/WL
+    wavelengths = monitoring_wavelengths(m)
+    center_bin = wavelengths.tolist().index(1.55)
+    frequencies = 1/wavelengths
     center = 299792458e6/1.55
     bandwidth = .5*299792458e6*(1/WL[0]-1/WL[-1])
     pulse_end = 12/(2*np.pi*bandwidth)*1e15
@@ -272,7 +298,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     if guided or not reference:
         detector('output',(1,py,pz),(px,sy,sz))
     if not reference:
-        detector('center',(nx-2*pml,1,nz-2*pml),(pml,ny//2,pml),(waves[2],))
+        detector('center',(nx-2*pml,1,nz-2*pml),(pml,ny//2,pml),(waves[center_bin],))
     energy = fdtdx.EnergyDetector(name='energy',partial_grid_shape=tuple(n-2*pml for n in shape),
                 reduce_volume=True,exact_interpolation=True,plot=False,
                 switch=fdtdx.OnOffSwitch(interval=max(1,round(4e-15/sim.time_step_duration))))
@@ -284,6 +310,9 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         eps = np.broadcast_to(eps[px:px+1],shape).copy()
     eps_hash=digest(eps)
     staggered=aligned(eps)
+    if not reference and m.get('grating_material_model')=='direct-yee':
+        ansys.silicon_on_yee_grid(m,axes,staggered)
+    component_hash=tuple(digest(component) for component in staggered)
     arrays=arrays.aset('inv_permittivities',jax.device_put(1/staggered,target))
     arrays,obj,_=fdtdx.apply_params(arrays,obj,params,key)
     if arrays.fields.E.device!=target or not np.allclose(np.asarray(arrays.inv_permittivities),1/staggered,rtol=2e-6):
@@ -412,7 +441,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     if final.fields.E.device!=target:
         raise RuntimeError('FDTD fields left the requested device.')
     data={'upper':upper,'upper_x_um':axes[0][ax0:ax1],'upper_y_um':axes[1][ay],
-          'wavelength_um':WL,'history_observable':np.array(spectra),'source_E':electric,'source_H':magnetic,
+          'wavelength_um':wavelengths,'history_observable':np.array(spectra),'source_E':electric,'source_H':magnetic,
           'source_time_offset_E':delays_e,'source_time_offset_H':delays_h,
           'energy':energy_trace,'energy_time_fs':times,
           'material_yz':eps[px],'material_xy':eps[:,:,at(2,.18)],'material_xz':eps[:,ny//2,:],
@@ -427,6 +456,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                 history=history,compile_seconds=compile_seconds,stepping_seconds=time.monotonic()-start,source_direction=direction.tolist(),
                 source_eh_sha256=digest(np.stack([electric,magnetic])),
                 source_time_offsets_sha256=digest(np.stack([delays_e,delays_h])),scalar_permittivity_sha256=eps_hash,
+                electric_component_permittivity_sha256=component_hash,
                 sample_plane_z_um=float(axes[2][az]),output_plane_x_um=float(axes[0][px]),
                 sampled_vertical_um=[float(axes[2][sz]),float(axes[2][sz+pz-1])],
                 port_basis=meta if guided or not reference else None,
@@ -464,6 +494,10 @@ def stage_archive(m, label, cache):
                 staged=Path(tmp)/'stage'; staged.mkdir()
                 cmd=[sys.executable,str(Path(__file__).resolve()),'--device','gpu','--geometry',m['geometry'],
                      '--resolution',str(m['resolution']),'--stage',label,'--output',str(staged)]
+                if 'grating_material_model' in m:
+                    cmd.extend(('--grating-material-model',m['grating_material_model']))
+                if 'grating_spectrum' in m:
+                    cmd.extend(('--grating-spectrum',m['grating_spectrum']))
                 # Workers are separate processes so native device memory is released after each stage.
                 env={**os.environ,'PHOTONICS_GRATING_DEVICE_SALT':salt.hex()}
                 gpu_lock=os.environ.get('PHOTONICS_GPU_LOCK')
@@ -499,6 +533,8 @@ def run(m, output, cache):
     output.mkdir(parents=True,exist_ok=True)
     if (output/'report.json').exists() or (output/'arrays.npz').exists():
         raise ValueError('Choose a fresh result directory.')
+    wavelengths=monitoring_wavelengths(m)
+    center_bin=wavelengths.tolist().index(1.55)
     ref,rr=stage_archive(m,'reference',cache)
     dev,dr=stage_archive(m,'device',cache)
     for key in ('source_eh_sha256','source_time_offsets_sha256','device_name','actual_device','cuda_identity'):
@@ -512,6 +548,8 @@ def run(m, output, cache):
         return publish(m,output,ref,rr,dev,dr,beam,br)
     with np.load(ref/'arrays.npz',allow_pickle=False) as r,np.load(dev/'arrays.npz',allow_pickle=False) as d:
         stored={**{f'ref_{k}':r[k] for k in r.files},**{f'dev_{k}':d[k] for k in d.files}}
+        np.testing.assert_array_equal(r['wavelength_um'],wavelengths)
+        np.testing.assert_array_equal(d['wavelength_um'],wavelengths)
         incident=-normal_flux(r['upper'],1/m['resolution'])
         output_mode=d['output_amplitudes'][:,1]
         efficiency=abs(output_mode)**2/incident
@@ -542,8 +580,14 @@ def run(m, output, cache):
     if comparison['geometry_matched']:
         comparison['local_minus_published_percentage_points']=(100*(efficiency-np.array(tidy['coupling']))).tolist()
         comparison['mean_absolute_difference_percentage_points']=float(np.mean(abs(100*(efficiency-np.array(tidy['coupling'])))))
+    published_lumerical=lum['samples']['S21']['power']
+    if m.get('grating_spectrum')=='dense':
+        source=json.loads((ROOT/'docs/verification/v013-grating-dense-reference.json').read_text())
+        if source['s_file_sha256']!=lum['s_file_sha256'] or source['wavelength_um']!=wavelengths.tolist():
+            raise ValueError('The dense comparison does not match the verified commercial reference and monitor grid.')
+        published_lumerical=source['published_s21_power']
     lcomparison={'vendor':'Lumerical','url':ANSYS_URL,'geometry_matched':m['geometry']=='lumerical',
-                 'wavelength_um':WL.tolist(),'published_s21_power':lum['samples']['S21']['power'],
+                 'wavelength_um':wavelengths.tolist(),'published_s21_power':published_lumerical,
                  'vendor_file_sha256':lum['s_file_sha256'],'scope':lum['scope']}
     if m['geometry']=='lumerical':
         comparison['scope']='Different geometry and incoming mode: Tidy3D uses straight teeth and an air-side Gaussian.'
@@ -554,8 +598,8 @@ def run(m, output, cache):
     report={'schema_version':1,'case_id':'finite-grating-3d','vendor':{'tidy3d':'Tidy3D','lumerical':'Lumerical'}.get(m['geometry'],'Workbench'),
             'actual_device':dr['actual_device'],'device_name':dr['device_name'],'passed':bool(np.all(valid)),
             'settings':m,'stages':{'reference':rr,'device':dr},'arrays_sha256':file_hash(output/'arrays.npz'),
-            'result':{'resolution':m['resolution'],'wavelength_um':WL.tolist(),'beam_to_guide':efficiency.tolist(),
-                      'center_beam_to_guide':float(efficiency[2]),'valid_beam_bins':valid.tolist(),
+            'result':{'resolution':m['resolution'],'wavelength_um':wavelengths.tolist(),'beam_to_guide':efficiency.tolist(),
+                      'center_beam_to_guide':float(efficiency[center_bin]),'valid_beam_bins':valid.tolist(),
                       'incident_power':incident.tolist(),'mode_real':output_mode.real.tolist(),'mode_imag':output_mode.imag.tolist()},
             'field_preview':{'array':'dev_center_fields','index':[1],'axis_order':'xy','horizontal_axis':'x','vertical_axis':'z',
                              'horizontal_um':horiz,'vertical_um':vert,'component':'Ey','wavelength_um':1.55,
@@ -570,10 +614,14 @@ def main():
     parser.add_argument('--device',choices=['gpu'],required=True)
     parser.add_argument('--resolution',type=int,choices=(12,14,16),default=12)
     parser.add_argument('--geometry',choices=('compact','compact-narrow','tidy3d','lumerical','compact-radiation'),default='compact')
+    parser.add_argument('--grating-material-model',choices=('volume-average','direct-yee'),default='volume-average',
+                        help='Use volume averaging or integrate the Lumerical silicon directly on the Yee cells.')
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--grating-spectrum',choices=('standard','dense'),default='standard',
+                        help='Measure the published five samples, or 21 native wavelengths on the 12-cell Lumerical grid.')
     parser.add_argument('--checkpoint',type=Path)
     parser.add_argument('--stage',choices=('reference','device'),help=argparse.SUPPRESS)
-    args=parser.parse_args(); m=settings(args.geometry,args.resolution)
+    args=parser.parse_args(); m=settings(args.geometry,args.resolution,args.grating_material_model,args.grating_spectrum)
     if args.stage:
         report,arrays=native_stage(m,args.stage=='reference')
         np.savez_compressed(args.output/'arrays.npz',**arrays)

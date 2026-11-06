@@ -99,7 +99,7 @@ def port_centers(project):
     return result
 
 
-def lumerical(archive):
+def lumerical(archive, wavelengths=WAVELENGTHS):
     data=archive.read_bytes()
     with zipfile.ZipFile(io.BytesIO(data)) as z:
         s_data=z.read('gc_strip_te_c_S_params.dat')
@@ -111,12 +111,12 @@ def lumerical(archive):
             raise ValueError('Invalid frequency ordering in the published S-parameter file.')
         # File stores scattering magnitude and phase. Interpolate measured power on wavelength.
         wv=299792458e6/val[:,0]
-        rows[f'S{m[1]}{m[2]}']=dict(power=np.interp(WAVELENGTHS,wv[::-1],val[::-1,1]**2).tolist(),
+        rows[f'S{m[1]}{m[2]}']=dict(power=np.interp(wavelengths,wv[::-1],val[::-1,1]**2).tolist(),
                                     peak_power=float(np.max(val[:,1]**2)),
                                     peak_wavelength_um=float(wv[np.argmax(val[:,1]**2)]))
     if set(rows)!=set(('S11','S12','S21','S22')): raise ValueError('Missing published matrix block.')
     return dict(vendor='Lumerical',source=LUM,download=LUM_EXAMPLE,archive_sha256=sha(data),s_file_sha256=sha(s_data),
-                project_sha256=sha(project),wavelength_um=WAVELENGTHS.tolist(),samples=rows,
+                project_sha256=sha(project),wavelength_um=wavelengths.tolist(),samples=rows,
                 fiber_group=group_properties(project,'core diameter',6),
                 grating_group=group_properties(project,'target length',13),
                 port_centers_um=port_centers(project),
@@ -130,6 +130,24 @@ if __name__=='__main__':
     parser.add_argument('--notebook',type=Path,required=True)
     parser.add_argument('--ansys-archive',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--dense-output',type=Path,help='Also write the derived 21-point, hash-checked Lumerical S21 reference.')
     args=parser.parse_args()
     receipt=dict(tidy3d=digitize(args.notebook),lumerical=lumerical(args.ansys_archive))
     args.output.write_text(json.dumps(receipt,indent=2,allow_nan=False)+'\n')
+    if args.dense_output:
+        from scripts.calibrate_finite_grating import monitoring_wavelengths
+        root=Path(__file__).resolve().parents[1]
+        nominal=json.loads((root/'docs/verification/v012-grating-commercial-references.json').read_text())['lumerical']
+        wavelengths=monitoring_wavelengths({'grating_spectrum':'dense'})
+        lum=lumerical(args.ansys_archive,wavelengths)
+        if any(lum[k]!=nominal[k] for k in ('archive_sha256','s_file_sha256','project_sha256')):
+            raise ValueError('The input differs from the pinned commercial example.')
+        if lum['samples']['S21']['power'][::5]!=nominal['samples']['S21']['power']:
+            raise ValueError('Dense commercial powers do not reproduce the five archived anchor values.')
+        output={k:lum[k] for k in ('source','download','archive_sha256','s_file_sha256','wavelength_um')}
+        output.update(input_file='gc_strip_te_c_S_params.dat',input_samples=50,
+                      published_s21_power=lum['samples']['S21']['power'],
+                      peak_wavelength_um=lum['samples']['S21']['peak_wavelength_um'],
+                      peak_power=lum['samples']['S21']['peak_power'],
+                      method='Linear interpolation in wavelength of squared S21 magnitude from the 50-row ascending frequency table.')
+        args.dense_output.write_text(json.dumps(output,indent=2,allow_nan=False)+'\n')
