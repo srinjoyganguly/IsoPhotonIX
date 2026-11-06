@@ -31,11 +31,21 @@ def section(axis, lo, hi):
 
 def geometry_steps(axes, m):
     x,y,z=(np.asarray(a,dtype=float) for a in axes)
+    period=m["period"]
+    start=period*np.floor(m["beam_x"]/period)
+    if m["geometry"]=="lumerical":
+        split=start+(1-m["fill"])*period
+        groove,ridge=(start,split),(split,start+period)
+    else:
+        split=start+m["fill"]*period
+        ridge,groove=(start,split),(split,start+period)
     return {"grid_boundary_bounds_um":[[float(a[0]),float(a[-1])] for a in (x,y,z)],
             "sampled_cell_counts":[len(a)-1 for a in (x,y,z)],
             "step_nm_at_beam_x":at(x,m["beam_x"]),"step_nm_at_center_y":at(y,0.),
             "ridge_section":section(z,0.,m["height"]),
-            "etched_part":section(z,m["height"]-m["etch"],m["height"])}
+            "etched_part":section(z,m["height"]-m["etch"],m["height"]),
+            "central_tooth_period":{"scope":"Centerline y=0, using the period containing the source beam center.",
+                                    "groove":section(x,*groove),"ridge":section(x,*ridge)}}
 
 
 def tidy_grid(m):

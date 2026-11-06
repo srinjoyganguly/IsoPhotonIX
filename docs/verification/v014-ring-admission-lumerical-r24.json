@@ -1,0 +1,8 @@
+{
+  "vendor": "lumerical",
+  "candidate_mesh": 24,
+  "admitted": true,
+  "available_at_launch_mib": 12437,
+  "required_with_reserve_mib": 7833.188239564428,
+  "budget_sha256": "3d66e04c46e667061033f440336493dc9f63bf3e189273fcc169f35105ac2c02"
+}

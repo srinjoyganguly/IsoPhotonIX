@@ -33,6 +33,32 @@
         1.36247253741087e-05
       ],
       "reciprocity_within_0_05": true
+    },
+    {
+      "forward_input": "left_lower",
+      "forward_output": "left_upper",
+      "reverse_arrays_sha256": "acc8fd52e3986c3dd321c3afbf35e2f2b8465d2380b989e5ee9c9eac6b7198c2",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "complex_amplitude_delta": [
+        1.1697699329040161e-07,
+        3.2109740199794245e-08,
+        2.0253391245345662e-08
+      ],
+      "power_delta": [
+        2.67241829172714e-10,
+        1.384186206418244e-10,
+        6.493732703452802e-12
+      ],
+      "signed_phase_delta_rad": [
+        null,
+        null,
+        null
+      ],
+      "reciprocity_within_0_05": true
     }
   ]
 }

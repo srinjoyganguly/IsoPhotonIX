@@ -28,7 +28,7 @@ def compare_duration(short,long):
             'native_run_passed':[x['native_passed'],y['native_passed']],'native_arrays_sha256':[x['sha'],y['sha']],
             'verified_exact_prefix_samples':prefix_samples,'common_qualified_inband_bins':int(good.sum()),
             'newly_qualified_wavelength_um':y['w'][~x['valid']&y['valid']].tolist(),
-            'channels':compare('ring',x['s'],y['s'],good,x['phase_ok']&y['phase_ok'])}
+            'channels':compare('ring',x['s'],y['s'],good,x['phase_ok']&y['phase_ok'],wavelengths=x['w'])}
     return result
 
 

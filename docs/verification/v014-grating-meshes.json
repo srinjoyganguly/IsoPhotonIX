@@ -2,11 +2,27 @@
   "qualified": [
     {
       "geometry": "lumerical",
+      "domain": "full",
+      "material": "direct-yee",
+      "resolution": 16,
+      "run": "v014-grating3d-lumerical-direct-r16.json",
+      "memory_profile": "v014-grating-memory-lumerical-r16.json"
+    },
+    {
+      "geometry": "lumerical",
       "domain": "mirror-y",
       "material": "direct-yee",
       "resolution": 12,
       "run": "v014-grating3d-lumerical-mirror-control-r12.json",
       "reference": "v014-grating-mirror-lumerical-r12.json"
+    },
+    {
+      "geometry": "tidy3d",
+      "domain": "mirror-y",
+      "material": "volume-average",
+      "resolution": 12,
+      "run": "v014-grating3d-tidy3d-mirror-control-r12.json",
+      "reference": "v014-grating-mirror-tidy3d-r12.json"
     }
   ]
 }

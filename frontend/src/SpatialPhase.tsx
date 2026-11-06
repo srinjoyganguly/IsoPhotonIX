@@ -2,13 +2,15 @@ import { useState } from 'react';
 
 type NativePhase = {power:number; complex:number; phase:number|null; strong:number};
 type CommercialPhase = {native_power:number;vendor_power:number; signed_native_minus_vendor_phase_rad:number|null};
+type Residual = {rms:number|null;max_abs:number|null;count:number};
 export type SpatialPhaseStudy = {
   receipt:string;vendor:string;amplitude_floor:number;
   samples:{mesh:number;passed:boolean;valid:number;total:number;band:Record<string,{count:number;rms:number|null;max_abs:number|null}>;central_wavelength_um:number|null;absolute:Record<string,CommercialPhase>;
-    commercial:Record<string,{max_abs:number|null;count:number}>}[];
+    commercial:Record<string,Residual>;commercial_power?:Record<string,Residual>}[];
   pairs:{meshes:[number,number];channels:Record<string,NativePhase>}[];
 };
 const value=(n:number|null)=>n===null?'—':n.toPrecision(4);
+const points=(n:number|null|undefined)=>n==null?'—':value(100*n);
 
 export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
   const [index,setIndex]=useState(0);
@@ -34,7 +36,14 @@ export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
       {Object.keys(s.band).length>0 && <div className="cal-time-scroll"><table><caption>Absolute phase difference across the Lumerical band · {s.mesh} cells/µm</caption>
       <thead><tr><th>Port</th><th>RMS (rad)</th><th>Maximum (rad)</th><th>Usable samples</th></tr></thead>
       <tbody>{Object.entries(s.band).map(([name,v])=><tr key={name}><th>{name}</th><td>{value(v.rms)}</td>
-        <td>{value(v.max_abs)}</td><td>{v.count}</td></tr>)}</tbody></table></div>}</div>)}
+        <td>{value(v.max_abs)}</td><td>{v.count}</td></tr>)}</tbody></table></div>}
+      {Object.keys(s.commercial).length>0 && <div className="cal-time-scroll"><table>
+        <caption>Power and phase increments against {study.vendor==='lumerical'?'Lumerical':study.vendor} · {s.mesh} cells/µm</caption>
+        <thead><tr><th>Port</th><th>Power RMS (pp)</th><th>Max power error (pp)</th><th>Phase increment RMS (rad)</th><th>Usable increments</th></tr></thead>
+        <tbody>{Object.entries(s.commercial).map(([name,angle])=><tr key={name}><th>{name}</th>
+          <td>{points(s.commercial_power?.[name]?.rms)}</td><td>{points(s.commercial_power?.[name]?.max_abs)}</td>
+          <td>{value(angle.rms??null)}</td><td>{angle.count}</td></tr>)}</tbody></table>
+        <p>Each increment measures phase change between adjacent qualified wavelengths. Sparse samples can miss full turns.</p></div>}</div>)}
     {study.vendor.toLowerCase()==='tidy3d' && <p>The published Tidy3D example supplies power. The phase changes above compare local GPU runs.</p>}
     <p><a href={'/api/calibrations/phase.csv?receipt='+encodeURIComponent(study.receipt)}>Download registered complex samples (CSV)</a></p>
     <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+study.receipt}

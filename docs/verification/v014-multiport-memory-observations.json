@@ -1,0 +1,26 @@
+{
+  "method": "Sampled global NVIDIA board memory via nvidia-smi about every two seconds while each listed registered worker was active. Sampling began partway through the first coupler job and omits intervals outside the observer lifetime. Global traffic includes WSL graphics and other processes. Values are observed extrema, not per-process allocation or guaranteed peak footprint. These observations do not change the admission reserve.",
+  "observations": {
+    "coupler-24": {
+      "first_sample_utc": "2026-11-06T14:35:38.933591+00:00",
+      "min_free_global_mib": 7854,
+      "max_used_global_mib": 8320,
+      "samples": 27,
+      "last_sample_utc": "2026-11-06T14:36:32.422450+00:00"
+    },
+    "splitter-24": {
+      "first_sample_utc": "2026-11-06T15:12:15.914373+00:00",
+      "min_free_global_mib": 7911,
+      "max_used_global_mib": 8263,
+      "samples": 71,
+      "last_sample_utc": "2026-11-06T15:14:40.172142+00:00"
+    },
+    "coupler-24-right_lower": {
+      "first_sample_utc": "2026-11-06T15:14:42.231186+00:00",
+      "min_free_global_mib": 7717,
+      "max_used_global_mib": 8457,
+      "samples": 72,
+      "last_sample_utc": "2026-11-06T15:17:08.702830+00:00"
+    }
+  }
+}

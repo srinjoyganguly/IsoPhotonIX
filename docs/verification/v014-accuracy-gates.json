@@ -166,6 +166,14 @@
       },
       "all_evidenced_and_met": false
     },
+    "v014-grating3d-lumerical-direct-r16.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": true
+    },
     "v014-grating3d-lumerical-mirror-control-r12.json": {
       "criteria": {
         "target_within_five_points": false,
@@ -173,6 +181,22 @@
         "native_full_spectrum_qualified": true
       },
       "all_evidenced_and_met": false
+    },
+    "v014-grating3d-tidy3d-full-control-r12.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": true
+    },
+    "v014-grating3d-tidy3d-mirror-control-r12.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": true
     },
     "v014-ring3d-lumerical-r16-t3200-wall-tensor.json": {
       "criteria": {
@@ -252,6 +276,26 @@
       "within_two_points": false
     },
     {
+      "vendor": "tidy3d",
+      "variant": "volume-average / standard",
+      "coarse": "v014-grating3d-tidy3d-full-control-r12.json",
+      "fine": "v012-grating3d-tidy3d-r14.json",
+      "coarse_domain": "full",
+      "fine_domain": "full",
+      "max_absolute_change": 0.03756322424540358,
+      "within_two_points": false
+    },
+    {
+      "vendor": "tidy3d",
+      "variant": "volume-average / standard",
+      "coarse": "v014-grating3d-tidy3d-mirror-control-r12.json",
+      "fine": "v012-grating3d-tidy3d-r14.json",
+      "coarse_domain": "mirror-y",
+      "fine_domain": "full",
+      "max_absolute_change": 0.037563222509246166,
+      "within_two_points": false
+    },
+    {
       "vendor": "lumerical",
       "variant": "direct-yee / standard",
       "coarse": "v013-grating3d-lumerical-direct-r12.json",
@@ -270,7 +314,17 @@
       "fine_domain": "full",
       "max_absolute_change": 0.08463531071917718,
       "within_two_points": false
+    },
+    {
+      "vendor": "lumerical",
+      "variant": "direct-yee / standard",
+      "coarse": "v013-grating3d-lumerical-direct-r14.json",
+      "fine": "v014-grating3d-lumerical-direct-r16.json",
+      "coarse_domain": "full",
+      "fine_domain": "full",
+      "max_absolute_change": 0.1025570702399635,
+      "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "2da783d64d6e094b0c72275ac8747142764c7107dde1f155e5a80f7a760f8a33"
+  "diagnosis_sha256": "e95ea0528d718a9703f3112da514670706c57b1768e56f8a46f652eca86ba5ef"
 }

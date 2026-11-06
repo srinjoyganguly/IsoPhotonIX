@@ -1,0 +1,39 @@
+{
+  "device": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "total_board_mib": 16384,
+  "rule": "Preserve the existing full-domain native memory reserve. No CPU fallback or numerical spectrum was produced by these refused attempts.",
+  "attempts": [
+    {
+      "case": "coupler",
+      "mesh": 28,
+      "shape": [
+        392,
+        196,
+        112
+      ],
+      "planned_cells": 8605184,
+      "required_free_mib": 12424.375,
+      "observed_free_mib": 12292,
+      "decision": "declined before native stepping",
+      "executed_steps": 0,
+      "stage_time_seconds": null,
+      "failure_log_sha256": "922d718d3fdb82b4db37e7c0d57e53df483bb1e8de51e8dd42e4cad5af19e88c"
+    },
+    {
+      "case": "splitter",
+      "mesh": 28,
+      "shape": [
+        392,
+        196,
+        112
+      ],
+      "planned_cells": 8605184,
+      "required_free_mib": 12424.375,
+      "observed_free_mib": 12324,
+      "decision": "declined before native stepping",
+      "executed_steps": 0,
+      "stage_time_seconds": null,
+      "failure_log_sha256": "ed7496e30a716a8070a0f6250e600761ed72eb87a3fb125aa988c386363bddee"
+    }
+  ]
+}

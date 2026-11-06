@@ -60,6 +60,18 @@
         "target_guide_x_um": -25.5,
         "fiber_lead_um": 0.15074858248950854,
         "guide_lead_um": -3.552713678800501e-15,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -3.552713678800501e-15,
+          "time_step_seconds": 1.588812391275838e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -1.197218082363143e-15,
+            -1.0960000806621166e-15,
+            -1.0037966588771323e-15,
+            -9.197134341549938e-16,
+            -8.44303269728729e-16
+          ],
+          "max_abs_rad": 1.197218082363143e-15
+        },
         "phase_convention": "Native DFT +i\u03c9t; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid."
       },
       "wavelength_um": [
@@ -236,6 +248,18 @@
         "target_guide_x_um": -25.5,
         "fiber_lead_um": 0.1567927885126384,
         "guide_lead_um": -0.0714285714285694,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -0.0714285714285694,
+          "time_step_seconds": 1.361839192522147e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -0.016877581305472514,
+            -0.01548914474674598,
+            -0.014220425037761815,
+            -0.013060022977988197,
+            -0.012016371288377126
+          ],
+          "max_abs_rad": 0.016877581305472514
+        },
         "phase_convention": "Native DFT +i\u03c9t; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid."
       },
       "wavelength_um": [

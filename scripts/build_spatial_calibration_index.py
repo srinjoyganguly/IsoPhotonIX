@@ -39,7 +39,10 @@ def phase_studies():
                             'passed':sample.get('native_run_passed',True),'valid':sum(sample['valid_bins']),'total':len(sample['valid_bins']),
                             'band':{port:stats['absolute_phase_residual_rad'] for port,stats in
                                     sample.get('single_central_basis_band',{}).get('channels',{}).items()},
-                            'commercial':{k:v.get('phase_increment_delta_rad',{}) for k,v in sample.get('commercial_comparison',{}).items()}})
+                            'commercial':{k:v['phase_increment_delta_rad'] for k,v in sample.get('commercial_comparison',{}).items()
+                                          if 'phase_increment_delta_rad' in v},
+                            'commercial_power':{k:v['power_delta'] for k,v in sample.get('commercial_comparison',{}).items()
+                                                if 'power_delta' in v}})
         pairs=[{'meshes':pair['meshes'],'channels':{port:{
                 'power':values['power_delta']['max_abs'],'complex':values['same_gauge_complex_delta']['max_abs'],
                 'phase':values['same_gauge_phase_delta_rad']['max_abs'],'strong':values['same_gauge_phase_delta_rad']['count']}
@@ -133,8 +136,10 @@ def spatial_index():
                     label += ' · 21 wavelengths'
                 panel=subset(data,('case_id','vendor','result','radiation','comparisons','settings'))
                 measurement=f"Measured input and output powers on {data['device_name']}."
-                if geometry in ('lumerical','tidy3d') and (geometry not in best_grating or mesh>best_grating[geometry][0]):
-                    best_grating[geometry]=(mesh,data)
+                key=(mesh,settings.get('grating_material_model')=='direct-yee',
+                     settings.get('grating_spectrum','standard')=='standard',settings.get('grating_domain','full')=='full')
+                if geometry in ('lumerical','tidy3d') and (geometry not in best_grating or key>best_grating[geometry][0]):
+                    best_grating[geometry]=(key,data)
             detail = diagnostics.get(path.name)
             if detail:
                 if (detail['source_report_sha256'] != hashlib.sha256(path.read_bytes()).hexdigest() or
@@ -181,7 +186,10 @@ def spatial_index():
         result = best_ring.get(brand.lower())
         if result:
             r=result[1]
-            note=f"Measured central spacing {r['measured_drop_fsr_nm']:.2f} nm versus {r['published_drop_fsr_nm']:.2f} nm published."
+            model=r['physical_model']
+            note=(f"At {model['resolution']} cells/µm with {model.get('ring_interface','legacy')} walls and "
+                  f"{r['duration_um_c']:g} µm/c observation, central spacing is {r['measured_drop_fsr_nm']:.2f} nm "
+                  f"versus {r['published_drop_fsr_nm']:.2f} nm published.")
             delta=r.get('vendor_comparison',{}).get('channels',{}).get('drop',{}).get('mean_absolute_power_difference')
             if delta is not None:
                 note+=f" Mean absolute drop-power difference over the common qualified band: {delta:.4f}."
@@ -196,9 +204,11 @@ def spatial_index():
             reference=next(c for c in r['comparisons'] if c.get('geometry_matched') and c['vendor']==brand)
             j=r['result']['wavelength_um'].index(1.55)
             published=reference.get('published_power',reference.get('published_s21_power'))
-            note=(f"At 1.55 µm on the {result[0]} cells/µm mesh, the measured guided output is "
+            model=r['settings']
+            note=(f"At 1.55 µm on the {model['resolution']} cells/µm mesh "
+                  f"({model.get('grating_material_model','volume-average')}, {model.get('grating_domain','full')}), the measured guided output is "
                   f"{r['result']['beam_to_guide'][j]*100:.2f}% versus {published[j]*100:.2f}% published. "
-                  f"The five-wavelength mean absolute difference is {reference['mean_absolute_difference_percentage_points']:.2f} percentage points.")
+                  f"The mean absolute difference over {len(published)} wavelengths is {reference['mean_absolute_difference_percentage_points']:.2f} percentage points.")
         index['grating-3d']['comparisons'].append(dict(vendor=brand,url=url,description=note))
     for case in ('multimode-tm','layout-ports-2d','layout-ports-3d'):
         index[case]['comparisons'] = [

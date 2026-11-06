@@ -1,0 +1,29 @@
+{
+  "geometry": "compact-narrow",
+  "resolution": 12,
+  "stage": "reference",
+  "actual_device": "cuda:0",
+  "worker_sha256": "53dbaf27a1e2096ee485523a0560b4f2ad2d92d314f7540c634fc3b46a502d40",
+  "grid_shape": [
+    134,
+    76,
+    74
+  ],
+  "cells": 753616,
+  "dt_seconds": 1.5888123912758381e-16,
+  "completed_fdtd_steps_lower_bound": 2646,
+  "completed_time_fs_lower_bound": 420.3997587315868,
+  "completed_time_windows_fs": [
+    60,
+    120,
+    180,
+    240,
+    300,
+    360,
+    420
+  ],
+  "synchronized_step_seconds": null,
+  "cuda_event_elapsed_seconds": null,
+  "qualified": false,
+  "scope": "Reference evolution reached the 420 fs window, then archive construction raised TypeError because a field-reduction axis tuple shadowed the physical coordinate arrays. The process exited without a completed checkpoint or spectrum. Native stepping time is unavailable."
+}

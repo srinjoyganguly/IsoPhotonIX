@@ -1,4 +1,5 @@
 """Build the public GPU timing ledger from the checked-in stage receipts."""
+import argparse
 import hashlib
 import json
 import math
@@ -86,8 +87,29 @@ def collect(base):
     return {'schema':1,'source_sha256':hashes,'totals':current_totals(rows),'rows':rows}
 
 
+def audit(ledger, base):
+    if json.loads((base/'v014-gpu-performance.json').read_text())!=ledger:
+        raise ValueError('Regenerate GPU timing JSON from the current stage receipts.')
+    if (base/'v014-gpu-performance.csv').read_text()!=timing_csv(ledger['rows']):
+        raise ValueError('GPU timing CSV differs from its source records.')
+    for row in ledger['rows']:
+        if not row['acquisition_id']:
+            continue
+        if (row['synchronized_step_seconds']<=0 or row['steps']<=0 or
+                row['cells']!=math.prod(row['grid_shape']) or not math.isclose(
+                    row['simulated_time_fs'],row['dt_seconds']*row['steps']*1e15)):
+            raise ValueError(f"Invalid timed stage for {row['receipt']} / {row['stage']}")
+        if row['cuda_event_elapsed_seconds'] is not None and row['cuda_event_elapsed_seconds']<=0:
+            raise ValueError('CUDA event intervals must be positive.')
+
+
 if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--check', action='store_true',help='Verify the saved ledger against all original stage receipts.')
+    args=parser.parse_args()
     ledger=collect(BASE)
-    (BASE/'v014-gpu-performance.json').write_text(json.dumps(ledger,indent=2,allow_nan=False)+'\n')
-    (BASE/'v014-gpu-performance.csv').write_text(timing_csv(ledger['rows']))
+    if not args.check:
+        (BASE/'v014-gpu-performance.json').write_text(json.dumps(ledger,indent=2,allow_nan=False)+'\n')
+        (BASE/'v014-gpu-performance.csv').write_text(timing_csv(ledger['rows']))
+    audit(ledger,BASE)
     print(len(ledger['source_sha256']), 'reports;', len(ledger['rows']), 'stage uses;', ledger['totals'])

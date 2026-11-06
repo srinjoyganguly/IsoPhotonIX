@@ -36,6 +36,13 @@ const { chromium } = require('playwright');
       await lab.getByText('Phase and weak reflections',{exact:true}).click();
       const comparison=lab.getByLabel('Comparison');
       assert((await comparison.locator('option').count())>0);
+      if (preset==='grating-3d') {
+        const entries=await comparison.locator('option').allTextContents();
+        const refined=entries.findIndex(label=>label.includes('grating-phase-refinement'));
+        assert(refined>=0,'Missing measured grating phase comparison.');
+        await comparison.selectOption(String(refined));
+        assert(await lab.getByText('Power and phase increments against Lumerical · 16 cells/µm',{exact:true}).isVisible());
+      }
       const phaseLink=lab.getByRole('link',{name:'Download registered complex samples (CSV)'});
       const phaseCsv=await (await page.request.get(origin+await phaseLink.getAttribute('href'))).text();
       assert(phaseCsv.includes('phase_reportable,phase_rad,signed_phase_minus_vendor_rad'));

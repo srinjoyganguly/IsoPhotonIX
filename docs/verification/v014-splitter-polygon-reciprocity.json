@@ -1,0 +1,38 @@
+{
+  "case": "splitter",
+  "resolution": 24,
+  "native_numerical_sha256": "117b1a4ca6d3dc46f43b0f8b71f1965c865817f4631da1388aebcc73eb60dd55",
+  "tolerances": {
+    "reciprocity_complex_amplitude": 0.05,
+    "minimum_amplitude_for_phase": 0.02
+  },
+  "forward_arrays_sha256": "f293e26fe01305903958b49075532f94234cda78a8d3a976f542cb2f353f5e8d",
+  "pairs": [
+    {
+      "forward_input": "left_center",
+      "forward_output": "right_lower",
+      "reverse_arrays_sha256": "b68ffd97d11a694d9e34d04aaf8568a0f2ee02dc9614145d77662ecf127fdccb",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "complex_amplitude_delta": [
+        0.00029233134543332913,
+        0.00032918738627746183,
+        0.0005787163070811836
+      ],
+      "power_delta": [
+        0.0002595953364645798,
+        0.0002362551980477079,
+        0.000489263494952763
+      ],
+      "signed_phase_delta_rad": [
+        -0.0003291844584341862,
+        -0.000432923647037864,
+        0.0006834288753302319
+      ],
+      "reciprocity_within_0_05": true
+    }
+  ]
+}

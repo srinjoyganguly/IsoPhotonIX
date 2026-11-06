@@ -8,6 +8,7 @@ import numpy as np
 from scripts.compare_grating_domain import read
 from scripts.grating_phase_matching import continuous_te
 from scripts.lumerical_grating3d import model
+from scripts.calibrate_finite_grating import grid, settings
 
 
 def material_dispersion_screen(reference):
@@ -25,7 +26,32 @@ def material_dispersion_screen(reference):
                        "estimated_shift_over_one_pitch_rad":2*np.pi*m["period"]*weighted/wave,
                        "estimated_shift_over_25_um_rad":2*np.pi*25*weighted/wave})
     return {"project_sha256":reference["project_sha256"],"samples":phases,
-            "scope":"Continuous lossless TE0 in symmetric oxide-clad 220 and 120 nm slabs, with filed permittivity versus its fixed 1550 nm value. The fill-weighted phase is an auxiliary approximation. It does not predict curved-grating diffraction power."}
+            "scope":"Continuous lossless TE0 in symmetric oxide-clad 220 and 120 nm slabs, with filed permittivity versus its fixed 1550 nm value. The fill-weighted phase estimates propagation in uniform sections. The full-device field acquisition determines diffraction power."}
+
+
+def vendor_grid_cost(evidence):
+    """Cell-scaling lower bound under the recorded policy; candidate CUDA plans may require more."""
+    vendor=json.loads((evidence/"v014-grating-vendor-mesh.json").read_text())
+    result={}
+    for geometry,profile_name in (("lumerical","v014-grating-memory-lumerical-mirror-r20.json"),
+                                  ("tidy3d","v014-grating-memory-tidy3d-mirror-r16.json")):
+        profile_path=evidence/profile_name
+        if not profile_path.is_file():
+            continue
+        profile=json.loads(profile_path.read_text())
+        dz=min(vendor[geometry]["etched_part"]["intersected_steps_nm"])
+        target=int(np.ceil(1000/dz))
+        m=settings(geometry,12); m["resolution"]=target
+        full=grid(m)[0]
+        native=(full[0],full[1]//2,full[2])
+        cells=int(np.prod(native))
+        bound=max(1024+1.2*stage["estimate"]["baseline_native_peak_mib"]*cells/stage["base"]["cells"]
+                  for stage in profile["roles"].values())
+        result[geometry]={"filed_etch_dz_nm":dz,"target_uniform_mesh_per_um":target,
+                          "native_mirror_shape":native,"native_cells":cells,
+                          "cell_scaling_min_required_free_mib":bound,"baseline_profile":profile_name,
+                          "scope":"Planning lower bound from measured r14 native allocation and cell-count scaling plus reserve. This candidate has zero measured FDTD steps and no compiled admission plan."}
+    return result
 
 
 def summarize(paths):
@@ -57,6 +83,11 @@ def summarize(paths):
                   "fiber_return_power":weak_return, "port_neff":neff,
                   "stages":{k:{"shape":v["shape"],"steps":v["time_steps"],"freshness":v.get("acquisition"),
                                "performance":v.get("performance")} for k,v in row["stages"].items()}}
+        if geometry=="tidy3d":
+            readout=references["tidy3d"]["calibration"]["conservative_readout_uncertainty_db"]
+            db_delta=10*np.log10(p/published)
+            sample["delta_db"]=db_delta.tolist()
+            sample["inside_published_figure_readout"]=np.less_equal(abs(db_delta),readout).tolist()
         if weak_return is not None:
             filed = references["lumerical"]
             if reference["vendor_file_sha256"] != filed["s_file_sha256"]:
@@ -73,8 +104,31 @@ def summarize(paths):
             r2["previous_mesh"]=r1["mesh"]
             r2["change_vs_previous_pp"]=d.tolist()
             r2["max_absolute_change_vs_previous_pp"]=float(max(abs(d)))
+            r2["within_1pp_mesh_target_every_bin"]=bool(np.all(abs(d)<=1.))
     return {"schema_version":1,"observables":"Independently illuminated full-width gratings. Power is output TE0 power divided by measured incoming finite-aperture power. Each reference belongs to its own published design.",
-            "tidy_readout_uncertainty_db":0.08,"filed_material_dispersion":material_dispersion_screen(references["lumerical"]),"groups":groups}
+            "mesh_power_target_pp":1.0,"mesh_power_target_scope":"Successive physically matched meshes differ by at most one absolute percentage point at every sampled wavelength. This workbench stability screen is independent of external-solver agreement.",
+            "tidy_readout_uncertainty_db":0.08,"filed_material_dispersion":material_dispersion_screen(references["lumerical"]),
+            "uniform_grid_cost_for_published_etch_sampling":vendor_grid_cost(evidence.parent),"groups":groups}
+
+
+def framebuffer_observations(path):
+    from datetime import datetime
+    rows = {}
+    for line in path.read_text().splitlines():
+        sample = json.loads(line)
+        if len(sample["jobs"]) != 1:
+            raise ValueError("A grating memory sample identifies overlapping GPU workers.")
+        geometry,mesh,stage = sample["jobs"][0]
+        rows.setdefault((geometry,mesh,stage),[]).append(sample)
+    grouped = []
+    for (geometry,mesh,stage), samples in sorted(rows.items()):
+        times = [datetime.fromisoformat(s["utc"]) for s in samples]
+        grouped.append({"geometry":geometry,"mesh":mesh,"stage":stage,"samples":len(samples),
+                        "sample_span_seconds":(times[-1]-times[0]).total_seconds(),
+                        "maximum_observed_global_used_mib":max(s["used_mib"] for s in samples),
+                        "minimum_observed_free_mib":min(s["free_mib"] for s in samples)})
+    return {"scope":"Read-only 2 s polling of global framebuffer usage during selected FDTDX workers. Graphics and other allocations are included. Sampling began late in the full 16-cell incident run. These are observed high-water marks.",
+            "stages":grouped}
 
 
 def plot_curves(report, path):
@@ -117,8 +171,11 @@ if __name__=="__main__":
     parser.add_argument("--receipts",type=Path,nargs="+",required=True)
     parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--plot",type=Path)
+    parser.add_argument("--framebuffer-samples",type=Path)
     args=parser.parse_args()
     report=summarize(args.receipts)
+    if args.framebuffer_samples:
+        report["observed_framebuffer"]=framebuffer_observations(args.framebuffer_samples)
     args.output.write_text(json.dumps(report,indent=2,allow_nan=False)+"\n")
     if args.plot:
         plot_curves(report,args.plot)

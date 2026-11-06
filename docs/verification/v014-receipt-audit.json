@@ -1,0 +1,262 @@
+{
+  "passed": true,
+  "cases": {
+    "ring-3d": [
+      {
+        "receipt": "v014-ring3d-lumerical-r20-t3200-wall-tensor.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-ring3d-lumerical-r16-t6000-wall-tensor.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-lumerical-r24-t3200.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-lumerical-r20-t3200.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-lumerical-r16-t3200.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-lumerical-r20-t3200-exact-area.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-lumerical-r16-t3200-aperture36c.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-lumerical-r16-t3200-pml14c.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-ring3d-tidy3d-r16-t4800-wall-tensor.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-tidy3d-r20-t4800.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-tidy3d-r16-t4800.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-tidy3d-r16-t4800-exact-area.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-ring3d-lumerical-r16-t3200-wall-tensor.json",
+        "passed": false,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-lumerical-r16-t1600.json",
+        "passed": false,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-ring3d-tidy3d-r20-t4800-wall-tensor.json",
+        "passed": false,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-ring3d-tidy3d-r16-t2700.json",
+        "passed": false,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      }
+    ],
+    "grating-3d": [
+      {
+        "receipt": "v012-grating3d-compact-narrow-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-compact-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-compact-r16.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-compact-radiation-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-lumerical-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-lumerical-r14.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-tidy3d-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v012-grating3d-tidy3d-r14.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-grating3d-lumerical-dense-direct-yee-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-grating3d-lumerical-dense-volume-average-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-grating3d-lumerical-direct-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-grating3d-lumerical-direct-r14.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-grating3d-lumerical-direct-r16.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-grating3d-lumerical-mirror-control-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-grating3d-tidy3d-full-control-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-grating3d-tidy3d-mirror-control-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      }
+    ],
+    "multimode-tm": [
+      {
+        "receipt": "v012-planar-tm.json",
+        "passed": true,
+        "actual_device": "CPU",
+        "has_native_field": true
+      }
+    ],
+    "layout-ports-3d": [
+      {
+        "receipt": "v012-layout-ports3d.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      }
+    ],
+    "layout-ports-2d": [
+      {
+        "receipt": "v012-layout-ports.json",
+        "passed": true,
+        "actual_device": "CPU",
+        "has_native_field": true
+      }
+    ]
+  },
+  "qualified_vendor_meshes": {
+    "ring-3d": {
+      "lumerical": [
+        16,
+        20,
+        24
+      ],
+      "tidy3d": [
+        16,
+        20
+      ]
+    },
+    "grating-3d": {
+      "lumerical": [
+        12,
+        14,
+        16
+      ],
+      "tidy3d": [
+        12,
+        14
+      ]
+    }
+  },
+  "scope": "All included records are re-read. Diagnostic ring spectra retain their original pass flag and wavelength mask."
+}

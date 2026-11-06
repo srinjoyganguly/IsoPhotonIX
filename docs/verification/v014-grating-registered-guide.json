@@ -62,6 +62,27 @@
         0.3175276927804793,
         0.3387911990695513
       ]
+    },
+    {
+      "receipt": "v014-grating3d-lumerical-direct-r16.json",
+      "received_arrays_sha256": "bfc5f0a1301f223a576ecbf8bf61fa8acded3b389d18bdbdbbd7e2af8f054d03",
+      "resolution": 16,
+      "material_model": "direct-yee",
+      "guide_neff_interpolated_to_filed_frequency": 2.451269672762963,
+      "guide_neff_minus_published": -0.0015236569737662187,
+      "local_detector_coordinate": "FDTDX E_z co-location (i,j,k+1/2)",
+      "local_detector_x_um": -25.5625,
+      "native_power_fraction_at_1550": 0.3591289883502366,
+      "registered_grid_diagnostic": {
+        "y_offset_cells": 0.0,
+        "z_offset_cells": 0.0,
+        "ey_shape_overlap": 0.9992503928536334,
+        "reprojected_power_fraction": 0.3609535106434315
+      },
+      "half_cell_axis_uncertainty_power_fraction": [
+        0.3432454403462815,
+        0.3609535106434315
+      ]
     }
   ],
   "scope": "A diagnostic reprojects the unchanged 1550 nm local output phasors on the filed lossless strip E/H basis from the nearby stored frequency. It retains the native incident-power normalization and uses bilinear interpolation and vacuum-impedance-scaled H. The offset range covers \u00b1half a native cell on both transverse axes; it is a registration sensitivity, not a vendor rerun or an error bar. No commercial field arrays are distributed."

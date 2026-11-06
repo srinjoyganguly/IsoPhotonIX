@@ -1,0 +1,682 @@
+{
+  "schema_version": 1,
+  "observables": "Independently illuminated full-width gratings. Power is output TE0 power divided by measured incoming finite-aperture power. Each reference belongs to its own published design.",
+  "mesh_power_target_pp": 1.0,
+  "mesh_power_target_scope": "Successive physically matched meshes differ by at most one absolute percentage point at every sampled wavelength. This workbench stability screen is independent of external-solver agreement.",
+  "tidy_readout_uncertainty_db": 0.08,
+  "filed_material_dispersion": {
+    "project_sha256": "422335a903fe187c99910efca2eb38c1e85dbb7bbae021954fa1109e71a6e60f",
+    "samples": [
+      {
+        "wavelength_um": 1.5,
+        "delta_neff_ridge": 0.004133676379032281,
+        "delta_neff_etched_film": 0.0035419022297364933,
+        "estimated_shift_over_one_pitch_rad": 0.010623879286980728,
+        "estimated_shift_over_25_um_rad": 0.39564573540074216
+      },
+      {
+        "wavelength_um": 1.525,
+        "delta_neff_ridge": 0.0024776437449300914,
+        "delta_neff_etched_film": 0.0021024829074329787,
+        "estimated_shift_over_one_pitch_rad": 0.006229349687799149,
+        "estimated_shift_over_25_um_rad": 0.23198829464468748
+      },
+      {
+        "wavelength_um": 1.55,
+        "delta_neff_ridge": 0.0,
+        "delta_neff_etched_film": 0.0,
+        "estimated_shift_over_one_pitch_rad": 0.0,
+        "estimated_shift_over_25_um_rad": 0.0
+      },
+      {
+        "wavelength_um": 1.575,
+        "delta_neff_ridge": -0.002726044354250945,
+        "delta_neff_etched_film": -0.002279835862024182,
+        "estimated_shift_over_one_pitch_rad": -0.006582504633119584,
+        "estimated_shift_over_25_um_rad": -0.24514019935645698
+      },
+      {
+        "wavelength_um": 1.6,
+        "delta_neff_ridge": -0.005356745005202335,
+        "delta_neff_etched_film": -0.0044538509917280145,
+        "estimated_shift_over_one_pitch_rad": -0.01269136822842073,
+        "estimated_shift_over_25_um_rad": -0.47264145048490724
+      }
+    ],
+    "scope": "Continuous lossless TE0 in symmetric oxide-clad 220 and 120 nm slabs, with filed permittivity versus its fixed 1550 nm value. The fill-weighted phase estimates propagation in uniform sections. The full-device field acquisition determines diffraction power."
+  },
+  "uniform_grid_cost_for_published_etch_sampling": {
+    "lumerical": {
+      "filed_etch_dz_nm": 43.097457421500145,
+      "target_uniform_mesh_per_um": 24,
+      "native_mirror_shape": [
+        1040,
+        256,
+        92
+      ],
+      "native_cells": 24494080,
+      "cell_scaling_min_required_free_mib": 14892.565864716142,
+      "baseline_profile": "v014-grating-memory-lumerical-mirror-r20.json",
+      "scope": "Planning lower bound from measured r14 native allocation and cell-count scaling plus reserve. This candidate has zero measured FDTD steps and no compiled admission plan."
+    },
+    "tidy3d": {
+      "filed_etch_dz_nm": 26.66666666666684,
+      "target_uniform_mesh_per_um": 38,
+      "native_mirror_shape": [
+        2492,
+        266,
+        233
+      ],
+      "native_cells": 154449176,
+      "cell_scaling_min_required_free_mib": 105157.21422708617,
+      "baseline_profile": "v014-grating-memory-tidy3d-mirror-r16.json",
+      "scope": "Planning lower bound from measured r14 native allocation and cell-count scaling plus reserve. This candidate has zero measured FDTD steps and no compiled admission plan."
+    }
+  },
+  "groups": {
+    "lumerical": [
+      {
+        "mesh": 12,
+        "spacing_nm": 83.33333333333333,
+        "etch_nm": 100.0,
+        "etch_cells": 1.2000000000000002,
+        "arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "power": [
+          0.04602741644313781,
+          0.12411395474052811,
+          0.2514941337844058,
+          0.34357045115220763,
+          0.305873723461999
+        ],
+        "published_power": [
+          0.15061306067750885,
+          0.29454587861600057,
+          0.4002656827642284,
+          0.37022350201649884,
+          0.2237287914242699
+        ],
+        "delta_percentage_points": [
+          -10.458564423437103,
+          -17.043192387547247,
+          -14.877154897982258,
+          -2.665305086429121,
+          8.214493203772907
+        ],
+        "mean_absolute_delta_pp": 10.651741999833728,
+        "max_absolute_delta_pp": 17.043192387547247,
+        "fiber_return_power": [
+          0.0017778857034957442,
+          0.0017306090090170284,
+          0.0006724811462554687,
+          0.004674388217813995,
+          0.007214647485226407
+        ],
+        "port_neff": [
+          2.5081305503845215,
+          2.4827752113342285,
+          2.4572486877441406,
+          2.4315593242645264,
+          2.405717372894287
+        ],
+        "stages": {
+          "reference": {
+            "shape": [
+              520,
+              256,
+              46
+            ],
+            "steps": 2646,
+            "freshness": null,
+            "performance": null
+          },
+          "device": {
+            "shape": [
+              520,
+              256,
+              46
+            ],
+            "steps": 7560,
+            "freshness": null,
+            "performance": null
+          }
+        },
+        "published_fiber_return_power": [
+          0.001268209874007498,
+          0.0008574615401667274,
+          0.004187484351639351,
+          0.007300020054434153,
+          0.004036927671417264
+        ],
+        "fiber_return_minus_published_pp": [
+          0.050967582948824613,
+          0.08731474688503009,
+          -0.35150032053838826,
+          -0.2625631836620158,
+          0.31777198138091434
+        ]
+      },
+      {
+        "mesh": 14,
+        "spacing_nm": 71.42857142857143,
+        "etch_nm": 100.0,
+        "etch_cells": 1.4000000000000001,
+        "arrays_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e",
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "power": [
+          0.09415942575952048,
+          0.20846862373193925,
+          0.33612928378434725,
+          0.37995319613092116,
+          0.29363404209710364
+        ],
+        "published_power": [
+          0.15061306067750885,
+          0.29454587861600057,
+          0.4002656827642284,
+          0.37022350201649884,
+          0.2237287914242699
+        ],
+        "delta_percentage_points": [
+          -5.645363491798837,
+          -8.607725488406132,
+          -6.413639897988116,
+          0.9729694114422316,
+          6.990525067283373
+        ],
+        "mean_absolute_delta_pp": 5.726044671383738,
+        "max_absolute_delta_pp": 8.607725488406132,
+        "fiber_return_power": [
+          0.001878416024197932,
+          0.001074480939147456,
+          0.0012110593880559541,
+          0.005245422037200588,
+          0.004797461747657341
+        ],
+        "port_neff": [
+          2.4917185306549072,
+          2.4671785831451416,
+          2.442481279373169,
+          2.417635679244995,
+          2.392651081085205
+        ],
+        "stages": {
+          "reference": {
+            "shape": [
+              606,
+              298,
+              53
+            ],
+            "steps": 3087,
+            "freshness": null,
+            "performance": null
+          },
+          "device": {
+            "shape": [
+              606,
+              298,
+              53
+            ],
+            "steps": 8820,
+            "freshness": null,
+            "performance": null
+          }
+        },
+        "published_fiber_return_power": [
+          0.001268209874007498,
+          0.0008574615401667274,
+          0.004187484351639351,
+          0.007300020054434153,
+          0.004036927671417264
+        ],
+        "fiber_return_minus_published_pp": [
+          0.06102061501904339,
+          0.02170193989807286,
+          -0.2976424963583397,
+          -0.20545980172335657,
+          0.0760534076240077
+        ],
+        "previous_mesh": 12,
+        "change_vs_previous_pp": [
+          4.813200931638266,
+          8.435466899141113,
+          8.463514999994143,
+          3.638274497871352,
+          -1.2239681364895338
+        ],
+        "max_absolute_change_vs_previous_pp": 8.463514999994143,
+        "within_1pp_mesh_target_every_bin": false
+      },
+      {
+        "mesh": 16,
+        "spacing_nm": 62.5,
+        "etch_nm": 100.0,
+        "etch_cells": 1.6,
+        "arrays_sha256": "bfc5f0a1301f223a576ecbf8bf61fa8acded3b389d18bdbdbbd7e2af8f054d03",
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "power": [
+          0.16073298108181713,
+          0.28596267705181555,
+          0.3591289883502366,
+          0.3159626464161778,
+          0.19107697185714015
+        ],
+        "published_power": [
+          0.15061306067750885,
+          0.29454587861600057,
+          0.4002656827642284,
+          0.37022350201649884,
+          0.2237287914242699
+        ],
+        "delta_percentage_points": [
+          1.0119920404308287,
+          -0.8583201564185017,
+          -4.113669441399182,
+          -5.4260855600321065,
+          -3.2651819567129756
+        ],
+        "mean_absolute_delta_pp": 2.935049830998719,
+        "max_absolute_delta_pp": 5.4260855600321065,
+        "fiber_return_power": [
+          0.0012220597957525983,
+          0.0005886722605688845,
+          0.003516144278828173,
+          0.005801730463488745,
+          0.0026804278915919804
+        ],
+        "port_neff": [
+          2.5008389949798584,
+          2.475310802459717,
+          2.4496116638183594,
+          2.4237513542175293,
+          2.397740364074707
+        ],
+        "stages": {
+          "reference": {
+            "shape": [
+              694,
+              342,
+              62
+            ],
+            "steps": 3528,
+            "freshness": {
+              "status": "fresh",
+              "gpu_lock_wait_seconds": 2742.2209971160046
+            },
+            "performance": {
+              "schema": 1,
+              "acquisition_id": "1b9ccc65b64b454f82038208936c3a18",
+              "platform": "gpu",
+              "device": "cuda:0",
+              "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+              "grid_shape": [
+                694,
+                342,
+                62
+              ],
+              "cells": 14715576,
+              "spacing_um": 0.0625,
+              "pml_cells": 11,
+              "steps": 3528,
+              "dt_seconds": 1.1916092934568783e-16,
+              "simulated_time_fs": 420.3997587315867,
+              "compile_seconds": 1.0294899629952852,
+              "synchronized_step_seconds": 138.08465756801888,
+              "step_batches": 7,
+              "cuda_event_elapsed_seconds": 138.08560546875,
+              "cuda_event_note": null,
+              "kernel_active_seconds": null,
+              "kernel_count": null,
+              "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+              "stage_through_steps_seconds": 150.19605798300472,
+              "million_cell_steps_per_second": 375.9762528463853,
+              "setup_before_compile_seconds": 15.217582420998951
+            }
+          },
+          "device": {
+            "shape": [
+              694,
+              342,
+              62
+            ],
+            "steps": 10080,
+            "freshness": {
+              "status": "fresh",
+              "gpu_lock_wait_seconds": 348.87283804298204
+            },
+            "performance": {
+              "schema": 1,
+              "acquisition_id": "f0d242f649eb45889c0818ab83059dc0",
+              "platform": "gpu",
+              "device": "cuda:0",
+              "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+              "grid_shape": [
+                694,
+                342,
+                62
+              ],
+              "cells": 14715576,
+              "spacing_um": 0.0625,
+              "pml_cells": 11,
+              "steps": 10080,
+              "dt_seconds": 1.1916092934568783e-16,
+              "simulated_time_fs": 1201.1421678045333,
+              "compile_seconds": 0.8587431159976404,
+              "synchronized_step_seconds": 353.26929317295435,
+              "step_batches": 20,
+              "cuda_event_elapsed_seconds": 353.2719375000001,
+              "cuda_event_note": null,
+              "kernel_active_seconds": null,
+              "kernel_count": null,
+              "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+              "stage_through_steps_seconds": 367.56089428800624,
+              "million_cell_steps_per_second": 419.8864972036469,
+              "setup_before_compile_seconds": 17.198171191004803
+            }
+          }
+        },
+        "published_fiber_return_power": [
+          0.001268209874007498,
+          0.0008574615401667274,
+          0.004187484351639351,
+          0.007300020054434153,
+          0.004036927671417264
+        ],
+        "fiber_return_minus_published_pp": [
+          -0.004615007825489975,
+          -0.02687892795978429,
+          -0.06713400728111785,
+          -0.1498289590945408,
+          -0.13564997798252834
+        ],
+        "previous_mesh": 14,
+        "change_vs_previous_pp": [
+          6.657355532229666,
+          7.74940533198763,
+          2.2999704565889347,
+          -6.399054971474339,
+          -10.255707023996349
+        ],
+        "max_absolute_change_vs_previous_pp": 10.255707023996349,
+        "within_1pp_mesh_target_every_bin": false
+      }
+    ],
+    "tidy3d": [
+      {
+        "mesh": 12,
+        "spacing_nm": 83.33333333333333,
+        "etch_nm": 160.0,
+        "etch_cells": 1.92,
+        "arrays_sha256": "76732cbdb3999be434df9d1aca404ae51679d6095879755578590583577aa738",
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "power": [
+          0.04804825451066927,
+          0.20368344185391474,
+          0.3529941651696145,
+          0.268081123234996,
+          0.10442643090112326
+        ],
+        "published_power": [
+          0.07110364946451826,
+          0.2590468874157015,
+          0.38018939632056115,
+          0.2744817749939425,
+          0.12127849076095215
+        ],
+        "delta_percentage_points": [
+          -2.3055394953848993,
+          -5.536344556178674,
+          -2.7195231150946633,
+          -0.6400651758946496,
+          -1.6852059859828892
+        ],
+        "mean_absolute_delta_pp": 2.5773356657071553,
+        "max_absolute_delta_pp": 5.536344556178674,
+        "fiber_return_power": null,
+        "port_neff": [
+          2.519932746887207,
+          2.4975225925445557,
+          2.47493314743042,
+          2.452169895172119,
+          2.4292385578155518
+        ],
+        "stages": {
+          "reference": {
+            "shape": [
+              788,
+              168,
+              74
+            ],
+            "steps": 2646,
+            "freshness": {
+              "status": "cache-hit",
+              "gpu_lock_wait_seconds": 270.0629630309995
+            },
+            "performance": {
+              "schema": 1,
+              "acquisition_id": "9ac0a57ab6ba42a985ebe8e2c89dbe85",
+              "platform": "gpu",
+              "device": "cuda:0",
+              "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+              "grid_shape": [
+                788,
+                168,
+                74
+              ],
+              "cells": 9796416,
+              "spacing_um": 0.08333333333333333,
+              "pml_cells": 8,
+              "steps": 2646,
+              "dt_seconds": 1.588812391275838e-16,
+              "simulated_time_fs": 420.3997587315867,
+              "compile_seconds": 0.7528585330001079,
+              "synchronized_step_seconds": 57.475168693985324,
+              "step_batches": 7,
+              "cuda_event_elapsed_seconds": 57.462323242187495,
+              "cuda_event_note": null,
+              "kernel_active_seconds": null,
+              "kernel_count": null,
+              "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+              "stage_through_steps_seconds": 68.312042303005,
+              "million_cell_steps_per_second": 451.0002723787154,
+              "setup_before_compile_seconds": 14.289309667001362
+            }
+          },
+          "device": {
+            "shape": [
+              788,
+              168,
+              74
+            ],
+            "steps": 7182,
+            "freshness": {
+              "status": "fresh",
+              "gpu_lock_wait_seconds": 2444.1572951319977
+            },
+            "performance": {
+              "schema": 1,
+              "acquisition_id": "cf029076b3ed4c73b32e1f90bdab6e1d",
+              "platform": "gpu",
+              "device": "cuda:0",
+              "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+              "grid_shape": [
+                788,
+                168,
+                74
+              ],
+              "cells": 9796416,
+              "spacing_um": 0.08333333333333333,
+              "pml_cells": 8,
+              "steps": 7182,
+              "dt_seconds": 1.588812391275838e-16,
+              "simulated_time_fs": 1141.085059414307,
+              "compile_seconds": 0.954826711997157,
+              "synchronized_step_seconds": 171.36446793895448,
+              "step_batches": 19,
+              "cuda_event_elapsed_seconds": 171.36632958984376,
+              "cuda_event_note": null,
+              "kernel_active_seconds": null,
+              "kernel_count": null,
+              "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+              "stage_through_steps_seconds": 184.7442784550076,
+              "million_cell_steps_per_second": 410.574377280264,
+              "setup_before_compile_seconds": 17.027174949005712
+            }
+          }
+        },
+        "delta_db": [
+          -1.702142765814727,
+          -1.0442265327493563,
+          -0.3223247323988943,
+          -0.10247279028962547,
+          -0.6497334889422501
+        ],
+        "inside_published_figure_readout": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      {
+        "mesh": 14,
+        "spacing_nm": 71.42857142857143,
+        "etch_nm": 160.0,
+        "etch_cells": 2.24,
+        "arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "power": [
+          0.04971306948515579,
+          0.20615110207764634,
+          0.3566585155142766,
+          0.30335541591626264,
+          0.14198965514652684
+        ],
+        "published_power": [
+          0.07110364946451826,
+          0.2590468874157015,
+          0.38018939632056115,
+          0.2744817749939425,
+          0.12127849076095215
+        ],
+        "delta_percentage_points": [
+          -2.139057997936247,
+          -5.289578533805514,
+          -2.3530880806284573,
+          2.8873640922320143,
+          2.0711164385574685
+        ],
+        "mean_absolute_delta_pp": 2.9480410286319403,
+        "max_absolute_delta_pp": 5.289578533805514,
+        "fiber_return_power": null,
+        "port_neff": [
+          2.563164710998535,
+          2.5406136512756348,
+          2.5178921222686768,
+          2.4950056076049805,
+          2.4719600677490234
+        ],
+        "stages": {
+          "reference": {
+            "shape": [
+              918,
+              196,
+              86
+            ],
+            "steps": 3087,
+            "freshness": null,
+            "performance": null
+          },
+          "device": {
+            "shape": [
+              918,
+              196,
+              86
+            ],
+            "steps": 8820,
+            "freshness": null,
+            "performance": null
+          }
+        },
+        "delta_db": [
+          -1.5542131283435847,
+          -0.9919271750943761,
+          -0.2774740238292706,
+          0.4343823945552872,
+          0.684729206243647
+        ],
+        "inside_published_figure_readout": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "previous_mesh": 12,
+        "change_vs_previous_pp": [
+          0.16648149744865198,
+          0.24676602237315992,
+          0.36643503446620596,
+          3.5274292681266637,
+          3.756322424540358
+        ],
+        "max_absolute_change_vs_previous_pp": 3.756322424540358,
+        "within_1pp_mesh_target_every_bin": false
+      }
+    ]
+  },
+  "observed_framebuffer": {
+    "scope": "Read-only 2 s polling of global framebuffer usage during selected FDTDX workers. Graphics and other allocations are included. Sampling began late in the full 16-cell incident run. These are observed high-water marks.",
+    "stages": [
+      {
+        "geometry": "lumerical",
+        "mesh": 16,
+        "stage": "device",
+        "samples": 182,
+        "sample_span_seconds": 371.819878,
+        "maximum_observed_global_used_mib": 11876,
+        "minimum_observed_free_mib": 4298
+      },
+      {
+        "geometry": "lumerical",
+        "mesh": 16,
+        "stage": "reference",
+        "samples": 4,
+        "sample_span_seconds": 6.166436,
+        "maximum_observed_global_used_mib": 11866,
+        "minimum_observed_free_mib": 4308
+      }
+    ]
+  }
+}

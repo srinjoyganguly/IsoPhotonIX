@@ -45,6 +45,18 @@
         "target_beam_x_um": 3.6,
         "guide_x_um": -50.46666666666666,
         "target_guide_x_um": -50.465,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -0.0016666666666580454,
+          "time_step_seconds": 1.588812391275838e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -0.0005730428348304403,
+            -0.0005268827367072694,
+            -0.0004846989985121804,
+            -0.0004461034058557491,
+            -0.000411337060281516
+          ],
+          "max_abs_rad": 0.0005730428348304403
+        },
         "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
       },
       "wavelength_um": [
@@ -169,6 +181,18 @@
         "target_beam_x_um": 3.6,
         "guide_x_um": -50.51428571428573,
         "target_guide_x_um": -50.465,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -0.04928571428572326,
+          "time_step_seconds": 1.361839192522147e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -0.01283689541642591,
+            -0.011823952502409196,
+            -0.010896065782891956,
+            -0.010045214066251988,
+            -0.009276612100641157
+          ],
+          "max_abs_rad": 0.01283689541642591
+        },
         "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
       },
       "wavelength_um": [

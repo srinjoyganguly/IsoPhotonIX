@@ -194,7 +194,7 @@ def guide_plane_sensitivity(report, indices, wavelengths, distance):
     dx=1/report['settings']['resolution']
     beta=2/dx*np.arcsin(np.pi*dx*effective*estimate)
     correction=(beta-2*np.pi*f*np.asarray(indices).real)*distance
-    return {'guide_length_um':distance,'temporal_offset_s':dt,'estimated_yee_minus_continuous_rad':correction.tolist(),
+    return {'guide_length_um':distance,'time_step_seconds':dt,'estimated_yee_minus_continuous_rad':correction.tolist(),
             'max_abs_rad':float(max(abs(correction)))}
 
 

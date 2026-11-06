@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "geometry": "lumerical",
+  "resolution": 20,
+  "material_model": "direct-yee",
+  "domain": "mirror-y",
+  "baseline_resolution": 14,
+  "grating_spectrum": "standard",
+  "allocator": "platform",
+  "device": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "policy": "Higher of compiled-buffer and cell-count scaling from same-role measured baseline peak, plus 20% and 1024 MiB. Both reference and device must fit.",
+  "required_free_with_reserve_mib": 8961.459259249972,
+  "roles": {
+    "reference": {
+      "base": {
+        "geometry": "lumerical",
+        "resolution": 14,
+        "shape": [
+          606,
+          149,
+          53
+        ],
+        "cells": 4785582,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cpu_field_allocation_verified": true,
+        "executed_fdtd_steps": 0,
+        "compiled_cuda_bytes": {
+          "argument_size_in_bytes": 756061668,
+          "output_size_in_bytes": 756061760,
+          "alias_size_in_bytes": 756061664,
+          "temp_size_in_bytes": 382852200,
+          "generated_code_size_in_bytes": 1131626
+        },
+        "compiled_live_bytes": 1138913964,
+        "compilation_seconds": 0.7654517399932956,
+        "grating_domain": "mirror-y",
+        "grating_spectrum": "standard",
+        "grating_material_model": "direct-yee",
+        "stage": "reference"
+      },
+      "actual": {
+        "geometry": "lumerical",
+        "resolution": 14,
+        "shape": [
+          606,
+          149,
+          53
+        ],
+        "cells": 4785582,
+        "executed_fdtd_steps": 1,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "global_free_mib": 10052,
+        "global_used_mib": 6122,
+        "global_total_mib": 16384,
+        "allocator_bytes": {
+          "num_allocs": 3945,
+          "bytes_in_use": 859539968,
+          "peak_bytes_in_use": 1667369728,
+          "largest_alloc_size": 499471104,
+          "bytes_limit": 17179344896,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 2149580800,
+          "peak_pool_bytes": 2149580800
+        },
+        "actual_compiled_live_bytes": 1138913964,
+        "grating_domain": "mirror-y",
+        "grating_spectrum": "standard",
+        "grating_material_model": "direct-yee",
+        "stage": "reference"
+      },
+      "observation": {
+        "idle_used_mib": 3865,
+        "free_before_mib": 12309,
+        "total_mib": 16384,
+        "sampled_peak_used_mib": 6123,
+        "samples": 106,
+        "lock_wait_seconds": 1797.4168107720034
+      },
+      "candidate": {
+        "geometry": "lumerical",
+        "resolution": 20,
+        "shape": [
+          866,
+          213,
+          76
+        ],
+        "cells": 14018808,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cpu_field_allocation_verified": true,
+        "executed_fdtd_steps": 0,
+        "compiled_cuda_bytes": {
+          "argument_size_in_bytes": 2206280100,
+          "output_size_in_bytes": 2206280192,
+          "alias_size_in_bytes": 2206280096,
+          "temp_size_in_bytes": 1121509480,
+          "generated_code_size_in_bytes": 2191576
+        },
+        "compiled_live_bytes": 3327789676,
+        "compilation_seconds": 0.9365927809994901,
+        "grating_domain": "mirror-y",
+        "grating_spectrum": "standard",
+        "grating_material_model": "direct-yee",
+        "stage": "reference"
+      },
+      "estimate": {
+        "geometry": "lumerical",
+        "resolution": 20,
+        "cells": 14018808,
+        "actual_reference_cells": 4785582,
+        "baseline_native_peak_mib": 2258,
+        "baseline_observed_global_peak_mib": 6123,
+        "idle_used_floor_mib": 3865,
+        "reference_abstract_compiled_live_mib": 1086.1529960632324,
+        "reference_actual_compiled_live_mib": 1086.1529960632324,
+        "reference_abstract_actual_fraction_difference": 0.0,
+        "refined_abstract_compiled_live_mib": 3173.627544403076,
+        "cell_count_ratio": 2.929384137603326,
+        "compiled_live_ratio": 2.921897334819226,
+        "estimated_runtime_mib": 6614.54938270831,
+        "required_free_with_reserve_mib": 8961.459259249972,
+        "available_before_launch_mib": 12309,
+        "fits_envelope": true,
+        "scope": "Hardware-specific memory admission estimate, combining measured baseline allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+      }
+    },
+    "device": {
+      "base": {
+        "geometry": "lumerical",
+        "resolution": 14,
+        "shape": [
+          606,
+          149,
+          53
+        ],
+        "cells": 4785582,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cpu_field_allocation_verified": true,
+        "executed_fdtd_steps": 0,
+        "compiled_cuda_bytes": {
+          "argument_size_in_bytes": 757195428,
+          "output_size_in_bytes": 757195536,
+          "alias_size_in_bytes": 757195424,
+          "temp_size_in_bytes": 382852728,
+          "generated_code_size_in_bytes": 1131626
+        },
+        "compiled_live_bytes": 1140048268,
+        "compilation_seconds": 0.8555065129912691,
+        "grating_domain": "mirror-y",
+        "grating_spectrum": "standard",
+        "grating_material_model": "direct-yee",
+        "stage": "device"
+      },
+      "actual": {
+        "geometry": "lumerical",
+        "resolution": 14,
+        "shape": [
+          606,
+          149,
+          53
+        ],
+        "cells": 4785582,
+        "executed_fdtd_steps": 1,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "global_free_mib": 10120,
+        "global_used_mib": 6054,
+        "global_total_mib": 16384,
+        "allocator_bytes": {
+          "num_allocs": 4238,
+          "bytes_in_use": 860608512,
+          "peak_bytes_in_use": 1670169856,
+          "largest_alloc_size": 470819584,
+          "bytes_limit": 17179344896,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 2149580800,
+          "peak_pool_bytes": 2149580800
+        },
+        "actual_compiled_live_bytes": 1140048268,
+        "grating_domain": "mirror-y",
+        "grating_spectrum": "standard",
+        "grating_material_model": "direct-yee",
+        "stage": "device"
+      },
+      "observation": {
+        "idle_used_mib": 3891,
+        "free_before_mib": 12283,
+        "total_mib": 16384,
+        "sampled_peak_used_mib": 6074,
+        "samples": 121,
+        "lock_wait_seconds": 2414.5443963490106
+      },
+      "candidate": {
+        "geometry": "lumerical",
+        "resolution": 20,
+        "shape": [
+          866,
+          213,
+          76
+        ],
+        "cells": 14018808,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cpu_field_allocation_verified": true,
+        "executed_fdtd_steps": 0,
+        "compiled_cuda_bytes": {
+          "argument_size_in_bytes": 2208576900,
+          "output_size_in_bytes": 2208577008,
+          "alias_size_in_bytes": 2208576896,
+          "temp_size_in_bytes": 1121509752,
+          "generated_code_size_in_bytes": 2191576
+        },
+        "compiled_live_bytes": 3330086764,
+        "compilation_seconds": 0.8706570259964792,
+        "grating_domain": "mirror-y",
+        "grating_spectrum": "standard",
+        "grating_material_model": "direct-yee",
+        "stage": "device"
+      },
+      "estimate": {
+        "geometry": "lumerical",
+        "resolution": 20,
+        "cells": 14018808,
+        "actual_reference_cells": 4785582,
+        "baseline_native_peak_mib": 2183,
+        "baseline_observed_global_peak_mib": 6074,
+        "idle_used_floor_mib": 3891,
+        "reference_abstract_compiled_live_mib": 1087.2347526550293,
+        "reference_actual_compiled_live_mib": 1087.2347526550293,
+        "reference_abstract_actual_fraction_difference": 0.0,
+        "refined_abstract_compiled_live_mib": 3175.818218231201,
+        "cell_count_ratio": 2.929384137603326,
+        "compiled_live_ratio": 2.921005063971555,
+        "estimated_runtime_mib": 6394.845572388061,
+        "required_free_with_reserve_mib": 8697.814686865673,
+        "available_before_launch_mib": 12283,
+        "fits_envelope": true,
+        "scope": "Hardware-specific memory admission estimate, combining measured baseline allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+      }
+    }
+  },
+  "same_mesh_control": {
+    "filename": "v014-grating-mirror-lumerical-r12.json",
+    "baseline": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+    "trial": "5121f0f82599afcf0d538301cdc4110b687f37939bfbb561ae99b65cc6603ef8",
+    "qualified": true
+  }
+}

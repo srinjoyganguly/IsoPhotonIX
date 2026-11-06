@@ -1,0 +1,154 @@
+{
+  "passed": true,
+  "case": "grating-3d",
+  "actual_device": "cuda:0",
+  "settings": {
+    "geometry": "compact-narrow",
+    "resolution": 12,
+    "period": 0.62,
+    "fill": 0.8,
+    "teeth": 8,
+    "width": 2.0,
+    "guide_width": 0.5,
+    "taper": 3.0,
+    "height": 0.26,
+    "etch": 0.16,
+    "oxide_top": 0.68,
+    "oxide_bottom": 2.0,
+    "n_si": 3.47,
+    "n_oxide": 1.44,
+    "beam_x": 1.8,
+    "waist": 1.5,
+    "angle_deg": 14.5,
+    "source_z": 1.18,
+    "buffer": 0.93,
+    "pml": 0.667,
+    "max_time_fs": 750.0,
+    "residual_slab_laterally_extended": false
+  },
+  "stages": {
+    "reference": {
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "0ee14f1ada2f4b7587be43eef6e6e217",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          134,
+          76,
+          74
+        ],
+        "cells": 753616,
+        "spacing_um": 0.08333333333333333,
+        "pml_cells": 8,
+        "steps": 2646,
+        "dt_seconds": 1.588812391275838e-16,
+        "simulated_time_fs": 420.3997587315867,
+        "compile_seconds": 1.024017586998525,
+        "synchronized_step_seconds": 5.47549874302058,
+        "step_batches": 7,
+        "cuda_event_elapsed_seconds": 5.476323364257812,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 15.553525263996562,
+        "million_cell_steps_per_second": 364.180146793343,
+        "setup_before_compile_seconds": 13.538192246007384
+      },
+      "acquisition": {
+        "status": "fresh",
+        "gpu_lock_wait_seconds": 2550.347406379995
+      },
+      "source_eh_sha256": "8869dce27a277deab7eaef8b06a9643630a894258f4acfcf634bf49d5d8e2777",
+      "source_time_offsets_sha256": "3adc13c76fc3be7477a74977766e8bb645a430f61df0db584cffea49b4651d56",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1"
+      },
+      "arrays_sha256": "05995beb7ca0928ecf31a281cf1defded192a5cd1f5de7b244dcef29b7247a7f",
+      "native_worker_sha256": "61a8d36606072e46bc522f665142a7eaeda7424c515c15808916363767500105"
+    },
+    "device": {
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "94a6d7694ff6489c9ccb06a8aa434e4b",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          134,
+          76,
+          74
+        ],
+        "cells": 753616,
+        "spacing_um": 0.08333333333333333,
+        "pml_cells": 8,
+        "steps": 3402,
+        "dt_seconds": 1.588812391275838e-16,
+        "simulated_time_fs": 540.51397551204,
+        "compile_seconds": 0.8642804330011131,
+        "synchronized_step_seconds": 7.272768471011659,
+        "step_batches": 9,
+        "cuda_event_elapsed_seconds": 7.273906738281249,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 18.927488859000732,
+        "million_cell_steps_per_second": 352.5207274532375,
+        "setup_before_compile_seconds": 15.098970255989116
+      },
+      "acquisition": {
+        "status": "fresh",
+        "gpu_lock_wait_seconds": 369.90510398198967
+      },
+      "source_eh_sha256": "8869dce27a277deab7eaef8b06a9643630a894258f4acfcf634bf49d5d8e2777",
+      "source_time_offsets_sha256": "3adc13c76fc3be7477a74977766e8bb645a430f61df0db584cffea49b4651d56",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1"
+      },
+      "arrays_sha256": "803bb2f3fac223c28df5f7d0cf1f9031c5964927b2b650bc4f184709c3cd0810",
+      "native_worker_sha256": "61a8d36606072e46bc522f665142a7eaeda7424c515c15808916363767500105"
+    }
+  },
+  "baseline": "v012-grating3d-compact-narrow-r12.json",
+  "baseline_native_arrays_sha256": "06ccef97782fe20d486c2f29c15689329d7432f9f3eeb6e01096b40bebf4c760",
+  "native_report_sha256": "dfdb1baaf992501a39b0b57fe4de1721eeffaa9076bbb6bad931abaddea4817b",
+  "native_arrays_sha256": "9f4a6c755763da192862b8b012e0edb0bec87a7b2a61aa1981a93c7e2e93130b",
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "old_power": [
+    0.14316361465987293,
+    0.1730237421051363,
+    0.1755378202038848,
+    0.19689415716156874,
+    0.16723009487721915
+  ],
+  "new_power": [
+    0.14316359226577813,
+    0.17302374305734033,
+    0.17553782007100924,
+    0.19689416251724484,
+    0.16723009484691848
+  ],
+  "maximum_absolute_power_difference": 2.239409480075949e-08,
+  "field_relative_l2": 2.9852253646822646e-07,
+  "source_and_time_offset_hashes_match": true,
+  "entry_point": "Extracted calibrated Python export, fresh reference and device on local NVIDIA."
+}
