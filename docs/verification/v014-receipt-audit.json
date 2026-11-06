@@ -9,6 +9,12 @@
         "has_native_field": true
       },
       {
+        "receipt": "v014-ring3d-lumerical-r20-t3200-reciprocal-wall.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
         "receipt": "v014-ring3d-lumerical-r20-t3200-wall-tensor.json",
         "passed": true,
         "actual_device": "cuda:0",

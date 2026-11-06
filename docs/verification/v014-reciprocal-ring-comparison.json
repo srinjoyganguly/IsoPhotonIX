@@ -1,6 +1,229 @@
 {
   "comparisons": [
     {
+      "mesh": 20,
+      "old_report": "v014-ring3d-lumerical-r20-t3200-wall-tensor.json",
+      "corrected_report": "v014-ring3d-lumerical-r20-t3200-reciprocal-wall.json",
+      "report_sha256": "c2ff363adb6c85dd332d330b2efe9b3f3b71d7da529795e07eacdb3de79cd46b",
+      "old_arrays_sha256": "962f0c1571fc9bb268b600615b34d0d00b175e8e210f043faa30593ffcf543e4",
+      "corrected_arrays_sha256": "3df5cd665236045d46adb3124acfd83031a9a5e7bbc6e3d1b04ab740db752b73",
+      "shape": [
+        236,
+        218,
+        70
+      ],
+      "source_relative_max_differences": {
+        "reference_source_E": 0.0,
+        "reference_source_H": 0.0
+      },
+      "raw_interface_midplane_and_source_sections_identical": true,
+      "old_spectrum_rejected": false,
+      "old_qualified_power_at_1550": {
+        "reflection": 0.07574088700810637,
+        "through": 0.19318915614952425,
+        "drop": 0.5018350840758438,
+        "add_side": 0.07547708408212676
+      },
+      "corrected_power_at_1550": {
+        "reflection": 0.00011468616601126453,
+        "through": 0.9668411790024694,
+        "drop": 0.026523168248693788,
+        "add_side": 0.00012188291080032512
+      },
+      "channels": {
+        "through": {
+          "samples": 201,
+          "mean_absolute_power_error": 0.1204583899145474,
+          "filed_power_at_1550": 0.093915300002907
+        },
+        "drop": {
+          "samples": 201,
+          "mean_absolute_power_error": 0.0850164069720217,
+          "filed_power_at_1550": 0.6744231240959558
+        },
+        "reflection": {
+          "samples": 201,
+          "mean_absolute_power_error": 0.0035340509631717094,
+          "filed_power_at_1550": 0.0007615791758866508
+        },
+        "add_side": {
+          "samples": 201,
+          "mean_absolute_power_error": 0.003523443555520873,
+          "filed_power_at_1550": 0.000824536588624558
+        }
+      },
+      "native_all_bin_pass": true,
+      "valid_bins": 241,
+      "stability": {
+        "usable_spectrum": true,
+        "screen_checked": true,
+        "reason": "No joint severe post-pulse growth and widespread passivity failure.",
+        "first_to_fourth_quarter_probe_peak_abs_Hz": [
+          [
+            0.24272745847702026,
+            0.20490767061710358,
+            0.23022787272930145
+          ],
+          [
+            0.03931424394249916,
+            0.03229761868715286,
+            0.02855386771261692
+          ],
+          [
+            0.011644073761999607,
+            0.010870476253330708,
+            0.01175480056554079
+          ],
+          [
+            0.005345245357602835,
+            0.0044513288885355,
+            0.0039034681394696236
+          ]
+        ],
+        "fourth_to_first_half_peak_per_probe": [
+          0.022021593235232943,
+          0.02172358348093948,
+          0.01695480261879179
+        ],
+        "passivity_failed_bins": 0,
+        "max_collected_power": 1.0020253809443522,
+        "sample_gates_passed_before_stability": 241
+      },
+      "operator": {
+        "inverse_lower": 0.08257365570088519,
+        "inverse_upper": 1.0,
+        "active_candidate_links": 26680,
+        "links_limited": 11624,
+        "legacy_max_transpose_discrepancy": 0.06303420662879944,
+        "construction": "Each stored xy edge pair is shared by the forward and transpose actions.",
+        "links_sha256": "6fd33dca5ddf50a2778f55d491f66a0316a7cf247a0ff1f8dae454ca6e496986"
+      },
+      "fsr_nm": 27.499999999999858,
+      "published_fsr_nm": 25.454899999999945,
+      "reference_linewidths_and_local_peak_offsets": [
+        {
+          "published_nominal_peak_um": 1.52463718,
+          "read_peak_um": 1.5246371801131047,
+          "read_peak_power": 0.316344378025,
+          "loaded_q_half_max": null,
+          "fwhm_nm": 2.176488661230991,
+          "largest_sample_interval_nm": 0.2014686202820304,
+          "number_of_peaks_above_half_height": 2,
+          "nearest_local_peak_um": 1.5195,
+          "nearest_wavelength_difference_nm": -5.1371801131046,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.55009208,
+          "read_peak_um": 1.5500920771652973,
+          "read_peak_power": 0.7153218182890001,
+          "loaded_q_half_max": 1090.9476500617614,
+          "fwhm_nm": 1.4208675155746864,
+          "largest_sample_interval_nm": 0.20060404892752182,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.5455,
+          "nearest_wavelength_difference_nm": -4.592077165297193,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.57724075,
+          "read_peak_um": 1.57724074834012,
+          "read_peak_power": 0.6629167548089999,
+          "loaded_q_half_max": 751.8385347623616,
+          "fwhm_nm": 2.097845049720215,
+          "largest_sample_interval_nm": 0.20775134860939737,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.573,
+          "nearest_wavelength_difference_nm": -4.240748340120115,
+          "local_qualified_loaded_q": 744.4587237522643
+        }
+      ],
+      "acquisition": {
+        "reference": "computed_this_invocation",
+        "device": "computed_this_invocation"
+      },
+      "timing": {
+        "reference": {
+          "schema": 1,
+          "acquisition_id": "e60463ecc6eb4bcaa2e5b7f318d29f8f",
+          "platform": "gpu",
+          "device": "cuda:0",
+          "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "grid_shape": [
+            236,
+            218,
+            70
+          ],
+          "cells": 3601360,
+          "spacing_um": 0.05,
+          "pml_cells": {
+            "min_x": 13,
+            "max_x": 13,
+            "min_y": 13,
+            "max_y": 13,
+            "min_z": 13,
+            "max_z": 13
+          },
+          "steps": 5244,
+          "dt_seconds": 9.532874347655028e-17,
+          "simulated_time_fs": 499.9039307910297,
+          "compile_seconds": 2.517169384009321,
+          "synchronized_step_seconds": 40.215279672978795,
+          "step_batches": 55,
+          "cuda_event_elapsed_seconds": 40.2241191711426,
+          "cuda_event_note": null,
+          "kernel_active_seconds": null,
+          "kernel_count": null,
+          "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+          "stage_through_steps_seconds": 50.848506242007716,
+          "million_cell_steps_per_second": 469.6108542218954,
+          "setup_seconds": 7.861003697005799,
+          "interior_non_pml_cells": 1774080,
+          "cells_touching_pml": 1827280,
+          "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+        },
+        "device": {
+          "schema": 1,
+          "acquisition_id": "72f1a0cac5824d19ab6045e5e30c1044",
+          "platform": "gpu",
+          "device": "cuda:0",
+          "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "grid_shape": [
+            236,
+            218,
+            70
+          ],
+          "cells": 3601360,
+          "spacing_um": 0.05,
+          "pml_cells": {
+            "min_x": 13,
+            "max_x": 13,
+            "min_y": 13,
+            "max_y": 13,
+            "min_z": 13,
+            "max_z": 13
+          },
+          "steps": 111966,
+          "dt_seconds": 9.532874347655028e-17,
+          "simulated_time_fs": 10673.57809209543,
+          "compile_seconds": 3.1746429900085786,
+          "synchronized_step_seconds": 875.0099357522267,
+          "step_batches": 1167,
+          "cuda_event_elapsed_seconds": 875.2193170623777,
+          "cuda_event_note": null,
+          "kernel_active_seconds": null,
+          "kernel_count": null,
+          "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+          "stage_through_steps_seconds": 885.4467278529919,
+          "million_cell_steps_per_second": 460.8289086607367,
+          "setup_seconds": 3.6731522970076185,
+          "interior_non_pml_cells": 1774080,
+          "cells_touching_pml": 1827280,
+          "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+        }
+      }
+    },
+    {
       "mesh": 24,
       "old_report": "v014-ring3d-lumerical-r24-t3200-wall-tensor.json",
       "corrected_report": "v014-ring3d-lumerical-r24-t3200-reciprocal-wall.json",

@@ -53,6 +53,16 @@ class PhaseRegistrationTests(unittest.TestCase):
         self.assertIsNone(result['channels']['add_side']['same_gauge_complex_delta'])
         self.assertEqual(result['channels']['add_side']['power_delta']['count'],2)
 
+    def test_blind_ring_forecast_leaves_missing_and_ambiguous_lines_unassigned(self):
+        from scripts.phase_ring_forecast_check import assign_lines
+        predictions=[{'anchor_r24_nm':t-5,'prediction_r20_nm':t,
+                      'sampling_and_prefix_interval_nm':[t-.5,t+.5]} for t in (1524.,1550.,1577.)]
+        half,rows=assign_lines(predictions,[1523.8,1524.2,1551.])
+        self.assertEqual(half,13.)
+        self.assertEqual([row['status'] for row in rows],['unassigned','outside interval','unassigned'])
+        self.assertEqual(rows[1]['observed_minus_prediction_nm'],1.)
+        self.assertIsNone(rows[0]['observed_r20_nm'])
+
     def test_return_windows_preserve_amplitude_and_temporal_phase_at_common_planes(self):
         from scripts.calibrate_finite_grating import return_window_status
         samples=np.array([[.1,.1],[.1,.2],[.1,.3]],dtype=complex)

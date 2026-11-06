@@ -70,6 +70,16 @@ const { chromium } = require('playwright');
       const download=page.waitForEvent('download');
       await lab.getByRole('button',{name:'Export Python + notebook',exact:true}).click();
       await (await download).saveAs(path.join(out,preset+'-program.zip'));
+      if (preset==='ring-3d') {
+        const available=catalog.find(c=>c.case===preset).reciprocal_meshes?.lumerical ?? [];
+        if (available.length) {
+          await lab.getByLabel('Ring boundary sampling').selectOption('reciprocal-wall');
+          await lab.getByLabel('Mesh resolution').selectOption(String(Math.max(...available)));
+          const corrected=page.waitForEvent('download');
+          await lab.getByRole('button',{name:'Export Python + notebook',exact:true}).click();
+          await (await corrected).saveAs(path.join(out,'reciprocal-ring-program.zip'));
+        }
+      }
     }
     if (job) {
       const deadline=Date.now()+3*60*60*1000;

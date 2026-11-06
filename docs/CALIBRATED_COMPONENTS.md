@@ -2,6 +2,17 @@
 
 Each row is qualified for a named geometry, source, execution target and measurement. The separate layout library has measured field propagation for 27 presets on Meep CPU and FDTDX CPU/NVIDIA. [Layout field verification](LAYOUT_FIELDS.md#verification).
 
+### Current commercial comparison at 1550 nm
+
+| Matched geometry | Workbench power | Published power | Qualification |
+| --- | ---: | ---: | --- |
+| Lumerical bus-loaded ring, reciprocal 20→24 cells/µm, drop | 2.652% → 1.803% | 67.442% | All 241 numerical bins passed on both meshes. The 24-cell central peak is displaced −5.09 nm. |
+| Tidy3D bus-loaded ring, wall tensor 20 cells/µm, drop | 83.682% | 2.159% | All 201 published-band samples passed. One sample outside the reference band failed settling. |
+| Lumerical finite-width grating, 20 cells/µm, guided output | 38.794% | 40.027% | Five-sample mean error 2.32 percentage points. Largest adjacent-mesh change 3.08 points, exceeding the 2-point gate. |
+| Tidy3D finite-width grating, 16 cells/µm, guided output | 34.601% | 38.019% | Five-sample mean error 6.27 points. Largest adjacent-mesh change 5.13 points. |
+
+Powers refer to each example’s own geometry and guided channel. The Lumerical references come from filed numerical data. The Tidy3D powers are read from the published figures. Complex Tidy3D phase was unavailable for these runs; its phase tables describe the local mesh study. [Ring evidence](RECIPROCAL_RING_STABILITY.md) · [Grating evidence](GRATING_ETCH_REFINEMENT.md) · [Complex phase and weak returns](COMPLEX_PORT_COMPARISONS.md).
+
 ## Current refinement campaign
 
 - [x] Checked the actual 100 nm coupling gap independently against Lumerical at 1550 nm. Four local mesh series expose the size of the coarse-grid error. The 128-cell wall and MPB mode splittings are 0.10992 and 0.11085 against the published 0.109. [Matched gap and sensitivity](RING_GAP_MODES.md).
@@ -22,6 +33,7 @@ Each row is qualified for a named geometry, source, execution target and measure
 - [x] Measured the held-out Tidy3D grating at 16 cells/µm in the mirror domain. At 1550 nm guided power is 34.601% versus 38.019% read from the published figure. The five-sample mean error is 6.27 percentage points, up from 2.95 at 14 cells/µm. The largest 14→16 changes were 5.13 points in guided power, 1.723 rad in guided phase and 0.0184 in complex return amplitude. The reference and device required 98.99 and 431.08 GPU-clock seconds. [Native fields and sampling](verification/v014-grating3d-tidy3d-mirror-r16.json) · [Phase and weak returns](verification/v014-grating-phase-tidy3d.json).
 - [x] Measured the Lumerical grating on the 50 nm grid. At 1550 nm guided power reached 38.794% versus 40.027% filed; reflected power is 0.439% versus 0.419%. The five-point mean error is 2.323 percentage points. The largest 16→20 guided power change is 3.082 points at 1525 nm, above the two-point mesh limit. The device took 12,600 steps over 14,018,808 cells in 421.23 GPU-clock seconds. It reused the verified incident reference after an interrupted attempt. [Qualified spectrum](verification/v014-grating3d-lumerical-mirror-r20.json) · [Interrupted attempt and measured lower bound](verification/v014-grating-lumerical-mirror-r20-interruption.json).
 - [x] Repeated the 24-cell Lumerical ring with a reciprocal dielectric update. All 241 wavelength samples passed, and the fields decayed after launch. At 1550 nm measured through/drop powers are 97.69%/1.80%, against 9.39%/67.44% filed. The return peaks at 9.17% around 1544.85 nm. The fixed-wavelength and peak comparisons remain outside their targets. The corrected device advanced 134,360 steps in 1,659.78 GPU-clock seconds. [Measured source and fields](verification/v014-ring3d-lumerical-r24-t3200-reciprocal-wall.json) · [Return line near the shifted resonance](verification/v014-reciprocal-ring24-return-resonance.json).
+- [x] Measured the same corrected ring at 20 cells/µm. It passed all 241 bins, using 875.22 GPU-clock seconds for 111,966 device steps over 3,601,360 cells. Across the 201 common-band samples the maximum 20→24 changes were 82.42 points in through power, 63.81 in drop and 7.53 in reflection. The central peak moved 0.5 nm, versus 5.04 nm prospectively predicted from straight-guide dispersion alone. That prediction also missed the other two assigned peaks. [Matched spectra](verification/v014-reciprocal-wall-meshes.json) · [Blind prediction outcome](verification/v014-reciprocal-ring-straight-forecast-check.json) · [Registered complex differences](verification/v014-ring-phase-reciprocal.json).
 - [ ] Qualify GPU ring wall and grating etch refinements at fixed physical dimensions. Earlier matched controls remain available below.
 - [ ] Qualify phase and weak returns at common physical planes across meshes. Distinguish absolute phase, phase change with wavelength and power-only vendor data.
 - [x] Published per-stage cells, actual steps, elapsed GPU timing, exclusions and fresh/cache provenance. The live ring device advanced 89,575 steps over 1,851,360 cells in 338.13 GPU-clock seconds. [GPU timing ledger](GPU_TIMING.md).

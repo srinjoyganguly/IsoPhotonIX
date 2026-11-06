@@ -236,6 +236,17 @@
       },
       "all_evidenced_and_met": false
     },
+    "v014-ring3d-lumerical-r20-t3200-reciprocal-wall.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": false
+    },
     "v014-ring3d-lumerical-r20-t3200-wall-tensor.json": {
       "criteria": {
         "nearest_drop_center_within_one_published_linewidth": true,
@@ -373,5 +384,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "2826036cd7f13c43fecad460c131f836b46304d3bd6237cb7fa1ec72f38094c4"
+  "diagnosis_sha256": "c118d9028fc75fecae01b5514ded2c44b87d9aa163148f3491b1332c64c16822"
 }

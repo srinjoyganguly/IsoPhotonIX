@@ -1,0 +1,73 @@
+{
+  "forecast_file": "v014-reciprocal-ring-straight-forecast.json",
+  "forecast_sha256": "4fd370d32314c05ffa173c29e8cfb5624d195f86d778a3effafd7adc59bf7f45",
+  "device20_file": "v014-ring3d-lumerical-r20-t3200-reciprocal-wall.json",
+  "device20_report_sha256": "c2ff363adb6c85dd332d330b2efe9b3f3b71d7da529795e07eacdb3de79cd46b",
+  "device20_arrays_sha256": "3df5cd665236045d46adb3124acfd83031a9a5e7bbc6e3d1b04ab740db752b73",
+  "native_run_passed": true,
+  "native_valid_bins": 241,
+  "native_bins": 241,
+  "straight_beta_max_discrepancy_rad_per_um": {
+    "beta_early_rad_per_um": 0.0,
+    "beta_full_rad_per_um": 0.0
+  },
+  "assignment_half_width_nm": 13.261405890285232,
+  "measured_qualified_drop_peaks_nm": [
+    1495.5,
+    1519.5,
+    1545.5,
+    1573.0,
+    1601.0
+  ],
+  "lines": [
+    {
+      "anchor_r24_nm": 1518.5,
+      "prediction_r20_nm": 1523.5197279370752,
+      "predicted_r20_minus_r24_nm": 5.019727937075169,
+      "sampling_and_prefix_interval_nm": [
+        1523.0192392476956,
+        1524.0198150278327
+      ],
+      "peak_candidates_r20_nm": [
+        1519.5
+      ],
+      "observed_r20_nm": 1519.5,
+      "observed_minus_prediction_nm": -4.019727937075231,
+      "observed_r20_minus_r24_nm": 1.0,
+      "status": "outside interval"
+    },
+    {
+      "anchor_r24_nm": 1545.0,
+      "prediction_r20_nm": 1550.0425397176457,
+      "predicted_r20_minus_r24_nm": 5.042539717645678,
+      "sampling_and_prefix_interval_nm": [
+        1549.541659586031,
+        1550.5431125329708
+      ],
+      "peak_candidates_r20_nm": [
+        1545.5
+      ],
+      "observed_r20_nm": 1545.5,
+      "observed_minus_prediction_nm": -4.542539717645695,
+      "observed_r20_minus_r24_nm": 0.5,
+      "status": "outside interval"
+    },
+    {
+      "anchor_r24_nm": 1572.0,
+      "prediction_r20_nm": 1577.0950908485975,
+      "predicted_r20_minus_r24_nm": 5.095090848597383,
+      "sampling_and_prefix_interval_nm": [
+        1576.594315314087,
+        1577.5956949651472
+      ],
+      "peak_candidates_r20_nm": [
+        1573.0
+      ],
+      "observed_r20_nm": 1573.0,
+      "observed_minus_prediction_nm": -4.095090848597465,
+      "observed_r20_minus_r24_nm": 1.0,
+      "status": "outside interval"
+    }
+  ],
+  "scope": "Only the predeclared propagation-only hypothesis is scored. A miss shows straight propagation alone does not predict that line at this precision. An inside-interval result is compatible with this mechanism, without identifying angular order or establishing commercial agreement."
+}
