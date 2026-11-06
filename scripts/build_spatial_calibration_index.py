@@ -80,6 +80,13 @@ def spatial_index():
                 measurement=f"Measured input and output powers on {data['device_name']}."
                 if geometry in ('lumerical','tidy3d') and (geometry not in best_grating or mesh>best_grating[geometry][0]):
                     best_grating[geometry]=(mesh,data)
+            clocks = data.get('stages',{})
+            time_key = 'elapsed_s' if case=='ring-3d' else 'stepping_seconds'
+            if all(time_key in clocks.get(role,{}) for role in ('reference','device')):
+                reference_s=clocks['reference'][time_key]
+                device_s=clocks['device'][time_key]
+                basis='acquisition' if case=='ring-3d' else 'time stepping'
+                measurement+=f" Recorded NVIDIA {basis}: {reference_s:.0f} s for the incident reference, {device_s:.0f} s for the device."
             view={'label':label,'receipt':path.name,'report':panel,'qualification':measurement}
             field=field_plane(data,raw)
             if field is not None:
