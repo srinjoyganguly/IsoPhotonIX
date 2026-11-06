@@ -162,3 +162,18 @@ class FiniteGrating3D(unittest.TestCase):
                 grating.memory_admission(grating.settings(name,16),free)
         with self.assertRaises(ValueError):
             grating.settings('compact',14)
+
+    def test_tilted_gaussian_sheet_is_deterministic_and_has_the_requested_direction(self):
+        x=np.arange(-4.,6.,.125);y=np.arange(-3.,3.,.125)+.0625
+        e,h=grating.sampled_gaussian_fields(x,y,.375,1.5,14.5)
+        other_e,other_h=grating.sampled_gaussian_fields(x.copy(),y.copy(),.375,1.5,14.5)
+        np.testing.assert_array_equal(other_e,e)
+        np.testing.assert_array_equal(other_h,h)
+        self.assertEqual(e.dtype,np.float32)
+        np.testing.assert_allclose(np.sum(e.astype(float)**2),1.,atol=1e-7)
+        np.testing.assert_allclose(np.sum(h.astype(float)**2),1.,atol=1e-7)
+        np.testing.assert_array_equal(e[1,:,:,0],e[1,:,::-1,0])
+        flux=np.cross(e[:,:,:,0].transpose(1,2,0).astype(float),
+                      h[:,:,:,0].transpose(1,2,0).astype(float)).sum(axis=(0,1))
+        theta=np.deg2rad(14.5)
+        np.testing.assert_allclose(flux/np.linalg.norm(flux),[-np.sin(theta),0.,-np.cos(theta)],atol=1e-7)

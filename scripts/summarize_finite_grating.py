@@ -49,10 +49,37 @@ def summarize(directory):
                            'nominal_reception':nominal[2],'nominal_emission':g['result']['guide_to_beam'][2]},
             'scope':'These quantify changes on one compact device. Numerical settling and mesh convergence are separate.'}
 
+def vendor_mesh_changes(directory):
+    result={}
+    for geometry in ('tidy3d','lumerical'):
+        a=read(directory/f'v012-grating3d-{geometry}-r12.json')
+        b=read(directory/f'v012-grating3d-{geometry}-r14.json')
+        if {k:v for k,v in a['settings'].items() if k!='resolution'}!={k:v for k,v in b['settings'].items() if k!='resolution'}:
+            raise ValueError(f'{geometry} geometry/source differs beyond the resolution setting.')
+        if a['device_name']!=b['device_name'] or a['actual_device']!=b['actual_device']:
+            raise ValueError(f'{geometry} targets differ.')
+        x=np.array(a['result']['beam_to_guide'])
+        y=np.array(b['result']['beam_to_guide'])
+        va=next(row for row in a['comparisons'] if row['geometry_matched'])
+        vb=next(row for row in b['comparisons'] if row['geometry_matched'])
+        result[geometry]={'wavelength_um':a['result']['wavelength_um'],'coarse_resolution':12,'fine_resolution':14,
+                         'coarse_coupling':x.tolist(),'fine_coupling':y.tolist(),
+                         'fine_minus_coarse_percentage_points':(100*(y-x)).tolist(),
+                         'maximum_power_fraction_change':float(np.max(abs(y-x))),
+                         'coarse_vendor_mae_percentage_points':va['mean_absolute_difference_percentage_points'],
+                         'fine_vendor_mae_percentage_points':vb['mean_absolute_difference_percentage_points'],
+                         'fine_vendor_differences_percentage_points':vb['local_minus_published_percentage_points'],
+                         'source_plane_z_um':[a['stages']['device']['sample_plane_z_um'],b['stages']['device']['sample_plane_z_um']],
+                         'guide_plane_x_um':[a['stages']['device']['output_plane_x_um'],b['stages']['device']['output_plane_x_um']],
+                         'pml_width_um':[a['stages']['device']['pml_cells']/12,b['stages']['device']['pml_cells']/14]}
+    return {'mesh_pairs':result,'scope':'Two independently acquired uniform grids establish the observed sensitivity at five wavelengths; absolute continuum convergence requires further evidence.'}
+
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--vendor-mesh',action='store_true')
     args=parser.parse_args()
-    args.output.write_text(json.dumps(summarize(args.directory),indent=2,allow_nan=False)+'\n')
+    result=vendor_mesh_changes(args.directory) if args.vendor_mesh else summarize(args.directory)
+    args.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')

@@ -56,3 +56,21 @@ def fingerprint(salt):
 def validate_worker(expected, actual):
     if expected!=actual:
         raise ValueError('NVIDIA device, driver or local cache identity changed during acquisition.')
+
+
+def available_mib():
+    """Read free framebuffer memory for the same CUDA-visible device, including WSL graphics use."""
+    import shutil
+    import subprocess
+    library=ctypes.CDLL('libcuda.so.1')
+    device=ctypes.c_int(); address=ctypes.create_string_buffer(32)
+    if (library.cuInit(0)!=0 or library.cuDeviceGet(ctypes.byref(device),0)!=0 or
+            library.cuDeviceGetPCIBusId(address,ctypes.sizeof(address),device)!=0):
+        raise RuntimeError('Cannot identify the selected NVIDIA adapter for a memory preflight.')
+    utility=shutil.which('nvidia-smi') or '/usr/lib/wsl/lib/nvidia-smi'
+    row=subprocess.check_output([utility,'-i',address.value.decode(),'--query-gpu=memory.free',
+                                 '--format=csv,noheader,nounits'],text=True).strip()
+    try:
+        return int(row)
+    except ValueError as error:
+        raise RuntimeError('NVIDIA did not return one available-memory value for the selected device.') from error

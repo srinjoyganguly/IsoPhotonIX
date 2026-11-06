@@ -1,0 +1,165 @@
+{
+  "status": "rejected_native_pair",
+  "resolution": 14,
+  "settings": {
+    "geometry": "tidy3d",
+    "resolution": 14,
+    "period": 0.62,
+    "fill": 0.8,
+    "teeth": 20,
+    "width": 10.8,
+    "guide_width": 0.5,
+    "taper": 50.0,
+    "height": 0.26,
+    "etch": 0.16,
+    "oxide_top": 0.68,
+    "oxide_bottom": 2.0,
+    "n_si": 3.47,
+    "n_oxide": 1.44,
+    "beam_x": 3.6,
+    "waist": 5.4,
+    "angle_deg": 14.5,
+    "source_z": 1.18,
+    "buffer": 0.93,
+    "pml": 0.667,
+    "max_time_fs": 2000.0,
+    "residual_slab_laterally_extended": true
+  },
+  "reason": "The strict source check detected independent float32 normalization differences. This pair did not qualify. The replacement explicitly constructs the unit-energy sampled sheet in float64 and then casts E/H to the FDTD dtype.",
+  "raw_sha256": {
+    "reference": "a1c51379a009edfb0df5bee786f7915ceeda79ed8c85863f4c0e7540e25b3b1f",
+    "device": "0313366d6bae5a075d015ee66f9a95063ca8f425736a8576c2cfccda41e021c4"
+  },
+  "source_eh_sha256": {
+    "reference": "31c3730227fc678649546009c82d4592aacc5a6e49ce11820e340d78641190dc",
+    "device": "9cbbaf534977e12a0df8b3c40d00c725b683faa1a2dbb9b5daedf13f667b8586",
+    "prescribed": "a250c92f8e60a0fc9850b58571a831cc8b2662c8b3b0c499d7a5fc6adbd78f66"
+  },
+  "original_source_differences": {
+    "source_E": {
+      "sample_shape": [
+        3,
+        288,
+        178,
+        1
+      ],
+      "max_absolute": 9.313225746154785e-10,
+      "relative_l2": 9.441262038229332e-08,
+      "fitted_scale": 1.000000088858877,
+      "relative_shape_residual": 3.190365414416107e-08,
+      "polarity_changes": 0
+    },
+    "source_H": {
+      "sample_shape": [
+        3,
+        288,
+        178,
+        1
+      ],
+      "max_absolute": 9.313225746154785e-10,
+      "relative_l2": 9.470308553030907e-08,
+      "fitted_scale": 1.0000000888281402,
+      "relative_shape_residual": 3.283650656410717e-08,
+      "polarity_changes": 0
+    }
+  },
+  "prescribed_vs_original": {
+    "reference": {
+      "source_E": {
+        "sample_shape": [
+          3,
+          288,
+          178,
+          1
+        ],
+        "max_absolute": 2.7939677238464355e-09,
+        "relative_l2": 1.3870457177484248e-07,
+        "fitted_scale": 0.999999959755801,
+        "relative_shape_residual": 1.3273794692731327e-07,
+        "polarity_changes": 0
+      },
+      "source_H": {
+        "sample_shape": [
+          3,
+          288,
+          178,
+          1
+        ],
+        "max_absolute": 2.7939677238464355e-09,
+        "relative_l2": 1.3882161803483956e-07,
+        "fitted_scale": 0.9999999640769152,
+        "relative_shape_residual": 1.3409315239314897e-07,
+        "polarity_changes": 0
+      }
+    },
+    "device": {
+      "source_E": {
+        "sample_shape": [
+          3,
+          288,
+          178,
+          1
+        ],
+        "max_absolute": 3.725290298461914e-09,
+        "relative_l2": 1.8516205382469688e-07,
+        "fitted_scale": 0.9999998708969376,
+        "relative_shape_residual": 1.3273049682640563e-07,
+        "polarity_changes": 0
+      },
+      "source_H": {
+        "sample_shape": [
+          3,
+          288,
+          178,
+          1
+        ],
+        "max_absolute": 3.725290298461914e-09,
+        "relative_l2": 1.8339295788537356e-07,
+        "fitted_scale": 0.9999998752487876,
+        "relative_shape_residual": 1.3442511485164208e-07,
+        "polarity_changes": 0
+      }
+    }
+  },
+  "matched_time_offsets": true,
+  "time_offsets_sha256": "e97af9fc557e1a42c4382394580594147c8d6dc9638e04dc6e8575577b5dde4b",
+  "matched_coordinates": true,
+  "matched_actual_gpu": true,
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "source_sheet_x_angle_deg": {
+    "reference": -14.50000036689158,
+    "device": -14.500000375023902,
+    "prescribed": -14.499999993799996
+  },
+  "original_reference_propagation": {
+    "mean_x_angle_deg": [
+      -14.500343977931982,
+      -14.500155600068322,
+      -14.500560846922845,
+      -14.500631909056542,
+      -14.50065432458894
+    ],
+    "downward_propagating_to_direct": [
+      0.9998687040177433,
+      0.9997256625723527,
+      0.9996019225190433,
+      0.9996352252202484,
+      0.9996931187473472
+    ],
+    "upward_propagating_to_direct": [
+      8.410401986677205e-05,
+      7.076730333892158e-05,
+      6.873226252230902e-05,
+      8.64462022620741e-05,
+      0.00010421592514926751
+    ],
+    "incident_to_band_max": [
+      0.34418610608558525,
+      0.7724225911561217,
+      1.0,
+      0.7856950496764691,
+      0.3922969522939138
+    ]
+  }
+}

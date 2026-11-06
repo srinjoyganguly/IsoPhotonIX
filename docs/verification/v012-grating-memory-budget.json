@@ -212,5 +212,124 @@
       "fits_envelope": false,
       "scope": "Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
     }
-  ]
+  ],
+  "shape_only_refinement_compiler_outputs": {
+    "lumerical-14": {
+      "geometry": "lumerical",
+      "resolution": 14,
+      "shape": [
+        606,
+        298,
+        53
+      ],
+      "cells": 9571164,
+      "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "cpu_field_allocation_verified": true,
+      "executed_fdtd_steps": 0,
+      "compiled_cuda_bytes": {
+        "argument_size_in_bytes": 1513243260,
+        "output_size_in_bytes": 1513243368,
+        "alias_size_in_bytes": 1513243256,
+        "temp_size_in_bytes": 765700472,
+        "generated_code_size_in_bytes": 2075786
+      },
+      "compiled_live_bytes": 2278943844,
+      "compilation_seconds": 0.9413115740026115
+    },
+    "lumerical-16": {
+      "geometry": "lumerical",
+      "resolution": 16,
+      "shape": [
+        694,
+        342,
+        62
+      ],
+      "cells": 14715576,
+      "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "cpu_field_allocation_verified": true,
+      "executed_fdtd_steps": 0,
+      "compiled_cuda_bytes": {
+        "argument_size_in_bytes": 2321920288,
+        "output_size_in_bytes": 2321920396,
+        "alias_size_in_bytes": 2321920284,
+        "temp_size_in_bytes": 824076664,
+        "generated_code_size_in_bytes": 2679192
+      },
+      "compiled_live_bytes": 3145997064,
+      "compilation_seconds": 0.9448922290030168
+    },
+    "tidy3d-13": {
+      "geometry": "tidy3d",
+      "resolution": 13,
+      "shape": [
+        854,
+        184,
+        81
+      ],
+      "cells": 12728016,
+      "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "cpu_field_allocation_verified": true,
+      "executed_fdtd_steps": 0,
+      "compiled_cuda_bytes": {
+        "argument_size_in_bytes": 1999460276,
+        "output_size_in_bytes": 1999460384,
+        "alias_size_in_bytes": 1999460272,
+        "temp_size_in_bytes": 712775544,
+        "generated_code_size_in_bytes": 1261058
+      },
+      "compiled_live_bytes": 2712235932,
+      "compilation_seconds": 0.7489506499987328
+    },
+    "tidy3d-14": {
+      "geometry": "tidy3d",
+      "resolution": 14,
+      "shape": [
+        918,
+        196,
+        86
+      ],
+      "cells": 15473808,
+      "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "cpu_field_allocation_verified": true,
+      "executed_fdtd_steps": 0,
+      "compiled_cuda_bytes": {
+        "argument_size_in_bytes": 2429945688,
+        "output_size_in_bytes": 2429945796,
+        "alias_size_in_bytes": 2429945684,
+        "temp_size_in_bytes": 866539384,
+        "generated_code_size_in_bytes": 1438368
+      },
+      "compiled_live_bytes": 3296485184,
+      "compilation_seconds": 0.7819528010004433
+    },
+    "tidy3d-16": {
+      "geometry": "tidy3d",
+      "resolution": 16,
+      "shape": [
+        1051,
+        226,
+        99
+      ],
+      "cells": 23515074,
+      "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "cpu_field_allocation_verified": true,
+      "executed_fdtd_steps": 0,
+      "compiled_cuda_bytes": {
+        "argument_size_in_bytes": 3689337836,
+        "output_size_in_bytes": 3689337944,
+        "alias_size_in_bytes": 3689337832,
+        "temp_size_in_bytes": 1316851320,
+        "generated_code_size_in_bytes": 1848188
+      },
+      "compiled_live_bytes": 5006189268,
+      "compilation_seconds": 0.7375677399977576
+    }
+  },
+  "selection": {
+    "tidy3d": 14,
+    "lumerical": 14
+  },
+  "measured_peak_method": "One-second NVIDIA global memory samples taken during actual 12-cell Lumerical stages, with a measured desktop usage floor. Each vendor also has an actual one-step 12-cell CUDA allocation and allocator statistics.",
+  "planner": "scripts/plan_grating_memory.py",
+  "budget_program": "scripts/grating_memory_budget.py"
 }

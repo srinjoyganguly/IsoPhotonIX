@@ -112,6 +112,29 @@ def normal_flux(phasors, dx):
     return .5*dx**2*np.real(p[:,0]*p[:,4].conj()-p[:,1]*p[:,3].conj()).sum(axis=(-1,-2), dtype=np.float64)
 
 
+def sampled_gaussian_fields(xs, ys, center_x_um, waist_um, angle_deg):
+    """Fixed E/H amplitudes for the native tilted air-side Gaussian injection sheet.
+
+    Project the same sampled transverse Gaussian onto the horizontal plane using
+    linear interpolation, then normalize in deterministic float64 arithmetic.
+    The FDTDX TFSF source supplies the staggered component time delays.
+    """
+    theta=math.radians(angle_deg)
+    xx=np.asarray(xs,dtype=np.float64)
+    yy=np.asarray(ys,dtype=np.float64)
+    projected_x=center_x_um+(xx-center_x_um)*math.cos(theta)
+    x_profile=np.interp(projected_x,xx,np.exp(-((xx-center_x_um)/waist_um)**2))
+    y_profile=np.interp(-yy,yy,np.exp(-(yy/waist_um)**2))
+    amplitude=x_profile[:,None]*y_profile[None,:]
+    amplitude=amplitude/np.sqrt(np.sum(amplitude**2,dtype=np.float64))
+    electric=np.zeros((3,len(xx),len(yy),1),dtype=np.float32)
+    magnetic=np.zeros_like(electric)
+    electric[1,:,:,0]=amplitude
+    magnetic[0,:,:,0]=math.cos(theta)*amplitude
+    magnetic[2,:,:,0]=-math.sin(theta)*amplitude
+    return electric,magnetic
+
+
 def digest(a):
     return hashlib.sha256(np.ascontiguousarray(a).tobytes()).hexdigest()
 
@@ -217,7 +240,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     source_shape = (xmax-xmin,ny-2*pml,1)
     source=WaistSource(name='beam',partial_grid_shape=source_shape, direction='-',
               fixed_E_polarization_vector=(0.,1.,0.), azimuth_angle=m['angle_deg'],
-              normalize_by_energy=not fiber,
+              normalize_by_energy=not fiber and m['geometry']!='tidy3d',
               center_x=(m['beam_x']-axes[0][xmin])/dx,center_y=-axes[1][pml]/dx,
               waist_cells=(m['fiber_radius'] if fiber else m['waist'])/dx, wave_character=fdtdx.WaveCharacter(frequency=center),
               temporal_profile=fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=bandwidth),
@@ -279,7 +302,13 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         obj=obj.aset('object_list',[source if item.name=='guide' else item for item in obj.object_list])
     else:
         source=obj['beam']
-        electric,magnetic=np.asarray(source._E),np.asarray(source._H)
+        if m['geometry']=='tidy3d':
+            electric,magnetic=sampled_gaussian_fields(axes[0][xmin:xmax],axes[1][pml:ny-pml],
+                                                     m['beam_x'],m['waist'],m['angle_deg'])
+            source=source.aset('_E',jax.device_put(electric,target)).aset('_H',jax.device_put(magnetic,target))
+            obj=obj.aset('object_list',[source if item.name=='beam' else item for item in obj.object_list])
+        else:
+            electric,magnetic=np.asarray(source._E),np.asarray(source._H)
     delays_e=np.asarray(source._time_offset_E);delays_h=np.asarray(source._time_offset_H)
     vector=np.cross(electric.squeeze().transpose(1,2,0).astype(np.float64),
                     magnetic.squeeze().transpose(1,2,0).astype(np.float64)).sum(axis=(0,1))
