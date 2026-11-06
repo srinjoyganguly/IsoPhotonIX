@@ -1,0 +1,94 @@
+{
+  "verified_at": "2026-11-06T02:26:07.559177+00:00",
+  "milestone": "Calibrated passive components, qualified local presets",
+  "release": "v0.11.0a3",
+  "release_source_commit": "7d26767b7c8ca01d162ebca5f6050b5e6f4419c5",
+  "release_receipt": "v011-a3-release.json",
+  "installed_wheel_receipt": "v011-a3-wheel-install.json",
+  "passed": true,
+  "application_tests": {
+    "command": "python -m unittest discover -s tests -v",
+    "total": 247,
+    "passed_in_api_environment": 237,
+    "requires_numerical_environment": 10,
+    "meep_tests_skipped_in_api_environment": 6,
+    "scipy_tests_skipped_in_api_environment": 4,
+    "all_skipped_cases_checked_in_numerical_environment": true,
+    "native_meep_regression_tests": 11,
+    "native_meep_receipt": "v011-native-regressions.json",
+    "native_scipy_tests": [
+      "test_independent_straight_interface",
+      "test_finest_ring_pair_must_straddle_center_at_adjacent_orders",
+      "test_peak_width_resolution_gate",
+      "test_straight_vertical_reduction_is_a_guided_root"
+    ]
+  },
+  "frontend": {
+    "typescript_typecheck": true,
+    "production_build": true,
+    "geometry_tests": 28,
+    "chrome": {
+      "records": 25,
+      "matrix_entries": 546,
+      "spectra": 27,
+      "plotted_samples": 4829,
+      "sample_readouts": 81,
+      "bare_ring_pairs": 2
+    },
+    "mobile_width_px": 390,
+    "browser_receipt": "v011-a3-browser-records.json",
+    "resume_receipt": "v011-browser-resume.json"
+  },
+  "numerical_data": {
+    "verified_public_raw_archives": 24,
+    "recorded_presets": {
+      "coupler": 6,
+      "splitter": 6,
+      "multimode": 1,
+      "multimode-3d": 1,
+      "ring": 2,
+      "grating": 9
+    },
+    "complete_paired_target_matrices": 8,
+    "meep_primary_sensitivity_controls": 8,
+    "same_mesh_cpu_vs_nvidia": {
+      "coupler-12": {
+        "matrix_coefficients": 48,
+        "max_complex_difference": 1.3029634812854006e-07,
+        "max_power_fraction_difference": 1.2474908350768033e-07
+      },
+      "coupler-16": {
+        "matrix_coefficients": 48,
+        "max_complex_difference": 1.3669489803132317e-07,
+        "max_power_fraction_difference": 1.7225778292662142e-07
+      },
+      "splitter-12": {
+        "matrix_coefficients": 27,
+        "max_complex_difference": 1.0330852674373419e-07,
+        "max_power_fraction_difference": 6.227397031377535e-08
+      },
+      "splitter-16": {
+        "matrix_coefficients": 27,
+        "max_complex_difference": 1.1020139330895345e-07,
+        "max_power_fraction_difference": 6.396533880348443e-08
+      }
+    },
+    "audit_receipt": "v011-receipt-audit.json",
+    "commercial_y_regeneration_repeat": "v011-published-y-photonforge-r20-replay.json",
+    "lumerical_far_output": "v011-grating-ansys-output-r60.json",
+    "meep_ring_campaign": "v011-ring.json",
+    "meep_grating_campaign": "v011-grating.json",
+    "finite_multimode": "v011-multimode-finite.json",
+    "planar_multimode": "v011-multimode-planar.json"
+  },
+  "exports": {
+    "measured_examples": 12,
+    "example_manifest": "v011-a3-example-exports.json",
+    "finite_multimode_python_and_notebook": "v011-finite-multimode-replays.json",
+    "planar_multimode": "v011-calibration-replays.json",
+    "ring": "v011-ring-release-replay.json",
+    "grating": "v011-grating-compact-replays.json",
+    "fdtdx_cuda_splitter": "v011-fdtdx-yee-notebook-replay.json"
+  },
+  "scope": "Per-geometry, per-target and per-observable evidence; full 3D loaded rings, lateral finite-width gratings, additional solver routes, and continuum convergence for weak phase/reflection remain open."
+}

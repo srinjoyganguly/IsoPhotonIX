@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "source_commit": "7d26767b7c8ca01d162ebca5f6050b5e6f4419c5",
+  "matching_wheel_entries_after_source_rebuild": 104,
+  "wheel_sha256": "162a985500f0472696bd499936c8d6053f065688f54c36fc7ae4df8d147b1028",
+  "source_sha256": "c0a9f382db4a06d3131677e7cb56674b46570f91505b76719e2d05c5573b9ed8",
+  "verified_at": "2026-11-06T02:24:55.437553+00:00",
+  "release": "https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a3",
+  "signed_out_repository": true,
+  "signed_out_release": true,
+  "verified_assets": {
+    "photonics_workbench-0.11.0a3-py3-none-any.whl": "162a985500f0472696bd499936c8d6053f065688f54c36fc7ae4df8d147b1028",
+    "photonics_workbench-0.11.0a3.tar.gz": "c0a9f382db4a06d3131677e7cb56674b46570f91505b76719e2d05c5573b9ed8",
+    "calibration-examples-v0.11.0a3.zip": "8af9470be55d3d6bfaf2258feb2ff68390dfd2c72b0236c53e4f9bcac757445b"
+  }
+}

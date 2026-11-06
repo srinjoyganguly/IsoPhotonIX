@@ -6,7 +6,7 @@ wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
 separate environments. Tagged wheels are distributed through [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases).
 
-The [calibration checklist](CALIBRATED_COMPONENTS.md) tracks the v0.11 results. The [v0.10 verification summary](verification/v010-checks.json) records the preceding preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
+The [v0.11.0a3 release](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a3) includes the wheel, source and twelve runnable example exports. The [calibration checklist](CALIBRATED_COMPONENTS.md) tracks measured results and remaining work. [Clean install and CPU/CUDA runs](verification/v011-a3-wheel-install.json) · [Signed-out download checks](verification/v011-a3-release.json). The [v0.10 verification summary](verification/v010-checks.json) records the preceding preview. The [v0.9 wheel check](verification/v09-wheel-install.json) records a fresh
 offline installation, an installed CLI run of the Lumerical comparison, and
 real simulations of the photonic-crystal line-defect layout on CPU and NVIDIA.
 The installed NVIDIA field bytes and material digest matched the corresponding
