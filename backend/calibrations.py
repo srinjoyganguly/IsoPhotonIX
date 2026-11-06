@@ -180,7 +180,8 @@ def specification(config):
         helpers = ['backend/__init__.py', *['backend/adapters/' + n + '.py' for n in (
             'fdtdx_adapter', 'fdtdx3d_adapter', 'fdtdx_ports_adapter', 'fdtdx_ports3d_adapter')]]
         if ring:
-            helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py']
+            helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py',
+                        'scripts/ring_stage_provenance.py']
         else:
             helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json']
         return worker, args, helpers

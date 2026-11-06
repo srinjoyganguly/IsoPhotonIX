@@ -22,6 +22,7 @@ from backend.adapters.fdtdx_ports_adapter import _ports_runtime
 from backend.adapters.fdtdx_ports3d_adapter import canonical_source_profile, port_basis
 from scripts.calibrate_ring import CASES, characterize
 from scripts.measure_loaded_ring_losses import measure as measure_loaded_loss
+from scripts.ring_stage_provenance import fingerprint as stage_fingerprint, public_fingerprint
 
 LIGHT = 299792458.
 SILICON, OXIDE = 3.48, 1.44
@@ -250,7 +251,7 @@ def qualified_spacing(peaks, valid):
     return min(adjacent,key=lambda pair:abs(sum(p['wavelength_um'] for p in pair)/2-1.55)) if adjacent else None
 
 
-def assemble(g, vendor, stages, duration, output, versions):
+def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity):
     ref,dev = [stages[k][1] for k in ('reference','device')]
     for k in ('source_E','source_H'):
         if not np.allclose(ref[k],dev[k],rtol=1e-6,atol=1e-8):
@@ -286,7 +287,7 @@ def assemble(g, vendor, stages, duration, output, versions):
     np.savez_compressed(output/'arrays.npz',**data)
     report=dict(case_id='loaded-ring-3d',vendor=vendor,solver='fdtdx',device='gpu',
         actual_device=stages['device'][0]['device'],device_name=stages['device'][0]['device_name'],
-        passed=passed,measurement_complete=True,physical_model=g,versions=versions,
+        passed=passed,measurement_complete=True,physical_model=g,versions=versions,checkpoint_identity=checkpoint_identity,
         stages={k:v[0] for k,v in stages.items()},series={vendor:row},
         duration_um_c=duration,early_fraction=.8,peaks=peaks,qualified_peaks=reliable,
         measured_drop_fsr_nm=fsr,published_drop_fsr_nm=external_fsr,
@@ -332,17 +333,16 @@ def main():
     runtime=_ports_runtime(args.device)
     versions={k:importlib.metadata.version(k) for k in ('jax','jaxlib','fdtdx','scipy','numpy','tidy3d')}
     g=geometry(args.vendor,args.resolution,args.pml_um,args.aperture_um)
-    # Bind the source, platform, versions and actual GPU into the immutable stage signature.
-    helpers=[Path(__file__),ROOT/'backend/adapters/fdtdx_ports3d_adapter.py',ROOT/'backend/adapters/fdtdx_ports_adapter.py']
-    provenance=dict(versions=versions,worker={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in helpers},
-                    device=runtime[3].device_kind)
+    provenance, reusable = stage_fingerprint(ROOT, runtime, versions)
+    if args.checkpoint and not reusable:
+        print('Persistent checkpoint reuse disabled. ' + provenance['reuse_disabled_reason'], flush=True)
     class StageCache(MeasurementCheckpoints):
         def __init__(self,directory):
             self.root=Path(directory)
             self.root.mkdir(exist_ok=True,parents=True)
             self.provenance=provenance
     with tempfile.TemporaryDirectory() as tmp:
-        cache=StageCache(args.checkpoint or tmp)
+        cache=StageCache(args.checkpoint if args.checkpoint and reusable else tmp)
         stages={}
         for label in ('reference','device'):
             is_reference=label=='reference'
@@ -353,7 +353,8 @@ def main():
                 return info,raw
             stages[label]=cache.acquire(label,settings,calculate)
             print(label,'complete',stages[label][0]['device'],flush=True)
-        result=assemble(g,args.vendor,stages,args.duration_um_c,args.output,versions)
+        identity = {'persistent_reuse_eligible': reusable, 'provenance': public_fingerprint(provenance)}
+        result=assemble(g,args.vendor,stages,args.duration_um_c,args.output,versions,identity)
         print('Measured',result['valid_bins'],'of',result['total_bins'],'qualified bins; FSR (nm)',result['measured_drop_fsr_nm'],flush=True)
 
 

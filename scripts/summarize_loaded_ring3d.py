@@ -13,6 +13,7 @@ sys.path.insert(0,str(ROOT))
 from scripts.calibrate_loaded_ring3d import directional_spectrum,PORTS
 from scripts.compare_loaded_ring3d import compare
 from scripts.measure_loaded_ring_losses import measure
+from scripts.ring_stage_provenance import public_fingerprint
 
 
 def validated_report(folder):
@@ -60,7 +61,7 @@ def stage_provenance(checkpoint, folder, report):
                     for key in raw.files:
                         np.testing.assert_array_equal(raw[key],all_arrays[label+'_'+key])
                 candidates.append({'checkpoint_signature':receipt['signature'],'native_arrays_sha256':receipt['arrays_sha256'],
-                                   'provenance':spec['provenance']})
+                                   'provenance':public_fingerprint(spec['provenance'])})
             if len(candidates)!=1:
                 raise ValueError(f'Expected one verified {label} acquisition for {folder}.')
             tags[label]=candidates[0]

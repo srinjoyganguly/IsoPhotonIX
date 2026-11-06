@@ -1,5 +1,8 @@
 """Finite two-bus ring geometry, native data and broadband modal reconstruction."""
 from importlib.util import find_spec
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
 import unittest
 
 import numpy as np
@@ -9,6 +12,20 @@ HAS_SCIPY = find_spec('scipy') is not None
 
 @unittest.skipUnless(HAS_SCIPY, 'Loaded-ring numerical tests run in the solver environment with SciPy.')
 class LoadedRing(unittest.TestCase):
+    def test_worker_calls_stage_identity_before_calculating(self):
+        from scripts import calibrate_loaded_ring3d as worker
+        class ReachedIdentity(Exception):
+            pass
+        runtime=(object(),object(),object(),object())
+        with TemporaryDirectory() as tmp, \
+             patch('sys.argv',['ring','--vendor','lumerical','--device','gpu','--output',str(Path(tmp)/'run')]), \
+             patch.object(worker,'_ports_runtime',return_value=runtime), \
+             patch.object(worker.importlib.metadata,'version',return_value='tested'), \
+             patch.object(worker,'stage_fingerprint',side_effect=ReachedIdentity) as identify:
+            with self.assertRaises(ReachedIdentity):
+                worker.main()
+        self.assertEqual(identify.call_args.args[:2],(worker.ROOT,runtime))
+
     def test_both_finite_stacks_and_measured_leads(self):
         from scripts.calibrate_loaded_ring3d import geometry, permittivity, OXIDE
         for name,top in (('lumerical',1.),('tidy3d',OXIDE)):
