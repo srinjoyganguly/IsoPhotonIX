@@ -1,0 +1,139 @@
+{
+  "source": "https://optics.ansys.com/hc/en-us/articles/360042800293-Ring-resonator-getting-started-Design-and-initial-simulation",
+  "material_audit_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+  "reference_delta_n": 0.109,
+  "wavelength_um": 1.55,
+  "width_um": 0.4,
+  "height_um": 0.18,
+  "silicon_epsilon": 12.085214794079697,
+  "oxide_epsilon": 2.0851426458070788,
+  "engine": "tidy3d",
+  "version": "2.11.2",
+  "observable": "Even minus odd quasi-TE index for two parallel straight rails; ring tangent section.",
+  "rows": [
+    {
+      "mesh_cells_per_um": 32,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 2.223428094484053,
+      "odd_neff": 2.16480819816675,
+      "even_odd_te_fraction": [
+        0.9716318632683638,
+        0.9785782579991341
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.058619896317303244,
+      "length_um_for_amplitude_0_31": 2.6528542373316997,
+      "difference_from_published_delta_n": -0.050380103682696756
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 2.1093061016818697,
+      "odd_neff": 2.031566704576935,
+      "even_odd_te_fraction": [
+        0.9615022313777242,
+        0.9665387387566753
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.07773939710493494,
+      "length_um_for_amplitude_0_31": 2.0004019342649486,
+      "difference_from_published_delta_n": -0.03126060289506506
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 2.0655521957607887,
+      "odd_neff": 1.9771777457686577,
+      "even_odd_te_fraction": [
+        0.9573369199655002,
+        0.9599415991374397
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.08837444999213107,
+      "length_um_for_amplitude_0_31": 1.759671945354676,
+      "difference_from_published_delta_n": -0.020625550007868934
+    },
+    {
+      "mesh_cells_per_um": 128,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 2.045716984292045,
+      "odd_neff": 1.9527889276287564,
+      "even_odd_te_fraction": [
+        0.9553817331900721,
+        0.9569462517493977
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.0929280566632884,
+      "length_um_for_amplitude_0_31": 1.6734455224945821,
+      "difference_from_published_delta_n": -0.016071943336711594
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.1,
+      "span_um": 3.0,
+      "even_neff": 2.1092397616498246,
+      "odd_neff": 2.0314861718089445,
+      "even_odd_te_fraction": [
+        0.9614922390655531,
+        0.9665267057002985
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.0777535898408801,
+      "length_um_for_amplitude_0_31": 2.0000367912986197,
+      "difference_from_published_delta_n": -0.0312464101591199
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.09,
+      "span_um": 2.5,
+      "even_neff": 2.113943493206761,
+      "odd_neff": 2.027594566320629,
+      "even_odd_te_fraction": [
+        0.9616881177071529,
+        0.9665498189567756
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.08634892688613194,
+      "length_um_for_amplitude_0_31": 1.8009493104919927
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.11,
+      "span_um": 2.5,
+      "even_neff": 2.0996481391916366,
+      "odd_neff": 2.0267298855398206,
+      "even_odd_te_fraction": [
+        0.9612647376974759,
+        0.965144008781376
+      ],
+      "rail_center_phase_cosines": [
+        1.0,
+        -1.0
+      ],
+      "delta_n": 0.07291825365181603,
+      "length_um_for_amplitude_0_31": 2.132662708570364
+    }
+  ]
+}

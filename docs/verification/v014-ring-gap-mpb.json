@@ -1,0 +1,139 @@
+{
+  "source": "https://optics.ansys.com/hc/en-us/articles/360042800293-Ring-resonator-getting-started-Design-and-initial-simulation",
+  "material_audit_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+  "reference_delta_n": 0.109,
+  "wavelength_um": 1.55,
+  "width_um": 0.4,
+  "height_um": 0.18,
+  "silicon_epsilon": 12.085214794079697,
+  "oxide_epsilon": 2.0851426458070788,
+  "engine": "mpb",
+  "version": "1.35.0",
+  "observable": "Even minus odd quasi-TE index for two parallel straight rails; ring tangent section.",
+  "rows": [
+    {
+      "mesh_cells_per_um": 32,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 1.9705592577192768,
+      "odd_neff": 1.8536831406325327,
+      "even_odd_te_fraction": [
+        0.9537312604887505,
+        0.9476729328339666
+      ],
+      "rail_center_phase_cosines": [
+        0.9999998471418038,
+        -0.999999954539052
+      ],
+      "delta_n": 0.11687611708674406,
+      "length_um_for_amplitude_0_31": 1.3305544726634366,
+      "difference_from_published_delta_n": 0.007876117086744058
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 1.9777801485246151,
+      "odd_neff": 1.8665128392807124,
+      "even_odd_te_fraction": [
+        0.9518694478989344,
+        0.947525087501891
+      ],
+      "rail_center_phase_cosines": [
+        0.9999999967238515,
+        -0.9999999966220919
+      ],
+      "delta_n": 0.11126730924390271,
+      "length_um_for_amplitude_0_31": 1.3976256044479167,
+      "difference_from_published_delta_n": 0.0022673092439027126
+    },
+    {
+      "mesh_cells_per_um": 96,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 1.980452070035516,
+      "odd_neff": 1.8696521406077915,
+      "even_odd_te_fraction": [
+        0.9506874515566507,
+        0.9465427455105861
+      ],
+      "rail_center_phase_cosines": [
+        0.9999999966490688,
+        -0.9999999999849992
+      ],
+      "delta_n": 0.11079992942772443,
+      "length_um_for_amplitude_0_31": 1.403521113600917,
+      "difference_from_published_delta_n": 0.001799929427724431
+    },
+    {
+      "mesh_cells_per_um": 128,
+      "gap_um": 0.1,
+      "span_um": 2.5,
+      "even_neff": 1.9822138509822986,
+      "odd_neff": 1.8713629073119857,
+      "even_odd_te_fraction": [
+        0.9492243089881341,
+        0.945404529839578
+      ],
+      "rail_center_phase_cosines": [
+        0.9999999516108087,
+        -0.9999999964890347
+      ],
+      "delta_n": 0.1108509436703129,
+      "length_um_for_amplitude_0_31": 1.4028752051025626,
+      "difference_from_published_delta_n": 0.0018509436703128962
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.1,
+      "span_um": 3.0,
+      "even_neff": 1.97807761790736,
+      "odd_neff": 1.8665868974418975,
+      "even_odd_te_fraction": [
+        0.9519066616599627,
+        0.9475506448607354
+      ],
+      "rail_center_phase_cosines": [
+        0.9999999297251682,
+        -0.9999999995343043
+      ],
+      "delta_n": 0.11149072046546249,
+      "length_um_for_amplitude_0_31": 1.394824965594124,
+      "difference_from_published_delta_n": 0.00249072046546249
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.09,
+      "span_um": 2.5,
+      "even_neff": 1.9863099717051007,
+      "odd_neff": 1.8666485388084357,
+      "even_odd_te_fraction": [
+        0.9522534432235583,
+        0.9467734169058268
+      ],
+      "rail_center_phase_cosines": [
+        0.9999999145306433,
+        -0.9999999849967337
+      ],
+      "delta_n": 0.11966143289666498,
+      "length_um_for_amplitude_0_31": 1.2995836383774153
+    },
+    {
+      "mesh_cells_per_um": 64,
+      "gap_um": 0.11,
+      "span_um": 2.5,
+      "even_neff": 1.9722572050752194,
+      "odd_neff": 1.8675213600280374,
+      "even_odd_te_fraction": [
+        0.9508545224942503,
+        0.9467646960294239
+      ],
+      "rail_center_phase_cosines": [
+        0.9999999401443505,
+        -0.9999999896814903
+      ],
+      "delta_n": 0.10473584504718203,
+      "length_um_for_amplitude_0_31": 1.4847833639691141
+    }
+  ]
+}

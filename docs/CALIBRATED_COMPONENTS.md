@@ -2,7 +2,15 @@
 
 Each row is qualified for a named geometry, source, execution target and measurement. The separate layout library has measured field propagation for 27 presets on Meep CPU and FDTDX CPU/NVIDIA. [Layout field verification](LAYOUT_FIELDS.md#verification).
 
-## Current v0.12 calibrated component checklist
+## Current refinement campaign
+
+- [x] Checked the actual 100 nm coupling gap independently against Lumerical at 1550 nm. Four local mesh series expose the size of the coarse-grid error. The 128-cell wall and MPB mode splittings are 0.10992 and 0.11085 against the published 0.109. [Matched gap and sensitivity](RING_GAP_MODES.md).
+- [ ] Qualify GPU ring wall and grating etch refinements at fixed physical dimensions. Earlier matched controls remain available below.
+- [ ] Qualify phase and weak returns at common physical planes across meshes. Distinguish absolute phase, phase change with wavelength and power-only vendor data.
+- [ ] Publish per-stage cells, actual steps, elapsed GPU timing, exclusions and fresh/cache provenance alongside the refined device reports.
+- [ ] Start persistent circuit connections after the calibration campaigns have been evaluated.
+
+## v0.12 calibrated component checklist
 
 ### Power-mismatch follow-up
 
