@@ -37,6 +37,10 @@ def verify(run):
             profile=np.stack([data[prefix+'_source_E'],data[prefix+'_source_H']])
             if digest(profile)!=stage['source_eh_sha256']:
                 raise ValueError('Source fields changed.')
+            if 'source_time_offsets_sha256' in stage:
+                offsets=np.stack([data[prefix+'_source_time_offset_E'],data[prefix+'_source_time_offset_H']])
+                if digest(offsets)!=stage['source_time_offsets_sha256']:
+                    raise ValueError('Source phase delays changed.')
             energies=data[prefix+'_energy'];times=data[prefix+'_energy_time_fs']
             if not len(energies) or len(times)!=len(energies) or np.any(np.diff(times)<=0):
                 raise ValueError('Invalid time trace.')
@@ -46,6 +50,8 @@ def verify(run):
                 for row in stage['history'][-2:]:
                     if row['energy_ratio']>=1e-4 or row['relative_spectral_change']>=.002:
                         raise ValueError('Settling metadata contradicts its measurements.')
+        if r.get('source_time_offsets_sha256')!=d.get('source_time_offsets_sha256'):
+            raise ValueError('Reference source phase delays differ from device.')
         if r['source_eh_sha256']!=d['source_eh_sha256']:raise ValueError('Reference source differs from device.')
         if m['geometry']=='compact-radiation':
             from scripts.grating_emission import observables
@@ -106,9 +112,11 @@ if __name__=='__main__':
         with tempfile.NamedTemporaryFile(dir=companion.parent,delete=False) as f:
             temp=Path(f.name)
             with (args.run/'arrays.npz').open('rb') as source:shutil.copyfileobj(source,f)
+        temp.chmod(0o644)
         temp.replace(companion)
         report['arrays_file']=companion.name
         with tempfile.NamedTemporaryFile(dir=companion.parent,mode='w',delete=False) as f:
             temp=Path(f.name);f.write(json.dumps(report,indent=2,allow_nan=False)+'\n')
+        temp.chmod(0o644)
         temp.replace(args.receipt)
     print(report['settings']['geometry'],report['result'].get('center_beam_to_guide',report['result'].get('center_guide_to_beam')),report['passed'])

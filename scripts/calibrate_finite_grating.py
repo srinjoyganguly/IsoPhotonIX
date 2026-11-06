@@ -154,13 +154,18 @@ def waist_source_type(m, lp):
     return WaistSource
 
 
-def native_stage(m, reference):
-    jax,jnp,fdtdx,target = _ports_runtime('gpu')
+def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
+    jax,jnp,fdtdx,gpu = _ports_runtime('gpu')
+    # The optional planner builds fields only on host RAM, then passes abstract
+    # GPU shapes to XLA. Actual electromagnetic acquisition always uses the GPU.
+    target=jax.devices('cpu')[0] if memory_plan else gpu
+    if memory_plan:
+        jax.config.update('jax_default_device',target)
     from fdtdx.fdtd.forward import forward
 
     import os
     hardware=cuda_identity.fingerprint(bytes.fromhex(os.environ['PHOTONICS_GRATING_DEVICE_SALT']))
-    if target.id!=hardware['ordinal'] or target.device_kind!=hardware['name']:
+    if gpu.id!=hardware['ordinal'] or gpu.device_kind!=hardware['name']:
         raise RuntimeError('The native JAX target differs from the CUDA device selected for the checkpoint.')
     fiber = m['geometry']=='lumerical'
     guided = m['geometry']=='compact-radiation'
@@ -177,8 +182,8 @@ def native_stage(m, reference):
     bandwidth = .5*299792458e6*(1/WL[0]-1/WL[-1])
     pulse_end = 12/(2*np.pi*bandwidth)*1e15
     sim = fdtdx.SimulationConfig(time=m['max_time_fs']*1e-15, resolution=dx*1e-6,
-                                 backend='gpu', dtype=jnp.float32, courant_factor=.99)
-    if sim.backend!='gpu' or target.platform!='gpu':
+                                 backend='cpu' if memory_plan else 'gpu', dtype=jnp.float32, courant_factor=.99)
+    if not memory_plan and (sim.backend!='gpu' or target.platform!='gpu'):
         raise RuntimeError('Requested NVIDIA FDTDX execution is unavailable.')
     volume = fdtdx.SimulationVolume(name='domain', partial_grid_shape=shape, material=fdtdx.Material(permittivity=1.))
     boundaries = fdtdx.BoundaryConfig(**{f'thickness_grid_{s}{a}':pml for s in ('min','max') for a in 'xyz'},
@@ -195,6 +200,7 @@ def native_stage(m, reference):
     source_shape = (xmax-xmin,ny-2*pml,1)
     source=WaistSource(name='beam',partial_grid_shape=source_shape, direction='-',
               fixed_E_polarization_vector=(0.,1.,0.), azimuth_angle=m['angle_deg'],
+              normalize_by_energy=not fiber,
               center_x=(m['beam_x']-axes[0][xmin])/dx,center_y=-axes[1][pml]/dx,
               waist_cells=(m['fiber_radius'] if fiber else m['waist'])/dx, wave_character=fdtdx.WaveCharacter(frequency=center),
               temporal_profile=fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=bandwidth),
@@ -257,7 +263,9 @@ def native_stage(m, reference):
     else:
         source=obj['beam']
         electric,magnetic=np.asarray(source._E),np.asarray(source._H)
-    vector=np.cross(electric.squeeze().transpose(1,2,0),magnetic.squeeze().transpose(1,2,0)).sum(axis=(0,1))
+    delays_e=np.asarray(source._time_offset_E);delays_h=np.asarray(source._time_offset_H)
+    vector=np.cross(electric.squeeze().transpose(1,2,0).astype(np.float64),
+                    magnetic.squeeze().transpose(1,2,0).astype(np.float64)).sum(axis=(0,1))
     direction=vector/np.linalg.norm(vector)
     expected=np.array([1.,0.,0.]) if guided else np.array([-np.sin(np.deg2rad(m['angle_deg'])),0.,-np.cos(np.deg2rad(m['angle_deg']))])
     if not np.allclose(direction,expected,atol=2e-4):
@@ -280,8 +288,47 @@ def native_stage(m, reference):
     dt=sim.time_step_duration*1e15
     state=(jnp.asarray(0,dtype=jnp.int32),arrays)
     compile_start=time.monotonic()
+    if memory_plan:
+        from jax.sharding import SingleDeviceSharding
+        sharding=SingleDeviceSharding(gpu)
+        def abstract(a):
+            return jax.ShapeDtypeStruct(a.shape,a.dtype,sharding=sharding)
+        spec=jax.tree.map(abstract,state)
+        end_spec=jax.ShapeDtypeStruct((),jnp.int32,sharding=sharding)
+        jax.config.update('jax_default_device',gpu)
+        program=jax.jit(evolve,donate_argnums=(0,),in_shardings=(sharding,sharding),out_shardings=sharding)
+        compiled=program.lower(spec,end_spec).compile()
+        devices=compiled.runtime_executable().local_devices()
+        if not devices or any(device.platform!='gpu' for device in devices):
+            raise RuntimeError('Memory inspection requires an actual GPU-compiled timestep.')
+        stats=compiled.memory_analysis()
+        names=('argument_size_in_bytes','output_size_in_bytes','alias_size_in_bytes','temp_size_in_bytes','generated_code_size_in_bytes')
+        memory={name:int(getattr(stats,name)) for name in names}
+        live=memory['argument_size_in_bytes']+memory['output_size_in_bytes']-memory['alias_size_in_bytes']+memory['temp_size_in_bytes']
+        return {'geometry':m['geometry'],'resolution':m['resolution'],'shape':list(shape),'cells':math.prod(shape),
+                'gpu':gpu.device_kind,'cpu_field_allocation_verified':arrays.fields.E.device.platform=='cpu',
+                'executed_fdtd_steps':0,'compiled_cuda_bytes':memory,'compiled_live_bytes':live,
+                'compilation_seconds':time.monotonic()-compile_start}
     compiled=jax.jit(evolve,donate_argnums=(0,)).lower(state,jnp.asarray(1,dtype=jnp.int32)).compile()
     compile_seconds=time.monotonic()-compile_start
+    if observe_one_step:
+        if m['resolution']!=12:
+            raise ValueError('One-step memory observation is restricted to the previously run 12-cell geometry.')
+        state=compiled(state,jnp.asarray(1,dtype=jnp.int32))
+        jax.block_until_ready(state)
+        if int(state[0])!=1 or state[1].fields.E.device!=gpu:
+            raise ValueError('Resource probe did not execute exactly one native GPU step.')
+        stats=compiled.memory_analysis(); allocator=gpu.memory_stats()
+        import subprocess
+        smi=subprocess.check_output(['nvidia-smi','--query-gpu=memory.free,memory.used,memory.total',
+                                     '--format=csv,noheader,nounits'],text=True).strip().splitlines()
+        if len(smi)!=1: raise ValueError('The memory observation needs a single unambiguous NVIDIA device.')
+        free,used,total=[int(v) for v in smi[0].split(',')]
+        return {'geometry':m['geometry'],'resolution':m['resolution'],'shape':list(shape),'cells':math.prod(shape),
+                'executed_fdtd_steps':1,'gpu':gpu.device_kind,'global_free_mib':free,'global_used_mib':used,
+                'global_total_mib':total,'allocator_bytes':dict(allocator or {}),
+                'actual_compiled_live_bytes':stats.argument_size_in_bytes+stats.output_size_in_bytes-
+                    stats.alias_size_in_bytes+stats.temp_size_in_bytes}
     schedule = np.flatnonzero(np.asarray(obj['energy']._is_on_at_time_step_arr))
     spectra=[]; history=[]; before=None; consecutive=0
     start=time.monotonic()
@@ -317,6 +364,7 @@ def native_stage(m, reference):
         raise RuntimeError('FDTD fields left the requested device.')
     data={'upper':upper,'upper_x_um':axes[0][ax0:ax1],'upper_y_um':axes[1][ay],
           'wavelength_um':WL,'history_observable':np.array(spectra),'source_E':electric,'source_H':magnetic,
+          'source_time_offset_E':delays_e,'source_time_offset_H':delays_h,
           'energy':energy_trace,'energy_time_fs':times,
           'material_yz':eps[px],'material_xy':eps[:,:,at(2,.18)],'material_xz':eps[:,ny//2,:],
           'grid_x_um':axes[0],'grid_y_um':axes[1],'grid_z_um':axes[2]}
@@ -328,7 +376,8 @@ def native_stage(m, reference):
     detail=dict(stage='reference' if reference else 'device',actual_device=str(final.fields.E.device),device_name=target.device_kind,
                 shape=list(shape),grid_resolution=m['resolution'],pml_cells=pml,time_steps=int(step),settled=consecutive>=2,
                 history=history,compile_seconds=compile_seconds,stepping_seconds=time.monotonic()-start,source_direction=direction.tolist(),
-                source_eh_sha256=digest(np.stack([electric,magnetic])),scalar_permittivity_sha256=eps_hash,
+                source_eh_sha256=digest(np.stack([electric,magnetic])),
+                source_time_offsets_sha256=digest(np.stack([delays_e,delays_h])),scalar_permittivity_sha256=eps_hash,
                 sample_plane_z_um=float(axes[2][az]),output_plane_x_um=float(axes[0][px]),
                 sampled_vertical_um=[float(axes[2][sz]),float(axes[2][sz+pz-1])],
                 port_basis=meta if guided or not reference else None,
@@ -403,8 +452,9 @@ def run(m, output, cache):
         raise ValueError('Choose a fresh result directory.')
     ref,rr=stage_archive(m,'reference',cache)
     dev,dr=stage_archive(m,'device',cache)
-    if rr['source_eh_sha256']!=dr['source_eh_sha256'] or rr['device_name']!=dr['device_name'] or rr['actual_device']!=dr['actual_device']:
-        raise ValueError('Reference and device acquisitions differ in source or hardware.')
+    for key in ('source_eh_sha256','source_time_offsets_sha256','device_name','actual_device','cuda_identity'):
+        if rr[key]!=dr[key]:
+            raise ValueError(f'Reference and device acquisitions differ in {key}.')
     if m['geometry']=='compact-radiation':
         from scripts.grating_emission import publish
         beam,br=stage_archive(settings('compact',m['resolution']),'reference',cache)

@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-06T03:48:45.528954+00:00",
+  "export_sha256": "1e7bd3c6cc8a6eb1847066af22abeaca6534e72b691cb3fa55a4055f1f2e88cc",
+  "python": {
+    "passed": true,
+    "all_array_bytes_equal": true,
+    "within_tolerance": {},
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "beam/wavelength_um",
+      "beam/beam_to_guide",
+      "beam/valid_beam_bins"
+    ]
+  },
+  "notebook": {
+    "passed": true,
+    "all_array_bytes_equal": false,
+    "within_tolerance": {
+      "arrays.npz:dev_energy": 7.62939453125e-06
+    },
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "beam/wavelength_um",
+      "beam/beam_to_guide",
+      "beam/valid_beam_bins"
+    ]
+  },
+  "browser": {
+    "passed": true,
+    "job_id": "9493718fbc4e42069ce83cf88ee5d4a1",
+    "checked_at": "2026-11-06T03:45:03.021Z",
+    "actual_device": "cuda:0",
+    "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "geometry": "compact",
+    "resolution": 12,
+    "coupling_at_1550": 0.1827581644873137,
+    "field_component": "Ey",
+    "field_shape": [
+      58,
+      118
+    ],
+    "center_sample": 3.257901906967163,
+    "checked_adjacent_sample": 3.1229262351989746,
+    "sample_units": "solver units",
+    "browser_errors": []
+  }
+}

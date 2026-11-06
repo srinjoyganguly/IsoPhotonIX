@@ -1,0 +1,44 @@
+{
+  "status": "rejected_native_pair",
+  "cause": "The stage-specific FDTDX energy normalization produced different floating-point source amplitudes. The exact source-profile gate rejected this pair. No device coupling is qualified from these checkpoints.",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "native_hardware_identity_equal": true,
+  "reference_arrays_sha256": "ffa03722c861ee495ce34fa1dc1c3122dfe2defbbc0d8d2d2eac91d69d13ba85",
+  "device_arrays_sha256": "5fc296c208a4edc3b8e6594c9eb19cfb0510324e1fffaf278c99ef8842f11857",
+  "source_EH_sha256": {
+    "reference": "a766fb6c3a3d1f086a4fcbe875dcb2bb01bed2d39ab5c8f4537782d147d839a1",
+    "device": "7bb9ff2ed2cbfeaa2841c656f4c3faec7d78f0e6f9ca2a07ea0d7b39d38bab6d"
+  },
+  "captured_worker_sha256": "e340b092f269d686d397d507b999be48aa26439cef2290b9214e9277ff760694",
+  "relative_source_checks": {
+    "source_E": {
+      "sample_shape": [
+        3,
+        241,
+        240,
+        1
+      ],
+      "maximum_absolute_difference": 1.862645149230957e-09,
+      "relative_l2_difference": 1.6478583904162812e-07,
+      "device_over_reference_scalar_fit": 1.0000001601161568,
+      "relative_shape_residual_after_fit": 3.89511186694504e-08,
+      "sign_changes": 0
+    },
+    "source_H": {
+      "sample_shape": [
+        3,
+        241,
+        240,
+        1
+      ],
+      "maximum_absolute_difference": 3.725290298461914e-09,
+      "relative_l2_difference": 1.6998498517403244e-07,
+      "device_over_reference_scalar_fit": 1.000000160929254,
+      "relative_shape_residual_after_fit": 5.474185558358045e-08,
+      "sign_changes": 0
+    }
+  },
+  "phase_delays_saved": false,
+  "coordinate_axes_equal": true
+}

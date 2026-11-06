@@ -22,7 +22,7 @@ class FiberSourceProfile(unittest.TestCase):
         pulse=fdtdx.WaveCharacter(wavelength=1.55e-6)
         Source=solver.waist_source_type(m,lp)
         source=Source(name='fiber',partial_grid_shape=(n,n,1),direction='-',fixed_E_polarization_vector=(0.,1.,0.),
-                      azimuth_angle=10.,center_x=0.,center_y=n/2,waist_cells=4.5/dx,wave_character=pulse)
+                      azimuth_angle=10.,normalize_by_energy=False,center_x=0.,center_y=n/2,waist_cells=4.5/dx,wave_character=pulse)
         rules=[source.set_grid_coordinates(axes=(0,1,2),sides=('-','-','-'),coordinates=(0,0,4))]
         obj,arr,params,sim,_=fdtdx.place_objects(object_list=[volume,source],config=sim,constraints=rules,key=key)
         values=np.broadcast_to(np.where(np.hypot(np.arange(n)[:,None],np.arange(n)[None,:]-n/2)*dx<m['fiber_radius'],m['fiber_core_n']**2,m['fiber_clad_n']**2)[:,:,None],(n,n,8))

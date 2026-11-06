@@ -14,6 +14,8 @@ The reference extraction reads only the publicly downloaded input files. The rec
 
 The full Tidy3D reference used 788 × 168 × 74 cells on the RTX 3080 Ti Laptop GPU. At 1550 nm the measured incident angular centroid was −14.50059°, and upward contamination in the nominally downward beam was 7.75 × 10⁻⁵ of incident power. [Independent source measurement](verification/v012-grating3d-tidy3d-source.json).
 
+A separate local full-vector Tidy3D mode solve also checked the Lumerical fiber cross section. At 12 cells/µm its modal index differs from the scalar LP01 value by −1.17 × 10⁻⁵, and the squared Ey-profile overlap is 0.999981. Two independent modal resolutions are recorded. [Fiber-mode control](verification/v012-grating-fiber-mode-reference.json) · [Local mode program](../scripts/validate_grating_fiber_mode.py).
+
 ## Fields, convergence and directions
 
 - The uniform grid samples the straight finite ridges using fractional horizontal/vertical cell coverage. The curved Ansys sectors use 4 × 4 lateral subsamples and fractional vertical coverage. Component permittivities are averaged to the electric Yee locations. These approximations require mesh checks, particularly for the roughly 100 nm etched features. The incident reference uses the actual truncated numerical aperture, which can differ from a full-space analytical beam normalization.
@@ -37,3 +39,17 @@ Use separate new result directories. The program export includes the solver sour
 **Guided-input angular radiation.** Select `compact-radiation` to launch the fundamental quasi-TE mode down the strip. A straight strip measures the incident guided amplitude and the launch background. A third native empty-domain run supplies the receiving Gaussian basis on the same air aperture. The device reports TE-guide-to-Gaussian efficiency, reflected guided power, upper-aperture flux and polar-angle bins. Comparison with the same compact device driven by the Gaussian checks reciprocity across independent acquisitions.
 
 New checkpoints bind each native acquisition to solver, SciPy, JAX, numerical source and actual CUDA device/driver. The device tag is salted per local cache. The native solver and coordinator compare the selected device before reusing a completed stage. [FDTDX phasor detector](https://fdtdx.readthedocs.io/en/latest/api/fdtdx.PhasorDetector.html) · [FDTDX guided source](https://fdtdx.readthedocs.io/en/stable/api/fdtdx.ModePlaneSource.html).
+
+## Measured finite-width results
+
+| Geometry | Workbench at 1550 nm | Comparison |
+| --- | ---: | --- |
+| Tidy3D uniform grating, 12 cells/µm | 35.2994% Gaussian to guide | Published 3D curve 38.0189%. The five-wavelength mean absolute difference is 2.5773 percentage points. |
+| Lumerical curved grating, 12 cells/µm | 22.2103% fiber to guide | Published S21 file 40.0266%. The five-wavelength mean absolute difference is 16.2332 percentage points. |
+| Compact, 12 cells/µm | 18.2758% Gaussian to guide | Narrow teeth at identical source and domain give 17.5538%. |
+| Compact, 16 cells/µm | 22.5344% Gaussian to guide | The finer mesh changes the nominal coupling by 4.2586 points. |
+| Compact with the guide excited, 12 cells/µm | 21.1016% guide to Gaussian | The upward finite-aperture estimate is 36.8530%. Reversing the excitation changes the nominal Gaussian transfer by 2.8258 points and by up to 3.2303 points over the five wavelengths. |
+
+The Tidy3D matched-geometry comparison uses 1500, 1525, 1550, 1575 and 1600 nm. Workbench minus the digitized vendor powers are −2.3055, −5.5363, −2.7195, −0.6401 and −1.6852 percentage points respectively. Each reference/device pair passed the incident support and finite-window checks at all five samples. [Tidy3D geometry receipt](verification/v012-grating3d-tidy3d-r12.json) · [Native fields and modes](verification/v012-grating3d-tidy3d-r12-arrays.npz) · [Compact mesh, width and reciprocity](verification/v012-grating3d-controls.json) · [Guided angular spectrum](verification/v012-grating3d-compact-radiation-r12.json).
+
+The Lumerical fiber’s original source pair failed the strict equality check. Its two solver-generated profiles had a fitted global amplitude ratio of 1.00000016 and sub-10⁻⁷ residual shape differences. Those data are retained as a rejected diagnostic. The revised source uses a fixed LP01 amplitude and saves both temporal offset arrays. Independent new reference/device acquisitions produced identical E/H source and time-offset hashes. All five bins passed the numerical checks. The local coupling fractions at 1500–1600 nm were 31.65%, 31.90%, 22.21%, 11.21% and 3.88%. The substantial spectral mismatch survives the source correction. [Qualified Lumerical device](verification/v012-grating3d-lumerical-r12.json) · [Native fields, source delays and modes](verification/v012-grating3d-lumerical-r12-arrays.npz). [Rejected input check](verification/v012-grating-lumerical-rejected-source-pair.json).

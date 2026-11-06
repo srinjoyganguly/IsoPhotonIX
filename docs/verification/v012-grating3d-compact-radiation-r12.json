@@ -1,0 +1,848 @@
+{
+  "schema_version": 1,
+  "case_id": "finite-grating-3d",
+  "vendor": "Workbench",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "passed": true,
+  "settings": {
+    "geometry": "compact-radiation",
+    "resolution": 12,
+    "period": 0.62,
+    "fill": 0.8,
+    "teeth": 8,
+    "width": 3.0,
+    "guide_width": 0.5,
+    "taper": 3.0,
+    "height": 0.26,
+    "etch": 0.16,
+    "oxide_top": 0.68,
+    "oxide_bottom": 2.0,
+    "n_si": 3.47,
+    "n_oxide": 1.44,
+    "beam_x": 1.8,
+    "waist": 1.5,
+    "angle_deg": 14.5,
+    "source_z": 1.18,
+    "buffer": 0.93,
+    "pml": 0.667,
+    "max_time_fs": 750.0,
+    "residual_slab_laterally_extended": false
+  },
+  "stages": {
+    "reference": {
+      "stage": "reference",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "shape": [
+        134,
+        76,
+        74
+      ],
+      "grid_resolution": 12,
+      "pml_cells": 8,
+      "time_steps": 3024,
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 60.057108390226674,
+          "energy": 1.255910683539696e-05,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": null
+        },
+        {
+          "time_fs": 120.11421678045335,
+          "energy": 3.665411949157715,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9990353559175291
+        },
+        {
+          "time_fs": 180.17132517068,
+          "energy": 112.81886291503906,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9100027440302241
+        },
+        {
+          "time_fs": 240.2284335609067,
+          "energy": 121.80201721191406,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.1889973069926925
+        },
+        {
+          "time_fs": 300.2855419511333,
+          "energy": 40.408103942871094,
+          "energy_ratio": 0.9980165958404541,
+          "relative_spectral_change": 0.0006171768809098666
+        },
+        {
+          "time_fs": 360.34265034136,
+          "energy": 0.011353503912687302,
+          "energy_ratio": 0.33109432458877563,
+          "relative_spectral_change": 3.465710369523551e-08
+        },
+        {
+          "time_fs": 420.3997587315867,
+          "energy": 8.290185360237956e-05,
+          "energy_ratio": 9.302789112553e-05,
+          "relative_spectral_change": 1.582041526068125e-06
+        },
+        {
+          "time_fs": 480.4568671218134,
+          "energy": 5.291013167152414e-06,
+          "energy_ratio": 6.79277945891954e-07,
+          "relative_spectral_change": 2.9955147862021275e-06
+        }
+      ],
+      "compile_seconds": 0.8772786160043324,
+      "stepping_seconds": 6.157490697994945,
+      "source_direction": [
+        1.0,
+        -9.404194756257311e-09,
+        7.1479098195936785e-09
+      ],
+      "source_eh_sha256": "9d6d1924a2eaded12383b269c14407aa56418628df261199429c0d46a025db2a",
+      "scalar_permittivity_sha256": "d01077bc04a4752115adeec84f5f01666a71fe2574453d279d226e7f3f7bd04f",
+      "sample_plane_z_um": 0.9283333333333341,
+      "output_plane_x_um": -3.4783333333333344,
+      "sampled_vertical_um": [
+        -0.6549999999999994,
+        0.8450000000000002
+      ],
+      "port_basis": {
+        "neff_real": [
+          2.519932746887207,
+          2.4975225925445557,
+          2.47493314743042,
+          2.452169895172119,
+          2.4292385578155518
+        ],
+        "neff_imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "ey_transverse_fraction": [
+          0.986778736114502,
+          0.9858577251434326,
+          0.9848865866661072,
+          0.9838646054267883,
+          0.9827912449836731
+        ],
+        "minimum_ey_transverse_fraction": 0.5,
+        "edge_electric_l2_fraction": [
+          3.633692176663317e-05,
+          4.625440851668827e-05,
+          5.857400537934154e-05,
+          7.381226168945432e-05,
+          9.258525824407116e-05
+        ],
+        "gauge": "Ey at the center sample is real and positive; common +x basis at both ports"
+      },
+      "fiber_mode": null,
+      "native_worker_sha256": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6"
+      },
+      "metadata_sha256": "7611a50041ba0af96b013e7fb7e741bd5febefda56e357a934bd193d852bb141",
+      "identity": {
+        "settings": {
+          "geometry": "compact-radiation",
+          "resolution": 12,
+          "period": 0.62,
+          "fill": 0.8,
+          "teeth": 8,
+          "width": 3.0,
+          "guide_width": 0.5,
+          "taper": 3.0,
+          "height": 0.26,
+          "etch": 0.16,
+          "oxide_top": 0.68,
+          "oxide_bottom": 2.0,
+          "n_si": 3.47,
+          "n_oxide": 1.44,
+          "beam_x": 1.8,
+          "waist": 1.5,
+          "angle_deg": 14.5,
+          "source_z": 1.18,
+          "buffer": 0.93,
+          "pml": 0.667,
+          "max_time_fs": 750.0,
+          "residual_slab_laterally_extended": false
+        },
+        "stage": "reference",
+        "sources": {
+          "calibrate_finite_grating.py": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd",
+          "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+          "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+          "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+          "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+          "grating_angular_spectrum.py": "4ed304986b8aae693574f4bd002c783593e4911d5f41f0ce9d635114c4618686",
+          "lumerical_grating3d.py": "c7607d49b96b2312f5faf1c9d0acc9db71c08e272a0684ea91cbb122be45e567",
+          "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76"
+        },
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        }
+      },
+      "signature": "189e32699ef605481de647c0ba6a868b47b314554ddb6f5978cd142ae43d65bf",
+      "arrays_sha256": "d0d8f57b6b2c9e82b6b476b4df96d6d0033d37e447671d43de27334081014d2e"
+    },
+    "device": {
+      "stage": "device",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "shape": [
+        134,
+        76,
+        74
+      ],
+      "grid_resolution": 12,
+      "pml_cells": 8,
+      "time_steps": 4158,
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 60.057108390226674,
+          "energy": 1.2559488823171705e-05,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": null
+        },
+        {
+          "time_fs": 120.11421678045335,
+          "energy": 3.666809558868408,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9999982772613285
+        },
+        {
+          "time_fs": 180.17132517068,
+          "energy": 113.74600982666016,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 1.0000457751908567
+        },
+        {
+          "time_fs": 240.2284335609067,
+          "energy": 106.71441650390625,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9972420700998172
+        },
+        {
+          "time_fs": 300.2855419511333,
+          "energy": 16.796436309814453,
+          "energy_ratio": 0.8626289367675781,
+          "relative_spectral_change": 0.7346918962553254
+        },
+        {
+          "time_fs": 360.34265034136,
+          "energy": 1.8635499477386475,
+          "energy_ratio": 0.13577446341514587,
+          "relative_spectral_change": 0.08534471340597244
+        },
+        {
+          "time_fs": 420.3997587315867,
+          "energy": 0.26706093549728394,
+          "energy_ratio": 0.015064057894051075,
+          "relative_spectral_change": 0.016544805321238403
+        },
+        {
+          "time_fs": 480.4568671218134,
+          "energy": 0.03468432277441025,
+          "energy_ratio": 0.002158794552087784,
+          "relative_spectral_change": 0.0012328030907207295
+        },
+        {
+          "time_fs": 540.51397551204,
+          "energy": 0.005206216126680374,
+          "energy_ratio": 0.00025029570679180324,
+          "relative_spectral_change": 0.000503354257450199
+        },
+        {
+          "time_fs": 600.5710839022667,
+          "energy": 0.0012862959410995245,
+          "energy_ratio": 4.208459358778782e-05,
+          "relative_spectral_change": 0.00014349034463974236
+        },
+        {
+          "time_fs": 660.6281922924934,
+          "energy": 0.0002456585061736405,
+          "energy_ratio": 1.0397809091955423e-05,
+          "relative_spectral_change": 7.779091631715776e-05
+        }
+      ],
+      "compile_seconds": 0.8109200659964699,
+      "stepping_seconds": 7.970693032999407,
+      "source_direction": [
+        1.0,
+        -9.404194756257311e-09,
+        7.1479098195936785e-09
+      ],
+      "source_eh_sha256": "9d6d1924a2eaded12383b269c14407aa56418628df261199429c0d46a025db2a",
+      "scalar_permittivity_sha256": "25c9bedcfaba8c03e5dd58e790640cb08bbee49732fb0830923c4a857fd02847",
+      "sample_plane_z_um": 0.9283333333333341,
+      "output_plane_x_um": -3.4783333333333344,
+      "sampled_vertical_um": [
+        -0.6549999999999994,
+        0.8450000000000002
+      ],
+      "port_basis": {
+        "neff_real": [
+          2.519932746887207,
+          2.4975225925445557,
+          2.47493314743042,
+          2.452169895172119,
+          2.4292385578155518
+        ],
+        "neff_imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "ey_transverse_fraction": [
+          0.986778736114502,
+          0.9858577251434326,
+          0.9848865866661072,
+          0.9838646054267883,
+          0.9827912449836731
+        ],
+        "minimum_ey_transverse_fraction": 0.5,
+        "edge_electric_l2_fraction": [
+          3.633692176663317e-05,
+          4.625440851668827e-05,
+          5.857400537934154e-05,
+          7.381226168945432e-05,
+          9.258525824407116e-05
+        ],
+        "gauge": "Ey at the center sample is real and positive; common +x basis at both ports"
+      },
+      "fiber_mode": null,
+      "native_worker_sha256": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6"
+      },
+      "metadata_sha256": "706d97a3ba5e5e9bac6afbe0dc2c2b657247c6f3609db82c3abd686a7e00755c",
+      "identity": {
+        "settings": {
+          "geometry": "compact-radiation",
+          "resolution": 12,
+          "period": 0.62,
+          "fill": 0.8,
+          "teeth": 8,
+          "width": 3.0,
+          "guide_width": 0.5,
+          "taper": 3.0,
+          "height": 0.26,
+          "etch": 0.16,
+          "oxide_top": 0.68,
+          "oxide_bottom": 2.0,
+          "n_si": 3.47,
+          "n_oxide": 1.44,
+          "beam_x": 1.8,
+          "waist": 1.5,
+          "angle_deg": 14.5,
+          "source_z": 1.18,
+          "buffer": 0.93,
+          "pml": 0.667,
+          "max_time_fs": 750.0,
+          "residual_slab_laterally_extended": false
+        },
+        "stage": "device",
+        "sources": {
+          "calibrate_finite_grating.py": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd",
+          "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+          "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+          "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+          "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+          "grating_angular_spectrum.py": "4ed304986b8aae693574f4bd002c783593e4911d5f41f0ce9d635114c4618686",
+          "lumerical_grating3d.py": "c7607d49b96b2312f5faf1c9d0acc9db71c08e272a0684ea91cbb122be45e567",
+          "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76"
+        },
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        }
+      },
+      "signature": "87c045a7c16747c019c29cbc8c6d8882a3c8035c30088249558b8b08dc662ce6",
+      "arrays_sha256": "79b1178dfcf8033e0135b6313966cb6c367ad15da44cef062021b9fca0e59fe4"
+    },
+    "beam_reference": {
+      "stage": "reference",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "shape": [
+        134,
+        76,
+        74
+      ],
+      "grid_resolution": 12,
+      "pml_cells": 8,
+      "time_steps": 2646,
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 60.057108390226674,
+          "energy": 9.166720701614395e-06,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": null
+        },
+        {
+          "time_fs": 120.11421678045335,
+          "energy": 2.1231462955474854,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9999983627603992
+        },
+        {
+          "time_fs": 180.17132517068,
+          "energy": 14.658390998840332,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9875437718886654
+        },
+        {
+          "time_fs": 240.2284335609067,
+          "energy": 0.003240336664021015,
+          "energy_ratio": 0.6104260087013245,
+          "relative_spectral_change": 0.27461941580161586
+        },
+        {
+          "time_fs": 300.2855419511333,
+          "energy": 1.0938704109175745e-10,
+          "energy_ratio": 0.00013493880396708846,
+          "relative_spectral_change": 0.0006904974549245887
+        },
+        {
+          "time_fs": 360.34265034136,
+          "energy": 8.972232679038683e-11,
+          "energy_ratio": 4.555254177335266e-12,
+          "relative_spectral_change": 2.187135035282791e-10
+        },
+        {
+          "time_fs": 420.3997587315867,
+          "energy": 8.965086312207049e-11,
+          "energy_ratio": 3.738491721055892e-12,
+          "relative_spectral_change": 5.8281719733626e-10
+        }
+      ],
+      "compile_seconds": 0.7510456469972269,
+      "stepping_seconds": 5.350383892000536,
+      "source_direction": [
+        -0.25037965178489685,
+        0.0,
+        -0.9681477546691895
+      ],
+      "source_eh_sha256": "713df907147fbc6b2fb83ac2b0b0dfb96aa55e7605079fff19497e61c0cd771b",
+      "scalar_permittivity_sha256": "d7e649f00f950c6fc18260fe8b6ce0505653594eb5f5f62704fdba881928ecb0",
+      "sample_plane_z_um": 0.9283333333333341,
+      "output_plane_x_um": -3.4783333333333344,
+      "sampled_vertical_um": [
+        -0.6549999999999994,
+        0.8450000000000002
+      ],
+      "port_basis": null,
+      "fiber_mode": null,
+      "native_worker_sha256": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6"
+      },
+      "metadata_sha256": "f39cb563e326db9ef84f2e7f743909679533d9e992317d7de299e8a9363cf40f",
+      "identity": {
+        "settings": {
+          "geometry": "compact",
+          "resolution": 12,
+          "period": 0.62,
+          "fill": 0.8,
+          "teeth": 8,
+          "width": 3.0,
+          "guide_width": 0.5,
+          "taper": 3.0,
+          "height": 0.26,
+          "etch": 0.16,
+          "oxide_top": 0.68,
+          "oxide_bottom": 2.0,
+          "n_si": 3.47,
+          "n_oxide": 1.44,
+          "beam_x": 1.8,
+          "waist": 1.5,
+          "angle_deg": 14.5,
+          "source_z": 1.18,
+          "buffer": 0.93,
+          "pml": 0.667,
+          "max_time_fs": 750.0,
+          "residual_slab_laterally_extended": false
+        },
+        "stage": "reference",
+        "sources": {
+          "calibrate_finite_grating.py": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd",
+          "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+          "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+          "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+          "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+          "grating_angular_spectrum.py": "4ed304986b8aae693574f4bd002c783593e4911d5f41f0ce9d635114c4618686",
+          "lumerical_grating3d.py": "c7607d49b96b2312f5faf1c9d0acc9db71c08e272a0684ea91cbb122be45e567",
+          "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76"
+        },
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2"
+        }
+      },
+      "signature": "e0f17f311cc1be0219f3bc03eed1710d35b9c095ca351fca0e7105f370c79e49",
+      "arrays_sha256": "7a7e08952b42f23b35014d5f6a701ebbddd6f12725e451521b12865be2e0dafe"
+    }
+  },
+  "arrays_sha256": "b41e0c2d21812aa97c205b1d982e412155e50fbde2ba3215989d912204ba7abb",
+  "result": {
+    "resolution": 12,
+    "wavelength_um": [
+      1.5,
+      1.525,
+      1.55,
+      1.575,
+      1.6
+    ],
+    "guide_to_beam": [
+      0.14651940592092966,
+      0.18461276021065243,
+      0.2110164491920323,
+      0.2511970456328048,
+      0.2350245464649289
+    ],
+    "guide_radiation_up": [
+      0.32289756249891327,
+      0.34606532850234667,
+      0.3685298947128128,
+      0.40893012652692806,
+      0.38860068649094176
+    ],
+    "guide_reflection": [
+      0.009552766927609143,
+      0.002154596099518954,
+      0.019448046571038238,
+      0.003855944852226905,
+      0.04433024374852877
+    ],
+    "valid_energy_bins": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "center_guide_to_beam": 0.2110164491920323,
+    "finite_aperture_signed_flux": [
+      0.32899928675030093,
+      0.3492927382613344,
+      0.37117259643313816,
+      0.41240164692418074,
+      0.3957180824936803
+    ]
+  },
+  "radiation": {
+    "polar_edges_deg": [
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0
+    ],
+    "fraction_of_incident": [
+      [
+        0.0004655031225234657,
+        0.07545216367163693,
+        0.12693518086157943,
+        0.08584064294212262,
+        0.016171581693935896,
+        0.0,
+        0.014786095141067594,
+        0.0032463950660473603
+      ],
+      [
+        0.0021680784560005463,
+        0.1164733832618503,
+        0.1293670111015274,
+        0.05461656844832006,
+        0.021794732342824828,
+        0.0,
+        0.006860666281846808,
+        0.014784888609976758
+      ],
+      [
+        0.020869279474139583,
+        0.145146895627084,
+        0.1229000728208415,
+        0.03799244787727629,
+        0.01647272566428118,
+        0.00202234158065745,
+        0.011110425799778079,
+        0.012015705868754709
+      ],
+      [
+        0.07216192655950877,
+        0.17788663968226248,
+        0.10762907306715175,
+        0.013934847189996344,
+        0.009717639185598164,
+        0.00574995376528309,
+        0.0,
+        0.02185004707712747
+      ],
+      [
+        0.11043759499885758,
+        0.16961297210397613,
+        0.07706666041036672,
+        0.007238402658093669,
+        0.006716485034301108,
+        0.004362794925072796,
+        0.0,
+        0.0131657763602737
+      ]
+    ],
+    "scope": "Propagating upward power estimated on a finite rectangular aperture. Each polar bin integrates azimuth; angles from 80\u00b0 to 90\u00b0 and rays beyond the aperture are excluded."
+  },
+  "field_preview": {
+    "array": "dev_center_fields",
+    "index": [
+      1
+    ],
+    "axis_order": "xy",
+    "horizontal_axis": "x",
+    "vertical_axis": "z",
+    "horizontal_um": [
+      -3.895000000000001,
+      -3.811666666666668,
+      -3.7283333333333344,
+      -3.645000000000001,
+      -3.5616666666666674,
+      -3.4783333333333344,
+      -3.3950000000000014,
+      -3.3116666666666674,
+      -3.2283333333333344,
+      -3.1450000000000014,
+      -3.0616666666666674,
+      -2.9783333333333344,
+      -2.8950000000000014,
+      -2.8116666666666674,
+      -2.7283333333333344,
+      -2.6450000000000014,
+      -2.561666666666668,
+      -2.4783333333333344,
+      -2.395000000000001,
+      -2.311666666666668,
+      -2.2283333333333344,
+      -2.145000000000001,
+      -2.061666666666668,
+      -1.9783333333333344,
+      -1.895000000000001,
+      -1.8116666666666679,
+      -1.7283333333333344,
+      -1.645000000000001,
+      -1.5616666666666679,
+      -1.4783333333333344,
+      -1.395000000000001,
+      -1.3116666666666679,
+      -1.2283333333333344,
+      -1.145000000000001,
+      -1.0616666666666679,
+      -0.9783333333333344,
+      -0.8950000000000009,
+      -0.8116666666666679,
+      -0.7283333333333344,
+      -0.6450000000000009,
+      -0.5616666666666674,
+      -0.4783333333333344,
+      -0.39500000000000135,
+      -0.3116666666666674,
+      -0.2283333333333344,
+      -0.14500000000000135,
+      -0.061666666666667425,
+      0.021666666666665613,
+      0.10499999999999865,
+      0.18833333333333258,
+      0.2716666666666656,
+      0.35499999999999865,
+      0.4383333333333326,
+      0.5216666666666656,
+      0.6049999999999986,
+      0.6883333333333326,
+      0.7716666666666656,
+      0.8549999999999986,
+      0.9383333333333326,
+      1.0216666666666656,
+      1.1049999999999986,
+      1.1883333333333326,
+      1.2716666666666656,
+      1.3549999999999986,
+      1.4383333333333326,
+      1.5216666666666656,
+      1.6049999999999986,
+      1.6883333333333326,
+      1.7716666666666656,
+      1.8549999999999986,
+      1.9383333333333326,
+      2.0216666666666656,
+      2.1049999999999986,
+      2.1883333333333326,
+      2.2716666666666656,
+      2.3549999999999986,
+      2.4383333333333326,
+      2.5216666666666656,
+      2.6049999999999986,
+      2.6883333333333326,
+      2.7716666666666656,
+      2.8549999999999986,
+      2.9383333333333326,
+      3.0216666666666656,
+      3.1049999999999986,
+      3.1883333333333326,
+      3.2716666666666656,
+      3.3549999999999986,
+      3.4383333333333317,
+      3.5216666666666656,
+      3.6049999999999995,
+      3.6883333333333317,
+      3.7716666666666656,
+      3.8549999999999995,
+      3.9383333333333317,
+      4.021666666666666,
+      4.1049999999999995,
+      4.188333333333332,
+      4.271666666666666,
+      4.3549999999999995,
+      4.438333333333332,
+      4.521666666666666,
+      4.6049999999999995,
+      4.688333333333332,
+      4.771666666666666,
+      4.8549999999999995,
+      4.938333333333332,
+      5.021666666666666,
+      5.1049999999999995,
+      5.188333333333332,
+      5.271666666666666,
+      5.3549999999999995,
+      5.438333333333332,
+      5.521666666666666,
+      5.6049999999999995,
+      5.688333333333332,
+      5.771666666666666,
+      5.8549999999999995
+    ],
+    "vertical_um": [
+      -2.9049999999999994,
+      -2.8216666666666663,
+      -2.738333333333333,
+      -2.6549999999999994,
+      -2.5716666666666663,
+      -2.488333333333333,
+      -2.4049999999999994,
+      -2.3216666666666663,
+      -2.238333333333333,
+      -2.1549999999999994,
+      -2.0716666666666663,
+      -1.9883333333333328,
+      -1.9049999999999996,
+      -1.821666666666666,
+      -1.7383333333333328,
+      -1.6549999999999996,
+      -1.5716666666666663,
+      -1.4883333333333328,
+      -1.4049999999999994,
+      -1.3216666666666663,
+      -1.2383333333333328,
+      -1.1549999999999994,
+      -1.0716666666666663,
+      -0.9883333333333328,
+      -0.9049999999999994,
+      -0.8216666666666663,
+      -0.7383333333333328,
+      -0.6549999999999994,
+      -0.5716666666666663,
+      -0.48833333333333284,
+      -0.40499999999999936,
+      -0.3216666666666663,
+      -0.23833333333333284,
+      -0.15499999999999936,
+      -0.07166666666666632,
+      0.011666666666667158,
+      0.09500000000000064,
+      0.17833333333333368,
+      0.26166666666666716,
+      0.34500000000000064,
+      0.4283333333333341,
+      0.5116666666666672,
+      0.5950000000000002,
+      0.6783333333333341,
+      0.7616666666666672,
+      0.8450000000000002,
+      0.9283333333333341,
+      1.0116666666666672,
+      1.0950000000000002,
+      1.1783333333333341,
+      1.2616666666666672,
+      1.3450000000000002,
+      1.4283333333333341,
+      1.5116666666666672,
+      1.5950000000000002,
+      1.6783333333333341,
+      1.7616666666666672,
+      1.8450000000000002
+    ],
+    "component": "Ey",
+    "wavelength_um": 1.55,
+    "description": "Real Ey phasor near y = 0 with the silicon guide excited."
+  },
+  "comparisons": [
+    {
+      "vendor": "Tidy3D",
+      "url": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+      "geometry_matched": false,
+      "scope": "The vendor describes reciprocal guided excitation and Gaussian overlap. The compact device has different physical dimensions."
+    },
+    {
+      "vendor": "Lumerical",
+      "url": "https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler",
+      "geometry_matched": false,
+      "scope": "Its published reverse S12 is for curved teeth and a polished fiber."
+    }
+  ],
+  "verification": {
+    "source_eh_checked": true,
+    "incident_and_mode_power_reconstructed": true,
+    "angular_or_fiber_return_reconstructed": true,
+    "energy_time_and_last_two_windows_checked": true,
+    "field_preview_shape": [
+      118,
+      58
+    ],
+    "numerical_archive_entries": 70,
+    "captured_program_sha256": "9576507c5289a6731db740339f8dd32cc2d5483c1ed3c859a5ff71adfff03ecd"
+  },
+  "arrays_file": "v012-grating3d-compact-radiation-r12-arrays.npz"
+}

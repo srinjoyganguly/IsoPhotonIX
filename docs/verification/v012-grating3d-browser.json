@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "job_id": "9493718fbc4e42069ce83cf88ee5d4a1",
+  "checked_at": "2026-11-06T03:45:03.021Z",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "geometry": "compact",
+  "resolution": 12,
+  "coupling_at_1550": 0.1827581644873137,
+  "field_component": "Ey",
+  "field_shape": [
+    58,
+    118
+  ],
+  "center_sample": 3.257901906967163,
+  "checked_adjacent_sample": 3.1229262351989746,
+  "sample_units": "solver units",
+  "browser_errors": []
+}

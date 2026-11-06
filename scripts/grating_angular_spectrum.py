@@ -36,3 +36,17 @@ def air_angular_flux(plane, spacing_um, wavelengths_um, upward=True):
                        for lo,hi in zip(bins[:-1],bins[1:])],axis=1)
     return {'power':power, 'polar_bin_power':binned, 'polar_edges_deg':bins,
             'spatial_frequency_x_per_um':fx[:,0], 'spatial_frequency_y_per_um':fy[0,:]}
+
+
+def incident_beam_check(plane, spacing_um, wavelengths_um, incident_power):
+    """Measure the incident beam direction and contamination from a finite air aperture."""
+    down=air_angular_flux(plane,spacing_um,wavelengths_um,upward=False)
+    up=air_angular_flux(plane,spacing_um,wavelengths_um)
+    power=down['power']
+    total=power.sum(axis=(-2,-1))
+    fx=down['spatial_frequency_x_per_um']
+    moment=(power*(np.asarray(wavelengths_um)[:,None,None]*fx[None,:,None])).sum(axis=(-2,-1))/total
+    return {'mean_x_angle_deg':np.rad2deg(np.arcsin(np.clip(moment,-1.,1.))).tolist(),
+            'downward_propagating_to_direct':(total/incident_power).tolist(),
+            'upward_propagating_to_direct':(up['power'].sum(axis=(-2,-1))/incident_power).tolist(),
+            'incident_to_band_max':(incident_power/np.max(incident_power)).tolist()}

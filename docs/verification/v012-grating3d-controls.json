@@ -1,0 +1,51 @@
+{
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "reference_geometry": "v012-grating3d-compact-r12.json",
+  "width": {
+    "comparison": "v012-grating3d-compact-narrow-r12.json",
+    "smaller_minus_nominal_percentage_points": [
+      1.672610881235076,
+      1.29423048546399,
+      -0.7220344283428881,
+      -2.2000247074786703,
+      -3.8554346840428186
+    ],
+    "source_eh_sha256": "713df907147fbc6b2fb83ac2b0b0dfb96aa55e7605079fff19497e61c0cd771b",
+    "domain_shape": [
+      134,
+      76,
+      74
+    ]
+  },
+  "mesh": {
+    "comparison": "v012-grating3d-compact-r16.json",
+    "fine_minus_nominal_percentage_points": [
+      2.4951982012059974,
+      4.020343040205798,
+      4.258583127276639,
+      3.737729952278132,
+      3.865179433588745
+    ],
+    "max_absolute_difference_percentage_points": 4.258583127276639
+  },
+  "reciprocity": {
+    "comparison": "v012-grating3d-compact-radiation-r12.json",
+    "emission_minus_reception_percentage_points": [
+      2.008190007340749,
+      2.4531322960156032,
+      2.825828470471861,
+      3.2302641396449365,
+      2.924010474728156
+    ],
+    "max_absolute_difference_percentage_points": 3.2302641396449365,
+    "nominal_reception": 0.1827581644873137,
+    "nominal_emission": 0.2110164491920323
+  },
+  "scope": "These quantify changes on one compact device. Numerical settling and mesh convergence are separate."
+}
