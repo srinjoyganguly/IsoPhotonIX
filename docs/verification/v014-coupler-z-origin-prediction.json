@@ -1,0 +1,19 @@
+{
+  "prepared_utc": "2026-11-06T16:02:42.117167+00:00",
+  "case": "coupler",
+  "mesh": 24,
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "old_reference_sha256": "766e18002cefaeeaff1675a29ca667f88d71e6ea03568caecc87bfc18166f7ab",
+  "straight_guide_length_um": 9.5,
+  "predicted_half_minus_zero_straight_phase_rad": [
+    0.909817918604011,
+    0.9591875175003963,
+    1.0069218319639957
+  ],
+  "method": "Independent matched transverse eigensolutions at the temporal Yee frequencies, translated by zero/half a z cell; fuse with the longitudinal Yee wavenumber. No shifted 3D measurement is an input.",
+  "old_column_sha256": "3cd76e5e55571560b03ba480265f5e8e544fbd3cccda7ec2b9e00eb83c7374e3"
+}
