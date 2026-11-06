@@ -1,5 +1,9 @@
 # Why the published and local powers differ
 
+The latest fixed-geometry GPU refinements are in the [calibration checklist](CALIBRATED_COMPONENTS.md). At 1550 nm the 50 nm Lumerical grating reaches 38.79% against 40.03% filed, while the 62.5 nm Tidy3D grating reaches 34.60% against 38.02% read from its published figure. Both still change more than the two-percentage-point mesh limit. Replacing the output receiver alone changes those results by about 0.10 and 0.07 points. An independent slab propagation estimate explains a substantial part of the measured grating phase shift. [Etch, taper phase and receiver comparisons](GRATING_ETCH_REFINEMENT.md).
+
+For the ring, resolving the straight 100 nm gap gives a mode splitting close to Lumerical’s published 0.109. The complete device remains sensitive to its round-trip phase. The original 24-cell wall update gives growing fields and its whole spectrum is excluded. The reciprocal wall update gives decaying fields and 241 qualified wavelength samples, but its central peak is displaced by 5.09 nm. Its small 1550 nm reflection coexists with a strong return at its shifted resonance. [Independent gap and bend modes](RING_GAP_MODES.md) · [Full-ring stability and optical results](RECIPROCAL_RING_STABILITY.md). The earlier baseline and material controls below retain their original meshes and numerical treatments.
+
 The comparisons use physical wavelengths and incident guided power. No gain or wavelength offset is fitted to the vendor spectrum. Each candidate material or geometry change is measured against the unmodified workbench calculation at the same mesh. The published Tidy3D and Lumerical examples describe different devices.
 
 ![Measured ring powers and grating efficiencies for the original and changed numerical models, alongside the published curves](verification/v013-power-controls.png)
