@@ -374,5 +374,10 @@
       "stage_through_steps_seconds": 22.398648089001654,
       "million_cell_steps_per_second": 450.71330723168535
     }
+  },
+  "published_executed_notebook": {
+    "file": "v014-splitter-polygon-executed.ipynb",
+    "sha256": "400fa7c19f236cc7799939c44032d6765de60d99c08932e2956a7bc089bf1df8",
+    "change": "The printed absolute result directory was shortened to notebook-result."
   }
 }
