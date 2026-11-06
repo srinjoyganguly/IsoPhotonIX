@@ -133,3 +133,32 @@ class FiniteGrating3D(unittest.TestCase):
             self.assertEqual(first,cache_salt(Path(temp)/'a'))
             self.assertNotEqual(fingerprint(first),fingerprint(cache_salt(Path(temp)/'b')))
             self.assertNotIn(raw.decode(),json.dumps(fingerprint(first)))
+
+    def test_memory_budget_combines_observations_and_an_actual_cuda_plan(self):
+        from scripts.grating_memory_budget import MIB,estimate
+        base={'gpu':'device','geometry':'tidy3d','resolution':12,'cells':1_000_000,
+              'cpu_field_allocation_verified':True,'executed_fdtd_steps':0,'compiled_live_bytes':100*MIB}
+        actual={'gpu':'device','geometry':'tidy3d','resolution':12,'executed_fdtd_steps':1,
+                'global_used_mib':700,'allocator_bytes':{},'actual_compiled_live_bytes':100*MIB}
+        refined=dict(base,resolution=16,cells=2_000_000,compiled_live_bytes=240*MIB)
+        sample=estimate(base,actual,refined,idle_used_mib=500,free_before_mib=1800)
+        self.assertEqual(sample['baseline_native_peak_mib'],200.)
+        self.assertEqual(sample['estimated_runtime_mib'],480.)
+        self.assertTrue(sample['fits_envelope'])
+        self.assertFalse(estimate(base,actual,refined,500,1400)['fits_envelope'])
+        with self.assertRaisesRegex(ValueError,'disagree'):
+            estimate(base,dict(actual,actual_compiled_live_bytes=110*MIB),refined,500,1800)
+        with self.assertRaisesRegex(ValueError,'host'):
+            estimate(base,actual,dict(refined,cpu_field_allocation_verified=False),500,1800)
+
+    def test_full_geometry_free_memory_preflight(self):
+        import json
+        budget=json.loads((grating.ROOT/'docs/verification/v012-grating-memory-budget.json').read_text())
+        free=budget['measured_free_mib']
+        for name in ('lumerical','tidy3d'):
+            row=grating.memory_admission(grating.settings(name,14),free)
+            self.assertLess(row['required_free_with_reserve_mib'],free)
+            with self.assertRaisesRegex(ValueError,'requires'):
+                grating.memory_admission(grating.settings(name,16),free)
+        with self.assertRaises(ValueError):
+            grating.settings('compact',14)

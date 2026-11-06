@@ -25,6 +25,14 @@ class SpatialCalibrations(unittest.TestCase):
             with self.assertRaises(ValueError):
                 Calibration(case='multimode',solver='meep',device='cpu',**extra)
 
+    def test_vendor_meshes_follow_measured_device_limits(self):
+        config = dict(case='grating-3d',solver='fdtdx',device='gpu')
+        for geometry in ('lumerical','tidy3d'):
+            self.assertEqual(Calibration(**config,geometry_3d=geometry,resolution=14).resolution,14)
+            with self.assertRaises(ValueError):
+                Calibration(**config,geometry_3d=geometry,resolution=16)
+        self.assertEqual(Calibration(**config,geometry_3d='compact',resolution=16).resolution,16)
+
     def test_old_captured_studies_keep_their_shape(self):
         previous={'study_type':'calibrated-component','revision':1,'case':'coupler','solver':'fdtdx','device':'gpu',
                   'resolution':None,'offset_um':None,'material_model':None,'ring_scope':None,'grating_scope':None}

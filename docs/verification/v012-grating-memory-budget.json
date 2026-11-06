@@ -1,0 +1,216 @@
+{
+  "device": "NVIDIA RTX 3080 Ti Laptop GPU",
+  "total_mib": 16384,
+  "measured_free_mib": 12140,
+  "measured_idle_used_floor_mib": 3584,
+  "sampled_at": "2026-11-06T04:45:50Z",
+  "policy": "Compare native r12 allocations with GPU-compiled live-buffer plans; require 20% reserve plus 1 GiB above the larger scaling bound. Select at most one finer admitted mesh per geometry.",
+  "reference_runs": {
+    "lumerical": {
+      "shape_only": {
+        "geometry": "lumerical",
+        "resolution": 12,
+        "shape": [
+          520,
+          256,
+          46
+        ],
+        "cells": 6123520,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cpu_field_allocation_verified": true,
+        "executed_fdtd_steps": 0,
+        "compiled_cuda_bytes": {
+          "argument_size_in_bytes": 970072708,
+          "output_size_in_bytes": 970072816,
+          "alias_size_in_bytes": 970072704,
+          "temp_size_in_bytes": 489886328,
+          "generated_code_size_in_bytes": 1549194
+        },
+        "compiled_live_bytes": 1459959148,
+        "compilation_seconds": 0.841514214000199
+      },
+      "actual_one_step": {
+        "geometry": "lumerical",
+        "resolution": 12,
+        "shape": [
+          520,
+          256,
+          46
+        ],
+        "cells": 6123520,
+        "executed_fdtd_steps": 1,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "global_free_mib": 8297,
+        "global_used_mib": 7877,
+        "global_total_mib": 16384,
+        "allocator_bytes": {
+          "num_allocs": 3396,
+          "bytes_in_use": 1043094528,
+          "peak_bytes_in_use": 2310471424,
+          "largest_alloc_size": 536870912,
+          "bytes_limit": 14260633600,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 4297064448,
+          "peak_pool_bytes": 4297064448
+        },
+        "actual_compiled_live_bytes": 1459959148
+      }
+    },
+    "tidy3d": {
+      "shape_only": {
+        "geometry": "tidy3d",
+        "resolution": 12,
+        "shape": [
+          788,
+          168,
+          74
+        ],
+        "cells": 9796416,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cpu_field_allocation_verified": true,
+        "executed_fdtd_steps": 0,
+        "compiled_cuda_bytes": {
+          "argument_size_in_bytes": 1539986412,
+          "output_size_in_bytes": 1539986520,
+          "alias_size_in_bytes": 1539986408,
+          "temp_size_in_bytes": 783717752,
+          "generated_code_size_in_bytes": 1079716
+        },
+        "compiled_live_bytes": 2323704276,
+        "compilation_seconds": 0.8069310490027419
+      },
+      "actual_one_step": {
+        "geometry": "tidy3d",
+        "resolution": 12,
+        "shape": [
+          788,
+          168,
+          74
+        ],
+        "cells": 9796416,
+        "executed_fdtd_steps": 1,
+        "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "global_free_mib": 8297,
+        "global_used_mib": 7877,
+        "global_total_mib": 16384,
+        "allocator_bytes": {
+          "num_allocs": 3431,
+          "bytes_in_use": 1597176320,
+          "peak_bytes_in_use": 3229318400,
+          "largest_alloc_size": 783717888,
+          "bytes_limit": 14260633600,
+          "bytes_reserved": 0,
+          "peak_bytes_reserved": 0,
+          "largest_free_block_bytes": 0,
+          "pool_bytes": 4297064448,
+          "peak_pool_bytes": 4297064448
+        },
+        "actual_compiled_live_bytes": 2323704276
+      }
+    }
+  },
+  "refinements": [
+    {
+      "geometry": "lumerical",
+      "resolution": 14,
+      "cells": 9571164,
+      "actual_reference_cells": 6123520,
+      "baseline_native_peak_mib": 4637,
+      "baseline_observed_global_peak_mib": 8221,
+      "idle_used_floor_mib": 3584,
+      "reference_abstract_compiled_live_mib": 1392.3255424499512,
+      "reference_actual_compiled_live_mib": 1392.3255424499512,
+      "reference_abstract_actual_fraction_difference": 0.0,
+      "refined_abstract_compiled_live_mib": 2173.3702125549316,
+      "cell_count_ratio": 1.5630166962792642,
+      "compiled_live_ratio": 1.5609641181549005,
+      "estimated_runtime_mib": 7247.708420646948,
+      "required_free_with_reserve_mib": 9721.250104776338,
+      "available_before_launch_mib": 12140,
+      "fits_envelope": true,
+      "scope": "Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+    },
+    {
+      "geometry": "lumerical",
+      "resolution": 16,
+      "cells": 14715576,
+      "actual_reference_cells": 6123520,
+      "baseline_native_peak_mib": 4637,
+      "baseline_observed_global_peak_mib": 8221,
+      "idle_used_floor_mib": 3584,
+      "reference_abstract_compiled_live_mib": 1392.3255424499512,
+      "reference_actual_compiled_live_mib": 1392.3255424499512,
+      "reference_abstract_actual_fraction_difference": 0.0,
+      "refined_abstract_compiled_live_mib": 3000.2565994262695,
+      "cell_count_ratio": 2.4031236935618727,
+      "compiled_live_ratio": 2.154852804141613,
+      "estimated_runtime_mib": 11143.284567046403,
+      "required_free_with_reserve_mib": 14395.941480455684,
+      "available_before_launch_mib": 12140,
+      "fits_envelope": false,
+      "scope": "Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+    },
+    {
+      "geometry": "tidy3d",
+      "resolution": 13,
+      "cells": 12728016,
+      "actual_reference_cells": 9796416,
+      "baseline_native_peak_mib": 4293,
+      "baseline_observed_global_peak_mib": 7877,
+      "idle_used_floor_mib": 3584,
+      "reference_abstract_compiled_live_mib": 2216.05708694458,
+      "reference_actual_compiled_live_mib": 2216.05708694458,
+      "reference_abstract_actual_fraction_difference": 0.0,
+      "refined_abstract_compiled_live_mib": 2586.5897483825684,
+      "cell_count_ratio": 1.2992522979832624,
+      "compiled_live_ratio": 1.1672035723361556,
+      "estimated_runtime_mib": 5577.690115242145,
+      "required_free_with_reserve_mib": 7717.228138290574,
+      "available_before_launch_mib": 12140,
+      "fits_envelope": true,
+      "scope": "Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+    },
+    {
+      "geometry": "tidy3d",
+      "resolution": 14,
+      "cells": 15473808,
+      "actual_reference_cells": 9796416,
+      "baseline_native_peak_mib": 4293,
+      "baseline_observed_global_peak_mib": 7877,
+      "idle_used_floor_mib": 3584,
+      "reference_abstract_compiled_live_mib": 2216.05708694458,
+      "reference_actual_compiled_live_mib": 2216.05708694458,
+      "reference_abstract_actual_fraction_difference": 0.0,
+      "refined_abstract_compiled_live_mib": 3143.7732543945312,
+      "cell_count_ratio": 1.5795376594868982,
+      "compiled_live_ratio": 1.4186336953661483,
+      "estimated_runtime_mib": 6780.955172177254,
+      "required_free_with_reserve_mib": 9161.146206612704,
+      "available_before_launch_mib": 12140,
+      "fits_envelope": true,
+      "scope": "Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+    },
+    {
+      "geometry": "tidy3d",
+      "resolution": 16,
+      "cells": 23515074,
+      "actual_reference_cells": 9796416,
+      "baseline_native_peak_mib": 4293,
+      "baseline_observed_global_peak_mib": 7877,
+      "idle_used_floor_mib": 3584,
+      "reference_abstract_compiled_live_mib": 2216.05708694458,
+      "reference_actual_compiled_live_mib": 2216.05708694458,
+      "reference_abstract_actual_fraction_difference": 0.0,
+      "refined_abstract_compiled_live_mib": 4774.274127960205,
+      "cell_count_ratio": 2.400375198439919,
+      "compiled_live_ratio": 2.154400333857285,
+      "estimated_runtime_mib": 10304.810726902573,
+      "required_free_with_reserve_mib": 13389.772872283087,
+      "available_before_launch_mib": 12140,
+      "fits_envelope": false,
+      "scope": "Hardware-specific memory admission estimate, combining actual 12-cell allocator/global measurements and CUDA XLA live-buffer analysis. Runtime success remains subject to available memory at launch."
+    }
+  ]
+}

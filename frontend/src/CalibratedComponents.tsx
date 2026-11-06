@@ -34,7 +34,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const history=jobs.filter(j=>j.config.case===key);
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
-  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? [12,16] :
+  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? (['lumerical','tidy3d'].includes(geometry3d)?[12,14]:[12,16]) :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
     if(!editableLayout || layoutText) return;
@@ -139,7 +139,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         <p>{evidence.limits}</p>{evidence.phase_check && <PhaseSensitivity check={evidence.phase_check}/>}</section>}
       <section><h3>Run locally</h3>
         {editableLayout && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}
-        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>setGeometry3d(e.target.value)}>
+        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>{setGeometry3d(e.target.value);setMesh('');}}>
           {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
             <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
         </select></label>}

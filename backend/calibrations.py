@@ -108,7 +108,7 @@ class Calibration(BaseModel):
             self.geometry_3d = self.geometry_3d or geometries[0]
             if self.geometry_3d not in geometries:
                 raise ValueError(f'Available {self.case} geometries: {", ".join(geometries)}.')
-            meshes = (12,16,20,24) if ring else (12,16)
+            meshes = (12,16,20,24) if ring else ((12,14) if self.geometry_3d in ('lumerical','tidy3d') else (12,16))
             if self.resolution is None:
                 self.resolution = 16 if ring else 12
             if self.resolution not in meshes:
@@ -182,7 +182,7 @@ def specification(config):
         if ring:
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py']
         else:
-            helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json']
+            helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json']
         return worker, args, helpers
     if config.case == 'layout-ports-3d':
         helpers = ['backend/__init__.py','backend/planar_port_layout.py','backend/geometry_draft.py','backend/calibrated_geometry.py',

@@ -63,7 +63,7 @@ if __name__=='__main__':
     measured=json.loads((ROOT/'docs/verification/v012-grating3d-lumerical-r12.json').read_text())['result']
     native=json.loads((ROOT/'docs/verification/v012-grating-commercial-references.json').read_text())['lumerical']['samples']['S21']
     peak=int(np.argmax(measured['beam_to_guide']))
-    study={'scope':'Approximate first-order phase matching of two symmetric oxide-supported TE slab sections, including the Yee temporal and longitudinal dispersion relations. The model omits curved-tooth scattering, the 3D taper, fiber overlap, finite substrate and transverse radiation. It supplies a mesh-sensitivity diagnostic, not the 3D coupling spectrum.',
+    study={'scope':'Approximate first-order phase matching of two symmetric oxide-supported TE slab sections, including the Yee temporal and longitudinal dispersion relations. The model omits curved-tooth scattering, the 3D taper, fiber overlap, finite substrate and transverse radiation. Its output is the reduced slab phase-matching wavelength.',
            'physical_continuous_slabs':continuous,'sampled_slabs':rows,'measured_12_cell_device':{'strongest_tested_wavelength_um':measured['wavelength_um'][peak],'power':measured['beam_to_guide'][peak]},
            'published_lumerical_peak_um':native['peak_wavelength_um'],'fine_root_check_passed':True}
     args.output.write_text(json.dumps(study,indent=2,allow_nan=False)+'\n')

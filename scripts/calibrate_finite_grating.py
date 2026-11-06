@@ -28,10 +28,11 @@ C = .299792458  # µm/fs
 
 
 def settings(name, resolution):
-    if name == 'lumerical' and resolution in (12,16):
+    if name == 'lumerical' and resolution in (12,14,16):
         return ansys.model(resolution)
     matched = name == 'tidy3d'
-    if name not in ('tidy3d', 'compact', 'compact-narrow', 'compact-radiation') or resolution not in (12, 16):
+    allowed=(12,14,16) if matched else (12,16)
+    if name not in ('tidy3d', 'compact', 'compact-narrow', 'compact-radiation') or resolution not in allowed:
         raise ValueError('Choose a supported grating and mesh.')
     return dict(geometry=name, resolution=resolution, period=.62, fill=.8, teeth=20 if matched else 8,
                 width=10.8 if matched else (2. if name == 'compact-narrow' else 3.),
@@ -154,6 +155,19 @@ def waist_source_type(m, lp):
     return WaistSource
 
 
+def memory_admission(m, available_mib):
+    record=json.loads((ROOT/'docs/verification/v012-grating-memory-budget.json').read_text())
+    samples=[v for v in record['refinements'] if v['geometry']==m['geometry']]
+    if m['resolution']==12:
+        required=1024.+1.2*samples[0]['baseline_native_peak_mib']
+    else:
+        required=next(v['required_free_with_reserve_mib'] for v in samples if v['resolution']==m['resolution'])
+    if available_mib<required:
+        raise ValueError(f"{m['geometry']} at {m['resolution']} cells/µm requires {math.ceil(required)} MiB free "
+                         f"under the measured GPU budget, but {available_mib} MiB is available. Choose a smaller mesh or free GPU memory.")
+    return {'available_mib':available_mib,'required_free_with_reserve_mib':required,'profile_device':record['device']}
+
+
 def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     jax,jnp,fdtdx,gpu = _ports_runtime('gpu')
     # The optional planner builds fields only on host RAM, then passes abstract
@@ -167,6 +181,9 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     hardware=cuda_identity.fingerprint(bytes.fromhex(os.environ['PHOTONICS_GRATING_DEVICE_SALT']))
     if gpu.id!=hardware['ordinal'] or gpu.device_kind!=hardware['name']:
         raise RuntimeError('The native JAX target differs from the CUDA device selected for the checkpoint.')
+    admission=None
+    if not memory_plan and not observe_one_step and m['geometry'] in ('lumerical','tidy3d'):
+        admission=memory_admission(m,cuda_identity.available_mib())
     fiber = m['geometry']=='lumerical'
     guided = m['geometry']=='compact-radiation'
     lp = ansys.lp01(m['fiber_radius'],m['fiber_core_n'],m['fiber_clad_n'],1.55) if fiber else None
@@ -321,7 +338,9 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
             raise ValueError('Resource probe did not execute exactly one native GPU step.')
         stats=compiled.memory_analysis(); allocator=gpu.memory_stats()
         import subprocess
-        smi=subprocess.check_output(['nvidia-smi','--query-gpu=memory.free,memory.used,memory.total',
+        import shutil
+        smi_path=shutil.which('nvidia-smi') or '/usr/lib/wsl/lib/nvidia-smi'
+        smi=subprocess.check_output([smi_path,'--query-gpu=memory.free,memory.used,memory.total',
                                      '--format=csv,noheader,nounits'],text=True).strip().splitlines()
         if len(smi)!=1: raise ValueError('The memory observation needs a single unambiguous NVIDIA device.')
         free,used,total=[int(v) for v in smi[0].split(',')]
@@ -384,7 +403,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                 port_basis=meta if guided or not reference else None,
                 fiber_mode=None if not fiber else dict(approximation='Weak-guidance LP01 transverse circular-fiber envelope on the tilted source plane',
                                                         u=lp[0],w=lp[1],neff=lp[2],source_impedance_relative_error=impedance_error,source_z_um=float(axes[2][at(2,m['source_z'])])),
-                native_worker_sha256=file_hash(__file__),cuda_identity=hardware,
+                native_worker_sha256=file_hash(__file__),cuda_identity=hardware,memory_admission=admission,
                 versions={k:importlib.metadata.version(k) for k in ('fdtdx','jax','jaxlib','tidy3d','numpy','scipy')})
     return detail,data
 
@@ -520,7 +539,7 @@ def run(m, output, cache):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--device',choices=['gpu'],required=True)
-    parser.add_argument('--resolution',type=int,choices=(12,16),default=12)
+    parser.add_argument('--resolution',type=int,choices=(12,14,16),default=12)
     parser.add_argument('--geometry',choices=('compact','compact-narrow','tidy3d','lumerical','compact-radiation'),default='compact')
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--checkpoint',type=Path)

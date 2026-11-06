@@ -1,5 +1,5 @@
 {
-  "scope": "Approximate first-order phase matching of two symmetric oxide-supported TE slab sections, including the Yee temporal and longitudinal dispersion relations. The model omits curved-tooth scattering, the 3D taper, fiber overlap, finite substrate and transverse radiation. It supplies a mesh-sensitivity diagnostic, not the 3D coupling spectrum.",
+  "scope": "Approximate first-order phase matching of two symmetric oxide-supported TE slab sections, including the Yee temporal and longitudinal dispersion relations. The model omits curved-tooth scattering, the 3D taper, fiber overlap, finite substrate and transverse radiation. Its output is the reduced slab phase-matching wavelength.",
   "physical_continuous_slabs": {
     "mesh_cells_per_um": null,
     "rib_te_neff_1550": 2.8481578567840424,
