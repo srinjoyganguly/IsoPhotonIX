@@ -1,6 +1,6 @@
 {
   "sdk_version": "2.11.2",
-  "scope": "Finite-aperture squared normalized vector overlaps with the SDK analytic Gaussian on the actual recorded air plane. Independent global amplitude and phase cancel. This isolates incident profile shape; it does not bound coupled power.",
+  "scope": "Finite-aperture squared normalized vector overlaps with the SDK analytic Gaussian on the actual recorded air plane. Independent global amplitude and phase cancel. This isolates incident profile shape. The full-device measurements supply the coupled power.",
   "definition": "abs(sum(conj(analytic)*measured))\u00b2/(sum(abs(analytic)\u00b2)*sum(abs(measured)\u00b2)), separately for E and H.",
   "source": "https://docs.flexcompute.com/projects/tidy3d/en/v2.12.0/api/analytic_beams.html",
   "examples": [

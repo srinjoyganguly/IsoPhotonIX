@@ -1,0 +1,9 @@
+{
+  "file": "splitter-polygon-area-3d-gpu-r16-v0.13.0a1.zip",
+  "sha256": "d970c9dc6f7ae0c7505e6ff91ff37a24353706421cdca183c9d5854810aad66b",
+  "bytes": 2695439,
+  "source_gui_zip_sha256": "aed28cdd462d071cd19b2212104da50c8064359f92cc24387627fbebd34b8401",
+  "preserved_gui_zip_members": 39,
+  "only_addition": "docs/licenses/FDTDX-MIT.txt",
+  "license_sha256": "986edffa455359aca6b59a16bbd5660161d694edd9a44cbf3f39ec465007e5e3"
+}

@@ -6,7 +6,7 @@ import unittest
 
 import numpy as np
 
-from scripts.phase_component_comparison import compare, fixed_mode_ring_spectrum, measured_beta, native_data
+from scripts.phase_component_comparison import compare, fixed_mode_ring_spectrum, measured_beta, native_data, sampled_mean_power, tidy_grating
 
 
 class PhaseRegistrationTests(unittest.TestCase):
@@ -61,6 +61,40 @@ class PhaseRegistrationTests(unittest.TestCase):
             record['valid_bins']=3;path.write_text(json.dumps(record))
             with self.assertRaises(ValueError):
                 native_data(path,allow_partial_ring=True)
+
+    def test_sparse_return_power_integral_skips_unqualified_gaps(self):
+        w=np.array([1.5,1.51,1.52,1.55,1.60])
+        valid=np.array([True,True,False,True,True])
+        a=np.array([1.,2.,90.,3.,4.])
+        result=sampled_mean_power(a,a,w,valid)
+        self.assertEqual(result['adjacent_intervals'],2)
+        df=abs(np.diff(299792458e6/w))[[0,3]]
+        expected=np.dot(df,[2.5,12.5])/df.sum()
+        self.assertAlmostEqual(result['mean_power_a'],expected)
+
+    def test_grating_return_and_guide_remove_arbitrary_impressed_pulse_phase(self):
+        n,res=16,10
+        xy=(np.arange(n)-n/2+.5)/res
+        power=np.full(2,.5*(n/res)**2)
+        wave=np.array([1.5,1.6])
+        settings={'resolution':res,'geometry':'tidy3d','taper':4.,'buffer':1.,'beam_x':0.}
+        details={'settings':settings,'arrays_sha256':'synthetic',
+                 'stages':{'reference':{'sample_plane_z_um':.93},'device':{'output_plane_x_um':-4.45,'history':[{'time_fs':10.}],'time_steps':100}}}
+        expected=.08+.02j
+        for phase in (0.,.78,-1.3):
+            rotation=np.exp(1j*phase)
+            incident=np.zeros((2,6,n,n),complex)
+            incident[:,1]=rotation;incident[:,3]=rotation
+            scatter=np.zeros_like(incident)
+            scatter[:,1]=expected*rotation;scatter[:,3]=-expected*rotation
+            guided=.4*np.sqrt(power)*rotation
+            data={'ref_upper':incident,'dev_upper':incident+scatter,'ref_wavelength_um':wave,
+                  'ref_upper_x_um':xy,'ref_upper_y_um':xy,'incident_power':power,'output_mode':guided,
+                  'dev_mode_neff':np.full(2,2.4),'coupling':np.full(2,.16),'valid':np.ones(2,bool),
+                  'dev_history_observable':np.stack([guided,guided,guided])}
+            record=tidy_grating(details,data)
+            np.testing.assert_allclose(record['s'][:,0],expected,rtol=1e-12)
+            np.testing.assert_allclose(record['s'][:,1],.4,rtol=1e-12)
 
     def test_drops_intervals_spanning_invalid_bins(self):
         values = np.ones((7,2),dtype=complex)

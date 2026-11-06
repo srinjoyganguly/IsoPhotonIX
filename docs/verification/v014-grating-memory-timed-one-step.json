@@ -1,0 +1,72 @@
+{
+  "geometry": "lumerical",
+  "resolution": 12,
+  "shape": [
+    520,
+    128,
+    46
+  ],
+  "cells": 3061760,
+  "executed_fdtd_steps": 1,
+  "performance": {
+    "schema": 1,
+    "acquisition_id": "1cd7a7abeb844f838ce3556082002a69",
+    "platform": "gpu",
+    "device": "cuda:0",
+    "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "grid_shape": [
+      520,
+      128,
+      46
+    ],
+    "cells": 3061760,
+    "spacing_um": 0.08333333333333333,
+    "pml_cells": 8,
+    "steps": 1,
+    "dt_seconds": 1.588812391275838e-16,
+    "simulated_time_fs": 0.15888123912758378,
+    "compile_seconds": 0.857444644003408,
+    "synchronized_step_seconds": 0.2779634969920153,
+    "step_batches": 1,
+    "cuda_event_elapsed_seconds": 0.27824639892578124,
+    "cuda_event_note": null,
+    "kernel_active_seconds": null,
+    "kernel_count": null,
+    "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+    "stage_through_steps_seconds": 16.758209175997763,
+    "million_cell_steps_per_second": 11.014971509327182,
+    "setup_before_compile_seconds": 20.14706196100451,
+    "represented_full_shape": [
+      520,
+      256,
+      46
+    ],
+    "boundary_faces": {
+      "min_y": "PEC mirror, one clamped Yee plane",
+      "remaining_five_faces": "PML, 8 cells per face"
+    }
+  },
+  "gpu": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "global_free_mib": 10183,
+  "global_used_mib": 5991,
+  "global_total_mib": 16384,
+  "allocator_bytes": {
+    "num_allocs": 4238,
+    "bytes_in_use": 567836928,
+    "peak_bytes_in_use": 1205201920,
+    "largest_alloc_size": 244945664,
+    "bytes_limit": 17179344896,
+    "bytes_reserved": 0,
+    "peak_bytes_reserved": 0,
+    "largest_free_block_bytes": 0,
+    "pool_bytes": 2149580800,
+    "peak_pool_bytes": 2149580800
+  },
+  "actual_compiled_live_bytes": 730410108,
+  "grating_domain": "mirror-y",
+  "grating_spectrum": "standard",
+  "grating_material_model": "direct-yee",
+  "stage": "device",
+  "scope": "Fresh one-step device allocation probe; timing is reported separately from physical spectrum acquisitions.",
+  "worker_sha256": "0ee37052d8a1c905cdd8d72bade149f3f7ddaf49b09a2480f5696c381fa115bb"
+}

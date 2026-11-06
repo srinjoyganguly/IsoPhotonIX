@@ -4896,6 +4896,12 @@
           },
           "strong_samples": 0,
           "bins_below_amplitude_floor": 201,
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 200,
+            "mean_power_a": 0.006167189077991924,
+            "mean_power_b": 0.0030499079715864247
+          },
           "peak_power_a": 0.21083943465719115,
           "peak_power_b": 0.19333321873503176
         },
@@ -4940,6 +4946,12 @@
           },
           "strong_samples": 0,
           "bins_below_amplitude_floor": 201,
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 200,
+            "mean_power_a": 0.006167713988295985,
+            "mean_power_b": 0.003047813537589169
+          },
           "peak_power_a": 0.21045362989434713,
           "peak_power_b": 0.19113347843156778
         }

@@ -23,8 +23,7 @@ The current calibration runs and the next Circuit Layout milestone have separate
 1. Extend the [calibrated component measurements](CALIBRATED_COMPONENTS.md) with additional reference spectra, paired mesh studies for weak signals and modes beyond the current presets.
 2. Further refine the loaded ring’s absolute pole wavelengths and external versus intrinsic Q estimates on the same resonance across mesh, boundary and observation-time controls. Use the [1D cavity benchmark](PASSIVE_CAVITY.md) as a numerical
    control for the fitting method.
-3. A dispersive material slab with fitted parameters, held-out data and measured
-   complex transmission. Only then use that model in a calibrated ring or DBR.
+3. Extend the tested narrow-band Palik material control beyond its reference slab and 16-cell ring. General finite-height absorption and anisotropy require causality, loss, interface and independent measurement checks. [Existing slab and ring evidence](CALIBRATED_COMPONENTS.md).
 4. A laser threshold model with a documented active material and injection
    conditions, checked against a public experimental or manufacturer dataset.
 

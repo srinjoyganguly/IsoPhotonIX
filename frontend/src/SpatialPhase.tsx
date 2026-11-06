@@ -19,7 +19,9 @@ export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
       {studies.map((s,i)=><option key={s.receipt} value={i}>{s.vendor} · {s.receipt.replace(/^v014-|\.json$/g,'')}</option>)}
     </select></label>
     {study.pairs.map(pair=><div className="cal-time-scroll" key={pair.meshes.join('-')}><table>
-      <caption>Largest change from {pair.meshes[0]} to {pair.meshes[1]} cells/µm at common port planes</caption>
+      <caption>{pair.meshes[0]===pair.meshes[1]
+        ? `Largest change between the two controls at ${pair.meshes[0]} cells/µm`
+        : `Largest change from ${pair.meshes[0]} to ${pair.meshes[1]} cells/µm`} at common port planes</caption>
       <thead><tr><th>Port</th><th>Power fraction</th><th>Complex amplitude</th><th>Phase (rad)</th><th>Usable phase samples</th></tr></thead>
       <tbody>{Object.entries(pair.channels).map(([name,v])=><tr key={name}><th>{name}</th><td>{value(v.power)}</td>
         <td>{value(v.complex)}</td><td>{value(v.phase)}</td><td>{v.strong}</td></tr>)}</tbody></table></div>)}

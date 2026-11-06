@@ -448,10 +448,21 @@ def calibrated_presets():
     if next_index.is_file():
         receipts.update(json.loads(next_index.read_text()))
     for case in ('coupler','splitter'):
-        phase_path = index.parent / f'v012-{case}-phase.json'
-        if case in receipts and phase_path.is_file():
-            study = json.loads(phase_path.read_text())
-            receipts[case]['phase_check'] = {**study['measurements'][-1], 'launch':study['launch'], 'receipt':phase_path.name}
+        if case not in receipts:
+            continue
+        checks=[]
+        for name,label in [(f'v012-{case}-phase.json','Electric-field-aligned grid'),
+                           (f'v014-{case}-polygon-phase.json','Integrated polygon area')]:
+            path=index.parent/name
+            if not path.is_file():
+                continue
+            study=json.loads(path.read_text())
+            current=[{**measurement,'launch':study['launch'],'receipt':name,'material_label':label}
+                     for measurement in study['measurements']]
+            if current and name.startswith('v012-'):
+                receipts[case]['phase_check']=current[-1]
+            checks.extend(current)
+        receipts[case]['phase_checks']=checks
     grating_options = {name:{domain:{material:grating_meshes(name,domain,material)
                            for material in ('volume-average','direct-yee')}
                            for domain in ('full','mirror-y')} for name in ('tidy3d','lumerical')}

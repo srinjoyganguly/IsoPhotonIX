@@ -72,9 +72,10 @@ def runtime_files():
                 raise ValueError('Invalid phase report filename.')
             selected.add('docs/verification/'+name)
     for case in ('coupler','splitter'):
-        phase_file = f'docs/verification/v012-{case}-phase.json'
-        if (ROOT / phase_file).is_file():
-            selected.add(phase_file)
+        for name in (f'v012-{case}-phase.json',f'v014-{case}-polygon-phase.json'):
+            phase_file='docs/verification/'+name
+            if (ROOT / phase_file).is_file():
+                selected.add(phase_file)
     for name in sorted(selected):
         source = ROOT / name
         if not source.is_file() or source.resolve() != source:

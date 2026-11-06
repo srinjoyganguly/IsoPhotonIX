@@ -32,6 +32,12 @@ def extra_costs(report, name):
                          steps_lower_bound=partial['completed_fdtd_steps_lower_bound'],grid_shape=model['shape'],
                          cells=math.prod(model['shape']),mesh_cells_per_um=model['resolution'],
                          kernel_timing_note=partial['timing_evidence']))
+    elif name=='v014-grating-memory-timed-one-step.json':
+        p=report['performance']
+        native={'case':'grating-3d','actual_device':p['device'],'settings':report,
+                'stages':{report['stage']:{'performance':p}}}
+        rows.extend(dict(row,purpose='memory probe',origin='computed_this_invocation',
+                         input_free_mib=report['global_free_mib']) for row in stage_rows(native,name))
     elif name.startswith('v014-grating-memory-') and 'roles' in report:
         plans=[report]
         if report.get('more_distant_r12_budget'):

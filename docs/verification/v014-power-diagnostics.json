@@ -4809,6 +4809,44 @@
       "total_bins": 241,
       "source_report_sha256": "cb060e77d9e43ab55bf3209154ae6a363693e68297283bfcbabd7690f377662f",
       "native_arrays_sha256": "4c4ddf9bab4dc4be22671f927209efa1061c1d25d96d7d196b74b84362049fe0"
+    },
+    "v014-ring3d-tidy3d-r20-t4800-wall-tensor.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "through": {
+          "local": 0.1591422511667528,
+          "published": 0.9893965015048625,
+          "mean_absolute_difference": 0.12922885308266013
+        },
+        "drop": {
+          "local": 0.8368245113026413,
+          "published": 0.021588430572647196,
+          "mean_absolute_difference": 0.10995022788924791
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5467849223946786,
+        "published_peak_power": 0.7994250960446708,
+        "published_fwhm_nm": 1.0736771484192165,
+        "local_sampled_center_um": 1.55,
+        "local_sampled_peak_power": 0.8368245113026413,
+        "nearest_sampled_center_difference_nm": 3.2150776053214702,
+        "published_target_distance_in_linewidths": 2.9944547204483722
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 17.50000000000007,
+        "published": 17.740000000000087
+      },
+      "variant": "wall-tensor / fixed",
+      "mesh": 20,
+      "vendor": "tidy3d",
+      "full_native_gate_passed": false,
+      "valid_bins": 240,
+      "total_bins": 241,
+      "source_report_sha256": "b27b2ae725b591e12ab1a83294d564416fecbf2e78305bb7cd5ab6bf342023da",
+      "native_arrays_sha256": "9672ca93d6ffefb26b18ca55b99c5843ebb96ce902a37d484f9d9a79a50c69fd"
     }
   }
 }

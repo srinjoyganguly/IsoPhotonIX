@@ -1,5 +1,7 @@
 """Predict straight-lead propagation using the spatial and temporal symbols of the Yee stencil."""
 import argparse
+import hashlib
+import importlib.metadata as metadata
 import json
 from pathlib import Path
 
@@ -13,7 +15,7 @@ from scripts.qualify_port_phase import native_column
 C_UM_S=299792458e6
 
 
-def section(model,r,port=0):
+def section(model,r,port=0,origin_shift_cells=(0.,0.),extra_aperture_cells=0):
     shape,pml,axes,planes=grid(model,r)
     m=planes[port]
     i,y,z=m['start']
@@ -21,8 +23,8 @@ def section(model,r,port=0):
     # Include a halo for the lateral normal estimate. Keep the exact port
     # location and aperture used when the native 3D amplitudes were projected.
     x_axis=axes[0][i-1:i+2]
-    y_axis=axes[1][y-1:y+ny+1]
-    z_axis=axes[2][z:z+nz]
+    y_axis=axes[1][y-1-extra_aperture_cells:y+ny+1+extra_aperture_cells]+origin_shift_cells[0]/r
+    z_axis=axes[2][z-extra_aperture_cells:z+nz+extra_aperture_cells]+origin_shift_cells[1]/r
     maps=extruded_yee(model,r,(x_axis,y_axis,z_axis),[straight_polygon(model,port)])
     return maps[:,1:2,1:-1,:]
 
@@ -73,13 +75,38 @@ def predict(folder):
             'measured_minus_yee_phase_rad':delta_yee.tolist(),'native_reference_sha256':hashes[f'{src}-reference.npz']}
 
 
+def registration_controls(folder):
+    plan=json.loads((folder/'run.json').read_text())
+    model,r=plan['model'],plan['resolution']
+    f=1/1.55
+    rows=[]
+    for y in (0.,.5):
+        for z in (0.,.25,.5):
+            value=mode_index(section(model,r,origin_shift_cells=(y,z)),f,1/r)
+            rows.append({'y_shift_cells':y,'z_shift_cells':z,'neff':value})
+    # Independently bound the small motion of the aperture edge in the shifted
+    # grid by extending each edge 0.25 µm while preserving the origin.
+    extra=round(.25*r)
+    larger=mode_index(section(model,r,origin_shift_cells=(.5,.5),extra_aperture_cells=extra),f,1/r)
+    return {'resolution':r,'nominal_guide_width_height_um':[model['width'],model['height']],
+            'wavelength_um':1.55,'registration':rows,'max_minus_min_neff':max(x['neff'] for x in rows)-min(x['neff'] for x in rows),
+            'larger_aperture_edge_extension_um':extra/r,'largest_translation_larger_aperture_neff':larger,
+            'largest_translation_aperture_change':larger-rows[-1]['neff']}
+
+
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('directories',nargs='+',type=Path);p.add_argument('--output',required=True,type=Path)
     args=p.parse_args()
     rows=[predict(path) for path in args.directories]
+    unique={}
+    for path in args.directories:
+        plan=json.loads((path/'run.json').read_text())
+        unique.setdefault(plan['resolution'],path)
     result={'method':'Independent transverse eigenmodes on the identical port section. For f in cycles/µm use f_eff = f sinc(f c Δt), solve n_eff(f_eff), and β_Yee = 2 asin(π f_eff n_eff Δx)/Δx. Compare the measured forward transfer with exp(iβL). No fitted constant or change to the device scattering matrix.',
+            'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            'transverse_versions':{p:metadata.version(p) for p in ('fdtdx','jax','numpy','tidy3d')},
             'transverse_execution':'FDTDX local CPU 2D mode calculation','native_execution':'Fully time-stepped 3D FDTDX on NVIDIA',
             'scope':'Uniform nondispersive straight leads. This control does not estimate junction radiation or resonant scattering.',
-            'samples':rows}
+            'samples':rows,'grid_registration':[registration_controls(path) for path in unique.values()]}
     args.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')

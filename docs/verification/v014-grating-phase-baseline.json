@@ -156,6 +156,12 @@
           },
           "strong_samples": 5,
           "bins_below_amplitude_floor": 0,
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 4,
+            "mean_power_a": 0.00283755014046794,
+            "mean_power_b": 0.003676418092041537
+          },
           "peak_power_a": 0.0072146474852264,
           "peak_power_b": 0.007288613552480933
         },
@@ -326,6 +332,12 @@
           },
           "strong_samples": 5,
           "bins_below_amplitude_floor": 0,
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 4,
+            "mean_power_a": 0.002666343660002916,
+            "mean_power_b": 0.003676418092041537
+          },
           "peak_power_a": 0.005245422037200589,
           "peak_power_b": 0.007288613552480933
         },
@@ -359,6 +371,13 @@
         1.575,
         1.6
       ],
+      "shared_valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
       "channels": {
         "reflection": {
           "power_delta": {
@@ -382,6 +401,12 @@
             "count": 5,
             "rms": 0.32307274054562507,
             "max_abs": 0.5468598482140419
+          },
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 4,
+            "mean_power_a": 0.00283755014046794,
+            "mean_power_b": 0.002666343660002916
           },
           "peak_power_a": 0.0072146474852264,
           "peak_power_b": 0.005245422037200589

@@ -29,6 +29,20 @@ For the coupler's 16→20 pair, maximum physical changes are 1.009 rad at the ot
 
 The independent full three-port GUI splitter run at r16 reproduces the separately acquired stem column exactly across all nine complex values. Its maximum |Sᵢⱼ−Sⱼᵢ| over all wavelengths and port pairs is 0.000803; the output-arm pair differs by 0.000000691. The largest measured singular value is 0.91577. These establish reciprocity and sampled passivity for the full r16 splitter. Mesh convergence still needs the independent refinements below. [Full three-port acquisition](verification/v014-splitter-polygon-matrix-gui16.json)
 
+
+The 20→24 coupler pair has a maximum physical phase change of 1.695 rad. Both forward ports stay within 0.075 rad in the straight-relative check, while the incident-port return changes by 0.01240. Holding the positive z wall at the same fractional lattice position instead (16→24) still gives up to 0.666 rad on the through port. The JSON includes this supplementary equal-registration series and every adjacent mesh pair. Both comparisons retain the actual port-plane phase.
+
+To reproduce one column from the repository root, use the registered FDTDX CUDA interpreter for the first command and its CPU environment for the independent transverse analysis. An existing run directory can be resumed with `--resume` only for the identical native plan. The report and NPZ contain one independent launch, validated physical planes, fields in the individual stage archives and the normalized column.
+
+```bash
+flock /tmp/photonics-v012-gpu.lock python -m scripts.measure_fdtdx_mesh_column \
+  --device gpu --case coupler --resolution 24 --material-model polygon-area \
+  --output runs/polygon-coupler-24
+JAX_PLATFORMS=cpu python -m scripts.phase_lead_dispersion \
+  --output lead.json runs/polygon-coupler-24
+```
+
+
 ## Mesh and execution summary
 
 Each number below is a maximum across all three sampled wavelengths and the indicated output group. Forward means either right-hand rail. Return means the launch side of the circuit. Power changes are absolute percentage points.
@@ -36,11 +50,15 @@ Each number below is a maximum across all three sampled wavelengths and the indi
 | Component | Mesh pair (cells/µm) | Forward power | Physical phase | Straight-relative phase | Return power | Complex return amplitude |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Coupler | 16 → 20 | 4.677 | 1.053 rad | 0.107 rad | 0.0195 | 0.02225 |
+| Coupler | 20 → 24 | 2.329 | 1.695 rad | 0.074 rad | 0.0174 | 0.01240 |
 | Splitter | 16 → 20 | 0.463 | 1.024 rad | 0.057 rad | 0.1398 | 0.05388 |
+| Splitter | 20 → 24 | 0.210 | 1.722 rad | 0.009 rad | 0.0458 | 0.10211 |
 
 | Component | Cells/µm | Actual cells | Steps, straight / device | Synchronized seconds, straight / device | Acquisition |
 | --- | ---: | ---: | --- | --- | --- |
 | Coupler | 16 | 1,605,632 | 3,444 / 3,444 | 12.26 / 12.25 | [Receipt](verification/v014-coupler-polygon-cuda16.json) |
 | Coupler | 20 | 3,136,000 | 4,305 / 4,305 | 27.34 / 30.89 | [Receipt](verification/v014-coupler-polygon-cuda20.json) |
+| Coupler | 24 | 5,419,008 | 5,166 / 5,166 | 54.82 / 59.41 | [Receipt](verification/v014-coupler-polygon-cuda24.json) |
 | Splitter | 16 | 1,605,632 | 3,444 / 3,444 | 12.29 / 12.01 | [Receipt](verification/v014-splitter-polygon-cuda16.json) |
 | Splitter | 20 | 3,136,000 | 4,305 / 4,305 | 26.43 / 28.99 | [Receipt](verification/v014-splitter-polygon-cuda20.json) |
+| Splitter | 24 | 5,419,008 | 5,166 / 5,166 | 58.50 / 60.63 | [Receipt](verification/v014-splitter-polygon-cuda24.json) |

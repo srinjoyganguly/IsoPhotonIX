@@ -1,0 +1,285 @@
+{
+  "method": "Remove only the uniform external lengths by multiplying by exp(-i\u03b2(L_in+L_out)). The straight propagated field supplies \u03b2, its independently solved Yee dispersion chooses the number of turns. No phase offset is fitted. The published native physical-plane S is unchanged.",
+  "scope": "Fundamental-mode virtual reference planes at the start/end of the varying polygon. The entire curved circuit remains between them.",
+  "studies": [
+    {
+      "case": "splitter",
+      "mesh": 16,
+      "port_order": [
+        "left_center",
+        "right_lower",
+        "right_upper"
+      ],
+      "actual_port_x_um": [
+        -4.75,
+        4.75,
+        4.75
+      ],
+      "virtual_port_x_um": [
+        -2.0,
+        2.0,
+        2.0
+      ],
+      "uniform_length_removed_per_port_um": [
+        2.75,
+        2.75,
+        2.75
+      ],
+      "measured_beta_rad_um": [
+        9.926632805632812,
+        10.460051349954936,
+        10.993229467702657
+      ],
+      "native_column_sha256": "b7f46e0c1fd3fd5e49bac1c1fd5dab2d68b4a4e5ad0f7fdedeee51b6e51528ab",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "registered_s_real": [
+        [
+          0.02118705093396897,
+          -0.2935875785155976,
+          -0.2935950227546716
+        ],
+        [
+          -0.06479207764113436,
+          0.6043135769606189,
+          0.6043092283532432
+        ],
+        [
+          -0.04744223459601484,
+          -0.4599822494965134,
+          -0.45998279680810883
+        ]
+      ],
+      "registered_s_imag": [
+        [
+          0.07191148951509999,
+          -0.5477174662751252,
+          -0.5477161238797105
+        ],
+        [
+          0.03631327851423739,
+          0.11310058837126719,
+          0.11309712207294216
+        ],
+        [
+          -0.039504475082569046,
+          0.4007186262092118,
+          0.4007152429925316
+        ]
+      ]
+    },
+    {
+      "case": "splitter",
+      "mesh": 20,
+      "port_order": [
+        "left_center",
+        "right_lower",
+        "right_upper"
+      ],
+      "actual_port_x_um": [
+        -4.75,
+        4.75,
+        4.75
+      ],
+      "virtual_port_x_um": [
+        -2.0,
+        2.0,
+        2.0
+      ],
+      "uniform_length_removed_per_port_um": [
+        2.75,
+        2.75,
+        2.75
+      ],
+      "measured_beta_rad_um": [
+        10.028422001901092,
+        10.561415641464203,
+        11.092754604771038
+      ],
+      "native_column_sha256": "97c933ac4c70ea916f55567a6188a63c06dda08367df4dd13382de773bc62033",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "registered_s_real": [
+        [
+          0.009624024609657155,
+          -0.01761726598925482,
+          -0.017621689840100374
+        ],
+        [
+          -0.06280723973024531,
+          0.4935534242850952,
+          0.4935503641947545
+        ],
+        [
+          -0.04560991642985929,
+          -0.5915858938266209,
+          -0.5915867269951206
+        ]
+      ],
+      "registered_s_imag": [
+        [
+          0.0768640684849085,
+          -0.624228273311309,
+          -0.6242265977795364
+        ],
+        [
+          0.024328570272961217,
+          0.3728555096981837,
+          0.3728540620353456
+        ],
+        [
+          -0.055942425960180495,
+          0.16331524035041753,
+          0.16331336442464164
+        ]
+      ]
+    },
+    {
+      "case": "splitter",
+      "mesh": 24,
+      "port_order": [
+        "left_center",
+        "right_lower",
+        "right_upper"
+      ],
+      "actual_port_x_um": [
+        -4.75,
+        4.75,
+        4.75
+      ],
+      "virtual_port_x_um": [
+        -2.0,
+        2.0,
+        2.0
+      ],
+      "uniform_length_removed_per_port_um": [
+        2.75,
+        2.75,
+        2.75
+      ],
+      "measured_beta_rad_um": [
+        9.870840595999129,
+        10.392287499040377,
+        10.911720043102305
+      ],
+      "native_column_sha256": "f293e26fe01305903958b49075532f94234cda78a8d3a976f542cb2f353f5e8d",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "registered_s_real": [
+        [
+          0.041161508475843454,
+          -0.38706435805884076,
+          -0.3870684266322923
+        ],
+        [
+          -0.04294173255255677,
+          0.6198431513153813,
+          0.6198403557220609
+        ],
+        [
+          -0.06943286960568933,
+          -0.33467227549449874,
+          -0.33467294159656463
+        ]
+      ],
+      "registered_s_imag": [
+        [
+          0.06203904850366354,
+          -0.49105551409968046,
+          -0.49105403755104365
+        ],
+        [
+          0.053107118647399386,
+          -0.02247610765406997,
+          -0.022477661133815267
+        ],
+        [
+          -0.02351223877818463,
+          0.5162776716002017,
+          0.5162757463781723
+        ]
+      ]
+    }
+  ],
+  "mesh_pairs": [
+    {
+      "meshes": [
+        16,
+        20
+      ],
+      "ports": [
+        {
+          "port": "left_center",
+          "complex_amplitude_delta_max": 0.016539758732121535,
+          "physical_phase_delta_rad": [
+            0.16195982615749563,
+            0.14128094718788486,
+            0.19243888233283546
+          ]
+        },
+        {
+          "port": "right_lower",
+          "complex_amplitude_delta_max": 0.286380021979913,
+          "physical_phase_delta_rad": [
+            0.46383179208009756,
+            0.46196564087622033,
+            0.4472969754726831
+          ]
+        },
+        {
+          "port": "right_upper",
+          "complex_amplitude_delta_max": 0.28638284357892796,
+          "physical_phase_delta_rad": [
+            0.463836213480087,
+            0.4619709961673677,
+            0.447295512271253
+          ]
+        }
+      ]
+    },
+    {
+      "meshes": [
+        20,
+        24
+      ],
+      "ports": [
+        {
+          "port": "left_center",
+          "complex_amplitude_delta_max": 0.04023990728961834,
+          "physical_phase_delta_rad": [
+            -0.46123126737959075,
+            -0.5212847798679827,
+            -0.5602825253358651
+          ]
+        },
+        {
+          "port": "right_lower",
+          "complex_amplitude_delta_max": 0.43656280780462947,
+          "physical_phase_delta_rad": [
+            -0.6393073965229268,
+            -0.6832258158563551,
+            -0.726304143887121
+          ]
+        },
+        {
+          "port": "right_upper",
+          "complex_amplitude_delta_max": 0.43656286626570223,
+          "physical_phase_delta_rad": [
+            -0.6393068116865256,
+            -0.683229596780035,
+            -0.7263048410727906
+          ]
+        }
+      ]
+    }
+  ]
+}

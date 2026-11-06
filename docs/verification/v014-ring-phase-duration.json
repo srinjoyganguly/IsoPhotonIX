@@ -46,6 +46,12 @@
         "rms": 0.046567590526825256,
         "max_abs": 0.13199994515551852
       },
+      "sampled_frequency_average": {
+        "covered_frequency_hz": 12163797152913.469,
+        "adjacent_intervals": 195,
+        "mean_power_a": 0.0055057628124141915,
+        "mean_power_b": 0.005508003631336945
+      },
       "peak_power_a": 0.22177093080702484,
       "peak_power_b": 0.21083943465719115
     },
@@ -119,6 +125,12 @@
         "count": 15,
         "rms": 0.040965611852037905,
         "max_abs": 0.11159183055383129
+      },
+      "sampled_frequency_average": {
+        "covered_frequency_hz": 12163797152913.469,
+        "adjacent_intervals": 195,
+        "mean_power_a": 0.0055047946952388686,
+        "mean_power_b": 0.005507977665567505
       },
       "peak_power_a": 0.2211695552839706,
       "peak_power_b": 0.21045362989434713

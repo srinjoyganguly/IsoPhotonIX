@@ -1,0 +1,38 @@
+{
+  "case": "coupler",
+  "resolution": 24,
+  "native_numerical_sha256": "117b1a4ca6d3dc46f43b0f8b71f1965c865817f4631da1388aebcc73eb60dd55",
+  "tolerances": {
+    "reciprocity_complex_amplitude": 0.05,
+    "minimum_amplitude_for_phase": 0.02
+  },
+  "forward_arrays_sha256": "3cd76e5e55571560b03ba480265f5e8e544fbd3cccda7ec2b9e00eb83c7374e3",
+  "pairs": [
+    {
+      "forward_input": "left_lower",
+      "forward_output": "right_lower",
+      "reverse_arrays_sha256": "5f71201676a203560ade749b1383a6f98b63fa24351c11d4d3d721c5bd90aa18",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "complex_amplitude_delta": [
+        1.0477538061231647e-05,
+        3.8660069126317414e-07,
+        1.3324849585695857e-05
+      ],
+      "power_delta": [
+        1.4500997428279483e-05,
+        7.276864318894738e-07,
+        5.519761902883502e-06
+      ],
+      "signed_phase_delta_rad": [
+        -7.528594733314588e-06,
+        -2.6742877076047247e-08,
+        1.36247253741087e-05
+      ],
+      "reciprocity_within_0_05": true
+    }
+  ]
+}

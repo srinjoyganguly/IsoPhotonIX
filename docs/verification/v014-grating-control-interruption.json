@@ -1,0 +1,29 @@
+{
+  "geometry": "tidy3d",
+  "resolution": 12,
+  "domain": "full",
+  "stage": "device",
+  "purpose": "matched canonical Gaussian control",
+  "exit_signal": 15,
+  "published_partial_observables": false,
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "grid_shape": [
+    788,
+    168,
+    74
+  ],
+  "cells": 9796416,
+  "dt_seconds": 1.588812391275838e-16,
+  "completed_fdtd_steps_lower_bound": 756,
+  "completed_time_fs_lower_bound": 120.11421678045335,
+  "synchronized_step_seconds": null,
+  "cuda_event_elapsed_seconds": null,
+  "last_completed_windows_fs": [
+    60,
+    120
+  ],
+  "reference_stage_arrays_sha256": "75946f7d05976b57686a604e1d851b1dbe171a6f1060ec1504cf5f6b6ca029c8",
+  "worker_sha256": "7e870344b755bc78be28bb3b8dc7c3ec4b2031511c38b15dd40ce381bafc5f0e",
+  "scope": "The process exited on signal 15 after logging the 120 fs window. The accepted reference checkpoint is reused. No completed device receipt or optical spectrum is derived from this interruption."
+}

@@ -325,7 +325,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     source_shape = (xmax-xmin,ny-pml-native_y0-shift,1)
     source=WaistSource(name='beam',partial_grid_shape=source_shape, direction='-',
               fixed_E_polarization_vector=(0.,1.,0.), azimuth_angle=m['angle_deg'],
-              normalize_by_energy=not fiber and m['geometry']!='tidy3d',
+              normalize_by_energy=False,  # Air-side fields receive deterministic host normalization below.
               center_x=(m['beam_x']-axes[0][xmin])/dx,center_y=-axes[1][pml]/dx,
               waist_cells=(m['fiber_radius'] if fiber else m['waist'])/dx, wave_character=fdtdx.WaveCharacter(frequency=center),
               temporal_profile=fdtdx.GaussianPulseProfile(spectral_width=fdtdx.WaveCharacter(frequency=bandwidth),
@@ -394,7 +394,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         obj=obj.aset('object_list',[source if item.name=='guide' else item for item in obj.object_list])
     else:
         source=obj['beam']
-        if m['geometry']=='tidy3d':
+        if not fiber:
             electric,magnetic=sampled_gaussian_fields(axes[0][xmin:xmax],axes[1][pml:ny-pml],
                                                      m['beam_x'],m['waist'],m['angle_deg'])
             source=source.aset('_E',jax.device_put(electric,target)).aset('_H',jax.device_put(magnetic,target))
@@ -471,8 +471,11 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     if observe_one_step:
         if m['resolution'] not in (12, 14) or (m['resolution'] == 14 and m['geometry'] not in ('lumerical', 'tidy3d')):
             raise ValueError('One-step memory observations require a mesh with a published full native run.')
-        state=compiled(state,jnp.asarray(1,dtype=jnp.int32))
-        jax.block_until_ready(state)
+        timer.begin_steps()
+        with timer.step():
+            state=compiled(state,jnp.asarray(1,dtype=jnp.int32))
+            jax.block_until_ready(state)
+        timer.end_steps()
         if int(state[0])!=1 or state[1].fields.E.device!=gpu:
             raise ValueError('Resource probe did not execute exactly one native GPU step.')
         stats=compiled.memory_analysis(); allocator=gpu.memory_stats()
@@ -483,8 +486,14 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                                      '--format=csv,noheader,nounits'],text=True).strip().splitlines()
         if len(smi)!=1: raise ValueError('The memory observation needs a single unambiguous NVIDIA device.')
         free,used,total=[int(v) for v in smi[0].split(',')]
+        performance=timer.report(shape=shape,steps=1,dt_seconds=sim.time_step_duration,spacing_um=dx,pml_cells=pml)
+        performance['setup_before_compile_seconds']=compile_start-worker_started
+        if mirror:
+            performance['represented_full_shape']=list(full_shape)
+            performance['boundary_faces']={'min_y':'PEC mirror, one clamped Yee plane',
+                                           'remaining_five_faces':f'PML, {pml} cells per face'}
         return {'geometry':m['geometry'],'resolution':m['resolution'],'shape':list(shape),'cells':math.prod(shape),
-                'executed_fdtd_steps':1,'gpu':gpu.device_kind,'global_free_mib':free,'global_used_mib':used,
+                'executed_fdtd_steps':1,'performance':performance,'gpu':gpu.device_kind,'global_free_mib':free,'global_used_mib':used,
                 'global_total_mib':total,'allocator_bytes':dict(allocator or {}),
                 'actual_compiled_live_bytes':stats.argument_size_in_bytes+stats.output_size_in_bytes-
                     stats.alias_size_in_bytes+stats.temp_size_in_bytes}
@@ -553,6 +562,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
     detail=dict(energy_volume='native allocated non-PML region', full_shape=list(full_shape), grating_domain=m.get('grating_domain','full'), performance=performance, stage='reference' if reference else 'device',actual_device=str(final.fields.E.device),device_name=target.device_kind,
                 shape=list(shape),grid_resolution=m['resolution'],pml_cells=pml,time_steps=int(step),settled=consecutive>=2,
                 history=history,compile_seconds=compile_seconds,stepping_seconds=time.monotonic()-start,source_direction=direction.tolist(),
+                source_sampling='guided-mode' if guided else ('lp01' if fiber else 'host-sampled-air-gaussian'),
                 source_eh_sha256=digest(np.stack([electric,magnetic])),
                 source_time_offsets_sha256=digest(np.stack([delays_e,delays_h])),scalar_permittivity_sha256=eps_hash,
                 electric_component_permittivity_sha256=component_hash,

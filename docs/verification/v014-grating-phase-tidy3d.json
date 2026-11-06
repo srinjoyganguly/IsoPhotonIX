@@ -267,6 +267,13 @@
         1.575,
         1.6
       ],
+      "shared_valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
       "channels": {
         "reflection": {
           "power_delta": {
@@ -290,6 +297,12 @@
             "count": 4,
             "rms": 0.14939720754295513,
             "max_abs": 0.2325275968505125
+          },
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 4,
+            "mean_power_a": 0.005409077458637119,
+            "mean_power_b": 0.009393101264679852
           },
           "peak_power_a": 0.010966388825755053,
           "peak_power_b": 0.019063185570796563

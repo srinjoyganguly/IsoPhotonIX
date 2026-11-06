@@ -1,0 +1,333 @@
+{
+  "method": "Remove only the uniform external lengths by multiplying by exp(-i\u03b2(L_in+L_out)). The straight propagated field supplies \u03b2, its independently solved Yee dispersion chooses the number of turns. No phase offset is fitted. The published native physical-plane S is unchanged.",
+  "scope": "Fundamental-mode virtual reference planes at the start/end of the varying polygon. The entire curved circuit remains between them.",
+  "studies": [
+    {
+      "case": "coupler",
+      "mesh": 16,
+      "port_order": [
+        "left_lower",
+        "left_upper",
+        "right_lower",
+        "right_upper"
+      ],
+      "actual_port_x_um": [
+        -4.75,
+        -4.75,
+        4.75,
+        4.75
+      ],
+      "virtual_port_x_um": [
+        -4.0,
+        -4.0,
+        4.0,
+        4.0
+      ],
+      "uniform_length_removed_per_port_um": [
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "measured_beta_rad_um": [
+        9.926632804328374,
+        10.46005135177224,
+        10.993229465420747
+      ],
+      "native_column_sha256": "f35ff9e819f67da5ab7cf9e9d3c4611af0f11da6487b6ca7b1cb2f0fb6b163b4",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "registered_s_real": [
+        [
+          -0.004790189153589984,
+          0.004703111412588923,
+          0.8701957200021566,
+          0.11504336061529426
+        ],
+        [
+          0.010613794676234545,
+          0.0007865099318904706,
+          -0.48418793217708644,
+          0.23180840299991137
+        ],
+        [
+          -0.0011688504869708926,
+          0.0026667938284498883,
+          -0.6796114644644469,
+          -0.16385807742414268
+        ]
+      ],
+      "registered_s_imag": [
+        [
+          -0.0139871517339429,
+          0.00025096538873579,
+          -0.2863769036465956,
+          0.31733215529513303
+        ],
+        [
+          -0.009231880063509813,
+          0.004206670566692442,
+          -0.7983055445769996,
+          -0.15073328188899324
+        ],
+        [
+          -0.0029176150131567063,
+          0.0010239268916881717,
+          0.6651941330244968,
+          -0.1698670117804278
+        ]
+      ]
+    },
+    {
+      "case": "coupler",
+      "mesh": 20,
+      "port_order": [
+        "left_lower",
+        "left_upper",
+        "right_lower",
+        "right_upper"
+      ],
+      "actual_port_x_um": [
+        -4.75,
+        -4.75,
+        4.75,
+        4.75
+      ],
+      "virtual_port_x_um": [
+        -4.0,
+        -4.0,
+        4.0,
+        4.0
+      ],
+      "uniform_length_removed_per_port_um": [
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "measured_beta_rad_um": [
+        10.028422000798143,
+        10.561415643084164,
+        11.092754604754276
+      ],
+      "native_column_sha256": "83e28d2eda3c23ab5165795a0c2697bcda967d51aede1848d3eb48032c081a99",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "registered_s_real": [
+        [
+          0.0020550099757266935,
+          0.0014928247322411447,
+          0.8090946911509918,
+          -0.12525707904306743
+        ],
+        [
+          -0.012411832618338229,
+          0.0011894521447439505,
+          0.29153851033647427,
+          0.19991584698018933
+        ],
+        [
+          -0.00022669867085488098,
+          0.0013759671782166748,
+          -0.9594831297781302,
+          0.024713323397011502
+        ]
+      ],
+      "registered_s_imag": [
+        [
+          -0.004369381520709405,
+          0.0006527294554568563,
+          0.4810244715997841,
+          0.23063661481601352
+        ],
+        [
+          -0.005022844543311644,
+          -0.0023115812878559635,
+          -0.9054355018146564,
+          0.06712864191073946
+        ],
+        [
+          -0.0069332685111648,
+          -0.0005339840139536274,
+          -0.06951521052767627,
+          -0.18091339493955277
+        ]
+      ]
+    },
+    {
+      "case": "coupler",
+      "mesh": 24,
+      "port_order": [
+        "left_lower",
+        "left_upper",
+        "right_lower",
+        "right_upper"
+      ],
+      "actual_port_x_um": [
+        -4.75,
+        -4.75,
+        4.75,
+        4.75
+      ],
+      "virtual_port_x_um": [
+        -4.0,
+        -4.0,
+        4.0,
+        4.0
+      ],
+      "uniform_length_removed_per_port_um": [
+        0.75,
+        0.75,
+        0.75,
+        0.75
+      ],
+      "measured_beta_rad_um": [
+        9.870840596053009,
+        10.392287499127548,
+        10.911720041036727
+      ],
+      "native_column_sha256": "3cd76e5e55571560b03ba480265f5e8e544fbd3cccda7ec2b9e00eb83c7374e3",
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "registered_s_real": [
+        [
+          0.001188384451674624,
+          0.00020214470132782965,
+          0.7362546042093555,
+          0.19295757516762888
+        ],
+        [
+          0.00027528244937425646,
+          -0.0007539493740776496,
+          -0.7843763212654873,
+          0.13173245505384337
+        ],
+        [
+          -0.0018789601303869552,
+          0.0004855014069482702,
+          -0.23914094850670875,
+          -0.1987081264133874
+        ]
+      ],
+      "registered_s_imag": [
+        [
+          0.0018568630529245066,
+          0.0011313810025452107,
+          -0.5698066947565061,
+          0.23439376234886544
+        ],
+        [
+          -0.0023111704238804173,
+          0.0020228781777071473,
+          -0.5237120698888186,
+          -0.20590001857425475
+        ],
+        [
+          -0.00012801056086479896,
+          -0.00011529524054064281,
+          0.9242622028367083,
+          -0.057916862628344515
+        ]
+      ]
+    }
+  ],
+  "mesh_pairs": [
+    {
+      "meshes": [
+        16,
+        20
+      ],
+      "ports": [
+        {
+          "port": "left_lower",
+          "complex_amplitude_delta_max": 0.023407167541564373,
+          "physical_phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "left_upper",
+          "complex_amplitude_delta_max": 0.006530694424502114,
+          "physical_phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "right_lower",
+          "complex_amplitude_delta_max": 0.7862098756364738,
+          "physical_phase_delta_rad": [
+            0.8543127651653211,
+            0.8567038975014369,
+            0.8470021353180676
+          ]
+        },
+        {
+          "port": "right_upper",
+          "complex_amplitude_delta_max": 0.2554611869520859,
+          "physical_phase_delta_rad": [
+            0.8453208019873222,
+            0.9005055228940205,
+            0.9031572267820244
+          ]
+        }
+      ]
+    },
+    {
+      "meshes": [
+        20,
+        24
+      ],
+      "ports": [
+        {
+          "port": "left_lower",
+          "complex_amplitude_delta_max": 0.012973668150194467,
+          "physical_phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "left_upper",
+          "complex_amplitude_delta_max": 0.004750194556222698,
+          "physical_phase_delta_rad": [
+            null,
+            null,
+            null
+          ]
+        },
+        {
+          "port": "right_lower",
+          "complex_amplitude_delta_max": 1.227390078757392,
+          "physical_phase_delta_rad": [
+            -1.195020539335965,
+            -1.2935971723292123,
+            -1.3899358547326313
+          ]
+        },
+        {
+          "port": "right_upper",
+          "complex_amplitude_delta_max": 0.31823683368211264,
+          "physical_phase_delta_rad": [
+            -1.1862645382432213,
+            -1.3255881997730086,
+            -1.4229489944966194
+          ]
+        }
+      ]
+    }
+  ]
+}

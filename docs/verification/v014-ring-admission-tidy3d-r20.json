@@ -1,0 +1,8 @@
+{
+  "vendor": "tidy3d",
+  "candidate_mesh": 20,
+  "admitted": true,
+  "available_at_launch_mib": 12352,
+  "required_with_reserve_mib": 8844.089762711865,
+  "budget_sha256": "d9ebebede3b95c708c5cf83705ed16770532f039c551df45759360e0519c486d"
+}

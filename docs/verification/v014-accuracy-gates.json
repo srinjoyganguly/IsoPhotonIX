@@ -217,6 +217,17 @@
         "native_full_spectrum_qualified": true
       },
       "all_evidenced_and_met": false
+    },
+    "v014-ring3d-tidy3d-r20-t4800-wall-tensor.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false,
+        "native_full_spectrum_qualified": false
+      },
+      "all_evidenced_and_met": false
     }
   },
   "grating_mesh_controls": [
@@ -261,5 +272,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "a31ec43186c4958ed839dd7c701cd5d8d5954df54980b9983d787f44dc5f556c"
+  "diagnosis_sha256": "2da783d64d6e094b0c72275ac8747142764c7107dde1f155e5a80f7a760f8a33"
 }

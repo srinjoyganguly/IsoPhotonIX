@@ -218,6 +218,110 @@
         -0.0001844188474450571
       ],
       "native_reference_sha256": "3f3fbd5be54539199afe899d5c80e97542ab70471d1431a98f9518848755e389"
+    },
+    {
+      "case": "coupler",
+      "resolution": 24,
+      "straight_plane_distance_um": 9.5,
+      "dt_seconds": 7.94406195637919e-17,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "effective_temporal_frequency_per_um": [
+        0.6249333590712413,
+        0.6449107777912995,
+        0.664886752449019
+      ],
+      "continuous_longitudinal_mode_neff": [
+        2.49674916267395,
+        2.5452656745910645,
+        2.59011173248291
+      ],
+      "effective_frequency_mode_neff": [
+        2.496173620223999,
+        2.5446815490722656,
+        2.589519500732422
+      ],
+      "yee_longitudinal_neff": [
+        2.5129376111239448,
+        2.5636752217331504,
+        2.610880149870018
+      ],
+      "measured_straight_transfer_real": [
+        0.88931541918368,
+        -0.23132303300577395,
+        -0.9999602510751869
+      ],
+      "measured_straight_transfer_imag": [
+        -0.45711843214169373,
+        -0.9728771507058239,
+        0.011217203215982236
+      ],
+      "measured_minus_continuous_phase_rad": [
+        0.6041934820786123,
+        0.7089435321235704,
+        0.8244490461685028
+      ],
+      "measured_minus_yee_phase_rad": [
+        0.0001046885749345437,
+        -5.282774721871994e-06,
+        -0.00013294210381121542
+      ],
+      "native_reference_sha256": "766e18002cefaeeaff1675a29ca667f88d71e6ea03568caecc87bfc18166f7ab"
+    },
+    {
+      "case": "splitter",
+      "resolution": 24,
+      "straight_plane_distance_um": 9.5,
+      "dt_seconds": 7.94406195637919e-17,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "effective_temporal_frequency_per_um": [
+        0.6249333590712413,
+        0.6449107777912995,
+        0.664886752449019
+      ],
+      "continuous_longitudinal_mode_neff": [
+        2.49674916267395,
+        2.5452656745910645,
+        2.59011173248291
+      ],
+      "effective_frequency_mode_neff": [
+        2.496173620223999,
+        2.5446815490722656,
+        2.589519500732422
+      ],
+      "yee_longitudinal_neff": [
+        2.5129376111239448,
+        2.5636752217331504,
+        2.610880149870018
+      ],
+      "measured_straight_transfer_real": [
+        0.8893154094832975,
+        -0.23132303007029525,
+        -0.999960259396184
+      ],
+      "measured_straight_transfer_imag": [
+        -0.4571184277310697,
+        -0.9728771347801167,
+        0.011217183684649404
+      ],
+      "measured_minus_continuous_phase_rad": [
+        0.6041934815667424,
+        0.708943531295448,
+        0.8244490657914882
+      ],
+      "measured_minus_yee_phase_rad": [
+        0.0001046880630645313,
+        -5.2836028443784885e-06,
+        -0.00013292248082569697
+      ],
+      "native_reference_sha256": "302a04d892d39fcd31216eff6222652ed976632a87ad282da8be5e40a091ce97"
     }
   ],
   "grid_registration": [
@@ -307,6 +411,50 @@
       "max_minus_min_neff": 0.03938031196594238,
       "larger_aperture_edge_extension_um": 0.25,
       "largest_translation_larger_aperture_neff": 2.5381391048431396,
+      "largest_translation_aperture_change": -2.384185791015625e-07
+    },
+    {
+      "resolution": 24,
+      "nominal_guide_width_height_um": [
+        0.5,
+        0.25
+      ],
+      "wavelength_um": 1.55,
+      "registration": [
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.0,
+          "neff": 2.5452656745910645
+        },
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.25,
+          "neff": 2.551187515258789
+        },
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.5,
+          "neff": 2.569600820541382
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.0,
+          "neff": 2.541970729827881
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.25,
+          "neff": 2.547977924346924
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.5,
+          "neff": 2.5666463375091553
+        }
+      ],
+      "max_minus_min_neff": 0.027630090713500977,
+      "larger_aperture_edge_extension_um": 0.25,
+      "largest_translation_larger_aperture_neff": 2.566646099090576,
       "largest_translation_aperture_change": -2.384185791015625e-07
     }
   ]

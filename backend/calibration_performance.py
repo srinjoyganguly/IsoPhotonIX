@@ -6,9 +6,9 @@ import math
 
 CASE_NAMES = {'loaded-ring-3d':'ring-3d', 'finite-grating-3d':'grating-3d'}
 FIELDS = ('receipt','case','geometry','stage','purpose','steps_lower_bound','origin','acquisition_id','device_kind','mesh_cells_per_um',
-          'grid_shape','cells','pml_cells','steps','dt_seconds','simulated_time_fs','compile_seconds',
+          'grid_shape','cells','pml_cells','interior_cells','gpu_lock_wait_seconds','setup_seconds','seconds_per_step','steps','dt_seconds','simulated_time_fs','compile_seconds',
           'synchronized_step_seconds','cuda_event_elapsed_seconds','cuda_event_note','kernel_active_seconds','kernel_count','kernel_timing_note',
-          'million_cell_steps_per_second','input_free_mib','driver_version','versions',
+          'million_cell_steps_per_second','input_free_mib','driver_build','cuda_driver_api','versions',
           'stage_through_steps_seconds','historical_elapsed_seconds','historical_basis','array_sha256')
 
 
@@ -69,12 +69,15 @@ def stage_rows(report, receipt):
             stage=role,purpose=report.get('timing_purpose','optical simulation'),steps_lower_bound=None,origin=origin,acquisition_id=p.get('acquisition_id'),device_kind=p.get('device_kind',stage.get('device_name',report.get('device_name'))),
             mesh_cells_per_um=resolution,grid_shape=shape,cells=math.prod(shape) if shape else None,
             pml_cells=p.get('pml_cells',stage.get('pml_cells',model.get('pml'))),steps=steps,
+            interior_cells=p.get('interior_non_pml_cells'),gpu_lock_wait_seconds=stage.get('acquisition',{}).get('gpu_lock_wait_seconds'),
+            setup_seconds=p.get('setup_seconds'),seconds_per_step=p['synchronized_step_seconds']/steps if p.get('synchronized_step_seconds') is not None else None,
             dt_seconds=dt,simulated_time_fs=final_fs,compile_seconds=p.get('compile_seconds',stage.get('compile_seconds')),
             synchronized_step_seconds=p.get('synchronized_step_seconds'),kernel_active_seconds=p.get('kernel_active_seconds'),
             cuda_event_elapsed_seconds=p.get('cuda_event_elapsed_seconds'),cuda_event_note=p.get('cuda_event_note'),
             million_cell_steps_per_second=p.get('million_cell_steps_per_second'),
             input_free_mib=stage.get('memory_admission',{}).get('available_mib'),
-            driver_version=hardware.get('driver_version',hardware.get('driver_build')) if isinstance(hardware,dict) else None,versions=versions,
+            driver_build=hardware.get('driver_build') if isinstance(hardware,dict) else None,
+            cuda_driver_api=hardware.get('cuda_driver_api',hardware.get('driver_version')) if isinstance(hardware,dict) else None,versions=versions,
             kernel_count=p.get('kernel_count'),kernel_timing_note=p.get('kernel_timing_note','Hardware intervals were not recorded.'),
             stage_through_steps_seconds=p.get('stage_through_steps_seconds'),
             historical_elapsed_seconds=historical[0][1] if historical and not p else None,

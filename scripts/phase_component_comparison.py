@@ -176,6 +176,28 @@ def grating_phase_flags(a, s):
     return flags
 
 
+def guide_plane_sensitivity(report, indices, wavelengths, distance):
+    """Estimate plane-translation sensitivity to the numerical longitudinal wavenumber.
+
+    The retained spectrum uses its documented transverse mode propagation.
+    This independent estimate interpolates the archived effective indices
+    to the temporal Yee frequency; only the tiny straight port translation
+    is tested, not propagation through a taper or a grating.
+    """
+    stage=report['stages']['device']
+    dt=stage['history'][-1]['time_fs']*1e-15/stage['time_steps']
+    f=1/np.asarray(wavelengths)
+    order=np.argsort(f);ordered=f[order];n=np.asarray(indices).real[order]
+    effective=f*np.sinc(f*299792458e6*dt)
+    lo=(np.searchsorted(ordered,effective)-1).clip(0,len(f)-2)
+    estimate=n[lo]+(effective-ordered[lo])*(n[lo+1]-n[lo])/(ordered[lo+1]-ordered[lo])
+    dx=1/report['settings']['resolution']
+    beta=2/dx*np.arcsin(np.pi*dx*effective*estimate)
+    correction=(beta-2*np.pi*f*np.asarray(indices).real)*distance
+    return {'guide_length_um':distance,'temporal_offset_s':dt,'estimated_yee_minus_continuous_rad':correction.tolist(),
+            'max_abs_rad':float(max(abs(correction)))}
+
+
 def tidy_grating(r,a):
     """Reference the measured incoming Gaussian beam to one common air plane."""
     m = r['settings']; dx=1/m['resolution']
@@ -207,6 +229,7 @@ def tidy_grating(r,a):
     return {'case_key':grating_case_key(m),'vendor':'tidy3d','r':m['resolution'],'w':w,'s':s,'valid':a['valid'],'phase_ok':grating_phase_flags(a,s),
             'sha':r['arrays_sha256'],'info':{'sample_z_um':z,'target_beam_z_um':beam_plane_z,'target_beam_x_um':m['beam_x'],
                 'guide_x_um':x_out,'target_guide_x_um':guide_x,
+                'guide_translation_sensitivity':guide_plane_sensitivity(r,a['dev_mode_neff'],w,x_out-guide_x),
                 'phase_convention':'Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode.'}}
 
 
@@ -254,6 +277,7 @@ def grating_measurement(path):
                     'target_fiber_z_um':target_z,'target_axis_x_um':float(m['fiber_center_x']+target_z*np.tan(theta)),
                     'file_port_center_x_um':2.8582013154835044,'target_guide_x_um':target_x,
                     'fiber_lead_um':float(length_in),'guide_lead_um':float(length_out),
+                    'guide_translation_sensitivity':guide_plane_sensitivity(r,a['dev_mode_neff'],w,length_out),
                     'phase_convention':'Native DFT +iωt; incoming LP01 field has positive Ey on its axis. The commercial FSP marks the cached fiber basis invalid.'}}
 
 
@@ -263,7 +287,18 @@ def distribution(values):
     return {'count':values.size,'rms':float(np.sqrt(np.mean(abs(values)**2))),'max_abs':float(np.max(abs(values)))}
 
 
-def compare(component, a, b, common, phase_ok, vendor=False):
+def sampled_mean_power(a,b,wavelengths,valid):
+    # Only integrate adjacent qualified bins; never bridge a missing resonance interval.
+    df=np.abs(np.diff(299792458e6/np.asarray(wavelengths)))
+    selected=valid[:-1]&valid[1:]
+    band=float(np.sum(df[selected]))
+    def average(values):
+        power=abs(values)**2
+        return float(np.sum(((power[:-1]+power[1:])*.5*df)[selected])/band) if band>0 else None
+    return {'covered_frequency_hz':band,'adjacent_intervals':int(selected.sum()),'mean_power_a':average(a),'mean_power_b':average(b)}
+
+
+def compare(component, a, b, common, phase_ok, vendor=False, wavelengths=None):
     """Compare squared powers and finite spectral phase differences on qualified data."""
     result = {}
     for j,name in enumerate(CHANNELS[component]):
@@ -279,10 +314,86 @@ def compare(component, a, b, common, phase_ok, vendor=False):
             row['same_gauge_complex_delta'] = distribution((sa-sb)[common])
             row['same_gauge_phase_delta_rad'] = distribution(np.angle(sa*sb.conj())[strong])
         if name in ('reflection','add_side'):
+            if wavelengths is not None:
+                row['sampled_frequency_average']=sampled_mean_power(sa,sb,wavelengths,common)
             row['peak_power_a'] = float(max(abs(sa[common])**2)) if common.any() else None
             row['peak_power_b'] = float(max(abs(sb[common])**2)) if common.any() else None
         result[name] = row
     return result
+
+
+def mode_gauge_valid(mode):
+    return (abs(mode['overlap_magnitude']-1)<=.05 and abs(mode['overlap_phase_rad'])<.01
+            and abs(mode['native_aperture_to_full_filed_power']-1)<=.05)
+
+
+def compare_fixed_ring(row,vendor_file):
+    """Compare the filed single-profile spectrum and verify the one saved mode frequency."""
+    w,s=row['w'],row['s']
+    modes = row['central']
+    fixed_s,fixed_valid,fixed_temporal=row['fixed']
+    vendor_s,vendor_stable,inside_band=optical_sfile(vendor_file,'ring',w)
+    modal_ok=np.array([all(mode_gauge_valid(mode)
+                           for mode in (modes[0],modes[j])) for j in range(len(modes))])
+    common=row['valid']&fixed_valid&inside_band
+    both=fixed_temporal&vendor_stable&modal_ok[None,:]&common[:,None]
+    delta=np.angle(fixed_s*vendor_s.conj())
+    diagnostics={}
+    for j,name in enumerate(CHANNELS['ring']):
+        strong=both[:,j]
+        diagnostics[name]={'absolute_phase_residual_rad':distribution(delta[:,j][strong]),
+            'native_vs_vendor_power_delta':distribution((abs(fixed_s[:,j])**2-abs(vendor_s[:,j])**2)[common]),
+            'fixed_minus_frequency_specific_power_max':float(np.max(abs(abs(fixed_s[common,j])**2-abs(s[common,j])**2))),
+            'fixed_minus_frequency_specific_phase_change_rad':distribution(np.angle(fixed_s[:,j]*s[:,j].conj())[strong&row['phase_ok'][:,j]])}
+    band_result={'vendor_expansion':'One central TE profile at all 500 frequencies, as described by Ansys.',
+         'native_method':'Time projections interpolated once at the saved central-mode wavelength; same weights then applied at every frequency. The actual vendor and local profiles have their measured overlap at that frequency.',
+         'channels':diagnostics,'native_valid_bins':(row['valid']&fixed_valid).tolist(),
+         'native_phase_ok':fixed_temporal.tolist(),'phase_qualified':both.tolist(),'registered_native_real':fixed_s.real.tolist(),
+         'registered_native_imag':fixed_s.imag.tolist(),'signed_native_minus_vendor_phase_rad':[
+             [float(v) if resolved else None for v,resolved in zip(values,flags)] for values,flags in zip(delta,both)]}
+    center_wavelength = modes[0]['wavelength_um']
+    if not all(mode['wavelength_um']==center_wavelength for mode in modes):
+        raise ValueError('The cached port modes refer to different wavelengths.')
+    v, vok, inside = optical_sfile(vendor_file,'ring',np.array([center_wavelength]))
+    hi = np.searchsorted(w,center_wavelength)
+    lo = hi-1
+    values = {}
+    for j,name in enumerate(CHANNELS['ring']):
+        two = s[lo:hi+1,j]
+        phase = np.unwrap(np.angle(two))
+        magnitude = np.interp(center_wavelength,w[lo:hi+1],abs(two))
+        native = magnitude*np.exp(1j*np.interp(center_wavelength,w[lo:hi+1],phase))
+        resolved = bool(row['valid'][lo:hi+1].all() and row['phase_ok'][lo:hi+1,j].all() and
+            inside[0] and vok[0,j] and abs(phase[1]-phase[0])<np.pi/2 and
+            all(mode_gauge_valid(mode) for mode in (modes[0],modes[j])))
+        values[name] = {'native_power':float(abs(native)**2),'vendor_power':float(abs(v[0,j])**2),
+                        'phase_gates_passed':resolved,'signed_native_minus_vendor_phase_rad':
+                            float(np.angle(native*v[0,j].conj())) if resolved else None}
+    central_result={'native_bracket_um':w[lo:hi+1].tolist(),'port_overlaps':modes,'channels':values}
+    return {'single_central_basis_band':band_result,'central_vendor_mode_check':central_result}
+
+
+def compare_mesh(component,previous,row,vendor_file):
+    w,s=row['w'],row['s']
+    if row['case_key']!=previous['case_key'] or row['r']<=previous['r']:
+        raise ValueError('A mesh comparison requires the same physical design/material model at increasing mesh resolution.')
+    # Match only physically identical wavelength samples on different monitor grids.
+    ia,ib=[],[]
+    for i,wl in enumerate(previous['w']):
+        matches=np.flatnonzero(np.isclose(w,wl,rtol=0,atol=1e-10))
+        if matches.size==1:
+            ia.append(i);ib.append(int(matches[0]))
+    if len(ia)<2:
+        raise ValueError('Insufficient common frequencies for a phase comparison.')
+    shared_valid=previous['valid'][ia]&row['valid'][ib]
+    if vendor_file:
+        _,_,inside=optical_sfile(vendor_file,component,w[ib])
+        shared_valid &= inside
+    elif component=='ring' and row['vendor']=='tidy3d':
+        shared_valid &= (w[ib]>=1.5)&(w[ib]<=1.6)
+    return {'meshes':[previous['r'],row['r']],'shared_wavelength_um':w[ib].tolist(),'shared_valid':shared_valid.tolist(),
+        'channels':compare(component,previous['s'][ia],s[ib],shared_valid,
+            previous['phase_ok'][ia]&row['phase_ok'][ib],wavelengths=w[ib])}
 
 
 def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False):
@@ -318,70 +429,13 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
             record['early_to_final_complex_change_max_by_port']=row['transient_abs'].max(axis=0).tolist()
         if vendor_file:
             vendor, phase_ok, inside = optical_sfile(vendor_file,component,w)
-            record['commercial_comparison'] = compare(component,s,vendor,row['valid']&inside,row['phase_ok']&phase_ok,True)
+            record['commercial_comparison'] = compare(component,s,vendor,row['valid']&inside,row['phase_ok']&phase_ok,True,w)
         if row['vendor']=='tidy3d':
             record['commercial_phase_data']='Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs.'
         if row.get('central') is not None:
-            modes = row['central']
-            fs,fvalid,fstable=row['fixed']
-            fv,fok,finside=optical_sfile(vendor_file,component,w)
-            modal_ok=np.array([all(abs(mode['overlap_magnitude']-1)<=.05 and abs(mode['overlap_phase_rad'])<.01 and
-                                    abs(mode['native_aperture_to_full_filed_power']-1)<=.05
-                                   for mode in (modes[0],modes[j])) for j in range(len(modes))])
-            common=row['valid']&fvalid&finside
-            both=fstable&fok&modal_ok[None,:]&common[:,None]
-            delta=np.angle(fs*fv.conj())
-            diagnostics={}
-            for j,name in enumerate(CHANNELS[component]):
-                strong=both[:,j]
-                diagnostics[name]={'absolute_phase_residual_rad':distribution(delta[:,j][strong]),
-                    'native_vs_vendor_power_delta':distribution((abs(fs[:,j])**2-abs(fv[:,j])**2)[common]),
-                    'fixed_minus_frequency_specific_power_max':float(np.max(abs(abs(fs[common,j])**2-abs(s[common,j])**2))),
-                    'fixed_minus_frequency_specific_phase_change_rad':distribution(np.angle(fs[:,j]*s[:,j].conj())[strong&row['phase_ok'][:,j]])}
-            record['single_central_basis_band']={'vendor_expansion':'One central TE profile at all 500 frequencies, as described by Ansys.',
-                 'native_method':'Time projections interpolated once at the saved central-mode wavelength; same weights then applied at every frequency. The actual vendor and local profiles have their measured overlap at that frequency.',
-                 'channels':diagnostics,'native_valid_bins':(row['valid']&fvalid).tolist(),
-                 'native_phase_ok':fstable.tolist(),'phase_qualified':both.tolist(),'registered_native_real':fs.real.tolist(),
-                 'registered_native_imag':fs.imag.tolist(),'signed_native_minus_vendor_phase_rad':[
-                     [float(v) if resolved else None for v,resolved in zip(values,flags)] for values,flags in zip(delta,both)]}
-            cw = modes[0]['wavelength_um']
-            if not all(mode['wavelength_um']==cw for mode in modes):
-                raise ValueError('The cached port modes refer to different wavelengths.')
-            v, vok, inside = optical_sfile(vendor_file,component,np.array([cw]))
-            hi = np.searchsorted(w,cw)
-            lo = hi-1
-            values = {}
-            for j,name in enumerate(CHANNELS[component]):
-                two = s[lo:hi+1,j]
-                phase = np.unwrap(np.angle(two))
-                magnitude = np.interp(cw,w[lo:hi+1],abs(two))
-                native = magnitude*np.exp(1j*np.interp(cw,w[lo:hi+1],phase))
-                resolved = bool(row['valid'][lo:hi+1].all() and row['phase_ok'][lo:hi+1,j].all() and
-                    inside[0] and vok[0,j] and abs(phase[1]-phase[0])<np.pi/2 and
-                    all(abs(mode['overlap_magnitude']-1)<=.05 and abs(mode['overlap_phase_rad'])<.01 and
-                                    abs(mode['native_aperture_to_full_filed_power']-1)<=.05 for mode in (modes[0],modes[j])))
-                values[name] = {'native_power':float(abs(native)**2),'vendor_power':float(abs(v[0,j])**2),
-                                'phase_gates_passed':resolved,'signed_native_minus_vendor_phase_rad':
-                                    float(np.angle(native*v[0,j].conj())) if resolved else None}
-            record['central_vendor_mode_check']={'native_bracket_um':w[lo:hi+1].tolist(),'port_overlaps':modes,'channels':values}
+            record.update(compare_fixed_ring(row,vendor_file))
         if previous:
-            if row['case_key']!=previous['case_key'] or row['r']<=previous['r']:
-                raise ValueError('A mesh comparison requires the same physical design/material model at increasing mesh resolution.')
-            # Match only physically identical wavelength samples on different monitor grids.
-            ia,ib=[],[]
-            for i,wl in enumerate(previous['w']):
-                matches=np.flatnonzero(np.isclose(w,wl,rtol=0,atol=1e-10))
-                if matches.size==1:
-                    ia.append(i);ib.append(int(matches[0]))
-            if len(ia)<2:
-                raise ValueError('Insufficient common frequencies for a phase comparison.')
-            shared_valid=previous['valid'][ia]&row['valid'][ib]
-            if vendor_file:
-                _,_,inside=optical_sfile(vendor_file,component,w[ib])
-                shared_valid &= inside
-            result['mesh_pairs'].append({'meshes':[previous['r'],row['r']],'shared_wavelength_um':w[ib].tolist(),
-                'channels':compare(component,previous['s'][ia],s[ib],shared_valid,
-                    previous['phase_ok'][ia]&row['phase_ok'][ib])})
+            result['mesh_pairs'].append(compare_mesh(component,previous,row,vendor_file))
         result['native_samples'].append(record)
         previous=row
     return result

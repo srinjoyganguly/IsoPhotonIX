@@ -1,13 +1,15 @@
 """Reconstruct the public add/drop ring's automatic grid locally, without submitting a job."""
 import argparse
+import base64
 import hashlib
+import io
 from importlib.metadata import version
 import json
 from pathlib import Path
 
 import numpy as np
 
-from scripts.compare_loaded_ring3d import TIDY_SHA
+from scripts.compare_loaded_ring3d import PLOT_SHA, TIDY_SHA
 
 
 def occupied(boundaries, start, stop):
@@ -21,6 +23,34 @@ def occupied(boundaries, start, stop):
     return dict(interval_um=[start,stop],intersecting_cells=int(hit.sum()),fully_inside_cells=int(complete.sum()),
                 equivalent_cells=float((overlaps[hit]/widths[hit]).sum()),widths_nm=(1000*widths[hit]).tolist())
 
+
+
+def central_plot_readout(path):
+    # Same pixel axes and RGB threshold as the published full-band benchmark.
+    # At the central wavelength the two adjacent column centers contribute equally.
+    from PIL import Image
+    cell=json.loads(path.read_text())['cells'][24]
+    png=base64.b64decode(cell['outputs'][0]['data']['image/png'])
+    if hashlib.sha256(png).hexdigest()!=PLOT_SHA:
+        raise ValueError('Unexpected plotted through/drop spectrum.')
+    pixels=np.array(Image.open(io.BytesIO(png)).convert('RGB'),dtype=int)
+    data={}
+    for name,channel in [('through',0),('drop',2)]:
+        intervals=[];mid=[]
+        for x in (316,317):
+            stripe=pixels[23:373,x]
+            signal=(stripe[:,channel]>175) & (stripe[:,channel]-stripe[:,1]>95) & (stripe[:,channel]-stripe[:,2-channel]>95)
+            rows=np.flatnonzero(signal)+23
+            if not len(rows):
+                raise ValueError('Published trace is missing at a central plot column.')
+            def power(row):
+                return float(10**((26-row)*30/(324*10)))
+            intervals.append([power(rows[-1]+.5),power(rows[0]-.5)])
+            mid.append(power(np.median(rows)))
+        data[name]=dict(interpolated_median=float(np.mean(mid)),stroke_and_half_pixel_bounds=np.mean(intervals,axis=0).tolist())
+    return dict(wavelength_um=1.55,bracketing_pixel_centers=[316,317],pixel_step_nm=100/451,
+                pixel_step_db=30/324,channels=data,
+                scope='Colored stroke extent plus half a vertical pixel, averaged over the two bracketing plot columns. This describes figure reading only, without historical solver uncertainty or horizontal subpixel curvature.')
 
 def audit(path):
     import tidy3d as td
@@ -53,6 +83,7 @@ def audit(path):
     bounds=sim.grid.boundaries
     return dict(scope='Offline grid and central material readout using the installed Tidy3D version and the inputs from the pinned notebook. This reconstruction is not a measured copy of the historical cloud solver grid or complex fields.',
                 notebook_sha256=TIDY_SHA,tidy3d=version('tidy3d'),solver_jobs_submitted=0,
+                central_plot_readout=central_plot_readout(path),
                 shape=list(sim.grid.num_cells),symmetry=sim.symmetry,source_aperture_yz_um=aperture[1:],
                 nominal_input_through_drop_plane_x_um=[-r,r,-r],central_wavelength_um=wavelength,
                 silicon_n=float(np.sqrt(si.eps_model(freq0)).real),oxide_n=float(np.sqrt(oxide.eps_model(freq0)).real),

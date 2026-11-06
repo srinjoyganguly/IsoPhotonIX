@@ -122,5 +122,18 @@
     "timing_evidence": "Step timing accumulated in process memory and no device-stage receipt was emitted. The progress log shows completed samples, without timestamps on those lines."
   },
   "local_attempt_log_sha256": "0a03de05ea64225b2f2276427c36effba4f17ec202f695899b44b618a55e9073",
-  "remediation": "Later cohorts retain six-face CPML and native staggered xy interpolation, specialize the lossless constitutive update after independent dense-vs-specialized validation, reduce dispatch length and replace optional CUPTI tracing with CUDA elapsed-event timing."
+  "remediation": "Later cohorts retain six-face CPML and native staggered xy interpolation, specialize the lossless constitutive update after independent dense-vs-specialized validation, reduce dispatch length and replace optional CUPTI tracing with CUDA elapsed-event timing.",
+  "subsequent_traced_recovery_attempt": {
+    "stage": "straight reference only",
+    "recovery_source": "Lossless xy worker before optional CUPTI was removed.",
+    "termination": "Stopped intentionally during reference after related traced workers had reported CUDA errors. The later event-only cohort recalculated the reference afresh.",
+    "flushed_reference_samples": 496,
+    "fdtd_steps_per_sample": 5,
+    "completed_fdtd_steps_lower_bound": 2480,
+    "synchronized_step_seconds": null,
+    "cuda_event_elapsed_seconds": null,
+    "kernel_active_seconds": null,
+    "local_log_sha256": "864b02b0ba54e334a263b00f5f984e889f8df8f1da924c632f2cb8fef6e5a62b",
+    "outcome": "No successful stage receipt or device measurement from this interrupted invocation."
+  }
 }

@@ -8,13 +8,14 @@ import subprocess
 import shutil
 import sys
 import tempfile
+import time
 
 
 def gpu_lock_path():
     """Use one private per-user lock for calibrated GPU programs and notebooks."""
     override=os.environ.get('PHOTONICS_GPU_LOCK')
     if override:
-        return Path(override).expanduser()
+        return Path(override).expanduser().resolve()
     import stat
     uid=os.getuid()
     fallback=Path(tempfile.gettempdir())/f'photonics-workbench-{uid}'
@@ -192,6 +193,8 @@ def run(root, output, checkpoint=None):
             else:
                 raise ValueError('No checkpoint format is defined for this worker.')
         command=[solver,'-m',manifest['worker'],*arguments,'--output',str(work)]
+        launch_time=time.perf_counter()
+        controller_wait=None
         if config['device']=='gpu':
             import fcntl
             lock_path=gpu_lock_path()
@@ -202,10 +205,13 @@ def run(root, output, checkpoint=None):
                 process=subprocess.run(command,cwd=root/'source',env=env)
             else:
                 with lock_path.open('a') as guard:
+                    before_lock=time.perf_counter()
                     fcntl.flock(guard,fcntl.LOCK_EX)
+                    controller_wait=time.perf_counter()-before_lock
                     process=subprocess.run(command,cwd=root/'source',env=env)
         else:
             process=subprocess.run(command,cwd=root/'source',env=env)
+        launch_elapsed=time.perf_counter()-launch_time
         # The shared checkpoint may already contain another completed report.
         # On rejection leave that cache intact and do not publish it as this job.
         if process.returncode and work!=staged:
@@ -217,6 +223,11 @@ def run(root, output, checkpoint=None):
             staged.rename(output)
         process.check_returncode()
     report=json.loads((output/'report.json').read_text())
+    invocation={'requested_device':config['device'],'process_and_lock_wall_seconds':launch_elapsed,
+                'controller_gpu_wait_seconds':controller_wait,
+                'native_process_wall_seconds':launch_elapsed-(controller_wait or 0.),
+                'scope':'The native process includes setup, stepping and output. Workers that acquire the GPU internally include that wait in their process wall time.'}
+    (output/'invocation-timing.json').write_text(json.dumps(invocation,indent=2)+'\n')
     if not (output/'arrays.npz').is_file():
         raise ValueError('No numerical arrays were produced.')
     if config['solver']=='fdtdx':

@@ -78,6 +78,20 @@ def publish(paths,destination):
         shutil.copyfile(folder/'arrays.npz',destination/array_name)
         save_record(destination/(stem+'.json'),report)
     if compared is not None:
+        # Keep all consecutive meshes as the main qualification. A supplementary
+        # series fixes the fractional position of the physical top Si wall on
+        # the z lattice while changing mesh spacing (e.g. 16→24 or 20→28).
+        groups={}
+        for folder in paths:
+            plan=json.loads((folder/'run.json').read_text())
+            offset=round((plan['model']['height']*plan['resolution']/2)%1,10)
+            groups.setdefault(offset,[]).append(folder)
+        compared['fixed_vertical_registration']=[]
+        for offset,folders in groups.items():
+            if len(folders)>=2:
+                pair=qualify(folders)
+                compared['fixed_vertical_registration'].append({'positive_wall_offset_cells':offset,
+                    'measurements':pair['measurements']})
         save_record(destination/f'v014-{case}-polygon-phase.json',compared)
 
 

@@ -11,7 +11,7 @@ import { CalibrationMeasurement, Spectrum, type Series } from './CalibrationMeas
 import './calibratedComponents.css';
 
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
-  limits: string; phase_check?:PhaseCheck; phase_studies?:SpatialPhaseStudy[]; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
+  limits: string; phase_check?:PhaseCheck;phase_checks?:PhaseCheck[]; phase_studies?:SpatialPhaseStudy[]; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
 type Preset = { case: string; name: string; scope: string; routes: string[]; grating_meshes?: Record<string,Record<string,Record<string,number[]>>>; evidence?: Evidence };
 type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
@@ -159,7 +159,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
         <p>{evidence.limits}</p>{evidence.phase_studies && <SpatialPhase key={key} studies={evidence.phase_studies}/>}
-        {evidence.phase_check && <PhaseSensitivity check={evidence.phase_check}/>}</section>}
+        {evidence.phase_check && <PhaseSensitivity key={key} checks={evidence.phase_checks?.length ? evidence.phase_checks : [evidence.phase_check]}/>}</section>}
       {selected.routes.includes('fdtdx:gpu') && <GpuPerformance key={key} preset={key}/>}
       <section><h3>Run locally</h3>
         {editableLayout && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}

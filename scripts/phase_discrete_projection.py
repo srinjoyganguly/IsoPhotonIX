@@ -1,5 +1,7 @@
 """Reproject measured native E/H with modes of the discrete propagation stencil."""
 import argparse
+import hashlib
+import importlib.metadata as metadata
 import json
 from pathlib import Path
 
@@ -25,6 +27,9 @@ def projection_bases(eps,f,dx,dt,model):
 
 
 def ribbon(folder):
+    import jax
+    if jax.default_backend()!='cpu':
+        raise RuntimeError('Select the CPU runtime for the independent transverse mode projections.')
     plan,report,column,_,hashes=native_column(folder)
     m,r=plan['model'],plan['resolution']
     if plan['material_model']!='polygon-area':
@@ -76,6 +81,8 @@ if __name__=='__main__':
     p.add_argument('directories',nargs='+',type=Path);p.add_argument('--output',required=True,type=Path)
     args=p.parse_args()
     result={'method':'First reconstruct the original port amplitudes from the stored full E/H planes. Evaluate transverse eigenprofiles at the temporal Yee symbol and collocate each with the discrete longitudinal propagation angle and original physical temporal angle. Normalize to the independently measured straight run. No phase alignment or fitted correction is used.',
+            'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            'transverse_versions':{p:metadata.version(p) for p in ('fdtdx','jax','numpy','tidy3d')},
             'scope':'Diagnostic reprojection of the same 3D GPU measurements; it does not change the native solver or production S matrix.',
             'samples':[ribbon(directory) for directory in args.directories]}
     args.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
