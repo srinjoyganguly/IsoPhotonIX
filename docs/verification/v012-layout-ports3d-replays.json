@@ -1,7 +1,7 @@
 {
   "passed": true,
   "case": "layout-ports-3d",
-  "verified_at": "2026-11-06T05:10:46.098276+00:00",
+  "verified_at": "2026-11-06T05:13:23.674097+00:00",
   "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
   "actual_device": "cuda:0",
   "export_sha256": "f1f2c8ecfb9b52a32bc4096d2a8c593d6fd0ddf0b3499db030435f96b35a0225",
@@ -23,6 +23,7 @@
       },
       "fresh_arrays_sha256": "5aa95ec8a38fd7f65236e0032c73e253f585b87936b5f74f9aa79e6d15d7f25f",
       "array_differences_within_tolerance": 0,
+      "max_absolute_difference_by_changed_array": {},
       "executed_program_sha256": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9"
     },
     "notebook": {
@@ -39,6 +40,9 @@
       },
       "fresh_arrays_sha256": "acdea791304f81aa2e859328f1122f4828a9267747bcafa9d67a9eb445860d7b",
       "array_differences_within_tolerance": 1,
+      "max_absolute_difference_by_changed_array": {
+        "arrays.npz:port0-reference_energy": 3.0517578125e-05
+      },
       "executed_program_sha256": "3c20f5f688a72c63a46bfa1aa9e39b7763a72eda9ff0590a7cca5e7c83746b1d"
     }
   }

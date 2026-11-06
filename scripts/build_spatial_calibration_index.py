@@ -41,6 +41,7 @@ def spatial_index():
             'These finite apertures collect the fundamental guided mode. Each new layout has its own convergence requirements.'),
     }
     best_ring, best_grating = {}, {}
+    ring_order = {}
     for path in sorted(BASE.glob('v012-*.json')):
         if path.name == 'v012-calibrated-index.json':
             continue
@@ -71,6 +72,10 @@ def spatial_index():
                        f"{model['pml']} PML cells · {model['aperture_um']:g} µm port")
                 measurement=f"{data['valid_bins']} of {data['total_bins']} samples passed the observation-window checks."
                 nominal=path.name.endswith(f"-t{int(data['duration_um_c'])}.json")
+                # The first record opens in the GUI. Start with the qualified default
+                # geometry and mesh; keep the shortened time-window diagnostics accessible.
+                ring_order[path.name]=(not data['passed'], not nominal, vendor != 'lumerical',
+                                       mesh != 16, -mesh, -data['duration_um_c'])
                 key=(data['passed'], mesh, data['duration_um_c'], nominal)
                 if data.get('measured_drop_fsr_nm') is not None and (vendor not in best_ring or key>best_ring[vendor][0]):
                     best_ring[vendor]=(key,data)
@@ -109,6 +114,7 @@ def spatial_index():
             if field is not None:
                 view['field']=field
         index[case]['recorded'].append(view)
+    index['ring-3d']['recorded'].sort(key=lambda record: ring_order[record['receipt']])
     for brand,url in RING_URLS.items():
         result = best_ring.get(brand.lower())
         if result:
