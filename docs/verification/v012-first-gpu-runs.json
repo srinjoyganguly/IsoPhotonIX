@@ -1,0 +1,63 @@
+{
+  "phase": "First full-vector native GPU runs. Mesh and observation-time controls are tracked separately.",
+  "checked_at": "2026-11-06T02:48:25.619314+00:00",
+  "cases": [
+    {
+      "case_id": "loaded-ring-3d",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "actual_device": "cuda:0",
+      "passed": false,
+      "duration_um_c": 160.0,
+      "measured_drop_fsr_nm": null,
+      "published_drop_fsr_nm": 25.454899999999945,
+      "valid_bins": 27,
+      "total_bins": 241,
+      "report_sha256": "19e7d4344feb54146721df701314ab99945b4aca7fad7222dd2f09b4950d3e79",
+      "raw_sha256": "3a42720f608ad318e87245bbfcf96de01f1212587542dd4298473444c53f47a2"
+    },
+    {
+      "case_id": "loaded-ring-3d",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "actual_device": "cuda:0",
+      "passed": false,
+      "duration_um_c": 1600.0,
+      "measured_drop_fsr_nm": 26.00000000000002,
+      "published_drop_fsr_nm": 25.454899999999945,
+      "valid_bins": 233,
+      "total_bins": 241,
+      "report_sha256": "356dbc0fafedef80b2298d062485cde8d01bfbf96cd572ecd99aab19d7c5848c",
+      "raw_sha256": "412ad59b71043d9e492a98279727cd1645753e56f534b167ab3ba55ef5732e46"
+    },
+    {
+      "case_id": "finite-grating-3d",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "actual_device": "cuda:0",
+      "passed": true,
+      "report_sha256": "8af21e0fff4d36acbe24fc10e1963562a884e36c083cbf5b4245aaf973c7ce75",
+      "raw_sha256": "7a6e4bd77904ff5f100e31524a7bb932d97a4023741c009fbad5c4f1a12f175d",
+      "result": {
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "beam_to_guide": [
+          0.12643750584752217,
+          0.1600814372504964,
+          0.1827581644873137,
+          0.21889440423635545,
+          0.20578444171764734
+        ],
+        "valid_beam_bins": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    }
+  ]
+}

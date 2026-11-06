@@ -40,11 +40,11 @@ The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coup
 
 | Work item | Status | Evidence required for completion |
 | --- | --- | --- |
-| Bus-loaded ring in 3D | Implementing on FDTDX NVIDIA | Separate straight-input calibration, finite-height ring and both bus guides, through/drop spectra, observation-time sensitivity and comparison with the published Lumerical and Tidy3D loaded spectra. |
-| Finite-width grating in 3D | Implementing on FDTDX NVIDIA | Separate incident calibration, finite transverse geometry, measured radiation or Gaussian-mode coupling, mesh or width sensitivity, and each vendor's detector definition. |
+| Bus-loaded ring in 3D | First Lumerical-geometry CUDA run at 16 cells/µm measures 26.0 nm FSR against 25.455 nm published. Longer-window and mesh controls are in progress. | Separate straight-input calibration, finite-height ring and both bus guides, through/drop spectra, observation-time sensitivity and comparison with the published Lumerical and Tidy3D loaded spectra. |
+| Finite-width grating in 3D | Compact CUDA pilot measured 18.28% at 1550 nm on the 3 µm-wide device. The full vendor geometry is a separate test. | Separate incident calibration, finite transverse geometry, measured radiation or Gaussian-mode coupling, mesh or width sensitivity, and each vendor's detector definition. |
 | Additional mode and port placement | Implementing a planar TM joint on Meep CPU | Independent transverse-magnetic mode matching, native excitation from both sides, and explicit reference-plane checks. |
 
-The WSL worker executed JAX on the RTX 3080 Ti Laptop GPU. Device availability and numerical acceptance of each electromagnetic study are recorded separately. [Device check](verification/v012-cuda-probe.json).
+The WSL worker executed JAX on the RTX 3080 Ti Laptop GPU. Device availability and numerical acceptance of each electromagnetic study are recorded separately. [Device check](verification/v012-cuda-probe.json) · [First GPU measurements](verification/v012-first-gpu-runs.json).
 
 ## Remaining calibration work
 
