@@ -40,6 +40,8 @@ def build():
             for mesh in (16,12):
                 refs.append((f'FDTDX {label} · aligned grid · {mesh} cells/µm',f'v011-fdtdx-yee-{key}-{device}{mesh}.json'))
             refs.append((f'FDTDX {label} · original grid',f'v011-fdtdx-{key}-{device}.json'))
+        if key=='splitter':
+            refs.insert(0,('FDTDX NVIDIA · polygon area · 16 cells/µm','v014-splitter-polygon-matrix-gui16.json'))
         if key=='coupler':
             summary='Each input illuminates a separate access guide. Select an input and a wavelength to inspect every output, including reflection.'
             comparisons=[vendor('Lumerical','https://optics.ansys.com/hc/en-us/articles/360042304694-Evanescent-waveguide-couplers',

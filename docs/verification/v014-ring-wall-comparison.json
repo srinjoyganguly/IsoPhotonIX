@@ -475,6 +475,248 @@
         "reference": "1c0fbfdcc2d03036430dc4d20721df36d065b68bc4ad9e0ececfa891a8a633da",
         "device": "4d3773a6217650f70df97fc8e7a82c4c0c0194d24f65b303025781a19d6f0584"
       }
+    },
+    {
+      "vendor": "tidy3d",
+      "mesh_cells_per_um": 16,
+      "edge_gap_nm": 100.0,
+      "cells_across_gap": 1.6,
+      "scalar_report": "v013-ring3d-tidy3d-r16-t4800-exact-area.json",
+      "scalar_arrays_sha256": "a4b3df34ed864bec5ee5866cb0c5b48ace574d5d58f2080c653989531a95780c",
+      "tensor_report": "v014-ring3d-tidy3d-r16-t4800-wall-tensor.json",
+      "tensor_report_sha256": "cb060e77d9e43ab55bf3209154ae6a363693e68297283bfcbabd7690f377662f",
+      "tensor_arrays_sha256": "4c4ddf9bab4dc4be22671f927209efa1061c1d25d96d7d196b74b84362049fe0",
+      "source": {
+        "kind": "published full-band figure digitization",
+        "notebook_sha256": "b1dac0b3a47518cc5461c5457511748f5435eaea53703d9fdff1236adbd24908",
+        "plot_sha256": "a9fc0b553c3e597bc4726063db06fb62d49523da06f0fe46b5c17d7ae1d56878",
+        "horizontal_pixel_nm": 0.22172949002217296,
+        "vertical_pixel_db": 0.09259259259259259,
+        "maximum_half_trace_range_db": 12.87037037037037,
+        "scope": "A steep line can cover many y pixels within one column. Readout varies across the plotted linewidth."
+      },
+      "versions": {
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "fdtdx": "0.6.2",
+        "scipy": "1.17.1",
+        "numpy": "2.4.6",
+        "tidy3d": "2.11.2"
+      },
+      "launch_mode_neff_at_1550": [
+        2.318988800048828,
+        2.302215576171875
+      ],
+      "central_drop_pair_um": [
+        [
+          1.533,
+          1.5505
+        ],
+        [
+          1.5390000000000001,
+          1.5565
+        ]
+      ],
+      "fsr_nm": [
+        17.50000000000007,
+        17.49999999999985
+      ],
+      "published_fsr_nm": 17.740000000000087,
+      "all_wavelengths_passed_native_controls": true,
+      "power_agreement": {
+        "through": {
+          "paired_samples": 201,
+          "old_exact_area_mae": 0.16373938982047698,
+          "wall_tensor_mae": 0.15993820030487418,
+          "at_1550": {
+            "scalar": 0.28839371115982937,
+            "tensor": 0.9927515495744735,
+            "published": 0.9893965015048625
+          }
+        },
+        "drop": {
+          "paired_samples": 201,
+          "old_exact_area_mae": 0.13786440116665485,
+          "wall_tensor_mae": 0.12534743999018252,
+          "at_1550": {
+            "scalar": 0.6939047561780669,
+            "tensor": 0.00692268281056755,
+            "published": 0.021588430572647196
+          }
+        }
+      },
+      "peak_comparisons": [
+        {
+          "published_nominal_peak_um": 1.51242,
+          "read_peak_um": 1.5124168514412417,
+          "read_peak_power": 0.734075518832883,
+          "loaded_q_half_max": null,
+          "fwhm_nm": 0.8529101740919476,
+          "largest_sample_interval_nm": 0.22172949002219333,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.505,
+          "nearest_wavelength_difference_nm": -7.416851441241823,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.52927,
+          "read_peak_um": 1.529490022172949,
+          "read_peak_power": 0.6323039952336929,
+          "loaded_q_half_max": 1346.8529225603131,
+          "fwhm_nm": 1.1356028535509655,
+          "largest_sample_interval_nm": 0.22172949002219333,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.522,
+          "nearest_wavelength_difference_nm": -7.490022172949029,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.54701,
+          "read_peak_um": 1.5467849223946786,
+          "read_peak_power": 0.7994250960446708,
+          "loaded_q_half_max": 1440.6424917136612,
+          "fwhm_nm": 1.0736771484192165,
+          "largest_sample_interval_nm": 0.22172949002219333,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.5390000000000001,
+          "nearest_wavelength_difference_nm": -7.7849223946784285,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.56475,
+          "read_peak_um": 1.5645232815964523,
+          "read_peak_power": 0.8079926448382959,
+          "loaded_q_half_max": 1264.6385273235003,
+          "fwhm_nm": 1.2371308067828934,
+          "largest_sample_interval_nm": 0.22172949002219333,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.5565,
+          "nearest_wavelength_difference_nm": -8.02328159645227,
+          "local_qualified_loaded_q": null
+        },
+        {
+          "published_nominal_peak_um": 1.58293,
+          "read_peak_um": 1.5827050997782706,
+          "read_peak_power": 0.8613609622059075,
+          "loaded_q_half_max": 1131.2282522726496,
+          "fwhm_nm": 1.3991032283702243,
+          "largest_sample_interval_nm": 0.22172949002219333,
+          "number_of_peaks_above_half_height": 1,
+          "nearest_local_peak_um": 1.5745,
+          "nearest_wavelength_difference_nm": -8.205099778270553,
+          "local_qualified_loaded_q": null
+        }
+      ],
+      "channels_at_workbench_planes": {
+        "reflection": {
+          "power_min": 1.53834925492333e-10,
+          "power_max": 0.2204249426976884,
+          "p80_window_delta_abs_s_max": 0.009523879261041571,
+          "defined_phase_bins_above_1pct_power": 12,
+          "qualified_bins": 201
+        },
+        "through": {
+          "power_min": 0.0099649765508205,
+          "power_max": 0.9979443794861914,
+          "p80_window_delta_abs_s_max": 0.02023827932693299,
+          "defined_phase_bins_above_1pct_power": 200,
+          "qualified_bins": 201
+        },
+        "drop": {
+          "power_min": 0.0035718780774095247,
+          "power_max": 0.8704565554066145,
+          "p80_window_delta_abs_s_max": 0.021606040841104623,
+          "defined_phase_bins_above_1pct_power": 128,
+          "qualified_bins": 201
+        },
+        "add_side": {
+          "power_min": 4.533348345486682e-09,
+          "power_max": 0.2194126196211218,
+          "p80_window_delta_abs_s_max": 0.009430232824073147,
+          "defined_phase_bins_above_1pct_power": 12,
+          "qualified_bins": 201
+        }
+      },
+      "reflection_background_check_at_1550": {
+        "wavelength_um": 1.55,
+        "qualified": true,
+        "straight_background_abs_s": 0.0005212359878731329,
+        "device_before_subtraction_abs_s": 0.0011753153433776645,
+        "background_subtracted_abs_s": 0.0006875234240976466,
+        "late_window_abs_s_change": 0.0006257107223750412,
+        "change_relative_to_final_amplitude": 0.9100936789117655
+      },
+      "matched_scalar_tensor_planes": {
+        "vendor": "tidy3d",
+        "first": "v013-ring3d-tidy3d-r16-t4800-exact-area.json",
+        "second": "v014-ring3d-tidy3d-r16-t4800-wall-tensor.json",
+        "jointly_qualified_wavelengths": 241,
+        "first_resolution": 16,
+        "second_resolution": 16,
+        "first_duration_um_c": 4800.0,
+        "second_duration_um_c": 4800.0,
+        "first_fsr_nm": 17.50000000000007,
+        "second_fsr_nm": 17.49999999999985,
+        "fsr_change_nm": -2.2026824808563106e-13,
+        "nominal_plane_distance_from_center_um": 5.76,
+        "first_snapped_plane_um": 5.75,
+        "second_snapped_plane_um": 5.75,
+        "port_differences": {
+          "reflection": {
+            "max_power_difference": 0.22042150951535477,
+            "mean_absolute_power_difference": 0.0060380032515408785,
+            "max_complex_amplitude_difference": 0.4676446896523373,
+            "phase_bins_with_both_powers_above_0_01": 0,
+            "max_wrapped_phase_difference_rad": null
+          },
+          "through": {
+            "max_power_difference": 0.9904266223983073,
+            "mean_absolute_power_difference": 0.17642275775364205,
+            "max_complex_amplitude_difference": 1.3001473613466934,
+            "phase_bins_with_both_powers_above_0_01": 237,
+            "max_wrapped_phase_difference_rad": 2.248706513311856
+          },
+          "drop": {
+            "max_power_difference": 0.9646018071436299,
+            "mean_absolute_power_difference": 0.15918383408878686,
+            "max_complex_amplitude_difference": 1.1020550892424226,
+            "phase_bins_with_both_powers_above_0_01": 136,
+            "max_wrapped_phase_difference_rad": 3.1075281528083507
+          },
+          "add_side": {
+            "max_power_difference": 0.2194119281725869,
+            "mean_absolute_power_difference": 0.006040961236920606,
+            "max_complex_amplitude_difference": 0.4691941240049044,
+            "phase_bins_with_both_powers_above_0_01": 0,
+            "max_wrapped_phase_difference_rad": null
+          }
+        },
+        "straight_phase_controls": {
+          "first": {
+            "reference_separation_um": 11.5,
+            "straight_group_index_at_1550nm": 4.3592718264161086,
+            "straight_group_delay_ring_spacing_estimate_nm": 17.542826692348598,
+            "max_wrapped_continuous_mode_phase_error_rad": 1.8070530948811863,
+            "max_wrapped_discrete_mode_phase_error_rad": 0.0857994103022408,
+            "at_1550nm_continuous_error_rad": 1.4404344510812066,
+            "at_1550nm_discrete_error_rad": -0.07929857989165191
+          },
+          "second": {
+            "reference_separation_um": 11.5,
+            "straight_group_index_at_1550nm": 4.347896184954256,
+            "straight_group_delay_ring_spacing_estimate_nm": 17.58872496088825,
+            "max_wrapped_continuous_mode_phase_error_rad": 1.7652022620214827,
+            "max_wrapped_discrete_mode_phase_error_rad": 0.08617761350161096,
+            "at_1550nm_continuous_error_rad": 1.405076488331043,
+            "at_1550nm_discrete_error_rad": -0.07962417302696212
+          }
+        },
+        "phase_correction": "Known distance to common physical planes. The lower bus uses its measured complex straight transmission with phase branch anchored to discrete modal propagation. The unexcited upper bus uses its own discrete modal propagation estimate. No fitted phase or wavelength registration."
+      },
+      "stage_calculation_signatures": {
+        "reference": "cc1b8dff29d35b6e1d96550204500d773f165d506d752a6ccbaa570de5101bc7",
+        "device": "967788419039ce97b313614654ec198f5d2ae9d97fb7c4e9025d60d405e63382"
+      }
     }
   ]
 }

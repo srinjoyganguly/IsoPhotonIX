@@ -1,0 +1,119 @@
+{
+  "sdk_version": "2.11.2",
+  "scope": "Finite-aperture squared normalized vector overlaps with the SDK analytic Gaussian on the actual recorded air plane. Independent global amplitude and phase cancel. This isolates incident profile shape; it does not bound coupled power.",
+  "definition": "abs(sum(conj(analytic)*measured))\u00b2/(sum(abs(analytic)\u00b2)*sum(abs(measured)\u00b2)), separately for E and H.",
+  "source": "https://docs.flexcompute.com/projects/tidy3d/en/v2.12.0/api/analytic_beams.html",
+  "examples": [
+    {
+      "mesh": 12,
+      "domain": "full",
+      "arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c",
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "sample_z_um": 0.9283333333333341,
+      "vector_shape_overlap": {
+        "E": [
+          0.9953121489683336,
+          0.9951496031776105,
+          0.9950030944777358,
+          0.9948983236915194,
+          0.9948349168185419
+        ],
+        "H": [
+          0.9961680626277968,
+          0.9960977552873709,
+          0.9960476579531737,
+          0.9959947479241847,
+          0.9959193719097739
+        ]
+      },
+      "analytic_native_aperture_to_nominal_square_power": [
+        0.9809273906732311,
+        0.9809270747870303,
+        0.9809267536656788,
+        0.9809264273085573,
+        0.9809260957149285
+      ],
+      "nominal_square_width_um": 21.6
+    },
+    {
+      "mesh": 14,
+      "domain": "full",
+      "arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "sample_z_um": 0.9342857142857146,
+      "vector_shape_overlap": {
+        "E": [
+          0.9954589087995719,
+          0.9952972483807815,
+          0.9951383506773228,
+          0.995015706488445,
+          0.9949389341821248
+        ],
+        "H": [
+          0.9962850647760136,
+          0.9962038548586574,
+          0.9961466031330867,
+          0.9960944212363173,
+          0.996026783737051
+        ]
+      },
+      "analytic_native_aperture_to_nominal_square_power": [
+        0.9813689120602388,
+        0.9813686009951446,
+        0.9813682847745093,
+        0.9813679633975604,
+        0.9813676368637421
+      ],
+      "nominal_square_width_um": 21.6
+    },
+    {
+      "mesh": 12,
+      "domain": "mirror-y",
+      "arrays_sha256": "80b4a4ae94b4af1102101f910e225ace4dffb6e2d0b680ec1e0cf5b5e75a2ef3",
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "sample_z_um": 0.9283333333333341,
+      "vector_shape_overlap": {
+        "E": [
+          0.9953120195806411,
+          0.9951494879814387,
+          0.9950029743939379,
+          0.9948981829729864,
+          0.994834757171268
+        ],
+        "H": [
+          0.9961679583944302,
+          0.9960976722257183,
+          0.9960475813091073,
+          0.995994657312037,
+          0.9959192605513553
+        ]
+      },
+      "analytic_native_aperture_to_nominal_square_power": [
+        0.9809273906732311,
+        0.9809270747870303,
+        0.9809267536656788,
+        0.9809264273085573,
+        0.9809260957149285
+      ],
+      "nominal_square_width_um": 21.6
+    }
+  ]
+}

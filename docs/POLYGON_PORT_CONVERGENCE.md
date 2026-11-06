@@ -1,5 +1,7 @@
 # Finite-height coupler and splitter ports
 
+The workbench exposes the measured polygon-area sampling control on the NVIDIA route. The existing electric-field-aligned and original material grids remain available on the calibrated FDTDX CPU route.
+
 The test devices have 500 × 250 nm silicon rails in oxide. Each source launches from a physical lead. The independently recorded straight reference uses the same source and receiver planes. The published matrices retain the electric-field port convention and the physical propagation phase.
 
 ## Material and propagation controls
@@ -7,6 +9,11 @@ The test devices have 500 × 250 nm silicon rails in oxide. Each source launches
 The opt-in FDTDX material model `polygon-area` integrates the signed area under each original polygon edge over each staggered Yee dual cell, including the concave Y junction. It combines this area with the exact 250 nm vertical extent. The diagonal lateral material uses arithmetic averaging tangent to a sidewall, harmonic averaging normal to it, and the local coverage-gradient direction. Ex and Ey then combine horizontal layers arithmetically and Ez combines them harmonically. This is a diagonal interface approximation. A curved oblique wall can also have an off-diagonal permittivity. The legacy and `yee-aligned` models remain available for reproducing their published runs. [Implementation and formulas](../scripts/phase_polygon_material.py)
 
 At 1550 nm and 16 cells/µm the transverse mode gives n_eff = 2.538205, while the independent time-stepped straight reference accumulates phase consistent with n_eff = 2.580392. Using the transverse mode directly misses 1.625 rad over 9.5 µm. The Cartesian Yee update's sine factors provide an independent test. For physical frequency f in cycles/µm, we solve the transverse section at f_eff = f sinc(f c Δt). The propagation angle per cell is 2 asin(π f_eff n_eff(f_eff) Δx). Across the three r16 wavelengths this predicts the measured straight phase to within 0.00030 rad. At r20 the corresponding central indices are 2.577520 transverse and 2.605398 propagated. The finite-stencil and transverse grid errors both affect physical phase. The independent 80-cell/µm MPB guide obtains 2.548773, versus 2.537127 at 32 cells/µm. At r16 the lower native transverse index partially offsets the positive longitudinal discretization shift. At r20 the native transverse index itself exceeds the 80-cell control. This explains why increasing the mesh from 16 to 20 can move a particular phase farther from an independent answer. The test uses the archived complex straight transfer and an independent local 2D eigenmode solve. [Propagation measurements](verification/v014-polygon-lead-dispersion.json) · [Schneider, numerical dispersion in the Yee grid](https://eecs.wsu.edu/~schneidj/ufdtd/chap7.pdf) · [Independent MPB transverse modes](verification/v011-multiport-mpb.json)
+
+
+We repeated the transverse solve for six predeclared grid origins: two lateral positions (0 and 0.5 cell) and three vertical positions (0, 0.25 and 0.5 cell). Physical dimensions and indices stay fixed. The r16 index spans 2.53129–2.59174, and r20 spans 2.53814–2.57752. A half-cell vertical shift raises the r16 index by 0.05353 but lowers the r20 index by 0.03478. Extending every aperture edge by another 250 nm changes the translated result by less than 0.0000003 on these meshes. These are independent 2D checks, with each offset retained; the production device has its original coordinates. Interface treatment and refining the physical walls are needed as well as increasing nominal resolution. [All six grid registrations](verification/v014-polygon-lead-dispersion.json)
+
+As a separate 2D study, local Tidy3D 2.11.2 used a grid registered to the physical core interfaces, double precision, and the open local mode solver with local subpixel averaging disabled. At 64/96/128/160 cells/µm it obtained 2.615591, 2.594225, 2.583478 and 2.577012. Independent MPB 1.12.0 obtained 2.549464, 2.550151 and 2.550468 at 96/128/160. The two raw 160-cell values differ by 1.04%. A linear-in-spacing estimate from the 96/128 Tidy3D pair predicts the held-out 160 result as 2.577030 (difference 0.000018). This trends toward the MPB sequence; neither extrapolated value is substituted for a measured 3D S coefficient. [Tidy3D transverse controls](verification/v014-polygon-tidy-lead.json) · [MPB transverse controls](verification/v014-polygon-mpb-lead.json)
 
 We also reprojected the original GPU E/H phasors with modal profiles evaluated at f_eff, using the discrete propagation angle and the physical time staggering for collocation. First we reproduced the original projected amplitudes from the same E/H arrays. At r16, the apparent straight-guide backwave decreases from a maximum of about 0.00108 in amplitude to 0.000028. The normalized first-column coefficients of the two devices change by at most 0.000026 after straight-reference subtraction. The smaller residual improves measurement of the straight return. Physical phase still accumulates along the simulated leads. The published native matrices and their mesh gates continue to use the directly acquired convention. [Reprojection on the same fields](verification/v014-polygon-discrete-projection.json)
 
@@ -19,6 +26,9 @@ At 16 cells/µm, each column used a 224 × 112 × 64 grid and 3,444 time steps p
 For the coupler's 16→20 pair, maximum physical changes are 1.009 rad at the other end of the incident rail and 1.053 rad on the opposite rail. The respective straight-relative changes are 0.051 and 0.107 rad, while power changes reach 4.68 and 4.51 percentage points. The incident-port return changes by 0.02225 in complex amplitude, and the adjacent input-side return changes by 0.00635. [All wavelengths and phase gates](verification/v014-coupler-polygon-phase.json)
 
 
+
+The independent full three-port GUI splitter run at r16 reproduces the separately acquired stem column exactly across all nine complex values. Its maximum |Sᵢⱼ−Sⱼᵢ| over all wavelengths and port pairs is 0.000803; the output-arm pair differs by 0.000000691. The largest measured singular value is 0.91577. These establish reciprocity and sampled passivity for the full r16 splitter. Mesh convergence still needs the independent refinements below. [Full three-port acquisition](verification/v014-splitter-polygon-matrix-gui16.json)
+
 ## Mesh and execution summary
 
 Each number below is a maximum across all three sampled wavelengths and the indicated output group. Forward means either right-hand rail. Return means the launch side of the circuit. Power changes are absolute percentage points.
@@ -26,9 +36,11 @@ Each number below is a maximum across all three sampled wavelengths and the indi
 | Component | Mesh pair (cells/µm) | Forward power | Physical phase | Straight-relative phase | Return power | Complex return amplitude |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Coupler | 16 → 20 | 4.677 | 1.053 rad | 0.107 rad | 0.0195 | 0.02225 |
+| Splitter | 16 → 20 | 0.463 | 1.024 rad | 0.057 rad | 0.1398 | 0.05388 |
 
 | Component | Cells/µm | Actual cells | Steps, straight / device | Synchronized seconds, straight / device | Acquisition |
 | --- | ---: | ---: | --- | --- | --- |
 | Coupler | 16 | 1,605,632 | 3,444 / 3,444 | 12.26 / 12.25 | [Receipt](verification/v014-coupler-polygon-cuda16.json) |
 | Coupler | 20 | 3,136,000 | 4,305 / 4,305 | 27.34 / 30.89 | [Receipt](verification/v014-coupler-polygon-cuda20.json) |
 | Splitter | 16 | 1,605,632 | 3,444 / 3,444 | 12.29 / 12.01 | [Receipt](verification/v014-splitter-polygon-cuda16.json) |
+| Splitter | 20 | 3,136,000 | 4,305 / 4,305 | 26.43 / 28.99 | [Receipt](verification/v014-splitter-polygon-cuda20.json) |

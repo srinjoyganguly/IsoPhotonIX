@@ -34,7 +34,11 @@ const { chromium } = require('playwright');
     for (const preset of ['ring-3d','grating-3d']) {
       await lab.getByRole('button',{name:catalog.find(c=>c.case===preset).name,exact:true}).click();
       await lab.getByText('Phase and weak reflections',{exact:true}).click();
-      assert((await lab.getByLabel('Comparison').locator('option').count())>0);
+      const comparison=lab.getByLabel('Comparison');
+      assert((await comparison.locator('option').count())>0);
+      const phaseLink=lab.getByRole('link',{name:'Download registered complex samples (CSV)'});
+      const phaseCsv=await (await page.request.get(origin+await phaseLink.getAttribute('href'))).text();
+      assert(phaseCsv.includes('phase_reportable,phase_rad,signed_phase_minus_vendor_rad'));
       await lab.getByText('GPU timing records',{exact:true}).click();
       const timings=await (await page.request.get(origin+'/api/calibrations/performance?case='+preset)).json();
       const row=timings.find(r=>r.synchronized_step_seconds!==null);

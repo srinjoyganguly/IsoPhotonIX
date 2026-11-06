@@ -150,7 +150,7 @@ def ring_measurement(path, project=None, allow_partial=False):
             fixed=(fs,fvalid,fstable)
         else:
             central,fixed=None,None
-        return {'central':central,'fixed':fixed,'native_passed':r['passed'],'case_key':{k:model.get(k) for k in
+        return {'central':central,'fixed':fixed,'native_passed':r['passed'],'duration':r['duration_um_c'],'case_key':{k:model.get(k) for k in
                     ('vendor','radius_um','width_um','height_um','edge_gap_um','bus_y_um','top_index','substrate_index','silicon_index','ring_material','ring_interface')},'vendor':r['vendor'],'r':model['resolution'],'w':w,'s':s*shift,'valid':a['valid_bins'],
                 'phase_ok':stable,'transient_abs':abs(s-early),'sha':r['arrays_sha256'],
                 'info':{'native_port_x_um':p.tolist(),'target_abs_x_um':target,'input_plus_output_lead_um':lengths.tolist(),
@@ -182,14 +182,14 @@ def tidy_grating(r,a):
     w = a['ref_wavelength_um']; incoming=a['ref_upper']
     z = r['stages']['reference']['sample_plane_z_um']
     xx,yy = a['ref_upper_x_um']-dx/2,a['ref_upper_y_um']-dx/2
-    fiber_z = .93
+    beam_plane_z = .93
     guide_x = -m['taper']-m['buffer']/2
     x_out = r['stages']['device']['output_plane_x_um']-dx/2
     es,et,cz,tx,ty,prop,_,_ = angular_components(incoming,dx,w,upward=False)
     # Downward propagating Ey at the same physical x, y, z on every mesh;
     # reject grazing waves as in the archived air-power decomposition.
-    ky_field = np.where(prop,(es*tx+et*ty)*np.exp(-2j*np.pi*cz*(fiber_z-z)/w[:,None,None]),0)
-    propagated = np.fft.ifft2(ky_field,axes=(-2,-1))
+    ey_spectrum = np.where(prop,(es*tx+et*ty)*np.exp(-2j*np.pi*cz*(beam_plane_z-z)/w[:,None,None]),0)
+    propagated = np.fft.ifft2(ey_spectrum,axes=(-2,-1))
     on_axis=[]
     for f in propagated:
         transverse = np.array([np.interp(0,yy,row) for row in f])
@@ -205,7 +205,7 @@ def tidy_grating(r,a):
     s=np.stack([reflected,guided],axis=1)
     np.testing.assert_allclose(abs(guided)**2,a['coupling'],rtol=2e-6)
     return {'case_key':grating_case_key(m),'vendor':'tidy3d','r':m['resolution'],'w':w,'s':s,'valid':a['valid'],'phase_ok':grating_phase_flags(a,s),
-            'sha':r['arrays_sha256'],'info':{'sample_z_um':z,'target_beam_z_um':fiber_z,'target_beam_x_um':m['beam_x'],
+            'sha':r['arrays_sha256'],'info':{'sample_z_um':z,'target_beam_z_um':beam_plane_z,'target_beam_x_um':m['beam_x'],
                 'guide_x_um':x_out,'target_guide_x_um':guide_x,
                 'phase_convention':'Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode.'}}
 
@@ -302,14 +302,18 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
         raise ValueError('Compare one physical vendor geometry per report.')
     result = {'component':component,'vendor':measurements[0]['vendor'],'amplitude_floor':S_FLOOR,
               'phase_increment_limit_rad':float(np.pi/2),'ring_80_to_100_percent_phase_limit_rad':.05,
-              'native_samples':[],'mesh_pairs':[],'vendor_absolute_phase_basis':'Matched fixed central ring profile and qualified samples' if project else None}
+              'native_samples':[],'mesh_pairs':[],'vendor_absolute_phase_basis':'Matched fixed central ring profile and qualified samples' if project else None,
+              'vendor_sfile_sha256':file_sha(vendor_file) if vendor_file else None,
+              'vendor_project_sha256':file_sha(vendor_project) if vendor_project else None}
     previous = None
-    for row in measurements:
+    for source,row in zip(paths,measurements):
         w,s = row['w'],row['s']
-        record = {'native_run_passed':bool(row.get('native_passed',True)),'qualified_wavelengths':int(row['valid'].sum()),
+        record = {'native_receipt':source.name,'native_run_passed':bool(row.get('native_passed',True)),'qualified_wavelengths':int(row['valid'].sum()),
                   'physical_model':row['case_key'],'total_wavelengths':len(w),'resolution':row['r'],'arrays_sha256':row['sha'],'planes':row['info'],'wavelength_um':w.tolist(),
                   'registered_complex_s_real':s.real.tolist(),'registered_complex_s_imag':s.imag.tolist(),
                   'valid_bins':row['valid'].tolist(),'phase_ok':row['phase_ok'].tolist()}
+        if 'duration' in row:
+            record['native_duration_um_c']=row['duration']
         if 'transient_abs' in row:
             record['early_to_final_complex_change_max_by_port']=row['transient_abs'].max(axis=0).tolist()
         if vendor_file:
@@ -336,7 +340,8 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
                     'fixed_minus_frequency_specific_phase_change_rad':distribution(np.angle(fs[:,j]*s[:,j].conj())[strong&row['phase_ok'][:,j]])}
             record['single_central_basis_band']={'vendor_expansion':'One central TE profile at all 500 frequencies, as described by Ansys.',
                  'native_method':'Time projections interpolated once at the saved central-mode wavelength; same weights then applied at every frequency. The actual vendor and local profiles have their measured overlap at that frequency.',
-                 'channels':diagnostics,'phase_qualified':both.tolist(),'registered_native_real':fs.real.tolist(),
+                 'channels':diagnostics,'native_valid_bins':(row['valid']&fvalid).tolist(),
+                 'native_phase_ok':fstable.tolist(),'phase_qualified':both.tolist(),'registered_native_real':fs.real.tolist(),
                  'registered_native_imag':fs.imag.tolist(),'signed_native_minus_vendor_phase_rad':[
                      [float(v) if resolved else None for v,resolved in zip(values,flags)] for values,flags in zip(delta,both)]}
             cw = modes[0]['wavelength_um']

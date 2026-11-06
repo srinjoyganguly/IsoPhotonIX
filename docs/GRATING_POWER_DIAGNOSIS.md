@@ -1,5 +1,7 @@
 # Where the curved-grating power difference comes from
 
+Further mesh runs, full-versus-mirror field checks, GPU timings and the filed commercial cell sizes are recorded in [finite-width grating mesh refinement](GRATING_ETCH_REFINEMENT.md).
+
 The Lumerical comparison uses a tilted polished fiber, a curved silicon grating and a strip-mode output. The Tidy3D example illuminates a different, straight grating and a 50 µm taper with an air-side Gaussian. Each comparison below uses its own source and observable. The baseline uses the original 12- and 14-cells/µm records. [Published Ansys project and S-parameter file](https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler) · [Published Tidy3D notebook](https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/) · [Baseline spectra](FINITE_GRATING_3D.md).
 
 ## Full-device measurements

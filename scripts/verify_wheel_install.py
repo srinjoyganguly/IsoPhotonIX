@@ -112,6 +112,8 @@ def main():
         assert any(row.get('synchronized_step_seconds') and row.get('cuda_event_elapsed_seconds') for row in stage_log)
         csv = get('/api/calibrations/performance.csv?case=ring-3d',raw=True)
         assert b'acquisition_id' in csv and b'synchronized_step_seconds' in csv
+        phase_csv=get('/api/calibrations/phase.csv?receipt=v014-ring-phase-wall.json',raw=True)
+        assert b'signed_phase_minus_vendor_rad' in phase_csv and b'single central mode' in phase_csv
         for case, options in [('ring-3d', {'ring_interface':'exact-area','ring_material':'palik-ade'}),
                               ('ring-3d', {'ring_interface':'wall-tensor'}),
                               ('grating-3d', {'grating_material_model':'direct-yee','grating_domain':'mirror-y'}),

@@ -8,7 +8,7 @@ from setuptools.command.build_py import build_py
 from setuptools.command.sdist import sdist
 
 ROOT = Path(__file__).resolve().parent
-MODULES = ('__init__ app benchmarks calibrated_geometry calibrations calibration_performance calibration_fields planar_port_layout calibration_replay capabilities compare3d component_library geometry_draft jobs '
+MODULES = ('__init__ app benchmarks calibrated_geometry calibrations calibration_phase calibration_performance calibration_fields planar_port_layout calibration_replay capabilities compare3d component_library geometry_draft jobs '
            'layout_examples layout_grid layout_study library_layout mode_benchmarks model passport ports ports3d ports_capabilities ports_probe probe '
            'reproduce reproduction_runtime runtime solver_environment source_snapshot sparameters spectra study3d taper_geometry '
            'taper_refinement taper_study taper_ports taper_port_geometry thin_film volume worker').split()
@@ -64,6 +64,13 @@ def runtime_files():
         if route['resolution'] >= 16:
             mirror='-mirror' if route['domain']=='mirror-y' else ''
             selected.add(f"docs/verification/v014-grating-memory-{route['geometry']}{mirror}-r{route['resolution']}.json")
+    spatial=json.loads((ROOT/'docs/verification/v012-calibrated-index.json').read_text())
+    for group in spatial.values():
+        for study in group.get('phase_studies',[]):
+            name=study['receipt']
+            if not re.fullmatch(r'v014-(?:ring|grating)-phase[-a-z0-9]*[.]json',name):
+                raise ValueError('Invalid phase report filename.')
+            selected.add('docs/verification/'+name)
     for case in ('coupler','splitter'):
         phase_file = f'docs/verification/v012-{case}-phase.json'
         if (ROOT / phase_file).is_file():

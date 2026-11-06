@@ -1,0 +1,177 @@
+{
+  "case": "splitter",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "launch": "left_center",
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "thresholds": {
+    "compare_every_frequency": true,
+    "min_phase_amplitude": 0.02,
+    "physical_phase_rad": 0.1,
+    "return_power_fraction": 0.001,
+    "return_complex_amplitude": 0.01
+  },
+  "meshes": [
+    {
+      "resolution": 16,
+      "native_sha256": {
+        "left_center-reference.npz": "869eb572c0e43be1af2236408e05c5b43581f5f46793f19dbff353c7cf7b1a0c",
+        "left_center-device.npz": "bb76852b5a6b23bdbbb0cbeae76e70463106ca5130b58bb036f425c966e54583",
+        "arrays.npz": "b7f46e0c1fd3fd5e49bac1c1fd5dab2d68b4a4e5ad0f7fdedeee51b6e51528ab"
+      },
+      "planes_um": [
+        [
+          "left_center",
+          -4.75,
+          0.0
+        ],
+        [
+          "right_lower",
+          4.75,
+          -1.25
+        ],
+        [
+          "right_upper",
+          4.75,
+          1.25
+        ]
+      ],
+      "straight_control_phase_rad": [
+        0.05523204581791376,
+        -1.1604770903014971,
+        -2.3784702788777414
+      ]
+    },
+    {
+      "resolution": 20,
+      "native_sha256": {
+        "left_center-reference.npz": "3f3fbd5be54539199afe899d5c80e97542ab70471d1431a98f9518848755e389",
+        "left_center-device.npz": "43e08463b6fd4f95058fc31adff2b7078effe734c8317d20d4424eae47ee15a2",
+        "arrays.npz": "97c933ac4c70ea916f55567a6188a63c06dda08367df4dd13382de773bc62033"
+      },
+      "planes_um": [
+        [
+          "left_center",
+          -4.75,
+          0.0
+        ],
+        [
+          "right_lower",
+          4.75,
+          -1.25
+        ],
+        [
+          "right_upper",
+          4.75,
+          1.25
+        ]
+      ],
+      "straight_control_phase_rad": [
+        1.0222294103665681,
+        -0.19751632096345575,
+        -1.432981476728119
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "lower_mesh": 16,
+      "higher_mesh": 20,
+      "ports": [
+        {
+          "port": "left_center",
+          "power_change_max": 0.0013984503240363991,
+          "absolute_complex_change_max": 0.053876890540268764,
+          "before_power": [
+            0.00562015345155893,
+            0.005516667521507358,
+            0.003811369175012626
+          ],
+          "after_power": [
+            0.006000706873739989,
+            0.004536628694058917,
+            0.005209819499049025
+          ],
+          "physical_phase_change_rad": [
+            0.7218004056330364,
+            0.69878455048885,
+            0.7398271362089287
+          ],
+          "phase_resolved_at_both_meshes": [
+            true,
+            true,
+            true
+          ],
+          "return_within_0_001_power_and_0_01_amplitude": false
+        },
+        {
+          "port": "right_lower",
+          "power_change_max": 0.0046295713469708955,
+          "absolute_complex_change_max": 0.6102297333351118,
+          "before_power": [
+            0.38618808912149505,
+            0.37798664238886465,
+            0.37215908724287067
+          ],
+          "after_power": [
+            0.38997130526215457,
+            0.38261621373583554,
+            0.3766457375053566
+          ],
+          "physical_phase_change_rad": [
+            1.0236723715556384,
+            1.0194692441771855,
+            0.9946852293487763
+          ],
+          "phase_resolved_at_both_meshes": [
+            true,
+            true,
+            true
+          ],
+          "straight_relative_phase_change_rad": [
+            0.05667500700698398,
+            0.056508474839144326,
+            0.04919642719915402
+          ],
+          "physical_phase_within_0_10_rad": false
+        },
+        {
+          "port": "right_upper",
+          "power_change_max": 0.004631511078957984,
+          "absolute_complex_change_max": 0.6102325038431934,
+          "before_power": [
+            0.38619098974413046,
+            0.3779806024940743,
+            0.37215687932597347
+          ],
+          "after_power": [
+            0.3899693693282359,
+            0.38261211357303226,
+            0.37664611055649505
+          ],
+          "physical_phase_change_rad": [
+            1.0236767929556279,
+            1.0194745994683332,
+            0.9946837661473462
+          ],
+          "phase_resolved_at_both_meshes": [
+            true,
+            true,
+            true
+          ],
+          "straight_relative_phase_change_rad": [
+            0.0566794284069735,
+            0.05651383013029163,
+            0.04919496399772393
+          ],
+          "physical_phase_within_0_10_rad": false
+        }
+      ]
+    }
+  ],
+  "scope": "One independently excited column per device. Agreement of successive meshes bounds observed sensitivity; it alone cannot establish continuum accuracy."
+}

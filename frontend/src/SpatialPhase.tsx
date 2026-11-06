@@ -34,6 +34,7 @@ export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
       <tbody>{Object.entries(s.band).map(([name,v])=><tr key={name}><th>{name}</th><td>{value(v.rms)}</td>
         <td>{value(v.max_abs)}</td><td>{v.count}</td></tr>)}</tbody></table></div>}</div>)}
     {study.vendor.toLowerCase()==='tidy3d' && <p>The published Tidy3D example supplies power. The phase changes above compare local GPU runs.</p>}
+    <p><a href={'/api/calibrations/phase.csv?receipt='+encodeURIComponent(study.receipt)}>Download registered complex samples (CSV)</a></p>
     <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+study.receipt}
        target="_blank" rel="noreferrer">Frequency samples, reference planes and qualification masks</a>
   </details>;

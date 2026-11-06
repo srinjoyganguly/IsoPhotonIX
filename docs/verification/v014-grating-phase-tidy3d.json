@@ -6,6 +6,7 @@
   "ring_80_to_100_percent_phase_limit_rad": 0.05,
   "native_samples": [
     {
+      "native_receipt": "v012-grating3d-tidy3d-r12.json",
       "native_run_passed": true,
       "qualified_wavelengths": 5,
       "physical_model": {
@@ -129,6 +130,7 @@
       "commercial_phase_data": "Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs."
     },
     {
+      "native_receipt": "v012-grating3d-tidy3d-r14.json",
       "native_run_passed": true,
       "qualified_wavelengths": 5,
       "physical_model": {
@@ -319,5 +321,7 @@
       }
     }
   ],
-  "vendor_absolute_phase_basis": null
+  "vendor_absolute_phase_basis": null,
+  "vendor_sfile_sha256": null,
+  "vendor_project_sha256": null
 }

@@ -66,7 +66,7 @@ def stage_rows(report, receipt):
         hardware = stage.get('cuda_identity',report.get('checkpoint_identity',{}).get('provenance',{}).get('hardware',{}))
         versions = stage.get('versions') or report.get('versions') or report.get('native_versions')
         rows.append(dict(receipt=receipt,case=case,geometry=settings.get('geometry') or report.get('vendor') or case,
-            stage=role,purpose='optical simulation',steps_lower_bound=None,origin=origin,acquisition_id=p.get('acquisition_id'),device_kind=p.get('device_kind',stage.get('device_name',report.get('device_name'))),
+            stage=role,purpose=report.get('timing_purpose','optical simulation'),steps_lower_bound=None,origin=origin,acquisition_id=p.get('acquisition_id'),device_kind=p.get('device_kind',stage.get('device_name',report.get('device_name'))),
             mesh_cells_per_um=resolution,grid_shape=shape,cells=math.prod(shape) if shape else None,
             pml_cells=p.get('pml_cells',stage.get('pml_cells',model.get('pml'))),steps=steps,
             dt_seconds=dt,simulated_time_fs=final_fs,compile_seconds=p.get('compile_seconds',stage.get('compile_seconds')),

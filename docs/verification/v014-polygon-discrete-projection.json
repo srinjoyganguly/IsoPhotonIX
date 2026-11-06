@@ -1,5 +1,12 @@
 {
   "method": "First reconstruct the original port amplitudes from the stored full E/H planes. Evaluate transverse eigenprofiles at the temporal Yee symbol and collocate each with the discrete longitudinal propagation angle and original physical temporal angle. Normalize to the independently measured straight run. No phase alignment or fitted correction is used.",
+  "source_sha256": "7de23c5fd466ea2f6e8c02c1ed2ae45130bcd5be1a0992abc2055edb1d251c32",
+  "transverse_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
   "scope": "Diagnostic reprojection of the same 3D GPU measurements; it does not change the native solver or production S matrix.",
   "samples": [
     {
@@ -436,6 +443,130 @@
             -2.5111136797614642e-05,
             -1.4249992065481395e-05,
             6.376737448186838e-05
+          ]
+        }
+      ]
+    },
+    {
+      "case": "splitter",
+      "resolution": 20,
+      "launch": "left_center",
+      "native_archive_sha256": {
+        "left_center-reference.npz": "3f3fbd5be54539199afe899d5c80e97542ab70471d1431a98f9518848755e389",
+        "left_center-device.npz": "43e08463b6fd4f95058fc31adff2b7078effe734c8317d20d4424eae47ee15a2",
+        "arrays.npz": "97c933ac4c70ea916f55567a6188a63c06dda08367df4dd13382de773bc62033"
+      },
+      "native_source_and_evolution": "Identical measured FDTDX CUDA phasors; only the diagnostic modal projection changes.",
+      "reference_reflected_amplitude": {
+        "original": [
+          0.00030874646354718196,
+          0.0003676500560723303,
+          0.0004497628780602972
+        ],
+        "discrete": [
+          2.050945919138459e-05,
+          1.5870622732291905e-07,
+          1.4266043676197911e-05
+        ]
+      },
+      "ports": [
+        {
+          "port": "left_center",
+          "original_power": [
+            0.006000706871938742,
+            0.00453662869382351,
+            0.005209819498732963
+          ],
+          "discrete_power": [
+            0.00600036482452309,
+            0.0045366244772183225,
+            0.005210168223713955
+          ],
+          "discrete_complex_real": [
+            0.07734952020106838,
+            -0.026303320598877418,
+            -0.0428689102573327
+          ],
+          "discrete_complex_imag": [
+            0.004173313933507156,
+            -0.062006127138299755,
+            0.0580725818012486
+          ],
+          "complex_change": [
+            2.4043172955255307e-06,
+            2.510111411868795e-06,
+            2.6402695599740436e-06
+          ],
+          "phase_change_rad": [
+            1.2289864433825917e-05,
+            3.726427800015136e-05,
+            1.4763963334846214e-05
+          ]
+        },
+        {
+          "port": "right_lower",
+          "original_power": [
+            0.3899713050984389,
+            0.38261621344162294,
+            0.3766457375171713
+          ],
+          "discrete_power": [
+            0.38998769772279884,
+            0.3826042346216243,
+            0.37663359275960223
+          ],
+          "discrete_complex_real": [
+            -0.6174562489394724,
+            -0.3570205898437227,
+            0.3050671667051978
+          ],
+          "discrete_complex_imag": [
+            -0.09346378105124566,
+            0.5051143762052954,
+            0.5325106727175197
+          ],
+          "complex_change": [
+            1.364283194505736e-05,
+            1.5673633877558082e-05,
+            1.4823766139069355e-05
+          ],
+          "phase_change_rad": [
+            -5.962129225408889e-06,
+            -1.9925373910891497e-05,
+            1.798603863364833e-05
+          ]
+        },
+        {
+          "port": "right_upper",
+          "original_power": [
+            0.38996936966876034,
+            0.3826121139763922,
+            0.37664611055873165
+          ],
+          "discrete_power": [
+            0.3899857487425939,
+            0.3826001034121475,
+            0.3766339690910533
+          ],
+          "discrete_complex_real": [
+            -0.6174553797867364,
+            -0.3570192289803083,
+            0.3050655439403966
+          ],
+          "discrete_complex_imag": [
+            -0.09345909648081921,
+            0.5051112486873102,
+            0.5325119557262572
+          ],
+          "complex_change": [
+            1.3641314476067857e-05,
+            1.5685609751102606e-05,
+            1.4833962632970162e-05
+          ],
+          "phase_change_rad": [
+            -6.01404880486779e-06,
+            -1.9917409452839492e-05,
+            1.8012252285059813e-05
           ]
         }
       ]

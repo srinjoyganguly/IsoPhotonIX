@@ -1,0 +1,124 @@
+{
+  "geometry": "lumerical",
+  "resolution": 12,
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "baseline_arrays_sha256": "0fedb26012611136120e2ddf19c2a6245cf993fd52fd5cae77943b634c59e903",
+  "trial_arrays_sha256": "8cb50cbc377155bbbba667ec5663fc3956a44e02df75ba8e6dd3f750b1b505e4",
+  "identical_full_source": true,
+  "limits": {
+    "power": 0.002,
+    "complex_s21": 0.01,
+    "phase_s21_rad": 0.025,
+    "incident_relative": 0.005,
+    "upper_relative_l2": 0.02,
+    "complex_return": 0.005
+  },
+  "absolute_errors": {
+    "power": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "complex_s21": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "phase_s21_rad": [
+      3.5718529355941716e-17,
+      1.9100450580962186e-18,
+      1.0501853982858467e-17,
+      4.3345994418115075e-18,
+      3.4167676902590985e-17
+    ],
+    "incident_relative": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "upper_relative_l2": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "complex_return": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "qualified": true,
+  "performance": {
+    "reference": {
+      "schema": 1,
+      "acquisition_id": "8b1a968ef45c4a86bcdccbad06608ba8",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        520,
+        256,
+        46
+      ],
+      "cells": 6123520,
+      "spacing_um": 0.08333333333333333,
+      "pml_cells": 8,
+      "steps": 2646,
+      "dt_seconds": 1.588812391275838e-16,
+      "simulated_time_fs": 420.3997587315867,
+      "compile_seconds": 0.9168495089979842,
+      "synchronized_step_seconds": 40.49020046099031,
+      "step_batches": 7,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_scope_boundary_overlaps": null,
+      "kernel_timing_note": "CUPTI disabled by environment",
+      "stage_through_steps_seconds": 52.1289366199926,
+      "million_cell_steps_per_second": 400.16679926320404
+    },
+    "device": {
+      "schema": 1,
+      "acquisition_id": "e09ec2a5a5964d3f9415dc6147631e64",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        520,
+        256,
+        46
+      ],
+      "cells": 6123520,
+      "spacing_um": 0.08333333333333333,
+      "pml_cells": 8,
+      "steps": 7560,
+      "dt_seconds": 1.588812391275838e-16,
+      "simulated_time_fs": 1201.1421678045335,
+      "compile_seconds": 0.9843611700052861,
+      "synchronized_step_seconds": 119.54313836492656,
+      "step_batches": 20,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_scope_boundary_overlaps": null,
+      "kernel_timing_note": "CUPTI disabled by environment",
+      "stage_through_steps_seconds": 133.3372091600031,
+      "million_cell_steps_per_second": 387.2561138446939
+    }
+  },
+  "scope": "Same physical planes, unit-incident normalization, identical full source and output mode gauge. Fields include every stored upper-plane vector component."
+}

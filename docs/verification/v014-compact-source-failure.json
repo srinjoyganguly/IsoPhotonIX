@@ -1,0 +1,113 @@
+{
+  "case": "grating-3d",
+  "settings": {
+    "geometry": "compact",
+    "resolution": 12
+  },
+  "actual_device": "cuda:0",
+  "passed": false,
+  "timing_purpose": "rejected source pair",
+  "stages": {
+    "reference": {
+      "source_eh_sha256": "713df907147fbc6b2fb83ac2b0b0dfb96aa55e7605079fff19497e61c0cd771b",
+      "source_time_offsets_sha256": "3adc13c76fc3be7477a74977766e8bb645a430f61df0db584cffea49b4651d56",
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "88e6c32a33da472ca8b0a3492054f67e",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          134,
+          76,
+          74
+        ],
+        "cells": 753616,
+        "spacing_um": 0.08333333333333333,
+        "pml_cells": 8,
+        "steps": 2646,
+        "dt_seconds": 1.588812391275838e-16,
+        "simulated_time_fs": 420.3997587315867,
+        "compile_seconds": 0.8291335489921039,
+        "synchronized_step_seconds": 5.87369490499259,
+        "step_batches": 7,
+        "cuda_event_elapsed_seconds": 5.8567597045898445,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 15.982984960006434,
+        "million_cell_steps_per_second": 339.4912347771178,
+        "setup_before_compile_seconds": 13.498434463996091
+      },
+      "arrays_sha256": "aa55d1827d44daf3210dd3e8cba291a37f5d5dd705a8197d4b4ef3b18726baad",
+      "native_worker_sha256": "cc00a12ac719e634db1861336b06e724bfc3c4cb58cedaef5d3038e8120adac5",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1"
+      },
+      "invocation_acquisition": "computed_this_invocation"
+    },
+    "device": {
+      "source_eh_sha256": "e7fb01a2afaac78793500673eb05ef68d06dcf00111bbb0be28f7b791b4000ad",
+      "source_time_offsets_sha256": "3adc13c76fc3be7477a74977766e8bb645a430f61df0db584cffea49b4651d56",
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "4e27618d98b042c484cf79d4f60f4698",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          134,
+          76,
+          74
+        ],
+        "cells": 753616,
+        "spacing_um": 0.08333333333333333,
+        "pml_cells": 8,
+        "steps": 3402,
+        "dt_seconds": 1.588812391275838e-16,
+        "simulated_time_fs": 540.51397551204,
+        "compile_seconds": 0.9527869779994944,
+        "synchronized_step_seconds": 7.409788789998856,
+        "step_batches": 9,
+        "cuda_event_elapsed_seconds": 7.411280761718749,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 19.992522993008606,
+        "million_cell_steps_per_second": 346.0019853009057,
+        "setup_before_compile_seconds": 16.70723451100639
+      },
+      "arrays_sha256": "f9f0b8699b65990df506c238e0456dcee2fade191213247df4eef233d2101419",
+      "native_worker_sha256": "cc00a12ac719e634db1861336b06e724bfc3c4cb58cedaef5d3038e8120adac5",
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1"
+      },
+      "invocation_acquisition": "computed_this_invocation"
+    }
+  },
+  "field_differences": {
+    "E": {
+      "max_absolute": 5.587935447692871e-09,
+      "relative_l2": 9.319036564647831e-08,
+      "unequal_values": 3894
+    },
+    "H": {
+      "max_absolute": 5.587935447692871e-09,
+      "relative_l2": 9.275392187646503e-08,
+      "unequal_values": 7771
+    }
+  },
+  "reason": "Independent reference and device E/H source arrays had different hashes. The worker refused to report normalized optical power."
+}

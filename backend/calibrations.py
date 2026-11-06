@@ -171,6 +171,8 @@ class Calibration(BaseModel):
             raise ValueError('Meep requires CPU execution.')
         if self.solver=='fdtdx' and self.case not in ('coupler','splitter'):
             raise ValueError('This calibrated preset supports Meep CPU.')
+        if self.material_model=='polygon-area' and self.device!='gpu':
+            raise ValueError('The polygon-area calibration is qualified on the NVIDIA target.')
         if self.material_model is not None and self.solver != 'fdtdx':
             raise ValueError('Only FDTDX offers a selectable material grid.')
         if self.ring_scope is not None and self.case != 'ring':

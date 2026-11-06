@@ -1,5 +1,13 @@
 {
   "engine": "tidy3d",
+  "versions": {
+    "tidy3d": "2.11.2"
+  },
+  "source_sha256": {
+    "phase_lead_reference.py": "024020dad9977425620ca530fbc01ec624bdbccb61bbde31eac64bfcf5aae784",
+    "compare_multiport_modes.py": "9f81f0e33c78c896512442b86a54f3d8d6a28dafa56daf5ece2e0de655228bbd",
+    "diagnose_ring_phase.py": "dda83d647550b53b3f08b8cb3e45f0455e9262ecf1b688c9585609563850b89a"
+  },
   "wavelength_um": 1.55,
   "geometry": {
     "name": "isolated-lead",
@@ -17,7 +25,6 @@
     ]
   },
   "transverse_execution": "local CPU eigensolve",
-  "tidy3d_version": "2.11.2",
   "measurements": [
     {
       "mesh": 64,
@@ -47,6 +54,16 @@
       "section_cells_yz": [
         768,
         384
+      ]
+    },
+    {
+      "mesh": 160,
+      "neff": 2.5770116365927938,
+      "te_fraction": 0.9877761131114634,
+      "max_abs_imag_neff": 1.1361487434691197e-12,
+      "section_cells_yz": [
+        960,
+        480
       ]
     }
   ]

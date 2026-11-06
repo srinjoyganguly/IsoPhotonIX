@@ -28,6 +28,8 @@ class CalibrationRefinements(unittest.TestCase):
             Calibration(case='grating-3d',solver='fdtdx',device='gpu',geometry_3d='lumerical',
                         resolution=12,grating_domain='mirror-y',grating_material_model='volume-average')
         with self.assertRaises(ValueError):
+            Calibration(case='coupler',solver='fdtdx',device='cpu',material_model='polygon-area')
+        with self.assertRaises(ValueError):
             Calibration(case='ring-3d',solver='fdtdx',device='gpu',resolution=12,ring_interface='wall-tensor')
 
     def test_diagnostic_export_requires_real_complete_ring_arrays_and_consistent_mask(self):

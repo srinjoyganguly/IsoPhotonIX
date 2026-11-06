@@ -178,7 +178,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         </select></label>}
         {key==='grating-3d' && Boolean(selected.grating_meshes?.[geometry3d]?.['mirror-y']?.[gratingMaterial]?.length) && <label>Simulation domain
           <select value={gratingDomain} onChange={e=>{setGratingDomain(e.target.value);setGratingSpectrum('standard');setMesh('');}}>
-            <option value="full">Full width</option><option value="mirror-y">Half width · validated mirror symmetry</option>
+            <option value="full">Full width</option><option value="mirror-y">Half width · checked against the full 12-cell model</option>
           </select></label>}
         {denseGrating && <label>Grating wavelengths<select value={gratingSpectrum} onChange={e=>setGratingSpectrum(e.target.value)}>
           <option value="standard">5 samples · 25 nm spacing</option><option value="dense">21 samples · 5 nm spacing</option>
@@ -208,11 +208,11 @@ export function CalibratedComponents({active}:{active:boolean}) {
       <fieldset disabled={pending}><legend>Execution target</legend>{!targets.length && <small>Checking local solver availability…</small>}{selected.routes.map(route=>{
         const info=targets.find(t=>t.solver+':'+t.device===route);
         return <label key={route}><input type="radio" name="cal-target" value={route} checked={target===route}
-          onChange={()=>{setTarget(route);if(mesh==='12' && !route.startsWith('fdtdx:'))setMesh('');}}/>{route.replace(':',' · ').toUpperCase()}
+          onChange={()=>{setTarget(route);if(route!=='fdtdx:gpu' && materialGrid==='polygon-area')setMaterialGrid('yee-aligned');if(mesh==='12' && !route.startsWith('fdtdx:'))setMesh('');}}/>{route.replace(':',' · ').toUpperCase()}
           {info && !info.available && <small>{info.reason}</small>}</label>;
       })}</fieldset>
       {solver==='fdtdx' && !gpuComponent && !editableLayout && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
-        <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option><option value="polygon-area">Integrated polygon area at each electric-field site</option>
+        <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option>{device==='gpu' && <option value="polygon-area">Integrated polygon area at each electric-field site</option>}
       </select></label>}
       <button className="button primary compact" disabled={!available||pending||busy||!offsetValid||!layoutValid} onClick={()=>void run()}>Run calibrated study</button>
       <CodeExport kind="calibration" value={configuration} disabled={!target||!offsetValid||!layoutValid}/>

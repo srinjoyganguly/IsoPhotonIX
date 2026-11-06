@@ -12,6 +12,7 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse, Res
 from starlette.background import BackgroundTask
 from fastapi.staticfiles import StaticFiles
 
+from .calibration_phase import registered_csv
 from .calibration_performance import stage_rows, timing_csv
 from .calibration_fields import field_plane
 from .calibrations import CASES, grating_meshes, calibration_routes, Calibration, design_archive, result_zip
@@ -469,6 +470,21 @@ def calibrated_performance(case: str | None = None):
 def download_performance(case: str | None = None):
     return Response(timing_csv(calibrated_performance(case)), media_type='text/csv',
                     headers={'Content-Disposition':'attachment; filename="photonics-gpu-performance.csv"'})
+
+
+@app.get('/api/calibrations/phase.csv')
+def download_phase(receipt: str):
+    import re
+    if not re.fullmatch(r'v014-(?:ring|grating)-phase[-a-z0-9]*[.]json',receipt):
+        raise HTTPException(404,'Unknown registered phase study.')
+    path=ROOT/'docs/verification'/receipt
+    if not path.is_file():
+        raise HTTPException(404,'Unknown registered phase study.')
+    study=json.loads(path.read_text())
+    if study.get('component') not in ('ring','grating') or not study.get('native_samples'):
+        raise HTTPException(404,'No registered wavelength samples in this report.')
+    return Response(registered_csv(study),media_type='text/csv',
+                    headers={'Content-Disposition':f'attachment; filename="{path.stem}.csv"'})
 
 
 @app.get('/api/calibrations/planar-layout-example')

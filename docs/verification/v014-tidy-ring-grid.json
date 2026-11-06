@@ -3,6 +3,32 @@
   "notebook_sha256": "b1dac0b3a47518cc5461c5457511748f5435eaea53703d9fdff1236adbd24908",
   "tidy3d": "2.11.2",
   "solver_jobs_submitted": 0,
+  "central_plot_readout": {
+    "wavelength_um": 1.55,
+    "bracketing_pixel_centers": [
+      316,
+      317
+    ],
+    "pixel_step_nm": 0.22172949002217296,
+    "pixel_step_db": 0.09259259259259259,
+    "channels": {
+      "through": {
+        "interpolated_median": 0.9893965015048625,
+        "stroke_and_half_pixel_bounds": [
+          0.9685256148599345,
+          1.010717137648061
+        ]
+      },
+      "drop": {
+        "interpolated_median": 0.021588430572648573,
+        "stroke_and_half_pixel_bounds": [
+          0.018794721127766804,
+          0.02479740621963912
+        ]
+      }
+    },
+    "scope": "Colored stroke extent plus half a vertical pixel, averaged over the two bracketing plot columns. This describes figure reading only, without historical solver uncertainty or horizontal subpixel curvature."
+  },
   "shape": [
     545,
     503,

@@ -1,0 +1,246 @@
+{
+  "schema": 1,
+  "vendor": "tidy3d",
+  "baseline_mesh": 16,
+  "candidate_mesh": 20,
+  "candidate_shape": [
+    312,
+    296,
+    70
+  ],
+  "candidate_cells": 6464640,
+  "initial_idle_used_mib": 3719,
+  "initial_free_mib": 12455,
+  "total_mib": 16384,
+  "free_at_completion_mib": 12470,
+  "admission_required_mib": 8844.089762711865,
+  "admitted_at_measurement": true,
+  "roles": {
+    "reference": {
+      "physical_model": {
+        "shape": [
+          250,
+          236,
+          56
+        ],
+        "pml": 10,
+        "ports": [
+          [
+            33,
+            16,
+            14
+          ],
+          [
+            217,
+            16,
+            14
+          ],
+          [
+            33,
+            192,
+            14
+          ],
+          [
+            217,
+            192,
+            14
+          ]
+        ],
+        "source_x": 20,
+        "half_ap": 14,
+        "vendor": "tidy3d",
+        "resolution": 16,
+        "radius_um": 5.0,
+        "width_um": 0.43,
+        "height_um": 0.22,
+        "edge_gap_um": 0.1,
+        "bus_y_um": 5.529999999999999,
+        "top_index": 1.44,
+        "substrate_index": 1.44,
+        "silicon_index": 3.48,
+        "aperture_um": 1.75,
+        "pml_um": 0.65,
+        "ring_interface": "wall-tensor"
+      },
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "bc5c94bdad51430d8311f62b2f23e917",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          250,
+          236,
+          56
+        ],
+        "cells": 3304000,
+        "spacing_um": 0.0625,
+        "pml_cells": {
+          "min_x": 10,
+          "max_x": 10,
+          "min_y": 10,
+          "max_y": 10,
+          "min_z": 10,
+          "max_z": 10
+        },
+        "steps": 560,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 66.73012043358518,
+        "compile_seconds": 1.234819304998382,
+        "synchronized_step_seconds": 3.7615233399847057,
+        "step_batches": 7,
+        "cuda_event_elapsed_seconds": 3.7624240112304688,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 12.318550233001588,
+        "million_cell_steps_per_second": 491.8858219838995,
+        "setup_seconds": 7.234517995995702,
+        "interior_non_pml_cells": 1788480,
+        "cells_touching_pml": 1515520,
+        "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+      },
+      "actual_material_sha256": "90a25b786cbde7e0ff9bd3f62412e4f45c2df16ebacdc5ca846b3bf891217dd0",
+      "role": "reference",
+      "cells": 3304000,
+      "allocator_peak_bytes_in_use": 1245553920,
+      "origin": "Fresh native 20 \u00b5m/c stage, no checkpoint lookup.",
+      "numerical_source_hashes": {
+        "scripts/calibrate_loaded_ring3d.py": "a89221a7bdffd8f555c1465ac1765e13ea0c470f9d9849261183a69938125cd7",
+        "scripts/calibrate_ring.py": "50b544c7d7ea35efd7c826925ba435b4a25412e9a259b177b36d4fe13b245b8e",
+        "scripts/gpu_timing.py": "7150612d42ed0dbb5cfe2ab9c0feda5fa1b74d8e307ac36b62da21395f34633b",
+        "scripts/ring_wall_tensor.py": "d0b8559bf7a2f2567a61b7f4a3b6cb3e92989b3bdc4b97b2e369d7f4353be4f1",
+        "scripts/measure_loaded_ring_losses.py": "82437d514e203760a84c84bea376ded18eb75ad857972f84acf82940ce05effa",
+        "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+        "scripts/ring_stage_provenance.py": "240e2a40950cc0aff03e57233519ca530312e0da1dc6754a4a0b7c4774058f51",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661"
+      },
+      "samples_observed": 73,
+      "baseline_idle_used_mib": 3719,
+      "sampled_peak_global_mib": 5952,
+      "peak_delta_used_for_estimate_mib": 2233,
+      "cell_ratio": 1.9566101694915254,
+      "estimated_candidate_mib": 4369.110508474576,
+      "required_free_with_reserve_mib": 8164.754711864406
+    },
+    "device": {
+      "physical_model": {
+        "shape": [
+          250,
+          236,
+          56
+        ],
+        "pml": 10,
+        "ports": [
+          [
+            33,
+            16,
+            14
+          ],
+          [
+            217,
+            16,
+            14
+          ],
+          [
+            33,
+            192,
+            14
+          ],
+          [
+            217,
+            192,
+            14
+          ]
+        ],
+        "source_x": 20,
+        "half_ap": 14,
+        "vendor": "tidy3d",
+        "resolution": 16,
+        "radius_um": 5.0,
+        "width_um": 0.43,
+        "height_um": 0.22,
+        "edge_gap_um": 0.1,
+        "bus_y_um": 5.529999999999999,
+        "top_index": 1.44,
+        "substrate_index": 1.44,
+        "silicon_index": 3.48,
+        "aperture_um": 1.75,
+        "pml_um": 0.65,
+        "ring_interface": "wall-tensor"
+      },
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "7a7bf3b75e7e4e58a9e87a4983371040",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          250,
+          236,
+          56
+        ],
+        "cells": 3304000,
+        "spacing_um": 0.0625,
+        "pml_cells": {
+          "min_x": 10,
+          "max_x": 10,
+          "min_y": 10,
+          "max_y": 10,
+          "min_z": 10,
+          "max_z": 10
+        },
+        "steps": 560,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 66.73012043358518,
+        "compile_seconds": 1.4933240550017217,
+        "synchronized_step_seconds": 3.983989422005834,
+        "step_batches": 7,
+        "cuda_event_elapsed_seconds": 3.9850411682128906,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 13.71323220100021,
+        "million_cell_steps_per_second": 464.41890377019445,
+        "setup_seconds": 8.15703327099618,
+        "interior_non_pml_cells": 1788480,
+        "cells_touching_pml": 1515520,
+        "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+      },
+      "actual_material_sha256": "9a1796011e8011e0eabf16e22f37507be06990e217d5e38a4f5483c0c3a6b0eb",
+      "role": "device",
+      "cells": 3304000,
+      "allocator_peak_bytes_in_use": 1351625984,
+      "origin": "Fresh native 20 \u00b5m/c stage, no checkpoint lookup.",
+      "numerical_source_hashes": {
+        "scripts/calibrate_loaded_ring3d.py": "a89221a7bdffd8f555c1465ac1765e13ea0c470f9d9849261183a69938125cd7",
+        "scripts/calibrate_ring.py": "50b544c7d7ea35efd7c826925ba435b4a25412e9a259b177b36d4fe13b245b8e",
+        "scripts/gpu_timing.py": "7150612d42ed0dbb5cfe2ab9c0feda5fa1b74d8e307ac36b62da21395f34633b",
+        "scripts/ring_wall_tensor.py": "d0b8559bf7a2f2567a61b7f4a3b6cb3e92989b3bdc4b97b2e369d7f4353be4f1",
+        "scripts/measure_loaded_ring_losses.py": "82437d514e203760a84c84bea376ded18eb75ad857972f84acf82940ce05effa",
+        "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+        "scripts/ring_stage_provenance.py": "240e2a40950cc0aff03e57233519ca530312e0da1dc6754a4a0b7c4774058f51",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661"
+      },
+      "samples_observed": 80,
+      "baseline_idle_used_mib": 3798,
+      "sampled_peak_global_mib": 6279,
+      "peak_delta_used_for_estimate_mib": 2481,
+      "cell_ratio": 1.9566101694915254,
+      "estimated_candidate_mib": 4854.349830508475,
+      "required_free_with_reserve_mib": 8844.089762711865
+    }
+  },
+  "policy": "Use the higher of observed board-usage increment and JAX peak buffer bytes for each actual smaller-mesh stage; scale by full-domain cell count, apply 40 percent overhead and 2048 MiB graphics reserve. Recheck free memory immediately before field acquisition under the same device lock. This is a hardware-specific estimate.",
+  "planning_program_sha256": "c898aca95df171d5f9068bdcaaa2a05a8f1529c2b18289c4178fcb37e3ab9b68"
+}

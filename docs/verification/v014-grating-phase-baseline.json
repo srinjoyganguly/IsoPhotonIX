@@ -6,6 +6,7 @@
   "ring_80_to_100_percent_phase_limit_rad": 0.05,
   "native_samples": [
     {
+      "native_receipt": "v013-grating3d-lumerical-direct-r12.json",
       "native_run_passed": true,
       "qualified_wavelengths": 5,
       "physical_model": {
@@ -175,6 +176,7 @@
       }
     },
     {
+      "native_receipt": "v013-grating3d-lumerical-direct-r14.json",
       "native_run_passed": true,
       "qualified_wavelengths": 5,
       "physical_model": {
@@ -411,5 +413,7 @@
       }
     }
   ],
-  "vendor_absolute_phase_basis": null
+  "vendor_absolute_phase_basis": null,
+  "vendor_sfile_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+  "vendor_project_sha256": null
 }

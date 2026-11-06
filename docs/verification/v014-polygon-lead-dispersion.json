@@ -1,5 +1,12 @@
 {
   "method": "Independent transverse eigenmodes on the identical port section. For f in cycles/\u00b5m use f_eff = f sinc(f c \u0394t), solve n_eff(f_eff), and \u03b2_Yee = 2 asin(\u03c0 f_eff n_eff \u0394x)/\u0394x. Compare the measured forward transfer with exp(i\u03b2L). No fitted constant or change to the device scattering matrix.",
+  "source_sha256": "b7ed821ece580d9597e7804376c621bc9af5080826737b9655abde49c46e432c",
+  "transverse_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
   "transverse_execution": "FDTDX local CPU 2D mode calculation",
   "native_execution": "Fully time-stepped 3D FDTDX on NVIDIA",
   "scope": "Uniform nondispersive straight leads. This control does not estimate junction radiation or resonant scattering.",
@@ -159,6 +166,148 @@
         -0.00018441900668148128
       ],
       "native_reference_sha256": "d9da6a3137ef290de2c9e58cfad7a26354de5988e451e341bbe8a4df9b68ca81"
+    },
+    {
+      "case": "splitter",
+      "resolution": 20,
+      "straight_plane_distance_um": 9.5,
+      "dt_seconds": 9.532874347655028e-17,
+      "frequency_per_um": [
+        0.6251612903225806,
+        0.6451612903225806,
+        0.6651612903225806
+      ],
+      "effective_temporal_frequency_per_um": [
+        0.624833085118281,
+        0.6448005707689204,
+        0.6647659773253145
+      ],
+      "continuous_longitudinal_mode_neff": [
+        2.5285558700561523,
+        2.577519655227661,
+        2.62272572517395
+      ],
+      "effective_frequency_mode_neff": [
+        2.5277187824249268,
+        2.5766711235046387,
+        2.621866226196289
+      ],
+      "yee_longitudinal_neff": [
+        2.553053419720677,
+        2.605397537975127,
+        2.6541980766732034
+      ],
+      "measured_straight_transfer_real": [
+        0.5214213350898494,
+        0.980556505267614,
+        0.13737856081623986
+      ],
+      "measured_straight_transfer_imag": [
+        0.8532013277049694,
+        -0.19623445364784964,
+        -0.9905152956800906
+      ],
+      "measured_minus_continuous_phase_rad": [
+        0.9143164656083386,
+        1.0735650754687425,
+        1.2493828298813354
+      ],
+      "measured_minus_yee_phase_rad": [
+        0.00016491696844561575,
+        -7.880082528048244e-06,
+        -0.0001844188474450571
+      ],
+      "native_reference_sha256": "3f3fbd5be54539199afe899d5c80e97542ab70471d1431a98f9518848755e389"
+    }
+  ],
+  "grid_registration": [
+    {
+      "resolution": 16,
+      "nominal_guide_width_height_um": [
+        0.5,
+        0.25
+      ],
+      "wavelength_um": 1.55,
+      "registration": [
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.0,
+          "neff": 2.5382046699523926
+        },
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.25,
+          "neff": 2.5512640476226807
+        },
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.5,
+          "neff": 2.591742515563965
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.0,
+          "neff": 2.531294822692871
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.25,
+          "neff": 2.544677972793579
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.5,
+          "neff": 2.5858962535858154
+        }
+      ],
+      "max_minus_min_neff": 0.06044769287109375,
+      "larger_aperture_edge_extension_um": 0.25,
+      "largest_translation_larger_aperture_neff": 2.5858962535858154,
+      "largest_translation_aperture_change": 0.0
+    },
+    {
+      "resolution": 20,
+      "nominal_guide_width_height_um": [
+        0.5,
+        0.25
+      ],
+      "wavelength_um": 1.55,
+      "registration": [
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.0,
+          "neff": 2.577519655227661
+        },
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.25,
+          "neff": 2.5512094497680664
+        },
+        {
+          "y_shift_cells": 0.0,
+          "z_shift_cells": 0.5,
+          "neff": 2.5427358150482178
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.0,
+          "neff": 2.573489189147949
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.25,
+          "neff": 2.5467700958251953
+        },
+        {
+          "y_shift_cells": 0.5,
+          "z_shift_cells": 0.5,
+          "neff": 2.5381393432617188
+        }
+      ],
+      "max_minus_min_neff": 0.03938031196594238,
+      "larger_aperture_edge_extension_um": 0.25,
+      "largest_translation_larger_aperture_neff": 2.5381391048431396,
+      "largest_translation_aperture_change": -2.384185791015625e-07
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "export_has_validity_mask": true,
+  "fresh_device_steps_on_replay": 0,
+  "native_arrays_sha256": "c41cf5bf28f74a52f8238ec508f980c83da1f6746e5c7eceb413dfa20e12c5dc",
+  "qualification": {
+    "numerical_gate_passed": false,
+    "qualified_wavelengths": 236,
+    "total_wavelengths": 241,
+    "scope": "Read the wavelength validity mask when using these measured fields."
+  },
+  "reproduction": {
+    "passed": true,
+    "all_array_bytes_equal": true,
+    "within_tolerance": {},
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "field/array",
+      "field/index",
+      "field/axis_order",
+      "field/component",
+      "field/horizontal_axis",
+      "field/vertical_axis",
+      "field/horizontal_um",
+      "field/vertical_um",
+      "field/time_um_c",
+      "measured_drop_fsr_nm",
+      "pole/0/qualified",
+      "pole/1/qualified",
+      "pole/2/qualified",
+      "pole/3/qualified",
+      "pole/3/wavelength_um",
+      "pole/3/loaded_q",
+      "pole/3/absolute_internal_fraction_uncertainty_proxy",
+      "pole/3/apparent_external_q_each_bus",
+      "pole/3/apparent_internal_q",
+      "pole/3/apparent_internal_q_lower_bound",
+      "lumerical/wavelength_um",
+      "lumerical/through",
+      "lumerical/drop",
+      "lumerical/reflection",
+      "lumerical/add_side",
+      "lumerical/valid_bins"
+    ],
+    "numerical_gate_passed": false,
+    "qualified_wavelengths": 236,
+    "total_wavelengths": 241
+  }
+}
