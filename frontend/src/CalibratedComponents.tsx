@@ -24,6 +24,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [geometry3d,setGeometry3d]=useState('lumerical');
   const [ringDuration,setRingDuration]=useState('');
   const [ringInterface,setRingInterface]=useState('legacy');
+  const [ringMaterial,setRingMaterial]=useState('constant');
   const [gratingMaterial,setGratingMaterial]=useState('volume-average');
   const [gratingSpectrum,setGratingSpectrum]=useState('standard');
   const [portDistance,setPortDistance]=useState('1.25');
@@ -38,6 +39,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
   const denseGrating = key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
+  const dispersiveRing = key==='ring-3d' && geometry3d==='lumerical' && ringInterface==='exact-area' && (!mesh || mesh==='16');
   const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? (['lumerical','tidy3d'].includes(geometry3d)?[12,14]:[12,16]) :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
@@ -98,6 +100,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
     planar_layout:editableLayout?parsePlanarLayout(layoutText):null,
     duration_um_c:key==='ring-3d'&&ringDuration?Number(ringDuration):null,
     ring_interface:key==='ring-3d' && ringInterface!=='legacy'?ringInterface:null,
+    ring_material:dispersiveRing && ringMaterial==='palik-ade'?'palik-ade':null,
     grating_material_model:key==='grating-3d' && geometry3d==='lumerical' && gratingMaterial!=='volume-average'?gratingMaterial:null,
     grating_spectrum:denseGrating && gratingSpectrum==='dense'?'dense':null,
     geometry_3d:gpuComponent?geometry3d:null,port_distance_um:key==='multimode-tm'?Number(portDistance):null,
@@ -128,7 +131,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   function choose(next:string) {
     setKey(next); setRecord(0); setMesh(''); setPortDistance('1.25'); setRingDuration('');
     setGeometry3d(next==='grating-3d'?'compact':'lumerical');
-    setRingInterface('legacy'); setGratingMaterial('volume-average'); setGratingSpectrum('standard');
+    setRingInterface('legacy'); setRingMaterial('constant'); setGratingMaterial('volume-average'); setGratingSpectrum('standard');
     setOffset('.125'); setTarget(''); setMaterialGrid('yee-aligned');
     setGratingScope('tidy3d-compact'); setRingScope('lumerical');
     setJobId(''); setError(''); setReport(null); setLocalField(null);
@@ -159,6 +162,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
         </select></label>}
         {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>setRingInterface(e.target.value)}>
           <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option>
+        </select></label>}
+        {dispersiveRing && <label>Ring material response<select value={ringMaterial} onChange={e=>setRingMaterial(e.target.value)}>
+          <option value="constant">Constant index</option><option value="palik-ade">Palik dispersion control · 1500–1600 nm</option>
         </select></label>}
         {key==='grating-3d' && geometry3d==='lumerical' && <label>Grating material sampling<select value={gratingMaterial} onChange={e=>setGratingMaterial(e.target.value)}>
           <option value="volume-average">Volume averaging (baseline)</option><option value="direct-yee">Direct electric-field cell integration</option>

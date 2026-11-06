@@ -63,6 +63,7 @@ class Calibration(BaseModel):
     planar_layout: dict | None = Field(default=None, exclude_if=lambda v: v is None)
     duration_um_c: float | None = Field(default=None, exclude_if=lambda v: v is None)
     ring_interface: Literal['legacy','exact-area'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    ring_material: Literal['constant','palik-ade'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_material_model: Literal['volume-average','direct-yee'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_spectrum: Literal['standard','dense'] | None = Field(default=None, exclude_if=lambda v: v is None)
 
@@ -91,8 +92,8 @@ class Calibration(BaseModel):
             raise ValueError('Movable port planes are supported on the planar TM joint.')
         if self.duration_um_c is not None and self.case != 'ring-3d':
             raise ValueError('Choose the 3D ring to set an observation duration.')
-        if self.ring_interface is not None and self.case != 'ring-3d':
-            raise ValueError('The ring interface setting requires a full 3D ring.')
+        if (self.ring_interface is not None or self.ring_material is not None) and self.case != 'ring-3d':
+            raise ValueError('Ring interface and material settings require a full 3D ring.')
         if (self.grating_material_model is not None or self.grating_spectrum is not None) and self.case != 'grating-3d':
             raise ValueError('Grating material or spectrum settings require a full 3D grating.')
         if self.case == 'layout-ports-3d':
@@ -120,6 +121,8 @@ class Calibration(BaseModel):
             meshes = (12,16,20,24) if ring else ((12,14) if self.geometry_3d in ('lumerical','tidy3d') else (12,16))
             if self.resolution is None:
                 self.resolution = 16 if ring else 12
+            if self.ring_material=='palik-ade' and (self.geometry_3d!='lumerical' or self.ring_interface!='exact-area' or self.resolution!=16):
+                raise ValueError('The measured dispersive ring uses the Lumerical geometry, exact area and 16 cells/µm.')
             if self.grating_spectrum=='dense' and (self.geometry_3d!='lumerical' or self.resolution!=12):
                 raise ValueError('The 21-sample spectrum requires the Lumerical grating at 12 cells/µm.')
             if self.resolution not in meshes:
@@ -190,6 +193,8 @@ def specification(config):
             args += ['--duration-um-c', str(config.duration_um_c)]
         if config.ring_interface is not None:
             args += ['--ring-interface',config.ring_interface]
+        if config.ring_material is not None:
+            args += ['--ring-material',config.ring_material]
         if config.grating_material_model is not None:
             args += ['--grating-material-model',config.grating_material_model]
         if config.grating_spectrum is not None:
@@ -199,6 +204,8 @@ def specification(config):
         if ring:
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py',
                         'scripts/ring_stage_provenance.py']
+            if config.ring_material=='palik-ade':
+                helpers += ['scripts/ring_ade_stage.py','scripts/ring_palik_dispersion.py','docs/verification/v013-ring-project-audit.json']
         else:
             helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json']
             if config.grating_spectrum=='dense':

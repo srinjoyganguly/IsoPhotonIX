@@ -22,6 +22,7 @@ FILES = ('LICENSE', 'CREDITS.md', 'frontend/THIRD_PARTY_NOTICES.txt', 'frontend/
          'scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py', 'scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json','docs/verification/v012-grating-memory-budget.json',
          'docs/verification/v013-grating-dense-reference.json','docs/verification/v013-grating-dense-memory.json',
          'scripts/ring_stage_provenance.py', 'scripts/measure_loaded_ring_losses.py', 'scripts/calibrate_loaded_ring3d.py', 'scripts/calibrate_finite_grating.py', 'scripts/calibrate_planar_tm.py', 'scripts/calibrate_layout_ports.py', 'scripts/calibrate_layout_ports3d.py',
+         'scripts/ring_ade_stage.py','scripts/ring_palik_dispersion.py','docs/verification/v013-ring-project-audit.json',
          'scripts/calibrate_multimode.py', 'scripts/calibrate_ring.py', 'scripts/calibrate_grating.py', 'scripts/calibration_checkpoint.py',
          'docs/verification/v010-passive-cavity.json', 'docs/verification/v010-beamz-cpu.json', 'docs/verification/v010-beamz-gpu.json',
          'requirements-fdtdx.txt', 'requirements-fdtdx-cuda.txt', 'docs/verification/public-mode-benchmarks.json',

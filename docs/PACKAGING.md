@@ -1,12 +1,14 @@
 # Install Photonics Workbench locally
 
-The **0.12.0a1 wheel** contains the local service, the compiled React interface,
+The **0.12.0a2 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
 separate environments. Tagged wheels are distributed through [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases).
 
 The [v0.12.0a1 release](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a1) includes the application wheel, its source archive and five measured programs independently rerun from Python and Jupyter. Use the wheel for installation. The example ZIP contains the exact inputs and reference data for the 3D ring, compact grating, 3D polygon elbow, planar TM joint and planar polygon elbow. [Download the five programs](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/calibration-examples-v0.12.0a1.zip) · [Example verification](verification/v012-example-exports.json).
+
+The v0.12.0a2 accuracy update includes the measured ring dispersion and direct-grating result programs, plus both complete 21-wavelength Lumerical grating programs and their raw arrays. The 21-point scans require the captured local FDTDX CUDA environment. [Download v0.12.0a2](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a2) · [Measured results and limitations](POWER_MISMATCH.md).
 
 The two larger 14-cell archives contain the original local full-geometry programs, native reference/device fields and published comparison inputs. The [curved Lumerical grating export](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/grating-lumerical-3d-gpu-r14-v0.12.0a1.zip) uses the tilted fiber; the [Tidy3D uniform grating export](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip) uses the incident Gaussian and finite taper. [Archive and numerical checks](verification/v012-vendor-grating-exports.json).
 
@@ -26,7 +28,7 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.12.0a1-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.12.0a2-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
@@ -79,6 +81,19 @@ photonics-workbench calibrate layout-ports-3d --solver fdtdx --device gpu --reso
 ```
 
 For either layout-port study, open **Edit polygons and ports** to inspect or change the layout document. The installed command accepts the same file with `--layout PATH`. Use `--export-only` to get the exact study program and notebook before a solver run, or take the measured bundle from a completed run. The original planar ring and grating programs remain available as `ring` and `grating`. [Bus-loaded ring model and numerical checks](LOADED_RING_3D.md) · [Finite-width grating model](FINITE_GRATING_3D.md).
+
+### Compare material and geometry sampling
+
+Select **3D bus-loaded ring** and choose **Ring boundary sampling**, or select **3D finite-width grating** and the **Lumerical curved grating and fiber** geometry to choose its material sampling. The existing baseline remains the default. The 12-cell Lumerical grating can also acquire 21 wavelength samples between 1500 and 1600 nm. Each source program records its selected interface model and spectral grid.
+
+```bash
+photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --ring-interface exact-area --output ring-area
+photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 16 --ring-interface exact-area --ring-material palik-ade --output ring-dispersion
+photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 14 --grating-material-model direct-yee --output curved-grating
+photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d lumerical --resolution 12 --grating-material-model direct-yee --grating-spectrum dense --output grating-spectrum
+```
+
+Use a fresh output directory for each run or add `--export-only` to get the local Python and notebook programs without starting a solve. The denser measurement uses additional detector memory and checks the free memory on the selected NVIDIA device before acquisition. [Correction experiments, reference planes and accuracy gates](POWER_MISMATCH.md).
 
 ## Set up the numerical runtimes
 

@@ -38,6 +38,23 @@ All three comparisons use full NVIDIA reference/device pulses and acquired 241 q
 
 The source-mode index at 1550 nm falls from 1.99050 to 1.97062 on the 16-cell mesh. The two central resonances still fall on the same 0.5 nm sample wavelengths. At 20 cells/µm the bus width was already represented exactly, although the circular-interface fractions still change. Correcting geometric area improves the represented width. It leaves a large absolute power error on both meshes, including sustained differences across the vendor band. On the Tidy3D geometry, the 437.5 nm integrated bus width becomes the specified 430 nm. Both central peak wavelengths keep their 0.5 nm sampled positions; the absolute drop-power error over the band still increases. [Tidy3D unshifted fields and spectrum](verification/v013-ring3d-tidy3d-r16-t4800-exact-area.json) · [All three controlled comparisons and array hashes](verification/v013-ring-interface-comparison.json) · [16-cell fields and spectra](verification/v013-ring3d-lumerical-r16-t3200-exact-area.json) · [20-cell fields and spectra](verification/v013-ring3d-lumerical-r20-t3200-exact-area.json).
 
+## Passive material dispersion at the same mesh
+
+A separate full 16-cell Lumerical ring measurement keeps the exact-area geometry and introduces a passive dispersion model. One undamped auxiliary differential equation (ADE) pole outside the passband fits the public Palik permittivities at 1500, 1550 and 1600 nm. The checks hold out 1525 and 1575 nm. The maximum absolute mixed-cell permittivity error at either held-out wavelength is 0.00449. The source uses a fixed fundamental mode at the fitted carrier permittivity. Each acquisition checks all 1,600 driven time steps and the staggered E/H offsets. The output bases use the realized discrete dielectric function at their five separate frequencies. [Fitted material model](../scripts/ring_palik_dispersion.py) · [Native dispersive ring](verification/v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json).
+
+| Observable | Constant indices, exact area | Passive dispersion, exact area | Published Lumerical |
+| --- | ---: | ---: | ---: |
+| Fundamental drop at 1550 nm | 3.160% | 4.919% | 67.442% |
+| Fundamental through at 1550 nm | 96.336% | 94.321% | 9.392% |
+| Central resonance spacing | 26.0 nm | 24.5 nm | 25.455 nm |
+| Mean absolute through / drop error against published power | 0.1622 / 0.1336 | 0.1469 / 0.1212 | Reference |
+
+All 201 wavelengths within the material fit passed the declared numerical checks. The 40 samples outside 1500–1600 nm are marked unqualified. The two central drop peaks move from 1530.5 / 1556.5 nm to 1530.0 / 1554.5 nm. This improves the two broadband mean errors but increases the absolute central spacing error from 0.55 to 0.95 nm. The normalized straight through-power spans 0.9981–1.0015; maximum collected port power is 1.0013. Dispersive material contributes measurably to detuning and group delay. Even with that change the 1550 nm drop is still 62.52 percentage points below the published value. [Controlled spectra and exported raw hashes](verification/v013-ring-ade-comparison.json).
+
+**The 16-cell grid has a separate, substantial propagation error.** An independently launched half-micrometre silicon film on this same grid differs from analytic transmission by up to **19.96 percentage points** and transmitted phase by **0.247 rad**. At 96 cells/µm those errors fall to 0.64 points and 0.00794 rad. The refined film verifies the passive update; the coarser ring is a material sensitivity measurement. An accuracy claim for the device needs both another material-enabled ring mesh and tests of curved-interface polarization, finite coupler phase, backscatter and linewidth against the same ports and modes. [Real NVIDIA film controls and their predeclared criteria](verification/v013-palik-slab.json).
+
+The normal exporter bundled the measured dispersive ring program and Jupyter notebook, preserving the original GPU fields. The readback checked thirteen captured acquisition files, the material input and both reference artifacts. The release scope for this archive is verification against the measured run. [Dispersive result export and checksums](verification/v013-ring-ade-example-export.json).
+
 ## Run the controlled device comparison
 
 ```bash
@@ -45,7 +62,7 @@ The source-mode index at 1550 nm falls from 1.99050 to 1.97062 on the 16-cell me
   --resolution 16 --duration-um-c 3200 --ring-interface exact-area --output exact-ring
 ```
 
-Each run writes its actual fields, modal coefficients, qualification mask, acquisition duration and solver identity. Use an empty output directory. The Tidy3D held-out device has a 5 µm radius, a 430 × 220 nm strip, oxide above and below and a 4800 µm/c observation window. Its published notebook uses circular geometry, vertical symmetry, absorbers, an automatic mesh and dispersive lossless silicon/oxide models. Its numerical powers are digitized from the pinned plot and have greater uncertainty on steep lines. [Tidy3D add/drop example](https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/) · [Pinned notebook](https://github.com/flexcompute/tidy3d-notebooks/blob/18fd47f8bd87ad89582b507c20bf4997f79d55c0/RingResonator.ipynb).
+Use `--ring-material palik-ade` with the Lumerical exact-area model to repeat the 1500–1600 nm material study. The other calibrated ring configurations use their original constant indices. Each run writes its actual fields, modal coefficients, qualification mask, acquisition duration and solver identity. Use an empty output directory. The Tidy3D held-out device has a 5 µm radius, a 430 × 220 nm strip, oxide above and below and a 4800 µm/c observation window. Its published notebook uses circular geometry, vertical symmetry, absorbers, an automatic mesh and dispersive lossless silicon/oxide models. Its numerical powers are digitized from the pinned plot and have greater uncertainty on steep lines. [Tidy3D add/drop example](https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/) · [Pinned notebook](https://github.com/flexcompute/tidy3d-notebooks/blob/18fd47f8bd87ad89582b507c20bf4997f79d55c0/RingResonator.ipynb).
 
 To reproduce the vendor audit, download the three attachments linked in its receipt outside the repository. The extraction program verifies every file digest. Run the mode programs with the corresponding local numerical interpreter.
 

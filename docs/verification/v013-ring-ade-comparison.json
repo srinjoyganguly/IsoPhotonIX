@@ -1,0 +1,67 @@
+{
+  "constant_receipt": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
+  "constant_receipt_sha256": "76165fd74e0d29dfe8ffbd4439347fbe34c7a2f2ef28b8a0d1662c0b5eefe30e",
+  "constant_arrays_sha256": "adf95f50b94eb001d1a9bea588c19e2007b3fbbf8013515efa3fd3cba667c687",
+  "ade_receipt": "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json",
+  "ade_receipt_sha256": "680d2945a27917262e3792902ebd8e9adc3790d8072202710f3a53e9404ece13",
+  "ade_arrays_sha256": "1b4c161f2a8a723483396e9d2a8dda23ad3d2e43dfb8ffbf8667d6b115417e3f",
+  "material_input_sha256": "eabaa8f2e629c4f550d7d70a990b269e2c597aa78cceb3a3257e63dce1b36030",
+  "numerical_pass": [
+    true,
+    true
+  ],
+  "ade_allowed_bins": 201,
+  "ade_qualified_bins": 201,
+  "actual_device": "cuda:0",
+  "fsr_nm": [
+    26.00000000000002,
+    24.499999999999964
+  ],
+  "vendor_fsr_nm": 25.454899999999945,
+  "central_peaks_um": [
+    [
+      1.5305,
+      1.5565
+    ],
+    [
+      1.53,
+      1.5545
+    ]
+  ],
+  "source_mode_neff_1550": [
+    1.970622181892395,
+    1.9665573835372925
+  ],
+  "power": {
+    "drop": {
+      "jointly_compared_wavelengths": 201,
+      "constant_mae": 0.13359539375650134,
+      "ade_mae": 0.1212395715747574,
+      "at_1550": {
+        "constant": 0.03160450528777398,
+        "ade": 0.04918832701230839,
+        "published": 0.6744231240959558
+      }
+    },
+    "through": {
+      "jointly_compared_wavelengths": 201,
+      "constant_mae": 0.16221373076288514,
+      "ade_mae": 0.14692931367080073,
+      "at_1550": {
+        "constant": 0.9633589130086524,
+        "ade": 0.9432107073817952,
+        "published": 0.093915300002907
+      }
+    }
+  },
+  "max_held_out_mixed_epsilon_error": 0.0044870483848864495,
+  "source_profile_and_temporal_hashes": {
+    "driven_E_sha256": "b535d3abe45b12e8a3aac14911a57dd2a85c4a90d5c8408a37f91c2a1c4b6111",
+    "source_offset_E_sha256": "b52ca85113a5f08c658cc11ca42d55b0e8d354637aab3549c0243fe297f95682",
+    "driven_H_sha256": "528126e314482c5f9eb5be5554647c2522b9917a4d87eb7256d11b7c51ea1b8c",
+    "source_offset_H_sha256": "e976f3a7b93a015ba2cab44057c8c8ef4ced201808ecc402a13b97471c03f50e",
+    "active_steps_sha256": "343d500edf9426c995449782e4e865bd3add64c9b366ee76d7a288fe1ca32e7e",
+    "active_steps": 1600
+  },
+  "scope": "No spectral alignment or fit to vendor transmission. The source is impressed, frozen at the fitted carrier, and calibrated with a separate dispersive straight-reference pulse. The five modal overlaps use their frequency-specific discrete ADE permittivity."
+}

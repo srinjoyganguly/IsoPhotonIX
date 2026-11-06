@@ -101,7 +101,7 @@ def lateral_fraction(xs, ys, dx, radius, width, bus, reference, interface):
     return fill / len(offsets)**2
 
 
-def permittivity(g, reference):
+def permittivity(g, reference, silicon_epsilon=SILICON**2, oxide_epsilon=OXIDE**2, dtype=np.float32):
     """Sample actual component-centred Yee cells, including the substrate under the Si.
 
     Lateral area fractions use the selected 6×6 quadrature or analytic disk/strip intersection.
@@ -111,7 +111,7 @@ def permittivity(g, reference):
     dx = 1/g['resolution']
     nx, ny, nz = g['shape']
     radius,width,height,bus = [g[k] for k in ('radius_um','width_um','height_um','bus_y_um')]
-    eps = np.empty((3,nx,ny,nz), np.float32)
+    eps = np.empty((3,nx,ny,nz), dtype)
     for component in range(3):
         xs = (np.arange(nx)-nx/2+.5*(component==0))*dx
         ys = (np.arange(ny)-ny/2+.5*(component==1))*dx
@@ -121,17 +121,17 @@ def permittivity(g, reference):
         slab = (np.minimum(z1,height/2)-np.maximum(z0,-height/2)).clip(0,dx)/dx
         below = ((-height/2-z0)/dx).clip(0,1)
         background = g['top_index']**2
-        slices = np.empty((nx,ny,nz),np.float32)
+        slices = np.empty((nx,ny,nz),dtype)
         for k in range(nz):
             oxide, core = below[k], slab[k] * fill
             outer = 1-oxide-core
             if component==2:
                 # Area average the two columns after harmonic z mixing within each.
-                column = 1/(oxide/OXIDE**2+slab[k]/SILICON**2+(1-oxide-slab[k])/background)
-                outside = 1/(oxide/OXIDE**2+(1-oxide)/background)
+                column = 1/(oxide/oxide_epsilon+slab[k]/silicon_epsilon+(1-oxide-slab[k])/background)
+                outside = 1/(oxide/oxide_epsilon+(1-oxide)/background)
                 slices[:,:,k] = fill*column+(1-fill)*outside
             else:
-                slices[:,:,k] = oxide*OXIDE**2+core*SILICON**2+outer*background
+                slices[:,:,k] = oxide*oxide_epsilon+core*silicon_epsilon+outer*background
         eps[component] = slices
     return eps
 
@@ -140,7 +140,7 @@ def fingerprint(array):
     return hashlib.sha256(np.ascontiguousarray(array).tobytes()).hexdigest()
 
 
-def stage(runtime, g, duration, reference):
+def stage(runtime, g, duration, reference, frozen_source=None):
     jax,jnp,fdtdx,target = runtime
     from fdtdx.core.physics.modes import compute_mode
     from fdtdx.core.physics.curl import interpolate_fields
@@ -167,7 +167,14 @@ def stage(runtime, g, duration, reference):
     key=jax.random.PRNGKey(0)
     objects, arrays, params, sim, _ = fdtdx.place_objects(object_list=[volume,*bounds.values(),source],
         config=sim,constraints=constraints,key=key)
-    eps=permittivity(g,reference)
+    ade=g.get('ring_material')=='palik-ade'
+    basis_wavelengths=BASIS_WAVELENGTHS
+    if ade:
+        from scripts import ring_ade_stage as dispersion
+        coefficients,eps,material_metadata=dispersion.build(g,reference,sim.time_step_duration,permittivity)
+        basis_wavelengths=dispersion.material.WAVELENGTHS
+    else:
+        eps=permittivity(g,reference)
     material_sha=fingerprint(eps)
     arrays=arrays.aset('inv_permittivities',jax.device_put(1/eps,target))
     arrays, objects, _ = fdtdx.apply_params(arrays,objects,params,key)
@@ -180,6 +187,12 @@ def stage(runtime, g, duration, reference):
     e,h,_=canonical_source_profile(e,h)
     if not OXIDE<float(np.real(n))<SILICON:
         raise RuntimeError('Unguided launch mode.')
+    if ade and frozen_source is not None:
+        for current,key in [(e,'source_E'),(h,'source_H'),(native._time_offset_E,'source_offset_E'),(native._time_offset_H,'source_offset_H')]:
+            np.testing.assert_allclose(np.asarray(current),frozen_source[key],rtol=2e-6,atol=1e-8)
+        e,h=frozen_source['source_E'],frozen_source['source_H']
+        native=native.aset('_time_offset_E',jax.device_put(frozen_source['source_offset_E'],target))
+        native=native.aset('_time_offset_H',jax.device_put(frozen_source['source_offset_H'],target))
     native=native.aset('_E',jax.device_put(e,target)).aset('_H',jax.device_put(h,target))
     objects=objects.aset('object_list',[native if obj.name=='launch' else obj for obj in objects.object_list])
     weights=[]
@@ -189,12 +202,23 @@ def stage(runtime, g, duration, reference):
     raw = {'source_E':e,'source_H':h,
            'permittivity_midplane':eps[1,:,:,shape[2]//2].copy(),
            'permittivity_cross_section':eps[:,g['source_x']].copy()}
+    if ade:
+        raw.update(projection_wavelengths_um=basis_wavelengths,source_offset_E=np.asarray(native._time_offset_E),
+                   source_offset_H=np.asarray(native._time_offset_H))
+        source_drive=dispersion.audit_waveform(native)
+        arrays=dispersion.attach(arrays,coefficients,target)
     for i,(x,y,z) in enumerate(g['ports']):
         section=arrays.inv_permittivities[:,x:x+1,y:y+aperture,z:z+aperture]
         digest=fingerprint(np.asarray(section))
+        if ade:
+            where=(slice(None),slice(x,x+1),slice(y,y+aperture),slice(z,z+aperture))
+            digest += fingerprint(coefficients['c3'][where])
         if digest not in bases:
-            bases[digest]=port_basis(section,1/BASIS_WAVELENGTHS, LIGHT*1e6/BASIS_WAVELENGTHS,
-                                      dx,sim.time_step_duration,OXIDE,SILICON)
+            if ade:
+                bases[digest]=dispersion.port_profiles(coefficients,where,dx,sim.time_step_duration,OXIDE,SILICON)
+            else:
+                bases[digest]=port_basis(section,1/BASIS_WAVELENGTHS, LIGHT*1e6/BASIS_WAVELENGTHS,
+                                          dx,sim.time_step_duration,OXIDE,SILICON)
         basis,details=bases[digest]
         mode_e,mode_h=basis['mode_e'],basis['mode_h']
         p=.5*np.real((mode_e[:,1]*mode_h[:,2].conj()-mode_e[:,2]*mode_h[:,1].conj()).sum(axis=(1,2)))*dx**2
@@ -260,6 +284,8 @@ def stage(runtime, g, duration, reference):
     info=dict(device=str(target),device_name=target.device_kind,time_steps=int(state[0]),time_step_um_c=dt,
               elapsed_s=time.monotonic()-start,material_sha256=material_sha,source_mode_neff=float(np.real(n)),
               sampled_mode_edge_fraction_max=float(np.max(edge)),source_E_sha256=fingerprint(e),source_H_sha256=fingerprint(h))
+    if ade:
+        info.update(material_validation=material_metadata,source_drive=source_drive)
     return raw,info
 
 
@@ -272,9 +298,10 @@ def directional_spectrum(data, fraction):
     traces=data['projections'][:stop]
     transformed=(dft @ traces.reshape(stop,-1)).reshape(len(WAVELENGTHS),*traces.shape[1:])*(t[1]-t[0])
     # Interpolate between lossless, identically gauged mode weights, never across optical frequencies.
-    i=np.searchsorted(BASIS_WAVELENGTHS,WAVELENGTHS,side='right')-1
-    i=i.clip(0,len(BASIS_WAVELENGTHS)-2)
-    a=(WAVELENGTHS-BASIS_WAVELENGTHS[i])/(BASIS_WAVELENGTHS[i+1]-BASIS_WAVELENGTHS[i])
+    basis=data.get('projection_wavelengths_um',BASIS_WAVELENGTHS)
+    i=np.searchsorted(basis,WAVELENGTHS,side='right')-1
+    i=i.clip(0,len(basis)-2)
+    a=(WAVELENGTHS-basis[i])/(basis[i+1]-basis[i])
     rows=np.arange(len(i))
     return (1-a[:,None,None])*transformed[rows,:,i,:]+a[:,None,None]*transformed[rows,:,i+1,:]
 
@@ -291,6 +318,13 @@ def qualified_spacing(peaks, valid):
 
 def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity):
     ref,dev = [stages[k][1] for k in ('reference','device')]
+    ade=g.get('ring_material')=='palik-ade'
+    if ade:
+        for key in ('source_E','source_H','source_offset_E','source_offset_H','projection_wavelengths_um'):
+            if not np.array_equal(ref[key],dev[key]):
+                raise ValueError(f'Unequal impressed source or port frequency input: {key}.')
+        if stages['reference'][0]['source_drive']!=stages['device'][0]['source_drive']:
+            raise ValueError('Impressed E/H source pulses differ.')
     for k in ('source_E','source_H'):
         if not np.allclose(ref[k],dev[k],rtol=1e-6,atol=1e-8):
             raise ValueError('Launch profiles differ between reference and device.')
@@ -309,6 +343,10 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
     valid=(abs(incident)>abs(incident).max()*.03)&(abs(straight-1)<.04)&(power.sum(axis=1)<=1.05)&(difference<.05)
     valid &= (abs(abs(ratio)-1)<.05)&(abs(np.angle(ratio))<.06)
     # Never report a finite-window resonance from an isolated reassuring wavelength sample.
+    in_band=np.ones(len(WAVELENGTHS),dtype=bool)
+    if ade:
+        in_band=(WAVELENGTHS>=1.5)&(WAVELENGTHS<=1.6)
+        valid &= in_band
     reliable=[p for p in peaks if valid[np.argmin(abs(WAVELENGTHS-p['wavelength_um']))]]
     pair=qualified_spacing(peaks,valid)
     fsr=(pair[1]['wavelength_um']-pair[0]['wavelength_um'])*1000 if pair else None
@@ -316,10 +354,10 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
     external_pair=min(zip(published,published[1:]),key=lambda p:abs(sum(p)/2-1.55))
     external_fsr=1000*(external_pair[1]-external_pair[0])
     # Peak spacings are meaningful only when adjacent peaks and their neighborhood are settled.
-    passed=bool(valid.all() and pair is not None)
+    passed=bool(valid[in_band].all() and pair is not None)
     row=dict(wavelength_um=WAVELENGTHS.tolist(),valid_bins=valid.tolist(),**{k:power[:,i].tolist() for i,k in enumerate(PORTS)})
     data={'s':s,'s_early':early,'incident':incident,'valid_bins':valid,'wavelength_um':WAVELENGTHS,
-          'basis_wavelength_um':BASIS_WAVELENGTHS,'reference_straight_power':straight,'incident_device_over_reference':ratio}
+          'basis_wavelength_um':ref.get('projection_wavelengths_um',BASIS_WAVELENGTHS),'reference_straight_power':straight,'incident_device_over_reference':ratio}
     for label,(info,arrays) in stages.items():
         data.update({label+'_'+key:value for key,value in arrays.items()})
     np.savez_compressed(output/'arrays.npz',**data)
@@ -336,6 +374,10 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
         max_collected_port_power=float(power.sum(axis=1).max()),incident_ratio_magnitude_range=[float(abs(ratio).min()),float(abs(ratio).max())],
         arrays_file='arrays.npz',arrays_sha256=hashlib.sha256((output/'arrays.npz').read_bytes()).hexdigest(),
         limits='Lossless, fixed central indices. Modal E/H overlaps interpolate five independently solved mode profiles across the band. FSR is loaded drop-peak spacing. Intrinsic/external rate estimates require the independent spectral/temporal gates in loaded_loss.')
+    if ade:
+        report['material_band_bins']=int(in_band.sum())
+        report['qualified_material_band_um']=[1.5,1.6]
+        report['limits']='Undamped one-pole fit to the 1500–1600 nm public samples, diagonal Yee coefficients, fixed impressed carrier mode and five frequency-specific port bases. Frequency margins are diagnostic only. Loss separation assumes equal buses.'
     nx,ny,_=g['shape']
     snapshot=int(np.argmin(abs(dev['snapshot_times_um_c']-(PULSE_END+40))))
     report['field_preview']=dict(array='device_E_midplane_snapshots',index=[snapshot,1],axis_order='xy',
@@ -357,6 +399,7 @@ def main():
     parser.add_argument('--resolution',type=int,choices=(12,16,20,24),default=16)
     parser.add_argument('--ring-interface', choices=('legacy','exact-area'), default='legacy',
                         help='How the ring and straight guides occupy the lateral Yee cells.')
+    parser.add_argument('--ring-material',choices=('constant','palik-ade'),default='constant')
     parser.add_argument('--duration-um-c',type=float,help='Total recording in µm/c (Lumerical 3200, Tidy3D 4800).')
     parser.add_argument('--pml-um',type=float,default=.65)
     parser.add_argument('--aperture-um',type=float,default=1.8)
@@ -367,6 +410,8 @@ def main():
         args.duration_um_c=3200. if args.vendor=='lumerical' else 4800.
     if not 100<=args.duration_um_c<=6000 or not .5<=args.pml_um<=1.2 or not 1.5<=args.aperture_um<=2.5:
         parser.error('Require duration 100–6000 µm/c, PML 0.5–1.2 µm and aperture 1.5–2.5 µm.')
+    if args.ring_material=='palik-ade' and (args.vendor!='lumerical' or args.ring_interface!='exact-area'):
+        parser.error('The Palik material control requires the exact-area Lumerical ring.')
     args.output.mkdir(parents=True,exist_ok=True)
     if any(args.output.iterdir()):
         parser.error('Choose an empty result directory.')
@@ -374,6 +419,15 @@ def main():
     versions={k:importlib.metadata.version(k) for k in ('jax','jaxlib','fdtdx','scipy','numpy','tidy3d')}
     g=geometry(args.vendor,args.resolution,args.pml_um,args.aperture_um,args.ring_interface)
     provenance, reusable = stage_fingerprint(ROOT, runtime, versions)
+    if args.ring_material=='palik-ade':
+        from scripts.ring_palik_dispersion import MATERIAL_FILE, MATERIAL_SOURCE_SHA256
+        g['ring_material']=args.ring_material
+        g['material_band_um']=[1.5,1.6]
+        g['material_sha256']=MATERIAL_SOURCE_SHA256
+        for name in ('scripts/ring_ade_stage.py','scripts/ring_palik_dispersion.py',MATERIAL_FILE):
+            provenance['source_files'][name]=hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+        if provenance['source_files'][MATERIAL_FILE]!=MATERIAL_SOURCE_SHA256:
+            raise ValueError('The captured Palik input differs from the fitted model.')
     if args.checkpoint and not reusable:
         print('Persistent checkpoint reuse disabled. ' + provenance['reuse_disabled_reason'], flush=True)
     class StageCache(MeasurementCheckpoints):
@@ -388,8 +442,15 @@ def main():
             is_reference=label=='reference'
             interval=150. if is_reference else args.duration_um_c
             settings=json.loads(json.dumps({'geometry':g,'duration_um_c':interval,'basis':BASIS_WAVELENGTHS.tolist()}))
+            frozen_source=None
+            if args.ring_material=='palik-ade':
+                settings['basis']=[1.5,1.525,1.55,1.575,1.6]
+                if not is_reference:
+                    frozen_source=stages['reference'][1]
+                    settings['frozen_source_sha256']={key:fingerprint(frozen_source[key]) for key in
+                        ('source_E','source_H','source_offset_E','source_offset_H')}
             def calculate():
-                raw,info=stage(runtime,g,interval,is_reference)
+                raw,info=stage(runtime,g,interval,is_reference,frozen_source)
                 return info,raw
             stages[label]=cache.acquire(label,settings,calculate)
             print(label,'complete',stages[label][0]['device'],flush=True)

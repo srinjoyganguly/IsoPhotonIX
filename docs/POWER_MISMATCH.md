@@ -2,6 +2,10 @@
 
 The comparisons use physical wavelengths and incident guided power. No gain or wavelength offset is fitted to the vendor spectrum. Each candidate material or geometry change is measured against the unmodified workbench calculation at the same mesh. The published Tidy3D and Lumerical examples describe different devices.
 
+![Measured ring powers and grating efficiencies for the original and changed numerical models, alongside the published curves](verification/v013-power-controls.png)
+
+The ring panels compare drop power near 1550 nm. The grating panels use actual detector samples. Each panel compares the same physical observable in its own vendor example.
+
 ## Where the ring power goes
 
 The Lumerical text attachment contains the complex fundamental-mode amplitudes for every port. For excitation at port 1, we square the amplitude magnitudes and interpolate power onto the qualified workbench wavelengths. At 1550 nm the 24-cell/µm workbench ring and the published file give:
@@ -32,6 +36,8 @@ On the finer 20-cell Lumerical mesh, exact area changes 1550 nm drop power from 
 **Independent dispersion check.** The original ring freezes silicon and oxide indices across the band. Both Tidy3D and MPB predict that using the filed wavelength dependence raises the straight-guide group index by about 0.17 around the target. To test this effect in the time-domain solver, we fitted a passive undamped Lorentz oscillator to the filed permittivities at 1500, 1550 and 1600 nm and held back 1525 and 1575 nm. The worst held-out index errors were 0.00065 for silicon and 0.000033 for oxide. The pole at 0.50 µm is an out-of-band fitting choice. The material is qualified only over 1500–1600 nm, where the project reports zero absorption.
 
 We propagated an actual plane wave through 0.50 µm films on NVIDIA and compared transmitted power and phase with the analytic Fresnel solution using the **filed** permittivities. For silicon the maximum power errors were **19.96**, **2.38** and **0.64 percentage points** at 16, 48 and 96 cells/µm. The 96-cell phase error was 0.00794 rad and all fine-grid gates passed. The 16-cell phase error was 0.247 rad. The coarse ring grid therefore has a substantial demonstrated propagation error even for a flat film. Matching the material data improves the physical model, but the fit alone cannot justify a coarse-mesh power claim. [Fields, phase, held-out data and per-mesh decisions](verification/v013-palik-slab.json) · [FDTDX polarization recurrence](https://fdtdx.readthedocs.io/en/latest/_modules/fdtdx/dispersion.html).
+
+The full 16-cell dispersive ring qualified its 201 in-band wavelengths and three loaded-Q fits. At 1550 nm its drop power rose from 3.16% to **4.92%**, versus **67.44%** published. The mean absolute drop error decreased from 13.36 to **12.12 percentage points**. The central spacing changed from 26.0 to **24.5 nm**, versus **25.45 nm** published. The correction moved the two central peaks from 1530.5/1556.5 to 1530.0/1554.5 nm. It improves the absolute spectrum in this comparison while moving spacing farther from the reference. Ring material dispersion and unresolved spatial phase both matter. [CUDA ring control and in-band masks](verification/v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json) · [Model, controls and remaining work](RING_INTERFACE_VALIDATION.md).
 
 ## Grating power and spectral shape
 

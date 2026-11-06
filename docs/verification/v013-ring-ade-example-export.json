@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "asset": "ring-lumerical-palik-ade-3d-gpu-r16-v0.12.0a2.zip",
+  "sha256": "159d4b19da144deacccff819eba40e6d0cb2c13303b2a362609ecd85b5d268f1",
+  "size_bytes": 7498425,
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "native_receipt": "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json",
+  "native_arrays_sha256": "1b4c161f2a8a723483396e9d2a8dda23ad3d2e43dfb8ffbf8667d6b115417e3f",
+  "native_captured_files_checked": 13,
+  "runtime_manifest_files_checked": 23,
+  "reference_hashes_checked": {
+    "arrays.npz": "1b4c161f2a8a723483396e9d2a8dda23ad3d2e43dfb8ffbf8667d6b115417e3f",
+    "report.json": "b59d0e9bcd2ebc732cc773fe4666ea27df40f40318195f7a610cb5be84c96259"
+  },
+  "original_native_stage_files_unchanged": true,
+  "scope": "The normal workbench program packaged its measured GPU result. The archive, Python program, notebook cells, source and numerical arrays were checked against the original acquisition. No independent Python or Jupyter rerun of this new archive is claimed."
+}

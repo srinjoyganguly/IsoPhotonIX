@@ -72,14 +72,18 @@ const {chromium} = require('playwright');
         const ring=key==='ring-3d';
         const model=ring?'exact-area':'direct-yee';
         await panel.getByLabel(ring?'Ring boundary sampling':'Grating material sampling').selectOption(model);
+        if(ring)await panel.getByLabel('Ring material response').selectOption('palik-ade');
+        else await panel.getByLabel('Grating wavelengths').selectOption('dense');
         await panel.getByRole('radio',{name:/FDTDX · GPU/i}).check();
         const post=page.waitForRequest(request=>request.url().endsWith('/api/reproduce/calibration')&&request.method()==='POST');
         const download=page.waitForEvent('download');
         await panel.getByRole('button',{name:'Export Python + notebook',exact:true}).click();
         const config=(await post).postDataJSON();
         assert.equal(config[ring?'ring_interface':'grating_material_model'],model);
+        if(ring)assert.equal(config.ring_material,'palik-ade');
+        else assert.equal(config.grating_spectrum,'dense');
         await (await download).saveAs(path.join(out,key+'-program.zip'));
-        modelExports.push({case:key,model});
+        modelExports.push({case:key,model,ring_material:config.ring_material??null,wavelength_grid:config.grating_spectrum??null});
       }
       if(key==='layout-ports-2d'){
         const input=panel.getByLabel('west x',{exact:true});

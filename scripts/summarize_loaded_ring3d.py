@@ -75,6 +75,8 @@ def publish(folder, source, output, checkpoint):
     g=report['physical_model']
     if g.get('ring_interface','legacy')!='legacy':
         base=base.replace('v012-', 'v013-', 1) + '-' + g['ring_interface']
+    if g.get('ring_material')=='palik-ade':
+        base+='-palik-ade'
     if g['pml']!=round(.65*g['resolution']):
         base+=f"-pml{g['pml']}c"
     if g['half_ap']!=round(.9*g['resolution']):

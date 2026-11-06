@@ -47,3 +47,15 @@ class PowerDiagnosticTests(unittest.TestCase):
             Calibration(case='grating-3d',solver='fdtdx',device='gpu',geometry_3d='tidy3d',grating_material_model='direct-yee')
         with self.assertRaises(ValueError):
             Calibration(case='ring',solver='meep',device='cpu',ring_interface='exact-area')
+
+    def test_dispersion_capture_and_qualified_scope(self):
+        settings=dict(case='ring-3d',geometry_3d='lumerical',solver='fdtdx',device='gpu',ring_interface='exact-area',ring_material='palik-ade')
+        for change in ({'geometry_3d':'tidy3d'}, {'resolution':20}, {'ring_interface':'legacy'}):
+            with self.assertRaises(ValueError):
+                Calibration(**(settings|change))
+        with zipfile.ZipFile(io.BytesIO(design_archive(Calibration(**settings)))) as bundle:
+            manifest=json.loads(bundle.read('manifest.json'))
+            self.assertIn('source/docs/verification/v013-ring-project-audit.json',manifest['files'])
+            self.assertIn('source/scripts/ring_ade_stage.py',manifest['files'])
+            args=manifest['arguments']
+            self.assertEqual(args[args.index('--ring-material')+1],'palik-ade')

@@ -41,6 +41,7 @@ def main(argv=None):
     calibration.add_argument('--port-distance-um',type=float,help='distance from the TM joint to its port planes')
     calibration.add_argument('--duration-um-c',type=float,help='observation duration for a loaded 3D ring in µm/c')
     calibration.add_argument('--ring-interface',choices=['legacy','exact-area'],help='lateral material coverage for the 3D ring')
+    calibration.add_argument('--ring-material',choices=['constant','palik-ade'],help='material response of the 16-cell, exact-area Lumerical ring')
     calibration.add_argument('--grating-material-model',choices=['volume-average','direct-yee'],help='material sampling for the finite grating')
     calibration.add_argument('--grating-spectrum',choices=['standard','dense'],help='five samples or 21 samples for the 12-cell Lumerical grating')
     calibration.add_argument('--ring-scope',choices=['full','lumerical','tidy3d'])
@@ -92,7 +93,8 @@ def main(argv=None):
         from backend.calibrations import Calibration, design_archive, run_config
         try:
             model=Calibration(revision=2,case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope,geometry_3d=args.geometry_3d,port_distance_um=args.port_distance_um,duration_um_c=args.duration_um_c,
-                              ring_interface=args.ring_interface,grating_material_model=args.grating_material_model,grating_spectrum=args.grating_spectrum,
+                              ring_interface=args.ring_interface,ring_material=args.ring_material,
+                              grating_material_model=args.grating_material_model,grating_spectrum=args.grating_spectrum,
                               planar_layout=json.loads(args.layout.read_text()) if args.layout is not None else None)
             if args.export_only:
                 archive = design_archive(model)

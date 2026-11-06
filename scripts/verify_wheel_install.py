@@ -108,7 +108,7 @@ def main():
             config={'case':preset['case'],'solver':solver,'device':device}
             with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
                 assert {'config.json','calibration.ipynb','run.py'} <= set(source.namelist())
-        for case, options in [('ring-3d', {'ring_interface':'exact-area'}),
+        for case, options in [('ring-3d', {'ring_interface':'exact-area','ring_material':'palik-ade'}),
                               ('grating-3d', {'grating_material_model':'direct-yee','grating_spectrum':'dense'})]:
             config={'case':case,'solver':'fdtdx','device':'gpu','geometry_3d':'lumerical',**options}
             with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as source:
@@ -120,6 +120,9 @@ def main():
                 if 'grating_spectrum' in options:
                     assert {'source/docs/verification/v013-grating-dense-reference.json',
                             'source/docs/verification/v013-grating-dense-memory.json'} <= set(source.namelist())
+                if 'ring_material' in options:
+                    assert {'source/scripts/ring_ade_stage.py','source/scripts/ring_palik_dispersion.py',
+                            'source/docs/verification/v013-ring-project-audit.json'} <= set(source.namelist())
         command([cli,'calibrate','coupler','--solver','fdtdx','--device','gpu','--export-only',
                  '--output',target/'calibrated-gpu-program'],'calibrated-cli.log')
         with zipfile.ZipFile(target/'calibrated-gpu-program/python-notebook.zip') as archive:

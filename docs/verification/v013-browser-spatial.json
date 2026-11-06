@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-06T12:28:39.425Z",
+  "matched_vendor_readouts": 138,
+  "native_field_readouts": 28,
+  "qualified_loaded_q_rows": 37,
+  "power_diagnostics": 17,
+  "model_program_exports": [
+    {
+      "case": "ring-3d",
+      "model": "exact-area",
+      "ring_material": "palik-ade",
+      "wavelength_grid": null
+    },
+    {
+      "case": "grating-3d",
+      "model": "direct-yee",
+      "ring_material": null,
+      "wavelength_grid": "dense"
+    }
+  ],
+  "editable_port_position": true,
+  "mobile_width_px": 390,
+  "browser_errors": []
+}

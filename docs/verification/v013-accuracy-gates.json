@@ -109,6 +109,16 @@
       },
       "all_evidenced_and_met": false
     },
+    "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json": {
+      "criteria": {
+        "nearest_drop_center_within_one_published_linewidth": false,
+        "through_at_target_within_five_points": false,
+        "through_band_mean_within_five_points": false,
+        "drop_at_target_within_five_points": false,
+        "drop_band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
     "v013-ring3d-lumerical-r16-t3200-exact-area.json": {
       "criteria": {
         "nearest_drop_center_within_one_published_linewidth": false,
@@ -166,5 +176,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "4daed4567287653d127f3e05901efb6a027f5fca82c302eb528c77414cf78045"
+  "diagnosis_sha256": "6f8e6174581589b37226a1ceec2928c6fe6d8ec3b53831a8a21eb1bbd17efb4b"
 }

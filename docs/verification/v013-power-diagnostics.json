@@ -4333,6 +4333,54 @@
       "source_report_sha256": "4bd24b1639cc7d749a6930f64867f8ff92a724cf51b994c164c8e628884b916b",
       "native_arrays_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e"
     },
+    "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "reflection": {
+          "local": 2.1508630504065576e-06,
+          "published": 0.0007615791758866508,
+          "mean_absolute_difference": 0.0031123756405717993
+        },
+        "through": {
+          "local": 0.9432107073817952,
+          "published": 0.093915300002907,
+          "mean_absolute_difference": 0.14692931367080073
+        },
+        "drop": {
+          "local": 0.04918832701230839,
+          "published": 0.6744231240959558,
+          "mean_absolute_difference": 0.1212395715747574
+        },
+        "add_side": {
+          "local": 3.19302080790578e-05,
+          "published": 0.000824536588624558,
+          "mean_absolute_difference": 0.0030823464171804084
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5500920771652973,
+        "published_peak_power": 0.7153218182890001,
+        "published_fwhm_nm": 1.4208675155746864,
+        "local_sampled_center_um": 1.5545,
+        "local_sampled_peak_power": 0.8505743496101568,
+        "nearest_sampled_center_difference_nm": 4.407922834702704,
+        "local_fitted_center_um": 1.5547542262671084,
+        "local_fwhm_nm": 2.3056581589492673,
+        "local_target_distance_in_linewidths": 2.0619822798341017,
+        "published_target_distance_in_linewidths": 0.06480348398985136
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 24.499999999999964,
+        "published": 25.454899999999945
+      },
+      "variant": "exact-area / palik-ade",
+      "mesh": 16,
+      "vendor": "lumerical",
+      "source_report_sha256": "680d2945a27917262e3792902ebd8e9adc3790d8072202710f3a53e9404ece13",
+      "native_arrays_sha256": "1b4c161f2a8a723483396e9d2a8dda23ad3d2e43dfb8ffbf8667d6b115417e3f"
+    },
     "v013-ring3d-lumerical-r16-t3200-exact-area.json": {
       "observable": "ring",
       "target_um": 1.55,
