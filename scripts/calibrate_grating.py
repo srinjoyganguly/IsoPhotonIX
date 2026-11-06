@@ -280,12 +280,12 @@ def gaussian_only(case, resolution, compact, arrays, prefix, checkpoint=None):
     return result
 
 
-def guided_radiation(out,vendor,resolution,checkpoint):
+def guided_radiation(out,vendor,resolution,checkpoint,post_source_duration=None):
     """One launched TE0 mode and an independent straight-guide normalization."""
     import meep as mp
     mp.verbosity(0)
     case=CASES[vendor]
-    duration=100 if vendor=='tidy3d' else 150
+    duration=post_source_duration if post_source_duration is not None else 100 if vendor=='tidy3d' else 150
     settings=(resolution,.8,1.,duration,1.56)
     reference=measured_stage(case,'guide_reference',settings,checkpoint=checkpoint)
     device=measured_stage(case,'guide_device',settings,checkpoint=checkpoint)
@@ -384,6 +384,7 @@ def main():
     parser.add_argument('--checkpoint',type=Path,help='retain and reuse verified, completed solver stages in this directory')
     parser.add_argument('--beam-only',choices=tuple(CASES),help='repeat only one measured Gaussian-to-guide case')
     parser.add_argument('--guide-only',choices=tuple(CASES),help='measure upward and downward flux for one guide-excited grating')
+    parser.add_argument('--guide-duration',type=int,choices=(150,300,450),help='post-source observation for a guided-input control, in µm/c')
     parser.add_argument('--vendor-box',action='store_true',help='use Tidy3D notebook box and monitor with an explicitly clipped beam')
     parser.add_argument('--project-source',action='store_true',help='use the published Ansys project oxide index, beam position and waist')
     parser.add_argument('--project-output',action='store_true',help='measure Ansys total output flux and TE0 at the filed far-port coordinates')
@@ -391,6 +392,8 @@ def main():
     args = parser.parse_args()
     if args.beam_only and args.guide_only:
         parser.error('choose a Gaussian or a guided input')
+    if args.guide_duration is not None and not args.guide_only:
+        parser.error('--guide-duration requires --guide-only')
     if args.vendor_box and args.beam_only!='tidy3d':
         parser.error('--vendor-box requires --beam-only tidy3d')
     if (args.project_source or args.project_output) and args.beam_only!='lumerical':
@@ -414,7 +417,7 @@ def main():
     with tempfile.TemporaryDirectory(dir=destination.parent) as temp:
         stage = Path(temp)/'study'; stage.mkdir()
         if args.guide_only:
-            result=guided_radiation(stage,args.guide_only,args.resolution or 40,checkpoint)
+            result=guided_radiation(stage,args.guide_only,args.resolution or 40,checkpoint,args.guide_duration)
         elif args.beam_only:
             import meep as mp
             mp.verbosity(0)

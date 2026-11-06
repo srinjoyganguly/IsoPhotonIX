@@ -1,0 +1,155 @@
+{
+  "passed": true,
+  "url": "https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.11.0a1/calibration-examples-2026-11-06.zip",
+  "sha256": "a8b901fe6577ad1fa0deb9f7da20d5144c3e6d10d9b7838a1104fa155ea3602d",
+  "runs": {
+    "meep-planar-multimode.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "multimode",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 48,
+        "offset_um": 0.125
+      },
+      "worker": "scripts.calibrate_multimode",
+      "measured_files": 3,
+      "source_files": 9,
+      "archive_sha256": "ce0fe32cf10e20af0b82bc0d1d53ea1bd8dcc99d9d9e72564e6daa75a0ed45d0"
+    },
+    "meep-compact-grating.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "grating",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 40,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": "tidy3d-compact"
+      },
+      "worker": "scripts.calibrate_grating",
+      "measured_files": 2,
+      "source_files": 11,
+      "archive_sha256": "3f72526e2526cc845b95aec465dd1f28a9f14254281f2b7add956ce08d6ce196"
+    },
+    "meep-loaded-ring.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "ring",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": null,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": "lumerical",
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_ring",
+      "measured_files": 2,
+      "source_files": 20,
+      "archive_sha256": "6fa0ac716252e9568379ed3af026d9d17c36b43089ac169119b72e141a75ff0d"
+    },
+    "coupler-yee-aligned-cpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "cpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "measured_files": 19,
+      "source_files": 16,
+      "archive_sha256": "92c30a3b8b6fe09ca76664fb1b087e1ce5b1fe133b10cc8b1dccdfe208f684e2"
+    },
+    "coupler-yee-aligned-gpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "measured_files": 19,
+      "source_files": 17,
+      "archive_sha256": "839c0593bc3eda93547e53d3bc8aff346fc56c183c53eaede01a4e57ba23722e"
+    },
+    "coupler-yee-aligned-gpu16.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "coupler",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "measured_files": 19,
+      "source_files": 17,
+      "archive_sha256": "c37f11dc772433fa91dc58d875a52681f1104c12f8ecd96984ecf9ee00c983fd"
+    },
+    "splitter-yee-aligned-cpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "cpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "measured_files": 15,
+      "source_files": 16,
+      "archive_sha256": "021477bd3ad4312a646afbe1386d2559ccd3ba27b6c4564e90e922c157b90ee0"
+    },
+    "splitter-yee-aligned-gpu12.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": "yee-aligned",
+        "ring_scope": null,
+        "grating_scope": null
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "measured_files": 15,
+      "source_files": 17,
+      "archive_sha256": "5f0ce469eca0f3f0a446c8b545229cf953cc724ca0e3fbd5fba1cb1d5936dd9e"
+    },
+    "splitter-yee-aligned-gpu16.zip": {
+      "config": {
+        "study_type": "calibrated-component",
+        "case": "splitter",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": "yee-aligned"
+      },
+      "worker": "scripts.calibrate_fdtdx_multiport",
+      "measured_files": 15,
+      "source_files": 17,
+      "archive_sha256": "30dda891e5b1fce8de29fc407885741a92e810f56197b4483cd5ef58c909efc2"
+    }
+  }
+}

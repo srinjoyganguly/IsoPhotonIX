@@ -137,12 +137,18 @@ def build():
     if 'grating' in index:
         for label,name in [('Lumerical article · 28 cells/µm','v011-grating-ansys-article-r28.json'),
                            ('Lumerical article · 40 cells/µm','v011-grating-ansys-article-r40.json'),
-                           ('Lumerical project source · 40 cells/µm','v011-grating-ansys-project-r40.json')]:
+                           ('Lumerical project source · 40 cells/µm','v011-grating-ansys-project-r40.json'),
+                           ('Lumerical project source · 60 cells/µm','v011-grating-ansys-project-r60.json')]:
             beam=read(name)
             if beam and beam.get('passed'):
                 panel={'case_id':beam['case_id'],'vendor':beam['vendor'],
                        'result':{k:beam['result'][k] for k in ('wavelength_um','beam_to_guide','valid_beam_bins')}}
                 index['grating']['recorded'].append({'label':label,'receipt':name,'report':panel})
+                if name=='v011-grating-ansys-project-r60.json':
+                    row=beam['result']
+                    mean=row['published_spectral_comparison']['mean_absolute_difference_percentage_points']
+                    index['grating']['comparisons'].append(vendor('Lumerical project source',beam['source_url'],
+                        f"The 60-cell source-matched model measures {100*row['center_beam_to_guide']:.2f}% at 1310 nm versus 55.7%. Its seven-point mean absolute difference is {mean:.2f} percentage points. The filed output aperture is a separate observable."))
     if 'grating' in index:
         for name in ('tidy3d','lumerical'):
             filename=f'v011-grating-guided-{name}-r40.json'
