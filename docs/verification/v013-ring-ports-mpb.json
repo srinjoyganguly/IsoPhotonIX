@@ -1,0 +1,203 @@
+{
+  "engine": "mpb",
+  "version": "1.35.0",
+  "source_project_sha256": "6132a406d16606f4a20122eb362e7a5895a3a9ad91492e035789b8d1698634b4",
+  "design": {
+    "width_um": 0.4,
+    "height_um": 0.18,
+    "port_span_um": 3.0,
+    "top": "air",
+    "bottom": "oxide"
+  },
+  "rows": [
+    {
+      "resolution": 40,
+      "wavelength_um": 1.5483870967741937,
+      "material": "constant",
+      "neff": 1.9065560440462788,
+      "transverse_Ey_fraction": 0.946473138615921,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 40,
+      "wavelength_um": 1.5483870967741937,
+      "material": "palik-table",
+      "neff": 1.9035904011510858,
+      "transverse_Ey_fraction": 0.9463418166538324,
+      "epsilon_si": 12.086305916251337,
+      "epsilon_oxide": 2.085201101125313
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.525,
+      "material": "constant",
+      "neff": 1.9495314864964068,
+      "transverse_Ey_fraction": 0.9478969262927724,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.525,
+      "material": "palik-table",
+      "neff": 1.9491383286335817,
+      "transverse_Ey_fraction": 0.9478757183637276,
+      "epsilon_si": 12.102386552846498,
+      "epsilon_oxide": 2.08606259835634
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.5483870967741937,
+      "material": "constant",
+      "neff": 1.9098679111883248,
+      "transverse_Ey_fraction": 0.9445317568022081,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.5483870967741937,
+      "material": "palik-table",
+      "neff": 1.906898472055905,
+      "transverse_Ey_fraction": 0.944403900067881,
+      "epsilon_si": 12.086305916251337,
+      "epsilon_oxide": 2.085201101125313
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.55,
+      "material": "constant",
+      "neff": 1.9071293022701774,
+      "transverse_Ey_fraction": 0.9443011871044721,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.55,
+      "material": "palik-table",
+      "neff": 1.9039873578945907,
+      "transverse_Ey_fraction": 0.9441665027959932,
+      "epsilon_si": 12.085214794079697,
+      "epsilon_oxide": 2.0851426458070788
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.575,
+      "material": "constant",
+      "neff": 1.8646814497290494,
+      "transverse_Ey_fraction": 0.9407782034465443,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 64,
+      "wavelength_um": 1.575,
+      "material": "palik-table",
+      "neff": 1.858582076751864,
+      "transverse_Ey_fraction": 0.9405347370605038,
+      "epsilon_si": 12.066231279626518,
+      "epsilon_oxide": 2.0842260681762776
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.525,
+      "material": "constant",
+      "neff": 1.9527188105622093,
+      "transverse_Ey_fraction": 0.946803637964453,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.525,
+      "material": "palik-table",
+      "neff": 1.9523135840761936,
+      "transverse_Ey_fraction": 0.9467816219353463,
+      "epsilon_si": 12.102386552846498,
+      "epsilon_oxide": 2.08606259835634
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.5483870967741937,
+      "material": "constant",
+      "neff": 1.9130027432063237,
+      "transverse_Ey_fraction": 0.9433987729061409,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.5483870967741937,
+      "material": "palik-table",
+      "neff": 1.9100136855737073,
+      "transverse_Ey_fraction": 0.943269760357034,
+      "epsilon_si": 12.086305916251337,
+      "epsilon_oxide": 2.085201101125313
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.55,
+      "material": "constant",
+      "neff": 1.910260112922122,
+      "transverse_Ey_fraction": 0.9431655349695918,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.55,
+      "material": "palik-table",
+      "neff": 1.9070979909545842,
+      "transverse_Ey_fraction": 0.9430296793301015,
+      "epsilon_si": 12.085214794079697,
+      "epsilon_oxide": 2.0851426458070788
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.575,
+      "material": "constant",
+      "neff": 1.8677426730200946,
+      "transverse_Ey_fraction": 0.9396034184416614,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 96,
+      "wavelength_um": 1.575,
+      "material": "palik-table",
+      "neff": 1.8616125825925436,
+      "transverse_Ey_fraction": 0.9393587405303587,
+      "epsilon_si": 12.066231279626518,
+      "epsilon_oxide": 2.0842260681762776
+    },
+    {
+      "resolution": 128,
+      "wavelength_um": 1.5483870967741937,
+      "material": "constant",
+      "neff": 1.9147527095942314,
+      "transverse_Ey_fraction": 0.9421354053373892,
+      "epsilon_si": 12.1104,
+      "epsilon_oxide": 2.0736
+    },
+    {
+      "resolution": 128,
+      "wavelength_um": 1.5483870967741937,
+      "material": "palik-table",
+      "neff": 1.9117553001054501,
+      "transverse_Ey_fraction": 0.9420083542120957,
+      "epsilon_si": 12.086305916251337,
+      "epsilon_oxide": 2.085201101125313
+    }
+  ],
+  "scope": "Local transverse eigensolves only. Tidy3D uses a local uniform grid without subpixel averaging; FDTDX also uses Tidy3D internally for transverse modes. MPB is a separate frequency-domain eigensolver with dielectric averaging.",
+  "group_index_64": {
+    "constant": 4.537480442058259,
+    "palik-table": 4.711231166227842
+  },
+  "group_index_96": {
+    "constant": 4.544520376727679,
+    "palik-table": 4.718829036947734
+  }
+}

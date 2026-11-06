@@ -1,0 +1,171 @@
+{
+  "geometry": {
+    "radius_um": 3.1,
+    "Lc_um": 0.0,
+    "gap_um": 0.1,
+    "base width_um": 0.4,
+    "base height_um": 0.18,
+    "x span_um": 22.0,
+    "base_angle_deg": 90.0,
+    "bezier_control_fraction": 0.55191502449,
+    "maximum_radial_difference_nm": 0.6078370623899487,
+    "perimeter_difference_nm": 0.7421584786884594
+  },
+  "port_modes": [
+    {
+      "port": 1,
+      "center_um": [
+        -4.199999999999999,
+        3.5999999999999996,
+        0.08999999999999997
+      ],
+      "aperture_yz_um": [
+        3.0,
+        3.0
+      ],
+      "mode_wavelength_um": 1.5483870967741937,
+      "neff": 1.9325164936753623,
+      "reported_mode_TE_fraction": 0.9471177406367213
+    },
+    {
+      "port": 2,
+      "center_um": [
+        -4.199999999999999,
+        -3.5999999999999996,
+        0.08999999999999997
+      ],
+      "aperture_yz_um": [
+        3.0,
+        3.0
+      ],
+      "mode_wavelength_um": 1.5483870967741937,
+      "neff": 1.9325164936753572,
+      "reported_mode_TE_fraction": 0.9471177406367207
+    },
+    {
+      "port": 3,
+      "center_um": [
+        4.199999999999999,
+        3.5999999999999996,
+        0.08999999999999997
+      ],
+      "aperture_yz_um": [
+        3.0,
+        3.0
+      ],
+      "mode_wavelength_um": 1.5483870967741937,
+      "neff": 1.9325164936753654,
+      "reported_mode_TE_fraction": 0.9471177406367215
+    },
+    {
+      "port": 4,
+      "center_um": [
+        4.199999999999999,
+        -3.5999999999999996,
+        0.08999999999999997
+      ],
+      "aperture_yz_um": [
+        3.0,
+        3.0
+      ],
+      "mode_wavelength_um": 1.5483870967741937,
+      "neff": 1.9325164936753585,
+      "reported_mode_TE_fraction": 0.9471177406367205
+    }
+  ],
+  "grid": {
+    "x": {
+      "coordinates": 227,
+      "minimum_step_nm": 42.857142857137376,
+      "step_at_guide_center_nm": 42.857142857142854
+    },
+    "y": {
+      "coordinates": 222,
+      "minimum_step_nm": 42.937853107338775,
+      "step_at_guide_center_nm": 42.937853107344104
+    },
+    "z": {
+      "coordinates": 50,
+      "minimum_step_nm": 43.097457421500145,
+      "step_at_guide_center_nm": 43.09745742150019
+    }
+  },
+  "material_wavelengths_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "material_tables_epsilon": {
+    "Si (Silicon) - Palik": {
+      "real": [
+        12.113767098181818,
+        12.102386552846498,
+        12.085214794079697,
+        12.066231279626518,
+        12.047841
+      ],
+      "imaginary": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "SiO2 (Glass) - Palik": {
+      "real": [
+        2.0868903295539103,
+        2.08606259835634,
+        2.0851426458070788,
+        2.0842260681762776,
+        2.083338133596439
+      ],
+      "imaginary": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "source_port_numbers": [
+    1
+  ],
+  "full_symmetry_flag": false,
+  "simulation_time_fs": 10000.000000000002,
+  "saved_pulse_settings": {
+    "global_length_fs": 9.913979300006998,
+    "local_port_length_fs": 2.653350757258028,
+    "scope": "Saved configuration fields. The launched time signal and its phase are not recovered from these scalar fields."
+  },
+  "total_flux_and_modal_drop": {
+    "number_of_points": 500,
+    "range_um": [
+      1.5,
+      1.5999999999999999
+    ],
+    "total_flux_fraction_at_1550": 0.7545645118299971,
+    "fundamental_S21_power_at_1550": 0.6744231240959558,
+    "mean_absolute_difference": 0.00562954923046941,
+    "maximum_absolute_difference": 0.08470977246396183,
+    "definition": "The LDF stores total recorded drop flux. The TXT stores modal S magnitudes; square S21 for fundamental power."
+  },
+  "sources": {
+    "project": {
+      "url": "https://optics.ansys.com/hc/en-us/article_attachments/50334806316307",
+      "sha256": "6132a406d16606f4a20122eb362e7a5895a3a9ad91492e035789b8d1698634b4"
+    },
+    "total_flux": {
+      "url": "https://optics.ansys.com/hc/en-us/article_attachments/50334805250579",
+      "sha256": "b366f4234fadd989534fe8fad48b6ecc80a34c9269aa0eaeb99aa103d74f3649"
+    },
+    "s_parameters": {
+      "url": "https://optics.ansys.com/hc/en-us/article_attachments/50334805245587",
+      "sha256": "497d0ed797b82d5887bd67ee1630712fb5ac38de0eee6a7b99d55e63fc938bd8"
+    }
+  },
+  "provenance_limit": "The project contains the port modes, grid and S-parameter export script. Neither separate measurement attachment identifies the exact project revision or mesh of its originating run."
+}
