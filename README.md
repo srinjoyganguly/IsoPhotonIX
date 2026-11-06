@@ -44,7 +44,7 @@ The local wheel bundles the web interface and Python service. On Linux/WSL2
 with Python 3.11, install the wheel with pip, use `photonics-workbench setup meep`
 to provision Meep/MPB through Conda, and launch `photonics-workbench web`.
 Use `setup fdtdx-cpu`, `setup fdtdx-cuda12` or `setup beamz-cpu` to provision a separate local worker. `photonics-workbench desktop` opens the dedicated application window.
-[Installation](docs/PACKAGING.md) · [Desktop window](docs/DESKTOP_WINDOW.md) · [BeamZ reference studies](docs/BEAMZ_REFERENCE.md).
+[Download a prebuilt release](https://github.com/srinjoyganguly/photonics-workbench/releases) · [Installation](docs/PACKAGING.md) · [Desktop window](docs/DESKTOP_WINDOW.md) · [BeamZ reference studies](docs/BEAMZ_REFERENCE.md).
 
 Choose **Open runnable 3D waveguide** to run a finite-height core with an optional
 substrate through Meep CPU or FDTDX CPU/NVIDIA GPU. Inspect actual Ex/Ey/Ez and

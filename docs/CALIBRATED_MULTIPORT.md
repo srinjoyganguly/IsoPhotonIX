@@ -209,5 +209,44 @@ straight-phase difference of −0.03350 rad, their excess-phase differences were
 compared with Meep's 0.87387 and 0.07320. These powers and phases quantify the
 remaining device-level disagreement at 16 cells/µm.
 [Native coupler straight reference and sampled electric fields](verification/v011-meep-coupler-straight-phase.json).
+
+### Measured sensitivity of the incident columns
+
+Each row is an independently evolved straight reference and device. The
+coupler input was the lower-left port. The splitter input was the centre trunk.
+All sixteen stages met the same energy and DFT settling checks at all three
+frequencies. Differences below are maxima over those frequencies and output
+ports. Power is a fraction of incident fundamental-mode power. The phase
+columns use wrapped phase differences where both modal amplitudes exceeded
+0.01. Forward refers to the two measured right-side outputs.
+
+| Device | Change from the nominal run | Max absolute power change | Max phase change, all ports (rad) | Max forward phase change (rad) |
+| --- | --- | ---: | ---: | ---: |
+| Coupler | Port aperture width 2 → 2.25 µm | 0.00000212 | 0.0000263 | 0.00000664 |
+| Coupler | PML thickness 0.75 → 1 µm | 0.0000197 | 0.02016 | 0.0000217 |
+| Coupler | Longer DFT ringdown | 0.0000636 | 0.00846 | 0.0000821 |
+| Coupler | Mesh 16 → 20 cells/µm | 0.04914 | 2.18441 | 0.96763 |
+| Splitter | Port aperture width 2 → 2.25 µm | 0.00000479 | 0.0000140 | 0.00000321 |
+| Splitter | PML thickness 0.75 → 1 µm | 0.00000652 | 0.0000806 | 0.00000928 |
+| Splitter | Longer DFT ringdown | 0.0000662 | 0.01333 | 0.0000487 |
+| Splitter | Mesh 16 → 20 cells/µm | 0.00943 | 1.05128 | 0.98938 |
+
+The longer run accumulated at least 72 µm/c after the end of the pulse, with
+a cap of 96 µm/c. PML enlargement kept the physical planes and access lengths
+fixed. Mesh refinement dominated both forward-power and physical-phase
+sensitivity. The isolated lead's measured MPB index at 1.55 µm changed from
+2.494685 to 2.547224; the separately resolved 80-cell/µm MPB section gave
+2.548773. Changes in longitudinal propagation accumulate over the 9.5 µm
+between physical planes.
+
+At 20 cells/µm the 1.55 µm coupler delivered bar/cross powers of
+0.909446/0.043183, or 4.5330% normalized cross power versus 7.7294% at 16.
+The splitter delivered 0.406182/0.396547, with a normalized 50.6002% lower-arm
+fraction and 0.95431 dB excess loss. Its nominal values were 50.967% and
+1.00764 dB. Weak returns show the largest phase shifts. The full nominal
+matrices remain the measured 16-cell results; these refinements bound the
+observed sensitivity of the two tested columns. Two mesh points do not
+establish a converged continuum scattering phase.
+[Native control matrices, convergence checks and numerical digests](verification/v011-meep-multiport-sensitivities.json).
 For example, the lower-port power remained 0.40414 for Meep versus 0.36595
 for the corrected FDTDX run.
