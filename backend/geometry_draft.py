@@ -201,7 +201,8 @@ def validate_geometry(value):
     if not isinstance(value, dict) or type(value.get('schema_version')) is not int or value['schema_version'] not in (1, 2):
         raise ValueError('Expected a version-1 or version-2 geometry draft.')
     version = value['schema_version']
-    _record(value, BASE_KEYS | ({'materials', 'components'} if version == 2 else set()), label='Geometry document')
+    _record(value, BASE_KEYS | ({'materials', 'components'} if version == 2 else set()),
+            ('connections',) if version == 2 else (), label='Geometry document')
     if value['schema'] != 'photonics-workbench-geometry' or value['units'] != 'um' or value['mode'] not in ('draft-3d', 'slab-preview'):
         raise ValueError('Expected a micrometre geometry draft, not a solver configuration.')
     domain = _vector(value['domain'], .1, 1000, 'Domain')
@@ -255,6 +256,35 @@ def validate_geometry(value):
               'mode': value['mode'], 'domain': domain, 'objects': objects}
     if version == 2:
         result.update(materials=materials, components=_components(value['components'], objects, material_by_id, domain))
+        if 'connections' in value:
+            result['connections']=_connections(value['connections'],result['components'])
+    return result
+
+
+def _connections(value, components):
+    if not isinstance(value,list) or len(value)>16384:
+        raise ValueError('A design may contain at most 16,384 named-port connections.')
+    known={(c['id'],p['name']) for c in components for p in c['ports']}
+    ids,occupied,result=set(),set(),[]
+    for item in value:
+        _record(item,{'id','a','b'},label='Connection')
+        key=_id(item['id'],'Connection id')
+        if key in ids:
+            raise ValueError('Connection ids must be unique.')
+        ids.add(key)
+        edge={'id':key}
+        for side in ('a','b'):
+            port=_record(item[side],{'component_id','port'},label='Connection endpoint')
+            endpoint=(_id(port['component_id'],'Component id'),_name(port['port'],'Port name'))
+            if endpoint not in known:
+                raise ValueError(f'Connection {key} references a missing port. Disconnect it before removing that port.')
+            if endpoint in occupied:
+                raise ValueError('Each named port may belong to only one saved connection.')
+            occupied.add(endpoint)
+            edge[side]={'component_id':endpoint[0],'port':endpoint[1]}
+        if edge['a']['component_id']==edge['b']['component_id']:
+            raise ValueError('Choose ports on two different components.')
+        result.append(edge)
     return result
 
 

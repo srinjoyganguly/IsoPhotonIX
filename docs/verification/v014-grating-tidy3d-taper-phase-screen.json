@@ -1,0 +1,118 @@
+{
+  "vendor_geometry": "tidy3d",
+  "scope": "A uniform, symmetric oxide-clad unetched slab of the actual silicon thickness, using the actual z mesh and the Yee propagation symbols, over the physical taper length. It omits narrowing, distributed grating radiation, substrate and fiber phase. No fitted optical length, phase shift, or modification of S. Residuals are modulo 2\u03c0; this cannot identify an absolute vendor phase or unwrapped delay.",
+  "mesh_pairs": [
+    {
+      "mesh_pair": [
+        12,
+        14
+      ],
+      "taper_length_um": 50.0,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "slab_neff_at_first_mesh": [
+        3.0041608783215143,
+        2.988297315771665,
+        2.9728776285225833,
+        2.957868958037609,
+        2.9432419464661352
+      ],
+      "slab_neff_at_second_mesh": [
+        3.018263671149536,
+        3.003647738833024,
+        2.9893523109944384,
+        2.9753564048635073,
+        2.9616411460154883
+      ],
+      "wide_uniform_slab_phase_change_rad": [
+        2.953682022907461,
+        3.162280414364648,
+        3.3391446079873934,
+        3.4881545700497516,
+        3.6126743835112696
+      ],
+      "measured_principal_guide_phase_change_rad": [
+        3.078499117848406,
+        -2.953461109490209,
+        -2.721742953393349,
+        -2.5242889679734564,
+        -2.3863002637917656
+      ],
+      "principal_residual_rad": [
+        0.12481709494094506,
+        0.16744378332473023,
+        0.22229774579884445,
+        0.27074176915637893,
+        0.28421065987655175
+      ]
+    },
+    {
+      "mesh_pair": [
+        14,
+        16
+      ],
+      "taper_length_um": 50.0,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "slab_neff_at_first_mesh": [
+        3.018263671149536,
+        3.003647738833024,
+        2.9893523109944384,
+        2.9753564048635073,
+        2.9616411460154883
+      ],
+      "slab_neff_at_second_mesh": [
+        3.0231997999885047,
+        3.0094775588550755,
+        2.995997067668062,
+        2.9827442461947395,
+        2.969706391330779
+      ],
+      "wide_uniform_slab_phase_change_rad": [
+        1.0338204065117764,
+        1.2009783444608226,
+        1.3467818548869066,
+        1.4736246382277038,
+        1.583607214494761
+      ],
+      "measured_principal_guide_phase_change_rad": [
+        1.1491853430904997,
+        1.4336650981491879,
+        1.6207256791865643,
+        1.7195422406217182,
+        1.7229564836499223
+      ],
+      "principal_residual_rad": [
+        0.11536493657872327,
+        0.23268675368836522,
+        0.2739438242996577,
+        0.2459176023940144,
+        0.13934926915516122
+      ]
+    }
+  ]
+}

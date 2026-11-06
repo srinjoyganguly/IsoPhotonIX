@@ -26,3 +26,19 @@
 .port-pair select {width:100%; min-width:0; padding:7px; background:#142d39; border:1px solid #42606b; color:#def1ed; border-radius:4px}
 .port-alignment .library-fit {margin:12px 0}
 @media(max-width:760px){.port-pair{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.port-alignment[open] > summary {margin-bottom:12px}
+.connection-count {display:inline-block;margin-left:.5rem;font:500 .75rem/1.2 ui-monospace,monospace;color:#a8c9cd}
+.connection-actions {display:flex;flex-wrap:wrap;gap:8px}
+.port-alignment .connection-actions .button {min-height:34px;padding:7px 12px;font-size:13px;line-height:1.3}
+.port-alignment .connection-actions .button:disabled {opacity:.55;cursor:not-allowed}
+.connection-list {display:grid;gap:8px;padding:0;margin:14px 0 0;list-style:none}
+.connection-list li {padding:12px;border:1px solid #3b5660;border-radius:5px;background:#132a34}
+.connection-head {display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+.connection-head strong {font-size:13px;overflow-wrap:anywhere}
+.connection-state {display:inline-block;border-radius:4px;padding:3px 7px;font-size:12px;font-weight:650}
+.connection-state.aligned {color:#acedce;background:#184238}
+.connection-state.planned {color:#ffde96;background:#493c24}
+.connection-metrics {display:flex;flex-wrap:wrap;gap:8px 22px;margin:10px 0;line-height:1.4;font-size:12px}
+.connection-metrics dt {color:#adbdc6}
+.connection-metrics dd {margin:0;color:#e2edf1;font-variant-numeric:tabular-nums}
+.port-alignment .connection-hint {color:#f1d598}

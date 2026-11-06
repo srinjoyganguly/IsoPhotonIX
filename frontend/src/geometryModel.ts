@@ -10,10 +10,13 @@ export type MaterialRecord = { id: string; name: string; reference_wavelength_um
   { model: 'constant-nk'; n: number; k: number } |
   { model: 'tabulated-nk'; wavelength_um: number[]; n: number[]; k: number[] }
 );
+export type LayoutPort = { name: string; x: number; y: number; z: number; angle_deg: number; width_um: number };
+export type PortEndpoint = { component_id: string; port: string };
+export type CircuitConnection = { id: string; a: PortEndpoint; b: PortEndpoint };
 export type ComponentInstance = {
   id: string; family: string; generator_version: 1; parameters: Record<string, number>; object_ids: string[];
   placement: { x: number; y: number; z: number; rotation_deg: number }; material_id: string;
-  ports: { name: string; x: number; y: number; z: number; angle_deg: number; width_um: number }[];
+  ports: LayoutPort[];
 };
 export type GeometryTemplate = 'strip' | 'coupler' | 'ring';
 export type GeometryObject = {
@@ -47,6 +50,7 @@ export type GeometryDocument = {
   objects: GeometryObject[];
   materials?: MaterialRecord[];
   components?: ComponentInstance[];
+  connections?: CircuitConnection[];
 };
 
 export const GEOMETRY_LIMITS = {
@@ -246,12 +250,62 @@ function validateComponents(value: unknown, objects: GeometryObject[], materials
   return result;
 }
 
+function validateConnections(value: unknown, components: ComponentInstance[]): CircuitConnection[] {
+  if (!Array.isArray(value) || value.length > 16384) throw new Error('A design may contain at most 16,384 named-port connections.');
+  const ports = new Map(components.map(c => [c.id, new Set(c.ports.map(p => p.name))]));
+  const ids = new Set<string>(), occupied = new Set<string>();
+  function endpoint(raw: unknown): PortEndpoint {
+    const recordValue = record(raw, 'Connection endpoint', ['component_id', 'port']);
+    const component_id = identifier(recordValue.component_id, 'Component id');
+    const port = name(recordValue.port, 'Port name');
+    if (!ports.get(component_id)?.has(port)) throw new Error('A connection references a missing component or port.');
+    const key = JSON.stringify([component_id, port]);
+    if (occupied.has(key)) throw new Error('Each named port may belong to only one saved connection.');
+    occupied.add(key);
+    return { component_id, port };
+  }
+  return value.map(raw => {
+    const item = record(raw, 'Connection', ['id', 'a', 'b']);
+    const id = identifier(item.id, 'Connection id');
+    if (ids.has(id)) throw new Error('Connection ids must be unique.');
+    ids.add(id);
+    const a = endpoint(item.a), b = endpoint(item.b);
+    if (a.component_id === b.component_id) throw new Error('Choose ports on two different components.');
+    return { id, a, b };
+  });
+}
+
+export function portRelation(a: LayoutPort, b: LayoutPort) {
+  const delta = { x: b.x - a.x, y: b.y - a.y, z: b.z - a.z };
+  const distance = Math.hypot(delta.x, delta.y, delta.z);
+  const angleError = Math.abs(((a.angle_deg - b.angle_deg) % 360 + 360) % 360 - 180);
+  const widthDifference = Math.abs(a.width_um - b.width_um);
+  const widthsMatch = widthDifference <= Math.max(1e-9, 1e-9 * Math.max(a.width_um, b.width_um));
+  return { delta, distance, angleError, widthDifference, widthsMatch, aligned: distance <= 1e-8 && angleError <= 1e-7 && widthsMatch };
+}
+
+export function connectedPorts(document: GeometryDocument) {
+  const parts = new Map((document.components ?? []).map(part => [part.id, part]));
+  return (document.connections ?? []).map(edge => {
+    // The document validator enforces both named endpoints before rendering.
+    const first = parts.get(edge.a.component_id)!, second = parts.get(edge.b.component_id)!;
+    const a = first.ports.find(port => port.name === edge.a.port)!, b = second.ports.find(port => port.name === edge.b.port)!;
+    return { edge, first, second, a, b, relation: portRelation(a, b) };
+  });
+}
+
+export function removeComponentLinks(document: GeometryDocument, id: string): Pick<GeometryDocument, 'connections'> {
+  return document.connections === undefined ? {} : {
+    connections: document.connections.filter(edge => edge.a.component_id !== id && edge.b.component_id !== id),
+  };
+}
+
 /** Validate a fresh normalized document; v1 stays the original primitive format. */
 export function validateGeometryDocument(value: unknown): GeometryDocument {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('Geometry document must be an object.');
   const version = (value as Record<string, unknown>).schema_version;
   if (version !== 1 && version !== 2) throw new Error('Expected a photonics-workbench-geometry document with schema_version 1 or 2. Solver configuration JSON is a different format.');
-  const input = record(value, 'Geometry document', [...documentKeys, ...(version === 2 ? ['materials', 'components'] : [])]);
+  const input = record(value, 'Geometry document', [...documentKeys, ...(version === 2 ? ['materials', 'components'] : [])], version === 2 ? ['connections'] : []);
   if (input.schema !== 'photonics-workbench-geometry') throw new Error('Expected a photonics-workbench-geometry document. Solver configuration JSON is a different format.');
   if (input.units !== 'um') throw new Error('Geometry units must be um (micrometres).');
   if (input.mode !== 'draft-3d' && input.mode !== 'slab-preview') throw new Error('Geometry mode must be draft-3d or slab-preview.');
@@ -288,8 +342,10 @@ export function validateGeometryDocument(value: unknown): GeometryDocument {
     for (const axis of ['x', 'y', 'z'] as const) if (bounds.min[axis] < -domain[axis] / 2 - EPS || bounds.max[axis] > domain[axis] / 2 + EPS) throw new Error(`${object.name} extends outside the domain along ${axis}. Move or resize the object, or enlarge the domain.`);
     return object;
   });
+  const components = version === 2 ? validateComponents(input.components, objects, materialById, domain) : [];
   return { schema: 'photonics-workbench-geometry', schema_version: version, units: 'um', name: name(input.name, 'Document name'), mode: input.mode, domain, objects,
-    ...(version === 2 ? { materials, components: validateComponents(input.components, objects, materialById, domain) } : {}) };
+    ...(version === 2 ? { materials, components } : {}),
+    ...(Object.hasOwn(input, 'connections') ? { connections: validateConnections(input.connections, components) } : {}) };
 }
 
 export function upgradeToV2(document: GeometryDocument): GeometryDocument {
@@ -302,7 +358,7 @@ export function detachComponent(document: GeometryDocument, objectId: string): G
   const value = validateGeometryDocument(document);
   const componentId = value.objects.find(o => o.id === objectId)?.component_id;
   if (!componentId) return value;
-  return { ...value, components: value.components!.filter(c => c.id !== componentId), objects: value.objects.map(o => {
+  return { ...value, ...removeComponentLinks(value, componentId), components: value.components!.filter(c => c.id !== componentId), objects: value.objects.map(o => {
     if (o.component_id !== componentId) return o;
     const { component_id: _removed, ...detached } = o; return detached;
   }) };

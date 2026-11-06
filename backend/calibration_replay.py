@@ -200,7 +200,8 @@ def run(root, output, checkpoint=None):
             option={'scripts.calibrate_ring':'--checkpoint','scripts.calibrate_grating':'--checkpoint',
                     'scripts.calibrate_multimode':'--checkpoint-dir','scripts.calibrate_planar_tm':'--checkpoint-dir',
                     'scripts.calibrate_layout_ports':'--checkpoint-dir','scripts.calibrate_layout_ports3d':'--checkpoint',
-                    'scripts.calibrate_loaded_ring3d':'--checkpoint','scripts.calibrate_finite_grating':'--checkpoint'}.get(manifest['worker'])
+                    'scripts.calibrate_loaded_ring3d':'--checkpoint','scripts.run_reciprocal_ring3d':'--checkpoint',
+                    'scripts.calibrate_finite_grating':'--checkpoint'}.get(manifest['worker'])
             if option:
                 arguments += [option,str(cache)]
             elif manifest['worker'] in ('scripts.calibrate_multiport','scripts.calibrate_fdtdx_multiport'):

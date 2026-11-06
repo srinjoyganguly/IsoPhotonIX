@@ -129,23 +129,82 @@ def _facing(first, second):
     return abs((first['angle_deg'] - second['angle_deg']) % 360 - 180) <= 1e-7
 
 
+def _endpoint(geometry, component_id, port_name):
+    component=next((c for c in geometry['components'] if c['id']==component_id),None)
+    if component is None:
+        raise ValueError('Choose a component that is still in the layout.')
+    port=next((p for p in component['ports'] if p['name']==port_name),None)
+    if port is None:
+        raise ValueError('Choose an existing named port on this component.')
+    return component,port
+
+
+def _existing_connection(geometry, a, b):
+    for edge in geometry.get('connections',[]):
+        ends=(edge['a'],edge['b'])
+        if a in ends and b in ends:
+            return edge
+        if a in ends or b in ends:
+            raise ValueError('That port already belongs to another connection. Disconnect it first.')
+    return None
+
+
+def connection_status(geometry):
+    """Evaluate geometry at saved port endpoints without inferring guided power."""
+    checked=validate_geometry(geometry)
+    ports={(c['id'],p['name']):p for c in checked.get('components',[]) for p in c['ports']}
+    rows=[]
+    for edge in checked.get('connections',[]):
+        a,b=(ports[(end['component_id'],end['port'])] for end in (edge['a'],edge['b']))
+        separation=math.dist([a[k] for k in 'xyz'],[b[k] for k in 'xyz'])
+        angle_error=abs((a['angle_deg']-b['angle_deg'])%360-180)
+        widths_match=math.isclose(a['width_um'],b['width_um'],rel_tol=1e-9,abs_tol=1e-9)
+        aligned=separation<=1e-8 and angle_error<=1e-7 and widths_match
+        rows.append({**edge,'state':'aligned' if aligned else 'needs_route','distance_um':separation,
+                     'angle_error_deg':angle_error,'width_difference_um':abs(a['width_um']-b['width_um']),
+                     'widths_match':widths_match})
+    return rows
+
+
+def connect_ports(geometry, moving_component, moving_port, fixed_component, fixed_port, align=False, fit_domain=False):
+    """Save design intent, optionally applying the normal rigid port alignment first."""
+    if moving_component==fixed_component:
+        raise ValueError('Choose ports on two different components.')
+    candidate=upgrade_geometry(geometry)
+    _endpoint(candidate,moving_component,moving_port)
+    _endpoint(candidate,fixed_component,fixed_port)
+    a={'component_id':moving_component,'port':moving_port}
+    b={'component_id':fixed_component,'port':fixed_port}
+    existing=_existing_connection(candidate,a,b)
+    if align:
+        candidate=align_ports(candidate,moving_component,moving_port,fixed_component,fixed_port,fit_domain)
+    if existing is not None:
+        return {'geometry':candidate,'connection':existing}
+    edge={'id':'connection-'+uuid.uuid4().hex[:16],'a':a,'b':b}
+    candidate.setdefault('connections',[]).append(edge)
+    checked=validate_geometry(candidate)
+    return {'geometry':checked,'connection':checked['connections'][-1]}
+
+
+def disconnect_ports(geometry, connection_id):
+    candidate=validate_geometry(geometry)
+    edges=candidate.get('connections',[])
+    if not any(e['id']==connection_id for e in edges):
+        raise ValueError('Choose a saved connection in this design.')
+    candidate['connections']=[e for e in edges if e['id']!=connection_id]
+    return candidate
+
+
 def align_ports(geometry, moving_component, moving_port, fixed_component, fixed_port, fit_domain=False):
     """Rigidly place one component against a named port. Dimensions are in µm."""
     candidate = upgrade_geometry(geometry)
     if moving_component == fixed_component:
         raise ValueError('Choose ports on two different components.')
 
-    def endpoint(component_id, port_name):
-        component = next((c for c in candidate['components'] if c['id'] == component_id), None)
-        if component is None:
-            raise ValueError('Choose a component that is still in the layout.')
-        port = next((p for p in component['ports'] if p['name'] == port_name), None)
-        if port is None:
-            raise ValueError('Choose an existing named port on this component.')
-        return component, port
-
-    moving, source = endpoint(moving_component, moving_port)
-    _, target = endpoint(fixed_component, fixed_port)
+    moving, source = _endpoint(candidate,moving_component,moving_port)
+    _, target = _endpoint(candidate,fixed_component,fixed_port)
+    _existing_connection(candidate,{'component_id':moving_component,'port':moving_port},
+                         {'component_id':fixed_component,'port':fixed_port})
     if not math.isclose(source['width_um'], target['width_um'], rel_tol=1e-9, abs_tol=1e-9):
         raise ValueError('Port widths differ. Choose equal-width ports or insert a taper.')
     for neighbor in candidate['components']:

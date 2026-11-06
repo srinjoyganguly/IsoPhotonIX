@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import {
   createGeometryObject, createGeometryTemplate, createSlabPreview,
   parseGeometryDocument, serializeGeometryDocument, validateGeometryDocument,
-  evaluateMaterial, geometryBounds, upgradeToV2, detachComponent,
+  evaluateMaterial, geometryBounds, upgradeToV2, detachComponent, connectedPorts, portRelation,
 } from './src/geometryModel.ts';
 import { commitDesign, deleteSelection, initialHistory, redoDesign, selectObject, undoDesign } from './src/designHistory.ts';
 import { packHistory, unpackHistory } from './src/designRecovery.ts';
@@ -222,6 +222,86 @@ test('empty designs, old primitives and missing selections are safe; redo follow
   assert.equal(history.future.length, 0);
   assert.equal(redoDesign(history), history);
   assert.deepEqual(undoDesign(history).present, original);
+});
+
+function connectedCircuit() {
+  const scene = clone(shared.valid[4].input);
+  const part = scene.components[0], solid = scene.objects[0];
+  const port = part.ports[0];
+  part.ports.push({ ...port, name: 'out', x: 2, angle_deg: 0 });
+  for (const i of [2, 3]) {
+    const next = clone(part);
+    next.id = 'instance-' + i;
+    next.object_ids = ['core-' + i];
+    scene.components.push(next);
+    scene.objects.push({ ...clone(solid), id: next.object_ids[0], component_id: next.id });
+  }
+  scene.connections = [1, 2].map(i => ({
+    id: 'link-' + i, a: { component_id: 'instance-' + i, port: 'out' },
+    b: { component_id: 'instance-' + (i+1), port: 'in' },
+  }));
+  return validateGeometryDocument(scene);
+}
+
+test('persistent edges round-trip independently; absent connections stay absent on older documents', () => {
+  const old = shared.valid[4].input;
+  assert.equal(Object.hasOwn(parseGeometryDocument(serializeGeometryDocument(old)), 'connections'), false);
+  assert.deepEqual(parseGeometryDocument(serializeGeometryDocument({ ...old, connections: [] })).connections, []);
+  assert.throws(() => validateGeometryDocument({ ...createGeometryTemplate('strip'), connections: [] }));
+  const linked = connectedCircuit();
+  const parsed = parseGeometryDocument(serializeGeometryDocument(linked));
+  assert.deepEqual(parsed, linked);
+  parsed.connections[0].a.port = 'changed';
+  assert.equal(linked.connections[0].a.port, 'out');
+});
+
+test('edge validation rejects duplicate endpoints in either order, missing references and malformed records', () => {
+  const linked = connectedCircuit();
+  const [one, two] = linked.connections;
+  const invalid = [
+    null, {}, [null], [{ ...one, unknown: 'field' }], [{ ...one, id: '../bad' }],
+    [{ ...one, b: { ...one.b, port: 'absent' } }], [{ ...one, b: { ...one.b, component_id: 'absent' } }],
+    [{ ...one, a: { ...one.a, x: 1 } }], [{ ...one, b: { ...one.a, port: 'in' } }],
+    [one, { ...two, id: one.id }], [one, { id: 'other', a: one.b, b: one.a }],
+    [one, { ...two, a: one.a }], new Array(16385),
+  ];
+  for (const connections of invalid) assert.throws(() => validateGeometryDocument({ ...linked, connections }));
+});
+
+test('connection status measures world XYZ, antiparallel directions and width tolerance', () => {
+  const scene = connectedCircuit();
+  const pair = connectedPorts(scene)[0];
+  assert.deepEqual(pair.relation.delta, { x: -4, y: 0, z: 0 });
+  assert.equal(pair.relation.distance, 4);
+  assert.equal(pair.relation.aligned, false);
+  const a = { ...pair.a, x: 0, y: 0, z: 0, angle_deg: 350, width_um: 2 };
+  const b = { ...a, angle_deg: 170 };
+  assert.equal(portRelation(a, b).aligned, true);
+  assert.equal(portRelation(a, { ...b, z: 1e-8 }).aligned, true);
+  assert.equal(portRelation(a, { ...b, z: 1.1e-8 }).aligned, false);
+  assert.equal(portRelation(a, { ...b, angle_deg: 170.0000002 }).aligned, false);
+  assert.equal(portRelation(a, { ...b, width_um: 2 + 1.9e-9 }).aligned, true);
+  assert.equal(portRelation(a, { ...b, width_um: 2 + 2.1e-9 }).aligned, false);
+  assert.equal(portRelation(a, { ...b, x: 3, y: 4, z: 12 }).distance, 13);
+  Object.assign(scene.components[1].ports[0], { x: pair.a.x });
+  assert.equal(connectedPorts(scene)[0].relation.aligned, true);
+  assert.deepEqual(scene.connections, connectedCircuit().connections);
+});
+
+test('deleting or detaching a component removes only incident edges and recovers through saved history', () => {
+  const scene = connectedCircuit(), selectedId = scene.objects[0].id;
+  for (const operation of [deleteSelection, detachComponent]) {
+    const after = validateGeometryDocument(operation(scene, selectedId));
+    assert.deepEqual(after.connections, [scene.connections[1]]);
+    assert.deepEqual(after.materials, scene.materials);
+    assert.deepEqual(after.components, scene.components.slice(1));
+    assert.equal(scene.connections.length, 2);
+    const history = commitDesign(selectObject(initialHistory(scene), selectedId), after, null);
+    assert.deepEqual(undoDesign(history).present, { document: scene, selectedId });
+    const undo = undoDesign(history);
+    const restored = unpackHistory(packHistory(undo).text, serializeGeometryDocument(scene), scene);
+    assert.deepEqual(redoDesign(restored), history);
+  }
 });
 
 test('design history retains the latest fifty changes and selections without mutating prior snapshots', () => {

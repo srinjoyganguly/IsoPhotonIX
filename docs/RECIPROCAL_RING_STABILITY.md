@@ -32,6 +32,10 @@ A local developer can profile the same model on a different GPU using the regist
 "$FDTDX_PYTHON" -m scripts.profile_ring_wall_memory --source "$PWD" --vendor lumerical \
   --model reciprocal-wall --base-mesh 16 --candidate-mesh 24 --output my-ring-budget.json
 PHOTONICS_RING_MEMORY_PLAN="$PWD/my-ring-budget.json" "$FDTDX_PYTHON" \
-  -m scripts.calibrate_loaded_ring3d --vendor lumerical --device gpu --resolution 24 \
+  -m scripts.run_reciprocal_ring3d --vendor lumerical --device gpu --resolution 24 \
   --duration-um-c 3200 --ring-interface reciprocal-wall --checkpoint my-stages --output fresh-ring
 ```
+
+The same independently compiled periodic stress control ran on the RTX 3080 Ti Laptop GPU. Relative energy drift was 1.31 × 10⁻⁷ across 8,192 steps, with 0.334 s synchronized stepping and 0.342 s of CUDA event elapsed time. The 16-cell role probes measured a conservative 8,372 MiB requirement for the 24-cell full ring, versus 12,501 MiB free at its outer admission check. The worker repeats that check before each newly computed stage. [GPU energy receipt](verification/v014-reciprocal-wall-gpu.json) · [Measured memory profile](verification/v014-ring-memory-lumerical-r24-reciprocal.json) · [Outer admission](verification/v014-ring-admission-lumerical-r24-reciprocal.json).
+
+The 24-cell pilot exercised the refusal path. After recording the straight stage, its process retained GPU allocations and the board reported 8,235 MiB free against the 8,372 MiB requirement. The native worker withheld the device stage. A fresh process reopened the verified straight checkpoint, released the prior allocator pool and rechecked the same budget before proceeding. The normal reciprocal entry creates a temporary checkpoint when none is supplied. It retries once, and only after observing this specific post-reference refusal and verifying a newly written reference archive. Other failures propagate. [Original admission and recovery evidence](verification/v014-reciprocal-ring-admission-recovery.json) · [Native orchestration](../scripts/run_reciprocal_ring3d.py).

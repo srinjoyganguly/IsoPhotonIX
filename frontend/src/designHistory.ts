@@ -1,4 +1,4 @@
-import type { GeometryDocument } from './geometryModel';
+import { removeComponentLinks, type GeometryDocument } from './geometryModel.ts';
 
 type Snapshot = { document: GeometryDocument; selectedId: string | null };
 export type DesignHistory = { past: Snapshot[]; present: Snapshot; future: Snapshot[] };
@@ -47,7 +47,7 @@ export function deleteSelection(document: GeometryDocument, selectedId: string |
   }
   const removed = new Set(component.object_ids);
   return {
-    ...document, mode: 'draft-3d',
+    ...document, ...removeComponentLinks(document, component.id), mode: 'draft-3d',
     objects: document.objects.filter(object => !removed.has(object.id)),
     components: document.components!.filter(instance => instance.id !== component.id),
   };

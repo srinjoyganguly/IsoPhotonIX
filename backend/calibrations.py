@@ -248,7 +248,8 @@ def specification(config):
         if ring:
             helpers += ['docs/verification/v014-ring-wall-stability.json']
             if config.ring_interface=='reciprocal-wall':
-                helpers += ['scripts/reciprocal_ring_wall.py','scripts/grating_cuda_identity.py',
+                worker='run_reciprocal_ring3d'
+                helpers += ['scripts/calibrate_loaded_ring3d.py','scripts/reciprocal_ring_wall.py','scripts/grating_cuda_identity.py',
                             f'docs/verification/v014-ring-memory-{config.geometry_3d}-r24-reciprocal.json']
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py',
                         'scripts/ring_stage_provenance.py','scripts/ring_wall_tensor.py']

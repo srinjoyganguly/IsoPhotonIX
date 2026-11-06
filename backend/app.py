@@ -136,6 +136,46 @@ def library_align(request: PortAlignment):
         raise HTTPException(422, str(exc)) from exc
 
 
+class PortConnection(PortAlignment):
+    align: bool = False
+
+
+class CircuitDesign(BaseModel):
+    model_config=ConfigDict(extra='forbid',strict=True)
+    geometry: dict
+
+
+class PortDisconnection(CircuitDesign):
+    connection_id: str=Field(min_length=1,max_length=80)
+
+
+@app.post('/api/library/connect')
+def library_connect(request: PortConnection):
+    from .library_layout import connect_ports
+    try:
+        return connect_ports(**request.model_dump())
+    except ValueError as exc:
+        raise HTTPException(422,str(exc)) from exc
+
+
+@app.post('/api/library/disconnect')
+def library_disconnect(request: PortDisconnection):
+    from .library_layout import disconnect_ports
+    try:
+        return {'geometry':disconnect_ports(**request.model_dump())}
+    except ValueError as exc:
+        raise HTTPException(422,str(exc)) from exc
+
+
+@app.post('/api/library/connections')
+def library_connections(request: CircuitDesign):
+    from .library_layout import connection_status
+    try:
+        return {'connections':connection_status(request.geometry)}
+    except ValueError as exc:
+        raise HTTPException(422,str(exc)) from exc
+
+
 @app.post('/api/materials/film')
 def material_film(config: dict):
     from .thin_film import film_spectrum

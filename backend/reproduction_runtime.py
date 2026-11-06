@@ -344,6 +344,25 @@ def align_ports(geometry, moving_component, moving_port, fixed_component, fixed_
         geometry, moving_component, moving_port, fixed_component, fixed_port, fit_domain)
 
 
+def connect_ports(geometry, moving_component, moving_port, fixed_component, fixed_port, *, align=False, fit_domain=False):
+    """Save a named-port link, optionally moving its first component into alignment."""
+    check_bundle()
+    return _design_module('library_layout').connect_ports(
+        geometry,moving_component,moving_port,fixed_component,fixed_port,align,fit_domain)['geometry']
+
+
+def disconnect_ports(geometry, connection_id):
+    """Remove the link while preserving the physical placement of its components."""
+    check_bundle()
+    return _design_module('library_layout').disconnect_ports(geometry,connection_id)
+
+
+def connection_status(geometry):
+    """Inspect position, orientation and width at each saved pair of ports."""
+    check_bundle()
+    return _design_module('library_layout').connection_status(geometry)
+
+
 def plot_geometry(geometry, *, show_hidden=False):
     """Render the exact draft solids; curved surfaces are visualization meshes."""
     import numpy as np

@@ -1,0 +1,189 @@
+{
+  "passed": true,
+  "geometry": "lumerical",
+  "domain": "mirror-y",
+  "mesh": 20,
+  "archive": "grating-lumerical-mirror-y-r20.zip",
+  "size_bytes": 52402731,
+  "sha256": "7bea8690d1c106d2d6f04c7c2b1371ed312972ff60d9d231d86a922126655290",
+  "fdtdx_license_sha256": "986edffa455359aca6b59a16bbd5660161d694edd9a44cbf3f39ec465007e5e3",
+  "reference_arrays_sha256": "279a73cfb9f4275af0b3be37d0ccee6f4a81bcf99649b09f1a84f5b7ea8e5578",
+  "reference_report_sha256": "77e09cdd8a11c60d8ce9ad5b5a308e67d15ab9f5563948a80bcd8657db29be43",
+  "source_sha256": {
+    "calibrate_finite_grating.py": "7e870344b755bc78be28bb3b8dc7c3ec4b2031511c38b15dd40ce381bafc5f0e",
+    "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+    "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+    "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+    "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+    "grating_angular_spectrum.py": "6cb92ee07a20d8eb7862413c0a4cf167f95806639b9374de3f42bddfabc50e5e",
+    "lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+    "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+    "grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+    "gpu_timing.py": "7150612d42ed0dbb5cfe2ab9c0feda5fa1b74d8e307ac36b62da21395f34633b",
+    "v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655",
+    "v014-grating-memory-lumerical-mirror-r20.json": "5c3b5135ffe3065da33ab4ddadeba30b10c3719a1bd2468c59208aebce20da90",
+    "grating_mirror.py": "201bc4850163a537ccd875417d15467637dedea6c24bb741bbf72b67ea64fad5"
+  },
+  "executed_notebook": {
+    "file": "grating-lumerical-mirror-y-r20-executed.ipynb",
+    "sha256": "94401702acf785f5c83660be03cb5ee8d79ca4af0e003ccaed9af0e7a87684a7",
+    "change": "The printed absolute result directory was shortened to notebook-result."
+  },
+  "original_stages": {
+    "reference": {
+      "schema": 1,
+      "acquisition_id": "94dcfadcc68a4960b3954bd77b7deffc",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        866,
+        213,
+        76
+      ],
+      "cells": 14018808,
+      "spacing_um": 0.05,
+      "pml_cells": 13,
+      "steps": 4410,
+      "dt_seconds": 9.532874347655028e-17,
+      "simulated_time_fs": 420.39975873158676,
+      "compile_seconds": 1.0954082819953328,
+      "synchronized_step_seconds": 146.52262254797097,
+      "step_batches": 7,
+      "cuda_event_elapsed_seconds": 146.52361132812499,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 167.5790224740049,
+      "million_cell_steps_per_second": 421.9344576620541,
+      "setup_before_compile_seconds": 25.525470139997196,
+      "represented_full_shape": [
+        866,
+        426,
+        76
+      ],
+      "boundary_faces": {
+        "min_y": "PEC mirror, one clamped Yee plane",
+        "remaining_five_faces": "PML, 13 cells per face"
+      }
+    },
+    "device": {
+      "schema": 1,
+      "acquisition_id": "4b3cf60d201945f6aae46b5b7931d7cf",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        866,
+        213,
+        76
+      ],
+      "cells": 14018808,
+      "spacing_um": 0.05,
+      "pml_cells": 13,
+      "steps": 12600,
+      "dt_seconds": 9.532874347655028e-17,
+      "simulated_time_fs": 1201.1421678045335,
+      "compile_seconds": 1.0277044380054576,
+      "synchronized_step_seconds": 421.2299038279598,
+      "step_batches": 20,
+      "cuda_event_elapsed_seconds": 421.23145312500003,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 446.0175683420093,
+      "million_cell_steps_per_second": 419.3362797721567,
+      "setup_before_compile_seconds": 28.408844215999125,
+      "represented_full_shape": [
+        866,
+        426,
+        76
+      ],
+      "boundary_faces": {
+        "min_y": "PEC mirror, one clamped Yee plane",
+        "remaining_five_faces": "PML, 13 cells per face"
+      }
+    }
+  },
+  "original_stage_acquisition": {
+    "reference": {
+      "status": "cache-hit",
+      "gpu_lock_wait_seconds": 6.760800897609442e-05
+    },
+    "device": {
+      "status": "fresh",
+      "gpu_lock_wait_seconds": 8.408899884670973e-05
+    }
+  },
+  "replays": {
+    "python": {
+      "stage_acquisition": {
+        "reference": "cache-hit",
+        "device": "cache-hit"
+      },
+      "matched_field_and_result_arrays": 45,
+      "archive_sha256": "279a73cfb9f4275af0b3be37d0ccee6f4a81bcf99649b09f1a84f5b7ea8e5578",
+      "reproduction": {
+        "passed": true,
+        "all_array_bytes_equal": true,
+        "within_tolerance": {},
+        "precision": {
+          "relative": 2e-06,
+          "absolute": 1e-10,
+          "per_array_peak_fraction": 2e-06
+        },
+        "reported_observables_checked": [
+          "beam/wavelength_um",
+          "beam/beam_to_guide",
+          "beam/valid_beam_bins",
+          "radiation/fiber_return_power",
+          "field/array",
+          "field/index",
+          "field/axis_order",
+          "field/component",
+          "field/horizontal_axis",
+          "field/vertical_axis",
+          "field/horizontal_um",
+          "field/vertical_um",
+          "field/wavelength_um"
+        ]
+      }
+    },
+    "notebook": {
+      "stage_acquisition": {
+        "reference": "cache-hit",
+        "device": "cache-hit"
+      },
+      "matched_field_and_result_arrays": 45,
+      "archive_sha256": "279a73cfb9f4275af0b3be37d0ccee6f4a81bcf99649b09f1a84f5b7ea8e5578",
+      "reproduction": {
+        "passed": true,
+        "all_array_bytes_equal": true,
+        "within_tolerance": {},
+        "precision": {
+          "relative": 2e-06,
+          "absolute": 1e-10,
+          "per_array_peak_fraction": 2e-06
+        },
+        "reported_observables_checked": [
+          "beam/wavelength_um",
+          "beam/beam_to_guide",
+          "beam/valid_beam_bins",
+          "radiation/fiber_return_power",
+          "field/array",
+          "field/index",
+          "field/axis_order",
+          "field/component",
+          "field/horizontal_axis",
+          "field/vertical_axis",
+          "field/horizontal_um",
+          "field/vertical_um",
+          "field/wavelength_um"
+        ]
+      }
+    }
+  },
+  "scope": "All native arrays and timings originate from verified completed GPU checkpoints. Original-stage acquisition flags identify reuse, including resumed runs. Python and unmodified Jupyter replay validate the exact source, archived arrays, field planes and native cache. Zero new electromagnetic steps were requested by the replays."
+}

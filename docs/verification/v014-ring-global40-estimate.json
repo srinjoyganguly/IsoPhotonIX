@@ -41,5 +41,6 @@
       "executed_40_cell_steps": 0,
       "gap_width_over_spacing": 4
     }
-  ]
+  ],
+  "ring_interface": "wall-tensor"
 }

@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import type { GeometryDocument, GeometryObject } from './geometryModel';
+import { connectedPorts, type GeometryDocument, type GeometryObject, type Vec3 } from './geometryModel';
 import './GeometryViewport.css';
 
 export type GeometryViewportProps = {
@@ -38,6 +38,7 @@ function surfaceColors(index: number, selected: boolean, componentMember: boolea
 function disposeGroup(group: THREE.Group) {
   group.traverse(node => {
     const drawable = node as THREE.Mesh;
+    if (node instanceof THREE.InstancedMesh) node.dispose();
     drawable.geometry?.dispose();
     if (drawable.material) {
       const materials = Array.isArray(drawable.material) ? drawable.material : [drawable.material];
@@ -49,6 +50,37 @@ function disposeGroup(group: THREE.Group) {
     }
   });
   group.clear();
+}
+
+function addConnectionGuides(group: THREE.Group, links: ReturnType<typeof connectedPorts>, scale: number) {
+  const segments: number[] = [];
+  const planned: Vec3[] = [], aligned: Vec3[] = [];
+  for (const { a, b, relation } of links) {
+    if (relation.aligned) aligned.push(a);
+    else {
+      planned.push(a, b);
+      segments.push(a.x, a.y, a.z, b.x, b.y, b.z);
+    }
+  }
+  if (segments.length) {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(segments, 3));
+    const line = new THREE.LineSegments(geometry, new THREE.LineDashedMaterial({
+      color: 0xffb566, dashSize: scale * .55, gapSize: scale * .3, depthTest: false, depthWrite: false,
+    }));
+    line.name = 'planned-connections'; line.renderOrder = 5; line.computeLineDistances(); group.add(line);
+  }
+  function markers(points: Vec3[], color: number, radius: number, name: string) {
+    if (!points.length) return;
+    const mesh = new THREE.InstancedMesh(new THREE.SphereGeometry(radius, 12, 8),
+      new THREE.MeshBasicMaterial({ color, depthTest: false, depthWrite: false }), points.length);
+    const matrix = new THREE.Matrix4();
+    points.forEach(({ x, y, z }, i) => mesh.setMatrixAt(i, matrix.makeTranslation(x, y, z)));
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.name = name; mesh.renderOrder = 6; group.add(mesh);
+  }
+  markers(planned, 0xffb566, scale * .12, 'planned-endpoints');
+  markers(aligned, 0x72ffdd, scale * .22, 'aligned-joints');
 }
 
 function makeGeometry(object: GeometryObject): THREE.BufferGeometry {
@@ -103,6 +135,12 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
   const [portsVisible, setPortsVisible] = useState(true);
   const [cameraView, setCameraView] = useState<CameraView | 'free'>('iso');
   const [distance, setDistance] = useState('');
+  const visibleConnections = useMemo(() => {
+    const shown = new Set(document.objects.filter(object => object.visible).map(object => object.component_id));
+    return connectedPorts(document).filter(({ edge }) => shown.has(edge.a.component_id) && shown.has(edge.b.component_id));
+  }, [document]);
+  const alignedCount = visibleConnections.filter(link => link.relation.aligned).length;
+  const plannedCount = visibleConnections.length - alignedCount;
   documentRef.current = document;
   selectionRef.current = onSelect;
   selectedRef.current = selectedId;
@@ -281,6 +319,7 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
         portGuides.add(arrow);
       }
     }
+    addConnectionGuides(portGuides, visibleConnections, arrowLength);
     engine.guides.add(portGuides);
     const domainGeometry = new THREE.BoxGeometry(document.domain.x, document.domain.y, document.domain.z);
     const border = new THREE.LineSegments(new THREE.EdgesGeometry(domainGeometry), new THREE.LineDashedMaterial({ color: 0x647d96, transparent: true, opacity: .65, dashSize: .12, gapSize: .08 }));
@@ -300,7 +339,7 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
       sprite.scale.setScalar(axisLength * .3); engine.guides.add(sprite);
     });
     engine.render();
-  }, [document, attempt]);
+  }, [document, visibleConnections, attempt]);
 
   useEffect(() => {
     const engine = engineRef.current;
@@ -348,13 +387,17 @@ export function GeometryViewport({ document, selectedId, onSelect, resetKey }: G
       <div className="geometry-guide-buttons" role="group" aria-label="Viewport guides">
         <button type="button" aria-pressed={gridVisible} onClick={() => setGridVisible(value => !value)}>Grid</button>
         <button type="button" aria-pressed={domainVisible} onClick={() => setDomainVisible(value => !value)}>Domain</button>
-        {document.schema_version === 2 && <button type="button" aria-pressed={portsVisible} title="Component layout-port directions; these are not configured simulation sources" onClick={() => setPortsVisible(value => !value)}>Layout ports</button>}
+        {document.schema_version === 2 && <button type="button" aria-pressed={portsVisible} title="Show named port directions and saved connections" onClick={() => setPortsVisible(value => !value)}>Layout ports</button>}
       </div>
     </div>
     <div className="geometry-3d-stage">
       <div className="geometry-3d-host" ref={hostRef}/>
       <div className="geometry-3d-caption"><span className="geometry-preview-pill">{document.mode === 'slab-preview' ? 'EXTRUDED 2D PREVIEW' : '3D GEOMETRY DRAFT'}</span><span>{document.domain.x} × {document.domain.y} × {document.domain.z} µm</span></div>
       <div className="geometry-3d-axis-key" aria-hidden="true"><span>x</span><span>y</span><span>z ↑</span></div>
+      {portsVisible && !error && visibleConnections.length > 0 && <div className="geometry-connection-key" role="group" aria-label="Connection guide legend">
+        {plannedCount > 0 && <span className="planned">{plannedCount} planned {plannedCount === 1 ? 'link' : 'links'}</span>}
+        {alignedCount > 0 && <span className="aligned">{alignedCount} aligned {alignedCount === 1 ? 'joint' : 'joints'}</span>}
+      </div>}
       {error && <div className="geometry-3d-error" role="alert"><strong>3D view unavailable</strong><p>{error}</p><button type="button" onClick={() => setAttempt(value => value + 1)}>Reopen viewport</button></div>}
       <div className="geometry-3d-selection">{selected ? <><span className="geometry-selection-dot"/>{selected.name}{!selected.visible && ' · hidden'}<span>n = {selected.refractive_index}</span></> : 'Click a solid to select it'}</div>
     </div>

@@ -24,7 +24,7 @@ Each row is qualified for a named geometry, source, execution target and measure
 - [ ] Qualify GPU ring wall and grating etch refinements at fixed physical dimensions. Earlier matched controls remain available below.
 - [ ] Qualify phase and weak returns at common physical planes across meshes. Distinguish absolute phase, phase change with wavelength and power-only vendor data.
 - [x] Published per-stage cells, actual steps, elapsed GPU timing, exclusions and fresh/cache provenance. The live ring device advanced 89,575 steps over 1,851,360 cells in 338.13 GPU-clock seconds. [GPU timing ledger](GPU_TIMING.md).
-- [ ] Start persistent circuit connections after the calibration campaigns have been evaluated.
+- [x] Started Circuit Layout after publishing both fine grating campaigns. Named-port connections are stored in the design and exposed to the local editor, Python and notebooks. [Connect, inspect and disconnect](CIRCUIT_CONNECTIONS.md).
 
 ## v0.12 calibrated component checklist
 

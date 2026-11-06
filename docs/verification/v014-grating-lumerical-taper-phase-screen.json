@@ -1,0 +1,174 @@
+{
+  "vendor_geometry": "lumerical",
+  "scope": "A uniform, symmetric oxide-clad unetched slab of the actual silicon thickness, using the actual z mesh and the Yee propagation symbols, over the physical taper length. It omits narrowing, distributed grating radiation, substrate and fiber phase. No fitted optical length, phase shift, or modification of S. Residuals are modulo 2\u03c0; this cannot identify an absolute vendor phase or unwrapped delay.",
+  "mesh_pairs": [
+    {
+      "mesh_pair": [
+        12,
+        14
+      ],
+      "taper_length_um": 25.0,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "slab_neff_at_first_mesh": [
+        2.999656836162132,
+        2.9812163914198617,
+        2.963278483440914,
+        2.9458077496344175,
+        2.9287726485630943
+      ],
+      "slab_neff_at_second_mesh": [
+        2.937716231214791,
+        2.9218193606722638,
+        2.906260384757055,
+        2.8910190661474275,
+        2.876077199400223
+      ],
+      "wide_uniform_slab_phase_change_rad": [
+        -6.4864049820491365,
+        -6.118074604645927,
+        -5.778310966028006,
+        -5.464245255320129,
+        -5.173363623990338
+      ],
+      "measured_principal_guide_phase_change_rad": [
+        -0.3800671556053138,
+        -0.12162046310008189,
+        0.18442176194070764,
+        0.5134995410923073,
+        0.8392960774705138
+      ],
+      "principal_residual_rad": [
+        -0.17684748073576387,
+        -0.28673116563374124,
+        -0.3204525792108728,
+        -0.3054405107671505,
+        -0.27052560571873513
+      ]
+    },
+    {
+      "mesh_pair": [
+        14,
+        16
+      ],
+      "taper_length_um": 25.0,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "slab_neff_at_first_mesh": [
+        2.937716231214791,
+        2.9218193606722638,
+        2.906260384757055,
+        2.8910190661474275,
+        2.876077199400223
+      ],
+      "slab_neff_at_second_mesh": [
+        2.9371502738954964,
+        2.921928605387478,
+        2.9069778691823345,
+        2.8922843126039806,
+        2.8778355005655682
+      ],
+      "wide_uniform_slab_phase_change_rad": [
+        -0.059266911884691804,
+        0.011252537533109345,
+        0.07271109030717907,
+        0.12618695152023715,
+        0.17262081324521955
+      ],
+      "measured_principal_guide_phase_change_rad": [
+        -0.23580214186289244,
+        -0.24779489876699418,
+        -0.22232944457238513,
+        -0.16602634522665197,
+        -0.08627633835359316
+      ],
+      "principal_residual_rad": [
+        -0.17653522997820065,
+        -0.2590474363001035,
+        -0.29504053487956416,
+        -0.2922132967468891,
+        -0.2588971515988127
+      ]
+    },
+    {
+      "mesh_pair": [
+        16,
+        20
+      ],
+      "taper_length_um": 25.0,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "slab_neff_at_first_mesh": [
+        2.9371502738954964,
+        2.921928605387478,
+        2.9069778691823345,
+        2.8922843126039806,
+        2.8778355005655682
+      ],
+      "slab_neff_at_second_mesh": [
+        2.910971592157383,
+        2.8972211743987155,
+        2.8836491665720976,
+        2.8702489308555803,
+        2.8570144632640844
+      ],
+      "wide_uniform_slab_phase_change_rad": [
+        -2.741425140970737,
+        -2.544940448635159,
+        -2.364170346390363,
+        -2.1976569339625662,
+        -2.0441005570769
+      ],
+      "measured_principal_guide_phase_change_rad": [
+        -2.824031482264732,
+        -2.622405584503439,
+        -2.4254698284641503,
+        -2.2457233695631684,
+        -2.0910891708178507
+      ],
+      "principal_residual_rad": [
+        -0.08260634129399504,
+        -0.0774651358682803,
+        -0.061299482073787104,
+        -0.0480664356006022,
+        -0.04698861374095076
+      ]
+    }
+  ]
+}

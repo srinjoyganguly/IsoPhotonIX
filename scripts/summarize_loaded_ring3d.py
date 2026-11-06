@@ -91,6 +91,9 @@ def publish(folder, source, output, checkpoint):
     report['validation_scope']='One physical port launch and its matched unpatterned two-bus reference. Checking the complete output spectrum uses all 241 illuminated bins; partial spectra preserve each wavelength mask.'
     report['native_stage_provenance']=stage_provenance(checkpoint,folder,report)
     report['source_report_sha256']=hashlib.sha256((folder/'report.json').read_bytes()).hexdigest()
+    if g.get('ring_interface')=='reciprocal-wall':
+        from datetime import datetime,timezone
+        report['native_report_file_written_utc']=datetime.fromtimestamp((folder/'report.json').stat().st_mtime,timezone.utc).isoformat()
     # Publish verified numerical data first; each visible file is complete after rename.
     temporary=dest.with_suffix('.npz.tmp')
     shutil.copyfile(folder/'arrays.npz',temporary)

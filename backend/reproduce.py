@@ -59,6 +59,13 @@ def _base_files():
             'LICENSE': (ROOT / 'LICENSE').read_bytes(), 'CREDITS.md': (ROOT / 'CREDITS.md').read_bytes()}
 
 
+def _design_sources():
+    files={f'design_source/{module}.py':(ROOT/'backend'/f'{module}.py').read_bytes()
+           for module in ('component_library','geometry_draft','library_layout')}
+    files['design_source/__init__.py']=b'"""Parametric geometry and circuit connections."""\n'
+    return files
+
+
 def _archive(files, kind, config, *, versions=None, snapshot_origin='not_applicable', implementation=None):
     revision = None
     if (ROOT / '.git').exists():
@@ -89,6 +96,8 @@ def study_bundle(config, output=None):
     config = parse_study(config).model_dump(by_alias=True)
     files = _base_files()
     files['config.json'] = _json(config)
+    notice='docs/licenses/FDTDX-MIT.txt' if config['solver']=='fdtdx' else 'docs/licenses/MEEP-GPL-2.0.txt'
+    files[notice]=(ROOT/notice).read_bytes()
     versions = {}
     implementation = None
     snapshot_origin = 'export_time'
@@ -124,6 +133,8 @@ def study_bundle(config, output=None):
         for name in ('spectrum.csv', 'sparameters.csv'):
             if (output / name).is_file(): files['reference/' + name] = (output / name).read_bytes()
     files.update(numerical_source if numerical_source is not None else _source_snapshot())
+    if config.get('study_type')=='layout-3d':
+        files.update(_design_sources())
     for name in ('environment-meep.yml', 'environment-meep-linux-64.lock', 'requirements-fdtdx.txt', 'requirements-fdtdx-cuda.txt'):
         if (ROOT / name).is_file(): files[name] = (ROOT / name).read_bytes()
     pip_names = {'fdtdx', 'jax', 'jaxlib', 'numpy', 'tidy3d', 'equinox'}
@@ -154,6 +165,8 @@ def study_bundle(config, output=None):
               'Geometry objects, source/boundary settings, monitor conventions and stopping tolerances are preserved. '
               'The solver/device selection remains explicit; GPU requests cannot retry on CPU.', 'settings-help'),
         _cell('code', config_code, 'configuration'),
+        *([_cell('code','from workbench_runtime import connection_status\nconnection_status(CONFIG["geometry"])\n',
+                 'inspect-connections')] if config.get('geometry',{}).get('connections') else []),
         _cell('code', '# Use None when the current kernel contains the solver or a local managed worker (or MEEP_PYTHON/FDTDX_PYTHON) is configured.\n'
               '# Otherwise set this to your local solver environment Python executable. No machine-specific path is embedded.\n'
               'SOLVER_PYTHON = None\nOUTPUT = run(CONFIG, solver_python=SOLVER_PYTHON)\n', 'run-real-solver'),
@@ -277,15 +290,14 @@ def geometry_bundle(geometry):
     """Export all supported editor solids as code without implying a solver."""
     geometry = validate_geometry(geometry)
     files = _base_files()
-    for module in ('component_library', 'geometry_draft', 'library_layout'):
-        files[f'design_source/{module}.py'] = (ROOT / 'backend' / f'{module}.py').read_bytes()
-    files['design_source/__init__.py'] = b'\"\"\"First-party parametric design generators from this export.\"\"\"\n'
+    files.update(_design_sources())
     files['geometry.json'] = _json(geometry)
     code = _configuration_code(geometry, 'GEOMETRY')
     files['geometry.py'] = ('"""Exact editable geometry draft; this is not an executable electromagnetic study."""\n'
-                            'import json\nfrom pathlib import Path\nfrom workbench_runtime import check_bundle, validate_geometry, plot_geometry\n\n' + code +
+                            'import json\nfrom pathlib import Path\nfrom workbench_runtime import check_bundle, validate_geometry, plot_geometry, connection_status\n\n' + code +
                             '\nif __name__ == "__main__":\n    check_bundle()\n    geometry = validate_geometry(GEOMETRY)\n'
                             '    Path("geometry.recreated.json").write_text(json.dumps(geometry, indent=2) + "\\n")\n'
+                            '    if geometry.get("connections"): print(connection_status(geometry))\n'
                             '    plot_geometry(geometry).savefig("geometry.png", dpi=160)\n'
                             '    print("Saved exact geometry.recreated.json and geometry.png; no simulation was run.")\n').encode()
     files['geometry.ipynb'] = _notebook([
@@ -293,11 +305,12 @@ def geometry_bundle(geometry):
               'rotations and visibility flags from the editor. Curved surfaces are tessellated only for display; JSON retains their exact radii. '
               'It is a design export, not a solver result. Unsupported CAD is never silently reduced to a straight guide. '
               'Choose a supported executable study in the workbench to obtain a solver notebook. Install `requirements-notebook.txt` before Run All.', 'introduction'),
-        _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, evaluate_material, regenerate_component, align_ports, plot_geometry\ncheck_bundle()\n', 'imports'),
+        _cell('code', 'import json\nfrom pathlib import Path\nimport matplotlib.pyplot as plt\nfrom workbench_runtime import check_bundle, validate_geometry, evaluate_material, regenerate_component, align_ports, connect_ports, disconnect_ports, connection_status, plot_geometry\ncheck_bundle()\n', 'imports'),
         _cell('code', code, 'geometry'),
         _cell('markdown', '## Optional parametric editing\n\nThe original contours remain authoritative. To regenerate a component from changed parameters, use the bundled generator below. This creates a new design and preserves unrelated objects. Leave it commented to reproduce the exact exported geometry.', 'parametric-help'),
         _cell('code', "# Example for a selected component with a width_um parameter:\n# GEOMETRY = regenerate_component(GEOMETRY, GEOMETRY['components'][0]['id'],\n#     parameters={'width_um': 0.6}, fit_domain=True)\n# GEOMETRY = align_ports(GEOMETRY, moving_id, 'in', fixed_id, 'out', fit_domain=True)\n", 'parametric-edit'),
         _cell('code', 'geometry = validate_geometry(GEOMETRY)\nPath("geometry.recreated.json").write_text(json.dumps(geometry, indent=2) + "\\n")\ngeometry\n', 'validate-exact-design'),
+        *([_cell('code','connection_status(geometry)\n','inspect-connections')] if geometry.get('connections') else []),
         _cell('code', "{material['name']: evaluate_material(material, material['reference_wavelength_um']) for material in geometry.get('materials', [])}\n", 'material-reference-values'),
         _cell('code', 'plot_geometry(geometry)\nplt.show()\n', 'inspect-solids'),
     ])
@@ -308,6 +321,11 @@ Run `python geometry.py` to write the exact validated design JSON and an
 original 3D plot, or `jupyter lab geometry.ipynb` and Run All. Edit GEOMETRY in
 either file to develop a new design. All objects and hidden-state flags are
 preserved; display visibility does not remove a material from a future study.
+
+Saved connections reference stable component IDs and named ports. The optional
+connect_ports, disconnect_ports and connection_status helpers use the editor's
+geometry rules. A planned connection stores intent. Only the drawn solids
+determine where material exists in a field simulation.
 
 This exports design geometry only. It does not claim that rings, couplers,
 rotated solids or every draft can be simulated. Unsupported geometry is not

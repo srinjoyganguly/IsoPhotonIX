@@ -150,6 +150,18 @@ def main():
         moved = get('/api/library/align', {'geometry':pair['geometry'], 'moving_component':pair['component']['id'],
             'moving_port':'in', 'fixed_component':fixed['component']['id'], 'fixed_port':'out', 'fit_domain':True})
         assert moved['geometry']['components'][1]['ports'][0]['x'] == fixed['component']['ports'][1]['x']
+        endpoints={'moving_component':pair['component']['id'],'moving_port':'in',
+                   'fixed_component':fixed['component']['id'],'fixed_port':'out'}
+        plan=get('/api/library/connect',{'geometry':pair['geometry'],**endpoints})
+        linked=get('/api/library/connect',{'geometry':plan['geometry'],**endpoints,'align':True,'fit_domain':True})
+        assert linked['connection']==plan['connection']
+        assert get('/api/library/connections',{'geometry':plan['geometry']})['connections'][0]['state']=='needs_route'
+        assert get('/api/library/connections',{'geometry':linked['geometry']})['connections'][0]['state']=='aligned'
+        with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/geometry',linked['geometry'],raw=True))) as bundle:
+            assert json.loads(bundle.read('geometry.json'))==linked['geometry']
+            assert 'connection_status' in bundle.read('geometry.ipynb').decode()
+        removed=get('/api/library/disconnect',{'geometry':linked['geometry'],'connection_id':linked['connection']['id']})
+        assert removed['geometry']=={**linked['geometry'],'connections':[]}
         assert len(get('/api/library')['components']) == 27
         comparisons = get('/api/component-benchmarks')
         assert len(comparisons['cases']) == 2 and len(comparisons['report_sha256']) == 64
@@ -298,7 +310,8 @@ def main():
               'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],
               'calibrated_cli_result_bundle_verified':True,
               'generic_calibration_config_coupling':repeated['result']['center_beam_to_guide'], 'export_found_registered_interpreter': True,
-              'cavity_four_modes_equal_to_packaged_reference': True, 'installed_port_alignment': True, 'pip_check': True, 'doctor_meep_ready': True,
+              'cavity_four_modes_equal_to_packaged_reference': True, 'installed_port_alignment': True,
+              'installed_planned_aligned_disconnected_and_exported': True, 'pip_check': True, 'doctor_meep_ready': True,
               'served_frontend_assets': assets, 'catalog_families': 27, 'benchmark_data': True,
               'job_id': jid, 'actual_device': job['result']['actual_device'], 'field_shape_zyx': volume['shape'],
               'state_separate_from_package': True, 'exclusive_store': True, 'saved_run_after_restart': True,

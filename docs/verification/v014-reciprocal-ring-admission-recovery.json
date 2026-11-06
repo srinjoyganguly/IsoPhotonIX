@@ -1,0 +1,23 @@
+{
+  "case": "Lumerical reciprocal 24-cell allocation admission",
+  "reference_signature": "c20920fad6eeae256a1a4b40115a22b80b531a1d855823393979a6f73450cab7",
+  "reference_archive_sha256": "23ccf84f3761e696997d6e46dbfdfc52c50a7076a8bd09fd7d109333bab3d8c4",
+  "reference_acquisition_id": "65fa61d4a03349708a44c678353f5163",
+  "reference_synchronized_step_seconds": 69.59704917002819,
+  "reference_cuda_event_elapsed_seconds": 69.60597006225589,
+  "reference_fresh_admission": {
+    "budget_sha256": "6db68c5e02e7df92f0b445ad35818b26801994bdb30cd4d16961cc214df71fc1",
+    "fixture": "docs/verification/v014-ring-memory-lumerical-r24-reciprocal.json",
+    "selected_device": "cuda:0",
+    "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "cells": 6250272,
+    "available_at_launch_mib": 12308,
+    "required_with_reserve_mib": 8372.004791288566,
+    "external_budget_override": false
+  },
+  "device_initial_decision": "withheld before allocating or stepping",
+  "device_initial_available_mib": 8235,
+  "required_with_reserve_mib": 8372.004791288566,
+  "failed_attempt_log_sha256": "bedf54785de9ee6ea7fcc1db3eb8a9a2333d456d72879c77a9b6fb2730f2df53",
+  "recovery": "The first witness process exited, releasing its allocator pool. A new process reopened the same verified straight reference and was admitted by the same native memory check."
+}

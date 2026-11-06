@@ -199,7 +199,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
   }
   function remove() {
     if (!selected) return;
-    apply(deleteSelection(scene, selected.id), `${selectionName} deleted. Undo restores the ${component ? 'component and its ports' : 'object'}.`, null);
+    apply(deleteSelection(scene, selected.id), `${selectionName} deleted. Undo restores the ${component ? 'component, ports and saved connections' : 'object'}.`, null);
   }
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -270,7 +270,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
           <button className="geo-visibility" aria-label={`${object.visible ? 'Hide' : 'Show'} ${object.name}`} title={`${object.visible ? 'Hide' : 'Show'} in viewport`} onClick={() => apply({ ...scene, objects: scene.objects.map(item => item.id === object.id ? { ...item, visible: !item.visible } : item) })}>{object.visible ? '◉' : '○'}</button>
         </div>)}{!scene.objects.length && <p className="geo-empty">Your scene is empty. Add a shape below.</p>}</div>
         <div className="geo-add"><select aria-label="New shape" value={addKind} onChange={e => setAddKind(e.target.value as GeometryObject['kind'])}><option value="box">Box</option><option value="cylinder">Cylinder</option><option value="ring">Ring</option><option value="polygon">Polygon prism</option></select><button className="button secondary compact" onClick={addObject} disabled={scene.objects.length >= (scene.schema_version===2?GEOMETRY_LIMITS.maxV2Objects:GEOMETRY_LIMITS.maxObjects)}>+ Add</button></div>
-        <div className="geo-tree-note">Select a solid in the list or viewport. Deleting a library component removes all its solids and ports together. Visibility affects the preview only.</div>
+        <div className="geo-tree-note">Select a solid in the list or viewport. Deleting a component removes its solids, ports and incident connections. Visibility affects the preview only.</div>
       </aside>
       <div className="geo-stage-column">
         <div className="geo-edit-tools" role="group" aria-label="Design editing">
@@ -295,7 +295,7 @@ export function GeometryEditor({ slabConfig, onSimulation }: { slabConfig: SlabC
         {selected ? <div className="geo-properties" key={selected.id}>
           <label className="parameter"><span>Object name</span><TextInput label="Object name" value={selected.name} onCommit={name => editObject({ name })}/></label>
           <h3>POSITION</h3>{vectorInputs('Position', selected.position, position => editObject({ position }))}
-          {selected.component_id&&<div className="geo-component-membership"><strong>Parametric component</strong><button onClick={()=>setLibraryEdit(value=>value+1)}>Edit component parameters</button><p>Use Edit selected component in the library to regenerate its full recipe. Manual solid edits detach that recipe.</p><button onClick={()=>apply(detachComponent(scene,selected.id),'Component recipe detached. Its exact solids remain editable.')}>Convert component to editable solids</button></div>}
+          {selected.component_id&&<div className="geo-component-membership"><strong>Parametric component</strong><button onClick={()=>setLibraryEdit(value=>value+1)}>Edit component parameters</button><p>Use Edit selected component in the library to regenerate its full recipe. Manual solid edits detach that recipe.</p><button onClick={()=>apply(detachComponent(scene,selected.id),'Component recipe detached. Its solids are editable and its port connections have been removed.')}>Convert component to editable solids</button></div>}
           <h3>DIMENSIONS</h3>{selected.kind === 'box' ? vectorInputs('Size', selected.size, size => editObject({ size })) : selected.kind === 'polygon' ? <NumericInput label="Thickness Z" value={selected.size.z} onCommit={z => editObject({ size: { ...selected.size, z } })}/> : <><NumericInput label="Outer radius" value={selected.radius} onCommit={radius => editObject({ radius })}/>{selected.kind === 'ring' && <NumericInput label="Inner radius" value={selected.inner_radius} onCommit={inner_radius => editObject({ inner_radius })}/>}<NumericInput label="Thickness Z" value={selected.size.z} onCommit={z => editObject({ size: { ...selected.size, z } })}/></>}
           <NumericInput label="Rotation Z" unit="deg" step={5} value={selected.rotation_deg} onCommit={rotation_deg => editObject({ rotation_deg })}/>
           <NumericInput label="Refractive index" unit="n" step={.05} value={selected.refractive_index} onCommit={refractive_index => editObject({ refractive_index })}/>

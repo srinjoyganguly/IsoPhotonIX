@@ -15,6 +15,10 @@
 .geometry-3d-axis-key span:nth-child(1) { color: #f58c86; }
 .geometry-3d-axis-key span:nth-child(2) { color: #9bdf98; }
 .geometry-3d-axis-key span:nth-child(3) { color: #85b6ff; }
+.geometry-connection-key { position: absolute; right: 15px; top: 42px; display: grid; justify-items: end; gap: 5px; pointer-events: none; color: #c5d6e4; font-size: 11px; }
+.geometry-connection-key span { display: flex; align-items: center; gap: 6px; padding: 3px 7px; border-radius: 4px; background: #0d1927dd; }
+.geometry-connection-key .planned::before { content: ''; width: 15px; border-top: 2px dashed #ffb566; }
+.geometry-connection-key .aligned::before { content: ''; width: 7px; height: 7px; background: #72ffdd; border-radius: 50%; }
 .geometry-3d-selection { display: flex; align-items: center; gap: 8px; position: absolute; left: 16px; bottom: 16px; max-width: calc(100% - 32px); padding: 7px 10px; border-radius: 5px; background: #0d1927dd; border: 1px solid #2e4052; font-size: 11px; color: #c5d6e4; pointer-events: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .geometry-3d-selection > span:last-child:not(:first-child) { color: #8da4ba; }
 .geometry-selection-dot { flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; background: #f2b969; }
