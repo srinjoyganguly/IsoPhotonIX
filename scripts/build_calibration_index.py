@@ -128,6 +128,12 @@ def build():
                    'limits':('A finite-height isolated ring check excludes the bus waveguides. A full loaded 3D spectrum requires a separate calculation.' if key=='ring'
                             else 'Upward radiated power and power coupled to a particular Gaussian mode have different collection and normalization.'),
                    'recorded':[{'label':'Meep CPU','receipt':file,'report':view}]}
+    bare=read('v011-ring-bare-fsr.json')
+    if 'ring' in index and bare and bare.get('passed'):
+        poles={name:{k:case[k] for k in ('measured_bare_ring_fsr_nm','published_loaded_ring_fsr_nm')}
+               for name,case in bare['cases'].items()}
+        index['ring']['recorded'].append({'label':'Isolated finite-height poles · Meep CPU',
+            'receipt':'v011-ring-bare-fsr.json','report':{'isolated_finite_height_ring':poles}})
     if 'grating' in index:
         for label,name in [('Lumerical article · 28 cells/µm','v011-grating-ansys-article-r28.json'),
                            ('Lumerical article · 40 cells/µm','v011-grating-ansys-article-r40.json'),

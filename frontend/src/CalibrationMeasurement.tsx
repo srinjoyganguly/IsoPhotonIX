@@ -7,7 +7,7 @@ type MatrixReport = {
   ports?: string[]; port_order?: string[]; channels?: string[]; wavelength_um: number[];
   s?: Complex[][][]; s_real?: number[][][]; s_imag?:number[][][];
 };
-type GratingRow = {wavelength_um:number[];beam_to_guide:number[];guide_radiation_up?:number[];guide_radiation_down?:number[];valid_beam_bins?:boolean[];valid_energy_bins?:boolean[]};
+type GratingRow = {wavelength_um:number[];beam_to_guide?:number[];guide_radiation_up?:number[];guide_radiation_down?:number[];valid_beam_bins?:boolean[];valid_energy_bins?:boolean[];direct_output_fraction?:number[];valid_direct_bins?:boolean[]};
 type RingRow = {wavelength_um:number[];through:number[];drop:number[];reflection:number[];add_side?:number[];valid_bins?:boolean[]};
 type Report = MatrixReport & {case_id?:string;vendor?:string;result?:GratingRow;series?:Record<string,RingRow>;studies?:Record<string,Record<string,GratingRow>>;compact_tidy_domain?:GratingRow;isolated_finite_height_ring?:Record<string,{measured_bare_ring_fsr_nm:number;published_loaded_ring_fsr_nm:number}>};
 
@@ -63,14 +63,21 @@ export function CalibrationMeasurement({value}:{value:unknown}) {
   const beamLabel=r.vendor==='lumerical'?'Lumerical beam coupling':'Tidy3D beam coupling';
   if(r.case_id==='grating-gaussian-profile' && r.result)options.push(beamLabel);
   if(r.compact_tidy_domain)options.push(compactLabel);
+  if(!options.length && r.isolated_finite_height_ring){
+    return <section aria-label="Isolated ring spacing"><h3>Isolated ring spacing</h3>
+      <table><thead><tr><th>Geometry</th><th>Bare ring FSR (nm)</th><th>Published loaded-ring FSR (nm)</th></tr></thead>
+      <tbody>{Object.entries(r.isolated_finite_height_ring).map(([name,measurement])=><tr key={name}>
+        <th>{name}</th><td>{measurement.measured_bare_ring_fsr_nm.toFixed(4)}</td><td>{measurement.published_loaded_ring_fsr_nm.toFixed(4)}</td>
+      </tr>)}</tbody></table></section>;
+  }
   if(!options.length)return null;
   const selected=options.includes(vendor)?vendor:options[0];
-  const ring=r.series?.[selected], grating=selected===beamLabel?r.result:selected===compactLabel?r.compact_tidy_domain:r.studies?.[selected]?.fine;
+  const ring=r.series?.[selected], grating=selected===beamLabel?r.result:selected===compactLabel?r.compact_tidy_domain:r.studies?.[selected]?.fine ?? r.studies?.[selected]?.guided;
   const pole=r.isolated_finite_height_ring?.[selected];
   const qualified=(values:number[],mask?:boolean[])=>
     values.map((v,i)=>mask && !mask[i]?null:v);
   const spectrum: SpectrumData | null=ring?{wavelengths:ring.wavelength_um,series:[{label:'Through',values:qualified(ring.through,ring.valid_bins)},{label:'Drop',values:qualified(ring.drop,ring.valid_bins)},{label:'Reflection',values:qualified(ring.reflection,ring.valid_bins)},...(ring.add_side?[{label:'Add-side outgoing',values:qualified(ring.add_side,ring.valid_bins)}]:[])]}:
-    grating?{wavelengths:grating.wavelength_um,series:[{label:'Gaussian to TE guide',values:qualified(grating.beam_to_guide,grating.valid_beam_bins)},...(grating.guide_radiation_up?[{label:'Upward radiation fraction',values:qualified(grating.guide_radiation_up,grating.valid_energy_bins)}]:[]),...(grating.guide_radiation_down?[{label:'Downward radiation fraction',values:qualified(grating.guide_radiation_down,grating.valid_energy_bins)}]:[])]}:null;
+    grating?{wavelengths:grating.wavelength_um,series:[...(grating.beam_to_guide?[{label:'Gaussian to TE guide',values:qualified(grating.beam_to_guide,grating.valid_beam_bins)}]:[]),...(grating.direct_output_fraction?[{label:'Total output aperture flux',values:qualified(grating.direct_output_fraction,grating.valid_direct_bins)}]:[]),...(grating.guide_radiation_up?[{label:'Upward radiation fraction',values:qualified(grating.guide_radiation_up,grating.valid_energy_bins)}]:[]),...(grating.guide_radiation_down?[{label:'Downward radiation fraction',values:qualified(grating.guide_radiation_down,grating.valid_energy_bins)}]:[])]}:null;
   return spectrum && <section aria-label="Measured spectrum"><h3>Measured spectrum</h3>
     <label>Reference geometry<select value={selected} onChange={e=>setVendor(e.target.value)}>{options.map(v=><option key={v}>{v}</option>)}</select></label>
     <Spectrum key={selected} {...spectrum}/>

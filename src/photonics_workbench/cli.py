@@ -37,7 +37,7 @@ def main(argv=None):
     calibration.add_argument('--resolution',type=int,help='cells per µm on supported matrix presets')
     calibration.add_argument('--offset-um',type=float,help='lateral offset for a multimode joint, in µm')
     calibration.add_argument('--ring-scope',choices=['full','lumerical','tidy3d'])
-    calibration.add_argument('--grating-scope',choices=['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output'])
+    calibration.add_argument('--grating-scope',choices=['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'])
     calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned'],help='FDTDX permittivity placement')
     calibration.add_argument('--checkpoint',type=Path,help='reuse matching measured native stages from this directory')
     calibration.add_argument('--export-only', action='store_true', help='write a runnable Python and notebook ZIP without executing the solver')

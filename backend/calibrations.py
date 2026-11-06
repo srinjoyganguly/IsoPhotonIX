@@ -35,7 +35,7 @@ class Calibration(BaseModel):
     offset_um: float | None = None
     material_model: Literal['legacy-x','yee-aligned'] | None = None
     ring_scope: Literal['full','lumerical','tidy3d'] | None = None
-    grating_scope: Literal['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output'] | None = None
+    grating_scope: Literal['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'] | None = None
 
     @model_validator(mode='after')
     def available_route(self):
@@ -80,7 +80,9 @@ def specification(config):
     beam_arguments={'tidy3d-compact':['--beam-only','tidy3d','--vendor-box'],
                     'lumerical-article':['--beam-only','lumerical'],
                     'lumerical-project':['--beam-only','lumerical','--project-source'],
-                    'lumerical-output':['--beam-only','lumerical','--project-output']}
+                    'lumerical-output':['--beam-only','lumerical','--project-output'],
+                    'tidy3d-radiation':['--guide-only','tidy3d'],
+                    'lumerical-radiation':['--guide-only','lumerical']}
     args.extend(beam_arguments.get(config.grating_scope, []))
     if config.resolution is not None:
         args+=['--resolution',str(config.resolution)]
@@ -151,7 +153,9 @@ def design_archive(config):
 
 def run_config(config, output, checkpoint=None):
     output=Path(output)
+    config=Calibration.model_validate(config).model_dump()
     output.mkdir(parents=True,exist_ok=False)
+    (output/'config.json').write_text(json.dumps(config,indent=2)+'\n')
     status = run_job(config, output, checkpoint)
     if status == 0:
         result_zip(output, output/'python-notebook-results.zip')

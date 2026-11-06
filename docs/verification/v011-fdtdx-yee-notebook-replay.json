@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-05T23:57:01.672042+00:00",
+  "case": "splitter",
+  "resolution": 12,
+  "device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "material_model": "yee-aligned",
+  "solver_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "mechanism": "Python 3.11 kernel executed the validated exported calibration.ipynb through nbclient. Its code cell invoked the bundled run.py in a fresh native FDTDX worker and compared to the frozen measurements.",
+  "notebook_sha256": "7911fb3e5ca03ea44c9817ded09a9128929cc87c0decbaf6fe9a3bed7f282b3f",
+  "program_sha256": "713baa4819ed72e64a043a2775131421ddb6e84e183a9e0f96743c10a8f7ccd3",
+  "source_archive": "splitter-yee-aligned-gpu12.zip",
+  "source_archive_sha256": "5f0ce469eca0f3f0a446c8b545229cf953cc724ca0e3fbd5fba1cb1d5936dd9e",
+  "frozen_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "measured_npz_files_checked": 7,
+  "full_matrix_max_complex_s_difference": 0.0,
+  "results": {
+    "passed": true,
+    "all_array_bytes_equal": true,
+    "within_tolerance": {},
+    "precision": {
+      "relative": 2e-06,
+      "absolute": 1e-10,
+      "per_array_peak_fraction": 2e-06
+    },
+    "reported_observables_checked": [
+      "wavelength_um",
+      "s",
+      "modal_power"
+    ]
+  },
+  "all_sampled_setup_checks": {
+    "complete_settling": true,
+    "straight_reference_power_within_0_03": true,
+    "max_complex_reciprocity_difference_below_0_05": true,
+    "max_singular_value_squared_at_most_1_05": true
+  },
+  "elapsed_seconds": 743.4391680590015
+}

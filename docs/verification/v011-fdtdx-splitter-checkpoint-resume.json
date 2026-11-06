@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "case": "splitter",
+  "solver": "FDTDX",
+  "actual_device": "cpu:0",
+  "resolution": 12,
+  "material_model": "yee-aligned",
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "interrupted_exit_status": 143,
+  "previously_completed_native_stages_reused": [
+    "left_center-reference",
+    "left_center-device",
+    "right_lower-reference",
+    "right_lower-device",
+    "right_upper-reference"
+  ],
+  "native_stages_computed_after_resume": [
+    "right_upper-device"
+  ],
+  "stage_checks": {
+    "left_center-reference": {
+      "archive_sha256": "786418925da1a19d4dda907da71a78f81413d07c1bd70045d15fb23968206484",
+      "steps": 2583,
+      "settled": true,
+      "archive_written_utc": "2026-11-05T22:40:42.681669+00:00"
+    },
+    "left_center-device": {
+      "archive_sha256": "95d145521d18caa249a7f4d70c9153888be51169368f33aff43ccd28d9452cb2",
+      "steps": 2751,
+      "settled": true,
+      "archive_written_utc": "2026-11-05T22:51:17.153579+00:00"
+    },
+    "right_lower-reference": {
+      "archive_sha256": "4707b71037f579e437c9d0dfb78816266ef0f783488681e2decd093ff34122f5",
+      "steps": 2583,
+      "settled": true,
+      "archive_written_utc": "2026-11-05T23:02:25.894853+00:00"
+    },
+    "right_lower-device": {
+      "archive_sha256": "486cf52b4721b79a91738a12fea73eff134520f3320019e7fa13d736b1e5edd7",
+      "steps": 2919,
+      "settled": true,
+      "archive_written_utc": "2026-11-05T23:18:16.262240+00:00"
+    },
+    "right_upper-reference": {
+      "archive_sha256": "6e0bb50d4c7bfef2da26a8d46c89192de3e63f741227d904dd90ee588211502f",
+      "steps": 2583,
+      "settled": true,
+      "archive_written_utc": "2026-11-05T23:32:44.182554+00:00"
+    },
+    "right_upper-device": {
+      "archive_sha256": "33c0a7b922e53629a59275299939d3002a91b2c8a513fa573f2a179b0cd52e73",
+      "steps": 2919,
+      "settled": true,
+      "archive_written_utc": "2026-11-05T23:55:19.616383+00:00"
+    }
+  },
+  "sampled_setup_checks_passed": true,
+  "final_arrays_sha256": "8505f4ba7772a891d77b135260c3efd084c361cc34e6e466ec8fbfa1c8cd315e",
+  "matched_cuda_receipt": "v011-fdtdx-yee-splitter-cpu-cuda12.json",
+  "method": "The interrupted native worker left five completed, checksum-verifiable straight-reference or device stages. The frozen worker verified the saved manifest and reloaded those stages. Only the final device launch ran again. No partially evolved field state or unattained port column entered the matrix."
+}

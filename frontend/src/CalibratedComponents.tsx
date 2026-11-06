@@ -7,7 +7,7 @@ import './calibratedComponents.css';
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
   limits: string; recorded?: {label:string; receipt:string;report:unknown}[]; comparisons: {vendor: string; description: string; url: string}[] };
 type Preset = { case: string; name: string; scope: string; routes: string[]; evidence?: Evidence };
-type Job = { id: string; status: string; created_at: string; error?: string; config: {case: string; solver: string; device: string} };
+type Job = { id: string; status: string; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
 
 export function CalibratedComponents({active}:{active:boolean}) {
@@ -88,7 +88,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
       {evidence && <section aria-label="Recorded evidence"><h3>Recorded measurements</h3><p>{evidence.summary}</p>
         <p>{evidence.dimension} · {evidence.routes.join(' / ')}</p>
 
-        {evidence.recorded?.length ? <><label>Measured target<select value={record} onChange={e=>setRecord(+e.target.value)}>
+        {evidence.recorded?.length ? <><label>Recorded result<select value={record} onChange={e=>setRecord(+e.target.value)}>
           {evidence.recorded.map((r,i)=><option key={r.label} value={i}>{r.label}</option>)}</select></label>
           <CalibrationMeasurement key={key+record} value={evidence.recorded[record]?.report}/>
           <a href={'https://github.com/srinjoyganguly/photonics-workbench/blob/main/docs/verification/'+evidence.recorded[record]?.receipt}
@@ -105,6 +105,8 @@ export function CalibratedComponents({active}:{active:boolean}) {
         <option value="lumerical-article">Lumerical article beam coupling</option>
         <option value="lumerical-project">Lumerical project source</option>
         <option value="lumerical-output">Lumerical project output aperture</option>
+        <option value="tidy3d-radiation">Tidy3D grating radiated power</option>
+        <option value="lumerical-radiation">Lumerical grating radiated power</option>
         <option value="full">Both gratings and all sensitivity controls</option>
       </select></label>}{meshes.length>0 && <label>Mesh resolution<select value={mesh} onChange={e=>setMesh(e.target.value)}>
         <option value="">Preset mesh</option>{meshes.map(v=><option value={v} key={v}>{v} cells/µm</option>)}</select></label>}
@@ -127,6 +129,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
         <option value="">Select a run</option>{history.map(j=><option key={j.id} value={j.id}>{j.id.slice(0,8)} · {j.config.solver}/{j.config.device} · {j.status}</option>)}</select></label>:<p>No saved runs for this preset.</p>}
       {job && <><p role="status">Run {job.id.slice(0,8)} · {job.status}</p>
         {(job.status==='queued'||job.status==='running')&&<button className="button secondary compact" onClick={()=>void cancel()}>Cancel run</button>}
+        {job.result?.actual_device && <p>Measured execution target {job.result.actual_device}{job.result.device_name && ` · ${job.result.device_name}`}</p>}
         {log && <details><summary>Solver progress</summary><pre>{log}</pre></details>}
         {job.error && <p role="alert">{job.error}</p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}

@@ -221,6 +221,9 @@ def code_archive(data,filename):
 def reproduce_study(config: dict):
     from .reproduce import study_bundle
     try:
+        if config.get('study_type')=='calibrated-component':
+            calibrated=Calibration.model_validate(config)
+            return code_archive(design_archive(calibrated), f'workbench-{calibrated.case}-python-notebook.zip')
         study = parse_study(config)
         return code_archive(study_bundle(study.model_dump()),'photonics-study-python-notebook.zip')
     except ValidationError as exc:

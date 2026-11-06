@@ -24,7 +24,7 @@ def measured_observables(report):
               if key in report}
     if report.get('case_id')=='grating-gaussian-profile':
         beam=report['result']
-        for key in ('wavelength_um','beam_to_guide','valid_beam_bins'):
+        for key in ('wavelength_um','beam_to_guide','valid_beam_bins','direct_output_fraction','valid_direct_bins'):
             if key in beam:
                 result['beam/'+key]=beam[key]
     for name, data in report.get('series', {}).items():
@@ -135,6 +135,11 @@ def run(root, output, checkpoint=None):
     report=json.loads((output/'report.json').read_text())
     if not (output/'arrays.npz').is_file():
         raise ValueError('No numerical arrays were produced.')
+    if config['solver']=='fdtdx':
+        platform=str(report.get('actual_device','')).lower().split(':')[0]
+        allowed={'gpu':{'cuda','gpu'},'cpu':{'cpu'}}[config['device']]
+        if platform not in allowed:
+            raise ValueError('The measured field device differs from the requested execution target.')
     reference=root/'reference'
     for key in ('passed','all_stages_settled','settled'):
         if key in report and report[key] is False:

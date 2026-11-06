@@ -184,11 +184,16 @@ def main():
     assert abs(observed-reference['beam_to_guide'][idx])<1e-6
     with zipfile.ZipFile(run_folder/'python-notebook-results.zip') as archive:
         assert {'run.py','calibration.ipynb','reference/arrays.npz','reference/report.json'}<=set(archive.namelist())
+    command([cli,'run',run_folder/'config.json','--output',target/'calibrated-config-replay'],
+            'calibrated-config-replay.log',timeout=7200)
+    repeated=json.loads((target/'calibrated-config-replay/calculation/report.json').read_text())
+    assert repeated['passed'] and abs(repeated['result']['center_beam_to_guide']-observed)<1e-6
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
               'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),
               'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],
-              'calibrated_cli_result_bundle_verified':True, 'export_found_registered_interpreter': True,
+              'calibrated_cli_result_bundle_verified':True,
+              'generic_calibration_config_coupling':repeated['result']['center_beam_to_guide'], 'export_found_registered_interpreter': True,
               'cavity_four_modes_equal_to_packaged_reference': True, 'installed_port_alignment': True, 'pip_check': True, 'doctor_meep_ready': True,
               'served_frontend_assets': assets, 'catalog_families': 27, 'benchmark_data': True,
               'job_id': jid, 'actual_device': job['result']['actual_device'], 'field_shape_zyx': volume['shape'],

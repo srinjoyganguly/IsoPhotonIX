@@ -1,0 +1,196 @@
+{
+  "case_id": "finite-height-bare-ring-fsr",
+  "solver": "Meep CPU",
+  "passed": true,
+  "physical_model": {
+    "lumerical": {
+      "radius": 3.1,
+      "width": 0.4,
+      "height": 0.18,
+      "gap": 0.1,
+      "reference_peaks_um": [
+        1.52463718,
+        1.55009208,
+        1.57724075
+      ],
+      "source": "https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction"
+    },
+    "tidy3d": {
+      "radius": 5.0,
+      "width": 0.43,
+      "height": 0.22,
+      "gap": 0.1,
+      "reference_peaks_um": [
+        1.51242,
+        1.52927,
+        1.54701,
+        1.56475,
+        1.58293
+      ],
+      "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/"
+    }
+  },
+  "cases": {
+    "lumerical": {
+      "physical_scope": "Finite-height isolated rotationally symmetric ring. No bus/loading. Outgoing cylindrical Maxwell fields in 3D.",
+      "measured_pair_orders": [
+        25,
+        24
+      ],
+      "measured_bare_ring_pair_um": [
+        1.538334300668314,
+        1.5652533924991854
+      ],
+      "measured_bare_ring_fsr_nm": 26.919091830871487,
+      "same_order_r36_pair_um": [
+        1.5520104574154205,
+        1.5791939442741179
+      ],
+      "r36_to_r48_fsr_change_nm": -0.26439502782582736,
+      "published_loaded_pair_um": [
+        1.52463718,
+        1.55009208
+      ],
+      "published_loaded_ring_fsr_nm": 25.454899999999945,
+      "bare_minus_loaded_reference_nm": 1.4641918308715418,
+      "boundary_peak_shift_nm": 0.002230697226268674,
+      "selected_poles": [
+        {
+          "angular_order": 25,
+          "resolution": 48,
+          "radial_padding_um": 0.8,
+          "pml_um": 0.75,
+          "first_post_source_window": {
+            "wavelength_um": 1.5383342992171458,
+            "frequency_per_um": 0.6500537630272544,
+            "imaginary_frequency_per_um": -7.474610374545244e-07,
+            "field_amplitude": 9.816827550641973,
+            "harminv_error_magnitude": 5.3258186682480155e-11
+          },
+          "second_post_source_window": {
+            "wavelength_um": 1.538334300668314,
+            "frequency_per_um": 0.6500537624140345,
+            "imaginary_frequency_per_um": -7.468015667961084e-07,
+            "field_amplitude": 9.81175964582265,
+            "harminv_error_magnitude": 6.290922301718414e-12
+          },
+          "sample_core_radial_fraction": 0.9998055497974665,
+          "pole_repeat_passed": true,
+          "inner_outer_radial_phase_correlation": 0.999999999990488
+        },
+        {
+          "angular_order": 24,
+          "resolution": 48,
+          "radial_padding_um": 0.8,
+          "pml_um": 0.75,
+          "first_post_source_window": {
+            "wavelength_um": 1.565253386740603,
+            "frequency_per_um": 0.638874196645148,
+            "imaginary_frequency_per_um": -2.845238475665352e-06,
+            "field_amplitude": 9.120329789977982,
+            "harminv_error_magnitude": 1.4842858458524976e-11
+          },
+          "second_post_source_window": {
+            "wavelength_um": 1.5652533924991854,
+            "frequency_per_um": 0.6388741942947237,
+            "imaginary_frequency_per_um": -2.8488686936033862e-06,
+            "field_amplitude": 9.102420380681755,
+            "harminv_error_magnitude": 1.3227503557411441e-10
+          },
+          "sample_core_radial_fraction": 0.9997758434861015,
+          "pole_repeat_passed": true,
+          "inner_outer_radial_phase_correlation": 0.9999999999036745
+        }
+      ],
+      "same_order_r36_to_r48_peak_shifts_nm": [
+        -13.67615674710665,
+        -13.940551774932475
+      ],
+      "absolute_poles_stable_within_1nm": false,
+      "external_source": "https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction",
+      "checks_passed": true
+    },
+    "tidy3d": {
+      "physical_scope": "Finite-height isolated rotationally symmetric ring. No bus/loading. Outgoing cylindrical Maxwell fields in 3D.",
+      "measured_pair_orders": [
+        48,
+        47
+      ],
+      "measured_bare_ring_pair_um": [
+        1.5419829138861405,
+        1.5601255944525665
+      ],
+      "measured_bare_ring_fsr_nm": 18.142680566425984,
+      "same_order_r36_pair_um": [
+        1.4940408729816326,
+        1.5113888182317121
+      ],
+      "r36_to_r48_fsr_change_nm": 0.7947353163464399,
+      "published_loaded_pair_um": [
+        1.54701,
+        1.56475
+      ],
+      "published_loaded_ring_fsr_nm": 17.740000000000087,
+      "bare_minus_loaded_reference_nm": 0.40268056642589656,
+      "boundary_peak_shift_nm": 1.035180829944693e-06,
+      "selected_poles": [
+        {
+          "angular_order": 48,
+          "resolution": 48,
+          "radial_padding_um": 0.8,
+          "pml_um": 0.75,
+          "first_post_source_window": {
+            "wavelength_um": 1.5419829140179377,
+            "frequency_per_um": 0.6485156164242473,
+            "imaginary_frequency_per_um": -6.882431960538422e-10,
+            "field_amplitude": 9.534711467154727,
+            "harminv_error_magnitude": 5.641365780748111e-11
+          },
+          "second_post_source_window": {
+            "wavelength_um": 1.5419829138861405,
+            "frequency_per_um": 0.6485156164796776,
+            "imaginary_frequency_per_um": 4.414847379215763e-10,
+            "field_amplitude": 9.534710054818909,
+            "harminv_error_magnitude": 1.3029509068404339e-11
+          },
+          "sample_core_radial_fraction": 0.9999269009591143,
+          "pole_repeat_passed": true,
+          "inner_outer_radial_phase_correlation": 0.9999999999997617
+        },
+        {
+          "angular_order": 47,
+          "resolution": 48,
+          "radial_padding_um": 0.8,
+          "pml_um": 0.75,
+          "first_post_source_window": {
+            "wavelength_um": 1.560125599117167,
+            "frequency_per_um": 0.640974034760966,
+            "imaginary_frequency_per_um": 1.1934866052860565e-09,
+            "field_amplitude": 9.211477799787351,
+            "harminv_error_magnitude": 1.3804930947844301e-11
+          },
+          "second_post_source_window": {
+            "wavelength_um": 1.5601255944525665,
+            "frequency_per_um": 0.6409740366774065,
+            "imaginary_frequency_per_um": 1.059754034641643e-09,
+            "field_amplitude": 9.211481324193533,
+            "harminv_error_magnitude": 8.502533129215923e-11
+          },
+          "sample_core_radial_fraction": 0.9999220693963257,
+          "pole_repeat_passed": true,
+          "inner_outer_radial_phase_correlation": 0.999999999997228
+        }
+      ],
+      "same_order_r36_to_r48_peak_shifts_nm": [
+        47.942040904507934,
+        48.736776220854374
+      ],
+      "absolute_poles_stable_within_1nm": false,
+      "external_source": "https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/",
+      "checks_passed": true
+    }
+  },
+  "arrays_file": "v011-ring-bare-fsr-arrays.npz",
+  "arrays_sha256": "dfab5a9fd21ed472a9d0b708c77ff181c10cdd9b3bb2a1660e312e6abde9a02e",
+  "archive_scope": "Measured Er and Ez at four transverse core probes and actual sample times for the final neighboring orders at each vendor geometry. The full campaign records other meshes and boundary controls."
+}

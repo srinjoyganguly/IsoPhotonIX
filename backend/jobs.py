@@ -161,7 +161,12 @@ class JobManager:
                     numerical = output/'calculation'
                     if not (numerical/'arrays.npz').is_file() or not (numerical/'report.json').is_file():
                         raise RuntimeError('Calibration ended without the measured report and arrays.')
-                    result = {'case':config['case'], 'solver':config['solver'], 'device':config['device']}
+                    report=json.loads((numerical/'report.json').read_text())
+                    actual=report.get('actual_device')
+                    if actual is None and report.get('solver')=='Meep CPU':
+                        actual='CPU'
+                    result={'case':config['case'],'solver':config['solver'],'device':config['device'],
+                            'actual_device':actual,'device_name':report.get('device_name')}
                 else:
                     if not (output/"arrays.npz").exists() or not (output/"metadata.json").exists():
                         raise RuntimeError("Solver exited without numerical results.")

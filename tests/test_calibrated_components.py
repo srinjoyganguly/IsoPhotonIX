@@ -113,6 +113,14 @@ class CalibratedComponents(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'Checkpoint'):
                 checkpointed_stage(mp,settings,0,1,True,Path(tmp))
 
+    def test_generic_study_export_reads_calibration_settings(self):
+        config=Calibration(case='ring',solver='meep',device='cpu',ring_scope='lumerical')
+        response=TestClient(app).post('/api/reproduce/study',json=config.model_dump())
+        self.assertEqual(response.status_code,200)
+        with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+            self.assertEqual(json.loads(archive.read('config.json')),config.model_dump())
+            self.assertIn('source/scripts/calibration_checkpoint.py',archive.namelist())
+
     def test_catalog(self):
         props=TestClient(app).get('/api/calibrations').json()
         self.assertEqual(len(props),6)

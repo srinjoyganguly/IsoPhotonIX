@@ -176,7 +176,9 @@ def run_case(name,setting,arrays):
         return np.stack([coeff[:,0,1]-reference[:,0,1], coeff[:,1,0],coeff[:,2,1],coeff[:,3,0]],axis=1)/incident[:,None]
     s=normalized(full); power=abs(s)**2; prev=abs(normalized(early))**2
     straight=abs(reference[:,1,0]/incident)**2
-    prefix=f'{name}_r{res}_p{pml}_pad{pad}_a{aperture}'
+    incoming_ratio=full[:,0,0]/incident
+    source_ok=(abs(incoming_ratio)>.97) & (abs(incoming_ratio)<1.03) & (abs(np.angle(incoming_ratio))<.02)
+    prefix=f'{name}_r{res}_p{pml}_pad{pad}_a{aperture}_t{duration:g}'
     arrays[prefix+'_reference_modes']=reference; arrays[prefix+'_device_modes']=full
     arrays[prefix+'_s']=s; arrays[prefix+'_s_early']=normalized(early)
     arrays[prefix+'_ring_time']=ts; arrays[prefix+'_ring_Hz']=probe
@@ -188,7 +190,9 @@ def run_case(name,setting,arrays):
             phase_convention='Positive-real Ey at the guide center for both propagation directions.',
             peaks=peaks,straight_reference_power_range=[float(straight.min()),float(straight.max())],
             port_power_sum_range=[float(power.sum(axis=1).min()),float(power.sum(axis=1).max())],
-            valid_bins=((np.max(abs(power-prev),axis=1)<=.05) & (power.sum(axis=1)<=1.03)).tolist(),
+            incident_device_over_reference_magnitude_range=[float(abs(incoming_ratio).min()),float(abs(incoming_ratio).max())],
+            incident_device_over_reference_max_phase_difference_rad=float(np.max(abs(np.angle(incoming_ratio)))),
+            valid_bins=(source_ok & (np.max(abs(power-prev),axis=1)<=.05) & (power.sum(axis=1)<=1.03)).tolist(),
             max_power_change_early_to_final=float(np.max(abs(power-prev))),
             final_window_ring_Hz_peak_ratio=float(np.max(abs(probe[ts>.95*duration]))/np.max(abs(probe))))
     return report,power
@@ -196,9 +200,11 @@ def run_case(name,setting,arrays):
 
 def planar_settings(name):
     settings={'coarse':(20,.8,.8,2.,1000.),'fine':(28,.8,.8,2.,1000.)}
-    if name=='lumerical':
-        settings.update(pml=(20,1.2,.8,2.,1000.),padding=(20,.8,1.3,2.,1000.),
-                        aperture=(20,.8,.8,2.4,1000.))
+    if name=='tidy3d':
+        return {'short-coarse':settings['coarse'], 'short-fine':settings['fine'],
+                'coarse':(20,.8,.8,2.,2500.),'fine':(28,.8,.8,2.,2500.)}
+    settings.update(pml=(20,1.2,.8,2.,1000.),padding=(20,.8,1.3,2.,1000.),
+                    aperture=(20,.8,.8,2.4,1000.))
     return settings
 
 
@@ -256,13 +262,18 @@ def isolated_pole(case, order, resolution, radial_padding, pml, traces, key, oxi
     radial_power=float(np.sum(abs(field[late,:,0])**2))
     vertical_power=float(np.sum(abs(field[late,:,1])**2))
     radial_fraction=radial_power/(radial_power+vertical_power)
+    inner=field[late,:2,0].mean(axis=1)
+    outer=field[late,2:,0].mean(axis=1)
+    norm=np.linalg.norm(inner)*np.linalg.norm(outer)
+    inner_outer_correlation=float(np.vdot(inner,outer).real/norm) if norm>0 else 0.
     traces[key+'_time']=np.asarray(ts)
     traces[key+'_Er_Ez']=field
-    checked=(abs(a['wavelength_um']-b['wavelength_um'])<.001 and radial_fraction>.5
+    checked=(abs(a['wavelength_um']-b['wavelength_um'])<.001 and radial_fraction>.5 and inner_outer_correlation>.5
              and abs(b['imaginary_frequency_per_um'])<.001)
     return dict(angular_order=int(order),resolution=resolution,radial_padding_um=radial_padding,
                 pml_um=pml,first_post_source_window=a,second_post_source_window=b,
-                sample_core_radial_fraction=radial_fraction,pole_repeat_passed=bool(checked))
+                sample_core_radial_fraction=radial_fraction,inner_outer_radial_phase_correlation=inner_outer_correlation,
+                pole_repeat_passed=bool(checked))
 
 
 def pole_wavelength(row):
@@ -322,6 +333,7 @@ def summarize_bare_ring(name, m0, straight, runs, boundary, traces, checkpoint=N
             r36[order]=measured_pole(name,order,36,.80,.75,traces,f'{name}_r36_m{order}',checkpoint)
     runs['r36']=[r36[m] for m in sorted(r36)]
     same_order=np.sort([pole_wavelength(r36[row['angular_order']]) for row in pair])
+    shifts=1000*(finest-same_order)
     vendor=np.array(CASES[name]['reference_peaks_um'])
     k=int(np.argmin(abs((vendor[:-1]+vendor[1:])/2-1.55)))
     published=float((vendor[k+1]-vendor[k])*1000)
@@ -332,6 +344,8 @@ def summarize_bare_ring(name, m0, straight, runs, boundary, traces, checkpoint=N
         measured_bare_ring_pair_um=finest.tolist(), measured_bare_ring_fsr_nm=fsr,
         measured_pair_orders=[row['angular_order'] for row in pair],
         same_order_r36_pair_um=same_order.tolist(),r36_to_r48_fsr_change_nm=fsr-1000*np.diff(same_order)[0],
+        same_order_r36_to_r48_peak_shifts_nm=shifts.tolist(),
+        absolute_poles_stable_within_1nm=bool(np.max(abs(shifts))<=1.),
         published_loaded_pair_um=vendor[k:k+2].tolist(), published_loaded_ring_fsr_nm=published,
         bare_minus_loaded_reference_nm=fsr-published,
         maximum_mesh_peak_shift_nm=max(1000*abs(pole_wavelength(coarse[m])-pole_wavelength(row))
@@ -368,7 +382,9 @@ def run(out, isolated_only=False, checkpoint=None):
     if isolated_only:
         np.savez_compressed(out/'arrays.npz',**arrays)
         report=dict(schema_version=1,case_id='isolated-ring-poles',solver='Meep CPU',
-                    passed=all(row['checks_passed'] for row in isolated.values()),cases=isolated)
+                    versions={'meep':mp.__version__,'numpy':np.__version__},
+                    passed=all(row['checks_passed'] for row in isolated.values()),cases=isolated,
+                    arrays_file='arrays.npz',arrays_sha256=hashlib.sha256((out/'arrays.npz').read_bytes()).hexdigest())
         (out/'report.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
         return report
     for name,case in CASES.items():
@@ -447,10 +463,21 @@ def run_loaded(out,name,profile,checkpoint):
                       valid_bins=row['valid_bins'],best_peaks=row['peaks'],cases={profile:row})}
     archive=out/'arrays.npz'
     np.savez_compressed(archive,**arrays)
+    peaks=np.array([peak['wavelength_um'] for peak in row['peaks']])
+    reference=np.array(CASES[name]['reference_peaks_um'])
+    def spacing(w):
+        if len(w)<2:
+            return None
+        pair=int(np.argmin(abs((w[:-1]+w[1:])/2-1.55)))
+        return float(1000*(w[pair+1]-w[pair]))
     report=dict(schema_version=1,case_id='ring-loaded',solver='Meep CPU',vendor=name,profile=profile,
                 physical_model=CASES[name],series=series,checks=checks,passed=all(checks.values()),
                 versions={'meep':mp.__version__,'numpy':np.__version__},
                 dimensionality='Planar 2D bus-loaded Hz model. Vertical slab effective index fixed at 1.55 µm.',
+                measured_loaded_fsr_nm=spacing(peaks),vendor_loaded_fsr_nm=spacing(reference),
+                incident_device_over_reference_magnitude_range=row['incident_device_over_reference_magnitude_range'],
+                incident_device_over_reference_max_phase_difference_rad=row['incident_device_over_reference_max_phase_difference_rad'],
+                scope='Local planar effective-index spectrum and a vendor finite-height loaded ring. The spacing is a diagnostic comparison of distinct models.',
                 arrays_file='arrays.npz',arrays_sha256=hashlib.sha256(archive.read_bytes()).hexdigest())
     (out/'report.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
     return report
@@ -461,7 +488,7 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--isolated-only',action='store_true',help='run only the finite-height cylindrical bare-ring pole studies')
     parser.add_argument('--loaded-case',choices=tuple(CASES),help='measure one vendor planar loaded-ring spectrum')
-    parser.add_argument('--profile',choices=('coarse','fine','pml','padding','aperture'),help='single-case settings (default fine)')
+    parser.add_argument('--profile',choices=('coarse','fine','pml','padding','aperture','short-coarse','short-fine'),help='single-case settings (default fine)')
     parser.add_argument('--checkpoint',type=Path,help='retain verified finished spectra and poles for resuming longer studies')
     args=parser.parse_args()
     if args.isolated_only and args.loaded_case:

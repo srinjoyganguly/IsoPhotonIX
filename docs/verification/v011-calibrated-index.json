@@ -5981,6 +5981,22 @@
             }
           }
         }
+      },
+      {
+        "label": "Isolated finite-height poles \u00b7 Meep CPU",
+        "receipt": "v011-ring-bare-fsr.json",
+        "report": {
+          "isolated_finite_height_ring": {
+            "lumerical": {
+              "measured_bare_ring_fsr_nm": 26.919091830871487,
+              "published_loaded_ring_fsr_nm": 25.454899999999945
+            },
+            "tidy3d": {
+              "measured_bare_ring_fsr_nm": 18.142680566425984,
+              "published_loaded_ring_fsr_nm": 17.740000000000087
+            }
+          }
+        }
       }
     ]
   },

@@ -13,7 +13,12 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("config", type=Path)
 parser.add_argument("--output", type=Path, required=True)
 args = parser.parse_args()
-config = parse_study(json.loads(args.config.read_text())).model_dump()
+settings = json.loads(args.config.read_text())
+if isinstance(settings, dict) and settings.get('study_type') == 'calibrated-component':
+    from backend.calibrations import Calibration, run_config
+    calibration = Calibration.model_validate(settings)
+    raise SystemExit(run_config(calibration.model_dump(), args.output))
+config = parse_study(settings).model_dump()
 args.output.mkdir(parents=True, exist_ok=False)
 output = args.output.resolve()
 (output/"config.json").write_text(json.dumps(config, indent=2))

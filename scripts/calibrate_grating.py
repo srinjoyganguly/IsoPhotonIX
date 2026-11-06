@@ -280,6 +280,39 @@ def gaussian_only(case, resolution, compact, arrays, prefix, checkpoint=None):
     return result
 
 
+def guided_radiation(out,vendor,resolution,checkpoint):
+    """One launched TE0 mode and an independent straight-guide normalization."""
+    import meep as mp
+    mp.verbosity(0)
+    case=CASES[vendor]
+    duration=100 if vendor=='tidy3d' else 150
+    settings=(resolution,.8,1.,duration,1.56)
+    reference=measured_stage(case,'guide_reference',settings,checkpoint=checkpoint)
+    device=measured_stage(case,'guide_device',settings,checkpoint=checkpoint)
+    incident=reference['values'][0]
+    if np.min(incident)<=0:
+        raise RuntimeError('The straight reference has nonpositive incident power.')
+    left,right,up,down=device['values']/incident
+    reflected=1-left
+    total=reflected+right+up-down
+    valid=(abs(total-1)<.04) & (incident>=.01*max(incident))
+    center=len(incident)//2
+    archive=out/'arrays.npz'
+    np.savez_compressed(archive,frequency_per_um=device['frequencies'],straight_flux=reference['values'],
+                        device_flux=device['values'])
+    row=dict(wavelength_um=(1/device['frequencies']).tolist(),guide_radiation_up=up.tolist(),
+             guide_radiation_down=(-down).tolist(),outlet_left=reflected.tolist(),outlet_right=right.tolist(),
+             power_sum=total.tolist(),valid_energy_bins=valid.tolist(),center_upper_fraction=float(up[center]),
+             center_lower_fraction=float(-down[center]),center_power_sum=float(total[center]))
+    report=dict(schema_version=1,case_id='grating-guided-radiation',solver='Meep CPU',version=mp.__version__,
+        vendor=vendor,physical_model=case,resolution=resolution,pml_um=.8,padding_um=1.,post_source_duration_um_c=duration,
+        passed=bool(valid[center] and np.isfinite(total).all()),studies={vendor:{'guided':row}},
+        scope='Power leaving an enclosing 2D cross-sectional contour for a guide launch. Upward flux includes all angles; the vendor percentages are for excitation by a specific Gaussian instead.',
+        arrays_file=archive.name,arrays_sha256=hashlib.sha256(archive.read_bytes()).hexdigest())
+    (out/'report.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
+    return report
+
+
 def run(out, checkpoint=None):
     import meep as mp
     mp.verbosity(0)
@@ -350,17 +383,20 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--checkpoint',type=Path,help='retain and reuse verified, completed solver stages in this directory')
     parser.add_argument('--beam-only',choices=tuple(CASES),help='repeat only one measured Gaussian-to-guide case')
+    parser.add_argument('--guide-only',choices=tuple(CASES),help='measure upward and downward flux for one guide-excited grating')
     parser.add_argument('--vendor-box',action='store_true',help='use Tidy3D notebook box and monitor with an explicitly clipped beam')
     parser.add_argument('--project-source',action='store_true',help='use the published Ansys project oxide index, beam position and waist')
     parser.add_argument('--project-output',action='store_true',help='measure Ansys total output flux and TE0 at the filed far-port coordinates')
-    parser.add_argument('--resolution',type=int,choices=(28,40,60),help='mesh for an individual Gaussian comparison (default 40)')
+    parser.add_argument('--resolution',type=int,choices=(28,40,60),help='mesh for an individual source study (default 40)')
     args = parser.parse_args()
+    if args.beam_only and args.guide_only:
+        parser.error('choose a Gaussian or a guided input')
     if args.vendor_box and args.beam_only!='tidy3d':
         parser.error('--vendor-box requires --beam-only tidy3d')
     if (args.project_source or args.project_output) and args.beam_only!='lumerical':
         parser.error('--project-source and --project-output apply to --beam-only lumerical')
-    if args.resolution is not None and not args.beam_only:
-        parser.error('--resolution applies to --beam-only')
+    if args.resolution is not None and not (args.beam_only or args.guide_only):
+        parser.error('--resolution applies to individual source studies')
     destination = args.output.resolve()
     if destination.exists():
         parser.error('choose a new output directory')
@@ -377,7 +413,9 @@ def main():
     destination.parent.mkdir(parents=True,exist_ok=True)
     with tempfile.TemporaryDirectory(dir=destination.parent) as temp:
         stage = Path(temp)/'study'; stage.mkdir()
-        if args.beam_only:
+        if args.guide_only:
+            result=guided_radiation(stage,args.guide_only,args.resolution or 40,checkpoint)
+        elif args.beam_only:
             import meep as mp
             mp.verbosity(0)
             arrays={}

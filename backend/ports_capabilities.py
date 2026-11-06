@@ -15,15 +15,19 @@ _lock = threading.Lock()
 def _probe(target):
     solver, device = target
     base = {'solver':solver,'device':device,'available':False}
+    timeout=180 if solver=='fdtdx' else 55
+    env={**worker_env(solver,device),'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1'}
     try:
         response = subprocess.run([interpreter(solver, device),'-m','backend.ports_probe',solver,device],cwd=ROOT,
-                                  env=worker_env(solver,device),capture_output=True,text=True,timeout=55)
+                                  env=env,capture_output=True,text=True,timeout=timeout)
         records=[line[11:] for line in response.stdout.splitlines() if line.startswith('PROBE_JSON=')]
         if response.returncode or not records:
             return {**base,'reason':clean_log((response.stderr or response.stdout)[-1600:]) or 'Port runtime probe failed.'}
         result=json.loads(records[-1])
         if result.get('reason'): result['reason']=clean_log(result['reason'])
         return {**base,**result}
+    except subprocess.TimeoutExpired:
+        return {**base,'reason':f'The {solver}/{device} port probe did not finish within {timeout} seconds.'}
     except Exception as exc:
         return {**base,'reason':clean_log(str(exc))}
 

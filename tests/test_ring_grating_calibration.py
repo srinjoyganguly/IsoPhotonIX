@@ -1,4 +1,6 @@
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -125,3 +127,26 @@ class ResonatorAndGrating(unittest.TestCase):
                     stream.write(b'damaged')
             with self.assertRaisesRegex(ValueError,'integrity'):
                 cache.acquire('port',{'mesh':20},measure)
+
+    def test_published_grating_power_and_ring_complex_coefficients_reconstruct(self):
+        folder=ROOT/'docs/verification'
+        for report_name,prefix in [('v011-grating-compact-tidy3d','tidy_compact'),
+                                   ('v011-grating-ansys-article-r40','lumerical')]:
+            report=json.loads((folder/(report_name+'.json')).read_text())
+            archive=folder/report['arrays_file']
+            self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),report['arrays_sha256'])
+            with np.load(archive,allow_pickle=False) as raw:
+                power=abs(raw[prefix+'_device_modes'][:,1])**2/-raw[prefix+'_reference'][0]
+                np.testing.assert_allclose(power,report['result']['beam_to_guide'])
+        report=json.loads((folder/'v011-ring-loaded-lumerical-fine.json').read_text())
+        series=report['series']['lumerical']
+        prefix=series['cases']['fine']['array_prefix']
+        archive=folder/report['arrays_file']
+        self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),report['arrays_sha256'])
+        with np.load(archive,allow_pickle=False) as raw:
+            reference,device=raw[prefix+'_reference_modes'],raw[prefix+'_device_modes']
+            outgoing=np.stack([device[:,0,1]-reference[:,0,1],device[:,1,0],
+                               device[:,2,1],device[:,3,0]],axis=1)
+            measured=outgoing/reference[:,0,0,None]
+            np.testing.assert_allclose(measured,raw[prefix+'_s'])
+            np.testing.assert_allclose(abs(measured[:,2])**2,series['drop'])

@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-11-06T00:01:31.418323+00:00",
+  "completed_controls": 2,
+  "planned_controls": 8,
+  "all_complete": false,
+  "scope": "One independent incident column per device (coupler left-lower; splitter centre trunk) per mesh, PML, transverse modal aperture or longer DFT ringdown. All baseline incoming ports were independently excited. Sensitivity is measured for the named columns and shared valid bins; it does not certify all coefficients converged.",
+  "controls": [
+    {
+      "case": "coupler",
+      "control": "aperture",
+      "convention_version": 2,
+      "baseline_report_sha256": "eba899e783e5b20a4750fdbfe753304f813172a1cd70df081b09c9b0e28616ac",
+      "control_report_sha256": "5ff0db9938fcc19b3abe77ba44f4de6b839157ac249a11662cd9c198bba6a2c5",
+      "control_arrays_sha256": "4a3ff3c4f500e175f7015ea9609d4601aea4cbe01f7c12b684b59f0b74202195",
+      "raw_dft_bytes_unchanged": true,
+      "source_native_monitor_sha256": {
+        "left_lower-monitors.npz": "0113dcd4b315196537a35208bae3ddaba5a39eced15042c0ece128a92d8e3cb5"
+      },
+      "native_electric_basis": true,
+      "ports": [
+        "left_lower",
+        "left_upper",
+        "right_lower",
+        "right_upper"
+      ],
+      "input_ports": [
+        "left_lower"
+      ],
+      "wavelength_um": [
+        1.5995872033023737,
+        1.55,
+        1.5033947623666344
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true
+      ],
+      "s": [
+        [
+          [
+            [
+              0.022927305499732778,
+              0.016618735503671954
+            ]
+          ],
+          [
+            [
+              -0.011682737321809179,
+              0.0040740463991289395
+            ]
+          ],
+          [
+            [
+              -0.6148196730268679,
+              0.6802954029385644
+            ]
+          ],
+          [
+            [
+              -0.25232394478274167,
+              -0.2126623348812025
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              -0.039266353767045785,
+              0.011462527142261984
+            ]
+          ],
+          [
+            [
+              -0.0025809275663486687,
+              -0.011836293102384808
+            ]
+          ],
+          [
+            [
+              0.24346634819149518,
+              0.9025518365925513
+            ]
+          ],
+          [
+            [
+              -0.2594940800173913,
+              0.07659310925910907
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              -0.00225111410987354,
+              0.010680364070965337
+            ]
+          ],
+          [
+            [
+              -0.0029143818243053277,
+              0.001058990019051664
+            ]
+          ],
+          [
+            [
+              0.9088611622643992,
+              0.2868339494594689
+            ]
+          ],
+          [
+            [
+              -0.07322255691777359,
+              0.2220530757790988
+            ]
+          ]
+        ]
+      ],
+      "stage_checks": [
+        {
+          "launch": "left_lower",
+          "minimum_Ey_fraction": 0.7118170705498378,
+          "maximum_edge_intensity_fraction": 1.5761451593918466e-05,
+          "min_incident_relative_power": 0.5051549729104658,
+          "seconds": 2718.4652058670035,
+          "reference": {
+            "elapsed_fs": 400.3811530175319,
+            "settled": true,
+            "steps": 3841
+          },
+          "device": {
+            "elapsed_fs": 480.4365358650884,
+            "settled": true,
+            "steps": 4609
+          }
+        }
+      ],
+      "measured_changes": {
+        "case": "coupler",
+        "solver": "Meep",
+        "actual_device": "CPU",
+        "control": "aperture",
+        "before": [
+          2.0,
+          2.5
+        ],
+        "after": [
+          2.25,
+          2.5
+        ],
+        "inputs_measured": [
+          "left_lower"
+        ],
+        "valid_bins": [
+          true,
+          true,
+          true
+        ],
+        "phase_amplitude_floor": 0.01,
+        "entries": [
+          {
+            "incident": "left_lower",
+            "outgoing": "left_lower",
+            "max_absolute_complex_change": 7.616813680900089e-07,
+            "max_absolute_power_change": 1.1695179349263674e-08,
+            "max_principal_phase_change_rad": 2.6252580079440986e-05
+          },
+          {
+            "incident": "left_lower",
+            "outgoing": "left_upper",
+            "max_absolute_complex_change": 1.891670480759156e-07,
+            "max_absolute_power_change": 4.085692732513956e-09,
+            "max_principal_phase_change_rad": 7.076191956270316e-06
+          },
+          {
+            "incident": "left_lower",
+            "outgoing": "right_lower",
+            "max_absolute_complex_change": 1.757282033033358e-06,
+            "max_absolute_power_change": 2.1180072208304423e-06,
+            "max_principal_phase_change_rad": 1.4745144082746917e-06
+          },
+          {
+            "incident": "left_lower",
+            "outgoing": "right_upper",
+            "max_absolute_complex_change": 3.101573722427196e-06,
+            "max_absolute_power_change": 1.411020490872661e-06,
+            "max_principal_phase_change_rad": 6.635800731778422e-06
+          }
+        ]
+      }
+    },
+    {
+      "case": "splitter",
+      "control": "pml",
+      "convention_version": 2,
+      "baseline_report_sha256": "5d73fd1029d2d773475c7e037a19b8c90051880162ae6bd0e93c7b7da5fe1f43",
+      "control_report_sha256": "8ca0b581cf39f018d6c07c2ec9b246782c26c01bbfcf08e47bf73ba106a5aa28",
+      "control_arrays_sha256": "5c3052978c400ee87b7d7941851719de707e9977a0b948f873a28c0daac1f07d",
+      "raw_dft_bytes_unchanged": true,
+      "source_native_monitor_sha256": {
+        "left_center-monitors.npz": "0c07dc41036d7481b0127fad945bb076d1216666836054eafa0ef7bc6c97c110"
+      },
+      "native_electric_basis": true,
+      "ports": [
+        "left_center",
+        "right_lower",
+        "right_upper"
+      ],
+      "input_ports": [
+        "left_center"
+      ],
+      "wavelength_um": [
+        1.5995872033023737,
+        1.55,
+        1.5033947623666344
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true
+      ],
+      "s": [
+        [
+          [
+            [
+              0.0018048741125065205,
+              -0.06284711552768224
+            ]
+          ],
+          [
+            [
+              -0.47240985874676933,
+              0.4298943032123116
+            ]
+          ],
+          [
+            [
+              -0.46185907402355664,
+              0.4239757001453925
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              -0.05848192956309894,
+              0.006312619614720573
+            ]
+          ],
+          [
+            [
+              0.16954506185495014,
+              0.6126895782913533
+            ]
+          ],
+          [
+            [
+              0.16936682956830637,
+              0.6000905264506728
+            ]
+          ]
+        ],
+        [
+          [
+            [
+              0.03422710093504551,
+              0.017681875959192368
+            ]
+          ],
+          [
+            [
+              0.6199125651219727,
+              0.118611257668782
+            ]
+          ],
+          [
+            [
+              0.6086247998761497,
+              0.11265533301579278
+            ]
+          ]
+        ]
+      ],
+      "stage_checks": [
+        {
+          "launch": "left_center",
+          "minimum_Ey_fraction": 0.752360377502675,
+          "maximum_edge_intensity_fraction": 2.1986798629551355e-05,
+          "min_incident_relative_power": 0.5051399529351833,
+          "seconds": 3079.4026576649994,
+          "reference": {
+            "elapsed_fs": 400.3811530175319,
+            "settled": true,
+            "steps": 3841
+          },
+          "device": {
+            "elapsed_fs": 400.3811530175319,
+            "settled": true,
+            "steps": 3841
+          }
+        }
+      ],
+      "measured_changes": {
+        "case": "splitter",
+        "solver": "Meep",
+        "actual_device": "CPU",
+        "control": "pml",
+        "before": 0.75,
+        "after": 1.0,
+        "inputs_measured": [
+          "left_center"
+        ],
+        "valid_bins": [
+          true,
+          true,
+          true
+        ],
+        "phase_amplitude_floor": 0.01,
+        "entries": [
+          {
+            "incident": "left_center",
+            "outgoing": "left_center",
+            "max_absolute_complex_change": 8.171575854634344e-06,
+            "max_absolute_power_change": 6.266878215981705e-07,
+            "max_principal_phase_change_rad": 8.061199841742106e-05
+          },
+          {
+            "incident": "left_center",
+            "outgoing": "right_lower",
+            "max_absolute_complex_change": 6.042360528322241e-06,
+            "max_absolute_power_change": 6.515419126551514e-06,
+            "max_principal_phase_change_rad": 9.008119978297712e-06
+          },
+          {
+            "incident": "left_center",
+            "outgoing": "right_upper",
+            "max_absolute_complex_change": 5.9469590809168155e-06,
+            "max_absolute_power_change": 5.629316308708443e-06,
+            "max_principal_phase_change_rad": 9.276595799029913e-06
+          }
+        ]
+      }
+    }
+  ]
+}
