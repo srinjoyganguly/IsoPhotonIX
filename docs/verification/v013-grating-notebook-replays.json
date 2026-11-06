@@ -1,0 +1,340 @@
+{
+  "passed": true,
+  "verified_at": "2026-11-06T11:23:21.091221+00:00",
+  "target": "FDTDX running locally on NVIDIA",
+  "program": "Jupyter, unchanged v0.12.0a1 release notebooks",
+  "release_source_commit": "af60ce65444229c215a00bad9b0808753d59bba4",
+  "release_checksums_sha256": "a5f6910ecd33a0d262ee3bbe410679dfc7fdae256945efaf6412bf4ef5ada4fe",
+  "scope": "Each notebook performed separate full reference and device simulations without a shared checkpoint.",
+  "cases": {
+    "lumerical": {
+      "passed": true,
+      "asset": "grating-lumerical-3d-gpu-r14-v0.12.0a1.zip",
+      "release_url": "https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/grating-lumerical-3d-gpu-r14-v0.12.0a1.zip",
+      "export_sha256": "85b505d90ae363d3fc263cb79fae1ba4e025f47d1aa2b8b42f7f575c995f98ba",
+      "original_notebook_sha256": "63be43e9fe806ec267a308a27f3c5cafbd65cea0c957e1b82b09606df3dbd41d",
+      "executed_notebook_sha256": "27024266a11fd6a6e58079abfc4a47f9a0d7e3e5e04699423b9f346bf5a0771f",
+      "native_receipt": "v012-grating3d-lumerical-r14.json",
+      "reference_arrays_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f",
+      "replay_arrays_sha256": "1d72c5fd81dc6ad62daeb26cae20a4a69cde1b64f3d80402fcdb44024eb528ca",
+      "replay_report_sha256": "c0dd56f5e1a76b1ec949f88a9a6981cc85d2ed165f524111883ba221344150bc",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "stages": {
+        "reference": {
+          "shape": [
+            606,
+            298,
+            53
+          ],
+          "time_steps": 3087,
+          "settled": true,
+          "source_eh_sha256": "9cf7bf974aaf2ad3e0b06b092348fb0f357761ae1f041e7c31914666e036a76d",
+          "source_time_offsets_sha256": "e6291dd70823535b051cecb6bbb6e2d0f56b6bb154d2ae0cf03c085cb31af2c2",
+          "scalar_permittivity_sha256": "0a91ed8dbb2faf2f7cb8ba3c7a691bdfdfcdc5bcf4e16474222230dfcca9fd62",
+          "native_worker_sha256": "301f0485beff67db44dd83244d48fd3112495de1ca0eef94d9b0f699782131b8",
+          "compile_seconds": 0.834846997007844,
+          "stepping_seconds": 112.22521024399612,
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "tidy3d": "2.11.2",
+            "numpy": "2.4.6",
+            "scipy": "1.17.1"
+          }
+        },
+        "device": {
+          "shape": [
+            606,
+            298,
+            53
+          ],
+          "time_steps": 8379,
+          "settled": true,
+          "source_eh_sha256": "9cf7bf974aaf2ad3e0b06b092348fb0f357761ae1f041e7c31914666e036a76d",
+          "source_time_offsets_sha256": "e6291dd70823535b051cecb6bbb6e2d0f56b6bb154d2ae0cf03c085cb31af2c2",
+          "scalar_permittivity_sha256": "6500c40479501b5fe027cd29f71cf0a18714fb489d2b078077bd38557ba9c182",
+          "native_worker_sha256": "301f0485beff67db44dd83244d48fd3112495de1ca0eef94d9b0f699782131b8",
+          "compile_seconds": 0.860886123002274,
+          "stepping_seconds": 322.43898675699893,
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "tidy3d": "2.11.2",
+            "numpy": "2.4.6",
+            "scipy": "1.17.1"
+          }
+        }
+      },
+      "independent_stage_signatures": true,
+      "numerical_array_count": 45,
+      "native_reconstruction": {
+        "source_eh_checked": true,
+        "incident_and_mode_power_reconstructed": true,
+        "angular_or_fiber_return_reconstructed": true,
+        "energy_time_and_last_two_windows_checked": true,
+        "field_preview_shape": [
+          588,
+          35
+        ],
+        "numerical_archive_entries": 45,
+        "captured_program_sha256": "301f0485beff67db44dd83244d48fd3112495de1ca0eef94d9b0f699782131b8"
+      },
+      "comparison": {
+        "passed": true,
+        "all_array_bytes_equal": false,
+        "within_tolerance": {
+          "arrays.npz:ref_energy": 0.015625,
+          "arrays.npz:dev_energy": 0.03125
+        },
+        "precision": {
+          "relative": 2e-06,
+          "absolute": 1e-10,
+          "per_array_peak_fraction": 2e-06
+        },
+        "reported_observables_checked": [
+          "beam/wavelength_um",
+          "beam/beam_to_guide",
+          "beam/valid_beam_bins",
+          "radiation/fiber_return_power",
+          "field/array",
+          "field/index",
+          "field/axis_order",
+          "field/component",
+          "field/horizontal_axis",
+          "field/vertical_axis",
+          "field/horizontal_um",
+          "field/vertical_um",
+          "field/wavelength_um"
+        ]
+      },
+      "changed_arrays_max_difference_over_reference_peak": {
+        "ref_energy": 7.958803957308339e-08,
+        "dev_energy": 8.803932117809642e-08
+      },
+      "preview_field_max_absolute_difference": 0.0,
+      "coupling_fraction_max_absolute_difference": 0.0,
+      "wavelength_nm": [
+        1500.0,
+        1525.0,
+        1550.0,
+        1575.0,
+        1600.0
+      ],
+      "coupling_fraction": [
+        0.33678055968545206,
+        0.34601388383841986,
+        0.24908304350250732,
+        0.12989219821317505,
+        0.045921267823827494
+      ],
+      "published_fraction": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "vendor_source": "https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler",
+      "local_minus_published_percentage_points": [
+        18.61674990079432,
+        5.146800522241929,
+        -15.11826392617211,
+        -24.03313038033238,
+        -17.780752360044243
+      ],
+      "five_wavelength_mean_absolute_difference_percentage_points": 16.139139417916997,
+      "published_executed_notebook": {
+        "file": "v013-grating-notebook-replays-lumerical.ipynb",
+        "sha256": "7a0ab9d72277796359ed0bf1bd0244858b33a070d69c16f77c7ba8c5f9bb90fc",
+        "change": "The printed absolute result directory was shortened to notebook-result."
+      }
+    },
+    "tidy3d": {
+      "passed": true,
+      "asset": "grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip",
+      "release_url": "https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip",
+      "export_sha256": "a52f1a1975602e5842a5392dcac5d80eb5d2270241b5d6574081d2808a7a5c12",
+      "original_notebook_sha256": "63be43e9fe806ec267a308a27f3c5cafbd65cea0c957e1b82b09606df3dbd41d",
+      "executed_notebook_sha256": "714f888e5b49e528a683a6076e856af3a9cd45539cb96cd5dc336ea28922d066",
+      "native_receipt": "v012-grating3d-tidy3d-r14.json",
+      "reference_arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+      "replay_arrays_sha256": "eeed151b0fdb5f63744f395eb046dda8b753ca498d3bb31a51c2953074c16510",
+      "replay_report_sha256": "df40041002dac3e6e1ae9f62506cb87f99e8f4d7469a4ef7464485ccb5ac91f0",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "stages": {
+        "reference": {
+          "shape": [
+            918,
+            196,
+            86
+          ],
+          "time_steps": 3087,
+          "settled": true,
+          "source_eh_sha256": "a250c92f8e60a0fc9850b58571a831cc8b2662c8b3b0c499d7a5fc6adbd78f66",
+          "source_time_offsets_sha256": "e97af9fc557e1a42c4382394580594147c8d6dc9638e04dc6e8575577b5dde4b",
+          "scalar_permittivity_sha256": "c9e082ae66fafddba678abcf7abfacad56b769bcb6bb901e94756c846418f861",
+          "native_worker_sha256": "6a6a18aa53aa05bec9dfbf003d228acb07e604b3b4435e8ca88ea3b8638112b6",
+          "compile_seconds": 0.7844400879985187,
+          "stepping_seconds": 95.94494597100129,
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "tidy3d": "2.11.2",
+            "numpy": "2.4.6",
+            "scipy": "1.17.1"
+          }
+        },
+        "device": {
+          "shape": [
+            918,
+            196,
+            86
+          ],
+          "time_steps": 8820,
+          "settled": true,
+          "source_eh_sha256": "a250c92f8e60a0fc9850b58571a831cc8b2662c8b3b0c499d7a5fc6adbd78f66",
+          "source_time_offsets_sha256": "e97af9fc557e1a42c4382394580594147c8d6dc9638e04dc6e8575577b5dde4b",
+          "scalar_permittivity_sha256": "72ac7573e051f41505d0c0674c841f84e4a6afff30f72d5641d22fc64b6091e6",
+          "native_worker_sha256": "6a6a18aa53aa05bec9dfbf003d228acb07e604b3b4435e8ca88ea3b8638112b6",
+          "compile_seconds": 0.8513246560032712,
+          "stepping_seconds": 286.65401590100373,
+          "versions": {
+            "fdtdx": "0.6.2",
+            "jax": "0.10.2",
+            "jaxlib": "0.10.2",
+            "tidy3d": "2.11.2",
+            "numpy": "2.4.6",
+            "scipy": "1.17.1"
+          }
+        }
+      },
+      "independent_stage_signatures": true,
+      "numerical_array_count": 50,
+      "native_reconstruction": {
+        "source_eh_checked": true,
+        "incident_and_mode_power_reconstructed": true,
+        "angular_or_fiber_return_reconstructed": true,
+        "energy_time_and_last_two_windows_checked": true,
+        "field_preview_shape": [
+          900,
+          68
+        ],
+        "numerical_archive_entries": 50,
+        "captured_program_sha256": "6a6a18aa53aa05bec9dfbf003d228acb07e604b3b4435e8ca88ea3b8638112b6",
+        "incident_beam_direction": {
+          "mean_x_angle_deg": [
+            -14.50034405918167,
+            -14.500155635891927,
+            -14.500560822463049,
+            -14.500631875117845,
+            -14.500654318465484
+          ],
+          "downward_propagating_to_direct": [
+            0.9998686845532581,
+            0.9997256508144341,
+            0.9996019332541463,
+            0.9996352328662673,
+            0.9996931097780449
+          ],
+          "upward_propagating_to_direct": [
+            8.410419857618251e-05,
+            7.076721961436461e-05,
+            6.873227714226727e-05,
+            8.644619550575891e-05,
+            0.00010421604329650845
+          ],
+          "incident_to_band_max": [
+            0.34418610638430336,
+            0.7724225920558283,
+            1.0,
+            0.7856950507876307,
+            0.3922969525780262
+          ]
+        }
+      },
+      "comparison": {
+        "passed": true,
+        "all_array_bytes_equal": false,
+        "within_tolerance": {
+          "arrays.npz:dev_energy": 3.814697265625e-06
+        },
+        "precision": {
+          "relative": 2e-06,
+          "absolute": 1e-10,
+          "per_array_peak_fraction": 2e-06
+        },
+        "reported_observables_checked": [
+          "beam/wavelength_um",
+          "beam/beam_to_guide",
+          "beam/valid_beam_bins",
+          "radiation/polar_edges_deg",
+          "radiation/fraction_of_incident",
+          "field/array",
+          "field/index",
+          "field/axis_order",
+          "field/component",
+          "field/horizontal_axis",
+          "field/vertical_axis",
+          "field/horizontal_um",
+          "field/vertical_um",
+          "field/wavelength_um"
+        ]
+      },
+      "changed_arrays_max_difference_over_reference_peak": {
+        "dev_energy": 7.362118381832884e-08
+      },
+      "preview_field_max_absolute_difference": 0.0,
+      "coupling_fraction_max_absolute_difference": 0.0,
+      "wavelength_nm": [
+        1500.0,
+        1525.0,
+        1550.0,
+        1575.0,
+        1600.0
+      ],
+      "coupling_fraction": [
+        0.04971306948515579,
+        0.20615110207764634,
+        0.3566585155142766,
+        0.30335541591626264,
+        0.14198965514652684
+      ],
+      "published_fraction": [
+        0.07110364946451826,
+        0.2590468874157015,
+        0.38018939632056115,
+        0.2744817749939425,
+        0.12127849076095215
+      ],
+      "vendor_source": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+      "local_minus_published_percentage_points": [
+        -2.139057997936247,
+        -5.289578533805514,
+        -2.3530880806284573,
+        2.8873640922320143,
+        2.0711164385574685
+      ],
+      "five_wavelength_mean_absolute_difference_percentage_points": 2.9480410286319403,
+      "published_executed_notebook": {
+        "file": "v013-grating-notebook-replays-tidy3d.ipynb",
+        "sha256": "106e70a543a9a1c8b929efb88be76e2e83c9bb9de52dae811a103a6fc2ee6733",
+        "change": "The printed absolute result directory was shortened to notebook-result."
+      }
+    }
+  },
+  "fresh_replacement_arrays": {
+    "file": "v013-grating-notebook-replays-changed-arrays.npz",
+    "sha256": "efef9489c2e90d8edc3f91884f3ee5af9f906beb8b1028458a20719284e03115",
+    "keys": [
+      "lumerical__dev_energy",
+      "lumerical__ref_energy",
+      "tidy3d__dev_energy"
+    ],
+    "meaning": "Keys use geometry__array. Each contains the complete fresh array where any byte differed from the original native array."
+  }
+}

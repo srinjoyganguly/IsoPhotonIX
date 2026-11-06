@@ -29,6 +29,10 @@ At both local meshes the strongest of the five tested samples is 1525 nm. The ve
 
 The Tidy3D uniform grating is a separate Gaussian-to-guide experiment. The local 14-cell result is 35.67% versus 38.02% published at 1550 nm, with a mean absolute difference of 2.95 percentage points over five samples. A successful reproduction of either workbench notebook tests reproducibility of its own fields. Commercial agreement is evaluated separately at identical wavelengths and output ports. [Tidy3D uniform grating](https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/) · [Finite-width measurements](FINITE_GRATING_3D.md).
 
+## What the independent notebook runs establish
+
+Both original v0.12.0a1 14-cell archives were downloaded signed out and checked against the published SHA-256 list. Their original notebook cells ran on the RTX 3080 Ti in fresh working directories with new reference and device stages. All five guided powers and the displayed field were exact in both runs. For Lumerical 43 of 45 arrays were byte-identical; for Tidy3D 49 of 50 were byte-identical. Only integrated-energy traces varied, within the originally declared tolerances. The public executed notebooks redact the local output path. The reproduction receipt distinguishes the original asset digest, original cells, private execution digest and published file digest. [Fresh numerical checks](verification/v013-grating-notebook-replays.json) · [Lumerical notebook](verification/v013-grating-notebook-replays-lumerical.ipynb) · [Tidy3D notebook](verification/v013-grating-notebook-replays-tidy3d.ipynb).
+
 ## What would qualify a correction
 
 The following are workbench investigation targets, not vendor accuracy specifications. Keep the incident-source, wavelength-mask, finite-time and native-device checks mandatory.
