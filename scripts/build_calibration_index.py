@@ -144,17 +144,25 @@ def build():
         for label,name in [('Lumerical article · 28 cells/µm','v011-grating-ansys-article-r28.json'),
                            ('Lumerical article · 40 cells/µm','v011-grating-ansys-article-r40.json'),
                            ('Lumerical project source · 40 cells/µm','v011-grating-ansys-project-r40.json'),
-                           ('Lumerical project source · 60 cells/µm','v011-grating-ansys-project-r60.json')]:
+                           ('Lumerical project source · 60 cells/µm','v011-grating-ansys-project-r60.json'),
+                           ('Lumerical output aperture · 40 cells/µm','v011-grating-ansys-output-r40.json'),
+                           ('Lumerical output aperture · 60 cells/µm','v011-grating-ansys-output-r60.json')]:
             beam=read(name)
             if beam and beam.get('passed'):
                 panel={'case_id':beam['case_id'],'vendor':beam['vendor'],
-                       'result':{k:beam['result'][k] for k in ('wavelength_um','beam_to_guide','valid_beam_bins')}}
+                       'result':{k:beam['result'][k] for k in ('wavelength_um','beam_to_guide','valid_beam_bins','direct_output_fraction','valid_direct_bins') if k in beam['result']}}
                 index['grating']['recorded'].append({'label':label,'receipt':name,'report':panel})
                 if name=='v011-grating-ansys-project-r60.json':
                     row=beam['result']
                     mean=row['published_spectral_comparison']['mean_absolute_difference_percentage_points']
                     index['grating']['comparisons'].append(vendor('Lumerical project source',beam['source_url'],
                         f"The 60-cell source-matched model measures {100*row['center_beam_to_guide']:.2f}% at 1310 nm versus 55.7%. Its seven-point mean absolute difference is {mean:.2f} percentage points. The filed output aperture is a separate observable."))
+        direct_results=[read(f'v011-grating-ansys-output-r{mesh}.json') for mesh in (60,40)]
+        direct=next((row for row in direct_results if row and row.get('passed')),None)
+        if direct:
+            row=direct['result']
+            index['grating']['comparisons'].append(vendor('Lumerical output aperture',direct['source_url'],
+                f"At the filed 1 µm aperture, the {row['resolution']}-cell calculation measures {100*row['center_direct_output_fraction']:.2f}% total flux at 1310 nm, compared with 55.7% published. TE0 at this plane is {100*row['center_beam_to_guide']:.2f}%."))
     if 'grating' in index:
         for name in ('tidy3d','lumerical'):
             filename=f'v011-grating-guided-{name}-r40.json'

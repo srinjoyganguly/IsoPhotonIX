@@ -10,9 +10,12 @@ import sys
 import tempfile
 
 
-def verify_source(root):
+def verify_source(root, *, editable_notebook=False):
     manifest = json.loads((root/'manifest.json').read_text())
     for name, digest in manifest['files'].items():
+        if editable_notebook and name=='calibration.ipynb':
+            # Jupyter persists outputs, execution counts and user-chosen result paths.
+            continue
         if hashlib.sha256((root/name).read_bytes()).hexdigest() != digest:
             raise ValueError(f'Export source or settings changed: {name}')
     return manifest
@@ -20,7 +23,7 @@ def verify_source(root):
 
 def measured_observables(report):
     """Numerical fields which the GUI renders; wall times and run dates vary."""
-    result = {key: report[key] for key in ('wavelength_um','s','s_real','s_imag','power','modal_power')
+    result = {key: report[key] for key in ('wavelength_um','s','s_real','s_imag','power','modal_power','ports','port_order','channels')
               if key in report}
     if report.get('case_id')=='grating-gaussian-profile':
         beam=report['result']
@@ -36,13 +39,15 @@ def measured_observables(report):
             for key in ('wavelength_um','beam_to_guide','guide_radiation_up','guide_radiation_down','power_sum','valid_beam_bins','valid_energy_bins'):
                 if key in data:
                     result[f'{name}/{mesh}/{key}'] = data[key]
-    for key in ('wavelength_um', 'beam_to_guide', 'guide_radiation_up'):
+    for key in ('wavelength_um', 'beam_to_guide', 'guide_radiation_up', 'valid_beam_bins', 'valid_energy_bins'):
         compact = report.get('compact_tidy_domain', {})
         if key in compact:
             result[f'compact/{key}'] = compact[key]
     for name, data in report.get('isolated_finite_height_ring', {}).items():
-        if isinstance(data, dict) and 'measured_bare_ring_fsr_nm' in data:
-            result[f'bare_ring/{name}/fsr_nm'] = data['measured_bare_ring_fsr_nm']
+        if isinstance(data,dict):
+            for field in ('measured_bare_ring_fsr_nm','published_loaded_ring_fsr_nm'):
+                if field in data:
+                    result[f'bare_ring/{name}/{field}'] = data[field]
     return result
 
 
@@ -81,6 +86,10 @@ def compare(original, output):
     if not first or first.keys()!=fresh.keys():
         raise ValueError('The replay has different reported observables.')
     for key,value in first.items():
+        if key in ('ports','port_order','channels'):
+            if value!=fresh[key]:
+                raise ValueError(f'Displayed channel order changed in {key}.')
+            continue
         a,b=np.asarray(value,dtype=float),np.asarray(fresh[key],dtype=float)
         if a.shape!=b.shape or not within_precision(a, b):
             raise ValueError(f'Displayed observable changed in {key}.')
@@ -91,7 +100,7 @@ def compare(original, output):
 
 def run(root, output, checkpoint=None):
     root,output = Path(root).resolve(),Path(output).resolve()
-    manifest=verify_source(root)
+    manifest=verify_source(root,editable_notebook=True)
     config=json.loads((root/'config.json').read_text())
     from workbench_solver_environment import default_user_state, solver_interpreter
     solver=solver_interpreter(config['solver'],config['device'],default_user_state())
@@ -125,8 +134,11 @@ def run(root, output, checkpoint=None):
                 raise ValueError('No checkpoint format is defined for this worker.')
         command=[solver,'-m',manifest['worker'],*arguments,'--output',str(work)]
         process=subprocess.run(command,cwd=root/'source',env=env)
-        # A solver may emit a useful partial/unqualified result with exit code 1.
-        # Preserve its diagnostics; require a successful worker exit for a qualified job.
+        # The shared checkpoint may already contain another completed report.
+        # On rejection leave that cache intact and do not publish it as this job.
+        if process.returncode and work!=staged:
+            process.check_returncode()
+        # A fresh worker can emit a useful unqualified report before exiting.
         if (work/'report.json').is_file():
             if work!=staged:
                 shutil.copytree(work,staged)

@@ -13,7 +13,7 @@ type Target = {solver: string; device: string; available: boolean; reason?: stri
 export function CalibratedComponents({active}:{active:boolean}) {
   const [catalog,setCatalog]=useState<Preset[]>([]), [key,setKey]=useState('coupler'), [target,setTarget]=useState('');
   const [record,setRecord]=useState(0);
-  const [materialGrid,setMaterialGrid]=useState('legacy-x');
+  const [materialGrid,setMaterialGrid]=useState('yee-aligned');
   const [gratingScope,setGratingScope]=useState('tidy3d-compact');
   const [ringScope,setRingScope]=useState('lumerical');
   const [mesh,setMesh]=useState(''),[offset,setOffset]=useState('.125');
@@ -62,7 +62,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   },[active,job?.id,job?.status]);
   const [solver,device]=target.split(':');
   const available=targets.some(t=>t.solver===solver && t.device===device && t.available);
-  const configuration={case:key,solver,device,resolution:mesh?Number(mesh):null,
+  const configuration={revision:2,case:key,solver,device,resolution:mesh?Number(mesh):null,
     offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'?materialGrid:null,
     grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
   async function run(){
@@ -88,7 +88,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
       setJobs(rows=>rows.map(j=>j.id===updated.id?updated:j));
     }catch(e){setError((e as Error).message);}finally{setPending(false);}
   }
-  function choose(next:string){setKey(next);setRecord(0);setMesh('');setOffset('.125');setTarget('');setMaterialGrid('legacy-x');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);}
+  function choose(next:string){setKey(next);setRecord(0);setMesh('');setOffset('.125');setTarget('');setMaterialGrid('yee-aligned');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);}
   return <section className="cal-lab" aria-label="Calibrated components">
     <header><h1>Calibrated components</h1><p>Inspect measured reference results or run the same physical study on this machine.</p></header>
     <div className="cal-columns"><aside aria-label="Calibrated presets">{catalog.map(p=><button key={p.case} aria-pressed={key===p.case} onClick={()=>choose(p.case)}>{p.name}</button>)}</aside>
@@ -128,7 +128,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
           {info && !info.available && <small>{info.reason}</small>}</label>;
       })}</fieldset>
       {solver==='fdtdx' && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
-        <option value="legacy-x">Original grid</option><option value="yee-aligned">Electric-field-aligned grid</option>
+        <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option>
       </select></label>}
       <button className="button primary compact" disabled={!available||pending||busy||!offsetValid} onClick={()=>void run()}>Run calibrated study</button>
       <CodeExport kind="calibration" value={configuration} disabled={!target||!offsetValid}/>

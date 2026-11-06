@@ -8,6 +8,8 @@ design, a finite-field calculation and a calibrated device measurement have
 different verification requirements. Commercial galleries also include circuit,
 multiphysics and free-space applications. [Tidy3D examples](https://www.flexcompute.com/tidy3d/examples/) · [Ansys Application Gallery](https://optics.ansys.com/hc/en-us/categories/360002993513-Application-Gallery).
 
+The v0.11 studies add published-geometry ring and grating spectra, measured multiple-input scattering matrices and a Y-junction replication. The original family survey below describes the wider library. [Calibrated comparison checklist](CALIBRATED_COMPONENTS.md).
+
 The library currently supplies **27 original parametric geometries**. The
 [component guide](COMPONENT_LIBRARY.md) lists their physical controls, units,
 port counts and curve approximations. The [finite-layout study](LAYOUT_FIELDS.md)

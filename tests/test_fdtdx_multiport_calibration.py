@@ -210,3 +210,40 @@ class MultiportCalibrationTests(unittest.TestCase):
         for rail in row["central_rails"]:
             self.assertAlmostEqual(rail["centroid_shift_um"], -1/48)
             self.assertAlmostEqual(rail["closed_width_um"]-rail["open_width_um"], 2/24)
+
+    def test_public_runner_uses_qualified_default_and_resumes_an_explicit_legacy_plan(self):
+        import json
+        from unittest.mock import patch
+        from scripts.calibrate_fdtdx_multiport import run
+
+        def plan(model, device, resolution, after_time, target, material_model):
+            return {"model":model, "device":device, "resolution":resolution,
+                    "after_time":after_time, "target":target, "material_model":material_model}
+        class FirstStageReached(Exception):
+            pass
+        def first_stage(runtime, saved, *args):
+            raise FirstStageReached(saved["material_model"])
+
+        worker = "scripts.calibrate_fdtdx_multiport."
+        with TemporaryDirectory() as temp, patch(worker+"_ports_runtime", return_value=(None,None,None,"cpu:0")), \
+                patch(worker+"build_plan", side_effect=plan), patch(worker+"measured_stage", side_effect=first_stage):
+            fresh, historic = Path(temp)/"new", Path(temp)/"historic"
+            with self.assertRaisesRegex(FirstStageReached, "yee-aligned"):
+                run("splitter","cpu",16,fresh)
+            self.assertEqual(json.loads((fresh/"run.json").read_text())["material_model"], "yee-aligned")
+            with self.assertRaisesRegex(FirstStageReached, "legacy-x"):
+                run("splitter","cpu",16,historic,material_model="legacy-x")
+            before = (historic/"run.json").read_bytes()
+            with self.assertRaisesRegex(FirstStageReached, "legacy-x"):
+                run("splitter","cpu",16,historic,resume=True)
+            with self.assertRaisesRegex(ValueError, "different model"):
+                run("splitter","cpu",16,historic,resume=True,material_model="yee-aligned")
+            self.assertEqual((historic/"run.json").read_bytes(), before)
+
+    def test_pre_grid_manifest_is_identified_as_legacy_without_relaxing_identity_checks(self):
+        from scripts.calibrate_fdtdx_multiport import resolved_material_model
+
+        self.assertEqual(resolved_material_model(None, {}), "legacy-x")
+        self.assertEqual(resolved_material_model(None, {"material_model":"yee-aligned"}), "yee-aligned")
+        with self.assertRaisesRegex(ValueError, "material sampling"):
+            resolved_material_model(None, {"material_model":"invalid"})

@@ -487,7 +487,7 @@
   "mirror_symmetry_max_guided_power_delta": 6.936910881494285e-06,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T23:44:45.946653+00:00",
+  "checked_at": "2026-11-06T01:28:33.290555+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -498,7 +498,7 @@
   "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
   "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
   "material_model": "yee-aligned",
-  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "worker_source_sha256": "1d22d50d1e1f7da2309e5906761b4a7ccae1471ea80014eed2a747e141616875",
   "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
   "array_payload_sha256": "8eaea3d5192ddd662c4feac7147f415b5a1ffb838e77060a15d10106c9deb78c",
   "array_fields": [
@@ -527,7 +527,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "f772616c1eab995f886706ce3f8a485e94c8af1e25fb2ed3c852b7a4271dfdf3",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_lower-device",
@@ -546,7 +548,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "071c7c7aeca510be83b36b63860127538c9ef7f51d04150732059a2066808009",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_upper-reference",
@@ -565,7 +569,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "a09afa985dd5a2ebe78858b1fc946bcf840428d060223a3988ceabbc4428e86c",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_upper-device",
@@ -584,7 +590,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "ba139cc546660d4d7059418db877c2252a760981ca30c4b56a9bbcf5e4524326",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-reference",
@@ -603,7 +611,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "0ba2bc97c3afde42f5c43f9be481baf97a6eebef621f1633787329e96eb0ac5b",
-      "reference_reused_from_verified_cache": true
+      "reference_reused_from_verified_cache": true,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-device",
@@ -622,7 +632,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "6b20120aa742191c115fe4c18e60c0bfc3c53560c6a022044ea6a5b14ad45292",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-reference",
@@ -641,7 +653,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "c1a7837091d0c732631ca681a1269c956cb5899d2ab9be5af2b98228965a261e",
-      "reference_reused_from_verified_cache": true
+      "reference_reused_from_verified_cache": true,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-device",
@@ -660,7 +674,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "d212f62a470491715f1c376213217943ca2a1fabfc4db4b6b1d402d5321264df",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     }
   ],
   "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
@@ -684,6 +700,25 @@
     "source": "v011-meep-multiport-coupler-electric.json",
     "source_sha256": "eba899e783e5b20a4750fdbfe753304f813172a1cd70df081b09c9b0e28616ac",
     "phase_convention_version": 2
+  },
+  "matched_cpu_gpu": {
+    "complex_s_relative_l2": 1.1620072263437583e-07,
+    "max_complex_s_difference": 1.3669489803132317e-07,
+    "max_modal_power_difference": 1.7225778292662142e-07,
+    "center_input0_guided_power_first": [
+      0.011013033046424635,
+      0.0011429565449616779,
+      0.7917707889355374,
+      0.07670412186653465
+    ],
+    "center_input0_guided_power_second": [
+      0.011013052098918437,
+      0.0011429557171851164,
+      0.7917709450856857,
+      0.07670412528780275
+    ],
+    "other_actual_device": "cpu:0",
+    "other_array_sha256": "6205946524ac202e93bfca1e1d7174f7f173d722b7dd57787a22bfd5d084f1b0"
   },
   "mesh_control": {
     "complex_s_relative_l2": 0.9385581623226746,

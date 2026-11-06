@@ -342,7 +342,7 @@
   "mirror_symmetry_max_guided_power_delta": 8.665624434300856e-06,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T23:23:48.710630+00:00",
+  "checked_at": "2026-11-06T01:28:31.215401+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -353,7 +353,7 @@
   "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
   "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
   "material_model": "yee-aligned",
-  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "worker_source_sha256": "1d22d50d1e1f7da2309e5906761b4a7ccae1471ea80014eed2a747e141616875",
   "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
   "array_payload_sha256": "1bb4f8721f890d6ad0e9a96b01ad9140f536e875dc605b1fd52f8a730c38070c",
   "array_fields": [
@@ -382,7 +382,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "1b12ff24fd1e7806e047ea0873c16039e39b216bf9906fc72a3bf289afa09993",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_center-device",
@@ -401,7 +403,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "a677dbfee3b77b4d1886d4f2755a84cf4a6c2ba5f2f0c1054b7f1248022888ba",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-reference",
@@ -420,7 +424,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "0ba2bc97c3afde42f5c43f9be481baf97a6eebef621f1633787329e96eb0ac5b",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-device",
@@ -439,7 +445,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "f5b122bb96db5f9822c84f76bdf306ea209a9745df8d67fe498fd8d5608a64b4",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-reference",
@@ -458,7 +466,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "c1a7837091d0c732631ca681a1269c956cb5899d2ab9be5af2b98228965a261e",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-device",
@@ -477,7 +487,9 @@
       "source_neff": 2.5382046699523926,
       "max_edge_mode_fraction": 5.2970517572248355e-06,
       "raw_monitor_sha256": "4fd5e41954864fb93c6c71e7fa68717bc71df58d77977ff9290e2731ff177907",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     }
   ],
   "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
@@ -499,6 +511,23 @@
     "source": "v011-meep-multiport-splitter-electric.json",
     "source_sha256": "5d73fd1029d2d773475c7e037a19b8c90051880162ae6bd0e93c7b7da5fe1f43",
     "phase_convention_version": 2
+  },
+  "matched_cpu_gpu": {
+    "complex_s_relative_l2": 8.948471601058557e-08,
+    "max_complex_s_difference": 1.1020139330895345e-07,
+    "max_modal_power_difference": 6.396533880348443e-08,
+    "center_input0_guided_power_first": [
+      0.013617364579789099,
+      0.3659513788838194,
+      0.365945389268933
+    ],
+    "center_input0_guided_power_second": [
+      0.013617359602337347,
+      0.3659513907011017,
+      0.36594539577475094
+    ],
+    "other_actual_device": "cpu:0",
+    "other_array_sha256": "62aadc32a21b5bd202fa739eb483c0584aca1056e05d19ca62ec6f82fb03f2cd"
   },
   "mesh_control": {
     "complex_s_relative_l2": 0.9954819124313115,

@@ -84,7 +84,7 @@ def main(argv=None):
     if args.command == 'calibrate':
         from backend.calibrations import Calibration, design_archive, run_config
         try:
-            model=Calibration(case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope)
+            model=Calibration(revision=2,case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope)
             if args.export_only:
                 archive = design_archive(model)
                 args.output.mkdir(parents=True, exist_ok=False)

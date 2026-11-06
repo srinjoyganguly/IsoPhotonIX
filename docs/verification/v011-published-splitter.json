@@ -85,10 +85,74 @@
       ],
       "native_version": "1.35.0",
       "native_scope": "Thirteen published junction widths, 2 \u00b5m junction and sinusoidal six-micrometre access bends reconstructed using constant normal path width. Real materials frozen at the reported central wavelength. Independent straight input reference and both output amplitudes. Vendor uses a nonuniform grid, a path construction library and dispersive media."
+    },
+    {
+      "published_observable_loss_db": [
+        0.2728033619453982,
+        0.18409597698499452,
+        0.1580285311075293,
+        0.16884593880195756,
+        0.1854779429894232
+      ],
+      "published_observable_delta_db": [
+        0.03631687544539822,
+        0.024636517484994513,
+        0.026271774307529278,
+        0.031683776601957564,
+        0.03345091598942318
+      ],
+      "published_observable_mean_absolute_delta_db": 0.03047197196586055,
+      "resolution": 24,
+      "native_arrays_sha256": "fc2927589858399da5bb46a83211a62a2c4b4df8bff0d802b121fb5fd0e00ef8",
+      "loss_db": [
+        0.27612585772085274,
+        0.1862862016210186,
+        0.1585244986123607,
+        0.16698889894762253,
+        0.18240016401648618
+      ],
+      "vendor_loss_db": [
+        0.2364864865,
+        0.1594594595,
+        0.1317567568,
+        0.1371621622,
+        0.152027027
+      ],
+      "delta_db": [
+        0.03963937122085273,
+        0.0268267421210186,
+        0.02676774181236069,
+        0.02982673674762254,
+        0.030373137016486168
+      ],
+      "mean_absolute_delta_db": 0.030686745783668146,
+      "measured_arm_powers": [
+        [
+          0.46884027780722876,
+          0.47876484268388153,
+          0.48202321167957374,
+          0.48134530383878343,
+          0.47977492682244294
+        ],
+        [
+          0.4695584584175436,
+          0.4792481075738561,
+          0.48213332535537434,
+          0.48093392194372964,
+          0.4790956305668161
+        ]
+      ],
+      "late_monitor_changes": [
+        2.0700460174514193e-07,
+        1.5149132609913253e-05,
+        2.8514927956324695e-05
+      ],
+      "native_version": "1.35.0",
+      "native_scope": "Thirteen published junction widths, 2 \u00b5m junction and sinusoidal six-micrometre access bends reconstructed using constant normal path width. Real materials frozen at the reported central wavelength. Independent straight input reference and both output amplitudes. Vendor uses a nonuniform grid, a path construction library and dispersive media."
     }
   ],
   "arrays_file": "v011-published-splitter.npz",
-  "arrays_sha256": "440e2826430cc6a38e395ba50faa4c369015eb017c1994c1a0511fa3aa3bc619",
+  "arrays_sha256": "42752ec86ecb826adfa386c0a8094d86ceaf81127e31b9f0185cb23f53763b54",
   "lumerical": {
     "source_url": "https://optics.ansys.com/hc/en-us/articles/360042800353-Y-branch",
     "scope": "The vendor Y-branch tutorial describes near-equal division for its own optimized device. Its loss curve is outside the matched Tidy3D geometry comparison."

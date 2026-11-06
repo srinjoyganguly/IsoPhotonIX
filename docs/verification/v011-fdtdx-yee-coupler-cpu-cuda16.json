@@ -1,0 +1,180 @@
+{
+  "case": "coupler",
+  "resolution": 16,
+  "material_model": "yee-aligned",
+  "port_order": [
+    "left_lower",
+    "left_upper",
+    "right_lower",
+    "right_upper"
+  ],
+  "matrix_order": [
+    "frequency",
+    "outgoing_port",
+    "incoming_port"
+  ],
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "cuda_device": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "cpu_array_sha256": "6205946524ac202e93bfca1e1d7174f7f173d722b7dd57787a22bfd5d084f1b0",
+  "gpu_array_sha256": "8eaea3d5192ddd662c4feac7147f415b5a1ffb838e77060a15d10106c9deb78c",
+  "complex_s_relative_l2": 1.1620072263437583e-07,
+  "max_complex_s_difference": 1.3669489803132317e-07,
+  "max_modal_power_difference": 1.7225778292662142e-07,
+  "stages": {
+    "left_lower-reference": {
+      "cpu_raw_sha256": "227499673abb9a345ec47641382754e9292b37d0dfd56ca43aef73d29580a22c",
+      "gpu_raw_sha256": "f772616c1eab995f886706ce3f8a485e94c8af1e25fb2ed3c852b7a4271dfdf3",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 3444,
+      "gpu_steps": 3444,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 3.807274057426303e-07,
+        "max_difference_over_cpu_peak": 4.822553380934151e-07
+      }
+    },
+    "left_lower-device": {
+      "cpu_raw_sha256": "8d281530f76910ee7f43322137b331bb95839cc39254878cf9017d10bff76479",
+      "gpu_raw_sha256": "071c7c7aeca510be83b36b63860127538c9ef7f51d04150732059a2066808009",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 4116,
+      "gpu_steps": 4116,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 4.869185445278778e-07,
+        "max_difference_over_cpu_peak": 5.504564164096262e-07
+      }
+    },
+    "left_upper-reference": {
+      "cpu_raw_sha256": "e4c66d2e2b79cde7bb900eca22aa11392519b5d8ff5950ef1d02ebc47ec3ff5b",
+      "gpu_raw_sha256": "a09afa985dd5a2ebe78858b1fc946bcf840428d060223a3988ceabbc4428e86c",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 3444,
+      "gpu_steps": 3444,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 3.925850953724531e-07,
+        "max_difference_over_cpu_peak": 4.464320864602514e-07
+      }
+    },
+    "left_upper-device": {
+      "cpu_raw_sha256": "e13ad6b8e99cc31105aa4a1b10ba5a4471ff1ed6f435b4926d98e0efa05db645",
+      "gpu_raw_sha256": "ba139cc546660d4d7059418db877c2252a760981ca30c4b56a9bbcf5e4524326",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 4116,
+      "gpu_steps": 4116,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 4.6353948878682143e-07,
+        "max_difference_over_cpu_peak": 7.46317237719877e-07
+      }
+    },
+    "right_lower-reference": {
+      "cpu_raw_sha256": "25298cfd05fd92bea8f6c95939067f89b4718aef4a2ce9a0280a536978e3a857",
+      "gpu_raw_sha256": "0ba2bc97c3afde42f5c43f9be481baf97a6eebef621f1633787329e96eb0ac5b",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 3444,
+      "gpu_steps": 3444,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 4.242992547735036e-07,
+        "max_difference_over_cpu_peak": 5.537148348794747e-07
+      }
+    },
+    "right_lower-device": {
+      "cpu_raw_sha256": "f9c1de0ca2597315a339afb62b887837ae823f0d74610f18216b1b354691068f",
+      "gpu_raw_sha256": "6b20120aa742191c115fe4c18e60c0bfc3c53560c6a022044ea6a5b14ad45292",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 4116,
+      "gpu_steps": 4116,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 4.629846942404847e-07,
+        "max_difference_over_cpu_peak": 6.007450379923143e-07
+      }
+    },
+    "right_upper-reference": {
+      "cpu_raw_sha256": "e899a8fe87410e756a25bbf044af705a49dd1c688cbae3b1e24a00d54ce488a7",
+      "gpu_raw_sha256": "c1a7837091d0c732631ca681a1269c956cb5899d2ab9be5af2b98228965a261e",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 3444,
+      "gpu_steps": 3444,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 3.9642121526670644e-07,
+        "max_difference_over_cpu_peak": 4.811884551266777e-07
+      }
+    },
+    "right_upper-device": {
+      "cpu_raw_sha256": "0a7c089784ea28c585e81b5b9109aba208d1917c46d3a253b31f3a75ddc642bd",
+      "gpu_raw_sha256": "d212f62a470491715f1c376213217943ca2a1fabfc4db4b6b1d402d5321264df",
+      "field_device_cpu": "cpu:0",
+      "field_device_gpu": "cuda:0",
+      "cpu_steps": 4116,
+      "gpu_steps": 4116,
+      "source_profile": {
+        "relative_l2": 3.7483421862400047e-07,
+        "max_difference_over_cpu_peak": 3.6696830237894543e-07
+      },
+      "native_six_component_monitor_planes": {
+        "relative_l2": 4.746799700626487e-07,
+        "max_difference_over_cpu_peak": 6.716533856677573e-07
+      }
+    }
+  },
+  "limits": {
+    "matrix_metrics": 2e-05,
+    "source_metrics": 1e-05,
+    "native_field_metrics": 0.0001
+  },
+  "checks": {
+    "complex_s_relative_l2": true,
+    "max_complex_s_difference": true,
+    "max_modal_power_difference": true,
+    "same_time_steps": true,
+    "source_profiles": true,
+    "native_monitor_planes": true
+  },
+  "passed": true,
+  "scope": "Execution-target repeatability at the same mesh, materials, terminal times and source. The limits are tolerances on this hardware comparison; they do not measure mesh convergence or agreement with commercial results."
+}

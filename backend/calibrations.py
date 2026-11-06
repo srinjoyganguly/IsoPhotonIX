@@ -28,7 +28,7 @@ CASES = {
 class Calibration(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     study_type: Literal['calibrated-component'] = 'calibrated-component'
-    revision: Literal[1,2] = 1
+    revision: Literal[1,2] = 2
     case: Literal['coupler','splitter','ring','grating','multimode','multimode-3d']
     solver: Literal['meep','fdtdx']
     device: Literal['cpu','gpu']
@@ -37,6 +37,15 @@ class Calibration(BaseModel):
     material_model: Literal['legacy-x','yee-aligned'] | None = None
     ring_scope: Literal['full','lumerical','tidy3d'] | None = None
     grating_scope: Literal['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'] | None = None
+
+    @model_validator(mode='before')
+    @classmethod
+    def load_saved_revision(cls, settings):
+        # Earlier exported configurations include the study_type discriminator
+        # but predate explicit revisions. Preserve their numerical defaults.
+        if isinstance(settings,dict) and settings.get('study_type')=='calibrated-component' and 'revision' not in settings:
+            return {**settings,'revision':1}
+        return settings
 
     @model_validator(mode='after')
     def available_route(self):
@@ -47,6 +56,11 @@ class Calibration(BaseModel):
                 self.ring_scope='lumerical'
             if self.case=='grating' and self.grating_scope is None:
                 self.grating_scope='tidy3d-compact'
+            if self.resolution is None:
+                default_mesh={'coupler':16,'splitter':16,'multimode':48,'multimode-3d':20}
+                if self.case=='grating' and self.grating_scope!='full':
+                    default_mesh['grating']=40
+                self.resolution=default_mesh.get(self.case)
         if self.solver=='meep' and self.device!='cpu':
             raise ValueError('Meep requires CPU execution.')
         if self.solver=='fdtdx' and self.case not in ('coupler','splitter'):
@@ -74,7 +88,7 @@ def specification(config):
     if multiport:
         name='calibrate_fdtdx_multiport' if config.solver=='fdtdx' else 'calibrate_multiport'
         args=['--case',config.case]
-        helpers=['backend/__init__.py','backend/calibrated_geometry.py']
+        helpers=['backend/__init__.py','backend/calibrated_geometry.py','scripts/calibration_checkpoint.py']
         if config.solver=='fdtdx':
             args+=['--device',config.device,'--material-model',config.material_model or 'legacy-x']
             helpers+=['backend/adapters/'+n+'.py' for n in (
@@ -135,10 +149,12 @@ def create_bundle(config, destination):
             '# '+CASES[config.case][0]+'\n',
             'Run with local Python and NumPy. The controller selects the saved solver and device. ',
             'The registered worker or MEEP_PYTHON / FDTDX_PYTHON must refer to that environment. ',
-            'Choose a fresh output directory for each execution. Results are in report.json and arrays.npz.']},
+            'Each execution writes a new result directory. The notebook can be saved or edited; the captured solver and settings are checked before execution. Results are in report.json and arrays.npz.']},
         {'cell_type':'code','execution_count':None,'outputs':[],'metadata':{},'id':'execute','source':[
-            'from pathlib import Path\n','from run import run\n',
-            "report = run(Path.cwd(), Path('notebook-result'))\n",'report']}
+            'from pathlib import Path\n','from uuid import uuid4\n','from run import run\n',
+            "output = Path('notebook-result')\n",
+            "if output.exists():\n","    output = Path('notebook-result-' + uuid4().hex)\n",
+            "report = run(Path.cwd(), output)\n","print(output.resolve())\n",'report']}
     ]
     notebook={'nbformat':4,'nbformat_minor':5,'metadata':{'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'}},'cells':cells}
     (destination/'calibration.ipynb').write_text(json.dumps(notebook,indent=2)+'\n')

@@ -125,8 +125,10 @@ def native_stage(record,resolution,reference):
         sim.run(until_after_sources=65.)
         def samples(d):
             return np.array([np.concatenate([np.ravel(sim.get_dft_array(d,component,i)) for component in (mp.Ey,mp.Hz)]) for i in range(len(frequencies))])
-        early=np.array([samples(d) for d in dfts]); sim.run(until=20.)
-        late=np.array([samples(d) for d in dfts]); change=np.linalg.norm(late-early,axis=-1)/np.linalg.norm(late,axis=-1)
+        # The two mirror-related native DFT buffers can have different pixel bounds.
+        early=[samples(d) for d in dfts]; sim.run(until=20.)
+        late=[samples(d) for d in dfts]
+        change=np.stack([np.linalg.norm(b-a,axis=-1)/np.linalg.norm(b,axis=-1) for a,b in zip(early,late)])
         amps=[];indices=[]
         for m in mode:
             if not np.array_equal(mp.get_flux_freqs(m),frequencies):
@@ -138,12 +140,35 @@ def native_stage(record,resolution,reference):
         guided=bool(np.all(np.asarray(indices)>np.sqrt(CLAD_EPS)) and np.all(np.asarray(indices)<np.sqrt(CORE_EPS)))
         return {'planes_um':planes,'guided':guided,'late_increment_per_plane_per_frequency':change.tolist(),
                 'settled':bool(guided and np.isfinite(change).all() and np.max(change)<1e-3),'timesteps':int(sim.timestep())}, \
-               {'forward_modes':np.asarray(amps),'mode_indices':np.asarray(indices),'modal_Ey_Hz_samples':late,'frequency_per_um':frequencies}
+               {'forward_modes':np.asarray(amps),'mode_indices':np.asarray(indices),'frequency_per_um':frequencies,
+                **{f'plane_{i}_Ey_Hz_samples':fields for i,fields in enumerate(late)}}
     finally:
         sim.reset_meep()
 
 
-def measure(vertices,output,resolution,only=None):
+def prior_straight(folder,settings,checkpoints):
+    """Read a verified pre-layout-fix straight stage from the same numerical implementation."""
+    p=Path(folder)
+    marker=json.loads((p/'receipt.json').read_text())
+    spec=marker['specification']
+    # c8158bc recorded both equal-size *straight* monitor buffers in a single array.
+    # Its unrelated mirrored device buffers required separate storage. Native field
+    # evolution, source, mode projection and reference planes were identical.
+    provenance=dict(checkpoints.provenance,worker_sha256='7171c3fe37b8f81d21e60062305ebb06ab3f07ea7760333e6b31078c583417dd')
+    if (spec!={'label':'reference','settings':settings,'provenance':provenance} or
+            checkpoints.json_hash(spec)!=marker['signature'] or
+            checkpoints.json_hash(marker['report'])!=marker['report_sha256'] or
+            checkpoints.file_hash(p/'arrays.npz')!=marker['arrays_sha256'] or not marker['report']['settled']):
+        raise ValueError('Historic straight stage has incompatible provenance, settings, settling or arrays.')
+    with np.load(p/'arrays.npz',allow_pickle=False) as raw:
+        data={k:raw[k] for k in raw.files}
+    if data['forward_modes'].shape!=(2,len(WAVELENGTHS)) or not np.array_equal(data['frequency_per_um'],1/WAVELENGTHS):
+        raise ValueError('Unexpected historic straight modes or wavelengths.')
+    return {**marker['report'],'reused_native_reference_sha256':marker['arrays_sha256'],
+            'reused_reference_worker_sha256':provenance['worker_sha256']},data
+
+
+def measure(vertices,output,resolution,only=None,historic_reference=None):
     verification=json.loads(Path(vertices).read_text())
     if verification['model_id']!='published-y-photonforge-outline-v1' or verification['notebook_sha256']!=NOTEBOOK_SHA:
         raise ValueError('Unexpected geometry or pinned source.')
@@ -156,7 +181,10 @@ def measure(vertices,output,resolution,only=None):
                          'junction_widths_um':WIDTHS,'notebook_sha256':NOTEBOOK_SHA,
                          'symmetry_xyz':[0,-1,1],'core_cladding_epsilon':[CORE_EPS,CLAD_EPS]}
     for name in ([only] if only else ['reference','device']):
-        stages[name]=checkpoints.acquire(name,settings,lambda: native_stage(verification,resolution,name=='reference'))
+        if name=='reference' and historic_reference:
+            stages[name]=prior_straight(historic_reference,settings,checkpoints)
+        else:
+            stages[name]=checkpoints.acquire(name,settings,lambda: native_stage(verification,resolution,name=='reference'))
     if only:
         return stages[only][0]
     ref,ra=stages['reference'];dev,da=stages['device']
@@ -190,11 +218,12 @@ if __name__=='__main__':
     calculation=subs.add_parser('run');calculation.add_argument('--vertices',type=Path,required=True)
     calculation.add_argument('--resolution',type=int,choices=(20,24),default=20)
     calculation.add_argument('--stage',choices=('reference','device'))
+    calculation.add_argument('--historic-reference',type=Path,help='verified straight checkpoint from the initial outline study')
     for item in (extraction,calculation): item.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if args.action=='extract':
         extract(args.notebook,args.output)
     else:
-        result=measure(args.vertices,args.output,args.resolution,args.stage)
+        result=measure(args.vertices,args.output,args.resolution,args.stage,args.historic_reference)
         print(json.dumps({k:result.get(k) for k in ('passed','settled','checks','upper_times_two_loss_db') if k in result},indent=2))
         if not result.get('passed',result.get('settled')):raise SystemExit(2)

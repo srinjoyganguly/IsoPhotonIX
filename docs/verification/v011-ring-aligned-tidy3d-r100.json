@@ -1,0 +1,94 @@
+{
+  "case_id": "bare-ring-vertical-mesh-alignment",
+  "vendor": "tidy3d",
+  "solver": "Meep CPU",
+  "version": "1.35.0",
+  "physical_geometry": {
+    "radius": 5.0,
+    "width": 0.43,
+    "height": 0.22,
+    "gap": 0.1,
+    "reference_peaks_um": [
+      1.51242,
+      1.52927,
+      1.54701,
+      1.56475,
+      1.58293
+    ],
+    "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/"
+  },
+  "resolution": 100,
+  "vertical_core_cells": 22,
+  "vertical_domain_cells": 342,
+  "rows": {
+    "46": {
+      "angular_order": 46,
+      "resolution": 100,
+      "radial_padding_um": 0.8,
+      "pml_um": 0.8,
+      "first_post_source_window": {
+        "wavelength_um": 1.5796483076523096,
+        "frequency_per_um": 0.6330523035764909,
+        "imaginary_frequency_per_um": 1.5951541912407896e-10,
+        "field_amplitude": 8.119338217517006,
+        "harminv_error_magnitude": 2.136688088789964e-11
+      },
+      "second_post_source_window": {
+        "wavelength_um": 1.579648309799552,
+        "frequency_per_um": 0.6330523027159723,
+        "imaginary_frequency_per_um": -2.045068388651428e-09,
+        "field_amplitude": 8.119344872034386,
+        "harminv_error_magnitude": 3.85808750891289e-11
+      },
+      "sample_core_radial_fraction": 0.9999091054608695,
+      "pole_repeat_passed": true,
+      "inner_outer_radial_phase_correlation": 0.9999999999992701
+    },
+    "47": {
+      "angular_order": 47,
+      "resolution": 100,
+      "radial_padding_um": 0.8,
+      "pml_um": 0.8,
+      "first_post_source_window": {
+        "wavelength_um": 1.5610454375418108,
+        "frequency_per_um": 0.6405963439313509,
+        "imaginary_frequency_per_um": 9.767342068647646e-10,
+        "field_amplitude": 9.222872982223693,
+        "harminv_error_magnitude": 1.4024046222645932e-11
+      },
+      "second_post_source_window": {
+        "wavelength_um": 1.5610454327498577,
+        "frequency_per_um": 0.6405963458977944,
+        "imaginary_frequency_per_um": 3.668239732624381e-12,
+        "field_amplitude": 9.222877946022741,
+        "harminv_error_magnitude": 4.674832352814843e-11
+      },
+      "sample_core_radial_fraction": 0.999914664469842,
+      "inner_outer_radial_phase_correlation": 0.999999999997139,
+      "pole_repeat_passed": true
+    }
+  },
+  "pair_um": [
+    1.5610454327498577,
+    1.579648309799552
+  ],
+  "pair_brackets_1550nm": false,
+  "bare_fsr_nm": 18.60287704969421,
+  "published_loaded_pair_um": [
+    1.54701,
+    1.56475
+  ],
+  "published_loaded_fsr_nm": 17.740000000000087,
+  "bare_minus_loaded_fsr_nm": 0.8628770496941236,
+  "passed": true,
+  "arrays_file": "v011-ring-aligned-tidy3d-r100-arrays.npz",
+  "arrays_sha256": "439f852c655ea2f86ccf60745516ddaf94b05105d04227fd1d6f1a6fcdfa5966",
+  "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/",
+  "scope": "Measured finite-height isolated-ring adjacent orders, compared with a bus-loaded commercial spectrum; both physical silicon faces coincide with vertical mesh boundaries. A given grid alone cannot certify mesh convergence.",
+  "r50_to_r100_same_order_peak_shifts_nm": {
+    "46": 12.769930860935919,
+    "47": 12.554906712825886
+  },
+  "r50_to_r100_fsr_change_nm": 0.21502414811003234,
+  "comparison_scope": "At this mesh both fixed angular orders lie above 1550 nm. Their separation measures same-order refinement. The midpoint is 1570.35 nm. The published near-1550-nm spacing is included for context."
+}

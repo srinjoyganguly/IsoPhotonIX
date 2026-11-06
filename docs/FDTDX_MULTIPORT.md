@@ -45,6 +45,19 @@ the corresponding earlier full-matrix launch byte-for-byte.
 
 ## Choosing the Yee material grid
 
+Fresh studies default to `yee-aligned` after the complete CPU/CUDA matrices
+passed at both 12 and 16 cells/µm. Omit the material option on `--resume`
+to keep the recorded grid. An explicitly different grid is rejected, as is
+a changed numerical implementation. Historical exports retain their worker
+source and original arguments.
+
+A fresh public CLI run omitting the grid flag measured all three CUDA
+splitter inputs. Its complex S matrix and native monitor fields matched the
+earlier explicit aligned-grid run exactly. Only integrated energy samples
+changed, by at most 0.000000156 of their peak. Resuming with the model
+omitted preserved all six stage archive hashes and write times.
+[Default and resume measurement](verification/v011-fdtdx-qualified-default.json).
+
 `--material-model legacy-x` reproduces the original adjacent-x tangential
 averaging. `--material-model yee-aligned` translates the same cell-center
 permittivities to the physical Ex, Ey and Ez locations. Ex averages its four
@@ -165,6 +178,13 @@ A fresh Jupyter kernel ran the exported 12-cell CUDA splitter notebook in
 743 seconds. All seven numerical archives reproduced every array byte,
 including native six-component monitor fields, the source profiles, energy
 samples, and all three frequency-dependent S matrices. [Executed notebook replay](verification/v011-fdtdx-yee-notebook-replay.json).
+
+The nominal 16-cell matrices also passed the target comparison. Across all
+four coupler launches, the largest absolute CPU/CUDA complex difference
+was 0.000000137. For all three splitter launches it was 0.000000111. The
+largest normalized native monitor-plane discrepancies were 0.000000747 and
+0.000000554, respectively. [Nominal coupler CPU/CUDA checks](verification/v011-fdtdx-yee-coupler-cpu-cuda16.json) ·
+[Nominal splitter CPU/CUDA checks](verification/v011-fdtdx-yee-splitter-cpu-cuda16.json).
 
 For a separate first-input mesh control,
 `scripts/measure_fdtdx_mesh_column.py --case coupler --device gpu --resolution 24 --compare BASE16 --output fresh-column`

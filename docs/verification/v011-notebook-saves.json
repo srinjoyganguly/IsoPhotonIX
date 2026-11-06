@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "two_saved_notebook_executions": true,
+  "distinct_result_directories": true,
+  "center_coupling_fractions": [
+    0.5823413109784932,
+    0.5823413109784943
+  ],
+  "maximum_raw_array_differences": {
+    "tidy_compact_reference": 0.0,
+    "tidy_compact_device_modes": 2.671256276959581e-11
+  },
+  "captured_manifest_sha256": "14b5b0217730150db1d10580a70183dbd5fb360a5f4a2be867e05c79506eed05"
+}

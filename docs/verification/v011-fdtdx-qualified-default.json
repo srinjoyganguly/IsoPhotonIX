@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-06T01:35:06.404708+00:00",
+  "case": "splitter",
+  "resolution": 12,
+  "fresh_material_model_flag_supplied": false,
+  "fresh_selected_material_model": "yee-aligned",
+  "actual_device": "cuda:0",
+  "fresh_device_inputs_computed": 3,
+  "straight_references_reused": 3,
+  "omitted_model_resume_selected": "yee-aligned",
+  "resumed_stage_hashes_and_timestamps_equal": true,
+  "raw_archive_files_compared": 7,
+  "all_arrays_exactly_equal_to_earlier_explicit_grid_run": false,
+  "max_raw_array_difference_from_explicit_run": 1.52587890625e-05,
+  "max_complex_s_difference_from_explicit_run": 0.0,
+  "stage_archives": {
+    "left_center-device.npz": "7a89a20780dcea900f125c4b7cd0591b604a49c1d1612eaf30d2e38cc46fbd31",
+    "left_center-reference.npz": "2fcd3263c17e517e9d393924b51b91fc7f2654ee409403fae650fdb37cf92f10",
+    "right_lower-device.npz": "4d37c69f5c3a6e543fdaa6221259b7fdd7e3625e50678d5d5e4cbdbc0c15afcf",
+    "right_lower-reference.npz": "940b5e6f5da7cad5f115a362f36512b88c1120cde23c5db99b3896c54a0b5f4d",
+    "right_upper-device.npz": "d44bf600d1b2402de727a6988af43985d9a7da9c7866bbb5d6666ce2ff4ab234",
+    "right_upper-reference.npz": "ffedeea95268024d8a26f96cb3b2f084bcd376ec3cf8a44c158e0eafacac25b2"
+  },
+  "driver_sha256": "1be4c9c58836bc87df6a990e01e1eb5628d008f3826911cfda37f50b5461c12a",
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "elapsed_seconds": 68.46815767499356,
+  "arrays_with_roundoff_differences": {
+    "right_lower-device.npz:energy": {
+      "absolute": 1.52587890625e-05,
+      "fraction_of_peak": 1.5466752166872645e-07
+    },
+    "left_center-device.npz:energy": {
+      "absolute": 1.52587890625e-05,
+      "fraction_of_peak": 1.5386494904146754e-07
+    },
+    "right_upper-device.npz:energy": {
+      "absolute": 1.52587890625e-05,
+      "fraction_of_peak": 1.555740792425907e-07
+    }
+  }
+}

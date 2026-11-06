@@ -24,6 +24,7 @@ if (ROOT / 'backend').is_dir():
     sys.path.insert(0, str(ROOT))
 
 from backend.calibrated_geometry import multiport_model, straight_polygon
+from scripts.calibration_checkpoint import read_locked_plan
 from backend.adapters.fdtdx_ports_adapter import _ports_runtime, measured_energy_tail
 from backend.adapters.fdtdx_ports3d_adapter import (
     canonical_source_profile, longitudinal_yee_permittivity, modal_amplitudes, port_basis,
@@ -32,6 +33,7 @@ from backend.adapters.fdtdx_ports3d_adapter import (
 C_UM_PER_FS = .299792458
 ENERGY_LIMIT = 1e-4
 DFT_LIMIT = .002
+DEFAULT_MATERIAL_MODEL = 'yee-aligned'
 
 
 def digest(array):
@@ -424,29 +426,44 @@ def measured_stage(runtime,plan,launch,reference,archive,bases,cache,device_cach
         return details
 
 
-def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=False,reference_cache=None,material_model='legacy-x',device_cache=None):
+def resolved_material_model(requested, saved_plan=None):
+    """New studies use the qualified grid; an unspecified resume keeps its recorded physical representation."""
+    if requested is None:
+        requested = DEFAULT_MATERIAL_MODEL if saved_plan is None else saved_plan.get('material_model', 'legacy-x')
+    if requested not in ('legacy-x', 'yee-aligned'):
+        raise ValueError('Choose legacy-x or yee-aligned material sampling.')
+    return requested
+
+
+def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=False,reference_cache=None,material_model=None,device_cache=None):
     import fcntl
     if resolution not in (12,16,20,24) or not 24<=after_time<=160:
         raise ValueError('Use a supported resolution (12/16/20/24) and an after-source time between 24 and 160 µm/c.')
-    if material_model not in ('legacy-x','yee-aligned'):
-        raise ValueError('Choose legacy-x or yee-aligned material sampling.')
+    if material_model is not None:
+        resolved_material_model(material_model)
+    if resume and not output.is_dir():
+        raise ValueError('Resume requires an existing study folder.')
     model=multiport_model(case,pml,aperture)
     runtime=_ports_runtime(device)
     jax,_,_,target=runtime
-    if resume and not output.is_dir():
-        raise ValueError('Resume requires an existing study folder.')
     output.mkdir(parents=True,exist_ok=resume)
-    plan=build_plan(model,device,resolution,after_time,target,material_model)
-    encoded=json.dumps(plan,sort_keys=True,separators=(',',':'),allow_nan=False)
     stages,bases={},{}
     with (output/'.run.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         manifest=output/'run.json'
-        if resume:
-            if not manifest.exists() or manifest.read_text().strip()!=encoded:
-                raise ValueError('Cannot resume a different model, worker version, numerical source or target.')
-        else:
-            manifest.write_text(encoded+'\n')
+        saved=read_locked_plan(manifest,'.run.lock','run.pending-json') if resume else None
+        saved_plan = json.loads(saved) if saved is not None else None
+        if saved is not None and not isinstance(saved_plan, dict):
+            raise ValueError('Cannot resume a study with an invalid manifest.')
+        material_model = resolved_material_model(material_model, saved_plan)
+        plan=build_plan(model,device,resolution,after_time,target,material_model)
+        encoded=json.dumps(plan,sort_keys=True,separators=(',',':'),allow_nan=False)
+        if saved is not None and saved!=encoded:
+            raise ValueError('Cannot resume a different model, worker version, numerical source or target.')
+        if saved is None:
+            pending=manifest.with_suffix('.pending-json')
+            pending.write_text(encoded+'\n')
+            pending.replace(manifest)
         for i,port in enumerate(model['ports']):
             for kind in ('reference','device'):
                 key=f"{port['name']}-{kind}"
@@ -482,8 +499,8 @@ def main():
     parser.add_argument('--resume',action='store_true',help='verify and reuse completed stages from this exact study folder')
     parser.add_argument('--reference-cache',type=Path,help='optional cache of exactly matching measured straight references')
     parser.add_argument('--device-cache',type=Path,help='coordinate native device stages from identical study plans and input ports')
-    parser.add_argument('--material-model',choices=('legacy-x','yee-aligned'),default='legacy-x',
-                        help='explicit material translation onto the E-component locations')
+    parser.add_argument('--material-model',choices=('legacy-x','yee-aligned'),
+                        help='fresh runs use yee-aligned; omit on resume to keep the recorded material grid')
     args=parser.parse_args()
     report=run(args.case,args.device,args.resolution,args.output,args.pml,args.aperture,args.after_time,args.resume,args.reference_cache,args.material_model,args.device_cache)
     if not report['sampled_setup_checks_passed']:

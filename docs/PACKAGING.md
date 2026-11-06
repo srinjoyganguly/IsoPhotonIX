@@ -1,6 +1,6 @@
 # Install Photonics Workbench locally
 
-The **0.11.0a1 wheel** contains the local service, the compiled React interface,
+The **0.11.0a2 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
@@ -20,7 +20,7 @@ Python 3.11 environment, run the following commands with the actual wheel path.
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.11.0a1-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.11.0a2-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```
@@ -48,7 +48,7 @@ second installed server can use a separate store and port.
 
 ## Run or export a calibrated preset
 
-Open **Calibrated components** in the web or desktop interface. Select an execution target. **Export Python + notebook** saves the preset before simulation. After a successful local run, the result export includes its measured arrays and a reference manifest. Both Python and Jupyter execute the captured numerical source in the chosen worker.
+Open **Calibrated components** in the web or desktop interface. New FDTDX studies use electric-field-aligned permittivity by default. The original grid remains selectable, and imported revision-1 configurations retain their original numerical defaults. New ring and grating commands default to one bounded measurement; choose the full scope explicitly to run the full sensitivity campaign. Select an execution target. **Export Python + notebook** saves the preset before simulation. After a successful local run, the result export includes its measured arrays and a reference manifest. Both Python and Jupyter execute the captured numerical source in the chosen worker.
 
 The installed command uses the same code:
 

@@ -24,6 +24,7 @@ def main():
     parser.add_argument('--wheel', type=Path, required=True)
     parser.add_argument('--wheelhouse', type=Path, required=True)
     parser.add_argument('--meep-python', type=Path, required=True)
+    parser.add_argument('--fdtdx-gpu-python',type=Path,help='also run the installed calibrated splitter on this native CUDA worker')
     parser.add_argument('--output', type=Path, required=True, help='new directory outside the source checkout')
     args = parser.parse_args()
     target = args.output.resolve()
@@ -109,7 +110,9 @@ def main():
         command([cli,'calibrate','coupler','--solver','fdtdx','--device','gpu','--export-only',
                  '--output',target/'calibrated-gpu-program'],'calibrated-cli.log')
         with zipfile.ZipFile(target/'calibrated-gpu-program/python-notebook.zip') as archive:
-            assert json.loads(archive.read('config.json'))['device']=='gpu'
+            gpu_config=json.loads(archive.read('config.json'))
+            assert gpu_config['device']=='gpu' and gpu_config['material_model']=='yee-aligned'
+            assert gpu_config['revision']==2 and gpu_config['resolution']==16
         cavity = get('/api/cavity-benchmark')
         assert cavity['passed'] and len(cavity['reference_comparison']) == 4
         command([cli, 'benchmark-cavity', '--output', target/'cavity-study'], 'cavity.log')
@@ -161,7 +164,10 @@ def main():
     command([cli, 'run', result_store / 'config.json', '--output', target / 'cli-run'], 'cli-run.log')
     # Mimic a registered external worker: standalone reproduction must find it from the same state as the app.
     registry = state / '.local/runtime.json'
-    registry.write_text(json.dumps({'meep_python': str(meep)}))
+    workers={'meep_python':str(meep)}
+    if args.fdtdx_gpu_python:
+        workers['fdtdx_gpu_python']=str(args.fdtdx_gpu_python.absolute())
+    registry.write_text(json.dumps(workers))
     env.pop('MEEP_PYTHON')
     command([python, target / 'export/study.py',
              '--output', target / 'replayed'], 'replay.log')
@@ -188,9 +194,29 @@ def main():
             'calibrated-config-replay.log',timeout=7200)
     repeated=json.loads((target/'calibrated-config-replay/calculation/report.json').read_text())
     assert repeated['passed'] and abs(repeated['result']['center_beam_to_guide']-observed)<1e-6
+    cuda_check=None
+    if args.fdtdx_gpu_python:
+        folder=target/'calibrated-cuda-splitter'
+        command([cli,'calibrate','splitter','--solver','fdtdx','--device','gpu','--resolution','12',
+                 '--output',folder],'calibrated-cuda.log',timeout=7200)
+        cuda=json.loads((folder/'calculation/report.json').read_text())
+        cfg=json.loads((folder/'config.json').read_text())
+        assert cfg['revision']==2 and cfg['material_model']=='yee-aligned' and cfg['device']=='gpu'
+        assert cuda['settled'] and cuda['actual_device'].lower().startswith(('cuda','gpu'))
+        splitter=next(p for p in presets if p['case']=='splitter')
+        saved=next(row['report'] for row in splitter['evidence']['recorded'] if row['receipt']=='v011-fdtdx-yee-splitter-gpu12.json')
+        assert saved['port_order']==cuda['port_order'] and saved['wavelength_um']==cuda['wavelength_um']
+        def coefficients(report):
+            return [complex(*z) for at_frequency in report['s'] for outputs in at_frequency for z in outputs]
+        original,measured=coefficients(saved),coefficients(cuda)
+        assert len(measured)==len(original)==27
+        maximum=max(abs(a-b) for a,b in zip(original,measured))
+        assert maximum<2e-5 and (folder/'python-notebook-results.zip').is_file()
+        cuda_check={'case':'splitter','actual_device':cuda['actual_device'],'resolution':12,'material_model':cfg['material_model'],
+                    'compared_complex_coefficients':len(measured),'maximum_complex_difference':maximum}
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
-              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),
+              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),'installed_cuda_study':cuda_check,
               'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],
               'calibrated_cli_result_bundle_verified':True,
               'generic_calibration_config_coupling':repeated['result']['center_beam_to_guide'], 'export_found_registered_interpreter': True,

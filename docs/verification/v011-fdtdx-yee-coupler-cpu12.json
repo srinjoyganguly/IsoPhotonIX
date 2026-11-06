@@ -487,7 +487,7 @@
   "mirror_symmetry_max_guided_power_delta": 5.84570879436086e-06,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T23:48:13.426465+00:00",
+  "checked_at": "2026-11-06T01:28:34.984533+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -498,7 +498,7 @@
   "device_name": "cpu",
   "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
   "material_model": "yee-aligned",
-  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "worker_source_sha256": "1d22d50d1e1f7da2309e5906761b4a7ccae1471ea80014eed2a747e141616875",
   "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
   "array_payload_sha256": "b427d3c1bd37bc160c91cbbbe1f443c1345d08833d9b9ebd91940b934936cf8e",
   "array_fields": [
@@ -527,7 +527,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "41639357312277794f6575659edfa4eba37cb0e099e558b4ff7ea88d1a40e531",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_lower-device",
@@ -546,7 +548,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "2fa8c6d847dca4bfdc6c7ff6d1d5acf281e0eb06ea5d193a26ad81ea9c77a29e",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_upper-reference",
@@ -565,7 +569,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "29a3a9a27efe0576e4ce09a28ee35c29420a1375735430c3d8cc4cab136619ef",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_upper-device",
@@ -584,7 +590,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "7837c8a66b5a9dbbb9b3e4f77393ba0305880c63a2540b60334108cc48f87785",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-reference",
@@ -603,7 +611,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "4707b71037f579e437c9d0dfb78816266ef0f783488681e2decd093ff34122f5",
-      "reference_reused_from_verified_cache": true
+      "reference_reused_from_verified_cache": true,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-device",
@@ -622,7 +632,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "c52d855b091c56183aed11d320154c10bfb140b96d558b2978e46362e062ca77",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-reference",
@@ -641,7 +653,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "6e0bb50d4c7bfef2da26a8d46c89192de3e63f741227d904dd90ee588211502f",
-      "reference_reused_from_verified_cache": true
+      "reference_reused_from_verified_cache": true,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-device",
@@ -660,7 +674,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "82866ce98a3521e27d918e30d0c9f5b8640497f6325ec846af16c75e1d831ada",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     }
   ],
   "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
@@ -683,5 +699,24 @@
     ],
     "other_actual_device": "cuda:0",
     "other_array_sha256": "f1a3f621a33d1e96114337a8ae6270e778d5b0631d9bfebdba952dbeef798d7a"
+  },
+  "mesh_control": {
+    "complex_s_relative_l2": 0.8951683492139318,
+    "max_complex_s_difference": 0.9687997493526574,
+    "max_modal_power_difference": 0.07205613712212255,
+    "center_input0_guided_power_first": [
+      0.0008281202548202631,
+      6.402058046550827e-05,
+      0.7696024450121564,
+      0.02659159708773398
+    ],
+    "center_input0_guided_power_second": [
+      0.011013052098918437,
+      0.0011429557171851164,
+      0.7917709450856857,
+      0.07670412528780275
+    ],
+    "other_resolution": 16,
+    "other_array_sha256": "6205946524ac202e93bfca1e1d7174f7f173d722b7dd57787a22bfd5d084f1b0"
   }
 }

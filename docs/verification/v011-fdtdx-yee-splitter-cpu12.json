@@ -342,7 +342,7 @@
   "mirror_symmetry_max_guided_power_delta": 1.4638731125282689e-05,
   "scalar_mask_mirror_disagreeing_voxels": 0,
   "schema_version": 1,
-  "checked_at": "2026-11-05T23:55:51.178539+00:00",
+  "checked_at": "2026-11-06T01:28:32.868328+00:00",
   "native_versions": {
     "fdtdx": "0.6.2",
     "jax": "0.10.2",
@@ -353,7 +353,7 @@
   "device_name": "cpu",
   "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
   "material_model": "yee-aligned",
-  "worker_source_sha256": "c3996bd43cbc8cb0d04724c939ec4f34d7e9ef4f8be699f600f38792c4f5c13d",
+  "worker_source_sha256": "1d22d50d1e1f7da2309e5906761b4a7ccae1471ea80014eed2a747e141616875",
   "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
   "array_payload_sha256": "8505f4ba7772a891d77b135260c3efd084c361cc34e6e466ec8fbfa1c8cd315e",
   "array_fields": [
@@ -382,7 +382,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "786418925da1a19d4dda907da71a78f81413d07c1bd70045d15fb23968206484",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "left_center-device",
@@ -401,7 +403,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "95d145521d18caa249a7f4d70c9153888be51169368f33aff43ccd28d9452cb2",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-reference",
@@ -420,7 +424,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "4707b71037f579e437c9d0dfb78816266ef0f783488681e2decd093ff34122f5",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_lower-device",
@@ -439,7 +445,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "486cf52b4721b79a91738a12fea73eff134520f3320019e7fa13d736b1e5edd7",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-reference",
@@ -458,7 +466,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "6e0bb50d4c7bfef2da26a8d46c89192de3e63f741227d904dd90ee588211502f",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     },
     {
       "name": "right_upper-device",
@@ -477,7 +487,9 @@
       "source_neff": 2.5289883613586426,
       "max_edge_mode_fraction": 1.1931663721043151e-05,
       "raw_monitor_sha256": "33c0a7b922e53629a59275299939d3002a91b2c8a513fa573f2a179b0cd52e73",
-      "reference_reused_from_verified_cache": false
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
     }
   ],
   "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
@@ -498,5 +510,22 @@
     ],
     "other_actual_device": "cuda:0",
     "other_array_sha256": "febd327cc2b792b7541b9a247fe3ef8bd7af969e89344ca4e4ef5b2b53059712"
+  },
+  "mesh_control": {
+    "complex_s_relative_l2": 1.0025729928479559,
+    "max_complex_s_difference": 0.7170202224604968,
+    "max_modal_power_difference": 0.021643842701137617,
+    "center_input0_guided_power_first": [
+      0.005538106354922859,
+      0.37517280646426265,
+      0.3751625881009469
+    ],
+    "center_input0_guided_power_second": [
+      0.013617359602337347,
+      0.3659513907011017,
+      0.36594539577475094
+    ],
+    "other_resolution": 16,
+    "other_array_sha256": "62aadc32a21b5bd202fa739eb483c0584aca1056e05d19ca62ec6f82fb03f2cd"
   }
 }

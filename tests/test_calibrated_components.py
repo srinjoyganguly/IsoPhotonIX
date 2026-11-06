@@ -123,13 +123,13 @@ class CalibratedComponents(unittest.TestCase):
 
     def test_saved_revision_preserves_historical_default_grid(self):
         from backend.calibrations import specification
-        old=Calibration(case='coupler',solver='fdtdx',device='cpu')
-        modern=Calibration(case='coupler',solver='fdtdx',device='cpu',revision=2)
+        old=Calibration(study_type='calibrated-component',case='coupler',solver='fdtdx',device='cpu')
+        modern=Calibration(case='coupler',solver='fdtdx',device='cpu')
         self.assertIn('legacy-x',specification(old)[1])
         self.assertIn('yee-aligned',specification(modern)[1])
         explicit=Calibration(case='coupler',solver='fdtdx',device='cpu',revision=2,material_model='legacy-x')
         self.assertIn('legacy-x',specification(explicit)[1])
-        old_ring=Calibration(case='ring',solver='meep',device='cpu')
+        old_ring=Calibration(study_type='calibrated-component',case='ring',solver='meep',device='cpu')
         new_ring=Calibration(case='ring',solver='meep',device='cpu',revision=2)
         self.assertEqual(specification(old_ring)[1],[])
         self.assertEqual(specification(new_ring)[1],['--loaded-case','lumerical','--profile','fine'])
@@ -167,6 +167,65 @@ class CalibratedComponents(unittest.TestCase):
             response=TestClient(app).post('/api/calibrations/jobs/saved/resume',json={})
             self.assertEqual(response.status_code,409)
             resume.assert_not_called()
+
+    def test_rejected_native_cache_does_not_publish_another_study(self):
+        import subprocess
+        from types import SimpleNamespace
+        from backend.calibration_replay import run
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            bundle=create_bundle(Calibration(case='coupler',solver='fdtdx',device='cpu'),root/'replay')
+            cache=root/'cache/native-multiport'
+            cache.mkdir(parents=True)
+            previous='{"case":"splitter","passed":true}'
+            (cache/'report.json').write_text(previous)
+            resolver=SimpleNamespace(default_user_state=lambda:root,solver_interpreter=lambda *args:'/test/worker')
+            with patch.dict('sys.modules',{'workbench_solver_environment':resolver}), \
+                 patch('backend.calibration_replay.subprocess.run',return_value=subprocess.CompletedProcess([],1)):
+                with self.assertRaises(subprocess.CalledProcessError):
+                    run(bundle,root/'new-result',root/'cache')
+            self.assertFalse((root/'new-result').exists())
+            self.assertEqual((cache/'report.json').read_text(),previous)
+
+    def test_compact_mask_ring_spacings_and_channel_labels_are_checked(self):
+        from backend.calibration_replay import measured_observables
+        report={'channels':['left','right'],'compact_tidy_domain':{'valid_beam_bins':[True,False]},
+                'isolated_finite_height_ring':{'tidy3d':{'measured_bare_ring_fsr_nm':18.1,'published_loaded_ring_fsr_nm':17.7}}}
+        observed=measured_observables(report)
+        self.assertEqual(observed['channels'],['left','right'])
+        self.assertEqual(observed['compact/valid_beam_bins'],[True,False])
+        self.assertEqual(observed['bare_ring/tidy3d/published_loaded_ring_fsr_nm'],17.7)
+
+    def test_saving_a_working_notebook_preserves_the_physical_source_check(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=create_bundle(Calibration(case='multimode',solver='meep',device='cpu'),Path(tmp)/'replay')
+            notebook=root/'calibration.ipynb'
+            draft=json.loads(notebook.read_text())
+            draft['cells'][1].update(execution_count=1,outputs=[{'output_type':'stream','name':'stdout','text':'done'}])
+            notebook.write_text(json.dumps(draft))
+            verify_source(root,editable_notebook=True)
+            with self.assertRaisesRegex(ValueError,'calibration.ipynb'):
+                verify_source(root)
+            (root/'source/scripts/calibrate_multimode.py').write_text('changed')
+            with self.assertRaisesRegex(ValueError,'calibrate_multimode.py'):
+                verify_source(root,editable_notebook=True)
+
+    def test_native_plan_initialization_recovers_only_an_empty_or_lock_only_study(self):
+        from scripts.calibration_checkpoint import read_locked_plan
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            manifest=root/'run.json'
+            lock='.run.lock'
+            pending='run.pending-json'
+            self.assertIsNone(read_locked_plan(manifest,lock,pending))
+            (root/lock).touch()
+            (root/pending).write_text('partial')
+            self.assertIsNone(read_locked_plan(manifest,lock,pending))
+            (root/'input.npz').write_bytes(b'existing measurements')
+            with self.assertRaisesRegex(ValueError,'without its committed manifest'):
+                read_locked_plan(manifest,lock,pending)
+            manifest.write_text('{"known":true}\n')
+            self.assertEqual(read_locked_plan(manifest,lock,pending),'{"known":true}')
 
     def test_catalog(self):
         props=TestClient(app).get('/api/calibrations').json()

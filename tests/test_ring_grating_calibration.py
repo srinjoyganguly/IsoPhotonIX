@@ -150,3 +150,43 @@ class ResonatorAndGrating(unittest.TestCase):
             measured=outgoing/reference[:,0,0,None]
             np.testing.assert_allclose(measured,raw[prefix+'_s'])
             np.testing.assert_allclose(abs(measured[:,2])**2,series['drop'])
+
+    def test_canonical_meep_reports_retain_weak_bins_and_actual_fluxes(self):
+        folder=ROOT/'docs/verification'
+        grating=json.loads((folder/'v011-grating.json').read_text())
+        raw=folder/grating['arrays_file']
+        self.assertEqual(hashlib.sha256(raw.read_bytes()).hexdigest(),grating['arrays_sha256'])
+        with np.load(raw,allow_pickle=False) as arrays:
+            for vendor,controls in grating['studies'].items():
+                for row in controls.values():
+                    label=row['label']
+                    left,right,up,down=arrays[label+'_guide_device']/arrays[label+'_guide_reference'][0]
+                    np.testing.assert_allclose(row['power_sum'],1-left+right+up-down)
+                    np.testing.assert_allclose(row['guide_radiation_up'],up)
+                    self.assertEqual(sum(row['valid_beam_bins']),19)
+                if vendor=='lumerical':
+                    self.assertLess(sum(controls['fine']['valid_energy_bins']),len(controls['fine']['wavelength_um']))
+        ring=json.loads((folder/'v011-ring.json').read_text())
+        self.assertTrue(ring['passed'])
+        for row in ring['series'].values():
+            self.assertEqual(sum(row['valid_bins']),561)
+        short=ring['series']['tidy3d']['cases']['short-fine']
+        self.assertLess(sum(short['valid_bins']),len(short['valid_bins']))
+        for case in ring['isolated_finite_height_ring'].values():
+            self.assertLess(case['measured_bare_ring_pair_um'][0],1.55)
+            self.assertGreater(case['measured_bare_ring_pair_um'][1],1.55)
+            self.assertFalse(case['absolute_poles_stable_within_1nm'])
+
+    def test_ansys_total_flux_and_late_window_are_separate_measured_controls(self):
+        folder=ROOT/'docs/verification'
+        far=json.loads((folder/'v011-grating-ansys-output-r40.json').read_text())
+        result=far['result']
+        self.assertEqual((result['output_x_um'],result['output_aperture_um']),(-40.,1.))
+        with np.load(folder/far['arrays_file'],allow_pickle=False) as raw:
+            incoming=-raw['lumerical_reference'][0]
+            np.testing.assert_allclose(result['direct_output_fraction'],-raw['lumerical_output_flux']/incoming)
+            np.testing.assert_allclose(result['beam_to_guide'],abs(raw['lumerical_device_modes'][:,1])**2/incoming)
+        long=json.loads((folder/'v011-grating-guided-lumerical-r40-long.json').read_text())
+        control=long['window_control']
+        self.assertEqual((control['earlier_qualified_bins'],control['longer_qualified_bins']),(13,19))
+        self.assertLess(control['longer_max_abs_balance_error'],.01)

@@ -62,3 +62,17 @@ class MeasurementCheckpoints:
     @staticmethod
     def json_hash(value):
         return hashlib.sha256(json.dumps(value,sort_keys=True,allow_nan=False).encode()).hexdigest()
+
+
+def read_locked_plan(path, lock_name, pending_name):
+    """Recover initialization only when there are no data from a previous plan.
+
+    The caller holds the native study lock. A leftover pending manifest was
+    never committed, so it can be replaced before starting the first stage.
+    """
+    if path.is_file():
+        return path.read_text().strip()
+    permitted={lock_name,pending_name}
+    if any(item.name not in permitted or not item.is_file() for item in path.parent.iterdir()):
+        raise ValueError('Cannot resume a study containing data without its committed manifest.')
+    return None

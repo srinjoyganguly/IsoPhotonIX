@@ -1,0 +1,549 @@
+{
+  "solver": "fdtdx",
+  "case": "splitter",
+  "requested_device": "cpu",
+  "actual_device": "cpu:0",
+  "port_order": [
+    "left_center",
+    "right_lower",
+    "right_upper"
+  ],
+  "frequency_per_um": [
+    0.6251612903225806,
+    0.6451612903225806,
+    0.6651612903225806
+  ],
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "matrix_axes": [
+    "frequency",
+    "outgoing_port",
+    "incoming_port"
+  ],
+  "complex_encoding": [
+    "real",
+    "imag"
+  ],
+  "s": [
+    [
+      [
+        [
+          0.1303696680600036,
+          -0.022562695393682233
+        ],
+        [
+          -0.4816589109108583,
+          0.37884149230485137
+        ],
+        [
+          -0.4816735791331507,
+          0.37883432788384447
+        ]
+      ],
+      [
+        [
+          -0.4819578906998614,
+          0.37878541929102333
+        ],
+        [
+          0.02920790325219424,
+          0.054776473009799584
+        ],
+        [
+          -0.05646837766909458,
+          0.012360412951779944
+        ]
+      ],
+      [
+        [
+          -0.4819551170554983,
+          0.37879311192179843
+        ],
+        [
+          -0.05646926360907698,
+          0.012360213778267718
+        ],
+        [
+          0.02920768756925596,
+          0.05477706991109936
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.10974948831875202,
+          -0.039653617944765907
+        ],
+        [
+          0.11791008405735638,
+          0.5931097441658548
+        ],
+        [
+          0.11790720137605677,
+          0.5931175261766011
+        ]
+      ],
+      [
+        [
+          0.11847892206753691,
+          0.5932235124527823
+        ],
+        [
+          -0.07720720000991958,
+          -0.03611436395180388
+        ],
+        [
+          -0.035764562306099916,
+          0.011042994784464967
+        ]
+      ],
+      [
+        [
+          0.11848042157750958,
+          0.5932181601043299
+        ],
+        [
+          -0.035764559626288925,
+          0.011042204773542938
+        ],
+        [
+          -0.07720657139184284,
+          -0.03611463827534529
+        ]
+      ]
+    ],
+    [
+      [
+        [
+          -0.00823055968083046,
+          0.13283207022099847
+        ],
+        [
+          0.5844050031251518,
+          0.14588360104794743
+        ],
+        [
+          0.5844090337711251,
+          0.14588488053302562
+        ]
+      ],
+      [
+        [
+          0.5841883995321171,
+          0.1466480787311655
+        ],
+        [
+          -0.04882501532308428,
+          -0.0024074987317270306
+        ],
+        [
+          -0.04031999361206215,
+          0.027906324245677502
+        ]
+      ],
+      [
+        [
+          0.5841862517662741,
+          0.1466502237674595
+        ],
+        [
+          -0.040320801440331656,
+          0.027906269506959853
+        ],
+        [
+          -0.04882533235175744,
+          -0.0024076664166956746
+        ]
+      ]
+    ]
+  ],
+  "modal_power": [
+    [
+      [
+        0.01750532557350361,
+        0.3755161827516009,
+        0.3755248848181438
+      ],
+      [
+        0.37576180227533584,
+        0.0038535636077828405,
+        0.003341457484918028
+      ],
+      [
+        0.3757649564953792,
+        0.0033415526171959057,
+        0.003853616401188736
+      ]
+    ],
+    [
+      [
+        0.013617359602337347,
+        0.3656819565468986,
+        0.3656905079941852
+      ],
+      [
+        0.3659513907011017,
+        0.007265199017015077,
+        0.0014010516507566234
+      ],
+      [
+        0.36594539577475094,
+        0.0014010340115232296,
+        0.007265121763842759
+      ]
+    ],
+    [
+      [
+        0.017712100991855977,
+        0.3628112327324253,
+        0.36281631712143525
+      ],
+      [
+        0.3627817451434387,
+        0.002389678171442682,
+        0.00240446481778162
+      ],
+      [
+        0.36277986488377467,
+        0.002404526906585729,
+        0.0023897099368336556
+      ]
+    ]
+  ],
+  "reference_through_power": [
+    [
+      0.999662502108685,
+      0.9996413174031947,
+      0.9996413674875653
+    ],
+    [
+      0.9999968172613769,
+      0.9999956537715862,
+      0.9999956767243929
+    ],
+    [
+      1.0000504454759953,
+      1.0000783479092759,
+      1.0000784160347755
+    ]
+  ],
+  "sum_observed_power": [
+    [
+      0.7690320843442187,
+      0.3827112989765797,
+      0.3827199587042506
+    ],
+    [
+      0.74551414607819,
+      0.3743481895754369,
+      0.37435668140878453
+    ],
+    [
+      0.7432737110190694,
+      0.36760543781045374,
+      0.3676104918760505
+    ]
+  ],
+  "max_reciprocity_complex_difference": 0.0007971085799181496,
+  "max_modal_power_excess": 0.0,
+  "maximum_singular_value": [
+    0.9027379082198184,
+    0.9147719571334492,
+    0.9084083008322974
+  ],
+  "sampled_setup_checks": {
+    "complete_settling": true,
+    "straight_reference_power_within_0_03": true,
+    "max_complex_reciprocity_difference_below_0_05": true,
+    "max_singular_value_squared_at_most_1_05": true
+  },
+  "sampled_setup_checks_passed": true,
+  "valid_column": [
+    true,
+    true,
+    true
+  ],
+  "settled": true,
+  "resolution": 16,
+  "grid_shape": [
+    224,
+    112,
+    64
+  ],
+  "after_source_cap_um_over_c": 80.0,
+  "sampled_ports": [
+    {
+      "name": "left_center",
+      "x": -4.75,
+      "y": 0.0,
+      "source_x": -5.5,
+      "inward_sign": 1,
+      "start": [
+        36,
+        40,
+        12
+      ],
+      "source_ix": 24,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": -4.75,
+      "actual_y": 0.0
+    },
+    {
+      "name": "right_lower",
+      "x": 4.75,
+      "y": -1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        188,
+        20,
+        12
+      ],
+      "source_ix": 200,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": 4.75,
+      "actual_y": -1.25
+    },
+    {
+      "name": "right_upper",
+      "x": 4.75,
+      "y": 1.25,
+      "source_x": 5.5,
+      "inward_sign": -1,
+      "start": [
+        188,
+        60,
+        12
+      ],
+      "source_ix": 200,
+      "shape": [
+        1,
+        32,
+        40
+      ],
+      "actual_x": 4.75,
+      "actual_y": 1.25
+    }
+  ],
+  "phase": "exp(-i omega t), common forward Ey-positive power basis, matched reference backwave subtracted only at launched port",
+  "scope": "The named straight-guide fundamental modes are observed at finite apertures. Radiation and other modes are not included.",
+  "mirror_symmetry_max_guided_power_delta": 8.702066542853881e-06,
+  "scalar_mask_mirror_disagreeing_voxels": 0,
+  "schema_version": 1,
+  "checked_at": "2026-11-06T01:28:31.641268+00:00",
+  "native_versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "device_name": "cpu",
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "material_model": "yee-aligned",
+  "worker_source_sha256": "1d22d50d1e1f7da2309e5906761b4a7ccae1471ea80014eed2a747e141616875",
+  "geometry_source_sha256": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
+  "array_payload_sha256": "62aadc32a21b5bd202fa739eb483c0584aca1056e05d19ca62ec6f82fb03f2cd",
+  "array_fields": [
+    "s",
+    "incident",
+    "reference_through",
+    "valid_column",
+    "frequency_per_um",
+    "wavelength_um"
+  ],
+  "stages": [
+    {
+      "name": "left_center-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 2668.940374351001,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.7683070563379033e-09,
+        "amplitude_change": 1.3221849773159097e-06
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "a9b828e2303853f0fb860087874483ec3bf7bd174dfaa38a9af30767c3929633",
+      "yee_component_grid_sha256": "c87583d8631b2ae76e4718777457bea3be499863209ad5453bbf8ec14f84d696",
+      "source_profile_sha256": "c09105b55207637c9a65c993845f7817a38dc6795f14db69c4826e8e3c89e985",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "27afae428acd340ace380107563fdb1ca3da37ab810414ee99551a66eda199b7",
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
+    },
+    {
+      "name": "left_center-device",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 1318.283105606999,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 4.5941342250443995e-06,
+        "amplitude_change": 0.00029620521360207647
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "84c0285588a96c06d0f0eadd1296459024f16fd3264e0a5259a2f88f1ae73a78",
+      "yee_component_grid_sha256": "449345e67af54af89654227d8b955cc66da84b4d7243bf1519896e3bd9d2843f",
+      "source_profile_sha256": "c09105b55207637c9a65c993845f7817a38dc6795f14db69c4826e8e3c89e985",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "209530828fc49a9134a7c3e723895fde1c90e266627e9118b424dc7e07b87935",
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
+    },
+    {
+      "name": "right_lower-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 1167.270179351999,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.7969425947228501e-09,
+        "amplitude_change": 1.0343234655302967e-06
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "50b9d7a8b7ac2af7405c1fb6e99bdff0e7375203daad2cc68b43b3832cbaa54f",
+      "yee_component_grid_sha256": "1977ed08fd7afba13cd6b9b6ec2f4d6f815b1d11237a311cd6e1d64c93656d6e",
+      "source_profile_sha256": "74072ef0157fe34c95fa2795eeae924b36f35f74d22b1f6f99f39ca749c94c26",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "25298cfd05fd92bea8f6c95939067f89b4718aef4a2ce9a0280a536978e3a857",
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
+    },
+    {
+      "name": "right_lower-device",
+      "settled": true,
+      "step_count": 3668,
+      "seconds": 882.5394679669989,
+      "final_sample": {
+        "time_fs": 437.08228883998294,
+        "energy_ratio": 9.690432989373221e-07,
+        "amplitude_change": 4.695238376210067e-05
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "84c0285588a96c06d0f0eadd1296459024f16fd3264e0a5259a2f88f1ae73a78",
+      "yee_component_grid_sha256": "449345e67af54af89654227d8b955cc66da84b4d7243bf1519896e3bd9d2843f",
+      "source_profile_sha256": "74072ef0157fe34c95fa2795eeae924b36f35f74d22b1f6f99f39ca749c94c26",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "163a2a147d717e540cce2418affa7a66658d758a932401421f00a2954d88a96f",
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": "8d4f3dfea040a5f042fe5edf9416b843e1c737d483c3e14bab1041a2d2291e7a"
+    },
+    {
+      "name": "right_upper-reference",
+      "settled": true,
+      "step_count": 3444,
+      "seconds": 669.8136198770007,
+      "final_sample": {
+        "time_fs": 410.3902406665489,
+        "energy_ratio": 1.7970532839584052e-09,
+        "amplitude_change": 1.0229189050288174e-06
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "181d9fbf89514293b6c98a1693aabf030a7f5ac1c99cab021cf2095003edc7a0",
+      "yee_component_grid_sha256": "5a80ee24c7413e905d937090e58182e0b511fc64c3f9c906dc7448179bdbee42",
+      "source_profile_sha256": "74072ef0157fe34c95fa2795eeae924b36f35f74d22b1f6f99f39ca749c94c26",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "e899a8fe87410e756a25bbf044af705a49dd1c688cbae3b1e24a00d54ce488a7",
+      "reference_reused_from_verified_cache": true,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": null
+    },
+    {
+      "name": "right_upper-device",
+      "settled": true,
+      "step_count": 3668,
+      "seconds": 857.3679969899968,
+      "final_sample": {
+        "time_fs": 437.08228883998294,
+        "energy_ratio": 9.724162737256847e-07,
+        "amplitude_change": 4.694994316205857e-05
+      },
+      "actual_device": "cpu:0",
+      "material_grid_sha256": "84c0285588a96c06d0f0eadd1296459024f16fd3264e0a5259a2f88f1ae73a78",
+      "yee_component_grid_sha256": "449345e67af54af89654227d8b955cc66da84b4d7243bf1519896e3bd9d2843f",
+      "source_profile_sha256": "74072ef0157fe34c95fa2795eeae924b36f35f74d22b1f6f99f39ca749c94c26",
+      "source_neff": 2.5382046699523926,
+      "max_edge_mode_fraction": 5.2970517572248355e-06,
+      "raw_monitor_sha256": "ea302a468cb196b8949f26f7f449e3c68ba77402de0d361ef297f0004465ba87",
+      "reference_reused_from_verified_cache": false,
+      "device_reused_from_verified_cache": false,
+      "device_cache_key": "7565deac8367f9e816efabd2e29e613ac9d959f32c96bc5d8e53521aab12bc48"
+    }
+  ],
+  "limits": "Three sampled frequencies, finite modal windows and a staircase scalar footprint. Guided power excludes radiation and unmonitored modes. The scattering matrix and local material assignment are both mesh dependent.",
+  "source_note": "worker_source_sha256 identifies the driver available at receipt generation. numerical_sha256 identifies the physical implementation recorded by the native run.",
+  "meep_comparison": {
+    "complex_s_relative_l2": 0.15234849773839976,
+    "max_complex_s_difference": 0.134733998956505,
+    "max_modal_power_difference": 0.038464445025633565,
+    "center_input0_guided_power_first": [
+      0.013617359602337347,
+      0.3659513907011017,
+      0.36594539577475094
+    ],
+    "center_input0_guided_power_second": [
+      0.0034595221044945094,
+      0.4041364983007108,
+      0.38879548570443745
+    ],
+    "source": "v011-meep-multiport-splitter-electric.json",
+    "source_sha256": "5d73fd1029d2d773475c7e037a19b8c90051880162ae6bd0e93c7b7da5fe1f43",
+    "phase_convention_version": 2
+  },
+  "matched_cpu_gpu": {
+    "complex_s_relative_l2": 8.948471567844292e-08,
+    "max_complex_s_difference": 1.1020139330895345e-07,
+    "max_modal_power_difference": 6.396533880348443e-08,
+    "center_input0_guided_power_first": [
+      0.013617359602337347,
+      0.3659513907011017,
+      0.36594539577475094
+    ],
+    "center_input0_guided_power_second": [
+      0.013617364579789099,
+      0.3659513788838194,
+      0.365945389268933
+    ],
+    "other_actual_device": "cuda:0",
+    "other_array_sha256": "1bb4f8721f890d6ad0e9a96b01ad9140f536e875dc605b1fd52f8a730c38070c"
+  },
+  "mesh_control": {
+    "complex_s_relative_l2": 0.9954818817131211,
+    "max_complex_s_difference": 0.7170202224604968,
+    "max_modal_power_difference": 0.021643842701137617,
+    "center_input0_guided_power_first": [
+      0.013617359602337347,
+      0.3659513907011017,
+      0.36594539577475094
+    ],
+    "center_input0_guided_power_second": [
+      0.005538106354922859,
+      0.37517280646426265,
+      0.3751625881009469
+    ],
+    "other_resolution": 12,
+    "other_array_sha256": "8505f4ba7772a891d77b135260c3efd084c361cc34e6e466ec8fbfa1c8cd315e"
+  }
+}

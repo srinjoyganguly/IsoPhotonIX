@@ -17,6 +17,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from backend.calibrated_geometry import multiport_model, straight_polygon
+from scripts.calibration_checkpoint import read_locked_plan
 
 C_UM_PER_FS = .299792458
 
@@ -251,14 +252,14 @@ def measure(case, output, resolution=16, pml_um=.75, aperture_um=2., after_time=
     out=Path(output)
     if not resume:
         out.mkdir(parents=True,exist_ok=False)
-    elif not (out/'config.json').is_file():
-        raise ValueError('Resume requires an existing study with its saved configuration.')
+    elif not out.is_dir():
+        raise ValueError('Resume requires an existing study directory.')
     with (out/'.measurement.lock').open('a') as lock:
         fcntl.flock(lock.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
-        if resume:
-            if json.loads((out/'config.json').read_text())!=config:
-                raise ValueError('Resume refused: physical model, solver, numerical code or inputs differ.')
-        else:
+        saved=read_locked_plan(out/'config.json','.measurement.lock','config.pending-json') if resume else None
+        if saved is not None and json.loads(saved)!=config:
+            raise ValueError('Resume refused: physical model, solver, numerical code or inputs differ.')
+        if saved is None:
             atomic_json(out/'config.json',config)
         key=hashlib.sha256(json.dumps(config,sort_keys=True,separators=(',',':')).encode()).hexdigest()
         return measure_locked(mp,model,resolution,after_time,minimum_ringdown,out,jobs,names,ids,launch_port,stage,key)
