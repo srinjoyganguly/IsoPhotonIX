@@ -84,6 +84,7 @@ export function PortAlignment({ scene, selected, selectedId, names, onApply }: P
 
   return <details className="port-alignment" onChange={() => setFeedback(null)}>
     <summary>Component connections{rows.length > 0 && <span className="connection-count">{rows.length}</span>}</summary>
+    <div className="connection-body">
     {pair ? <fieldset disabled={busy}>
       <div className="port-pair">
         <label>Moving component<select aria-label="Moving component" value={pair.source.id} onChange={e => { setSourceId(e.target.value); setSourcePort(''); }}>
@@ -128,6 +129,7 @@ export function PortAlignment({ scene, selected, selectedId, names, onApply }: P
         </div>
       </li>)}
     </ul>}
+    </div>
     {feedback && <p role={feedback.error ? 'alert' : 'status'}>{feedback.text}</p>}
   </details>;
 }
