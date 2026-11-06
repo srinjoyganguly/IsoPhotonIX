@@ -214,6 +214,14 @@
       },
       "all_evidenced_and_met": true
     },
+    "v014-grating3d-tidy3d-mirror-r16-resolved-return.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": false,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": false
+    },
     "v014-grating3d-tidy3d-mirror-r16-return-windows.json": {
       "criteria": {
         "target_within_five_points": true,
@@ -420,5 +428,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "e50803e9e078c5ba6c8007592ddab7ede0b3badc939632a845cfcab650dbe513"
+  "diagnosis_sha256": "7c468dea3f0eecf3346dab5b0e1a83e325df266cd4043fe281b355ebc507e00c"
 }

@@ -37,6 +37,34 @@ def verify_mirror_archive(data, stage, prefix):
         np.testing.assert_array_equal(left,right*signs)
 
 
+def verify_return_stop(model, stage, series, ref_changes):
+    """Independent audit of the opt-in stop against every complete recorded window."""
+    rows=stage['history']
+    if len(rows)<3 or len(series)!=len(rows):
+        raise ValueError('Two complete changes in reciprocal return are required.')
+    criterion=stage['duration_stop']
+    if criterion['policy']!='guide-energy-and-reciprocal-amplitude' or criterion['max_time_fs']!=model['max_time_fs']:
+        raise ValueError('Weak-return duration policy or ceiling differs from the requested experiment.')
+    dt_fs=stage['performance']['dt_seconds']*1e15
+    if rows[-1]['time_fs']>model['max_time_fs']+dt_fs:
+        raise ValueError('The weak-return control exceeded its physical time ceiling.')
+    wave=monitoring_wavelengths(model)
+    pulse_end=12/(2*np.pi*(.5*299792458e6*(1/wave[0]-1/wave[-1])))*1e15
+    ready=False
+    for i in range(2,len(rows)):
+        amplitude=return_window_status(series[i-2:i+1],ref_changes)['amplitude_qualified']
+        guide=all(row['time_fs']>pulse_end and row['energy_ratio']<1e-4 and
+                  row['relative_spectral_change'] is not None and row['relative_spectral_change']<.002
+                  for row in rows[i-1:i+1])
+        ready=all(amplitude) and guide
+        if ready and i<len(rows)-1:
+            raise ValueError('The duration control ran past an earlier eligible stop.')
+    if criterion['stop']!=('qualified' if ready else 'time-cap') or criterion['return_amplitudes_qualified']!=all(amplitude):
+        raise ValueError('The recorded duration stop contradicts the guide and weak-return windows.')
+    if not ready and abs(rows[-1]['time_fs']-model['max_time_fs'])>dt_fs:
+        raise ValueError('The unresolved return stopped before the physical time ceiling.')
+
+
 def verify(run):
     report=json.loads((run/'report.json').read_text())
     archive=run/'arrays.npz'
@@ -96,6 +124,10 @@ def verify(run):
             ref_changes=np.max([h['relative_incident_plane_l2_change'] for h in r['history'][-2:]],axis=0)
             if return_window_status(series,ref_changes)!=report['radiation']['reciprocal_return_settling']:
                 raise ValueError('Weak-return qualification contradicts the recorded time windows.')
+            if m.get('resolve_weak_return'):
+                verify_return_stop(m,d,series,ref_changes)
+        elif m.get('resolve_weak_return'):
+            raise ValueError('The requested duration control lacks its reciprocal-return trace.')
         if m['geometry']=='compact-radiation':
             from scripts.grating_emission import observables
             archives=[{key[len(prefix):]:data[key] for key in data.files if key.startswith(prefix)}

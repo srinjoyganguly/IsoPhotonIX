@@ -8,6 +8,7 @@ BASE=Path(__file__).resolve().parents[1]/'docs/verification'
 
 def collect(base):
     candidates={}
+    durations={}
     for path in sorted(base.glob('v014-grating3d-*.json')):
         run=json.loads(path.read_text())
         if run.get('case_id')!='finite-grating-3d' or run.get('actual_device')!='cuda:0' or not run['passed']:
@@ -41,6 +42,11 @@ def collect(base):
                 raise ValueError(f'No measured memory profile for {path.name}.')
             item['memory_profile']=profile.name
         tracks_return='reciprocal_return_settling' in run.get('radiation',{})
+        if model.get('resolve_weak_return'):
+            gates=run['radiation']['reciprocal_return_settling']
+            durations.setdefault(key,[]).append({'run':path.name,'stop':run['stages']['device']['duration_stop']['stop'],
+                'amplitude_qualified':gates['amplitude_qualified'],'phase_qualified':gates['phase_qualified']})
+            continue
         candidates.setdefault(key,[]).append((tracks_return,path.name,item))
     qualified=[]
     for key in sorted(candidates):
@@ -50,6 +56,8 @@ def collect(base):
         selected=records[0][2]
         if len(records)>1:
             selected['other_acquisitions']=[entry[1] for entry in records[1:]]
+        if key in durations:
+            selected['duration_controls']=durations[key]
         qualified.append(selected)
     return {'qualified':qualified}
 

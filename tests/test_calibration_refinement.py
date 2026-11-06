@@ -15,6 +15,10 @@ class CalibrationRefinements(unittest.TestCase):
         self.assertEqual(catalogue,json.loads((BASE/'v014-grating-meshes.json').read_text()))
         self.assertFalse(grating_meshes('tidy3d','full','direct-yee'))
         for row in catalogue['qualified']:
+            if row['domain']=='mirror-y' and (row['geometry'],row['resolution']) in (('lumerical',20),('tidy3d',16)):
+                stem=f"v014-grating3d-{row['geometry']}-mirror-r{row['resolution']}"
+                self.assertEqual(row['run'],stem+'-return-windows.json')
+                self.assertIn(stem+'.json',row['other_acquisitions'])
             self.assertIn(row['resolution'],grating_meshes(row['geometry'],row['domain'],row['material']))
             config=Calibration(case='grating-3d',solver='fdtdx',device='gpu',geometry_3d=row['geometry'],
                 grating_domain=row['domain'],grating_material_model=row['material'],resolution=row['resolution'])
@@ -43,6 +47,21 @@ class CalibrationRefinements(unittest.TestCase):
         self.assertEqual(ring_rejection(native),proof['reason'])
         self.assertIsNone(ring_rejection({**native,'arrays_sha256':'another measured array'}))
         self.assertFalse(diagnostic_ring({**native,'arrays_file':'arrays.npz'},BASE))
+
+    def test_extended_return_observation_is_explicit_and_bounded(self):
+        options=dict(case='grating-3d',solver='fdtdx',device='gpu',geometry_3d='tidy3d',
+                     grating_domain='mirror-y',resolution=16)
+        for enabled in (None,True):
+            config=Calibration(**options,grating_resolve_return=enabled)
+            with TemporaryDirectory() as tmp:
+                program=Path(tmp)/'program'
+                create_bundle(config,program)
+                command=json.loads((program/'manifest.json').read_text())['arguments']
+                self.assertEqual('--resolve-weak-return' in command, bool(enabled))
+        for changed in ({'resolution':12},{'geometry_3d':'lumerical','grating_material_model':'direct-yee'},
+                        {'grating_domain':'full'}):
+            with self.assertRaises(ValueError):
+                Calibration(**(options|changed),grating_resolve_return=True)
 
     def test_diagnostic_export_requires_real_complete_ring_arrays_and_consistent_mask(self):
         import hashlib

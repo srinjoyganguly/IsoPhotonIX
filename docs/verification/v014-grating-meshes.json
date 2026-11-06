@@ -46,6 +46,26 @@
       "memory_profile": "v014-grating-memory-tidy3d-mirror-r16.json",
       "other_acquisitions": [
         "v014-grating3d-tidy3d-mirror-r16.json"
+      ],
+      "duration_controls": [
+        {
+          "run": "v014-grating3d-tidy3d-mirror-r16-resolved-return.json",
+          "stop": "qualified",
+          "amplitude_qualified": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "phase_qualified": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
       ]
     }
   ]

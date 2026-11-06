@@ -127,6 +127,11 @@ def main():
                     assert {'source/scripts/calibrate_loaded_ring3d.py','source/scripts/reciprocal_ring_wall.py',
                             f'source/docs/verification/v014-ring-memory-{geometry}-r24-reciprocal.json'}<=set(bundle.namelist())
                 reciprocal_exports.append({'geometry':geometry,'resolution':mesh})
+        extended={'case':'grating-3d','solver':'fdtdx','device':'gpu','geometry_3d':'tidy3d','resolution':16,
+                  'grating_domain':'mirror-y','grating_resolve_return':True}
+        with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',extended,raw=True))) as bundle:
+            assert json.loads(bundle.read('config.json'))['grating_resolve_return'] is True
+            assert '--resolve-weak-return' in json.loads(bundle.read('manifest.json'))['arguments']
         for case, options in [('ring-3d', {'ring_interface':'exact-area','ring_material':'palik-ade'}),
                               ('ring-3d', {'ring_interface':'wall-tensor'}),
                               ('grating-3d', {'grating_material_model':'direct-yee','grating_domain':'mirror-y'}),

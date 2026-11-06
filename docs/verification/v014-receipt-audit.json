@@ -239,6 +239,12 @@
         "has_native_field": true
       },
       {
+        "receipt": "v014-grating3d-tidy3d-mirror-r16-resolved-return.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
         "receipt": "v014-grating3d-tidy3d-mirror-r16-return-windows.json",
         "passed": true,
         "actual_device": "cuda:0",

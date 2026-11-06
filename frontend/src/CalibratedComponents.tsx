@@ -30,6 +30,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [ringMaterial,setRingMaterial]=useState('constant');
   const [gratingMaterial,setGratingMaterial]=useState('volume-average');
   const [gratingDomain,setGratingDomain]=useState('full');
+  const [resolveReturn,setResolveReturn]=useState(false);
   const [gratingSpectrum,setGratingSpectrum]=useState('standard');
   const [portDistance,setPortDistance]=useState('1.25');
   const [mesh,setMesh]=useState(''),[offset,setOffset]=useState('.125');
@@ -45,6 +46,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
   const denseGrating = gratingDomain==='full' && key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
+  const boundedReturn=key==='grating-3d' && geometry3d==='tidy3d' && gratingDomain==='mirror-y' && mesh==='16';
   const dispersiveRing = key==='ring-3d' && geometry3d==='lumerical' && ringInterface==='exact-area' && (!mesh || mesh==='16');
   const ringMeshes={...selected?.ring_meshes,'reciprocal-wall':selected?.reciprocal_meshes?.[geometry3d] ?? []} as Record<string,number[]>;
   const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? (ringMeshes[ringInterface] ?? []) : key==='grating-3d' ? (selected?.grating_meshes?.[geometry3d]?.[gratingDomain]?.[gratingMaterial] ?? [12,16]) :
@@ -110,6 +112,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
     ring_material:dispersiveRing && ringMaterial==='palik-ade'?'palik-ade':null,
     grating_material_model:key==='grating-3d' && geometry3d==='lumerical' && gratingMaterial!=='volume-average'?gratingMaterial:null,
     grating_domain:key==='grating-3d' && gratingDomain!=='full'?gratingDomain:null,
+    grating_resolve_return:boundedReturn && resolveReturn ? true : null,
     grating_spectrum:denseGrating && gratingSpectrum==='dense'?'dense':null,
     geometry_3d:gpuComponent?geometry3d:null,port_distance_um:key==='multimode-tm'?Number(portDistance):null,
     grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
@@ -140,6 +143,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
     setKey(next); setRecord(0); setMesh(''); setPortDistance('1.25'); setRingDuration('');
     setGeometry3d(next==='grating-3d'?'compact':'lumerical');
     setRingInterface('legacy'); setRingMaterial('constant'); setGratingMaterial('volume-average'); setGratingSpectrum('standard'); setGratingDomain('full');
+    setResolveReturn(false);
     setOffset('.125'); setTarget(''); setMaterialGrid('yee-aligned');
     setGratingScope('tidy3d-compact'); setRingScope('lumerical');
     setJobId(''); setError(''); setReport(null); setLocalField(null);
@@ -207,6 +211,8 @@ export function CalibratedComponents({active}:{active:boolean}) {
         <option value="full">Both gratings and all sensitivity controls</option>
       </select></label>}{meshes.length>0 && <label>Mesh resolution<select value={mesh} onChange={e=>setMesh(e.target.value)}>
         <option value="">Preset mesh</option>{meshes.map(v=><option value={v} key={v}>{v} cells/µm</option>)}</select></label>}
+      {boundedReturn && <label><input type="checkbox" checked={resolveReturn} onChange={e=>setResolveReturn(e.target.checked)}/>
+        Wait for weak reflection amplitude (up to 2,000 fs)</label>}
       {key==='multimode' && mesh==='32' && Number(offset)===.125 && <p>The recorded 32-cell mesh exceeded the complex-amplitude limit at this offset. Select 48 or 64 cells/µm for the qualified reference study.</p>}
       {key==='coupler' && target.startsWith('fdtdx:') && mesh==='12' && <p>The 125 nm rail gap spans 1.5 cells at this mesh. Cross-port power is sensitive to its sampled width.</p>}
       {key.startsWith('multimode') && <label className="cal-offset">Lateral offset (µm)<input aria-label="Lateral offset (µm)" type="number" min="0" max="0.25" step=".025" value={offset} onChange={e=>setOffset(e.target.value)}/></label>}

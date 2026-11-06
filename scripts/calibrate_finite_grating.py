@@ -36,7 +36,9 @@ def monitoring_wavelengths(model):
     return WL
 
 
-def settings(name, resolution, grating_material_model='volume-average', grating_spectrum='standard', grating_domain='full'):
+def settings(name, resolution, grating_material_model='volume-average', grating_spectrum='standard', grating_domain='full', resolve_weak_return=False):
+    if resolve_weak_return and (name,resolution,grating_domain,grating_spectrum)!=('tidy3d',16,'mirror-y','standard'):
+        raise ValueError('Weak-return duration control requires the standard 16-cell mirror Tidy3D grating.')
     if grating_domain not in ('full','mirror-y') or (grating_domain == 'mirror-y' and name not in ('lumerical','tidy3d')):
         raise ValueError('The y mirror requires a symmetric benchmark grating.')
     mirrors = grating_domain == 'mirror-y'
@@ -77,6 +79,8 @@ def settings(name, resolution, grating_material_model='volume-average', grating_
         model['grating_domain']='mirror-y'
     if matched and resolution == 16:
         model['grating_allocator'] = 'platform'
+    if resolve_weak_return:
+        model['resolve_weak_return'] = True
     return model
 
 
@@ -474,6 +478,12 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False, inc
     source_hash=digest(np.stack([electric,magnetic]))
     delays_hash=digest(np.stack([delays_e,delays_h]))
     incoming=None if incident_path is None else return_reference(incident_path,incident_sha,m,hardware,source_hash,delays_hash)
+    resolve_return = bool(m.get('resolve_weak_return')) and not reference
+    if resolve_return:
+        if incoming is None:
+            raise ValueError('Weak-return duration control requires a settled matched incident plane.')
+        incident_history=json.loads((incident_path/'receipt.json').read_text())['history']
+        ref_changes=np.max([row['relative_incident_plane_l2_change'] for row in incident_history[-2:]],axis=0)
     basis = None
     if guided or not reference:
         section=jax.device_put(port_section,target) if mirror else arrays.inv_permittivities[:,px:px+1,sy:sy+py,sz:sz+pz]
@@ -587,7 +597,10 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False, inc
         consecutive=consecutive+1 if passed else 0
         spectra.append(measure.copy()); history.append(dict(time_fs=end*dt,energy=current_energy,energy_ratio=ratio,relative_spectral_change=change,relative_incident_plane_l2_change=plane_change))
         print(f"{'reference' if reference else 'device'} t={end*dt:.0f} fs, relative energy={ratio:.3g}, DFT-change={change}",flush=True)
-        if consecutive>=2 or end==sim.time_steps_total: break
+        return_ready=True
+        if resolve_return:
+            return_ready=len(returns)>=3 and all(return_window_status(returns[-3:],ref_changes)['amplitude_qualified'])
+        if (consecutive>=2 and return_ready) or end==sim.time_steps_total: break
         before=measure.copy()
     timer.end_steps()
     if final.fields.E.device!=target:
@@ -629,6 +642,10 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False, inc
                                                         u=lp[0],w=lp[1],neff=lp[2],source_impedance_relative_error=impedance_error,source_z_um=float(axes[2][at(2,m['source_z'])])),
                 native_worker_sha256=file_hash(__file__),cuda_identity=hardware,memory_admission=admission,
                 versions={k:importlib.metadata.version(k) for k in ('fdtdx','jax','jaxlib','tidy3d','numpy','scipy')})
+    if resolve_return:
+        detail['duration_stop']={'policy':'guide-energy-and-reciprocal-amplitude','max_time_fs':m['max_time_fs'],
+                                 'stop':'qualified' if consecutive>=2 and return_ready else 'time-cap',
+                                 'return_amplitudes_qualified':return_ready}
     return detail,data
 
 
@@ -691,6 +708,8 @@ def _locked_stage_archive(m, label, cache, wait_seconds, gpu_lock_fd, incident):
                 if m.get('grating_domain')=='mirror-y': cmd.extend(('--grating-domain','mirror-y'))
                 if 'grating_spectrum' in m:
                     cmd.extend(('--grating-spectrum',m['grating_spectrum']))
+                if m.get('resolve_weak_return'):
+                    cmd.append('--resolve-weak-return')
                 # Workers are separate processes so native device memory is released after each stage.
                 env={**os.environ,'PHOTONICS_GRATING_DEVICE_SALT':salt.hex()}
                 print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
@@ -814,13 +833,14 @@ def main():
     parser.add_argument('--grating-spectrum',choices=('standard','dense'),default='standard',
                         help='Measure the published five samples, or 21 native wavelengths on the 12-cell Lumerical grid.')
     parser.add_argument('--grating-domain',choices=('full','mirror-y'),default='full')
+    parser.add_argument('--resolve-weak-return',action='store_true',help='Require reciprocal-return amplitude convergence before an early device stop.')
     parser.add_argument('--on-demand-memory',action='store_true',
                         help='Use the measured on-demand CUDA allocator for the 12-cell control or a qualified 16-cell grating.')
     parser.add_argument('--checkpoint',type=Path)
     parser.add_argument('--incident-stage',type=Path,help=argparse.SUPPRESS)
     parser.add_argument('--incident-sha256',help=argparse.SUPPRESS)
     parser.add_argument('--stage',choices=('reference','device'),help=argparse.SUPPRESS)
-    args=parser.parse_args(); m=settings(args.geometry,args.resolution,args.grating_material_model,args.grating_spectrum,args.grating_domain)
+    args=parser.parse_args(); m=settings(args.geometry,args.resolution,args.grating_material_model,args.grating_spectrum,args.grating_domain,args.resolve_weak_return)
     if args.on_demand_memory:
         if m['geometry'] not in ('lumerical', 'tidy3d') or (m['resolution'] != 12 and 'grating_allocator' not in m):
             parser.error('On-demand grating memory is qualified for the matched 12-cell controls and selected 16-cell models.')

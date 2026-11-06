@@ -1,10 +1,14 @@
 # Install Photonics Workbench locally
 
-The **0.12.0a2 wheel** contains the local service, the compiled React interface,
+The **0.13.0a1 wheel** contains the local service, the compiled React interface,
 27 component families, solver adapters, examples and dependency notices. The
 wheel installs the pinned application dependencies through pip. The tested
 platform is Python 3.11 on Linux x86-64 under WSL2. Native solvers run in
 separate environments. Tagged wheels are distributed through [GitHub Releases](https://github.com/srinjoyganguly/photonics-workbench/releases).
+
+The v0.13.0a1 prerelease includes the [circuit connection editor](CIRCUIT_CONNECTIONS.md), matched GPU ring and grating measurements, [phase comparisons](COMPLEX_PORT_COMPARISONS.md) and [per-stage GPU costs](GPU_TIMING.md). The wheel contains the local interface and verified configuration choices. The larger result archives include the actual fields, recorded numerical source, editable Python program and notebook. Each design has its own commercial accuracy and mesh-convergence limits. [Measured checklist](CALIBRATED_COMPONENTS.md).
+
+The largest corrected ring and grating configurations use memory profiles measured on the RTX 3080 Ti Laptop GPU. A fresh stage verifies the selected device and available memory before allocation. Other hardware needs its own measured profile for those configurations. The general CPU and NVIDIA worker setup is separate from this model-specific admission step. [Ring memory admission](RECIPROCAL_RING_STABILITY.md) · [Grating admission](GRATING_ETCH_REFINEMENT.md).
 
 The [v0.12.0a1 release](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.12.0a1) includes the application wheel, its source archive and five measured programs independently rerun from Python and Jupyter. Use the wheel for installation. The example ZIP contains the exact inputs and reference data for the 3D ring, compact grating, 3D polygon elbow, planar TM joint and planar polygon elbow. [Download the five programs](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.12.0a1/calibration-examples-v0.12.0a1.zip) · [Example verification](verification/v012-example-exports.json).
 
@@ -24,13 +28,13 @@ The [v0.12.0a2 clean-install receipt](verification/v013-wheel-install.json) veri
 
 ## Install and launch
 
-Use the wheel from this release, or build one as described below. In a new
+Download the [v0.13.0a1 wheel and checksum list](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.13.0a1), or build from source as described below. In a new
 Python 3.11 environment, run the following commands with the actual wheel path.
 
 ```bash
 python3.11 -m venv .venv-workbench
 source .venv-workbench/bin/activate
-python -m pip install /path/to/photonics_workbench-0.12.0a2-py3-none-any.whl
+python -m pip install /path/to/photonics_workbench-0.13.0a1-py3-none-any.whl
 photonics-workbench doctor
 photonics-workbench web
 ```

@@ -7,9 +7,33 @@ from unittest.mock import patch
 
 from scripts import calibrate_finite_grating as grating
 from scripts.grating_memory_budget import MIB, estimate
+from scripts.verify_finite_grating import verify_return_stop
 
 
 class GratingRuntimeBudget(unittest.TestCase):
+    def test_optional_return_stop_preserves_default_inputs_and_qualifies_amplitude_separately_from_phase(self):
+        default=grating.settings('tidy3d',16,grating_domain='mirror-y')
+        extended=grating.settings('tidy3d',16,grating_domain='mirror-y',resolve_weak_return=True)
+        self.assertEqual(extended,{**default,'resolve_weak_return':True})
+        for g,r,domain in [('tidy3d',12,'mirror-y'),('tidy3d',16,'full'),('lumerical',16,'mirror-y')]:
+            with self.assertRaisesRegex(ValueError,'16-cell mirror Tidy3D'):
+                grating.settings(g,r,grating_domain=domain,resolve_weak_return=True)
+        rows=[{'time_fs':t,'energy_ratio':0.,'relative_spectral_change':0.} for t in (300,360,420)]
+        stage={'history':rows,'duration_stop':{'policy':'guide-energy-and-reciprocal-amplitude','max_time_fs':2000.,
+               'stop':'qualified','return_amplitudes_qualified':True},'performance':{'dt_seconds':1e-16}}
+        stable=np.full((3,5),1e-6+0j)
+        verify_return_stop(extended,stage,stable,np.zeros(5))
+        self.assertFalse(any(grating.return_window_status(stable,np.zeros(5))['phase_qualified']))
+        changing=stable.copy()
+        changing[-1,2]+=.01
+        with self.assertRaisesRegex(ValueError,'contradicts'):
+            verify_return_stop(extended,stage,changing,np.zeros(5))
+        stage['duration_stop'].update(stop='time-cap',return_amplitudes_qualified=False)
+        with self.assertRaisesRegex(ValueError,'before the physical time ceiling'):
+            verify_return_stop(extended,stage,changing,np.zeros(5))
+        rows[-1]['time_fs']=2000.
+        verify_return_stop(extended,stage,changing,np.zeros(5))
+
     def test_fresh_nearby_mesh_requires_both_stage_estimates(self):
         with TemporaryDirectory() as td, patch.object(grating, "ROOT", Path(td)), \
              patch.dict("os.environ", XLA_PYTHON_CLIENT_ALLOCATOR="platform"):

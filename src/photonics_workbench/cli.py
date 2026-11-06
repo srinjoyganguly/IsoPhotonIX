@@ -45,6 +45,8 @@ def main(argv=None):
     calibration.add_argument('--grating-material-model',choices=['volume-average','direct-yee'],help='material sampling for the finite grating')
     calibration.add_argument('--grating-domain',choices=['full','mirror-y'],help='use the full domain or a qualified reflection symmetry')
     calibration.add_argument('--grating-spectrum',choices=['standard','dense'],help='five samples or 21 samples for the 12-cell Lumerical grating')
+    calibration.add_argument('--resolve-weak-return',action='store_true',default=None,
+                             help='also wait for the reflected amplitude on the 16-cell Tidy3D mirror grating, up to 2,000 fs')
     calibration.add_argument('--ring-scope',choices=['full','lumerical','tidy3d'])
     calibration.add_argument('--grating-scope',choices=['full','tidy3d-compact','lumerical-article','lumerical-project','lumerical-output','tidy3d-radiation','lumerical-radiation'])
     calibration.add_argument('--material-model',choices=['legacy-x','yee-aligned','polygon-area'],help='FDTDX permittivity placement')
@@ -96,6 +98,7 @@ def main(argv=None):
             model=Calibration(revision=2,case=args.case,solver=args.solver,device=args.device,resolution=args.resolution,offset_um=args.offset_um,material_model=args.material_model,grating_scope=args.grating_scope,ring_scope=args.ring_scope,geometry_3d=args.geometry_3d,port_distance_um=args.port_distance_um,duration_um_c=args.duration_um_c,
                               ring_interface=args.ring_interface,ring_material=args.ring_material,
                               grating_material_model=args.grating_material_model,grating_spectrum=args.grating_spectrum,grating_domain=args.grating_domain,
+                              grating_resolve_return=args.resolve_weak_return,
                               planar_layout=json.loads(args.layout.read_text()) if args.layout is not None else None)
             if args.export_only:
                 archive = design_archive(model)

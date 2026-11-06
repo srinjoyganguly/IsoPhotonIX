@@ -94,6 +94,7 @@ class Calibration(BaseModel):
     ring_material: Literal['constant','palik-ade'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_material_model: Literal['volume-average','direct-yee'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_domain: Literal['full','mirror-y'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    grating_resolve_return: bool | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_spectrum: Literal['standard','dense'] | None = Field(default=None, exclude_if=lambda v: v is None)
 
     @model_validator(mode='before')
@@ -123,7 +124,7 @@ class Calibration(BaseModel):
             raise ValueError('Choose the 3D ring to set an observation duration.')
         if (self.ring_interface is not None or self.ring_material is not None) and self.case != 'ring-3d':
             raise ValueError('Ring interface and material settings require a full 3D ring.')
-        if any(v is not None for v in (self.grating_material_model,self.grating_spectrum,self.grating_domain)) and self.case != 'grating-3d':
+        if any(v is not None for v in (self.grating_material_model,self.grating_spectrum,self.grating_domain,self.grating_resolve_return)) and self.case != 'grating-3d':
             raise ValueError('Grating material or spectrum settings require a full 3D grating.')
         if self.case == 'layout-ports-3d':
             if f'{self.solver}:{self.device}' not in calibration_routes(self.case):
@@ -164,6 +165,8 @@ class Calibration(BaseModel):
                 raise ValueError('The measured dispersive ring uses the Lumerical geometry, exact area and 16 cells/µm.')
             if self.grating_spectrum=='dense' and (self.geometry_3d!='lumerical' or self.resolution!=12):
                 raise ValueError('The 21-sample spectrum requires the Lumerical grating at 12 cells/µm.')
+            if self.grating_resolve_return and (self.geometry_3d,self.grating_domain,self.resolution)!=('tidy3d','mirror-y',16):
+                raise ValueError('The bounded weak-return control uses the 16-cell Tidy3D mirror grating.')
             if self.resolution not in meshes:
                 raise ValueError(f'Available {self.case} meshes: {meshes} cells/µm.')
             if ring and self.duration_um_c is None:
@@ -241,6 +244,8 @@ def specification(config):
         # Full width is the default in every worker, including the original 16-cell acquisition.
         if config.grating_domain=='mirror-y':
             args += ['--grating-domain',config.grating_domain]
+        if config.grating_resolve_return:
+            args.append('--resolve-weak-return')
         if config.grating_spectrum is not None:
             args += ['--grating-spectrum',config.grating_spectrum]
         helpers = ['backend/__init__.py', 'scripts/gpu_timing.py', *['backend/adapters/' + n + '.py' for n in (

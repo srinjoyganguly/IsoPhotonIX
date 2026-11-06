@@ -37,6 +37,13 @@ const { chromium } = require('playwright');
       const comparison=lab.getByLabel('Comparison');
       assert((await comparison.locator('option').count())>0);
       if (preset==='grating-3d') {
+        const records=catalog.find(c=>c.case===preset).evidence.recorded;
+        const measured=records.findIndex(view=>view.report.radiation?.reciprocal_return_settling);
+        assert(measured>=0,'Missing temporal S11 measurement.');
+        await lab.getByLabel('Recorded result').selectOption(String(measured));
+        const windows=lab.getByText('Weak reflection over the final time windows',{exact:true});
+        await windows.click();
+        assert.equal(await windows.locator('..').locator('tbody tr').count(),records[measured].report.result.wavelength_um.length);
         const entries=await comparison.locator('option').allTextContents();
         const refined=entries.findIndex(label=>label.includes('grating-phase-refinement'));
         assert(refined>=0,'Missing measured grating phase comparison.');
@@ -79,6 +86,14 @@ const { chromium } = require('playwright');
           await lab.getByRole('button',{name:'Export Python + notebook',exact:true}).click();
           await (await corrected).saveAs(path.join(out,'reciprocal-ring-program.zip'));
         }
+      } else {
+        await lab.getByLabel('3D geometry').selectOption('tidy3d');
+        await lab.getByLabel('Simulation domain').selectOption('mirror-y');
+        await lab.getByLabel('Mesh resolution').selectOption('16');
+        await lab.getByLabel('Wait for weak reflection amplitude (up to 2,000 fs)').check();
+        const bounded=page.waitForEvent('download');
+        await lab.getByRole('button',{name:'Export Python + notebook',exact:true}).click();
+        await (await bounded).saveAs(path.join(out,'tidy-return-control-program.zip'));
       }
     }
     if (job) {
