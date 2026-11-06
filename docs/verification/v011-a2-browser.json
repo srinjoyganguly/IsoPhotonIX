@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checked_at": "2026-11-06T01:53:43.309Z",
+  "job_id": "826943f994a24697a44e8159af3b4d37",
+  "config": {
+    "study_type": "calibrated-component",
+    "revision": 2,
+    "case": "grating",
+    "solver": "meep",
+    "device": "cpu",
+    "resolution": 40,
+    "offset_um": null,
+    "material_model": null,
+    "ring_scope": null,
+    "grating_scope": "tidy3d-compact"
+  },
+  "coupling_fraction": 0.5823413109784932,
+  "plotted_samples": 21,
+  "gpu_design_export": true,
+  "result_export": true,
+  "browser_errors": []
+}

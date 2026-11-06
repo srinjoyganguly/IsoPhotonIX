@@ -1,0 +1,271 @@
+{
+  "case": "splitter",
+  "resolution": 24,
+  "incident": "left_center",
+  "wavelength_um": [
+    1.5995872033023737,
+    1.55,
+    1.5033947623666344
+  ],
+  "devices": [
+    "CPU",
+    "cuda:0"
+  ],
+  "versions": {
+    "meep": "1.35.0",
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "meep_archive_sha256": "27b84392baa69cbd321cf3dafa1d1244dfb8e18aac648c177667b4f987cdebde",
+  "fdtdx_archive_sha256": "e4fa60e61611b460579aafc5e2994804706c01bb7c284e94e3da5e7d55fa833c",
+  "meep_report_sha256": "c6bb726ab83867535beb7b068b7268df6e182bff175300928abd98a415ca9fb8",
+  "fdtdx_report_sha256": "82e7f9713b249ac228e1cee74f95c27d79d4f12c9787a3d4e0d70e86be128f74",
+  "meep_native_monitor_sha256": {
+    "left_center-monitors.npz": "47d341dd3f8fbd320d7686915978f3603a74e7952e89d385f3039b8c8b1d68e6"
+  },
+  "meep_valid_bins": [
+    true,
+    true,
+    true
+  ],
+  "meep_stage_checks": [
+    {
+      "launch": "left_center",
+      "minimum_Ey_fraction": 0.763064776976795,
+      "maximum_edge_intensity_fraction": 4.2481625952909586e-06,
+      "min_incident_relative_power": 0.5059157842594043,
+      "seconds": 4103.996923285995,
+      "reference": {
+        "elapsed_fs": 373.66127914176326,
+        "settled": true,
+        "steps": 5377
+      },
+      "device": {
+        "elapsed_fs": 400.3464067576154,
+        "settled": true,
+        "steps": 5761
+      }
+    }
+  ],
+  "fdtdx_checks": {
+    "both_stages_settled": true,
+    "straight_reference_power_within_0_03": true,
+    "measured_column_total_guided_power_at_most_1_05": true,
+    "requested_native_device": true
+  },
+  "physical_model_sha256": "fdc07eff11b2366f2c0ae264f05c8634454f869da38fe51ad9f9e83e42b2d922",
+  "meep_mesh_change": {
+    "case": "splitter",
+    "solver": "Meep",
+    "actual_device": "CPU",
+    "control": "mesh",
+    "before": 20,
+    "after": 24,
+    "inputs_measured": [
+      "left_center"
+    ],
+    "valid_bins": [
+      true,
+      true,
+      true
+    ],
+    "phase_amplitude_floor": 0.01,
+    "entries": [
+      {
+        "incident": "left_center",
+        "outgoing": "left_center",
+        "max_absolute_complex_change": 0.07722982079013359,
+        "max_absolute_power_change": 0.0010140066620180853,
+        "max_principal_phase_change_rad": 1.3208645308177969
+      },
+      {
+        "incident": "left_center",
+        "outgoing": "right_lower",
+        "max_absolute_complex_change": 0.9636837240784906,
+        "max_absolute_power_change": 0.007737454306941838,
+        "max_principal_phase_change_rad": 1.7417996829180564
+      },
+      {
+        "incident": "left_center",
+        "outgoing": "right_upper",
+        "max_absolute_complex_change": 0.9535404828248815,
+        "max_absolute_power_change": 0.004140341232059752,
+        "max_principal_phase_change_rad": 1.7399286014580768
+      }
+    ]
+  },
+  "ports": [
+    {
+      "port": "left_center",
+      "meep_S": [
+        [
+          -0.005916825414787859,
+          -0.06699327080377417
+        ],
+        [
+          -0.04563236617138294,
+          0.03593905320748186
+        ],
+        [
+          0.06378476167224194,
+          0.013411059168151928
+        ]
+      ],
+      "fdtdx_S": [
+        [
+          0.07377412178644902,
+          -0.07275509597188493
+        ],
+        [
+          -0.09278357775159997,
+          -0.007811282485387571
+        ],
+        [
+          0.02392031392095674,
+          0.07237233495418473
+        ]
+      ],
+      "meep_power": [
+        0.0045231071559769,
+        0.003373928387849387,
+        0.004248352329596376
+      ],
+      "fdtdx_power": [
+        0.010735925035239997,
+        0.00866980843445372,
+        0.005809936284797824
+      ],
+      "fdtdx_minus_meep_power": [
+        0.006212817879263097,
+        0.0052958800466043334,
+        0.0015615839552014484
+      ],
+      "fdtdx_minus_meep_physical_phase_rad": [
+        0.8804435962042175,
+        0.7511107408387339,
+        1.0443459527613432
+      ],
+      "absolute_complex_difference": [
+        0.07989897180250945,
+        0.06432206951522282,
+        0.07117307241388111
+      ]
+    },
+    {
+      "port": "right_lower",
+      "meep_S": [
+        [
+          -0.18446999651542936,
+          0.6082420912656459
+        ],
+        [
+          0.503145155066722,
+          0.3828443177177948
+        ],
+        [
+          0.5197248637221288,
+          -0.3521297848110524
+        ]
+      ],
+      "fdtdx_S": [
+        [
+          -0.22586648435842716,
+          0.577415596962163
+        ],
+        [
+          0.45983729049379307,
+          0.4086316091959308
+        ],
+        [
+          0.5327867668349001,
+          -0.3094425775994869
+        ]
+      ],
+      "meep_power": [
+        0.4039876212016088,
+        0.3997248186759195,
+        0.3941093193220634
+      ],
+      "fdtdx_power": [
+        0.3844244403716067,
+        0.3784301257627289,
+        0.37961644774580067
+      ],
+      "fdtdx_minus_meep_power": [
+        -0.01956318083000208,
+        -0.021294692913190638,
+        -0.014492871576262722
+      ],
+      "fdtdx_minus_meep_physical_phase_rad": [
+        0.07840268252727943,
+        0.07606331479928849,
+        0.06930425995073058
+      ],
+      "absolute_complex_difference": [
+        0.05161338931690229,
+        0.05040392381199596,
+        0.044640911420473425
+      ]
+    },
+    {
+      "port": "right_upper",
+      "meep_S": [
+        [
+          -0.1820607051542038,
+          0.6043292143441237
+        ],
+        [
+          0.5001498505120427,
+          0.378986524562383
+        ],
+        [
+          0.5148627765483759,
+          -0.35081289546137046
+        ]
+      ],
+      "fdtdx_S": [
+        [
+          -0.2258629506676979,
+          0.5774189274151161
+        ],
+        [
+          0.45983657606188827,
+          0.40862827761984577
+        ],
+        [
+          0.5327862916796011,
+          -0.3094406772047875
+        ]
+      ],
+      "meep_power": [
+        0.39835989967103175,
+        0.3937806587670925,
+        0.38815336629709335
+      ],
+      "fdtdx_power": [
+        0.38442669022154213,
+        0.3784267459548825,
+        0.37961476531065863
+      ],
+      "fdtdx_minus_meep_power": [
+        -0.013933209449489614,
+        -0.015353912812209991,
+        -0.008538600986434719
+      ],
+      "fdtdx_minus_meep_physical_phase_rad": [
+        0.0802490855155303,
+        0.07806208445611518,
+        0.07193403710301828
+      ],
+      "absolute_complex_difference": [
+        0.051408173033340984,
+        0.050037921831477775,
+        0.04508783470216324
+      ]
+    }
+  ],
+  "scope": "One independently excited input for both solvers. Same physical layout and cell density; Meep subpixel permittivity and FDTDX component/Yee material assignment differ. Reported physical phases are at the specified planes; no fitted or removed phase. Weak amplitudes below 0.01 are excluded only from the phase statistic."
+}

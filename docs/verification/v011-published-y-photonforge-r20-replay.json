@@ -1,0 +1,147 @@
+{
+  "case": "Regenerated PhotonForge Y, independent fresh native Meep replay at 20 cells/\u00b5m",
+  "command": [
+    "python",
+    "scripts/measure_published_y_outline.py",
+    "run",
+    "--vertices",
+    "docs/verification/v011-published-y-photonforge-outline.json",
+    "--resolution",
+    "20",
+    "--output",
+    "fresh-output-directory"
+  ],
+  "solver": {
+    "protocol": 1,
+    "worker_sha256": "41a207f81c0c7681bd2fbb5cc5a621ff571303a9a6b085662e096badc94118ce",
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "python": "3.11.18",
+    "architecture": "x86_64"
+  },
+  "geometry_sha256": "24e6312e91bb66fe9994ba5f33dcc46be63fc30efa24239e9cb981180a8d1f62",
+  "first_used_verified_straight": true,
+  "fresh_replay_used_verified_straight": false,
+  "first_report_sha256": "07960820f8b57b7f2d6a71948c4855ead01879d22f8d907ed64898b1c17465f7",
+  "fresh_report_sha256": "47a84a7cae7e20ac94813ddc94d5c01b15f5db5b5fc60860a7078866e2db3916",
+  "first_arrays_sha256": "602022f091b989cde75ff79f7a85c735392d86719f46e51e6a69550274706f67",
+  "fresh_arrays_sha256": "602022f091b989cde75ff79f7a85c735392d86719f46e51e6a69550274706f67",
+  "mode_array_checks": {
+    "frequency_per_um": {
+      "shape": [
+        5
+      ],
+      "dtype": "float64",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "wavelength_um": {
+      "shape": [
+        5
+      ],
+      "dtype": "float64",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "upper_mode": {
+      "shape": [
+        5
+      ],
+      "dtype": "complex128",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "lower_mode": {
+      "shape": [
+        5
+      ],
+      "dtype": "complex128",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "incident_mode": {
+      "shape": [
+        5
+      ],
+      "dtype": "complex128",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "straight_far_mode": {
+      "shape": [
+        5
+      ],
+      "dtype": "complex128",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "power_upper": {
+      "shape": [
+        5
+      ],
+      "dtype": "float64",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "power_lower": {
+      "shape": [
+        5
+      ],
+      "dtype": "float64",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "straight_through_power": {
+      "shape": [
+        5
+      ],
+      "dtype": "float64",
+      "identical": true,
+      "max_absolute_difference": 0.0
+    }
+  },
+  "native_field_checks": {
+    "reference/plane_0_Ey_Hz_samples": {
+      "shape": [
+        5,
+        2352
+      ],
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "reference/plane_1_Ey_Hz_samples": {
+      "shape": [
+        5,
+        2352
+      ],
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "device/plane_0_Ey_Hz_samples": {
+      "shape": [
+        5,
+        2352
+      ],
+      "identical": true,
+      "max_absolute_difference": 0.0
+    },
+    "device/plane_1_Ey_Hz_samples": {
+      "shape": [
+        5,
+        3752
+      ],
+      "identical": true,
+      "max_absolute_difference": 0.0
+    }
+  },
+  "scope": "Independent straight and device FDTD evolution from the documented command in an empty output directory on the tested native environment. Compare recorded E/H samples, mode indices, complex amplitudes, and positive upper-arm spectral loss.",
+  "upper_times_two_loss_db": [
+    0.2821109282375347,
+    0.20011530992188814,
+    0.16287838590498596,
+    0.17417173648168893,
+    0.1746296655139553
+  ],
+  "passed": true
+}

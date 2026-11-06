@@ -19,7 +19,7 @@ const { chromium } = require('playwright');
     const panel=page.getByRole('region',{name:'Calibrated components',exact:true});
     await panel.getByRole('button',{name:'Y splitter',exact:true}).click();
     await panel.locator('input[value="fdtdx:gpu"]').check();
-    await panel.getByLabel('Material sampling').selectOption('yee-aligned');
+    assert.equal(await panel.getByLabel('Material sampling').inputValue(),'yee-aligned');
     await panel.getByLabel('Mesh resolution').selectOption('16');
     const program=page.waitForEvent('download');
     await panel.getByRole('button',{name:'Export Python + notebook',exact:true}).click();

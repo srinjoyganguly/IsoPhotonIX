@@ -147,6 +147,11 @@ straight-through control returned 1.00093–1.00308 fundamental-mode power.
 [Raw upper/lower and straight modes](verification/v011-published-y-photonforge-r20.npz) ·
 [Independent sinusoidal reconstruction](verification/v011-published-splitter.json).
 
+A fresh run of the documented command evolved its own straight reference
+and device. It reproduced all five losses, all nine exported numerical arrays
+and every recorded straight/device Ey and Hz sample exactly on this Meep
+environment. [Independent replay and hashes](verification/v011-published-y-photonforge-r20-replay.json).
+
 Compare one measured numerical control to its baseline, for example:
 
 ```bash
@@ -286,5 +291,32 @@ matrices remain the measured 16-cell results; these refinements bound the
 observed sensitivity of the two tested columns. Two mesh points do not
 establish a converged continuum scattering phase.
 [Native control matrices, convergence checks and numerical digests](verification/v011-meep-multiport-sensitivities.json).
+
+### Supplementary 24-cell incident columns
+
+Meep and CUDA FDTDX each excited the same single physical input at 24 cells/µm.
+All stages settled. The following are 1.55 µm powers and physical-plane phases.
+The phase difference is FDTDX minus Meep; no fitted phase offset was applied.
+
+| Output | Meep power | FDTDX CUDA power | Phase difference (rad) |
+| --- | ---: | ---: | ---: |
+| Coupler bar | 0.893831 | 0.823761 | +0.06835 |
+| Coupler cross | 0.056296 | 0.052301 | +0.03304 |
+| Splitter lower | 0.399725 | 0.378430 | +0.07606 |
+| Splitter upper | 0.393781 | 0.378427 | +0.07806 |
+
+Changing Meep from 20 to 24 cells/µm moved output powers by as much as 0.02160
+for the coupler and 0.00774 for the splitter across the three wavelengths.
+The maximum forward phase changes were larger than in the 16→20 step,
+1.71574 and 1.74180 radians respectively. The 1.55 µm lead index also changed
+non-monotonically, from 2.494685 to 2.547224 to 2.525272 across these meshes.
+The 24-cell FDTDX coupler's
+material assignment breaks mirror symmetry at four transverse interface
+coordinates across its parallel region, affecting 1,152 sampled voxels. The
+matched physical density does not guarantee matching material discretization
+or convergence to a continuum phase. The receipts retain every complex
+coefficient for the excited column. [Coupler](verification/v011-multiport-refined-coupler24.json) ·
+[Splitter](verification/v011-multiport-refined-splitter24.json) ·
+[CUDA interface audit](verification/v011-fdtdx-coupler-boundary-ties.json).
 For example, the lower-port power remained 0.40414 for Meep versus 0.36595
 for the corrected FDTDX run.
