@@ -1,0 +1,15 @@
+{
+  "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "gpu_index": 0,
+  "total_mib": 16384,
+  "free_before_gpu_worker_mib": 12591,
+  "estimated_required_with_reserve_mib": 9549.7265625,
+  "shape": [
+    284,
+    262,
+    84
+  ],
+  "cells": 6250272,
+  "passes": true,
+  "basis": "1 KiB per cell + 1536 MiB fixed overhead, multiplied by 1.25. Checked under the shared hardware lock before JAX initialization."
+}
