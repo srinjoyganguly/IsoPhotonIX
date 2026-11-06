@@ -18,6 +18,10 @@ The workbench runs each reference geometry on local NVIDIA hardware. The four co
 
 Each grating comparison uses the same five wavelengths from 1500 to 1600 nm. Each mesh has its own simulated incident reference. In **Calibrated components**, select a measured record, then a wavelength to inspect the local value and its difference from the published curve. Compare the mesh records separately before using an absolute power or peak position in a design. [Measurement checklist](CALIBRATED_COMPONENTS.md) · [Ring modes, meshes and losses](LOADED_RING_3D.md) · [Grating geometry, source and field checks](FINITE_GRATING_3D.md).
 
+![Published and measured fiber or Gaussian coupling at five wavelengths, with mesh and residual comparisons](verification/v012-grating-vendor-spectra.png)
+
+The lines join the five measured wavelengths. The lower panels show local minus published coupling in percentage points on the same scale for both geometries. [Raw measurements and source checks](FINITE_GRATING_3D.md).
+
 ## Matched Lumerical and Tidy3D cross sections
 
 The published Lumerical SOI evanescent coupler has two 0.5 µm wide,

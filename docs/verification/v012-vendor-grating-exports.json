@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "Original 14-cell GPU result exports checked against their native public receipts, source manifests and measured arrays. These two supplemental exports have no independent Python or notebook replay claim.",
+  "assets": {
+    "grating-lumerical-3d-gpu-r14-v0.12.0a1.zip": {
+      "sha256": "85b505d90ae363d3fc263cb79fae1ba4e025f47d1aa2b8b42f7f575c995f98ba",
+      "size_bytes": 37135231,
+      "geometry": "lumerical",
+      "native_receipt": "v012-grating3d-lumerical-r14.json",
+      "native_arrays_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f",
+      "actual_device": "cuda:0",
+      "source_files_checked": 22,
+      "reference_files_checked": 2
+    },
+    "grating-tidy3d-3d-gpu-r14-v0.12.0a1.zip": {
+      "sha256": "a52f1a1975602e5842a5392dcac5d80eb5d2270241b5d6574081d2808a7a5c12",
+      "size_bytes": 27099624,
+      "geometry": "tidy3d",
+      "native_receipt": "v012-grating3d-tidy3d-r14.json",
+      "native_arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+      "actual_device": "cuda:0",
+      "source_files_checked": 22,
+      "reference_files_checked": 2
+    }
+  }
+}

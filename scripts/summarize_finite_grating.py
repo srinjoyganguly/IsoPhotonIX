@@ -69,7 +69,8 @@ def vendor_mesh_changes(directory):
                          'coarse_vendor_mae_percentage_points':va['mean_absolute_difference_percentage_points'],
                          'fine_vendor_mae_percentage_points':vb['mean_absolute_difference_percentage_points'],
                          'fine_vendor_differences_percentage_points':vb['local_minus_published_percentage_points'],
-                         'source_plane_z_um':[a['stages']['device']['sample_plane_z_um'],b['stages']['device']['sample_plane_z_um']],
+                         'upper_collection_plane_z_um':[a['stages']['device']['sample_plane_z_um'],b['stages']['device']['sample_plane_z_um']],
+                         'nominal_source_z_um':a['settings']['source_z'],
                          'guide_plane_x_um':[a['stages']['device']['output_plane_x_um'],b['stages']['device']['output_plane_x_um']],
                          'pml_width_um':[a['stages']['device']['pml_cells']/12,b['stages']['device']['pml_cells']/14]}
     return {'mesh_pairs':result,'scope':'Two independently acquired uniform grids establish the observed sensitivity at five wavelengths; absolute continuum convergence requires further evidence.'}

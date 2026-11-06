@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "examples": [
+    {
+      "geometry": "lumerical",
+      "mesh": 14,
+      "file": "grating3d-lumerical-r14-python-notebook.zip",
+      "bytes": 37135231,
+      "sha256": "85b505d90ae363d3fc263cb79fae1ba4e025f47d1aa2b8b42f7f575c995f98ba",
+      "raw_result_sha256": "e7468cf762e887261a78fa51e3f1909926dc7eb6fdbcd1dfc031f71450b0ed0f",
+      "original_report_sha256": "01e143c33b65f82a0d4c0374565c50d495982ce45d5e871b5259add3074c940d",
+      "exact_native_source_hashes": {
+        "scripts/calibrate_finite_grating.py": "301f0485beff67db44dd83244d48fd3112495de1ca0eef94d9b0f699782131b8",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "scripts/grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "scripts/grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+        "scripts/lumerical_grating3d.py": "c7607d49b96b2312f5faf1c9d0acc9db71c08e272a0684ea91cbb122be45e567",
+        "scripts/grating_angular_spectrum.py": "e95a23cb4517c2e1168c73fe438c33acefe2e6c9a3d8236e77440178e1637045",
+        "docs/verification/v012-grating-commercial-references.json": "e36c4f699040b718b8c6656b3eed9bc87e50ac7795b7a80a93565c3e8c5417d2",
+        "docs/verification/v012-grating-memory-budget.json": "d4d052d23a7b5a70e53b94f30d268c0ff639344d7e692b4fe48b0c769a8e6787"
+      },
+      "entries": 26,
+      "native_receipt": "v012-grating3d-lumerical-r14.json",
+      "actual_device": "cuda:0",
+      "scope": "Original physical worker, helpers, comparison inputs, memory budget and measured reference arrays were verified. Launcher and Jupyter notebook are the standard current result exports. This packaging step does not claim a fresh notebook simulation."
+    },
+    {
+      "geometry": "tidy3d",
+      "mesh": 14,
+      "file": "grating3d-tidy3d-r14-python-notebook.zip",
+      "bytes": 27099624,
+      "sha256": "a52f1a1975602e5842a5392dcac5d80eb5d2270241b5d6574081d2808a7a5c12",
+      "raw_result_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+      "original_report_sha256": "fcbcd69fb9c708cb3e1354c3632ec73e194d9feb505fb2eea01cc18f30152ce9",
+      "exact_native_source_hashes": {
+        "scripts/calibrate_finite_grating.py": "6a6a18aa53aa05bec9dfbf003d228acb07e604b3b4435e8ca88ea3b8638112b6",
+        "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "scripts/grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "scripts/grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+        "scripts/lumerical_grating3d.py": "c7607d49b96b2312f5faf1c9d0acc9db71c08e272a0684ea91cbb122be45e567",
+        "scripts/grating_angular_spectrum.py": "e95a23cb4517c2e1168c73fe438c33acefe2e6c9a3d8236e77440178e1637045",
+        "docs/verification/v012-grating-commercial-references.json": "e36c4f699040b718b8c6656b3eed9bc87e50ac7795b7a80a93565c3e8c5417d2",
+        "docs/verification/v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655"
+      },
+      "entries": 26,
+      "native_receipt": "v012-grating3d-tidy3d-r14.json",
+      "actual_device": "cuda:0",
+      "scope": "Original physical worker, helpers, comparison inputs, memory budget and measured reference arrays were verified. Launcher and Jupyter notebook are the standard current result exports. This packaging step does not claim a fresh notebook simulation."
+    }
+  ]
+}

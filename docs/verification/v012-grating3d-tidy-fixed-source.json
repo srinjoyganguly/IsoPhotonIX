@@ -1,0 +1,83 @@
+{
+  "scope": "The new finite-width Gaussian source is compared with the rejected original mean propagation directions and exact staggered phase offsets on the same physical grid.",
+  "wavelength_um": [
+    1.5,
+    1.525,
+    1.55,
+    1.575,
+    1.6
+  ],
+  "rejected_pair": "v012-grating-tidy-rejected-source-pair.json",
+  "old_reference_raw_sha256": "a1c51379a009edfb0df5bee786f7915ceeda79ed8c85863f4c0e7540e25b3b1f",
+  "new_reference_raw_sha256": "7c5079736e294a74626eb6c51a4fb1e41518c87cead10fbb865be7c67d8ebd00",
+  "original_reference_propagation": {
+    "mean_x_angle_deg": [
+      -14.500343977931982,
+      -14.500155600068322,
+      -14.500560846922845,
+      -14.500631909056542,
+      -14.50065432458894
+    ],
+    "downward_propagating_to_direct": [
+      0.9998687040177433,
+      0.9997256625723527,
+      0.9996019225190433,
+      0.9996352252202484,
+      0.9996931187473472
+    ],
+    "upward_propagating_to_direct": [
+      8.410401986677205e-05,
+      7.076730333892158e-05,
+      6.873226252230902e-05,
+      8.64462022620741e-05,
+      0.00010421592514926751
+    ],
+    "incident_to_band_max": [
+      0.34418610608558525,
+      0.7724225911561217,
+      1.0,
+      0.7856950496764691,
+      0.3922969522939138
+    ]
+  },
+  "corrected_reference_propagation": {
+    "mean_x_angle_deg": [
+      -14.50034405918167,
+      -14.500155635891927,
+      -14.500560822463049,
+      -14.500631875117845,
+      -14.500654318465484
+    ],
+    "downward_propagating_to_direct": [
+      0.9998686845532581,
+      0.9997256508144341,
+      0.9996019332541463,
+      0.9996352328662673,
+      0.9996931097780449
+    ],
+    "upward_propagating_to_direct": [
+      8.410419857618251e-05,
+      7.076721961436461e-05,
+      6.873227714226727e-05,
+      8.644619550575891e-05,
+      0.00010421604329650845
+    ],
+    "incident_to_band_max": [
+      0.34418610638430336,
+      0.7724225920558283,
+      1.0,
+      0.7856950507876307,
+      0.3922969525780262
+    ]
+  },
+  "original_and_corrected_time_offsets_match": true,
+  "corrected_minus_original_x_angle_deg": [
+    -8.124968786660247e-08,
+    -3.582360541543039e-08,
+    2.4459795966436104e-08,
+    3.393869718593123e-08,
+    6.123455520423704e-09
+  ],
+  "fixed_source_EH_sha256": "a250c92f8e60a0fc9850b58571a831cc8b2662c8b3b0c499d7a5fc6adbd78f66",
+  "passed": true
+}

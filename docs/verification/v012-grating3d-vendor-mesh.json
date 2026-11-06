@@ -1,0 +1,115 @@
+{
+  "mesh_pairs": {
+    "tidy3d": {
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "coarse_resolution": 12,
+      "fine_resolution": 14,
+      "coarse_coupling": [
+        0.04804827511353959,
+        0.20368346548327432,
+        0.35299421472565723,
+        0.2680811675446028,
+        0.10442647590127943
+      ],
+      "fine_coupling": [
+        0.04971306948515579,
+        0.20615110207764634,
+        0.3566585155142766,
+        0.30335541591626264,
+        0.14198965514652684
+      ],
+      "fine_minus_coarse_percentage_points": [
+        0.16647943716162003,
+        0.2467636594372019,
+        0.36643007886193457,
+        3.527424837165982,
+        3.756317924524741
+      ],
+      "maximum_power_fraction_change": 0.03756317924524741,
+      "coarse_vendor_mae_percentage_points": 2.577332003746443,
+      "fine_vendor_mae_percentage_points": 2.9480410286319403,
+      "fine_vendor_differences_percentage_points": [
+        -2.139057997936247,
+        -5.289578533805514,
+        -2.3530880806284573,
+        2.8873640922320143,
+        2.0711164385574685
+      ],
+      "upper_collection_plane_z_um": [
+        0.9283333333333341,
+        0.9342857142857146
+      ],
+      "nominal_source_z_um": 1.18,
+      "guide_plane_x_um": [
+        -50.425,
+        -50.47857142857144
+      ],
+      "pml_width_um": [
+        0.6666666666666666,
+        0.6428571428571429
+      ]
+    },
+    "lumerical": {
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "coarse_resolution": 12,
+      "fine_resolution": 14,
+      "coarse_coupling": [
+        0.316544798824311,
+        0.31902785446514464,
+        0.22210307731559442,
+        0.11211647784705212,
+        0.0387506418651861
+      ],
+      "fine_coupling": [
+        0.33678055968545206,
+        0.34601388383841986,
+        0.24908304350250732,
+        0.12989219821317505,
+        0.045921267823827494
+      ],
+      "fine_minus_coarse_percentage_points": [
+        2.0235760861141037,
+        2.698602937327521,
+        2.6979966186912896,
+        1.7775720366122933,
+        0.7170625958641396
+      ],
+      "maximum_power_fraction_change": 0.02698602937327521,
+      "coarse_vendor_mae_percentage_points": 16.233229863462217,
+      "fine_vendor_mae_percentage_points": 16.139139417916997,
+      "fine_vendor_differences_percentage_points": [
+        18.61674990079432,
+        5.146800522241929,
+        -15.11826392617211,
+        -24.03313038033238,
+        -17.780752360044243
+      ],
+      "upper_collection_plane_z_um": [
+        0.8416666666666668,
+        0.8357142857142854
+      ],
+      "nominal_source_z_um": 0.9901250394579352,
+      "guide_plane_x_um": [
+        -25.458333333333336,
+        -25.535714285714285
+      ],
+      "pml_width_um": [
+        0.6666666666666666,
+        0.6428571428571429
+      ]
+    }
+  },
+  "scope": "Two independently acquired uniform grids establish the observed sensitivity at five wavelengths; absolute continuum convergence requires further evidence."
+}
