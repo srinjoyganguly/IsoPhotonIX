@@ -56,7 +56,8 @@
             }
           ]
         }
-      }
+      },
+      "matched_native_arrays_sha256": "279a73cfb9f4275af0b3be37d0ccee6f4a81bcf99649b09f1a84f5b7ea8e5578"
     },
     {
       "geometry": "tidy3d",
@@ -113,7 +114,8 @@
             }
           ]
         }
-      }
+      },
+      "matched_native_arrays_sha256": "df4aa81c4b61a28e56ade1494e1de0f1c2e0bc3baea2785ae774f0777ffb4561"
     }
   ]
 }

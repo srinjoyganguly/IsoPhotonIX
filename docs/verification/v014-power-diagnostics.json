@@ -4674,6 +4674,55 @@
       "source_report_sha256": "85b95c869d3322887b37888765a3d03b3226fe645821407d33edfa50e0f4951e",
       "native_arrays_sha256": "5121f0f82599afcf0d538301cdc4110b687f37939bfbb561ae99b65cc6603ef8"
     },
+    "v014-grating3d-lumerical-mirror-r20.json": {
+      "observable": "grating",
+      "target_um": 1.55,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "local_power": [
+        0.18830751680973243,
+        0.3167870625653341,
+        0.3879354963891905,
+        0.3417952108305026,
+        0.20825200523881057
+      ],
+      "published_power": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "local_at_target": 0.3879354963891905,
+      "published_at_target": 0.4002656827642284,
+      "mean_absolute_difference": 0.023234180765610117,
+      "max_absolute_difference": 0.03769445613222358,
+      "local_best_sample_um": 1.55,
+      "published_best_sample_um": 1.55,
+      "gain_only": {
+        "tolerance_power_fraction": 0.05,
+        "minimum_required": 0.9368870360658703,
+        "maximum_allowed": 1.0653481288280704,
+        "feasible": true,
+        "minimum_set_by_index": 3,
+        "maximum_set_by_index": 0
+      },
+      "variant": "direct-yee / standard",
+      "domain": "mirror-y",
+      "allocator": "platform",
+      "mesh": 20,
+      "vendor": "lumerical",
+      "full_native_gate_passed": true,
+      "valid_bins": null,
+      "total_bins": null,
+      "source_report_sha256": "7c3a72c7f568a062bbb178ddd603cb82dde7d442b6249394b3e6707c7d903c03",
+      "native_arrays_sha256": "279a73cfb9f4275af0b3be37d0ccee6f4a81bcf99649b09f1a84f5b7ea8e5578"
+    },
     "v014-grating3d-tidy3d-full-control-r12.json": {
       "observable": "grating",
       "target_um": 1.55,

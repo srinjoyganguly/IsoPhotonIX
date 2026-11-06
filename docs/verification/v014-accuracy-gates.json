@@ -182,6 +182,14 @@
       },
       "all_evidenced_and_met": false
     },
+    "v014-grating3d-lumerical-mirror-r20.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": true
+    },
     "v014-grating3d-tidy3d-full-control-r12.json": {
       "criteria": {
         "target_within_five_points": true,
@@ -342,7 +350,17 @@
       "fine_domain": "full",
       "max_absolute_change": 0.1025570702399635,
       "within_two_points": false
+    },
+    {
+      "vendor": "lumerical",
+      "variant": "direct-yee / standard",
+      "coarse": "v014-grating3d-lumerical-direct-r16.json",
+      "fine": "v014-grating3d-lumerical-mirror-r20.json",
+      "coarse_domain": "full",
+      "fine_domain": "mirror-y",
+      "max_absolute_change": 0.03082438551351857,
+      "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "3fe5c764b12a4a262306aed9903c5ce4128040e3919ae0d56d1e7753635fb8d6"
+  "diagnosis_sha256": "78f09599613d33db7eb7845a8c5c01476861441ec858e64f70412cbfc82a0b90"
 }

@@ -129,12 +129,21 @@ def framebuffer_observations(path):
         rows.setdefault((geometry,mesh,stage),[]).append(sample)
     grouped = []
     for (geometry,mesh,stage), samples in sorted(rows.items()):
-        times = [datetime.fromisoformat(s["utc"]) for s in samples]
-        grouped.append({"geometry":geometry,"mesh":mesh,"stage":stage,"samples":len(samples),
-                        "sample_span_seconds":(times[-1]-times[0]).total_seconds(),
-                        "maximum_observed_global_used_mib":max(s["used_mib"] for s in samples),
-                        "minimum_observed_free_mib":min(s["free_mib"] for s in samples)})
-    return {"scope":"Read-only 2 s polling of global framebuffer usage during selected FDTDX workers. Graphics and other allocations are included. Sampling began late in the full 16-cell incident run. These are observed high-water marks.",
+        segments=[[]]
+        previous=None
+        for sample in samples:
+            now=datetime.fromisoformat(sample["utc"])
+            if previous is not None and (now-previous).total_seconds()>10:
+                segments.append([])
+            segments[-1].append((now,sample))
+            previous=now
+        for number,segment in enumerate(segments,1):
+            points=[s for _,s in segment]
+            grouped.append({"geometry":geometry,"mesh":mesh,"stage":stage,"sampling_segment":number,
+                            "samples":len(points),"sample_span_seconds":(segment[-1][0]-segment[0][0]).total_seconds(),
+                            "maximum_observed_global_used_mib":max(s["used_mib"] for s in points),
+                            "minimum_observed_free_mib":min(s["free_mib"] for s in points)})
+    return {"scope":"Read-only 2 s polling of global framebuffer usage during selected FDTDX workers. Graphics and other allocations are included. Sampling began late in the full 16-cell incident run. Sampling gaps over 10 s start a separate segment. These are observed framebuffer high-water marks and wall intervals.",
             "stages":grouped}
 
 

@@ -417,6 +417,183 @@
         ],
         "max_absolute_change_vs_previous_pp": 10.255707023996349,
         "within_1pp_mesh_target_every_bin": false
+      },
+      {
+        "mesh": 20,
+        "spacing_nm": 50.0,
+        "etch_nm": 100.0,
+        "etch_cells": 2.0,
+        "arrays_sha256": "279a73cfb9f4275af0b3be37d0ccee6f4a81bcf99649b09f1a84f5b7ea8e5578",
+        "wavelength_um": [
+          1.5,
+          1.525,
+          1.55,
+          1.575,
+          1.6
+        ],
+        "power": [
+          0.18830751680973243,
+          0.3167870625653341,
+          0.3879354963891905,
+          0.3417952108305026,
+          0.20825200523881057
+        ],
+        "published_power": [
+          0.15061306067750885,
+          0.29454587861600057,
+          0.4002656827642284,
+          0.37022350201649884,
+          0.2237287914242699
+        ],
+        "delta_percentage_points": [
+          3.769445613222358,
+          2.224118394933355,
+          -1.233018637503791,
+          -2.8428291185996213,
+          -1.5476786185459335
+        ],
+        "mean_absolute_delta_pp": 2.323418076561012,
+        "max_absolute_delta_pp": 3.769445613222358,
+        "fiber_return_power": [
+          0.0012220927898794287,
+          0.0011154425130980444,
+          0.004387223779009402,
+          0.006340405557226199,
+          0.0033193656862737842
+        ],
+        "port_neff": [
+          2.498321056365967,
+          2.4729068279266357,
+          2.447309732437134,
+          2.421539068222046,
+          2.3956055641174316
+        ],
+        "stages": {
+          "reference": {
+            "shape": [
+              866,
+              213,
+              76
+            ],
+            "steps": 4410,
+            "freshness": {
+              "status": "cache-hit",
+              "gpu_lock_wait_seconds": 6.760800897609442e-05
+            },
+            "performance": {
+              "schema": 1,
+              "acquisition_id": "94dcfadcc68a4960b3954bd77b7deffc",
+              "platform": "gpu",
+              "device": "cuda:0",
+              "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+              "grid_shape": [
+                866,
+                213,
+                76
+              ],
+              "cells": 14018808,
+              "spacing_um": 0.05,
+              "pml_cells": 13,
+              "steps": 4410,
+              "dt_seconds": 9.532874347655028e-17,
+              "simulated_time_fs": 420.39975873158676,
+              "compile_seconds": 1.0954082819953328,
+              "synchronized_step_seconds": 146.52262254797097,
+              "step_batches": 7,
+              "cuda_event_elapsed_seconds": 146.52361132812499,
+              "cuda_event_note": null,
+              "kernel_active_seconds": null,
+              "kernel_count": null,
+              "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+              "stage_through_steps_seconds": 167.5790224740049,
+              "million_cell_steps_per_second": 421.9344576620541,
+              "setup_before_compile_seconds": 25.525470139997196,
+              "represented_full_shape": [
+                866,
+                426,
+                76
+              ],
+              "boundary_faces": {
+                "min_y": "PEC mirror, one clamped Yee plane",
+                "remaining_five_faces": "PML, 13 cells per face"
+              }
+            }
+          },
+          "device": {
+            "shape": [
+              866,
+              213,
+              76
+            ],
+            "steps": 12600,
+            "freshness": {
+              "status": "fresh",
+              "gpu_lock_wait_seconds": 8.408899884670973e-05
+            },
+            "performance": {
+              "schema": 1,
+              "acquisition_id": "4b3cf60d201945f6aae46b5b7931d7cf",
+              "platform": "gpu",
+              "device": "cuda:0",
+              "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+              "grid_shape": [
+                866,
+                213,
+                76
+              ],
+              "cells": 14018808,
+              "spacing_um": 0.05,
+              "pml_cells": 13,
+              "steps": 12600,
+              "dt_seconds": 9.532874347655028e-17,
+              "simulated_time_fs": 1201.1421678045335,
+              "compile_seconds": 1.0277044380054576,
+              "synchronized_step_seconds": 421.2299038279598,
+              "step_batches": 20,
+              "cuda_event_elapsed_seconds": 421.23145312500003,
+              "cuda_event_note": null,
+              "kernel_active_seconds": null,
+              "kernel_count": null,
+              "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+              "stage_through_steps_seconds": 446.0175683420093,
+              "million_cell_steps_per_second": 419.3362797721567,
+              "setup_before_compile_seconds": 28.408844215999125,
+              "represented_full_shape": [
+                866,
+                426,
+                76
+              ],
+              "boundary_faces": {
+                "min_y": "PEC mirror, one clamped Yee plane",
+                "remaining_five_faces": "PML, 13 cells per face"
+              }
+            }
+          }
+        },
+        "published_fiber_return_power": [
+          0.001268209874007498,
+          0.0008574615401667274,
+          0.004187484351639351,
+          0.007300020054434153,
+          0.004036927671417264
+        ],
+        "fiber_return_minus_published_pp": [
+          -0.004611708412806934,
+          0.0257980972931317,
+          0.01997394273700508,
+          -0.09596144972079546,
+          -0.07175619851434796
+        ],
+        "previous_mesh": 16,
+        "change_vs_previous_pp": [
+          2.7574535727915297,
+          3.0824385513518573,
+          2.8806508038953904,
+          2.5832564414324857,
+          1.7175033381670424
+        ],
+        "max_absolute_change_vs_previous_pp": 3.0824385513518573,
+        "within_1pp_mesh_target_every_bin": false
       }
     ],
     "tidy3d": [
@@ -828,12 +1005,13 @@
     ]
   },
   "observed_framebuffer": {
-    "scope": "Read-only 2 s polling of global framebuffer usage during selected FDTDX workers. Graphics and other allocations are included. Sampling began late in the full 16-cell incident run. These are observed high-water marks.",
+    "scope": "Read-only 2 s polling of global framebuffer usage during selected FDTDX workers. Graphics and other allocations are included. Sampling began late in the full 16-cell incident run. Sampling gaps over 10 s start a separate segment. These are observed framebuffer high-water marks and wall intervals.",
     "stages": [
       {
         "geometry": "lumerical",
         "mesh": 16,
         "stage": "device",
+        "sampling_segment": 1,
         "samples": 182,
         "sample_span_seconds": 371.819878,
         "maximum_observed_global_used_mib": 11876,
@@ -843,6 +1021,7 @@
         "geometry": "lumerical",
         "mesh": 16,
         "stage": "reference",
+        "sampling_segment": 1,
         "samples": 4,
         "sample_span_seconds": 6.166436,
         "maximum_observed_global_used_mib": 11866,
@@ -852,15 +1031,27 @@
         "geometry": "lumerical",
         "mesh": 20,
         "stage": "device",
-        "samples": 169,
-        "sample_span_seconds": 1021.943023,
+        "sampling_segment": 1,
+        "samples": 163,
+        "sample_span_seconds": 337.425408,
         "maximum_observed_global_used_mib": 11865,
         "minimum_observed_free_mib": 4309
       },
       {
         "geometry": "lumerical",
         "mesh": 20,
+        "stage": "device",
+        "sampling_segment": 2,
+        "samples": 220,
+        "sample_span_seconds": 452.046986,
+        "maximum_observed_global_used_mib": 12006,
+        "minimum_observed_free_mib": 4168
+      },
+      {
+        "geometry": "lumerical",
+        "mesh": 20,
         "stage": "reference",
+        "sampling_segment": 1,
         "samples": 86,
         "sample_span_seconds": 177.308102,
         "maximum_observed_global_used_mib": 11694,
@@ -870,6 +1061,7 @@
         "geometry": "tidy3d",
         "mesh": 16,
         "stage": "device",
+        "sampling_segment": 1,
         "samples": 224,
         "sample_span_seconds": 461.189133,
         "maximum_observed_global_used_mib": 12376,
@@ -879,6 +1071,7 @@
         "geometry": "tidy3d",
         "mesh": 16,
         "stage": "reference",
+        "sampling_segment": 1,
         "samples": 70,
         "sample_span_seconds": 145.146107,
         "maximum_observed_global_used_mib": 11665,

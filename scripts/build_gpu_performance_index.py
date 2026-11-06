@@ -17,7 +17,12 @@ def extra_costs(report, name):
                 'purpose':purpose,'origin':'computed_this_invocation', **observed}
 
     rows=[]
-    if name.startswith('v014-ring-memory-'):
+    if name=='v014-reciprocal-wall-gpu.json':
+        p=report['performance']
+        native={'case':'ring-3d','actual_device':p['device'],'physical_model':report['source_geometry'],
+                'stages':{'passive wall tile':{'performance':p}}}
+        rows.extend(dict(row,purpose='bounded stability control',origin='computed_this_invocation') for row in stage_rows(native,name))
+    elif name.startswith('v014-ring-memory-'):
         for role,stage in report['roles'].items():
             native={'actual_device':stage['performance']['device'],'case':'ring-3d','vendor':report['vendor'],
                     'physical_model':stage['physical_model'],'stages':{role:stage}}

@@ -17,6 +17,15 @@
       "reference": "v014-grating-mirror-lumerical-r12.json"
     },
     {
+      "geometry": "lumerical",
+      "domain": "mirror-y",
+      "material": "direct-yee",
+      "resolution": 20,
+      "run": "v014-grating3d-lumerical-mirror-r20.json",
+      "reference": "v014-grating-mirror-lumerical-r12.json",
+      "memory_profile": "v014-grating-memory-lumerical-mirror-r20.json"
+    },
+    {
       "geometry": "tidy3d",
       "domain": "mirror-y",
       "material": "volume-average",

@@ -78,9 +78,11 @@ def source_files(root=None):
                     # it is a local module, rather than a package attribute.
                     imported.extend(node.module+'.'+alias.name for alias in node.names
                                     if _module_path(root,node.module+'.'+alias.name).is_file())
+                elif node.module=='scripts':
+                    imported=['scripts.gpu_timing' for alias in node.names if alias.name=='gpu_timing']
             elif isinstance(node, ast.Import):
                 imported = [alias.name for alias in node.names
-                            if alias.name == 'backend' or alias.name.startswith('backend.')]
+                            if alias.name == 'backend' or alias.name.startswith('backend.') or alias.name=='scripts.gpu_timing']
             pending.extend(item for item in imported if item not in seen)
     return dict(sorted(files.items()))
 
