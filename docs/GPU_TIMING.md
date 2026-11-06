@@ -4,6 +4,15 @@ Open **Calibrated components → GPU timing records** for the selected preset. T
 
 A ring can finish its physical acquisition while individual wavelengths fail the observation-window check. The failed run then offers **Export diagnostic spectrum, validity mask and replay**. The package identifies the numerical gate failure and preserves the valid-bin mask. A replay reports whether the same measurements and mask were reproduced.
 
+| Fresh device stage on the RTX 3080 Ti Laptop | Allocated cells | FDTD steps | Synchronized stepping | CUDA event elapsed |
+| --- | ---: | ---: | ---: | ---: |
+| Lumerical ring, reciprocal walls, 20 cells/µm | 3,601,360 | 111,966 | 875.010 s | 875.219 s |
+| Lumerical ring, reciprocal walls, 24 cells/µm | 6,250,272 | 134,360 | 1,659.562 s | 1,659.777 s |
+| Lumerical grating, 20 cells/µm, mirror domain | 14,018,808 | 12,600 | 421.230 s | 421.231 s |
+| Tidy3D grating, 16 cells/µm, mirror domain | 11,757,537 | 14,112 | 431.072 s | 431.076 s |
+
+These rows use the original fine acquisitions. Each incident reference has its own row in the ledger, as do repeat notebook runs and interrupted attempts. The 50 nm grating reused its verified 4,410-step reference. That reference originally took 146.524 GPU-clock seconds. The ring and grating use different observation times and detector workloads. [Matched ring meshes](verification/v014-reciprocal-wall-meshes.json) · [Lumerical grating](verification/v014-grating3d-lumerical-mirror-r20.json) · [Tidy3D grating](verification/v014-grating3d-tidy3d-mirror-r16.json).
+
 | Field | What was measured |
 | --- | --- |
 | Cells and steps | Allocated cells including absorbing boundaries, and the actual electromagnetic steps advanced. Some runs stop early on their measured decay criterion. |

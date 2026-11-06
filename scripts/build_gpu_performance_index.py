@@ -99,7 +99,12 @@ def collect(base):
         report=json.loads(data)
         if not isinstance(report,dict):
             continue
-        record=stage_rows(report,path.name)+extra_costs(report,path.name)
+        native=report
+        if path.name=='v014-reciprocal-ring-automatic-recovery.json':
+            native={**report,'case':'ring-3d','vendor':'lumerical','timing_purpose':'bounded admission control',
+                    'resolution':round(1/report['stages']['reference']['performance']['spacing_um']),
+                    'stage_acquisition':report['final_child_acquisitions']}
+        record=stage_rows(native,path.name)+extra_costs(report,path.name)
         if record:
             hashes[path.name]=hashlib.sha256(data).hexdigest()
             rows.extend(record)

@@ -1,0 +1,244 @@
+{
+  "case": "Lumerical ring, 20 cells/\u00b5m, 3200 \u00b5m/c",
+  "interfaces": [
+    "wall-tensor",
+    "reciprocal-wall"
+  ],
+  "source_report_sha256": [
+    "63abd780a641cc8b9add92bcc08d0648d34025a7fd91a73dc0fccbef584d515d",
+    "c2ff363adb6c85dd332d330b2efe9b3f3b71d7da529795e07eacdb3de79cd46b"
+  ],
+  "source_arrays_sha256": [
+    "962f0c1571fc9bb268b600615b34d0d00b175e8e210f043faa30593ffcf543e4",
+    "3df5cd665236045d46adb3124acfd83031a9a5e7bbc6e3d1b04ab740db752b73"
+  ],
+  "registered_report_sha256": [
+    "7849f3a81d05720a9d2f0fbb664d257f538127afd6350677b1f12c2c654256be",
+    "6b195313cff447ad7dfaf8c5401b47237a4a66bea90268786f580e88fb0176a8"
+  ],
+  "byte_identical_fields": {
+    "reference_time_um_c": {
+      "shape": [
+        874
+      ],
+      "dtype": "<f8",
+      "sha256": "ab4ed73a5791be30149035cbc0ff82a9959e895281c4bbd8bcd3500ac6c39298"
+    },
+    "reference_projections": {
+      "shape": [
+        874,
+        4,
+        5,
+        2
+      ],
+      "dtype": "<f4",
+      "sha256": "d84f62d1a87a90d528495463dbd8fc4a5fd8cfb7839be2c4a9e7a3ca4d4ff0c8"
+    },
+    "reference_source_E": {
+      "shape": [
+        3,
+        1,
+        36,
+        36
+      ],
+      "dtype": "<f4",
+      "sha256": "dd1dbc6addb016c14620f7f6d316c97531969f3b6b55e6a08f9472f39f03ae9f"
+    },
+    "reference_source_H": {
+      "shape": [
+        3,
+        1,
+        36,
+        36
+      ],
+      "dtype": "<f4",
+      "sha256": "cf8159fa691ebe63cad9c34a807a66cd8f5e0419a367192b1e3502012ee74212"
+    },
+    "reference_mode_neff": {
+      "shape": [
+        4,
+        5
+      ],
+      "dtype": "<f8",
+      "sha256": "ab3ff39679b47068eecb3f3a74336c03f8d9c493896637ce5967ba3c95b7e05e"
+    },
+    "device_source_E": {
+      "shape": [
+        3,
+        1,
+        36,
+        36
+      ],
+      "dtype": "<f4",
+      "sha256": "dd1dbc6addb016c14620f7f6d316c97531969f3b6b55e6a08f9472f39f03ae9f"
+    },
+    "device_source_H": {
+      "shape": [
+        3,
+        1,
+        36,
+        36
+      ],
+      "dtype": "<f4",
+      "sha256": "cf8159fa691ebe63cad9c34a807a66cd8f5e0419a367192b1e3502012ee74212"
+    },
+    "device_inverse_xy_midplane": {
+      "shape": [
+        2,
+        236,
+        218
+      ],
+      "dtype": "<f4",
+      "sha256": "e012974cc43fb7b1c77227ee509abb765dc1d04f88538251f76645cf541aed6e"
+    },
+    "device_permittivity_cross_section": {
+      "shape": [
+        3,
+        218,
+        70
+      ],
+      "dtype": "<f4",
+      "sha256": "b17306f0dce54b482448456b814dd141bffab1c52c733cebeb3864bf4f405263"
+    },
+    "basis_wavelength_um": {
+      "shape": [
+        5
+      ],
+      "dtype": "<f8",
+      "sha256": "24c9f8624400e4f5633c5c1d19ed1868742ecdde2175449b0ba9fb367107dc04"
+    }
+  },
+  "ordered_peak_positions_nm": [
+    [
+      1524.0,
+      1550.5,
+      1578.0
+    ],
+    [
+      1519.5,
+      1545.5,
+      1573.0
+    ]
+  ],
+  "reciprocal_minus_original_peak_nm": [
+    -4.5,
+    -5.0,
+    -5.0
+  ],
+  "common_valid_in_band_samples": 201,
+  "fixed_basis_port_comparison": {
+    "reflection": {
+      "power_delta": {
+        "count": 201,
+        "rms": 0.011936049682867865,
+        "max_abs": 0.1133887377909353
+      },
+      "phase_increment_delta_rad": {
+        "count": 0,
+        "rms": null,
+        "max_abs": null
+      },
+      "strong_samples": 0,
+      "bins_below_amplitude_floor": 198,
+      "same_gauge_complex_delta": {
+        "count": 201,
+        "rms": 0.05058516749502869,
+        "max_abs": 0.34443310313647657
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 0,
+        "rms": null,
+        "max_abs": null
+      },
+      "sampled_frequency_average": {
+        "covered_frequency_hz": 12491352416666.656,
+        "adjacent_intervals": 200,
+        "mean_power_a": 0.0019013692220732604,
+        "mean_power_b": 0.0005797547113124186
+      },
+      "peak_power_a": 0.11345918177974061,
+      "peak_power_b": 0.034316468927844776
+    },
+    "through": {
+      "power_delta": {
+        "count": 201,
+        "rms": 0.2611287098663256,
+        "max_abs": 0.9703353787403096
+      },
+      "phase_increment_delta_rad": {
+        "count": 197,
+        "rms": 0.19518144653344446,
+        "max_abs": 1.5276795713695386
+      },
+      "strong_samples": 200,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 201,
+        "rms": 0.3235295147297138,
+        "max_abs": 0.8909984291331616
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 200,
+        "rms": 0.32686015899091553,
+        "max_abs": 1.057818399615014
+      }
+    },
+    "drop": {
+      "power_delta": {
+        "count": 201,
+        "rms": 0.19426370227683473,
+        "max_abs": 0.7790851349807381
+      },
+      "phase_increment_delta_rad": {
+        "count": 197,
+        "rms": 0.16815278943500478,
+        "max_abs": 0.748226137551809
+      },
+      "strong_samples": 199,
+      "bins_below_amplitude_floor": 0,
+      "same_gauge_complex_delta": {
+        "count": 201,
+        "rms": 0.3222689365165184,
+        "max_abs": 0.8942138507402512
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 199,
+        "rms": 0.8962542307213253,
+        "max_abs": 2.6777119580293434
+      }
+    },
+    "add_side": {
+      "power_delta": {
+        "count": 201,
+        "rms": 0.01191447952477754,
+        "max_abs": 0.11297003177336007
+      },
+      "phase_increment_delta_rad": {
+        "count": 0,
+        "rms": null,
+        "max_abs": null
+      },
+      "strong_samples": 0,
+      "bins_below_amplitude_floor": 198,
+      "same_gauge_complex_delta": {
+        "count": 201,
+        "rms": 0.05055656798970923,
+        "max_abs": 0.3440947090405018
+      },
+      "same_gauge_phase_delta_rad": {
+        "count": 0,
+        "rms": null,
+        "max_abs": null
+      },
+      "sampled_frequency_average": {
+        "covered_frequency_hz": 12491352416666.656,
+        "adjacent_intervals": 200,
+        "mean_power_a": 0.0019159947046764752,
+        "mean_power_b": 0.0005885746823926173
+      },
+      "peak_power_a": 0.11304586489368364,
+      "peak_power_b": 0.03443328911576798
+    }
+  },
+  "scope": "Both native 20-cell acquisitions pass. The raw input wall map, port sections, launching fields and straight-reference time signals are byte-identical. Peak pairing uses increasing wavelength in the interior interval. This intervention measures sensitivity to the update in the bent, coupled device. It does not separate the contributions of curvature, directional staggering and coupler phase or identify angular mode order."
+}

@@ -23,7 +23,7 @@ Two 2 µm strips were driven by the same Ey point current on NVIDIA. The first s
 
 ![Measured Ey field between separated and aligned strips, with the material boundaries drawn from each numerical grid](verification/v015-circuit-fields.png)
 
-The planned and aligned device stepping times were 0.435 s and 0.694 s on the GPU event clock. Fresh executions of the aligned result’s Python program and unchanged notebook on NVIDIA reproduced all eleven field, material and coordinate arrays byte-for-byte. The saved connection also matched in both offline design programs. These dipole fields measure the response of the two layouts; guided-port transmission requires a separate calibrated port measurement. [Field and timing verification](verification/v015-circuit-gpu-fields.json).
+The planned and aligned device stepping times were 0.435 s and 0.694 s on the GPU event clock. Fresh executions of the aligned result’s Python program and unchanged notebook on NVIDIA reproduced all eleven field, material and coordinate arrays byte-for-byte. The saved connection also matched in both offline design programs. These dipole fields measure the response of the two layouts. Guided-port transmission requires a separate calibrated port measurement. [Field and timing verification](verification/v015-circuit-gpu-fields.json).
 
 ## Work with an exported design
 

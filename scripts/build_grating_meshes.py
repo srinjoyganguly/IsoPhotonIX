@@ -40,8 +40,18 @@ def collect(base):
             if not profile.is_file():
                 raise ValueError(f'No measured memory profile for {path.name}.')
             item['memory_profile']=profile.name
-        candidates[key]=item
-    return {'qualified':[candidates[key] for key in sorted(candidates)]}
+        tracks_return='reciprocal_return_settling' in run.get('radiation',{})
+        candidates.setdefault(key,[]).append((tracks_return,path.name,item))
+    qualified=[]
+    for key in sorted(candidates):
+        # Prefer measured return histories while retaining the independent run
+        # that first established this mesh. Filenames alone do not encode coverage.
+        records=sorted(candidates[key],key=lambda entry:(entry[0],entry[1]),reverse=True)
+        selected=records[0][2]
+        if len(records)>1:
+            selected['other_acquisitions']=[entry[1] for entry in records[1:]]
+        qualified.append(selected)
+    return {'qualified':qualified}
 
 
 if __name__=='__main__':

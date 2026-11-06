@@ -77,7 +77,7 @@ def plot_reciprocal(directory,lumerical,output):
         axes[0].plot(w,power[:,2],color=colors[mesh],lw=1.4,label=f'Reciprocal · {mesh} cells/µm')
         axes[1].plot(w,np.where(power[:,0]>0,power[:,0],np.nan),color=colors[mesh],lw=1.4,label=f'Reciprocal · {mesh} cells/µm')
     axes[0].set_xlim(1500,1600);axes[0].set_ylim(0,105)
-    axes[1].set_xlim(1547.5,1553.5);axes[1].set_yscale('log');axes[1].axvline(1550,color='#777777',lw=.8,ls=':')
+    axes[1].set_xlim(1542,1554);axes[1].set_yscale('log');axes[1].set_ylim(.0001,30);axes[1].axvline(1550,color='#777777',lw=.8,ls=':')
     for ax in axes:ax.legend(loc='upper right',fontsize=8,ncol=3,framealpha=.9)
     fig.savefig(output,dpi=170,metadata={'Title':'Reciprocal finite-height ring mesh and vendor power comparison'})
     plt.close(fig)

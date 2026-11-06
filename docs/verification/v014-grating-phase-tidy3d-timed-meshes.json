@@ -1,0 +1,1161 @@
+{
+  "component": "grating",
+  "vendor": "tidy3d",
+  "amplitude_floor": 0.02,
+  "phase_increment_limit_rad": 1.5707963267948966,
+  "ring_80_to_100_percent_phase_limit_rad": 0.05,
+  "native_samples": [
+    {
+      "native_receipt": "v012-grating3d-tidy3d-r12.json",
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "tidy3d",
+        "period": 0.62,
+        "fill": 0.8,
+        "teeth": 20,
+        "width": 10.8,
+        "guide_width": 0.5,
+        "height": 0.26,
+        "etch": 0.16,
+        "radius": null,
+        "taper": 50.0,
+        "taper_exponent": null,
+        "oxide_top": 0.68,
+        "oxide_bottom": 2.0,
+        "n_si": 3.47,
+        "n_oxide": 1.44,
+        "source_z": 1.18,
+        "beam_x": 3.6,
+        "fiber_radius": null,
+        "fiber_cladding_radius": null,
+        "fiber_core_n": null,
+        "fiber_clad_n": null,
+        "fiber_center_x": null,
+        "angle_deg": 14.5,
+        "waist": 5.4,
+        "buffer": 0.93,
+        "pml": 0.667,
+        "output_x": null,
+        "sample_z": null,
+        "upper_half_span": null,
+        "residual_slab_laterally_extended": true,
+        "grating_material_model": null,
+        "physical_bounds": null
+      },
+      "total_wavelengths": 5,
+      "resolution": 12,
+      "arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c",
+      "planes": {
+        "sample_z_um": 0.9283333333333341,
+        "target_beam_z_um": 0.93,
+        "target_beam_x_um": 3.6,
+        "guide_x_um": -50.46666666666666,
+        "target_guide_x_um": -50.465,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -0.0016666666666580454,
+          "time_step_seconds": 1.588812391275838e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -0.0005730428348304403,
+            -0.0005268827367072694,
+            -0.0004846989985121804,
+            -0.0004461034058557491,
+            -0.000411337060281516
+          ],
+          "max_abs_rad": 0.0005730428348304403
+        },
+        "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.00493689464249202,
+          -0.022903060343530346
+        ],
+        [
+          0.08747003806935663,
+          -0.32858809088117347
+        ],
+        [
+          -0.04243087095272579,
+          0.52142477337303
+        ],
+        [
+          -0.02488583181575185,
+          0.3472269343632157
+        ],
+        [
+          0.007693043744805927,
+          0.032103006473208545
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.03221832424099458,
+          -0.21799936912853718
+        ],
+        [
+          -0.0015105375322883973,
+          0.30937571335568675
+        ],
+        [
+          -0.09573928146768278,
+          0.2847989122846884
+        ],
+        [
+          0.04046087278898446,
+          -0.3840763252236797
+        ],
+        [
+          -0.004397507649335753,
+          -0.3215522863807075
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ]
+      ],
+      "registered_return_time_history": null,
+      "commercial_phase_data": "Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs.",
+      "commercial_power_comparison": {
+        "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+        "figure_sha256": "2eb81a1f20080105be90bbca17fd2ecfe5295327f1c148e40da86a4c88f35a90",
+        "source": "Digitized public guide-power plot.",
+        "guide": {
+          "sample_count": 5,
+          "valid_bins": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "native_minus_published_percentage_points": [
+            -2.305537435097866,
+            -5.536342193242713,
+            -2.719518159490381,
+            -0.6400607449339846,
+            -1.685201485967279
+          ],
+          "mean_absolute_difference_pp": 2.5773320037464442,
+          "rms_difference_pp": 3.0532588678533927,
+          "max_abs_difference_pp": 5.536342193242713
+        }
+      }
+    },
+    {
+      "native_receipt": "v012-grating3d-tidy3d-r14.json",
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "tidy3d",
+        "period": 0.62,
+        "fill": 0.8,
+        "teeth": 20,
+        "width": 10.8,
+        "guide_width": 0.5,
+        "height": 0.26,
+        "etch": 0.16,
+        "radius": null,
+        "taper": 50.0,
+        "taper_exponent": null,
+        "oxide_top": 0.68,
+        "oxide_bottom": 2.0,
+        "n_si": 3.47,
+        "n_oxide": 1.44,
+        "source_z": 1.18,
+        "beam_x": 3.6,
+        "fiber_radius": null,
+        "fiber_cladding_radius": null,
+        "fiber_core_n": null,
+        "fiber_clad_n": null,
+        "fiber_center_x": null,
+        "angle_deg": 14.5,
+        "waist": 5.4,
+        "buffer": 0.93,
+        "pml": 0.667,
+        "output_x": null,
+        "sample_z": null,
+        "upper_half_span": null,
+        "residual_slab_laterally_extended": true,
+        "grating_material_model": null,
+        "physical_bounds": null
+      },
+      "total_wavelengths": 5,
+      "resolution": 14,
+      "arrays_sha256": "cf78e3912ec47ef4c71f286da6ffc92b3b3f4534a78e687b0bbb45b5548deeb9",
+      "planes": {
+        "sample_z_um": 0.9342857142857146,
+        "target_beam_z_um": 0.93,
+        "target_beam_x_um": 3.6,
+        "guide_x_um": -50.51428571428573,
+        "target_guide_x_um": -50.465,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -0.04928571428572326,
+          "time_step_seconds": 1.361839192522147e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -0.01283689541642591,
+            -0.011823952502409196,
+            -0.010896065782891956,
+            -0.010045214066251988,
+            -0.009276612100641157
+          ],
+          "max_abs_rad": 0.01283689541642591
+        },
+        "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.01564203004001146,
+          0.037231429165607115
+        ],
+        [
+          0.10932634546101024,
+          0.3829497469120918
+        ],
+        [
+          -0.06688209354703735,
+          -0.3619124369801067
+        ],
+        [
+          -0.0393961427078561,
+          -0.5376887539242522
+        ],
+        [
+          0.013032456923075544,
+          -0.28428435018814346
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.038648049320721314,
+          0.2198337784951215
+        ],
+        [
+          -0.019578166396591892,
+          -0.24392743473748743
+        ],
+        [
+          -0.12078895286226266,
+          -0.4750556846027597
+        ],
+        [
+          0.05835836067420431,
+          0.1193575293797911
+        ],
+        [
+          5.720253826005828e-05,
+          0.24732986755471295
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ]
+      ],
+      "registered_return_time_history": null,
+      "commercial_phase_data": "Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs.",
+      "commercial_power_comparison": {
+        "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+        "figure_sha256": "2eb81a1f20080105be90bbca17fd2ecfe5295327f1c148e40da86a4c88f35a90",
+        "source": "Digitized public guide-power plot.",
+        "guide": {
+          "sample_count": 5,
+          "valid_bins": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "native_minus_published_percentage_points": [
+            -2.139057997936248,
+            -5.2895785338055115,
+            -2.353088080628468,
+            2.88736409223202,
+            2.0711164385574685
+          ],
+          "mean_absolute_difference_pp": 2.9480410286319425,
+          "rms_difference_pp": 3.1849216129192466,
+          "max_abs_difference_pp": 5.2895785338055115
+        }
+      }
+    },
+    {
+      "native_receipt": "v014-grating3d-tidy3d-mirror-r16-return-windows.json",
+      "native_run_passed": true,
+      "qualified_wavelengths": 5,
+      "physical_model": {
+        "geometry": "tidy3d",
+        "period": 0.62,
+        "fill": 0.8,
+        "teeth": 20,
+        "width": 10.8,
+        "guide_width": 0.5,
+        "height": 0.26,
+        "etch": 0.16,
+        "radius": null,
+        "taper": 50.0,
+        "taper_exponent": null,
+        "oxide_top": 0.68,
+        "oxide_bottom": 2.0,
+        "n_si": 3.47,
+        "n_oxide": 1.44,
+        "source_z": 1.18,
+        "beam_x": 3.6,
+        "fiber_radius": null,
+        "fiber_cladding_radius": null,
+        "fiber_core_n": null,
+        "fiber_clad_n": null,
+        "fiber_center_x": null,
+        "angle_deg": 14.5,
+        "waist": 5.4,
+        "buffer": 0.93,
+        "pml": 0.667,
+        "output_x": null,
+        "sample_z": null,
+        "upper_half_span": null,
+        "residual_slab_laterally_extended": true,
+        "grating_material_model": null,
+        "physical_bounds": null
+      },
+      "total_wavelengths": 5,
+      "resolution": 16,
+      "arrays_sha256": "ad9209240c70a49fa5134d442bbb9249d3a666443a7c3ee86faa0af02ed4ecc1",
+      "planes": {
+        "sample_z_um": 0.9074999999999998,
+        "target_beam_z_um": 0.93,
+        "target_beam_x_um": 3.6,
+        "guide_x_um": -50.51875,
+        "target_guide_x_um": -50.465,
+        "guide_translation_sensitivity": {
+          "guide_length_um": -0.05374999999999375,
+          "time_step_seconds": 1.1916092934568783e-16,
+          "estimated_yee_minus_continuous_rad": [
+            -0.010923735995387929,
+            -0.01006311313937282,
+            -0.009273495305165157,
+            -0.008548361170210624,
+            -0.007892905610210783
+          ],
+          "max_abs_rad": 0.010923735995387929
+        },
+        "phase_convention": "Downward free-space Ey reconstructed at common beam anchor from finite-aperture propagating TE/TM components below 80 degrees. Reflection observes the reciprocal Gaussian mode."
+      },
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "registered_complex_s_real": [
+        [
+          0.021038774494752138,
+          -0.1620721991997923
+        ],
+        [
+          0.09734887092096184,
+          0.26285840941493993
+        ],
+        [
+          -0.054108274877249375,
+          0.4851196387343415
+        ],
+        [
+          -0.05510054081456224,
+          -0.041462092236710976
+        ],
+        [
+          0.025434261809205997,
+          -0.23498082972543743
+        ]
+      ],
+      "registered_complex_s_imag": [
+        [
+          0.031110425706116857,
+          0.10837105592833415
+        ],
+        [
+          -0.016176122033175918,
+          0.3093719756174545
+        ],
+        [
+          -0.12985718713725666,
+          -0.33267295849309564
+        ],
+        [
+          0.06795084288053886,
+          -0.5939472138162374
+        ],
+        [
+          -0.0018272253669561352,
+          -0.37162509301962066
+        ]
+      ],
+      "valid_bins": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_ok": [
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ],
+        [
+          false,
+          true
+        ]
+      ],
+      "registered_return_time_history": {
+        "incident_stage_arrays_sha256": "885f3f49f1dbe81aca546cfa8647846f1155f100c9799ac00071488a1530431f",
+        "time_fs": [
+          60.05710839022667,
+          120.11421678045333,
+          180.17132517067998,
+          240.22843356090667,
+          300.2855419511333,
+          360.34265034135996,
+          420.39975873158664,
+          480.45686712181333,
+          540.51397551204,
+          600.5710839022667,
+          660.6281922924933,
+          720.6853006827199,
+          780.7424090729467,
+          840.7995174631733,
+          900.8566258533999,
+          960.9137342436267,
+          1020.9708426338533,
+          1081.02795102408,
+          1141.0850594143067,
+          1201.1421678045333,
+          1261.19927619476,
+          1321.2563845849866,
+          1381.3134929752132,
+          1441.3706013654398,
+          1501.4277097556667,
+          1561.4848181458933,
+          1621.54192653612,
+          1681.5990349263466
+        ],
+        "registered_real": [
+          [
+            -2.2429281879652767e-06,
+            1.8237780207879078e-07,
+            1.290585080375287e-06,
+            -1.0206658201231293e-06,
+            -1.4886577096519687e-06
+          ],
+          [
+            -0.0001524853925583752,
+            -0.00024042698162968345,
+            -0.00019950882859434124,
+            -0.00016192784260318834,
+            -0.00016488244465088573
+          ],
+          [
+            0.011747927146205506,
+            0.005520457506054718,
+            0.0021126590237455006,
+            -0.0010771855581221835,
+            -0.005982660980309809
+          ],
+          [
+            0.0717238635123846,
+            0.042517262147478425,
+            -0.01786997963610532,
+            -0.04929143163164814,
+            -0.02491509750267663
+          ],
+          [
+            0.014478369135351613,
+            0.09789730933932829,
+            -0.044238221498284505,
+            -0.07134344385360855,
+            0.043081628891929395
+          ],
+          [
+            0.01971210683856981,
+            0.10089109063299294,
+            -0.05183275898372511,
+            -0.06022628796113359,
+            0.028891293704337805
+          ],
+          [
+            0.022156320184418134,
+            0.09646861188199875,
+            -0.051788304315727986,
+            -0.05579527741837654,
+            0.023624469102645086
+          ],
+          [
+            0.02167208198450931,
+            0.09625244185929298,
+            -0.051803756112281996,
+            -0.05566688311654362,
+            0.02364431124572529
+          ],
+          [
+            0.021403724157174384,
+            0.09607130684059355,
+            -0.051855780842347675,
+            -0.05563370489312968,
+            0.023723528634361973
+          ],
+          [
+            0.021414215202767484,
+            0.09598741879152813,
+            -0.05177272745686621,
+            -0.05561245319840829,
+            0.023624923933420732
+          ],
+          [
+            0.021491349637675898,
+            0.09591195524760965,
+            -0.05170021778855436,
+            -0.055682175144712166,
+            0.023666797663910284
+          ],
+          [
+            0.021456463531572913,
+            0.0959020473971627,
+            -0.051676007667565464,
+            -0.05570204506242474,
+            0.02368224565381061
+          ],
+          [
+            0.02144583356689175,
+            0.09589605260726033,
+            -0.05167848278652669,
+            -0.055701300945317694,
+            0.023683130954072172
+          ],
+          [
+            0.021439837998426806,
+            0.09588854664842772,
+            -0.05168439214375155,
+            -0.055707113330329495,
+            0.02367534379373297
+          ],
+          [
+            0.0214420522280318,
+            0.095887186002842,
+            -0.05168502017630701,
+            -0.05570656205872052,
+            0.02367609352473218
+          ],
+          [
+            0.021441488224976584,
+            0.09588700164457188,
+            -0.05168503073634521,
+            -0.055705591349187386,
+            0.023674228165460044
+          ],
+          [
+            0.021439192356628202,
+            0.09588971513432519,
+            -0.05168456183694588,
+            -0.05570790521580706,
+            0.023677301087787178
+          ],
+          [
+            0.021439604097453557,
+            0.0958893498399637,
+            -0.05168682252909021,
+            -0.05570915800754172,
+            0.02368257376283551
+          ],
+          [
+            0.021433347048464342,
+            0.09588284351076012,
+            -0.051691098793225504,
+            -0.055713724148742136,
+            0.023675914526421923
+          ],
+          [
+            0.021438033980562897,
+            0.09588320356792207,
+            -0.05170247928697105,
+            -0.05572636756541233,
+            0.023660376033989666
+          ],
+          [
+            0.021449991575919224,
+            0.09588355557764922,
+            -0.05168831680978955,
+            -0.05576883372773288,
+            0.023651794007191317
+          ],
+          [
+            0.021446744276396097,
+            0.09582375649880889,
+            -0.051638988886751364,
+            -0.05582429160891066,
+            0.023733253795749774
+          ],
+          [
+            0.02137813426969479,
+            0.09579968963252031,
+            -0.05159870888173138,
+            -0.05582282904396124,
+            0.023721830501291886
+          ],
+          [
+            0.021413174220984522,
+            0.09582914840438998,
+            -0.05156349482163142,
+            -0.05575375049376957,
+            0.023733733722764515
+          ],
+          [
+            0.02156844863629296,
+            0.09574160276936078,
+            -0.05167227009836017,
+            -0.05578359866003681,
+            0.023597254578131412
+          ],
+          [
+            0.02022222411288008,
+            0.09675644017680775,
+            -0.05281123700399647,
+            -0.056055625278531335,
+            0.024389957912190917
+          ],
+          [
+            0.020924799171136994,
+            0.09759592917967304,
+            -0.053826790058448246,
+            -0.055516660781125125,
+            0.025801098173465178
+          ],
+          [
+            0.02103877449475214,
+            0.09734887092096184,
+            -0.05410827487724938,
+            -0.05510054081456224,
+            0.025434261809205994
+          ]
+        ],
+        "registered_imag": [
+          [
+            5.846255314146956e-07,
+            -1.5733283875519377e-06,
+            5.894811084015633e-07,
+            1.2635613433596838e-06,
+            -1.7835008036216568e-06
+          ],
+          [
+            0.00048250815219369963,
+            0.00014934693293719653,
+            -9.758161520140472e-06,
+            -8.802640015314911e-05,
+            -0.00017948870062855967
+          ],
+          [
+            -0.018217782640048905,
+            -0.015760412365185446,
+            -0.015020151833737203,
+            -0.015921209815752114,
+            -0.018439413996235866
+          ],
+          [
+            0.015332290181089527,
+            -0.05235196620640538,
+            -0.05703144611237894,
+            -0.012563601054158002,
+            0.035160547843397054
+          ],
+          [
+            0.05560068529929733,
+            -0.04211429104412012,
+            -0.102509869646849,
+            0.03957416179156463,
+            0.02307123868447753
+          ],
+          [
+            0.02626184081597404,
+            -0.017943272081046943,
+            -0.12452677589693839,
+            0.06292928330225156,
+            -0.0065637161790198335
+          ],
+          [
+            0.031506015100013864,
+            -0.016700929332173604,
+            -0.12888205700685834,
+            0.06493750705915104,
+            -0.003088536337985369
+          ],
+          [
+            0.03158216794944765,
+            -0.01676685281002563,
+            -0.12897661865476828,
+            0.06497460096185086,
+            -0.002759520428368955
+          ],
+          [
+            0.03145429974017115,
+            -0.016660610052812923,
+            -0.12880992876009778,
+            0.06513981877205613,
+            -0.002592098538851796
+          ],
+          [
+            0.03131086578117389,
+            -0.01659524750904176,
+            -0.12877028194451795,
+            0.0650505908588939,
+            -0.0026188365105319572
+          ],
+          [
+            0.03136634357152986,
+            -0.016619224531431425,
+            -0.12874803921525937,
+            0.0650048259384178,
+            -0.002523992983981468
+          ],
+          [
+            0.031384382365612314,
+            -0.01664597565748836,
+            -0.12874496546233935,
+            0.06501870815187152,
+            -0.0025468015880873098
+          ],
+          [
+            0.03138439211765955,
+            -0.016647552960340102,
+            -0.12874802770636937,
+            0.06501633599754188,
+            -0.002547047280276662
+          ],
+          [
+            0.031376401451089005,
+            -0.01664763462481659,
+            -0.12874503072483476,
+            0.06501997887586275,
+            -0.0025451776516310816
+          ],
+          [
+            0.03137532993543749,
+            -0.016648520635098963,
+            -0.128743949258725,
+            0.06502077360938646,
+            -0.0025448200209238583
+          ],
+          [
+            0.031377035298408226,
+            -0.01665001460815674,
+            -0.12874252369148612,
+            0.06501952685924692,
+            -0.002545249380010687
+          ],
+          [
+            0.031373794375708086,
+            -0.016652131988513532,
+            -0.12873922834266469,
+            0.06501657971001464,
+            -0.0025415716650142683
+          ],
+          [
+            0.03137484311126117,
+            -0.01665036497387322,
+            -0.12873838475513447,
+            0.06501336359550783,
+            -0.002540810337182537
+          ],
+          [
+            0.031367765853864416,
+            -0.016648774543956916,
+            -0.12873473963871038,
+            0.06501661042956368,
+            -0.0025405754186398444
+          ],
+          [
+            0.03137060070727125,
+            -0.016657373191873444,
+            -0.12873653929351558,
+            0.06502667498328231,
+            -0.002521160992636853
+          ],
+          [
+            0.03133478135840056,
+            -0.016623133872063427,
+            -0.1287691662239373,
+            0.06502872521700763,
+            -0.0024640568743319606
+          ],
+          [
+            0.03140540857508905,
+            -0.016631065302326355,
+            -0.12880124423111944,
+            0.06506372140604622,
+            -0.0024526142809939712
+          ],
+          [
+            0.03135733382297219,
+            -0.0166856793955114,
+            -0.12882992719752423,
+            0.06511091914776278,
+            -0.0025025627291972875
+          ],
+          [
+            0.03135754986537865,
+            -0.01671866156816113,
+            -0.128869831711504,
+            0.06510603446622726,
+            -0.0024030000120201
+          ],
+          [
+            0.03142921497690429,
+            -0.016818063098454048,
+            -0.12875759945931742,
+            0.06532811735695909,
+            -0.0020663532985203737
+          ],
+          [
+            0.031900057246311474,
+            -0.017441719726981452,
+            -0.12896086414147281,
+            0.066601543308818,
+            -0.0005923802187877676
+          ],
+          [
+            0.03057639636927782,
+            -0.016534903022142965,
+            -0.1295598949983269,
+            0.06778266245616243,
+            -0.0013975383645906318
+          ],
+          [
+            0.03111042570611686,
+            -0.016176122033175918,
+            -0.12985718713725666,
+            0.06795084288053886,
+            -0.0018272253669561335
+          ]
+        ],
+        "qualification": {
+          "max_reference_plane_relative_l2_change": [
+            9.605405571731776e-07,
+            6.423774367936708e-07,
+            5.63462981616208e-07,
+            6.364406678150869e-07,
+            9.01337056113719e-07
+          ],
+          "max_absolute_return_change": [
+            0.0014985625879068948,
+            0.0012357420127623287,
+            0.0011790614801059699,
+            0.001298277770620747,
+            0.001624683500483062
+          ],
+          "max_phase_change_rad": [
+            0.03515057041228702,
+            0.010520415981998387,
+            0.005080615939083979,
+            0.013387372313950542,
+            0.029829868423746818
+          ],
+          "amplitude_qualified": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "phase_qualified": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "reference_l2_limit": 0.002,
+          "absolute_amplitude_limit": 0.001,
+          "phase_amplitude_floor": 0.005,
+          "phase_limit_rad": 0.05,
+          "consecutive_changes": 2
+        },
+        "scope": "Each raw reciprocal-mode coefficient is multiplied by the same independently defined phase factor at its wavelength. This preserves the measured convergence while expressing the field at the common port plane."
+      },
+      "commercial_phase_data": "Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs.",
+      "commercial_power_comparison": {
+        "source_url": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+        "figure_sha256": "2eb81a1f20080105be90bbca17fd2ecfe5295327f1c148e40da86a4c88f35a90",
+        "source": "Digitized public guide-power plot.",
+        "guide": {
+          "sample_count": 5,
+          "valid_bins": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "native_minus_published_percentage_points": [
+            -3.3091965948038973,
+            -9.424132471810248,
+            -3.41770351222741,
+            8.001062289877424,
+            7.204270933934459
+          ],
+          "mean_absolute_difference_pp": 6.271273160530688,
+          "rms_difference_pp": 6.743356281597659,
+          "max_abs_difference_pp": 9.424132471810248
+        }
+      }
+    }
+  ],
+  "mesh_pairs": [
+    {
+      "meshes": [
+        12,
+        14
+      ],
+      "shared_wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "shared_valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "channels": {
+        "reflection": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.004364501380787816,
+            "max_abs": 0.00809679674504151
+          },
+          "phase_increment_delta_rad": {
+            "count": 0,
+            "rms": null,
+            "max_abs": null
+          },
+          "strong_samples": 0,
+          "bins_below_amplitude_floor": 1,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.02351446349853903,
+            "max_abs": 0.03500497569393537
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 0,
+            "rms": null,
+            "max_abs": null
+          },
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 4,
+            "mean_power_a": 0.005409077458637119,
+            "mean_power_b": 0.009393101264679852
+          },
+          "peak_power_a": 0.010966388825755053,
+          "peak_power_b": 0.019063185570796563
+        },
+        "guide": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.02314110154736492,
+            "max_abs": 0.03756317924524748
+          },
+          "phase_increment_delta_rad": {
+            "count": 2,
+            "rms": 0.17033637139486887,
+            "max_abs": 0.1974539854198929
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.8747179444544279,
+            "max_abs": 1.1651882404167355
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 5,
+            "rms": 2.744974964950174,
+            "max_abs": 3.078499117848406
+          }
+        }
+      }
+    },
+    {
+      "meshes": [
+        14,
+        16
+      ],
+      "shared_wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "shared_valid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "channels": {
+        "reflection": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.0017250317824257005,
+            "max_abs": 0.00269563232539464
+          },
+          "phase_increment_delta_rad": {
+            "count": 0,
+            "rms": null,
+            "max_abs": null
+          },
+          "strong_samples": 0,
+          "bins_below_amplitude_floor": 1,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.014016971189843703,
+            "max_abs": 0.018402277977814605
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 0,
+            "rms": null,
+            "max_abs": null
+          },
+          "sampled_frequency_average": {
+            "covered_frequency_hz": 12491352416666.656,
+            "adjacent_intervals": 4,
+            "mean_power_a": 0.009393101264679852,
+            "mean_power_b": 0.009570957215979028
+          },
+          "peak_power_a": 0.019063185570796563,
+          "peak_power_b": 0.019790594461392474
+        },
+        "guide": {
+          "power_delta": {
+            "count": 5,
+            "rms": 0.03797271413774879,
+            "max_abs": 0.0513315449537699
+          },
+          "phase_increment_delta_rad": {
+            "count": 2,
+            "rms": 0.06991555574163447,
+            "max_abs": 0.09881656143515394
+          },
+          "strong_samples": 5,
+          "bins_below_amplitude_floor": 0,
+          "same_gauge_complex_delta": {
+            "count": 5,
+            "rms": 0.6709731524302961,
+            "max_abs": 0.8689329988183863
+          },
+          "same_gauge_phase_delta_rad": {
+            "count": 5,
+            "rms": 1.5445503459216579,
+            "max_abs": 1.7229564836499223
+          }
+        }
+      }
+    }
+  ],
+  "vendor_absolute_phase_basis": null,
+  "vendor_sfile_sha256": null,
+  "vendor_project_sha256": null,
+  "native_phase_evidence": {
+    "guide": {
+      "minimum_amplitude": 0.02,
+      "verified_final_phase_intervals": 2,
+      "phase_change_limit_rad": 0.05
+    },
+    "reflection": {
+      "minimum_amplitude": 0.02,
+      "verified_final_phase_intervals": 0,
+      "requires_per_mesh_return_history": true,
+      "scope": "The final source-subtracted E/H projection defines the port return. Native samples with a registered return history also require the reported per-bin temporal phase gate."
+    }
+  }
+}

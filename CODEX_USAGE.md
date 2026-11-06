@@ -45,3 +45,7 @@ differences instead of silently substituting saved GUI results.
 Run focused checks with `python -m unittest discover -s tests -v`. Run real solver checks separately using the setup instructions; passing unit tests alone does not establish solver or GPU availability.
 
 The application has no runtime chatbot, OpenAI API dependency, or API key. Official [Codex documentation](https://developers.openai.com/codex) and the [scoped-work Cookbook example](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex) informed the outcome/constraint/verification workflow; no example code was copied. Raw chat logs and private handoff material are excluded.
+
+## Post-event numerical debugging
+
+Codex traced a misleading spectral result to the 24-cell ring's underlying field history. One wavelength passed a per-sample mask while the late fields grew at all three ring probes. The workbench now withholds that entire spectrum. Codex implemented a reciprocal dielectric update and tested it first on a curved-wall tile, then on full GPU rings at two mesh sizes. That correction restored decaying fields and 241 usable samples at each mesh. The external drop-power discrepancy is recorded separately. [Original rejection](docs/verification/v014-ring-wall-stability.json) · [Corrected measurements](docs/RECIPROCAL_RING_STABILITY.md).

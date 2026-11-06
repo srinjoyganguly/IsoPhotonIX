@@ -182,6 +182,14 @@
       },
       "all_evidenced_and_met": false
     },
+    "v014-grating3d-lumerical-mirror-r20-return-windows.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": true,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": true
+    },
     "v014-grating3d-lumerical-mirror-r20.json": {
       "criteria": {
         "target_within_five_points": true,
@@ -205,6 +213,14 @@
         "native_full_spectrum_qualified": true
       },
       "all_evidenced_and_met": true
+    },
+    "v014-grating3d-tidy3d-mirror-r16-return-windows.json": {
+      "criteria": {
+        "target_within_five_points": true,
+        "band_mean_within_five_points": false,
+        "native_full_spectrum_qualified": true
+      },
+      "all_evidenced_and_met": false
     },
     "v014-grating3d-tidy3d-mirror-r16.json": {
       "criteria": {
@@ -337,6 +353,16 @@
       "vendor": "tidy3d",
       "variant": "volume-average / standard",
       "coarse": "v012-grating3d-tidy3d-r14.json",
+      "fine": "v014-grating3d-tidy3d-mirror-r16-return-windows.json",
+      "coarse_domain": "full",
+      "fine_domain": "mirror-y",
+      "max_absolute_change": 0.05133154495376982,
+      "within_two_points": false
+    },
+    {
+      "vendor": "tidy3d",
+      "variant": "volume-average / standard",
+      "coarse": "v012-grating3d-tidy3d-r14.json",
       "fine": "v014-grating3d-tidy3d-mirror-r16.json",
       "coarse_domain": "full",
       "fine_domain": "mirror-y",
@@ -377,6 +403,16 @@
       "vendor": "lumerical",
       "variant": "direct-yee / standard",
       "coarse": "v014-grating3d-lumerical-direct-r16.json",
+      "fine": "v014-grating3d-lumerical-mirror-r20-return-windows.json",
+      "coarse_domain": "full",
+      "fine_domain": "mirror-y",
+      "max_absolute_change": 0.03082438551351857,
+      "within_two_points": false
+    },
+    {
+      "vendor": "lumerical",
+      "variant": "direct-yee / standard",
+      "coarse": "v014-grating3d-lumerical-direct-r16.json",
       "fine": "v014-grating3d-lumerical-mirror-r20.json",
       "coarse_domain": "full",
       "fine_domain": "mirror-y",
@@ -384,5 +420,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "c118d9028fc75fecae01b5514ded2c44b87d9aa163148f3491b1332c64c16822"
+  "diagnosis_sha256": "e50803e9e078c5ba6c8007592ddab7ede0b3badc939632a845cfcab650dbe513"
 }

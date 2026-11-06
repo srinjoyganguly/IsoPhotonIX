@@ -133,6 +133,8 @@ def diagnose(directory, lumerical_file, names):
                 row = grating_details(report, arrays)
                 model=report['settings']
                 row['variant'] = model.get('grating_material_model','volume-average') + ' / ' + model.get('grating_spectrum','standard')
+                if model.get('resolve_weak_return'):
+                    row['variant'] += ' / extended return observation'
                 # Preserve equal-mesh controls as distinct numerical experiments.
                 row['domain'] = model.get('domain', model.get('grating_domain','full'))
                 row['allocator'] = model.get('grating_allocator','default')

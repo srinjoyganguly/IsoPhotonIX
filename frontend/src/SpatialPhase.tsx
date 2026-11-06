@@ -4,7 +4,7 @@ type NativePhase = {power:number; complex:number; phase:number|null; strong:numb
 type CommercialPhase = {native_power:number;vendor_power:number; signed_native_minus_vendor_phase_rad:number|null};
 type Residual = {rms:number|null;max_abs:number|null;count:number};
 export type SpatialPhaseStudy = {
-  receipt:string;vendor:string;amplitude_floor:number;
+  receipt:string;vendor:string;amplitude_floor:number;historical_return_phase?:boolean;
   samples:{mesh:number;passed:boolean;valid:number;total:number;band:Record<string,{count:number;rms:number|null;max_abs:number|null}>;central_wavelength_um:number|null;absolute:Record<string,CommercialPhase>;
     commercial:Record<string,Residual>;commercial_power?:Record<string,Residual>}[];
   pairs:{meshes:[number,number];channels:Record<string,NativePhase>}[];
@@ -27,7 +27,8 @@ export function SpatialPhase({studies}:{studies:SpatialPhaseStudy[]}) {
       <thead><tr><th>Port</th><th>Power fraction</th><th>Complex amplitude</th><th>Phase (rad)</th><th>Usable phase samples</th></tr></thead>
       <tbody>{Object.entries(pair.channels).map(([name,v])=><tr key={name}><th>{name}</th><td>{value(v.power)}</td>
         <td>{value(v.complex)}</td><td>{value(v.phase)}</td><td>{v.strong}</td></tr>)}</tbody></table></div>)}
-    <p>Phase requires both amplitudes to reach {study.amplitude_floor}, with stable monitored fields. Power and complex-amplitude changes remain measurable below that floor.</p>
+    {study.historical_return_phase && <p>These earlier grating runs retained final return fields only. Their reflected phase comparisons use the amplitude floor. Choose a timed-mesh comparison for phases that also passed an observation-window check.</p>}
+    <p>Phase requires both amplitudes to reach {study.amplitude_floor}. Power and complex-amplitude changes remain measurable below that floor.</p>
     {study.samples.map((s,i)=><div key={i}>{!s.passed && <p>At {s.mesh} cells/µm, {s.valid} of {s.total} native wavelength samples passed. The tables use qualified samples.</p>}{s.central_wavelength_um!==null && <div className="cal-time-scroll"><table>
       <caption>Workbench and Lumerical at {(s.central_wavelength_um*1000).toFixed(3)} nm · {s.mesh} cells/µm</caption>
       <thead><tr><th>Port</th><th>Workbench power</th><th>Lumerical power</th><th>Signed phase difference (rad)</th></tr></thead>

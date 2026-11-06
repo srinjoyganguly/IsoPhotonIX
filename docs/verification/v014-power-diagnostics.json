@@ -4674,6 +4674,55 @@
       "source_report_sha256": "85b95c869d3322887b37888765a3d03b3226fe645821407d33edfa50e0f4951e",
       "native_arrays_sha256": "5121f0f82599afcf0d538301cdc4110b687f37939bfbb561ae99b65cc6603ef8"
     },
+    "v014-grating3d-lumerical-mirror-r20-return-windows.json": {
+      "observable": "grating",
+      "target_um": 1.55,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "local_power": [
+        0.18830751680973243,
+        0.3167870625653341,
+        0.3879354963891905,
+        0.3417952108305026,
+        0.20825200523881057
+      ],
+      "published_power": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "local_at_target": 0.3879354963891905,
+      "published_at_target": 0.4002656827642284,
+      "mean_absolute_difference": 0.023234180765610117,
+      "max_absolute_difference": 0.03769445613222358,
+      "local_best_sample_um": 1.55,
+      "published_best_sample_um": 1.55,
+      "gain_only": {
+        "tolerance_power_fraction": 0.05,
+        "minimum_required": 0.9368870360658703,
+        "maximum_allowed": 1.0653481288280704,
+        "feasible": true,
+        "minimum_set_by_index": 3,
+        "maximum_set_by_index": 0
+      },
+      "variant": "direct-yee / standard",
+      "domain": "mirror-y",
+      "allocator": "platform",
+      "mesh": 20,
+      "vendor": "lumerical",
+      "full_native_gate_passed": true,
+      "valid_bins": null,
+      "total_bins": null,
+      "source_report_sha256": "cf20625c97ae73d8b2ceff8c104db87d6fca9afe93cc65e5e94aa08657b6d556",
+      "native_arrays_sha256": "7cf219dd6ab6e135b6011bfa692fa12a4b66c42f6fca46b52abc965576eb828c"
+    },
     "v014-grating3d-lumerical-mirror-r20.json": {
       "observable": "grating",
       "target_um": 1.55,
@@ -4820,6 +4869,55 @@
       "total_bins": null,
       "source_report_sha256": "b972b83a97964d64d1c809eb4421fe83f80127033df9bc4a0f2baf8522ed17c5",
       "native_arrays_sha256": "80b4a4ae94b4af1102101f910e225ace4dffb6e2d0b680ec1e0cf5b5e75a2ef3"
+    },
+    "v014-grating3d-tidy3d-mirror-r16-return-windows.json": {
+      "observable": "grating",
+      "target_um": 1.55,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "local_power": [
+        0.03801168351647929,
+        0.164805562697599,
+        0.346012361198287,
+        0.3544923978927167,
+        0.19332120010029666
+      ],
+      "published_power": [
+        0.07110364946451826,
+        0.2590468874157015,
+        0.38018939632056115,
+        0.2744817749939425,
+        0.12127849076095215
+      ],
+      "local_at_target": 0.346012361198287,
+      "published_at_target": 0.38018939632056115,
+      "mean_absolute_difference": 0.06271273160530685,
+      "max_absolute_difference": 0.09424132471810248,
+      "local_best_sample_um": 1.575,
+      "published_best_sample_um": 1.55,
+      "gain_only": {
+        "tolerance_power_fraction": 0.05,
+        "minimum_required": 1.2684455791051221,
+        "maximum_allowed": 0.8859788304236236,
+        "feasible": false,
+        "minimum_set_by_index": 1,
+        "maximum_set_by_index": 4
+      },
+      "variant": "volume-average / standard",
+      "domain": "mirror-y",
+      "allocator": "platform",
+      "mesh": 16,
+      "vendor": "tidy3d",
+      "full_native_gate_passed": true,
+      "valid_bins": null,
+      "total_bins": null,
+      "source_report_sha256": "7fd6d173af5d746c14eeea4ebc277e7e3c7ce8a104c851e99a8374e4391e40a6",
+      "native_arrays_sha256": "ad9209240c70a49fa5134d442bbb9249d3a666443a7c3ee86faa0af02ed4ecc1"
     },
     "v014-grating3d-tidy3d-mirror-r16.json": {
       "observable": "grating",

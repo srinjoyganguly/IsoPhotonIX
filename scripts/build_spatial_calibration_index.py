@@ -48,7 +48,12 @@ def phase_studies():
                 'phase':values['same_gauge_phase_delta_rad']['max_abs'],'strong':values['same_gauge_phase_delta_rad']['count']}
                 for port,values in pair['channels'].items()}} for pair in study['mesh_pairs']]
         studies[key].append({'receipt':path.name,'vendor':study['vendor'],'amplitude_floor':study['amplitude_floor'],
+                             'historical_return_phase':key=='grating-3d' and not any(s.get('registered_return_time_history') for s in study['native_samples']),
                              'samples':samples,'pairs':pairs})
+    preferred={'ring-3d':['v014-ring-phase-reciprocal.json'],
+               'grating-3d':['v014-grating-phase-lumerical-timed-meshes.json','v014-grating-phase-tidy3d-timed-meshes.json']}
+    for case,order in preferred.items():
+        studies[case].sort(key=lambda item: order.index(item['receipt']) if item['receipt'] in order else len(order))
     return studies
 
 
@@ -154,9 +159,13 @@ def spatial_index():
                     label += ' · mirror symmetry'
                 if settings.get('grating_spectrum') == 'dense':
                     label += ' · 21 wavelengths'
+                if data.get('radiation',{}).get('reciprocal_return_settling'):
+                    label += ' · recorded S11 time windows'
+                if settings.get('resolve_weak_return'):
+                    label += ' · extended return observation'
                 panel=subset(data,('case_id','vendor','result','radiation','comparisons','settings'))
                 measurement=f"Measured input and output powers on {data['device_name']}."
-                key=(mesh,settings.get('grating_material_model')=='direct-yee',
+                key=(mesh,not settings.get('resolve_weak_return',False),settings.get('grating_material_model')=='direct-yee',
                      settings.get('grating_spectrum','standard')=='standard',settings.get('grating_domain','full')=='full')
                 if geometry in ('lumerical','tidy3d') and (geometry not in best_grating or key>best_grating[geometry][0]):
                     best_grating[geometry]=(key,data)

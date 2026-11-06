@@ -21,9 +21,12 @@
       "domain": "mirror-y",
       "material": "direct-yee",
       "resolution": 20,
-      "run": "v014-grating3d-lumerical-mirror-r20.json",
+      "run": "v014-grating3d-lumerical-mirror-r20-return-windows.json",
       "reference": "v014-grating-mirror-lumerical-r12.json",
-      "memory_profile": "v014-grating-memory-lumerical-mirror-r20.json"
+      "memory_profile": "v014-grating-memory-lumerical-mirror-r20.json",
+      "other_acquisitions": [
+        "v014-grating3d-lumerical-mirror-r20.json"
+      ]
     },
     {
       "geometry": "tidy3d",
@@ -38,9 +41,12 @@
       "domain": "mirror-y",
       "material": "volume-average",
       "resolution": 16,
-      "run": "v014-grating3d-tidy3d-mirror-r16.json",
+      "run": "v014-grating3d-tidy3d-mirror-r16-return-windows.json",
       "reference": "v014-grating-mirror-tidy3d-r12.json",
-      "memory_profile": "v014-grating-memory-tidy3d-mirror-r16.json"
+      "memory_profile": "v014-grating-memory-tidy3d-mirror-r16.json",
+      "other_acquisitions": [
+        "v014-grating3d-tidy3d-mirror-r16.json"
+      ]
     }
   ]
 }

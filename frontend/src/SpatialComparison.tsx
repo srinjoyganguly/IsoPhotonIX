@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
 type Paired = {wavelength_um:number[];local_power:number[];published_power:number[]};
+type ReturnWindows = {
+  max_absolute_return_change:number[];max_phase_change_rad:(number|null)[];
+  amplitude_qualified:boolean[];phase_qualified:boolean[];absolute_amplitude_limit:number;
+  phase_amplitude_floor:number;phase_limit_rad:number;reference_l2_limit:number;consecutive_changes:number;
+};
 type LossPeak = {qualified:boolean;sampled_drop_peak_um:number;field_decay?:{loaded_q?:number};
   qualified_equal_bus_loss?:{loaded_q?:number;apparent_external_q_each_bus?:number;apparent_internal_q?:number;apparent_internal_q_lower_bound?:number}};
 type PowerDiagnostic =
@@ -13,7 +18,7 @@ type SpatialReport = {vendor?:string;case_id?:string;settings?:{geometry:string}
   figure_readout?:{wavelength_um?:number;drop_power_bounds?:[number,number];uncertainty_db?:number};
   vendor_comparison?:{channels:Record<string,{paired_spectrum:Paired}>}; loaded_loss?:{peaks:LossPeak[]};
   comparisons?:{vendor:string;geometry_matched?:boolean;wavelength_um?:number[];published_power?:number[];published_s21_power?:number[]}[];
-  radiation?:{polar_edges_deg?:number[];fraction_of_incident?:number[][];fiber_return_power?:number[]};
+  radiation?:{polar_edges_deg?:number[];fraction_of_incident?:number[][];fiber_return_power?:number[];reciprocal_return_settling?:ReturnWindows};
 };
 
 const criteriaLabels:Record<string,string>={
@@ -99,6 +104,7 @@ export function SpatialComparison({value}:{value:unknown}) {
   const figure=r.figure_readout;
   const qualified=r.loaded_loss?.peaks.filter(p=>p.qualified && p.qualified_equal_bus_loss);
   const angles=r.radiation;
+  const settling=angles?.reciprocal_return_settling;
   const wavelengths=r.result?.wavelength_um || [];
   const angleIndex=Math.min(angleSample,wavelengths.length-1);
   return <>{r.accuracy_criteria && <details className="cal-runtime"><summary>Numerical and commercial-reference checks</summary>
@@ -118,6 +124,15 @@ export function SpatialComparison({value}:{value:unknown}) {
             (p.qualified_equal_bus_loss?.apparent_internal_q_lower_bound ? '≥ '+p.qualified_equal_bus_loss.apparent_internal_q_lower_bound.toFixed(0) : 'Unresolved')}</td></tr>)}</tbody></table>
         <p>The external Q estimate assumes equal bus coupling.</p></>:<p>This observation window has no qualified linewidth and decay pair.</p>}
     </section>}
+    {settling && <details className="cal-runtime"><summary>Weak reflection over the final time windows</summary>
+      <p>The amplitude limit is {settling.absolute_amplitude_limit}. Phase requires |S11| ≥ {settling.phase_amplitude_floor}
+        {' '}and a change ≤ {settling.phase_limit_rad} rad across each of the last {settling.consecutive_changes} increments.
+        The incident field’s relative L2 change must be ≤ {settling.reference_l2_limit}.</p>
+      <table><thead><tr><th>Wavelength (nm)</th><th>Max |ΔS11|</th><th>Amplitude</th><th>Max |Δphase| (rad)</th><th>Phase</th></tr></thead>
+        <tbody>{wavelengths.map((w,i)=><tr key={w}><th>{(1000*w).toFixed(1)}</th>
+          <td>{settling.max_absolute_return_change[i].toPrecision(3)}</td><td>{settling.amplitude_qualified[i]?'Passed':'Outside limit'}</td>
+          <td>{settling.max_phase_change_rad[i]?.toPrecision(3) ?? '—'}</td><td>{settling.phase_qualified[i]?'Passed':'Unqualified'}</td>
+        </tr>)}</tbody></table></details>}
     {angles && wavelengths.length>0 && <section aria-label="Reflected power distribution"><h3>{r.settings?.geometry==='compact-radiation'?'Upward radiation':'Reflected power'}</h3>
       <label>Radiation wavelength<select value={angleIndex} onChange={e=>setAngleSample(Number(e.target.value))}>
         {wavelengths.map((w,i)=><option key={i} value={i}>{w.toFixed(4)} µm</option>)}</select></label>

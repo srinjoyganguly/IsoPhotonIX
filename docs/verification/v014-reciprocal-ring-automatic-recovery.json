@@ -1,0 +1,121 @@
+{
+  "scope": "Bounded 100 \u00b5m/c native CUDA test of the normal reciprocal CLI with no user checkpoint. This tests runtime recovery and temporary storage management; the device window is intentionally short for spectral qualification.",
+  "solver": "fdtdx",
+  "actual_device": "cuda:0",
+  "native_report_sha256": "753cd1ac78b5fe38022e531982ec7a2ace42442af560595d33ec25286dbbf9bb",
+  "arrays_sha256": "5de516b87ca7bb9d95b7453dfd9ca11612ccb0af4129e8764189eda5a010f880",
+  "temporary_stages_cleaned": true,
+  "automatic_retry_observed": false,
+  "recovery": null,
+  "final_child_acquisitions": {
+    "reference": "computed_this_invocation",
+    "device": "computed_this_invocation"
+  },
+  "native_bins": 0,
+  "total_bins": 241,
+  "native_spectrum_qualified": false,
+  "stages": {
+    "reference": {
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "f0324b6bff604bc080734d6508235cd7",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          284,
+          262,
+          84
+        ],
+        "cells": 6250272,
+        "spacing_um": 0.041666666666666664,
+        "pml_cells": {
+          "min_x": 16,
+          "max_x": 16,
+          "min_y": 16,
+          "max_y": 16,
+          "min_z": 16,
+          "max_z": 16
+        },
+        "steps": 6296,
+        "dt_seconds": 7.94406195637919e-17,
+        "simulated_time_fs": 500.1581407736338,
+        "compile_seconds": 2.751746556998114,
+        "synchronized_step_seconds": 67.99032156096655,
+        "step_batches": 50,
+        "cuda_event_elapsed_seconds": 67.99976013183594,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 80.16898602798756,
+        "million_cell_steps_per_second": 578.7840329114127,
+        "setup_seconds": 9.18468228400161,
+        "interior_non_pml_cells": 3013920,
+        "cells_touching_pml": 3236352,
+        "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+      },
+      "admission": {
+        "budget_sha256": "6db68c5e02e7df92f0b445ad35818b26801994bdb30cd4d16961cc214df71fc1",
+        "fixture": "docs/verification/v014-ring-memory-lumerical-r24-reciprocal.json",
+        "selected_device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cells": 6250272,
+        "available_at_launch_mib": 12520,
+        "required_with_reserve_mib": 8372.004791288566,
+        "external_budget_override": false
+      }
+    },
+    "device": {
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "b5351b2780f5440b9eb23de1a8834a68",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          284,
+          262,
+          84
+        ],
+        "cells": 6250272,
+        "spacing_um": 0.041666666666666664,
+        "pml_cells": {
+          "min_x": 16,
+          "max_x": 16,
+          "min_y": 16,
+          "max_y": 16,
+          "min_z": 16,
+          "max_z": 16
+        },
+        "steps": 4192,
+        "dt_seconds": 7.94406195637919e-17,
+        "simulated_time_fs": 333.01507721141564,
+        "compile_seconds": 2.8070200130023295,
+        "synchronized_step_seconds": 50.987043434070074,
+        "step_batches": 33,
+        "cuda_event_elapsed_seconds": 50.992317626953145,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 58.02713084500283,
+        "million_cell_steps_per_second": 513.8783984970606,
+        "setup_seconds": 4.084623850998469,
+        "interior_non_pml_cells": 3013920,
+        "cells_touching_pml": 3236352,
+        "exclusions": "Step scopes exclude compilation, host trace transfers, snapshots, Fourier analysis and checkpoint I/O; all six PML faces are included in the field evolution."
+      },
+      "admission": {
+        "budget_sha256": "6db68c5e02e7df92f0b445ad35818b26801994bdb30cd4d16961cc214df71fc1",
+        "fixture": "docs/verification/v014-ring-memory-lumerical-r24-reciprocal.json",
+        "selected_device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "cells": 6250272,
+        "available_at_launch_mib": 8417,
+        "required_with_reserve_mib": 8372.004791288566,
+        "external_budget_override": false
+      }
+    }
+  }
+}

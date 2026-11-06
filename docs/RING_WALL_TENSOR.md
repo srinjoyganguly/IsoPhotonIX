@@ -93,3 +93,20 @@ A uniform 40-cell/µm grid has four cell widths per 100 nm; the number of fully 
 All scattering claims for the 24-cell `wall-tensor` acquisition are withheld. Late source-free probe growth reaches 336–772 field units and 127 wavelengths violate the passivity check. The one nominally qualified wavelength has no physically usable power or phase. The unmodified acquisition and failed mask are retained. Valid 16- and 20-cell measurements are plotted below. [Stability diagnosis and separate reciprocal operator](RECIPROCAL_RING_STABILITY.md).
 
 ![Qualified original-wall ring power compared with the published Lumerical and Tidy3D references; unstable 24-cell spectrum omitted.](verification/v014-ring-wall-power.png)
+
+## Recorded NVIDIA device costs
+
+These eight full-device acquisitions used the RTX 3080 Ti Laptop GPU. Step scopes include all six PML faces. Synchronized and CUDA-event times are separate elapsed measurements. The complete archive for each row also records compilation, setup, cell spacing, time step, acquisition identity, exact source hashes and non-PML cell count.
+
+| Geometry · model | Cells/µm | Window (µm/c) | Cells | Device steps | Synchronized s | CUDA elapsed s | Native bins |
+|---|---:|---:|---:|---:|---:|---:|---|
+| Lumerical · original wall | 16 | 3200 | 1,851,360 | 89,575 | 337.929 | 338.128 | 236/241 |
+| Lumerical · original wall | 16 | 6000 | 1,851,360 | 167,955 | 655.521 | 655.923 | 241/241 |
+| Lumerical · original wall | 20 | 3200 | 3,601,360 | 111,966 | 753.075 | 753.323 | 241/241 |
+| Lumerical · original wall | 24 | 3200 | 6,250,272 | 134,360 | 1432.121 | 1432.321 | Whole run rejected |
+| Tidy3D · original wall | 16 | 4800 | 3,304,000 | 134,365 | 818.732 | 819.005 | 241/241 |
+| Tidy3D · original wall | 20 | 4800 | 6,464,640 | 167,952 | 1966.941 | 1967.233 | 240/241 |
+| Lumerical · reciprocal | 20 | 3200 | 3,601,360 | 111,966 | 875.010 | 875.219 | 241/241 |
+| Lumerical · reciprocal | 24 | 3200 | 6,250,272 | 134,360 | 1659.562 | 1659.777 | 241/241 |
+
+Adding these eight device stages and their seven distinct straight references by acquisition ID gives **8,822.686 synchronized seconds** and **8,824.841 CUDA-event seconds**, with the shared 16-cell straight reference counted once. The total includes the fully executed unstable calculation. Aborted attempts, allocator probes, stress tests and replay checks are separate from these 15 acquisitions. [Timing ledger](verification/v014-gpu-performance.json) · [Failed-attempt evidence](verification/v014-ring-dense-attempt.json) · [Reciprocal stability and recovery records](RECIPROCAL_RING_STABILITY.md).
