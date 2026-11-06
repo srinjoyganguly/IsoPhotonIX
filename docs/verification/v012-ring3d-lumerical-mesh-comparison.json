@@ -1,0 +1,63 @@
+{
+  "vendor": "lumerical",
+  "first": "v012-ring3d-lumerical-r16-t3200.json",
+  "second": "v012-ring3d-lumerical-r20-t3200.json",
+  "jointly_qualified_wavelengths": 241,
+  "first_resolution": 16,
+  "second_resolution": 20,
+  "first_duration_um_c": 3200.0,
+  "second_duration_um_c": 3200.0,
+  "first_fsr_nm": 26.00000000000002,
+  "second_fsr_nm": 27.000000000000135,
+  "fsr_change_nm": 1.0000000000001137,
+  "nominal_plane_distance_from_center_um": 3.8600000000000003,
+  "first_snapped_plane_um": 3.875,
+  "second_snapped_plane_um": 3.85,
+  "port_differences": {
+    "reflection": {
+      "max_power_difference": 0.05492870785162291,
+      "mean_absolute_power_difference": 0.001358584236803775,
+      "max_complex_amplitude_difference": 0.2333217298002706,
+      "phase_bins_with_both_powers_above_0_01": 0,
+      "max_wrapped_phase_difference_rad": null
+    },
+    "through": {
+      "max_power_difference": 0.9699083246960624,
+      "mean_absolute_power_difference": 0.1759061934809792,
+      "max_complex_amplitude_difference": 1.9562674445534876,
+      "phase_bins_with_both_powers_above_0_01": 239,
+      "max_wrapped_phase_difference_rad": 3.077521655525638
+    },
+    "drop": {
+      "max_power_difference": 0.861338067473703,
+      "mean_absolute_power_difference": 0.15050595394220256,
+      "max_complex_amplitude_difference": 1.0243369243281766,
+      "phase_bins_with_both_powers_above_0_01": 184,
+      "max_wrapped_phase_difference_rad": 3.012421809618118
+    },
+    "add_side": {
+      "max_power_difference": 0.052948823558307365,
+      "mean_absolute_power_difference": 0.001341265547157239,
+      "max_complex_amplitude_difference": 0.2330925244246615,
+      "phase_bins_with_both_powers_above_0_01": 0,
+      "max_wrapped_phase_difference_rad": null
+    }
+  },
+  "straight_phase_controls": {
+    "first": {
+      "reference_separation_um": 7.75,
+      "max_wrapped_continuous_mode_phase_error_rad": 0.7476380972925779,
+      "max_wrapped_discrete_mode_phase_error_rad": 0.0782472057864412,
+      "at_1550nm_continuous_error_rad": 0.5536815534603995,
+      "at_1550nm_discrete_error_rad": -0.07223060297911917
+    },
+    "second": {
+      "reference_separation_um": 7.7,
+      "max_wrapped_continuous_mode_phase_error_rad": 0.41195787970865044,
+      "max_wrapped_discrete_mode_phase_error_rad": 0.049744198535934446,
+      "at_1550nm_continuous_error_rad": 0.30238015329611123,
+      "at_1550nm_discrete_error_rad": -0.04516676736730048
+    }
+  },
+  "phase_correction": "Known distance to common physical planes. The lower bus uses its measured complex straight transmission with phase branch anchored to discrete modal propagation. The unexcited upper bus uses its own discrete modal propagation estimate. No fitted phase or wavelength registration."
+}

@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import subprocess
 
 import numpy as np
 
@@ -72,8 +73,25 @@ def compare_baseline(folder, plan, column, launch=0):
         }
 
 
+def gpu_preflight(case, resolution):
+    shape, _, _, _ = grid(multiport_model(case), resolution)
+    # The FDTDX field, detector, PML and compiled-kernel allocations share
+    # device memory with WSL graphics. Budget against free memory before JAX starts.
+    required = (np.prod(shape) / 1024 + 1536) * 1.25
+    rows = subprocess.check_output([
+        'nvidia-smi','--query-gpu=index,memory.free','--format=csv,noheader,nounits'
+    ], text=True).strip().splitlines()
+    if len(rows) != 1:
+        raise ValueError('The high-resolution GPU memory estimate requires a single visible NVIDIA device.')
+    free = int(rows[0].split(',')[1])
+    if free < required:
+        raise ValueError(f'{resolution} cells/µm requires {required:.0f} MiB available on CUDA; found {free} MiB.')
+    return {'cell_shape': list(shape), 'free_mib': free, 'required_free_mib': float(required)}
+
+
 def measure(case, device, resolution, destination, baselines, resume=False, launch_port=None,
             reference_cache=None, device_cache=None):
+    preflight = gpu_preflight(case, resolution) if device=='gpu' and resolution>24 else None
     runtime = _ports_runtime(device)
     target = runtime[-1]
     model = multiport_model(case)
@@ -99,7 +117,11 @@ def measure(case, device, resolution, destination, baselines, resume=False, laun
         else:
             save_record(manifest, plan)
             save_record(selection, {"launch":launch_port})
-        return measure_locked(runtime, plan, destination, baselines, resume, launch, reference_cache, device_cache)
+        report = measure_locked(runtime, plan, destination, baselines, resume, launch, reference_cache, device_cache)
+        if preflight:
+            report['memory_preflight'] = preflight
+            save_record(destination / 'report.json', report)
+        return report
 
 
 def measure_locked(runtime, plan, destination, baselines, resume, launch, reference_cache, device_cache):
@@ -160,7 +182,7 @@ def measure_locked(runtime, plan, destination, baselines, resume, launch, refere
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case", choices=("coupler", "splitter"), required=True)
-    parser.add_argument("--resolution", type=int, choices=(12, 16, 20, 24), default=24)
+    parser.add_argument("--resolution", type=int, choices=(12, 16, 20, 24, 28), default=24)
     parser.add_argument("--device", choices=("cpu", "gpu"), required=True)
     parser.add_argument("--launch-port", help="Named physical input to measure; defaults to the first port.")
     parser.add_argument("--reference-cache", type=Path, help="Share physically identical measured straight references.")

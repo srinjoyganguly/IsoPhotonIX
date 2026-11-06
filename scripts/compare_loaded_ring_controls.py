@@ -2,9 +2,13 @@
 import argparse
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
+
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from scripts.calibrate_loaded_ring3d import directional_spectrum
 
 
 def read(path):
@@ -17,18 +21,37 @@ def read(path):
         index=data['device_mode_neff']
         basis=data['basis_wavelength_um']
         native=data['s']
+        reference={key.removeprefix('reference_'):data[key] for key in data.files if key.startswith('reference_')}
+        straight=directional_spectrum(reference,1.)
+        measured_through=straight[:,1,0]/straight[:,0,0]
     g=r['physical_model']
     snapped=(g['shape'][0]/2-g['ports'][0][0])/g['resolution']
     desired=g['radius_um']+.76
     # Both distances in each optical path extend when the nominal planes move farther out.
     modal=np.stack([np.interp(wl,basis,row) for row in index],axis=1)
-    phase=2*np.pi*(desired-snapped)*(modal[:,0,None]+modal)/wl[:,None]
-    return r,wl,native*np.exp(1j*phase),desired,snapped
+    dx=1/g['resolution']
+    dt=r['stages']['reference']['time_step_um_c']
+    beta=2*np.pi*modal/wl[:,None]
+    # A uniform lossless port on this Yee grid advances with a discrete longitudinal wavenumber.
+    yee_beta=2/dx*np.arcsin(.5*dx*beta*np.sinc(dt/wl)[:,None])
+    length=2*snapped
+    residual=np.angle(measured_through*np.exp(-1j*yee_beta[:,0]*length))
+    continuum_residual=np.angle(measured_through*np.exp(-1j*beta[:,0]*length))
+    # The lower bus is independently excited in the straight reference. Its measured residual
+    # sets the propagation constant for that bus; only the discrete modal estimate is used above.
+    yee_beta[:,:2]+=residual[:,None]/length
+    phase=(desired-snapped)*(yee_beta[:,0,None]+yee_beta)
+    control={'reference_separation_um':length,
+             'max_wrapped_continuous_mode_phase_error_rad':float(np.max(abs(continuum_residual))),
+             'max_wrapped_discrete_mode_phase_error_rad':float(np.max(abs(residual))),
+             'at_1550nm_continuous_error_rad':float(continuum_residual[np.argmin(abs(wl-1.55))]),
+             'at_1550nm_discrete_error_rad':float(residual[np.argmin(abs(wl-1.55))])}
+    return r,wl,native*np.exp(1j*phase),desired,snapped,control
 
 
 def compare(a,b):
-    old,wl,s1,plane,old_plane=read(a)
-    new,wl2,s2,new_plane,new_snapped=read(b)
+    old,wl,s1,plane,old_plane,first_control=read(a)
+    new,wl2,s2,new_plane,new_snapped,second_control=read(b)
     if old['vendor']!=new['vendor'] or plane!=new_plane or not np.array_equal(wl,wl2):
         raise ValueError('Cases, desired planes and wavelength sampling must agree.')
     vendor=old['vendor']
@@ -51,7 +74,8 @@ def compare(a,b):
                 first_duration_um_c=old['duration_um_c'],second_duration_um_c=new['duration_um_c'],
                 first_fsr_nm=a_fsr,second_fsr_nm=b_fsr,fsr_change_nm=b_fsr-a_fsr if a_fsr and b_fsr else None,
                 nominal_plane_distance_from_center_um=plane,first_snapped_plane_um=old_plane,second_snapped_plane_um=new_snapped,
-                port_differences=rows,phase_correction='Known guided propagation distance from each sampled plane to its common physical plane. Effective indices from the five independently solved lossless port modes, linearly interpolated in wavelength. No fitted phase or spectral registration.')
+                port_differences=rows,straight_phase_controls={'first':first_control,'second':second_control},
+                phase_correction='Known distance to common physical planes. The lower bus uses its measured complex straight transmission with phase branch anchored to discrete modal propagation. The unexcited upper bus uses its own discrete modal propagation estimate. No fitted phase or wavelength registration.')
 
 
 if __name__=='__main__':

@@ -15,33 +15,49 @@
   "second_snapped_plane_um": 3.875,
   "port_differences": {
     "reflection": {
-      "max_power_difference": 0.013039515579168846,
-      "mean_absolute_power_difference": 0.0001311497630942584,
-      "max_complex_amplitude_difference": 0.029934545999066007,
+      "max_power_difference": 0.013039515579168832,
+      "mean_absolute_power_difference": 0.00013114976309425844,
+      "max_complex_amplitude_difference": 0.029934545999065993,
       "phase_bins_with_both_powers_above_0_01": 4,
-      "max_wrapped_phase_difference_rad": 0.1571857336096826
+      "max_wrapped_phase_difference_rad": 0.15718573360968266
     },
     "through": {
-      "max_power_difference": 0.06113145493454031,
-      "mean_absolute_power_difference": 0.005028665381238375,
-      "max_complex_amplitude_difference": 0.055250078568432226,
+      "max_power_difference": 0.061131454934540086,
+      "mean_absolute_power_difference": 0.005028665381238363,
+      "max_complex_amplitude_difference": 0.05525007856843227,
       "phase_bins_with_both_powers_above_0_01": 232,
-      "max_wrapped_phase_difference_rad": 0.11130606245125095
+      "max_wrapped_phase_difference_rad": 0.11130606245125096
     },
     "drop": {
-      "max_power_difference": 0.02680837563975702,
-      "mean_absolute_power_difference": 0.0018800684880964998,
+      "max_power_difference": 0.02680837563975713,
+      "mean_absolute_power_difference": 0.0018800684880964985,
       "max_complex_amplitude_difference": 0.05539219435197345,
       "phase_bins_with_both_powers_above_0_01": 194,
-      "max_wrapped_phase_difference_rad": 0.06879796360723142
+      "max_wrapped_phase_difference_rad": 0.06879796360723135
     },
     "add_side": {
-      "max_power_difference": 0.012702076273806276,
-      "mean_absolute_power_difference": 0.000130658626693451,
+      "max_power_difference": 0.012702076273806262,
+      "mean_absolute_power_difference": 0.00013065862669345084,
       "max_complex_amplitude_difference": 0.029740435745277922,
       "phase_bins_with_both_powers_above_0_01": 4,
       "max_wrapped_phase_difference_rad": 0.15791216657600163
     }
   },
-  "phase_correction": "Known guided propagation distance from each sampled plane to its common physical plane. Effective indices from the five independently solved lossless port modes, linearly interpolated in wavelength. No fitted phase or spectral registration."
+  "straight_phase_controls": {
+    "first": {
+      "reference_separation_um": 7.75,
+      "max_wrapped_continuous_mode_phase_error_rad": 0.7476380972925779,
+      "max_wrapped_discrete_mode_phase_error_rad": 0.0782472057864412,
+      "at_1550nm_continuous_error_rad": 0.5536815534603995,
+      "at_1550nm_discrete_error_rad": -0.07223060297911917
+    },
+    "second": {
+      "reference_separation_um": 7.75,
+      "max_wrapped_continuous_mode_phase_error_rad": 0.7476380972925779,
+      "max_wrapped_discrete_mode_phase_error_rad": 0.0782472057864412,
+      "at_1550nm_continuous_error_rad": 0.5536815534603995,
+      "at_1550nm_discrete_error_rad": -0.07223060297911917
+    }
+  },
+  "phase_correction": "Known distance to common physical planes. The lower bus uses its measured complex straight transmission with phase branch anchored to discrete modal propagation. The unexcited upper bus uses its own discrete modal propagation estimate. No fitted phase or wavelength registration."
 }
