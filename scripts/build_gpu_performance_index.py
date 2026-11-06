@@ -77,6 +77,15 @@ def extra_costs(report, name):
             sample={'case':'splitter','resolution':report['resolution'],'actual_device':report['actual_device'],'stages':stages}
             rows.extend(dict(row,purpose='GUI simulation' if label=='gui' else 'fresh notebook replay',
                              stage=label+' '+row['stage'],origin='computed_this_invocation') for row in stage_rows(sample,name))
+    elif name=='v015-circuit-gpu-fields.json':
+        for label,run in report['runs'].items():
+            if 'timing' in run:
+                timing=run['timing']
+                sample={'case':'layout-3d','actual_device':timing['device'],'versions':report['versions'],
+                        'settings':{'geometry':'connected strips','resolution':report['runs']['joined']['config']['resolution']},
+                        'stages':{label:{'performance':timing,'acquisition':{'status':'fresh'}}}}
+                rows.extend(dict(row,purpose='circuit field study' if 'config' in run else 'fresh circuit field replay')
+                            for row in stage_rows(sample,name))
     return rows
 
 

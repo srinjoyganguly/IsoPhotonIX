@@ -3,6 +3,12 @@
   "cases": {
     "ring-3d": [
       {
+        "receipt": "v014-ring3d-lumerical-r24-t3200-reciprocal-wall.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
         "receipt": "v014-ring3d-lumerical-r20-t3200-wall-tensor.json",
         "passed": true,
         "actual_device": "cuda:0",
@@ -10,6 +16,24 @@
       },
       {
         "receipt": "v014-ring3d-lumerical-r16-t6000-wall-tensor.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-lumerical-r20-t3200-exact-area.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
         "passed": true,
         "actual_device": "cuda:0",
         "has_native_field": true
@@ -33,12 +57,6 @@
         "has_native_field": true
       },
       {
-        "receipt": "v013-ring3d-lumerical-r20-t3200-exact-area.json",
-        "passed": true,
-        "actual_device": "cuda:0",
-        "has_native_field": true
-      },
-      {
         "receipt": "v012-ring3d-lumerical-r16-t3200-aperture36c.json",
         "passed": true,
         "actual_device": "cuda:0",
@@ -51,19 +69,13 @@
         "has_native_field": true
       },
       {
-        "receipt": "v013-ring3d-lumerical-r16-t3200-exact-area-palik-ade.json",
-        "passed": true,
-        "actual_device": "cuda:0",
-        "has_native_field": true
-      },
-      {
-        "receipt": "v013-ring3d-lumerical-r16-t3200-exact-area.json",
-        "passed": true,
-        "actual_device": "cuda:0",
-        "has_native_field": true
-      },
-      {
         "receipt": "v014-ring3d-tidy3d-r16-t4800-wall-tensor.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v013-ring3d-tidy3d-r16-t4800-exact-area.json",
         "passed": true,
         "actual_device": "cuda:0",
         "has_native_field": true
@@ -76,12 +88,6 @@
       },
       {
         "receipt": "v012-ring3d-tidy3d-r16-t4800.json",
-        "passed": true,
-        "actual_device": "cuda:0",
-        "has_native_field": true
-      },
-      {
-        "receipt": "v013-ring3d-tidy3d-r16-t4800-exact-area.json",
         "passed": true,
         "actual_device": "cuda:0",
         "has_native_field": true

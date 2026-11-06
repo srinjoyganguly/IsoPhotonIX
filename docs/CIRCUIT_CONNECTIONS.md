@@ -17,6 +17,14 @@ The two strips above are 5 µm apart with a 90° facing error. **Align connectio
 
 **What the field solver sees.** Both Meep and FDTDX use the materials and physical solids. A gap remains a gap until geometry changes. The alignment check measures positions, directions and widths. A mode mismatch, radiation loss or manufacturing violation needs its own study. Automatic bend routing, hierarchy, process layers, Boolean operations, GDS round-trips and fabrication design-rule checks remain in the [product checklist](NEXT_CHUNKS.md).
 
+## Measured fields of a connected pair
+
+Two 2 µm strips were driven by the same Ey point current on NVIDIA. The first study had a 0.6 µm gap. The second moved the ends together, retaining the same connection ID. Both used 482,560 cells, 294 time steps and the same source, time window and coordinate axes. Alignment changed 640 displayed material cells. The relative L2 difference between the two final vector fields was 0.1717.
+
+![Measured Ey field between separated and aligned strips, with the material boundaries drawn from each numerical grid](verification/v015-circuit-fields.png)
+
+The planned and aligned device stepping times were 0.435 s and 0.694 s on the GPU event clock. Fresh executions of the aligned result’s Python program and unchanged notebook on NVIDIA reproduced all eleven field, material and coordinate arrays byte-for-byte. The saved connection also matched in both offline design programs. These dipole fields measure the response of the two layouts; guided-port transmission requires a separate calibrated port measurement. [Field and timing verification](verification/v015-circuit-gpu-fields.json).
+
 ## Work with an exported design
 
 The Python program contains the full editable design in `GEOMETRY`. From the unpacked design archive, use the bundled helpers to inspect a saved pair or align it. The same helpers are included in finite-layout field study exports.

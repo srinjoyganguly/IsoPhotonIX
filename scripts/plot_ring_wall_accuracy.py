@@ -12,9 +12,12 @@ from scripts.compare_loaded_ring3d import lumerical_port_spectra, tidy_spectrum
 from scripts.compare_ring_interface_models import BASE, digest
 
 
-def curve(directory,vendor,mesh,duration):
-    name=f'v014-ring3d-{vendor}-r{mesh}-t{duration}-wall-tensor.json'
+def curve(directory,vendor,mesh,duration,interface='wall-tensor'):
+    name=f'v014-ring3d-{vendor}-r{mesh}-t{duration}-{interface}.json'
     record=json.loads((directory/name).read_text())
+    from scripts.diagnose_ring_stability import rejection_for
+    if rejection_for(directory/name):
+        raise ValueError('A globally rejected ring spectrum cannot be plotted.')
     path=directory/record['arrays_file']
     if digest(path)!=record['arrays_sha256']:
         raise ValueError('The public ring data have changed.')
@@ -60,11 +63,36 @@ def plot(directory,lumerical,tidy,output):
     plt.close(fig)
 
 
+def plot_reciprocal(directory,lumerical,output):
+    wave,ports,_=lumerical_port_spectra(lumerical)
+    fig,axes=plt.subplots(2,1,figsize=(8.5,5.8),layout='constrained')
+    colors={20:'#146578',24:'#66438E'}
+    for ax,label,title in zip(axes,('drop','reflection'),('Drop-port power','Return at the driven port')):
+        ax.plot(wave*1000,100*ports[label],lw=2.2,color='#202020',label='Filed Lumerical')
+        ax.set_title(title,loc='left',fontweight='bold',fontsize=12)
+        ax.set_ylabel('Power (%)');ax.set_xlabel('Wavelength (nm)')
+        ax.spines[['top','right']].set_visible(False);ax.grid(axis='y',alpha=.19)
+    for mesh in (20,24):
+        w,power=curve(directory,'lumerical',mesh,3200,'reciprocal-wall')
+        axes[0].plot(w,power[:,2],color=colors[mesh],lw=1.4,label=f'Reciprocal · {mesh} cells/µm')
+        axes[1].plot(w,np.where(power[:,0]>0,power[:,0],np.nan),color=colors[mesh],lw=1.4,label=f'Reciprocal · {mesh} cells/µm')
+    axes[0].set_xlim(1500,1600);axes[0].set_ylim(0,105)
+    axes[1].set_xlim(1547.5,1553.5);axes[1].set_yscale('log');axes[1].axvline(1550,color='#777777',lw=.8,ls=':')
+    for ax in axes:ax.legend(loc='upper right',fontsize=8,ncol=3,framealpha=.9)
+    fig.savefig(output,dpi=170,metadata={'Title':'Reciprocal finite-height ring mesh and vendor power comparison'})
+    plt.close(fig)
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory',type=Path,default=BASE)
     parser.add_argument('--lumerical',type=Path,required=True)
-    parser.add_argument('--tidy3d',type=Path,required=True)
+    parser.add_argument('--tidy3d',type=Path)
+    parser.add_argument('--reciprocal',action='store_true')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
-    plot(args.directory,args.lumerical,args.tidy3d,args.output)
+    if args.reciprocal:
+        plot_reciprocal(args.directory,args.lumerical,args.output)
+    elif args.tidy3d is None:
+        parser.error('The original-wall plot requires --tidy3d.')
+    else:
+        plot(args.directory,args.lumerical,args.tidy3d,args.output)

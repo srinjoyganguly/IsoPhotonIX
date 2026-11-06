@@ -1,0 +1,233 @@
+{
+  "scope": "Apply the same post-pulse field and passivity screen to every original wall-tensor study; individual wavelength masks still govern otherwise usable runs.",
+  "records": [
+    {
+      "source_report": "v014-ring3d-lumerical-r16-t3200-wall-tensor.json",
+      "report_sha256": "d2cdf57adcba592739a9b01925daee3233c93fe9345e4e94901fecadde76a16a",
+      "arrays_sha256": "c41cf5bf28f74a52f8238ec508f980c83da1f6746e5c7eceb413dfa20e12c5dc",
+      "original_native_bins": 236,
+      "usable_spectrum": true,
+      "screen_checked": true,
+      "reason": "No joint severe post-pulse growth and widespread passivity failure.",
+      "first_to_fourth_quarter_probe_peak_abs_Hz": [
+        [
+          0.23784953355789185,
+          0.23067575693130493,
+          0.2367345094680786
+        ],
+        [
+          0.059240907430648804,
+          0.06936829537153244,
+          0.075739286839962
+        ],
+        [
+          0.024017255753278732,
+          0.026971884071826935,
+          0.020921524614095688
+        ],
+        [
+          0.012960546649992466,
+          0.015360941179096699,
+          0.011856431141495705
+        ]
+      ],
+      "fourth_to_first_half_peak_per_probe": [
+        0.05449052792377206,
+        0.06659105136770474,
+        0.05008323952488402
+      ],
+      "passivity_failed_bins": 0,
+      "max_collected_power": 1.0392950818977114
+    },
+    {
+      "source_report": "v014-ring3d-lumerical-r16-t6000-wall-tensor.json",
+      "report_sha256": "363509fc2da7c51d75f247a584f17b361366907172734e145bb95419a23529e4",
+      "arrays_sha256": "a4824eb537fd83aa85bbba08c27e47e27d5f8c17fa95b9ec0166d2a98fe3d2f3",
+      "original_native_bins": 241,
+      "usable_spectrum": true,
+      "screen_checked": true,
+      "reason": "No joint severe post-pulse growth and widespread passivity failure.",
+      "first_to_fourth_quarter_probe_peak_abs_Hz": [
+        [
+          0.23784953355789185,
+          0.23067575693130493,
+          0.2367345094680786
+        ],
+        [
+          0.025370147079229355,
+          0.0300871804356575,
+          0.025627238675951958
+        ],
+        [
+          0.008733601309359074,
+          0.009291168302297592,
+          0.008160104043781757
+        ],
+        [
+          0.004954461939632893,
+          0.0061127012595534325,
+          0.0047910395078361034
+        ]
+      ],
+      "fourth_to_first_half_peak_per_probe": [
+        0.020830236097255123,
+        0.026499105674870682,
+        0.020238027478972725
+      ],
+      "passivity_failed_bins": 0,
+      "max_collected_power": 1.0035573828974185
+    },
+    {
+      "source_report": "v014-ring3d-lumerical-r20-t3200-wall-tensor.json",
+      "report_sha256": "63abd780a641cc8b9add92bcc08d0648d34025a7fd91a73dc0fccbef584d515d",
+      "arrays_sha256": "962f0c1571fc9bb268b600615b34d0d00b175e8e210f043faa30593ffcf543e4",
+      "original_native_bins": 241,
+      "usable_spectrum": true,
+      "screen_checked": true,
+      "reason": "No joint severe post-pulse growth and widespread passivity failure.",
+      "first_to_fourth_quarter_probe_peak_abs_Hz": [
+        [
+          0.24134844541549683,
+          0.20521612465381622,
+          0.2323073148727417
+        ],
+        [
+          0.046471863985061646,
+          0.03954770043492317,
+          0.033162135630846024
+        ],
+        [
+          0.010860512964427471,
+          0.01048990711569786,
+          0.009270894341170788
+        ],
+        [
+          0.00451995013281703,
+          0.0037529985420405865,
+          0.005108994897454977
+        ]
+      ],
+      "fourth_to_first_half_peak_per_probe": [
+        0.018727902411120344,
+        0.018288029502416564,
+        0.02199239787285085
+      ],
+      "passivity_failed_bins": 0,
+      "max_collected_power": 1.0011237439467215
+    },
+    {
+      "source_report": "v014-ring3d-lumerical-r24-t3200-wall-tensor.json",
+      "report_sha256": "07bd8a82732d5ebddefe167d3f95b6296013a47dbc7d740e4f9087cfb655574b",
+      "arrays_sha256": "ba326ba00e420a180e86239ebf7e78085515e16318338ebdd89b6bc4a69b930a",
+      "original_native_bins": 1,
+      "usable_spectrum": false,
+      "screen_checked": true,
+      "reason": "After source shutoff all three ring probes grow by over eight times their first-half peaks, and collected power exceeds the passivity limit across over 10% of the band.",
+      "first_to_fourth_quarter_probe_peak_abs_Hz": [
+        [
+          0.19293244183063507,
+          0.15966357290744781,
+          0.1883389949798584
+        ],
+        [
+          0.03988204896450043,
+          0.03793586790561676,
+          0.0406007319688797
+        ],
+        [
+          1.8002395629882812,
+          1.008051872253418,
+          1.6520936489105225
+        ],
+        [
+          418.0560302734375,
+          771.5482788085938,
+          336.05859375
+        ]
+      ],
+      "fourth_to_first_half_peak_per_probe": [
+        2166.8519109939334,
+        4832.337550505882,
+        1784.3282735258263
+      ],
+      "passivity_failed_bins": 127,
+      "max_collected_power": 1.7407471996501898
+    },
+    {
+      "source_report": "v014-ring3d-tidy3d-r16-t4800-wall-tensor.json",
+      "report_sha256": "cb060e77d9e43ab55bf3209154ae6a363693e68297283bfcbabd7690f377662f",
+      "arrays_sha256": "4c4ddf9bab4dc4be22671f927209efa1061c1d25d96d7d196b74b84362049fe0",
+      "original_native_bins": 241,
+      "usable_spectrum": true,
+      "screen_checked": true,
+      "reason": "No joint severe post-pulse growth and widespread passivity failure.",
+      "first_to_fourth_quarter_probe_peak_abs_Hz": [
+        [
+          0.26812711358070374,
+          0.22495567798614502,
+          0.26067662239074707
+        ],
+        [
+          0.047104425728321075,
+          0.038044609129428864,
+          0.06068374589085579
+        ],
+        [
+          0.01574421115219593,
+          0.01608312875032425,
+          0.01635575294494629
+        ],
+        [
+          0.004672807641327381,
+          0.0045813764445483685,
+          0.005753752309828997
+        ]
+      ],
+      "fourth_to_first_half_peak_per_probe": [
+        0.017427583428338774,
+        0.020365684856509976,
+        0.02207237556271648
+      ],
+      "passivity_failed_bins": 0,
+      "max_collected_power": 1.0134980466350052
+    },
+    {
+      "source_report": "v014-ring3d-tidy3d-r20-t4800-wall-tensor.json",
+      "report_sha256": "b27b2ae725b591e12ab1a83294d564416fecbf2e78305bb7cd5ab6bf342023da",
+      "arrays_sha256": "9672ca93d6ffefb26b18ca55b99c5843ebb96ce902a37d484f9d9a79a50c69fd",
+      "original_native_bins": 240,
+      "usable_spectrum": true,
+      "screen_checked": true,
+      "reason": "No joint severe post-pulse growth and widespread passivity failure.",
+      "first_to_fourth_quarter_probe_peak_abs_Hz": [
+        [
+          0.20916025340557098,
+          0.18133412301540375,
+          0.20262229442596436
+        ],
+        [
+          0.05267132818698883,
+          0.053391799330711365,
+          0.05697961151599884
+        ],
+        [
+          0.016714531928300858,
+          0.016891196370124817,
+          0.01745106279850006
+        ],
+        [
+          0.006114310119301081,
+          0.006120953243225813,
+          0.0060746679082512856
+        ]
+      ],
+      "fourth_to_first_half_peak_per_probe": [
+        0.029232657829330332,
+        0.033755109857099855,
+        0.02998025427291217
+      ],
+      "passivity_failed_bins": 0,
+      "max_collected_power": 1.0323576897924942
+    }
+  ]
+}

@@ -5017,6 +5017,54 @@
       "source_report_sha256": "63abd780a641cc8b9add92bcc08d0648d34025a7fd91a73dc0fccbef584d515d",
       "native_arrays_sha256": "962f0c1571fc9bb268b600615b34d0d00b175e8e210f043faa30593ffcf543e4"
     },
+    "v014-ring3d-lumerical-r24-t3200-reciprocal-wall.json": {
+      "observable": "ring",
+      "target_um": 1.55,
+      "channels_at_target": {
+        "reflection": {
+          "local": 9.424308342470603e-05,
+          "published": 0.0007615791758866508,
+          "mean_absolute_difference": 0.00416048201136808
+        },
+        "through": {
+          "local": 0.9769097923337537,
+          "published": 0.093915300002907,
+          "mean_absolute_difference": 0.12535475784895742
+        },
+        "drop": {
+          "local": 0.018033841689867953,
+          "published": 0.6744231240959558,
+          "mean_absolute_difference": 0.08842662910470699
+        },
+        "add_side": {
+          "local": 0.00011646352518109268,
+          "published": 0.000824536588624558,
+          "mean_absolute_difference": 0.004152593963376493
+        }
+      },
+      "nearest_published_drop_line": {
+        "published_sampled_center_um": 1.5500920771652973,
+        "published_peak_power": 0.7153218182890001,
+        "published_fwhm_nm": 1.4208675155746864,
+        "local_sampled_center_um": 1.545,
+        "local_sampled_peak_power": 0.5702844546692633,
+        "nearest_sampled_center_difference_nm": -5.0920771652973595,
+        "published_target_distance_in_linewidths": 0.06480348398985136
+      },
+      "additional_spectra": {},
+      "spacing_nm": {
+        "local": 27.000000000000135,
+        "published": 25.454899999999945
+      },
+      "variant": "reciprocal-wall / fixed",
+      "mesh": 24,
+      "vendor": "lumerical",
+      "full_native_gate_passed": true,
+      "valid_bins": 241,
+      "total_bins": 241,
+      "source_report_sha256": "6123d0f6028b887397706a3f1ca33a5d5815fd278ceea416f357d2c13adef7f6",
+      "native_arrays_sha256": "54bc09034fd81e6795d580062517bc5f11947585e3a97a2b44c6008e0d817bda"
+    },
     "v014-ring3d-tidy3d-r16-t4800-wall-tensor.json": {
       "observable": "ring",
       "target_um": 1.55,

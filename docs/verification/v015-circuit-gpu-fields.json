@@ -1,0 +1,541 @@
+{
+  "passed": true,
+  "device": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "design_asset_sha256": "a5cbfb733b0376a29b9c5c43dcabd94ef9d3b8624feb611188779b5081872b3c",
+  "endpoint_states": [
+    {
+      "id": "connection-8c6c23c39be84a8f",
+      "a": {
+        "component_id": "component-ab0bbe1fa9e1448e",
+        "port": "in"
+      },
+      "b": {
+        "component_id": "component-456c2ae3d24844cf",
+        "port": "out"
+      },
+      "state": "needs_route",
+      "distance_um": 0.6000000000000001,
+      "angle_error_deg": 0.0,
+      "width_difference_um": 0.0,
+      "widths_match": true
+    },
+    {
+      "id": "connection-8c6c23c39be84a8f",
+      "a": {
+        "component_id": "component-ab0bbe1fa9e1448e",
+        "port": "in"
+      },
+      "b": {
+        "component_id": "component-456c2ae3d24844cf",
+        "port": "out"
+      },
+      "state": "aligned",
+      "distance_um": 0.0,
+      "angle_error_deg": 0.0,
+      "width_difference_um": 0.0,
+      "widths_match": true
+    }
+  ],
+  "changed_display_material_cells": 640,
+  "relative_l2_final_vector_field_change": 0.17173343896865845,
+  "runs": {
+    "design_python": {
+      "exact_geometry_and_connection": true
+    },
+    "design_notebook": {
+      "exact_geometry_and_connection": true
+    },
+    "planned": {
+      "config": {
+        "schema_version": 6,
+        "study_type": "layout-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Strip waveguide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 10.0,
+            "y": 3.6,
+            "z": 3.2
+          },
+          "objects": [
+            {
+              "id": "component-456c2ae3d24844cf-1",
+              "name": "Strip core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 2.0,
+                "y": 0.5,
+                "z": 0.22
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "material_id": "generic-core",
+              "component_id": "component-456c2ae3d24844cf"
+            },
+            {
+              "id": "component-ab0bbe1fa9e1448e-1",
+              "name": "Strip core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 2.6,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 2.0,
+                "y": 0.5,
+                "z": 0.22
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "material_id": "generic-core",
+              "component_id": "component-ab0bbe1fa9e1448e"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-456c2ae3d24844cf",
+              "family": "strip",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "width_um": 0.5,
+                "height_um": 0.22
+              },
+              "object_ids": [
+                "component-456c2ae3d24844cf-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.5
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 0.5
+                }
+              ]
+            },
+            {
+              "id": "component-ab0bbe1fa9e1448e",
+              "family": "strip",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "width_um": 0.5,
+                "height_um": 0.22
+              },
+              "object_ids": [
+                "component-ab0bbe1fa9e1448e-1"
+              ],
+              "placement": {
+                "x": 2.6,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": 1.6,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.5
+                },
+                {
+                  "name": "out",
+                  "x": 3.6,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 0.5
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "id": "connection-8c6c23c39be84a8f",
+              "a": {
+                "component_id": "component-ab0bbe1fa9e1448e",
+                "port": "in"
+              },
+              "b": {
+                "component_id": "component-456c2ae3d24844cf",
+                "port": "out"
+              }
+            }
+          ]
+        },
+        "source_um": {
+          "x": -0.7,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "resolution": 16,
+        "duration_fs": 35.0,
+        "wavelength_um": 1.55,
+        "cladding_index": 1.0,
+        "pml_um": 0.8,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "job_id": "9afd570869384e4c9a8077056652fc9e",
+      "timing": {
+        "schema": 1,
+        "acquisition_id": "b669077d0b66418ba855f479d6479df3",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          160,
+          58,
+          52
+        ],
+        "cells": 482560,
+        "spacing_um": 0.0625,
+        "pml_cells": 13,
+        "steps": 294,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 35.03331322763222,
+        "compile_seconds": 0.7103106120048324,
+        "synchronized_step_seconds": 0.43470979800622445,
+        "step_batches": 1,
+        "cuda_event_elapsed_seconds": 0.434977783203125,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 5.550322834998951,
+        "million_cell_steps_per_second": 326.3617260312329
+      },
+      "array_hash": "fd0d3d5ba2e34b1e2ad4cdfb12668d10f511bcdbb5b513f7c2f73809180876bc",
+      "asset_sha256": "341e85876f5df98e9ece654cd6b4e14feb408eae2b59aaba36ca15384d3726a4"
+    },
+    "joined": {
+      "config": {
+        "schema_version": 6,
+        "study_type": "layout-3d",
+        "geometry": {
+          "schema": "photonics-workbench-geometry",
+          "schema_version": 2,
+          "units": "um",
+          "name": "Strip waveguide",
+          "mode": "draft-3d",
+          "domain": {
+            "x": 10.0,
+            "y": 3.6,
+            "z": 3.2
+          },
+          "objects": [
+            {
+              "id": "component-456c2ae3d24844cf-1",
+              "name": "Strip core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 2.0,
+                "y": 0.5,
+                "z": 0.22
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "material_id": "generic-core",
+              "component_id": "component-456c2ae3d24844cf"
+            },
+            {
+              "id": "component-ab0bbe1fa9e1448e-1",
+              "name": "Strip core",
+              "visible": true,
+              "kind": "box",
+              "position": {
+                "x": 2.0,
+                "y": 0,
+                "z": 0
+              },
+              "size": {
+                "x": 2.0,
+                "y": 0.5,
+                "z": 0.22
+              },
+              "radius": 1.0,
+              "inner_radius": 0.6,
+              "rotation_deg": 0,
+              "refractive_index": 2.0,
+              "material_id": "generic-core",
+              "component_id": "component-ab0bbe1fa9e1448e"
+            }
+          ],
+          "materials": [
+            {
+              "id": "generic-core",
+              "name": "Generic dielectric \u00b7 n = 2",
+              "model": "constant-nk",
+              "reference_wavelength_um": 1.55,
+              "source": "Original workbench design preset.",
+              "notes": "Illustrative lossless constant index, not a measured material dataset.",
+              "n": 2.0,
+              "k": 0
+            }
+          ],
+          "components": [
+            {
+              "id": "component-456c2ae3d24844cf",
+              "family": "strip",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "width_um": 0.5,
+                "height_um": 0.22
+              },
+              "object_ids": [
+                "component-456c2ae3d24844cf-1"
+              ],
+              "placement": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": -1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.5
+                },
+                {
+                  "name": "out",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 0.5
+                }
+              ]
+            },
+            {
+              "id": "component-ab0bbe1fa9e1448e",
+              "family": "strip",
+              "generator_version": 1,
+              "parameters": {
+                "length_um": 2.0,
+                "width_um": 0.5,
+                "height_um": 0.22
+              },
+              "object_ids": [
+                "component-ab0bbe1fa9e1448e-1"
+              ],
+              "placement": {
+                "x": 2.0,
+                "y": 0,
+                "z": 0,
+                "rotation_deg": 0
+              },
+              "material_id": "generic-core",
+              "ports": [
+                {
+                  "name": "in",
+                  "x": 1.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 180.0,
+                  "width_um": 0.5
+                },
+                {
+                  "name": "out",
+                  "x": 3.0,
+                  "y": 0,
+                  "z": 0,
+                  "angle_deg": 0,
+                  "width_um": 0.5
+                }
+              ]
+            }
+          ],
+          "connections": [
+            {
+              "id": "connection-8c6c23c39be84a8f",
+              "a": {
+                "component_id": "component-ab0bbe1fa9e1448e",
+                "port": "in"
+              },
+              "b": {
+                "component_id": "component-456c2ae3d24844cf",
+                "port": "out"
+              }
+            }
+          ]
+        },
+        "source_um": {
+          "x": -0.7,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "resolution": 16,
+        "duration_fs": 35.0,
+        "wavelength_um": 1.55,
+        "cladding_index": 1.0,
+        "pml_um": 0.8,
+        "solver": "fdtdx",
+        "device": "gpu"
+      },
+      "job_id": "a4569e36a1b84f1db6b93804f912c272",
+      "timing": {
+        "schema": 1,
+        "acquisition_id": "819b2207509a4a86a1c0667e9b501593",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          160,
+          58,
+          52
+        ],
+        "cells": 482560,
+        "spacing_um": 0.0625,
+        "pml_cells": 13,
+        "steps": 294,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 35.03331322763222,
+        "compile_seconds": 0.8368685760069638,
+        "synchronized_step_seconds": 0.6941645970073296,
+        "step_batches": 1,
+        "cuda_event_elapsed_seconds": 0.6944327392578125,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 6.4062625680089695,
+        "million_cell_steps_per_second": 204.37896229747076
+      },
+      "array_hash": "fd8f639fe7085efe61afdb181990c996b3f5be8649f385bb21d0cf9dd7ed0fac",
+      "asset_sha256": "fbd34c220e3f37a8c2c0ae09a5ccf275fa751e7038af2af56c61ca2e939a5b2d"
+    },
+    "field_python": {
+      "exact_arrays": 11,
+      "exact_connections": true,
+      "timing": {
+        "schema": 1,
+        "acquisition_id": "2ca387fd50a9456a8eb0aa9e8b308079",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          160,
+          58,
+          52
+        ],
+        "cells": 482560,
+        "spacing_um": 0.0625,
+        "pml_cells": 13,
+        "steps": 294,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 35.03331322763222,
+        "compile_seconds": 0.6993844579992583,
+        "synchronized_step_seconds": 0.5721221760031767,
+        "step_batches": 1,
+        "cuda_event_elapsed_seconds": 0.572262451171875,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 5.654441978011164,
+        "million_cell_steps_per_second": 247.9761245947793
+      }
+    },
+    "field_notebook": {
+      "exact_arrays": 11,
+      "exact_connections": true,
+      "timing": {
+        "schema": 1,
+        "acquisition_id": "0bb6dfba403b4a129a11a6a77d849f74",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          160,
+          58,
+          52
+        ],
+        "cells": 482560,
+        "spacing_um": 0.0625,
+        "pml_cells": 13,
+        "steps": 294,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 35.03331322763222,
+        "compile_seconds": 0.951725525999791,
+        "synchronized_step_seconds": 0.4248291060066549,
+        "step_batches": 1,
+        "cuda_event_elapsed_seconds": 0.4249845886230469,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 5.705790697989869,
+        "million_cell_steps_per_second": 333.9522598476988
+      }
+    }
+  },
+  "scope": "Two physical 3D point-current CUDA runs compare a 0.6 \u00b5m gap with aligned strip ends on the same grid. The stored edge is identical. The result measures the fields of the actual geometry; it does not give port transmission.",
+  "versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6"
+  },
+  "field_sampling": "Spatially averaged Yee samples, positive outermost layer omitted in display, raw fields also exported."
+}

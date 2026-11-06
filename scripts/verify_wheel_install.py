@@ -114,6 +114,19 @@ def main():
         assert b'acquisition_id' in csv and b'synchronized_step_seconds' in csv
         phase_csv=get('/api/calibrations/phase.csv?receipt=v014-ring-phase-wall.json',raw=True)
         assert b'signed_phase_minus_vendor_rad' in phase_csv and b'single central mode' in phase_csv
+        reciprocal_exports=[]
+        ring_preset=next(p for p in presets if p['case']=='ring-3d')
+        assert ring_preset['ring_meshes']['wall-tensor']==[16,20] and ring_preset['evidence']['rejected']
+        for geometry,meshes in ring_preset['reciprocal_meshes'].items():
+            for mesh in meshes:
+                config={'case':'ring-3d','geometry_3d':geometry,'ring_interface':'reciprocal-wall',
+                        'resolution':mesh,'solver':'fdtdx','device':'gpu'}
+                with zipfile.ZipFile(io.BytesIO(get('/api/reproduce/calibration',config,raw=True))) as bundle:
+                    manifest=json.loads(bundle.read('manifest.json'))
+                    assert manifest['worker']=='scripts.run_reciprocal_ring3d'
+                    assert {'source/scripts/calibrate_loaded_ring3d.py','source/scripts/reciprocal_ring_wall.py',
+                            f'source/docs/verification/v014-ring-memory-{geometry}-r24-reciprocal.json'}<=set(bundle.namelist())
+                reciprocal_exports.append({'geometry':geometry,'resolution':mesh})
         for case, options in [('ring-3d', {'ring_interface':'exact-area','ring_material':'palik-ade'}),
                               ('ring-3d', {'ring_interface':'wall-tensor'}),
                               ('grating-3d', {'grating_material_model':'direct-yee','grating_domain':'mirror-y'}),
@@ -311,7 +324,8 @@ def main():
               'calibrated_cli_result_bundle_verified':True,
               'generic_calibration_config_coupling':repeated['result']['center_beam_to_guide'], 'export_found_registered_interpreter': True,
               'cavity_four_modes_equal_to_packaged_reference': True, 'installed_port_alignment': True,
-              'installed_planned_aligned_disconnected_and_exported': True, 'pip_check': True, 'doctor_meep_ready': True,
+              'installed_planned_aligned_disconnected_and_exported': True, 'installed_reciprocal_exports':reciprocal_exports,
+              'pip_check': True, 'doctor_meep_ready': True,
               'served_frontend_assets': assets, 'catalog_families': 27, 'benchmark_data': True,
               'job_id': jid, 'actual_device': job['result']['actual_device'], 'field_shape_zyx': volume['shape'],
               'state_separate_from_package': True, 'exclusive_store': True, 'saved_run_after_restart': True,

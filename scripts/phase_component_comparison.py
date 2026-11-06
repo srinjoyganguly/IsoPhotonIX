@@ -174,12 +174,43 @@ def grating_case_key(settings):
     return {k:settings.get(k) for k in keys}
 
 
-def grating_phase_flags(a, s):
+def grating_return_windows(report, archive, transfer, final_s):
+    """Register each measured return using the same incident acquisition and plane as the final S11."""
+    if 'dev_reciprocal_return_history' not in archive:
+        return None
+    from scripts.calibrate_finite_grating import return_window_status
+    ref,device=report['stages']['reference'],report['stages']['device']
+    if device['return_reference_arrays_sha256']!=ref['arrays_sha256']:
+        raise ValueError('The return history is not bound to this incident acquisition.')
+    samples=archive['dev_reciprocal_return_history']
+    times=np.asarray([h['time_fs'] for h in device['history']])
+    if samples.shape!=(len(times),len(final_s)) or np.any(np.diff(times)<=0):
+        raise ValueError('Return windows must match the recorded simulation times and wavelengths.')
+    reference_error=np.max([h['relative_incident_plane_l2_change'] for h in ref['history'][-2:]],axis=0)
+    native=return_window_status(samples,reference_error)
+    if native!=report['radiation']['reciprocal_return_settling']:
+        raise ValueError('Stored return gates differ from the source-bound detector history.')
+    np.testing.assert_allclose(abs(transfer),1.,rtol=1e-10,atol=1e-12)
+    registered=samples*transfer
+    np.testing.assert_allclose(registered[-1],final_s,rtol=2e-6,atol=1e-8)
+    local=return_window_status(registered,reference_error)
+    np.testing.assert_array_equal(local['phase_qualified'],native['phase_qualified'])
+    np.testing.assert_array_equal(local['amplitude_qualified'],native['amplitude_qualified'])
+    for key in ('max_absolute_return_change','max_phase_change_rad'):
+        np.testing.assert_allclose(local[key],native[key],rtol=2e-6,atol=1e-8)
+    return {'incident_stage_arrays_sha256':ref['arrays_sha256'],'time_fs':times.tolist(),
+        'registered_real':registered.real.tolist(),'registered_imag':registered.imag.tolist(),'qualification':local,
+        'scope':'Each raw reciprocal-mode coefficient is multiplied by the same independently defined phase factor at its wavelength. This preserves the measured convergence while expressing the field at the common port plane.'}
+
+
+def grating_phase_flags(a, s, returns=None):
     history = a['dev_history_observable']
     if len(history)<3 or history.shape[1]!=len(s):
         raise ValueError('Need three final guided-mode observations to test temporal phase.')
     np.testing.assert_allclose(history[-1],a['output_mode'],rtol=1e-7)
     flags = abs(s)>=S_FLOOR
+    if returns is not None:
+        flags[:,0] &= np.asarray(returns['qualification']['phase_qualified'])
     flags[:,1] &= np.all(abs(np.angle(history[-2:]*history[-3:-1].conj()))<=.05,axis=0)
     return flags
 
@@ -234,7 +265,9 @@ def tidy_grating(r,a):
     guided*=np.exp(2j*np.pi*a['dev_mode_neff'].real/w*(x_out-guide_x))
     s=np.stack([reflected,guided],axis=1)
     np.testing.assert_allclose(abs(guided)**2,a['coupling'],rtol=2e-6)
-    return {'case_key':grating_case_key(m),'vendor':'tidy3d','r':m['resolution'],'w':w,'s':s,'valid':a['valid'],'phase_ok':grating_phase_flags(a,s),
+    returns=grating_return_windows(r,a,1/chi**2,s[:,0])
+    return {'case_key':grating_case_key(m),'vendor':'tidy3d','r':m['resolution'],'w':w,'s':s,'valid':a['valid'],
+            'return_windows':returns,'phase_ok':grating_phase_flags(a,s,returns),
             'sha':r['arrays_sha256'],'info':{'sample_z_um':z,'target_beam_z_um':beam_plane_z,'target_beam_x_um':m['beam_x'],
                 'guide_x_um':x_out,'target_guide_x_um':guide_x,
                 'guide_translation_sensitivity':guide_plane_sensitivity(r,a['dev_mode_neff'],w,x_out-guide_x),
@@ -280,7 +313,9 @@ def grating_measurement(path):
         beta_out = 2*np.pi*a['dev_mode_neff'].real/w
         s = np.stack([reflected*np.exp(2j*beta*length_in),outgoing*np.exp(1j*(beta*length_in+beta_out*length_out))],axis=1)
         np.testing.assert_allclose(abs(s[:,1])**2,a['coupling'],rtol=2e-6)
-        return {'case_key':grating_case_key(m),'vendor':'lumerical','r':n,'w':w,'s':s,'valid':a['valid'],'phase_ok':grating_phase_flags(a,s),
+        returns=grating_return_windows(r,a,np.exp(2j*beta*length_in)/chi**2,s[:,0])
+        return {'case_key':grating_case_key(m),'vendor':'lumerical','r':n,'w':w,'s':s,'valid':a['valid'],
+                'return_windows':returns,'phase_ok':grating_phase_flags(a,s,returns),
                 'sha':r['arrays_sha256'],'info':{'center_x_um':center,'sample_z_um':z,'guide_x_um':x_out,
                     'target_fiber_z_um':target_z,'target_axis_x_um':float(m['fiber_center_x']+target_z*np.tan(theta)),
                     'file_port_center_x_um':2.8582013154835044,'target_guide_x_um':target_x,
@@ -350,8 +385,12 @@ def compare_fixed_ring(row,vendor_file):
     for j,name in enumerate(CHANNELS['ring']):
         strong=both[:,j]
         diagnostics[name]={'absolute_phase_residual_rad':distribution(delta[:,j][strong]),
+            'phase_gate_counts':{'shared_valid':int(common.sum()),'native_temporal_and_amplitude':int((common&fixed_temporal[:,j]).sum()),
+                'filed_interval_and_amplitude':int((common&vendor_stable[:,j]).sum()),
+                'both_center_amplitudes_above_floor':int((common&(abs(fixed_s[:,j])>=S_FLOOR)&(abs(vendor_s[:,j])>=S_FLOOR)).sum()),
+                'joint_absolute_phase':int(strong.sum())},
             'native_vs_vendor_power_delta':distribution((abs(fixed_s[:,j])**2-abs(vendor_s[:,j])**2)[common]),
-            'fixed_minus_frequency_specific_power_max':float(np.max(abs(abs(fixed_s[common,j])**2-abs(s[common,j])**2))),
+            'fixed_minus_frequency_specific_power_max':float(np.max(abs(abs(fixed_s[common,j])**2-abs(s[common,j])**2))) if common.any() else None,
             'fixed_minus_frequency_specific_phase_change_rad':distribution(np.angle(fixed_s[:,j]*s[:,j].conj())[strong&row['phase_ok'][:,j]])}
     band_result={'vendor_expansion':'One central TE profile at all 500 frequencies, as described by Ansys.',
          'native_method':'Time projections interpolated once at the saved central-mode wavelength; same weights then applied at every frequency. The actual vendor and local profiles have their measured overlap at that frequency.',
@@ -399,9 +438,30 @@ def compare_mesh(component,previous,row,vendor_file):
         shared_valid &= inside
     elif component=='ring' and row['vendor']=='tidy3d':
         shared_valid &= (w[ib]>=1.5)&(w[ib]<=1.6)
-    return {'meshes':[previous['r'],row['r']],'shared_wavelength_um':w[ib].tolist(),'shared_valid':shared_valid.tolist(),
+    result={'meshes':[previous['r'],row['r']],'shared_wavelength_um':w[ib].tolist(),'shared_valid':shared_valid.tolist(),
         'channels':compare(component,previous['s'][ia],s[ib],shared_valid,
             previous['phase_ok'][ia]&row['phase_ok'][ib],wavelengths=w[ib])}
+    if component=='ring' and previous.get('fixed') is not None and row.get('fixed') is not None:
+        # Repeat the mesh comparison with one expansion profile across the entire
+        # band on each mesh, as specified in the source project. A given mesh
+        # must pass its own two temporal checks and its own profile-gauge check.
+        old_s,old_valid,old_temporal=previous['fixed']
+        new_s,new_valid,new_temporal=row['fixed']
+        old_modes,new_modes=previous['central'],row['central']
+        center=old_modes[0]['wavelength_um']
+        if any(abs(mode['wavelength_um']-center)>1e-12 for mode in (*old_modes,*new_modes)):
+            raise ValueError('A fixed-profile mesh comparison requires the same expansion wavelength.')
+        valid=shared_valid & old_valid[ia] & new_valid[ib]
+        gauge=np.array([all(mode_gauge_valid(m[k]) for m in (old_modes,new_modes) for k in (0,j))
+                        for j in range(len(CHANNELS['ring']))])
+        phase_ok=old_temporal[ia] & new_temporal[ib] & gauge[None,:]
+        channels=compare(component,old_s[ia],new_s[ib],valid,phase_ok,wavelengths=w[ib])
+        for name,qualified in zip(CHANNELS['ring'],gauge,strict=True):
+            if not qualified:
+                channels[name]['same_gauge_complex_delta']=None
+        result['single_central_basis_band']={'profile_wavelength_um':center,'gauge_verified_by_port':gauge.tolist(),
+            'shared_valid':valid.tolist(),'joint_phase_ok':(valid[:,None]&phase_ok).tolist(),'channels':channels}
+    return result
 
 
 def published_power_summary(native,published,valid):
@@ -438,10 +498,11 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
               'vendor_sfile_sha256':file_sha(vendor_file) if vendor_file else None,
               'vendor_project_sha256':file_sha(vendor_project) if vendor_project else None}
     if component=='grating':
+        window_counts=[2 if row['return_windows'] is not None else 0 for row in measurements]
         result['native_phase_evidence']={
             'guide':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':2,'phase_change_limit_rad':.05},
-            'reflection':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':0,
-                          'scope':'Final source-subtracted E/H projection; an independent return-phase duration history is unavailable.'}}
+            'reflection':{'minimum_amplitude':S_FLOOR,'verified_final_phase_intervals':min(window_counts),
+                          'scope':'The final source-subtracted E/H projection defines the port return. Native samples with a registered return history also require the reported per-bin temporal phase gate.'}}
     if rejected_rings:
         if component!='ring':
             raise ValueError('A rejected ring can only accompany a ring study.')
@@ -460,6 +521,8 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
                   'physical_model':row['case_key'],'total_wavelengths':len(w),'resolution':row['r'],'arrays_sha256':row['sha'],'planes':row['info'],'wavelength_um':w.tolist(),
                   'registered_complex_s_real':s.real.tolist(),'registered_complex_s_imag':s.imag.tolist(),
                   'valid_bins':row['valid'].tolist(),'phase_ok':row['phase_ok'].tolist()}
+        if component=='grating':
+            record['registered_return_time_history']=row['return_windows']
         if 'duration' in row:
             record['native_duration_um_c']=row['duration']
         if 'transient_abs' in row:

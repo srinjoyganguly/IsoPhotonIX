@@ -135,9 +135,11 @@ def spatial_index():
                 nominal=path.name.endswith(f"-t{int(data['duration_um_c'])}.json")
                 # The first record opens in the GUI. Start with the qualified default
                 # geometry and mesh; keep the shortened time-window diagnostics accessible.
-                wall=model.get('ring_interface')=='wall-tensor'
-                ring_order[path.name]=(not data['passed'],vendor!='lumerical',not wall,not nominal,-mesh,-data['duration_um_c'])
-                key=(data['passed'],mesh,wall,data['duration_um_c'],nominal)
+                interface_rank={'reciprocal-wall':0,'wall-tensor':1,'exact-area':2,'legacy':3}[model.get('ring_interface','legacy')]
+                ring_order[path.name]=(not data['passed'],vendor!='lumerical',interface_rank,-mesh,-data['duration_um_c'],not nominal)
+                band=[usable for wave,usable in zip(series['wavelength_um'],series['valid_bins'])
+                      if 1.5-1e-12<=wave<=1.6+1e-12]
+                key=(bool(band) and all(band),-interface_rank,mesh,data['duration_um_c'],data['passed'],nominal)
                 if data.get('measured_drop_fsr_nm') is not None and (vendor not in best_ring or key>best_ring[vendor][0]):
                     best_ring[vendor]=(key,data)
             else:
@@ -217,6 +219,8 @@ def spatial_index():
             delta=r.get('vendor_comparison',{}).get('channels',{}).get('drop',{}).get('mean_absolute_power_difference')
             if delta is not None:
                 note+=f" Mean absolute drop-power difference over the common qualified band: {delta:.4f}."
+            if not r['passed']:
+                note+=f" The full observation qualified {r['valid_bins']} of {r['total_bins']} wavelengths."
         else:
             note='Published 3D through and drop spectra for this ring geometry.'
         index['ring-3d']['comparisons'].append(dict(vendor=brand,url=url,description=note))

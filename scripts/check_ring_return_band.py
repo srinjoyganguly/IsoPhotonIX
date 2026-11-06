@@ -50,7 +50,7 @@ def peak_summary(wl,power,duration,wavelength=1.55):
                 rayleigh_spacing_estimate_nm=float(1000*wavelength**2/(duration-PULSE_END)))
 
 
-def measure(path,reference_path=None):
+def measure(path,reference_path=None,center_nm=1550.):
     from scripts.diagnose_ring_stability import rejection_for
     rejected=rejection_for(path)
     if rejected:
@@ -63,7 +63,7 @@ def measure(path,reference_path=None):
         ref=stage_arrays(arrays,'reference');dev=stage_arrays(arrays,'device')
         original_wl=arrays['wavelength_um']
         original=arrays['s']
-    wl=np.arange(154750,155351,5)*1e-5  # µm; 0.05 nm diagnostic spacing
+    wl=(np.arange(-250,351,5)/100+center_nm)/1000  # µm; 0.05 nm diagnostic spacing
     ref_signal=spectrum(ref,wl,1.)
     inc=ref_signal[:,0,0]
     background=ref_signal[:,0,1]/inc
@@ -77,12 +77,12 @@ def measure(path,reference_path=None):
             np.testing.assert_allclose(wl[candidates[common]],original_wl[common],atol=1e-12,rtol=0)
             np.testing.assert_allclose(s[candidates[common]],original[common],atol=5e-10,rtol=1e-8)
         powers=abs(s)**2
-        center=int(np.argmin(abs(wl-1.55)))
+        center=int(np.argmin(abs(wl-center_nm/1000)))
         significant=(powers[:,0]>=.01)&(powers[:,3]>=.01)
         relative=np.angle(s[significant,3]*s[significant,0].conj())
-        differential=np.angle(np.exp(1j*(relative-relative[np.argmin(abs(wl[significant]-1.55))]))) if len(relative) else relative
+        differential=np.angle(np.exp(1j*(relative-relative[np.argmin(abs(wl[significant]-center_nm/1000))]))) if len(relative) else relative
         end=float(dev['time_um_c'][int(len(dev['time_um_c'])*fraction)-1])
-        hist=dict(window_fraction=fraction,observed_um_c=end,lines={key:peak_summary(wl,powers[:,i],end)
+        hist=dict(window_fraction=fraction,observed_um_c=end,lines={key:peak_summary(wl,powers[:,i],end,center_nm/1000)
                     for key,i in (('reflection',0),('drop',2),('add_side',3))},
                 at_1550=dict(channel_powers=powers[center].tolist(),normalized_complex_s_pairs=[[float(z.real),float(z.imag)] for z in s[center]],
                     straight_background_abs_s=float(abs(background[center])),reflection_add_combined_power=float(powers[center,0]+powers[center,3])),
@@ -90,6 +90,10 @@ def measure(path,reference_path=None):
                 maximum_return_power_difference=float(np.max(abs(powers[:,0]-powers[:,3]))),
                 maximum_add_to_reflection_phase_change_relative_to_1550_rad=float(np.max(abs(differential))) if len(relative) else None,
                 wavelength_um=wl.tolist(),power={key:powers[:,i].tolist() for i,key in enumerate(('reflection','through','drop','add_side'))})
+        if center_nm!=1550.:
+            hist['at_band_center']=hist.pop('at_1550')
+            key='maximum_add_to_reflection_phase_change_relative_to_1550_rad'
+            hist['maximum_add_to_reflection_phase_change_relative_to_band_center_rad']=hist.pop(key)
         histories.append(hist)
     published=None
     if reference_path is not None:
@@ -105,7 +109,7 @@ def measure(path,reference_path=None):
                 largest_native_sample_power=float(values[band][peak]),
                 interpolated_power_at_local_return_peak=float(np.interp(local_peak/1000,w,values)) if local_peak else None)
     return dict(source_report=path.name,arrays_sha256=report['arrays_sha256'],grid_step_nm=.05,
-        published=published,
+        published=published,center_wavelength_nm=center_nm,
         scope='Direct complex Fourier transform of the measured time traces, checked against every stored 0.5 nm sample in the band. Finer sampling gives a denser evaluation of the same finite-time signal. Distinct physical lines still require separation, sufficient observation time and mesh stability.',
         ports='Local positive-Ey mode bases and actual native monitoring planes. The phase variation compares the two measured returned channels; it does not establish eigenmode parity or direction.',
         windows=histories,observable_limits='One excitation; reciprocity relates reverse excitations. Return/add equality cannot be inferred from reciprocity. Three staggered Hz point histories plus instantaneous real E snapshots do not give a complex counter-propagating modal expansion around the ring.')
@@ -115,6 +119,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('report',type=Path)
     parser.add_argument('--lumerical-reference',type=Path)
+    parser.add_argument('--center-nm',type=float,default=1550.)
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
-    args.output.write_text(json.dumps(measure(args.report,args.lumerical_reference),indent=2,allow_nan=False)+'\n')
+    args.output.write_text(json.dumps(measure(args.report,args.lumerical_reference,args.center_nm),indent=2,allow_nan=False)+'\n')

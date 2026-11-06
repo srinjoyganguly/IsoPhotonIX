@@ -6,7 +6,7 @@ import unittest
 
 import numpy as np
 
-from scripts.phase_component_comparison import compare, fixed_mode_ring_spectrum, measured_beta, native_data, sampled_mean_power, tidy_grating
+from scripts.phase_component_comparison import compare, compare_mesh, fixed_mode_ring_spectrum, grating_phase_flags, grating_return_windows, measured_beta, native_data, sampled_mean_power, tidy_grating
 
 
 class PhaseRegistrationTests(unittest.TestCase):
@@ -31,6 +31,47 @@ class PhaseRegistrationTests(unittest.TestCase):
         self.assertEqual(result['guide']['phase_increment_delta_rad']['count'],9)
         self.assertLess(result['guide']['phase_increment_delta_rad']['max_abs'],1e-12)
         self.assertNotIn('same_gauge_phase_delta_rad',result['guide'])
+
+    def test_fixed_profile_mesh_comparison_respects_both_windows_and_port_gauges(self):
+        w=np.array([1.51,1.55,1.59])
+        values=np.ones((3,4),dtype=complex)
+        phases=np.ones((3,4),dtype=bool)
+        modes=[{'wavelength_um':1.55,'overlap_magnitude':1.,'overlap_phase_rad':0.,
+                'native_aperture_to_full_filed_power':1.} for _ in range(4)]
+        a={'r':16,'case_key':{'ring_interface':'reciprocal-wall'},'w':w,'s':values,
+           'valid':np.ones(3,dtype=bool),'phase_ok':phases,'vendor':'lumerical','central':modes,
+           'fixed':(values,np.array([True,False,True]),phases)}
+        new_modes=[dict(mode) for mode in modes]
+        new_modes[3]['overlap_phase_rad']=.1
+        temporal=phases.copy();temporal[2,0]=False
+        b={**a,'r':20,'central':new_modes,'fixed':(values*np.exp(.3j),np.ones(3,dtype=bool),temporal)}
+        result=compare_mesh('ring',a,b,None)['single_central_basis_band']
+        self.assertEqual(result['shared_valid'],[True,False,True])
+        self.assertEqual(result['gauge_verified_by_port'],[True,True,True,False])
+        self.assertEqual(result['channels']['reflection']['same_gauge_phase_delta_rad']['count'],1)
+        self.assertAlmostEqual(result['channels']['drop']['same_gauge_phase_delta_rad']['rms'],.3)
+        self.assertIsNone(result['channels']['add_side']['same_gauge_complex_delta'])
+        self.assertEqual(result['channels']['add_side']['power_delta']['count'],2)
+
+    def test_return_windows_preserve_amplitude_and_temporal_phase_at_common_planes(self):
+        from scripts.calibrate_finite_grating import return_window_status
+        samples=np.array([[.1,.1],[.1,.2],[.1,.3]],dtype=complex)
+        transfer=np.exp(1j*np.array([.4,-.8]))
+        final=samples[-1]*transfer
+        ref={'arrays_sha256':'incident','history':[{'relative_incident_plane_l2_change':[0,0]}]*2}
+        dev={'return_reference_arrays_sha256':'incident','history':[{'time_fs':t} for t in (60,120,180)]}
+        report={'stages':{'reference':ref,'device':dev},
+                'radiation':{'reciprocal_return_settling':return_window_status(samples,[0,0])}}
+        archive={'dev_reciprocal_return_history':samples,'dev_history_observable':np.ones((3,2)),
+                 'output_mode':np.ones(2)}
+        windows=grating_return_windows(report,archive,transfer,final)
+        registered=np.asarray(windows['registered_real'])+1j*np.asarray(windows['registered_imag'])
+        np.testing.assert_allclose(registered,samples*transfer)
+        flags=grating_phase_flags(archive,np.column_stack((final,np.ones(2))),windows)
+        np.testing.assert_array_equal(flags,[[True,True],[False,True]])
+        dev['return_reference_arrays_sha256']='different'
+        with self.assertRaisesRegex(ValueError,'incident acquisition'):
+            grating_return_windows(report,archive,transfer,final)
 
     def test_fixed_profile_interpolates_once_before_transform(self):
         t=np.arange(151)*.1
