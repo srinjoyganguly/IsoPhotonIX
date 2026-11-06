@@ -30,7 +30,12 @@ def measure(engine):
     f,si,bg=.47,3.48**2,1.
     xx,xy,yy=in_plane_inverse(f,*n,1.,0.,si,1.44**2,bg)
     inv=np.array([xx,xy,0.,xy,yy,0.,0.,0.,1.],np.float32)
-    arrays=arrays.aset('inv_permittivities',jax.device_put(np.broadcast_to(inv[:,None,None,None],(9,*shape)),target))
+    tensor=np.broadcast_to(inv[:,None,None,None],(9,*shape))
+    arrays=arrays.aset('inv_permittivities',jax.device_put(tensor,target))
+    links=None
+    if engine=='reciprocal':
+        from scripts.reciprocal_ring_wall import reciprocal_links
+        links=jax.device_put(reciprocal_links(tensor,1/si,1.,periodic=True)[0],target)
     field=np.zeros((3,*shape),np.float32)
     field[0]=np.cos(2*np.pi*np.arange(shape[-1])/shape[-1])
     arrays=arrays.aset('fields->E',jax.device_put(field,target))
@@ -39,7 +44,7 @@ def measure(engine):
             state=forward(state=state,config=sim,objects=objects,key=key,record_detectors=False,
                           record_boundaries=False,simulate_boundaries=True)
         else:
-            state=forward_lossless_xy(state,sim,objects)
+            state=forward_lossless_xy(state,sim,objects,links)
         return state,state[1].fields.E[:,1,1,0]
     steps=256
     _,samples=jax.jit(lambda state:jax.lax.scan(step,state,None,length=steps))((jnp.array(0,jnp.int32),arrays))
@@ -63,7 +68,7 @@ def measure(engine):
                 measured_ex_ey=signals[:,:2].tolist(),expected_ex_ey=expected.tolist())
 
 
-def check_spatial_fields():
+def check_spatial_fields(reciprocal=False):
     """Compare native and specialized fields including source injection and all PML sides."""
     import fdtdx
     import jax
@@ -88,16 +93,23 @@ def check_spatial_fields():
     inv=np.zeros((9,*shape),np.float32)
     angle=rng.uniform(-np.pi,np.pi,shape)
     fraction=rng.uniform(0,1,shape)
+    if reciprocal:
+        angle[:]=np.pi/5
+        fraction[:]=.47
     inv[0],inv[1],inv[4]=in_plane_inverse(fraction,np.cos(angle),np.sin(angle),1.,0.,3.48**2,1.44**2,1.)
     inv[3]=inv[1]
     inv[8]=.52
+    links=None
+    if reciprocal:
+        from scripts.reciprocal_ring_wall import reciprocal_links
+        links=jax.device_put(reciprocal_links(inv,1/3.48**2,1.)[0],target)
     arrays=arrays.aset('inv_permittivities',jax.device_put(inv,target))
     for field in ('E','H'):
         arrays=arrays.aset('fields->'+field,jax.device_put(rng.normal(0,.1,(3,*shape)).astype(np.float32),target))
     def native(i,state):
         return forward(state,sim,objects,key,False,False,True)
     def block(i,state):
-        return forward_lossless_xy(state,sim,objects)
+        return forward_lossless_xy(state,sim,objects,links)
     start=(jnp.array(0,jnp.int32),arrays)
     states=[jax.jit(lambda st:jax.lax.fori_loop(0,steps,step,st))(start)[1].fields for step in (native,block)]
     differences={}

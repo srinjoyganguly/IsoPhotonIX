@@ -185,6 +185,12 @@
         "has_native_field": true
       },
       {
+        "receipt": "v014-grating3d-compact-narrow-return-windows-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
         "receipt": "v014-grating3d-lumerical-direct-r16.json",
         "passed": true,
         "actual_device": "cuda:0",
@@ -204,6 +210,12 @@
       },
       {
         "receipt": "v014-grating3d-tidy3d-mirror-control-r12.json",
+        "passed": true,
+        "actual_device": "cuda:0",
+        "has_native_field": true
+      },
+      {
+        "receipt": "v014-grating3d-tidy3d-mirror-r16.json",
         "passed": true,
         "actual_device": "cuda:0",
         "has_native_field": true
@@ -254,7 +266,8 @@
       ],
       "tidy3d": [
         12,
-        14
+        14,
+        16
       ]
     }
   },

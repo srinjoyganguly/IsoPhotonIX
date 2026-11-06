@@ -1,0 +1,970 @@
+{
+  "schema_version": 1,
+  "case_id": "finite-grating-3d",
+  "vendor": "Workbench",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "passed": true,
+  "settings": {
+    "geometry": "compact-narrow",
+    "resolution": 12,
+    "period": 0.62,
+    "fill": 0.8,
+    "teeth": 8,
+    "width": 2.0,
+    "guide_width": 0.5,
+    "taper": 3.0,
+    "height": 0.26,
+    "etch": 0.16,
+    "oxide_top": 0.68,
+    "oxide_bottom": 2.0,
+    "n_si": 3.47,
+    "n_oxide": 1.44,
+    "beam_x": 1.8,
+    "waist": 1.5,
+    "angle_deg": 14.5,
+    "source_z": 1.18,
+    "buffer": 0.93,
+    "pml": 0.667,
+    "max_time_fs": 750.0,
+    "residual_slab_laterally_extended": false
+  },
+  "stages": {
+    "reference": {
+      "energy_volume": "native allocated non-PML region",
+      "full_shape": [
+        134,
+        76,
+        74
+      ],
+      "grating_domain": "full",
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "66f6224dd8e34abfa95bf8ea81fae622",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          134,
+          76,
+          74
+        ],
+        "cells": 753616,
+        "spacing_um": 0.08333333333333333,
+        "pml_cells": 8,
+        "steps": 2646,
+        "dt_seconds": 1.588812391275838e-16,
+        "simulated_time_fs": 420.3997587315867,
+        "compile_seconds": 1.9790598480030894,
+        "synchronized_step_seconds": 7.018012752014329,
+        "step_batches": 7,
+        "cuda_event_elapsed_seconds": 7.0196162109375,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 28.681237879995024,
+        "million_cell_steps_per_second": 284.1356957391759,
+        "setup_before_compile_seconds": 29.557025159985642
+      },
+      "stage": "reference",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "shape": [
+        134,
+        76,
+        74
+      ],
+      "grid_resolution": 12,
+      "pml_cells": 8,
+      "time_steps": 2646,
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 60.057108390226674,
+          "energy": 9.166721611109097e-06,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": null,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 120.11421678045335,
+          "energy": 2.1231467723846436,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9999983627603946,
+          "relative_incident_plane_l2_change": [
+            1.0008363708047776,
+            0.9994210340000949,
+            0.998727551654746,
+            0.9993362048238185,
+            1.0006211026355671
+          ]
+        },
+        {
+          "time_fs": 180.17132517068,
+          "energy": 14.658391952514648,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.987543771884455,
+          "relative_incident_plane_l2_change": [
+            1.014752949739377,
+            0.9191120745149906,
+            0.8886772639616562,
+            0.9164347398779041,
+            0.9979077710297732
+          ]
+        },
+        {
+          "time_fs": 240.2284335609067,
+          "energy": 0.003240336896851659,
+          "energy_ratio": 0.6104260087013245,
+          "relative_spectral_change": 0.27461941627362124,
+          "relative_incident_plane_l2_change": [
+            0.22932270401255922,
+            0.16480818728315955,
+            0.14851565513746312,
+            0.16394871929703106,
+            0.2180428645948594
+          ]
+        },
+        {
+          "time_fs": 300.2855419511333,
+          "energy": 1.0930963079136546e-10,
+          "energy_ratio": 0.00013493880396708846,
+          "relative_spectral_change": 0.0006904976828300139,
+          "relative_incident_plane_l2_change": [
+            0.0005728122240725307,
+            0.0003914173102419252,
+            0.0003466013500580391,
+            0.00038899879856921926,
+            0.0005403872591967218
+          ]
+        },
+        {
+          "time_fs": 360.34265034136,
+          "energy": 8.964542996814373e-11,
+          "energy_ratio": 4.552030193755163e-12,
+          "relative_spectral_change": 2.6692136966587486e-10,
+          "relative_incident_plane_l2_change": [
+            2.6605175694628114e-08,
+            1.84197727040872e-08,
+            2.5929169442081352e-08,
+            3.330472819314789e-08,
+            3.423132289310424e-08
+          ]
+        },
+        {
+          "time_fs": 420.3997587315867,
+          "energy": 8.957234259865388e-11,
+          "energy_ratio": 3.7354750369311684e-12,
+          "relative_spectral_change": 6.576139905745368e-10,
+          "relative_incident_plane_l2_change": [
+            2.5838930046671917e-08,
+            1.9602418783222253e-08,
+            2.4719678944518914e-08,
+            3.1878929515459906e-08,
+            3.461656551082755e-08
+          ]
+        }
+      ],
+      "compile_seconds": 1.9791032600041945,
+      "stepping_seconds": 7.086094198006322,
+      "source_direction": [
+        -0.25038000365059837,
+        0.0,
+        -0.9681476404825486
+      ],
+      "source_sampling": "host-sampled-air-gaussian",
+      "return_reference_arrays_sha256": null,
+      "source_eh_sha256": "8869dce27a277deab7eaef8b06a9643630a894258f4acfcf634bf49d5d8e2777",
+      "source_time_offsets_sha256": "3adc13c76fc3be7477a74977766e8bb645a430f61df0db584cffea49b4651d56",
+      "scalar_permittivity_sha256": "d7e649f00f950c6fc18260fe8b6ce0505653594eb5f5f62704fdba881928ecb0",
+      "electric_component_permittivity_sha256": [
+        "d7e649f00f950c6fc18260fe8b6ce0505653594eb5f5f62704fdba881928ecb0",
+        "d7e649f00f950c6fc18260fe8b6ce0505653594eb5f5f62704fdba881928ecb0",
+        "d7e649f00f950c6fc18260fe8b6ce0505653594eb5f5f62704fdba881928ecb0"
+      ],
+      "sample_plane_z_um": 0.9283333333333341,
+      "output_plane_x_um": -3.4783333333333344,
+      "sampled_vertical_um": [
+        -0.6549999999999994,
+        0.8450000000000002
+      ],
+      "port_basis": null,
+      "fiber_mode": null,
+      "native_worker_sha256": "890803770342873de9fc04c959d960cab84b541cc5de8ed4b4f9575eaec36074",
+      "cuda_identity": {
+        "ordinal": 0,
+        "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "compute_capability": "8.6",
+        "driver_version": 13040,
+        "per_cache_device_sha256": "3d6db2feeda4c3ede4a4366fbb67e829c1a73691348bbceea2198e40152b78c1"
+      },
+      "memory_admission": null,
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1"
+      },
+      "metadata_sha256": "8ecaced5a6964bfc0ad3c23aa03ea9aaa01133a8aa154dd078938e31e4e9a9ae",
+      "identity": {
+        "settings": {
+          "geometry": "compact-narrow",
+          "resolution": 12,
+          "period": 0.62,
+          "fill": 0.8,
+          "teeth": 8,
+          "width": 2.0,
+          "guide_width": 0.5,
+          "taper": 3.0,
+          "height": 0.26,
+          "etch": 0.16,
+          "oxide_top": 0.68,
+          "oxide_bottom": 2.0,
+          "n_si": 3.47,
+          "n_oxide": 1.44,
+          "beam_x": 1.8,
+          "waist": 1.5,
+          "angle_deg": 14.5,
+          "source_z": 1.18,
+          "buffer": 0.93,
+          "pml": 0.667,
+          "max_time_fs": 750.0,
+          "residual_slab_laterally_extended": false
+        },
+        "stage": "reference",
+        "cuda_identity": {
+          "ordinal": 0,
+          "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "compute_capability": "8.6",
+          "driver_version": 13040,
+          "per_cache_device_sha256": "3d6db2feeda4c3ede4a4366fbb67e829c1a73691348bbceea2198e40152b78c1"
+        },
+        "sources": {
+          "calibrate_finite_grating.py": "890803770342873de9fc04c959d960cab84b541cc5de8ed4b4f9575eaec36074",
+          "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+          "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+          "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+          "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+          "grating_angular_spectrum.py": "6cb92ee07a20d8eb7862413c0a4cf167f95806639b9374de3f42bddfabc50e5e",
+          "lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+          "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+          "grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+          "gpu_timing.py": "7150612d42ed0dbb5cfe2ab9c0feda5fa1b74d8e307ac36b62da21395f34633b",
+          "grating_mirror.py": "201bc4850163a537ccd875417d15467637dedea6c24bb741bbf72b67ea64fad5"
+        },
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2",
+          "scipy": "1.17.1"
+        }
+      },
+      "signature": "690cbaff46ac9bf73b092887a2a2e13035f989e09664e947a30a0d5a0c40180f",
+      "arrays_sha256": "05995beb7ca0928ecf31a281cf1defded192a5cd1f5de7b244dcef29b7247a7f",
+      "acquisition": {
+        "status": "fresh",
+        "gpu_lock_wait_seconds": 1899.676382147998
+      }
+    },
+    "device": {
+      "energy_volume": "native allocated non-PML region",
+      "full_shape": [
+        134,
+        76,
+        74
+      ],
+      "grating_domain": "full",
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "75c477839bf04aa8b20386aea5fc67f7",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          134,
+          76,
+          74
+        ],
+        "cells": 753616,
+        "spacing_um": 0.08333333333333333,
+        "pml_cells": 8,
+        "steps": 3402,
+        "dt_seconds": 1.588812391275838e-16,
+        "simulated_time_fs": 540.51397551204,
+        "compile_seconds": 0.9701025020040106,
+        "synchronized_step_seconds": 8.108414463989902,
+        "step_batches": 9,
+        "cuda_event_elapsed_seconds": 8.109993225097655,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 22.251436458012904,
+        "million_cell_steps_per_second": 316.1902543815492,
+        "setup_before_compile_seconds": 18.289136485997005
+      },
+      "stage": "device",
+      "actual_device": "cuda:0",
+      "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "shape": [
+        134,
+        76,
+        74
+      ],
+      "grid_resolution": 12,
+      "pml_cells": 8,
+      "time_steps": 3402,
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 60.057108390226674,
+          "energy": 9.189665433950722e-06,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": null,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 120.11421678045335,
+          "energy": 2.277251720428467,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9999911737456832,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 180.17132517068,
+          "energy": 39.37397003173828,
+          "energy_ratio": 1.0,
+          "relative_spectral_change": 0.9991032869967318,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 240.2284335609067,
+          "energy": 6.859403610229492,
+          "energy_ratio": 0.923451840877533,
+          "relative_spectral_change": 0.9464552738760253,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 300.2855419511333,
+          "energy": 0.09051831811666489,
+          "energy_ratio": 0.1608760505914688,
+          "relative_spectral_change": 0.3953107723581803,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 360.34265034136,
+          "energy": 0.008183566853404045,
+          "energy_ratio": 0.0021229584235697985,
+          "relative_spectral_change": 0.02819066444079726,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 420.3997587315867,
+          "energy": 0.0002705045335460454,
+          "energy_ratio": 0.00019193212210666388,
+          "relative_spectral_change": 0.010069143903156464,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 480.4568671218134,
+          "energy": 2.5549077690811828e-05,
+          "energy_ratio": 6.344239864120027e-06,
+          "relative_spectral_change": 0.0015611794784749164,
+          "relative_incident_plane_l2_change": null
+        },
+        {
+          "time_fs": 540.51397551204,
+          "energy": 1.8011490965363919e-06,
+          "energy_ratio": 4.981445727025857e-07,
+          "relative_spectral_change": 0.00040110824182126756,
+          "relative_incident_plane_l2_change": null
+        }
+      ],
+      "compile_seconds": 0.9701251029910054,
+      "stepping_seconds": 8.171864546995494,
+      "source_direction": [
+        -0.25038000365059837,
+        0.0,
+        -0.9681476404825486
+      ],
+      "source_sampling": "host-sampled-air-gaussian",
+      "return_reference_arrays_sha256": "05995beb7ca0928ecf31a281cf1defded192a5cd1f5de7b244dcef29b7247a7f",
+      "source_eh_sha256": "8869dce27a277deab7eaef8b06a9643630a894258f4acfcf634bf49d5d8e2777",
+      "source_time_offsets_sha256": "3adc13c76fc3be7477a74977766e8bb645a430f61df0db584cffea49b4651d56",
+      "scalar_permittivity_sha256": "fb1242ef1849841406fd167129bfdffc90cf5ab3fab5329ce8a0f605eb9a2eaa",
+      "electric_component_permittivity_sha256": [
+        "f5d772bb801227b6792101bc9164b805929a43dc00e2fa7903bd23077cae6b5e",
+        "428ea80d4b2588a09b72fa6b375bade349e550fccb98f52e79889d92417971f3",
+        "011655e4b5240795c1835de74b07f46059a72665ded80ce6da576fbc6cd17893"
+      ],
+      "sample_plane_z_um": 0.9283333333333341,
+      "output_plane_x_um": -3.4783333333333344,
+      "sampled_vertical_um": [
+        -0.6549999999999994,
+        0.8450000000000002
+      ],
+      "port_basis": {
+        "neff_real": [
+          2.519932746887207,
+          2.4975225925445557,
+          2.47493314743042,
+          2.452169895172119,
+          2.4292385578155518
+        ],
+        "neff_imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "ey_transverse_fraction": [
+          0.986778736114502,
+          0.9858577251434326,
+          0.9848865866661072,
+          0.9838646054267883,
+          0.9827912449836731
+        ],
+        "minimum_ey_transverse_fraction": 0.5,
+        "edge_electric_l2_fraction": [
+          3.633692176663317e-05,
+          4.625440851668827e-05,
+          5.857400537934154e-05,
+          7.381226168945432e-05,
+          9.258525824407116e-05
+        ],
+        "gauge": "Ey at the center sample is real and positive; common +x basis at both ports"
+      },
+      "fiber_mode": null,
+      "native_worker_sha256": "890803770342873de9fc04c959d960cab84b541cc5de8ed4b4f9575eaec36074",
+      "cuda_identity": {
+        "ordinal": 0,
+        "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "compute_capability": "8.6",
+        "driver_version": 13040,
+        "per_cache_device_sha256": "3d6db2feeda4c3ede4a4366fbb67e829c1a73691348bbceea2198e40152b78c1"
+      },
+      "memory_admission": null,
+      "versions": {
+        "fdtdx": "0.6.2",
+        "jax": "0.10.2",
+        "jaxlib": "0.10.2",
+        "tidy3d": "2.11.2",
+        "numpy": "2.4.6",
+        "scipy": "1.17.1"
+      },
+      "metadata_sha256": "993add7028031ea5b96c603b853b92a36b43f09ae07463527915c15123d54704",
+      "identity": {
+        "settings": {
+          "geometry": "compact-narrow",
+          "resolution": 12,
+          "period": 0.62,
+          "fill": 0.8,
+          "teeth": 8,
+          "width": 2.0,
+          "guide_width": 0.5,
+          "taper": 3.0,
+          "height": 0.26,
+          "etch": 0.16,
+          "oxide_top": 0.68,
+          "oxide_bottom": 2.0,
+          "n_si": 3.47,
+          "n_oxide": 1.44,
+          "beam_x": 1.8,
+          "waist": 1.5,
+          "angle_deg": 14.5,
+          "source_z": 1.18,
+          "buffer": 0.93,
+          "pml": 0.667,
+          "max_time_fs": 750.0,
+          "residual_slab_laterally_extended": false
+        },
+        "stage": "device",
+        "cuda_identity": {
+          "ordinal": 0,
+          "name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+          "compute_capability": "8.6",
+          "driver_version": 13040,
+          "per_cache_device_sha256": "3d6db2feeda4c3ede4a4366fbb67e829c1a73691348bbceea2198e40152b78c1"
+        },
+        "sources": {
+          "calibrate_finite_grating.py": "890803770342873de9fc04c959d960cab84b541cc5de8ed4b4f9575eaec36074",
+          "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+          "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+          "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+          "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+          "grating_angular_spectrum.py": "6cb92ee07a20d8eb7862413c0a4cf167f95806639b9374de3f42bddfabc50e5e",
+          "lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+          "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+          "grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+          "gpu_timing.py": "7150612d42ed0dbb5cfe2ab9c0feda5fa1b74d8e307ac36b62da21395f34633b",
+          "grating_mirror.py": "201bc4850163a537ccd875417d15467637dedea6c24bb741bbf72b67ea64fad5"
+        },
+        "versions": {
+          "fdtdx": "0.6.2",
+          "jax": "0.10.2",
+          "jaxlib": "0.10.2",
+          "numpy": "2.4.6",
+          "tidy3d": "2.11.2",
+          "scipy": "1.17.1"
+        },
+        "incident_reference": {
+          "signature": "690cbaff46ac9bf73b092887a2a2e13035f989e09664e947a30a0d5a0c40180f",
+          "arrays_sha256": "05995beb7ca0928ecf31a281cf1defded192a5cd1f5de7b244dcef29b7247a7f"
+        }
+      },
+      "signature": "ec7860739dd127cdf4deb018651db9b22b7a60a17bef3ceb34e0112104b37fde",
+      "arrays_sha256": "76940150c5fb0e7017590c5c8a237f51e8b9f581f7cb02c9286b8388c6d27c38",
+      "acquisition": {
+        "status": "fresh",
+        "gpu_lock_wait_seconds": 993.6530721750023
+      }
+    }
+  },
+  "arrays_sha256": "96f156d617460a05dac7e8a55a12bc306ccd9d8771ceb8a216c311291946e2ba",
+  "result": {
+    "resolution": 12,
+    "wavelength_um": [
+      1.5,
+      1.525,
+      1.55,
+      1.575,
+      1.6
+    ],
+    "beam_to_guide": [
+      0.14316359226577813,
+      0.17302374305734033,
+      0.17553782007100924,
+      0.19689416251724484,
+      0.16723009484691848
+    ],
+    "center_beam_to_guide": 0.17553782007100924,
+    "valid_beam_bins": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "incident_power": [
+      45.91447040993551,
+      103.0620801402593,
+      133.45197597203918,
+      104.8760535188789,
+      52.37924193567489
+    ],
+    "mode_real": [
+      -1.1444470048263633,
+      3.611097573723079,
+      1.994896604006559,
+      -4.465390288746699,
+      0.17122826015291928
+    ],
+    "mode_imag": [
+      -2.2942365993966507,
+      -2.1891005427331414,
+      4.409790979811125,
+      0.8424798483525197,
+      -2.954668590525443
+    ]
+  },
+  "field_preview": {
+    "array": "dev_center_fields",
+    "index": [
+      1
+    ],
+    "axis_order": "xy",
+    "horizontal_axis": "x",
+    "vertical_axis": "z",
+    "horizontal_um": [
+      -3.895000000000001,
+      -3.811666666666668,
+      -3.7283333333333344,
+      -3.645000000000001,
+      -3.5616666666666674,
+      -3.4783333333333344,
+      -3.3950000000000014,
+      -3.3116666666666674,
+      -3.2283333333333344,
+      -3.1450000000000014,
+      -3.0616666666666674,
+      -2.9783333333333344,
+      -2.8950000000000014,
+      -2.8116666666666674,
+      -2.7283333333333344,
+      -2.6450000000000014,
+      -2.561666666666668,
+      -2.4783333333333344,
+      -2.395000000000001,
+      -2.311666666666668,
+      -2.2283333333333344,
+      -2.145000000000001,
+      -2.061666666666668,
+      -1.9783333333333344,
+      -1.895000000000001,
+      -1.8116666666666679,
+      -1.7283333333333344,
+      -1.645000000000001,
+      -1.5616666666666679,
+      -1.4783333333333344,
+      -1.395000000000001,
+      -1.3116666666666679,
+      -1.2283333333333344,
+      -1.145000000000001,
+      -1.0616666666666679,
+      -0.9783333333333344,
+      -0.8950000000000009,
+      -0.8116666666666679,
+      -0.7283333333333344,
+      -0.6450000000000009,
+      -0.5616666666666674,
+      -0.4783333333333344,
+      -0.39500000000000135,
+      -0.3116666666666674,
+      -0.2283333333333344,
+      -0.14500000000000135,
+      -0.061666666666667425,
+      0.021666666666665613,
+      0.10499999999999865,
+      0.18833333333333258,
+      0.2716666666666656,
+      0.35499999999999865,
+      0.4383333333333326,
+      0.5216666666666656,
+      0.6049999999999986,
+      0.6883333333333326,
+      0.7716666666666656,
+      0.8549999999999986,
+      0.9383333333333326,
+      1.0216666666666656,
+      1.1049999999999986,
+      1.1883333333333326,
+      1.2716666666666656,
+      1.3549999999999986,
+      1.4383333333333326,
+      1.5216666666666656,
+      1.6049999999999986,
+      1.6883333333333326,
+      1.7716666666666656,
+      1.8549999999999986,
+      1.9383333333333326,
+      2.0216666666666656,
+      2.1049999999999986,
+      2.1883333333333326,
+      2.2716666666666656,
+      2.3549999999999986,
+      2.4383333333333326,
+      2.5216666666666656,
+      2.6049999999999986,
+      2.6883333333333326,
+      2.7716666666666656,
+      2.8549999999999986,
+      2.9383333333333326,
+      3.0216666666666656,
+      3.1049999999999986,
+      3.1883333333333326,
+      3.2716666666666656,
+      3.3549999999999986,
+      3.4383333333333317,
+      3.5216666666666656,
+      3.6049999999999995,
+      3.6883333333333317,
+      3.7716666666666656,
+      3.8549999999999995,
+      3.9383333333333317,
+      4.021666666666666,
+      4.1049999999999995,
+      4.188333333333332,
+      4.271666666666666,
+      4.3549999999999995,
+      4.438333333333332,
+      4.521666666666666,
+      4.6049999999999995,
+      4.688333333333332,
+      4.771666666666666,
+      4.8549999999999995,
+      4.938333333333332,
+      5.021666666666666,
+      5.1049999999999995,
+      5.188333333333332,
+      5.271666666666666,
+      5.3549999999999995,
+      5.438333333333332,
+      5.521666666666666,
+      5.6049999999999995,
+      5.688333333333332,
+      5.771666666666666,
+      5.8549999999999995
+    ],
+    "vertical_um": [
+      -2.9049999999999994,
+      -2.8216666666666663,
+      -2.738333333333333,
+      -2.6549999999999994,
+      -2.5716666666666663,
+      -2.488333333333333,
+      -2.4049999999999994,
+      -2.3216666666666663,
+      -2.238333333333333,
+      -2.1549999999999994,
+      -2.0716666666666663,
+      -1.9883333333333328,
+      -1.9049999999999996,
+      -1.821666666666666,
+      -1.7383333333333328,
+      -1.6549999999999996,
+      -1.5716666666666663,
+      -1.4883333333333328,
+      -1.4049999999999994,
+      -1.3216666666666663,
+      -1.2383333333333328,
+      -1.1549999999999994,
+      -1.0716666666666663,
+      -0.9883333333333328,
+      -0.9049999999999994,
+      -0.8216666666666663,
+      -0.7383333333333328,
+      -0.6549999999999994,
+      -0.5716666666666663,
+      -0.48833333333333284,
+      -0.40499999999999936,
+      -0.3216666666666663,
+      -0.23833333333333284,
+      -0.15499999999999936,
+      -0.07166666666666632,
+      0.011666666666667158,
+      0.09500000000000064,
+      0.17833333333333368,
+      0.26166666666666716,
+      0.34500000000000064,
+      0.4283333333333341,
+      0.5116666666666672,
+      0.5950000000000002,
+      0.6783333333333341,
+      0.7616666666666672,
+      0.8450000000000002,
+      0.9283333333333341,
+      1.0116666666666672,
+      1.0950000000000002,
+      1.1783333333333341,
+      1.2616666666666672,
+      1.3450000000000002,
+      1.4283333333333341,
+      1.5116666666666672,
+      1.5950000000000002,
+      1.6783333333333341,
+      1.7616666666666672,
+      1.8450000000000002
+    ],
+    "component": "Ey",
+    "wavelength_um": 1.55,
+    "description": "Real part of the Ey phasor on the recorded x\u2013z plane nearest y = 0."
+  },
+  "radiation": {
+    "polar_edges_deg": [
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0
+    ],
+    "fraction_of_incident": [
+      [
+        0.011031643310379532,
+        0.06962390443077163,
+        0.07248902093031816,
+        0.035399379686293156,
+        0.012083450782075988,
+        0.0,
+        0.0036635139669240384,
+        0.00023423453249776642
+      ],
+      [
+        0.008573291766488076,
+        0.060050803393088215,
+        0.05763986642818931,
+        0.01582205760991477,
+        0.027185837587990702,
+        0.0,
+        0.0019492631032327458,
+        0.0024060722513665127
+      ],
+      [
+        0.003450862250372212,
+        0.044816954190474614,
+        0.04370632079902726,
+        0.010288294938463982,
+        0.019140445647190463,
+        0.00887910851355189,
+        0.0018058460493793902,
+        0.0027219155884385914
+      ],
+      [
+        0.0012913578829876586,
+        0.021283899468869227,
+        0.02579947945929994,
+        0.003784305313022112,
+        0.017656542099739866,
+        0.007106395622799542,
+        0.0,
+        0.0036593782808449593
+      ],
+      [
+        0.005486936030727899,
+        0.009140263350727469,
+        0.01365732437929795,
+        0.0015494198600935353,
+        0.015822672257219297,
+        0.005463948147295981,
+        0.0,
+        0.00097937345912098
+      ]
+    ],
+    "scope": "Upgoing propagating power below 80\u00b0, estimated from the finite rectangular air-plane aperture after complex incident-field subtraction. Each bin integrates azimuth; uncollected lateral light and grazing waves lie outside the aperture estimate.",
+    "reciprocal_return_settling": {
+      "max_reference_plane_relative_l2_change": [
+        2.6605175694628114e-08,
+        1.9602418783222253e-08,
+        2.5929169442081352e-08,
+        3.330472819314789e-08,
+        3.461656551082755e-08
+      ],
+      "max_absolute_return_change": [
+        7.834487604389663e-05,
+        7.310886897952983e-05,
+        7.771443729128597e-05,
+        9.46562237011271e-05,
+        0.00013107502118683362
+      ],
+      "max_phase_change_rad": [
+        0.0007076317693139849,
+        0.000712205290416052,
+        0.00044193815517772593,
+        0.004409210053879847,
+        0.0012621169058796163
+      ],
+      "amplitude_qualified": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "phase_qualified": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reference_l2_limit": 0.002,
+      "absolute_amplitude_limit": 0.001,
+      "phase_amplitude_floor": 0.005,
+      "phase_limit_rad": 0.05,
+      "consecutive_changes": 2
+    }
+  },
+  "comparisons": [
+    {
+      "vendor": "Tidy3D",
+      "url": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+      "geometry_matched": false,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "published_power": [
+        0.07110364946451826,
+        0.2590468874157015,
+        0.38018939632056115,
+        0.2744817749939425,
+        0.12127849076095215
+      ],
+      "published_db": [
+        -11.481081081081081,
+        -5.8662162162162526,
+        -4.2,
+        -5.614864864864861,
+        -9.162162162162161
+      ],
+      "figure_sha256": "2eb81a1f20080105be90bbca17fd2ecfe5295327f1c148e40da86a4c88f35a90",
+      "scope": "Workbench compact geometry has a different width, taper, tooth count, beam waist and lateral residual film."
+    },
+    {
+      "vendor": "Lumerical",
+      "url": "https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler",
+      "geometry_matched": false,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "published_s21_power": [
+        0.15061306067750885,
+        0.29454587861600057,
+        0.4002656827642284,
+        0.37022350201649884,
+        0.2237287914242699
+      ],
+      "vendor_file_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+      "scope": "Filed curved 38-period SOI sector, unlike the Tidy3D uniform linear grating. The S21 magnitude in this file is squared to obtain the transfer power between the tilted fiber port and the integrated guide."
+    }
+  ],
+  "verification": {
+    "source_eh_checked": true,
+    "incident_and_mode_power_reconstructed": true,
+    "angular_or_fiber_return_reconstructed": true,
+    "energy_time_and_last_two_windows_checked": true,
+    "field_preview_shape": [
+      118,
+      58
+    ],
+    "numerical_archive_entries": 51,
+    "captured_program_sha256": "890803770342873de9fc04c959d960cab84b541cc5de8ed4b4f9575eaec36074",
+    "incident_beam_direction": {
+      "mean_x_angle_deg": [
+        -14.51487457603909,
+        -14.51614117546258,
+        -14.517529050583104,
+        -14.51767528204795,
+        -14.519468576131704
+      ],
+      "downward_propagating_to_direct": [
+        0.9999184336213851,
+        0.9999264006668318,
+        0.9999389321370035,
+        0.999924359758676,
+        0.9997843250535897
+      ],
+      "upward_propagating_to_direct": [
+        4.239910197711713e-05,
+        4.6833752136556796e-05,
+        5.613521690308018e-05,
+        6.753135434879147e-05,
+        4.488825787109415e-05
+      ],
+      "incident_to_band_max": [
+        0.3440523834548205,
+        0.7722784124369416,
+        1.0,
+        0.7858711177184255,
+        0.39249506464145106
+      ]
+    }
+  },
+  "arrays_file": "v014-grating3d-compact-narrow-return-windows-r12-arrays.npz"
+}

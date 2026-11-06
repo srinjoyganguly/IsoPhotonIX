@@ -1,0 +1,440 @@
+{
+  "method": "Zero versus positive half-cell z lattice origin at unchanged resolution. The physical silicon edges and x/y port planes stay fixed. Both z-domain faces, inner PML faces, and finite launch/receiver aperture edges move by the declared amount. This experiment retains their combined sensitivity.",
+  "case": "coupler",
+  "mesh": 24,
+  "numerical_sha256": "6ba460b6c34d7bde96282003611f8850f4873c22f2b93bf24cb09432330ebd12",
+  "prior_reference_sha256": "3cd76e5e55571560b03ba480265f5e8e544fbd3cccda7ec2b9e00eb83c7374e3",
+  "fresh_zero_vs_prior_complex_delta_max": 0.0,
+  "acquisitions": [
+    {
+      "stage_material_and_source": {
+        "reference": {
+          "yee_component_grid_sha256": "01414d45f59f93844e360503c187f6df23c3507f23575d8e73ded7b0265a1b81",
+          "source_profile_sha256": "4b16d79c6f5d6dc7cca2ad92f33d38c9eb01372f6c7c32cd1d972137360fa4cd",
+          "field_device": "cuda:0"
+        },
+        "device": {
+          "yee_component_grid_sha256": "299390aa724a926d0760a0ec238f6fad4204648f0302b6700028898923ef2801",
+          "source_profile_sha256": "4b16d79c6f5d6dc7cca2ad92f33d38c9eb01372f6c7c32cd1d972137360fa4cd",
+          "field_device": "cuda:0"
+        }
+      },
+      "requested_gpu_allocator": "platform",
+      "z_grid_origin_um": 0.0,
+      "z_grid_origin_cells": 0.0,
+      "domain_z_bounds_um": [
+        -2.0,
+        2.0
+      ],
+      "pml_inner_z_faces_um": [
+        -1.25,
+        1.25
+      ],
+      "source_and_port_aperture_z_bounds_um": [
+        -1.25,
+        1.25
+      ],
+      "physical_si_z_faces_um": [
+        -0.125,
+        0.125
+      ],
+      "port_x_y_um": [
+        [
+          -4.75,
+          -1.25
+        ],
+        [
+          -4.75,
+          1.25
+        ],
+        [
+          4.75,
+          -1.25
+        ],
+        [
+          4.75,
+          1.25
+        ]
+      ],
+      "s_real": [
+        [
+          -0.0021936194668863603,
+          -0.0010128225575396137,
+          -0.009733484881182758,
+          -0.3035415803748327
+        ],
+        [
+          2.2832921538514507e-06,
+          0.0005073462810750555,
+          0.8412308397184749,
+          -0.10623940602117483
+        ],
+        [
+          0.0014063585858547362,
+          -0.00045431092680816844,
+          0.7553765525529107,
+          0.12153228250052528
+        ]
+      ],
+      "s_imag": [
+        [
+          -0.00021961702300895444,
+          -0.0005432089102123042,
+          0.9309434842571683,
+          0.005964111516105759
+        ],
+        [
+          0.00232750594880658,
+          -0.0020983506693580027,
+          0.42644017143763463,
+          0.22013960564073717
+        ],
+        [
+          0.0012526106351414036,
+          -0.00020641267020892297,
+          -0.583828122565651,
+          0.16753861283191346
+        ]
+      ],
+      "straight_transfer_real": [
+        0.88931541918368,
+        -0.23132303300577395,
+        -0.9999602510751869
+      ],
+      "straight_transfer_imag": [
+        -0.45711843214169373,
+        -0.9728771507058239,
+        0.011217203215982236
+      ],
+      "stage_sha256": {
+        "reference": "7a72b72ddbf7472650d57b22ad3c92173d5de196eab5bbf6586f875da8ef073d",
+        "device": "0e65fff904edad5e4a59d3b2baec3a84c6b9f573a0582df3881057720ee41867"
+      },
+      "native_arrays_sha256": "3cd76e5e55571560b03ba480265f5e8e544fbd3cccda7ec2b9e00eb83c7374e3",
+      "memory_preflight": {
+        "cell_shape": [
+          336,
+          168,
+          96
+        ],
+        "free_mib": 12514,
+        "required_free_mib": 8535.0
+      },
+      "stage_acquisition_ids": {
+        "reference": "5825432b9a0449d8b80636e75f78c996",
+        "device": "e90840c9ee9843119bce12a8feffdd16"
+      }
+    },
+    {
+      "stage_material_and_source": {
+        "reference": {
+          "yee_component_grid_sha256": "158fb096b89eb02607e916904554297fca3d5adec0f583c2351ecd06dcb37707",
+          "source_profile_sha256": "9d055fc324ec96206d23321dff5e8b53e9d81da860784f400a71dfb213ce7850",
+          "field_device": "cuda:0"
+        },
+        "device": {
+          "yee_component_grid_sha256": "ab7ef0f60ed57d08ec06d00a13b807c29898eca22fd8386c5b1f80802402053a",
+          "source_profile_sha256": "9d055fc324ec96206d23321dff5e8b53e9d81da860784f400a71dfb213ce7850",
+          "field_device": "cuda:0"
+        }
+      },
+      "requested_gpu_allocator": "platform",
+      "z_grid_origin_um": 0.020833333333333332,
+      "z_grid_origin_cells": 0.5,
+      "domain_z_bounds_um": [
+        -1.9791666666666667,
+        2.0208333333333335
+      ],
+      "pml_inner_z_faces_um": [
+        -1.2291666666666667,
+        1.2708333333333335
+      ],
+      "source_and_port_aperture_z_bounds_um": [
+        -1.2291666666666667,
+        1.2708333333333333
+      ],
+      "physical_si_z_faces_um": [
+        -0.125,
+        0.125
+      ],
+      "port_x_y_um": [
+        [
+          -4.75,
+          -1.25
+        ],
+        [
+          -4.75,
+          1.25
+        ],
+        [
+          4.75,
+          -1.25
+        ],
+        [
+          4.75,
+          1.25
+        ]
+      ],
+      "s_real": [
+        [
+          -0.003226732820989307,
+          0.0009616869566846669,
+          -0.7603558812107298,
+          -0.1711383884635572
+        ],
+        [
+          0.0017625296302682953,
+          0.0015445024710578615,
+          0.10586861168091255,
+          -0.22573280343034124
+        ],
+        [
+          0.0009291515127552056,
+          0.0006139067577442194,
+          0.8904647342561456,
+          -0.0827245521105942
+        ]
+      ],
+      "s_imag": [
+        [
+          -0.0054896780878818194,
+          -0.0015645913815750647,
+          0.5487444733060558,
+          -0.221473476051431
+        ],
+        [
+          0.0003922983274207002,
+          1.1149644198307082e-05,
+          0.9422788214954847,
+          0.02400397999572071
+        ],
+        [
+          0.00048467423223065646,
+          -0.0007404414071961423,
+          0.35738734360575436,
+          0.17882964089868092
+        ]
+      ],
+      "straight_transfer_real": [
+        0.9067935867520759,
+        0.6636991932784091,
+        -0.5439139015913002
+      ],
+      "straight_transfer_imag": [
+        0.4214179264307753,
+        -0.7480008239348397,
+        -0.8391493379672843
+      ],
+      "stage_sha256": {
+        "reference": "c544a8d0b18cfca754ae7982ce3774c35b77658230e7ad7890b41dd2336fa663",
+        "device": "1d8c99c675d238e53bbf762bf8c9aa5f2e9ddf73327361424ff2a28d2fc26d88"
+      },
+      "native_arrays_sha256": "36b44019df5ea7b801d79292bcacf64a37203b1cf781adfd651059561be42ea7",
+      "memory_preflight": {
+        "cell_shape": [
+          336,
+          168,
+          96
+        ],
+        "free_mib": 12374,
+        "required_free_mib": 8535.0
+      },
+      "stage_acquisition_ids": {
+        "reference": "bb9a67b6031645c3a8adcd2549fc798c",
+        "device": "92fc487f38dd481d92c3db7cc0c42ced"
+      }
+    }
+  ],
+  "ports": [
+    {
+      "name": "left_lower",
+      "max_absolute_complex_change": 0.005370369338315081,
+      "max_absolute_power_change": 3.568817220432129e-05,
+      "phase_change_rad": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "name": "left_upper",
+      "max_absolute_complex_change": 0.0023506774630548148,
+      "max_absolute_power_change": 2.274863582846278e-06,
+      "phase_change_rad": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "name": "right_lower",
+      "max_absolute_complex_change": 0.9508603318028059,
+      "max_absolute_power_change": 0.012511051466877254,
+      "phase_change_rad": [
+        0.935203227495164,
+        0.9897402145015928,
+        1.0396637177314563
+      ]
+    },
+    {
+      "name": "right_upper",
+      "max_absolute_complex_change": 0.2631700238758871,
+      "max_absolute_power_change": 0.013834213042420357,
+      "phase_change_rad": [
+        0.9325541948746535,
+        1.0152253379366258,
+        1.060842589698234
+      ]
+    }
+  ],
+  "actual_device": "cuda:0",
+  "stage_performance": {
+    "zero-reference": {
+      "schema": 1,
+      "acquisition_id": "5825432b9a0449d8b80636e75f78c996",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        336,
+        168,
+        96
+      ],
+      "cells": 5419008,
+      "spacing_um": 0.041666666666666664,
+      "pml_cells": 18,
+      "steps": 5166,
+      "dt_seconds": 7.94406195637919e-17,
+      "simulated_time_fs": 410.39024066654895,
+      "compile_seconds": 2.2123118610034,
+      "synchronized_step_seconds": 61.15564639600052,
+      "step_batches": 6,
+      "cuda_event_elapsed_seconds": 61.15755346679687,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 83.07917764000013,
+      "million_cell_steps_per_second": 457.7597814390987
+    },
+    "zero-device": {
+      "schema": 1,
+      "acquisition_id": "e90840c9ee9843119bce12a8feffdd16",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        336,
+        168,
+        96
+      ],
+      "cells": 5419008,
+      "spacing_um": 0.041666666666666664,
+      "pml_cells": 18,
+      "steps": 5166,
+      "dt_seconds": 7.94406195637919e-17,
+      "simulated_time_fs": 410.39024066654895,
+      "compile_seconds": 2.1106064339983277,
+      "synchronized_step_seconds": 66.84626679398934,
+      "step_batches": 6,
+      "cuda_event_elapsed_seconds": 66.848234375,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 89.38903643799131,
+      "million_cell_steps_per_second": 418.7907069556382
+    },
+    "half-reference": {
+      "schema": 1,
+      "acquisition_id": "bb9a67b6031645c3a8adcd2549fc798c",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        336,
+        168,
+        96
+      ],
+      "cells": 5419008,
+      "spacing_um": 0.041666666666666664,
+      "pml_cells": 18,
+      "steps": 5166,
+      "dt_seconds": 7.94406195637919e-17,
+      "simulated_time_fs": 410.39024066654895,
+      "compile_seconds": 0.8932100579986582,
+      "synchronized_step_seconds": 64.82320894199074,
+      "step_batches": 6,
+      "cuda_event_elapsed_seconds": 64.82388916015626,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 76.29573372799496,
+      "million_cell_steps_per_second": 431.8606836179912
+    },
+    "half-device": {
+      "schema": 1,
+      "acquisition_id": "92fc487f38dd481d92c3db7cc0c42ced",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        336,
+        168,
+        96
+      ],
+      "cells": 5419008,
+      "spacing_um": 0.041666666666666664,
+      "pml_cells": 18,
+      "steps": 5166,
+      "dt_seconds": 7.94406195637919e-17,
+      "simulated_time_fs": 410.39024066654895,
+      "compile_seconds": 0.8448201279970817,
+      "synchronized_step_seconds": 65.98646194500907,
+      "step_batches": 6,
+      "cuda_event_elapsed_seconds": 65.98718432617187,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 76.2656356869993,
+      "million_cell_steps_per_second": 424.2475577995039
+    }
+  },
+  "stage_acquisition": {
+    "zero-reference": "fresh",
+    "zero-device": "fresh",
+    "half-reference": "fresh",
+    "half-device": "fresh"
+  },
+  "stage_sha256": {
+    "zero-reference": "7a72b72ddbf7472650d57b22ad3c92173d5de196eab5bbf6586f875da8ef073d",
+    "zero-device": "0e65fff904edad5e4a59d3b2baec3a84c6b9f573a0582df3881057720ee41867",
+    "half-reference": "c544a8d0b18cfca754ae7982ce3774c35b77658230e7ad7890b41dd2336fa663",
+    "half-device": "1d8c99c675d238e53bbf762bf8c9aa5f2e9ddf73327361424ff2a28d2fc26d88"
+  },
+  "straight_phase_prediction": {
+    "forecast_sha256": "b92ad7992434b8bb54f8770ea66a9bb220ded746e221ddb6ed6583df9093223b",
+    "predicted_half_minus_zero_rad": [
+      0.909817918604011,
+      0.9591875175003963,
+      1.0069218319639957
+    ],
+    "measured_half_minus_zero_rad": [
+      0.9098329911917173,
+      0.9591899507767401,
+      1.006923751205548
+    ],
+    "signed_residual_rad": [
+      1.5072587706388418e-05,
+      2.4332763437495686e-06,
+      1.91924155235057e-06
+    ]
+  },
+  "raw_monitors": {
+    "filename": "v014-coupler-z-origin-monitors.zip",
+    "sha256": "6517473d511ff4cb24acad7767cbfe6496fb2f97f33173aff75d97eff5c02165",
+    "scope": "Unmodified raw port E/H DFT arrays, normalized columns, material/source fingerprints, per-stage receipts and complete run plans. The zero and half directories can be checked independently with native_column."
+  }
+}

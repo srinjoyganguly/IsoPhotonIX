@@ -15,7 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from .calibration_phase import registered_csv
 from .calibration_performance import stage_rows, timing_csv
 from .calibration_fields import field_plane
-from .calibrations import CASES, RING_MESHES, grating_meshes, calibration_routes, Calibration, design_archive, result_zip
+from .calibrations import CASES, RING_MESHES, grating_meshes, reciprocal_ring_meshes, calibration_routes, Calibration, design_archive, result_zip
 from .capabilities import capabilities
 from .jobs import JobManager
 from .model import WaveguideConfig
@@ -468,7 +468,8 @@ def calibrated_presets():
                            for domain in ('full','mirror-y')} for name in ('tidy3d','lumerical')}
     return [{'case':key,'name':title,'scope':scope,'routes':calibration_routes(key), 'evidence':receipts.get(key),
              **({'grating_meshes':grating_options} if key=='grating-3d' else {}),
-             **({'ring_meshes':RING_MESHES} if key=='ring-3d' else {})}
+             **({'ring_meshes':RING_MESHES,'reciprocal_meshes':{g:reciprocal_ring_meshes(g) for g in ('lumerical','tidy3d')}}
+                if key=='ring-3d' else {})}
             for key,(title,scope) in CASES.items()]
 
 

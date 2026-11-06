@@ -7,6 +7,7 @@ import numpy as np
 from ..layout_grid import rasterize
 from .fdtdx_adapter import _runtime
 from .fdtdx_taper import _save_fields
+from scripts.gpu_timing import StageTiming
 
 
 def run(config, output_dir):
@@ -15,6 +16,7 @@ def run(config, output_dir):
     started = time.perf_counter()
     spec, axes, epsilon = rasterize(config)
     jax,jnp,fdtdx,target = _runtime(config['device'])
+    timer=StageTiming(target)
     from fdtdx.core.jax.pytrees import autoinit, field
     from fdtdx.objects.static_material.static import StaticMultiMaterialObject
     from fdtdx.materials import compute_ordered_names
@@ -60,9 +62,15 @@ def run(config, output_dir):
     if arrays.fields.E.device != target or actual.shape!=shape or not np.allclose(actual,epsilon,rtol=1e-6,atol=1e-6):
         raise RuntimeError('The placed device or material grid differs from the validated layout.')
     initialized=time.perf_counter()
-    compiled=jax.jit(lambda a: fdtdx.run_fdtd(arrays=a,objects=objects,config=sim,key=key,show_progress=False)).lower(arrays).compile()
-    step,final=compiled(arrays)
-    jax.block_until_ready(final)
+    with timer.compile():
+        compiled=jax.jit(lambda a: fdtdx.run_fdtd(arrays=a,objects=objects,config=sim,key=key,show_progress=False)).lower(arrays).compile()
+    timer.begin_steps()
+    try:
+        with timer.step():
+            step,final=compiled(arrays)
+            jax.block_until_ready((step,final))
+    finally:
+        timer.end_steps()
     if final.fields.E.device != target:
         raise RuntimeError('FDTDX result is on a different device.')
     field_shape,peaks=_save_fields(Path(output_dir),{'centres':axes,'dx':dx},final)
@@ -76,5 +84,6 @@ def run(config, output_dir):
         'boundaries':{'faces':'six PML','pml_cells':pml,'pml_um':pml*dx},'field_sampling':'Spatially averaged Yee samples, positive outermost layer omitted in display, raw fields also exported.',
         'material_sampling':'Scalar permittivity at cell centres. Checked every initialized voxel before evolving.',
         'material_grid_check':{'cells':int(actual.size),'maximum_absolute_error':float(np.max(abs(actual-epsilon)))},
+        'performance':timer.report(shape=shape,steps=int(step),dt_seconds=sim.time_step_duration,spacing_um=dx,pml_cells=pml),
         'timings':{'initialization_s':initialized-started,'total_s':time.perf_counter()-started},
         'assumptions':['Finite as-drawn solids in homogeneous cladding. Fields include the near-source field.']}

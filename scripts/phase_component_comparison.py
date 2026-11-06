@@ -7,7 +7,7 @@ import re
 
 import numpy as np
 
-from scripts.compare_loaded_ring3d import ANSYS_SHA
+from scripts.compare_loaded_ring3d import ANSYS_SHA, tidy_spectrum
 from scripts.lumerical_grating3d import lp01, reflected_fiber_amplitude
 from scripts.grating_angular_spectrum import angular_components
 from scripts.phase_stability_check import growth_diagnostic, inspect as inspect_stability
@@ -169,7 +169,8 @@ def grating_case_key(settings):
     keys = ('geometry','period','fill','teeth','width','guide_width','height','etch','radius',
             'taper','taper_exponent','oxide_top','oxide_bottom','n_si','n_oxide','source_z','beam_x',
             'fiber_radius','fiber_cladding_radius','fiber_core_n','fiber_clad_n','fiber_center_x',
-            'angle_deg','grating_material_model','physical_bounds')
+            'angle_deg','waist','buffer','pml','output_x','sample_z','upper_half_span',
+            'residual_slab_laterally_extended','grating_material_model','physical_bounds')
     return {k:settings.get(k) for k in keys}
 
 
@@ -403,7 +404,17 @@ def compare_mesh(component,previous,row,vendor_file):
             previous['phase_ok'][ia]&row['phase_ok'][ib],wavelengths=w[ib])}
 
 
-def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False, rejected_rings=()):
+def published_power_summary(native,published,valid):
+    mask=valid&np.isfinite(published)
+    delta=(abs(native)**2-published)*100
+    return {'sample_count':int(mask.sum()),'valid_bins':mask.tolist(),
+            'native_minus_published_percentage_points':[float(d) if ok else None for d,ok in zip(delta,mask)],
+            'mean_absolute_difference_pp':float(np.mean(abs(delta[mask]))) if mask.any() else None,
+            'rms_difference_pp':float(np.sqrt(np.mean(delta[mask]**2))) if mask.any() else None,
+            'max_abs_difference_pp':float(np.max(abs(delta[mask]))) if mask.any() else None}
+
+
+def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=False, rejected_rings=(), tidy_ring_notebook=None):
     if not paths:
         raise ValueError('At least one native receipt is required.')
     if vendor_project and (component!='ring' or not vendor_file):
@@ -418,6 +429,9 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
         raise ValueError('The Lumerical S file applies only to that physical geometry.')
     if len({row['vendor'] for row in measurements})!=1:
         raise ValueError('Compare one physical vendor geometry per report.')
+    if tidy_ring_notebook and (component!='ring' or measurements[0]['vendor']!='tidy3d'):
+        raise ValueError('The Tidy3D ring notebook applies only to that ring geometry.')
+    tidy_reference=tidy_spectrum(tidy_ring_notebook) if tidy_ring_notebook else None
     result = {'component':component,'vendor':measurements[0]['vendor'],'amplitude_floor':S_FLOOR,
               'phase_increment_limit_rad':float(np.pi/2),'ring_80_to_100_percent_phase_limit_rad':.05,
               'native_samples':[],'mesh_pairs':[],'vendor_absolute_phase_basis':'Matched fixed central ring profile and qualified samples' if project else None,
@@ -455,6 +469,20 @@ def analyze(component, paths, vendor_file, vendor_project=None, allow_partial=Fa
             record['commercial_comparison'] = compare(component,s,vendor,row['valid']&inside,row['phase_ok']&phase_ok,True,w)
         if row['vendor']=='tidy3d':
             record['commercial_phase_data']='Pinned notebook exposes a power plot; it does not include the complex monitor data in its saved outputs.'
+            if component=='grating':
+                comparisons=json.loads(source.read_text())['comparisons']
+                ref=next(x for x in comparisons if x['vendor']=='Tidy3D' and x['geometry_matched'])
+                np.testing.assert_allclose(ref['wavelength_um'],w,rtol=0,atol=1e-12)
+                power=published_power_summary(s[:,1],np.array(ref['published_power']),row['valid'])
+                record['commercial_power_comparison']={'source_url':ref['url'],'figure_sha256':ref['figure_sha256'],
+                    'source':'Digitized public guide-power plot.','guide':power}
+            elif tidy_reference is not None:
+                wr,through,drop,metadata=tidy_reference
+                comparison={'source':metadata,'source_url':'https://www.flexcompute.com/tidy3d/examples/notebooks/RingResonator/'}
+                inside=row['valid']&(w>=wr[0])&(w<=wr[-1])
+                for j,name,values in ((1,'through',through),(2,'drop',drop)):
+                    comparison[name]=published_power_summary(s[:,j],np.interp(w,wr,values),inside)
+                record['commercial_power_comparison']=comparison
         if row.get('central') is not None:
             record.update(compare_fixed_ring(row,vendor_file))
         if previous:
@@ -469,9 +497,10 @@ if __name__=='__main__':
     p.add_argument('--component',choices=('ring','grating'),required=True)
     p.add_argument('--vendor-sfile',type=Path)
     p.add_argument('--vendor-ring-project',type=Path)
+    p.add_argument('--tidy-ring-notebook',type=Path,help='Pinned Tidy3D ring notebook for published through/drop power only.')
     p.add_argument('--include-partial-rings',action='store_true',help='Use qualified bins of source-bound, complete ring acquisitions; preserve the original run status.')
     p.add_argument('--record-rejected-ring',action='append',default=[],type=Path,help='Keep a verified runaway acquisition visible without publishing S from it.')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('receipts',type=Path,nargs='+')
     args=p.parse_args()
-    args.output.write_text(json.dumps(analyze(args.component,args.receipts,args.vendor_sfile,args.vendor_ring_project,args.include_partial_rings,args.record_rejected_ring),indent=2,allow_nan=False)+'\n')
+    args.output.write_text(json.dumps(analyze(args.component,args.receipts,args.vendor_sfile,args.vendor_ring_project,args.include_partial_rings,args.record_rejected_ring,args.tidy_ring_notebook),indent=2,allow_nan=False)+'\n')

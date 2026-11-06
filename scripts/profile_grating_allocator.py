@@ -39,7 +39,7 @@ def measure(geometry, model, role, mesh, observe, domain):
         idle, free, total = smi_memory()
         samples = [idle]
         env = dict(os.environ, XLA_PYTHON_CLIENT_PREALLOCATE="false", XLA_PYTHON_CLIENT_ALLOCATOR="platform")
-        with subprocess.Popen(command, env=env) as worker:
+        with subprocess.Popen(command, env=env, pass_fds=(lock.fileno(),)) as worker:
             while worker.poll() is None:
                 used, _, capacity = smi_memory()
                 if capacity != total:

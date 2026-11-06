@@ -58,6 +58,12 @@ def grating_meshes(geometry, domain, material):
     return sorted(set(defaults))
 
 
+def reciprocal_ring_meshes(geometry):
+    catalogue=ROOT/'docs/verification/v014-ring-meshes.json'
+    rows=json.loads(catalogue.read_bytes())['qualified']
+    return sorted({r['resolution'] for r in rows if r['geometry']==geometry})
+
+
 def calibration_routes(case):
     if case in GPU_COMPONENTS or case=='layout-ports-3d':
         return ['fdtdx:gpu']
@@ -84,7 +90,7 @@ class Calibration(BaseModel):
     port_distance_um: float | None = Field(default=None, exclude_if=lambda v: v is None)
     planar_layout: dict | None = Field(default=None, exclude_if=lambda v: v is None)
     duration_um_c: float | None = Field(default=None, exclude_if=lambda v: v is None)
-    ring_interface: Literal['legacy','exact-area','wall-tensor'] | None = Field(default=None, exclude_if=lambda v: v is None)
+    ring_interface: Literal['legacy','exact-area','wall-tensor','reciprocal-wall'] | None = Field(default=None, exclude_if=lambda v: v is None)
     ring_material: Literal['constant','palik-ade'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_material_model: Literal['volume-average','direct-yee'] | None = Field(default=None, exclude_if=lambda v: v is None)
     grating_domain: Literal['full','mirror-y'] | None = Field(default=None, exclude_if=lambda v: v is None)
@@ -141,12 +147,17 @@ class Calibration(BaseModel):
                 raise ValueError('Direct Yee-cell material sampling requires the Lumerical curved grating.')
             if self.geometry_3d not in geometries:
                 raise ValueError(f'Available {self.case} geometries: {", ".join(geometries)}.')
-            meshes = RING_MESHES[self.ring_interface or 'legacy'] if ring else grating_meshes(self.geometry_3d,self.grating_domain or 'full',
-                                                              self.grating_material_model or 'volume-average')
+            if ring:
+                meshes=(reciprocal_ring_meshes(self.geometry_3d) if self.ring_interface=='reciprocal-wall'
+                        else RING_MESHES[self.ring_interface or 'legacy'])
+                if not meshes:
+                    raise ValueError('There is no qualified reciprocal-wall spectrum for this ring geometry.')
+            else:
+                meshes=grating_meshes(self.geometry_3d,self.grating_domain or 'full',self.grating_material_model or 'volume-average')
             if self.grating_domain=='mirror-y' and self.grating_spectrum=='dense':
                 raise ValueError('Mirror symmetry is qualified only for the standard grating spectrum.')
             if self.resolution is None:
-                self.resolution = 16 if ring else 12
+                self.resolution = meshes[0] if self.ring_interface=='reciprocal-wall' else (16 if ring else 12)
             if self.ring_interface=='wall-tensor' and self.resolution not in meshes:
                 raise ValueError('Choose 16 or 20 cells/µm for wall-tensor. The 24-cell Lumerical evolution failed its stability check.')
             if self.ring_material=='palik-ade' and (self.geometry_3d!='lumerical' or self.ring_interface!='exact-area' or self.resolution!=16):
@@ -236,6 +247,9 @@ def specification(config):
             'fdtdx_adapter', 'fdtdx3d_adapter', 'fdtdx_ports_adapter', 'fdtdx_ports3d_adapter')]]
         if ring:
             helpers += ['docs/verification/v014-ring-wall-stability.json']
+            if config.ring_interface=='reciprocal-wall':
+                helpers += ['scripts/reciprocal_ring_wall.py','scripts/grating_cuda_identity.py',
+                            f'docs/verification/v014-ring-memory-{config.geometry_3d}-r24-reciprocal.json']
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py',
                         'scripts/ring_stage_provenance.py','scripts/ring_wall_tensor.py']
             if config.ring_material=='palik-ade':

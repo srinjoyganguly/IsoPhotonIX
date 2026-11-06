@@ -16,7 +16,7 @@ ADAPTERS = ('fdtdx_adapter fdtdx3d_adapter fdtdx_ports_adapter fdtdx_ports3d_ada
             'meep_adapter meep3d_adapter meep_ports_adapter meep_ports3d_adapter meep_taper meep_layout').split()
 FILES = ('LICENSE', 'CREDITS.md', 'frontend/THIRD_PARTY_NOTICES.txt', 'frontend/dist/index.html',
          'docs/licenses/FDTDX-MIT.txt','docs/licenses/MEEP-GPL-2.0.txt', 'docs/licenses/MPB-GPL-2.0.txt', 'docs/licenses/BEAMZ-APACHE-2.0.txt',
-         'docs/verification/v014-ring-wall-stability.json',
+         'docs/verification/v014-ring-wall-stability.json','docs/verification/v014-ring-meshes.json','scripts/reciprocal_ring_wall.py',
          'environment-meep.yml', 'environment-meep-linux-64.lock',
          'environment-fdtdx-cpu-linux-64.lock', 'environment-fdtdx-cuda12-linux-64.lock', 'environment-beamz-cpu-linux-64.lock', 'requirements-api.txt', 'scripts/run_simulation.py', 'scripts/benchmark_component_references.py', 'scripts/benchmark_passive_cavity.py', 'scripts/benchmark_beamz_reference.py',
          'docs/verification/v014-grating-meshes.json','docs/verification/v014-gpu-performance.json','docs/verification/v014-gpu-performance.csv','docs/verification/v012-calibrated-index.json','docs/verification/v011-calibrated-index.json', 'scripts/calibrate_multiport.py', 'scripts/calibrate_fdtdx_multiport.py',
@@ -60,6 +60,10 @@ def runtime_files():
     selected = {*FILES, *assets.paths, *(f'backend/{m}.py' for m in MODULES),
                 *(f'backend/adapters/{m}.py' for m in ADAPTERS)}
     import json
+    for row in json.loads((ROOT/'docs/verification/v014-ring-meshes.json').read_bytes())['qualified']:
+        if row['geometry'] not in ('lumerical','tidy3d'):
+            raise ValueError('Unexpected reciprocal ring geometry.')
+        selected.add(f"docs/verification/v014-ring-memory-{row['geometry']}-r24-reciprocal.json")
     grating_routes=json.loads((ROOT/'docs/verification/v014-grating-meshes.json').read_text())['qualified']
     for route in grating_routes:
         if route['resolution'] >= 16:

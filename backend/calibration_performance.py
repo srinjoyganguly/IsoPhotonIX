@@ -75,7 +75,7 @@ def stage_rows(report, receipt):
             synchronized_step_seconds=p.get('synchronized_step_seconds'),kernel_active_seconds=p.get('kernel_active_seconds'),
             cuda_event_elapsed_seconds=p.get('cuda_event_elapsed_seconds'),cuda_event_note=p.get('cuda_event_note'),
             million_cell_steps_per_second=p.get('million_cell_steps_per_second'),
-            input_free_mib=stage.get('memory_admission',{}).get('available_mib'),
+            input_free_mib=(stage.get('memory_admission') or {}).get('available_mib'),
             driver_build=hardware.get('driver_build') if isinstance(hardware,dict) else None,
             cuda_driver_api=hardware.get('cuda_driver_api',hardware.get('driver_version')) if isinstance(hardware,dict) else None,versions=versions,
             kernel_count=p.get('kernel_count'),kernel_timing_note=p.get('kernel_timing_note','Hardware intervals were not recorded.'),

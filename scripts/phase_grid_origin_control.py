@@ -4,6 +4,7 @@ from datetime import datetime,timezone
 import hashlib
 import json
 from pathlib import Path
+import zipfile
 
 import numpy as np
 
@@ -79,6 +80,19 @@ def summarize(baseline,shifted,prior_reference,forecast):
             'case':a[1]['case'],'mesh':a[0]['resolution'],'numerical_sha256':a[0]['numerical_sha256'],
             'prior_reference_sha256':hashlib.sha256(prior_reference.read_bytes()).hexdigest(),'fresh_zero_vs_prior_complex_delta_max':float(replay_delta.max()),
             'acquisitions':[a[2],b[2]],'ports':[]}
+    result['actual_device']=a[0]['actual_device']
+    result['stage_performance']={}
+    result['stage_acquisition']={}
+    result['stage_sha256']={}
+    for name,acquisition in zip(('zero','half'),result['acquisitions']):
+        # Expose one timing entry per real acquisition for the benchmark ledger.
+        for role in ('reference','device'):
+            label=name+'-'+role
+            result['stage_performance'][label]=acquisition['stage_performance'][role]
+            result['stage_acquisition'][label]=acquisition['stage_acquisition'][role]
+            result['stage_sha256'][label]=acquisition['stage_sha256'][role]
+        acquisition['stage_acquisition_ids']={role:item['acquisition_id'] for role,item in acquisition.pop('stage_performance').items()}
+        acquisition.pop('stage_acquisition')
     forecast_data=json.loads(forecast.read_text())
     if (forecast_data['case']!=a[1]['case'] or forecast_data['mesh']!=a[0]['resolution']
             or forecast_data['old_column_sha256']!=result['prior_reference_sha256']):
@@ -98,13 +112,36 @@ def summarize(baseline,shifted,prior_reference,forecast):
     return result
 
 
+def archive_monitors(output,folders,forecast):
+    """Keep the original checked NPZ bytes, plans and timing receipts for both acquisitions."""
+    with zipfile.ZipFile(output,'w',compression=zipfile.ZIP_STORED) as z:
+        def store(path,name):
+            # Archive bytes do not depend on copy time, user, host or local clock.
+            entry=zipfile.ZipInfo(name)
+            entry.create_system=3
+            entry.external_attr=0o100644<<16
+            z.writestr(entry,path.read_bytes())
+        store(forecast,'prediction.json')
+        for registration,folder in zip(('zero','half'),folders):
+            plan=json.loads((folder/'run.json').read_text())
+            port=plan['model']['ports'][0]['name']
+            names=['run.json','column.json','report.json','arrays.npz']
+            names.extend(port+'-'+role+suffix for role in ('reference','device') for suffix in ('.npz','.json'))
+            for name in names:
+                store(folder/name,registration+'/'+name)
+    return {'filename':output.name,'sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
+            'scope':'Unmodified raw port E/H DFT arrays, normalized columns, material/source fingerprints, per-stage receipts and complete run plans. The zero and half directories can be checked independently with native_column.'}
+
+
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     modes=p.add_subparsers(dest='action',required=True)
     forecast=modes.add_parser('predict');forecast.add_argument('original',type=Path);forecast.add_argument('--output',required=True,type=Path)
     compare=modes.add_parser('compare');compare.add_argument('baseline',type=Path);compare.add_argument('shifted',type=Path)
     compare.add_argument('--prior-reference',required=True,type=Path);compare.add_argument('--prediction',required=True,type=Path)
-    compare.add_argument('--output',required=True,type=Path)
+    compare.add_argument('--output',required=True,type=Path);compare.add_argument('--raw-archive',type=Path)
     args=p.parse_args()
     result=prediction(args.original) if args.action=='predict' else summarize(args.baseline,args.shifted,args.prior_reference,args.prediction)
+    if args.action=='compare' and args.raw_archive:
+        result['raw_monitors']=archive_monitors(args.raw_archive,(args.baseline,args.shifted),args.prediction)
     args.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')

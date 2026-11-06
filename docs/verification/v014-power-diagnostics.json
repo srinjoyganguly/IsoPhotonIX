@@ -4772,6 +4772,55 @@
       "source_report_sha256": "b972b83a97964d64d1c809eb4421fe83f80127033df9bc4a0f2baf8522ed17c5",
       "native_arrays_sha256": "80b4a4ae94b4af1102101f910e225ace4dffb6e2d0b680ec1e0cf5b5e75a2ef3"
     },
+    "v014-grating3d-tidy3d-mirror-r16.json": {
+      "observable": "grating",
+      "target_um": 1.55,
+      "wavelength_um": [
+        1.5,
+        1.525,
+        1.55,
+        1.575,
+        1.6
+      ],
+      "local_power": [
+        0.03801168351647929,
+        0.164805562697599,
+        0.346012361198287,
+        0.3544923978927167,
+        0.19332120010029666
+      ],
+      "published_power": [
+        0.07110364946451826,
+        0.2590468874157015,
+        0.38018939632056115,
+        0.2744817749939425,
+        0.12127849076095215
+      ],
+      "local_at_target": 0.346012361198287,
+      "published_at_target": 0.38018939632056115,
+      "mean_absolute_difference": 0.06271273160530685,
+      "max_absolute_difference": 0.09424132471810248,
+      "local_best_sample_um": 1.575,
+      "published_best_sample_um": 1.55,
+      "gain_only": {
+        "tolerance_power_fraction": 0.05,
+        "minimum_required": 1.2684455791051221,
+        "maximum_allowed": 0.8859788304236236,
+        "feasible": false,
+        "minimum_set_by_index": 1,
+        "maximum_set_by_index": 4
+      },
+      "variant": "volume-average / standard",
+      "domain": "mirror-y",
+      "allocator": "platform",
+      "mesh": 16,
+      "vendor": "tidy3d",
+      "full_native_gate_passed": true,
+      "valid_bins": null,
+      "total_bins": null,
+      "source_report_sha256": "dc687afea809e5cce0b68f242f3b4653e73580c17084afab23b5f43482ba0b6f",
+      "native_arrays_sha256": "df4aa81c4b61a28e56ade1494e1de0f1c2e0bc3baea2785ae774f0777ffb4561"
+    },
     "v014-ring3d-lumerical-r16-t3200-wall-tensor.json": {
       "observable": "ring",
       "target_um": 1.55,

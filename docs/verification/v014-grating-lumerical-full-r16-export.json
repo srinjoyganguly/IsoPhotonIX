@@ -1,0 +1,160 @@
+{
+  "passed": true,
+  "geometry": "lumerical",
+  "domain": "full",
+  "mesh": 16,
+  "archive": "grating-lumerical-full-r16.zip",
+  "size_bytes": 48451687,
+  "sha256": "0c6de206eb15a34ed8d585839464996d0fe3442daaab89e6ecc31dcc58c22506",
+  "fdtdx_license_sha256": "986edffa455359aca6b59a16bbd5660161d694edd9a44cbf3f39ec465007e5e3",
+  "reference_arrays_sha256": "bfc5f0a1301f223a576ecbf8bf61fa8acded3b389d18bdbdbbd7e2af8f054d03",
+  "reference_report_sha256": "3d89f57ca7c945fe2e6bfb961333790d4b07ea38e574fe4b40e3026153ed9975",
+  "source_sha256": {
+    "calibrate_finite_grating.py": "6b60e893c6eafd6113d49bbdc88d2fc826bc42dd3df2f901724ff806174404e9",
+    "fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+    "fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+    "fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+    "fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+    "grating_angular_spectrum.py": "6cb92ee07a20d8eb7862413c0a4cf167f95806639b9374de3f42bddfabc50e5e",
+    "lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+    "grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+    "grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+    "gpu_timing.py": "7150612d42ed0dbb5cfe2ab9c0feda5fa1b74d8e307ac36b62da21395f34633b",
+    "v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655",
+    "v014-grating-memory-lumerical-r16.json": "bd5c8ef9a3a2193d7dde3ee223b1e95c3b47098030e6c5ce32f8562951632928"
+  },
+  "executed_notebook": {
+    "file": "grating-lumerical-full-r16-executed.ipynb",
+    "sha256": "d0c4f9eac3863c4e6b36a1b4c454344d04aa567b33ef86b95c22f4ef9a4977ae",
+    "change": "The printed absolute result directory was shortened to notebook-result."
+  },
+  "original_stages": {
+    "reference": {
+      "schema": 1,
+      "acquisition_id": "1b9ccc65b64b454f82038208936c3a18",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        694,
+        342,
+        62
+      ],
+      "cells": 14715576,
+      "spacing_um": 0.0625,
+      "pml_cells": 11,
+      "steps": 3528,
+      "dt_seconds": 1.1916092934568783e-16,
+      "simulated_time_fs": 420.3997587315867,
+      "compile_seconds": 1.0294899629952852,
+      "synchronized_step_seconds": 138.08465756801888,
+      "step_batches": 7,
+      "cuda_event_elapsed_seconds": 138.08560546875,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 150.19605798300472,
+      "million_cell_steps_per_second": 375.9762528463853,
+      "setup_before_compile_seconds": 15.217582420998951
+    },
+    "device": {
+      "schema": 1,
+      "acquisition_id": "f0d242f649eb45889c0818ab83059dc0",
+      "platform": "gpu",
+      "device": "cuda:0",
+      "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+      "grid_shape": [
+        694,
+        342,
+        62
+      ],
+      "cells": 14715576,
+      "spacing_um": 0.0625,
+      "pml_cells": 11,
+      "steps": 10080,
+      "dt_seconds": 1.1916092934568783e-16,
+      "simulated_time_fs": 1201.1421678045333,
+      "compile_seconds": 0.8587431159976404,
+      "synchronized_step_seconds": 353.26929317295435,
+      "step_batches": 20,
+      "cuda_event_elapsed_seconds": 353.2719375000001,
+      "cuda_event_note": null,
+      "kernel_active_seconds": null,
+      "kernel_count": null,
+      "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+      "stage_through_steps_seconds": 367.56089428800624,
+      "million_cell_steps_per_second": 419.8864972036469,
+      "setup_before_compile_seconds": 17.198171191004803
+    }
+  },
+  "replays": {
+    "python": {
+      "stage_acquisition": {
+        "reference": "cache-hit",
+        "device": "cache-hit"
+      },
+      "matched_field_and_result_arrays": 45,
+      "archive_sha256": "bfc5f0a1301f223a576ecbf8bf61fa8acded3b389d18bdbdbbd7e2af8f054d03",
+      "reproduction": {
+        "passed": true,
+        "all_array_bytes_equal": true,
+        "within_tolerance": {},
+        "precision": {
+          "relative": 2e-06,
+          "absolute": 1e-10,
+          "per_array_peak_fraction": 2e-06
+        },
+        "reported_observables_checked": [
+          "beam/wavelength_um",
+          "beam/beam_to_guide",
+          "beam/valid_beam_bins",
+          "radiation/fiber_return_power",
+          "field/array",
+          "field/index",
+          "field/axis_order",
+          "field/component",
+          "field/horizontal_axis",
+          "field/vertical_axis",
+          "field/horizontal_um",
+          "field/vertical_um",
+          "field/wavelength_um"
+        ]
+      }
+    },
+    "notebook": {
+      "stage_acquisition": {
+        "reference": "cache-hit",
+        "device": "cache-hit"
+      },
+      "matched_field_and_result_arrays": 45,
+      "archive_sha256": "bfc5f0a1301f223a576ecbf8bf61fa8acded3b389d18bdbdbbd7e2af8f054d03",
+      "reproduction": {
+        "passed": true,
+        "all_array_bytes_equal": true,
+        "within_tolerance": {},
+        "precision": {
+          "relative": 2e-06,
+          "absolute": 1e-10,
+          "per_array_peak_fraction": 2e-06
+        },
+        "reported_observables_checked": [
+          "beam/wavelength_um",
+          "beam/beam_to_guide",
+          "beam/valid_beam_bins",
+          "radiation/fiber_return_power",
+          "field/array",
+          "field/index",
+          "field/axis_order",
+          "field/component",
+          "field/horizontal_axis",
+          "field/vertical_axis",
+          "field/horizontal_um",
+          "field/vertical_um",
+          "field/wavelength_um"
+        ]
+      }
+    }
+  },
+  "scope": "Original measurement was fresh. Python and unmodified Jupyter replay validate the exact source, archived arrays, field planes and native cache. Zero new electromagnetic steps were requested by the replays."
+}

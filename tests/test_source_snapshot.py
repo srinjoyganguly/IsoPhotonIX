@@ -78,6 +78,7 @@ class NumericalSourceSnapshotTests(unittest.TestCase):
 
     def test_real_numerical_closure_recaptures_inside_standalone_source(self):
         files=source_files()
+        self.assertIn('source/scripts/gpu_timing.py',files)
         self.assertIn('source/backend/source_snapshot.py',files)
         self.assertIn('source/backend/sparameters.py',files)
         self.assertIn('source/backend/ports3d.py',files)

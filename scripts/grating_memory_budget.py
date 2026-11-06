@@ -18,7 +18,7 @@ def estimate(base,observed,refined,idle_used_mib,free_before_mib,observed_global
         raise ValueError('Expected two shape-only plans and one bounded native measurement.')
     if base['geometry']!=refined['geometry'] or observed['geometry']!=base['geometry'] or base['resolution'] not in (12,14) or observed['resolution']!=base['resolution']:
         raise ValueError('Compare one physical geometry against its own measured baseline.')
-    for setting in ('grating_material_model', 'grating_spectrum', 'stage'):
+    for setting in ('grating_material_model', 'grating_spectrum', 'grating_domain', 'stage'):
         values = {run[setting] for run in (base, observed, refined) if setting in run}
         if len(values) > 1:
             raise ValueError(f'Memory profiles disagree on {setting}.')

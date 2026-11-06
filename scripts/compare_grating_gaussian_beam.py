@@ -59,7 +59,7 @@ if __name__=="__main__":
     p.add_argument("--output",type=Path,required=True)
     args=p.parse_args()
     record={"sdk_version":importlib.metadata.version("tidy3d"),
-            "scope":"Finite-aperture squared normalized vector overlaps with the SDK analytic Gaussian on the actual recorded air plane. Independent global amplitude and phase cancel. This isolates incident profile shape; it does not bound coupled power.",
+            "scope":"Finite-aperture squared normalized vector overlaps with the SDK analytic Gaussian on the actual recorded air plane. Independent global amplitude and phase cancel. This isolates incident profile shape. The full-device measurements supply the coupled power.",
             "definition":"abs(sum(conj(analytic)*measured))²/(sum(abs(analytic)²)*sum(abs(measured)²)), separately for E and H.",
             "source":"https://docs.flexcompute.com/projects/tidy3d/en/v2.12.0/api/analytic_beams.html",
             "examples":[inspect(row) for row in args.receipts]}

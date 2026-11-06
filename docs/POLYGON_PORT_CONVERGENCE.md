@@ -55,6 +55,21 @@ The six original mesh columns and three reverse columns contain 18 distinct fres
 
 At the identical 24-cell/µm physical layouts and port planes, the independent Meep control differs from the NVIDIA coupler’s forward powers by at most 0.566 percentage points and its forward phases by at most 0.189 rad. For the splitter these maxima are 1.556 percentage points and 0.0795 rad. The largest input-side complex discrepancies are 0.00325 (coupler) and 0.0315 (splitter). Each comparison uses independently acquired field monitors at the same three wavelengths. Neither finite mesh supplies a continuum truth value. [Coupler same-layout comparison](verification/v014-coupler-polygon-cuda24.json) · [Splitter same-layout comparison](verification/v014-splitter-polygon-cuda24.json)
 
+## Prediction tested on the GPU
+
+At 24 cells/µm we repeated the same coupler twice, first with the original z-grid origin and then with a +0.5 cell (+20.833 nm) shift. The z-domain changed from [−2, 2] µm to [−1.979167, 2.020833] µm. The inner PML faces and finite source/monitor aperture edges changed from [−1.25, 1.25] µm to [−1.229167, 1.270833] µm. Silicon stayed between −0.125 and +0.125 µm and every x/y port coordinate stayed fixed. This probes material registration together with the relative positions of the finite boundary and monitoring regions.
+
+Before acquiring the shifted fields we published the predicted straight-phase changes: +0.909818, +0.959188 and +1.006922 rad in the three native frequency bins. The measured changes are +0.909833, +0.959190 and +1.006924 rad, a maximum discrepancy of 0.0000151 rad. The zero-origin replay reproduced the original column and straight transfer bit for bit; both stages have the same source-profile and material-grid fingerprints as the original. Forward coupler phase changes by up to 1.061 rad under the translation, forward power by 1.383 percentage points, and the input-side returns by up to 0.00537 in complex amplitude. The prediction was for the uniform straight guide; the device values are independent measurements. [Prospective forecast at commit fa79fef](https://github.com/srinjoyganguly/photonics-workbench/blob/fa79fef/docs/verification/v014-coupler-z-origin-prediction.json) · [Four native acquisitions and forecast residuals](verification/v014-coupler-z-origin-control.json) · [Raw E/H monitors, receipt files and run plans](verification/v014-coupler-z-origin-monitors.zip)
+
+The four fresh stages used 258.81 synchronized seconds in total. Their CUDA event elapsed times are supplied separately in the receipt. To independently check the result, unzip the raw monitor bundle and run the following from the repository root, replacing `monitor-data` with its extraction directory. The complete summary and deterministic archive SHA-256 have both been replayed from the packaged measurements.
+
+```bash
+python -m scripts.phase_grid_origin_control compare monitor-data/zero monitor-data/half \
+  --prior-reference docs/verification/v014-coupler-polygon-cuda24-arrays.npz \
+  --prediction monitor-data/prediction.json --output checked.json \
+  --raw-archive v014-coupler-z-origin-monitors.zip
+```
+
 ## Mesh and execution summary
 
 Each number below is a maximum across all three sampled wavelengths and the indicated output group. Forward means either right-hand rail. Return means the launch side of the circuit. Power changes are absolute percentage points.

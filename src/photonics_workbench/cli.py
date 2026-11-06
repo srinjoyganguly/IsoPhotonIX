@@ -40,7 +40,7 @@ def main(argv=None):
     calibration.add_argument('--layout',type=Path,help='planar model JSON with polygon vertices and port positions')
     calibration.add_argument('--port-distance-um',type=float,help='distance from the TM joint to its port planes')
     calibration.add_argument('--duration-um-c',type=float,help='observation duration for a loaded 3D ring in µm/c')
-    calibration.add_argument('--ring-interface',choices=['legacy','exact-area','wall-tensor'],help='lateral material coverage for the 3D ring')
+    calibration.add_argument('--ring-interface',choices=['legacy','exact-area','wall-tensor','reciprocal-wall'],help='lateral material coverage for the 3D ring')
     calibration.add_argument('--ring-material',choices=['constant','palik-ade'],help='material response of the 16-cell, exact-area Lumerical ring')
     calibration.add_argument('--grating-material-model',choices=['volume-average','direct-yee'],help='material sampling for the finite grating')
     calibration.add_argument('--grating-domain',choices=['full','mirror-y'],help='use the full domain or a qualified reflection symmetry')

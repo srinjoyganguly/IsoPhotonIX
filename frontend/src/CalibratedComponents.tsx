@@ -13,7 +13,7 @@ import './calibratedComponents.css';
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
   rejected?: {receipt:string;label:string;reason:string;diagnostic:string}[];
   limits: string; phase_check?:PhaseCheck;phase_checks?:PhaseCheck[]; phase_studies?:SpatialPhaseStudy[]; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
-type Preset = { case: string; name: string; scope: string; routes: string[]; ring_meshes?:Record<string,number[]>;grating_meshes?: Record<string,Record<string,Record<string,number[]>>>; evidence?: Evidence };
+type Preset = { case: string; name: string; scope: string; routes: string[]; ring_meshes?:Record<string,number[]>;reciprocal_meshes?:Record<string,number[]>;grating_meshes?: Record<string,Record<string,Record<string,number[]>>>; evidence?: Evidence };
 type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
 
@@ -46,7 +46,8 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
   const denseGrating = gratingDomain==='full' && key==='grating-3d' && geometry3d==='lumerical' && (!mesh || mesh==='12');
   const dispersiveRing = key==='ring-3d' && geometry3d==='lumerical' && ringInterface==='exact-area' && (!mesh || mesh==='16');
-  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? (selected?.ring_meshes?.[ringInterface] ?? []) : key==='grating-3d' ? (selected?.grating_meshes?.[geometry3d]?.[gratingDomain]?.[gratingMaterial] ?? [12,16]) :
+  const ringMeshes={...selected?.ring_meshes,'reciprocal-wall':selected?.reciprocal_meshes?.[geometry3d] ?? []} as Record<string,number[]>;
+  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? (ringMeshes[ringInterface] ?? []) : key==='grating-3d' ? (selected?.grating_meshes?.[geometry3d]?.[gratingDomain]?.[gratingMaterial] ?? [12,16]) :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
     if(!editableLayout || layoutText) return;
@@ -167,12 +168,12 @@ export function CalibratedComponents({active}:{active:boolean}) {
       {selected.routes.includes('fdtdx:gpu') && <GpuPerformance key={key} preset={key}/>}
       <section><h3>Run locally</h3>
         {editableLayout && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}
-        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>{setGeometry3d(e.target.value);setGratingDomain('full');setGratingMaterial('volume-average');setMesh('');}}>
+        {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>{setGeometry3d(e.target.value);if(ringInterface==='reciprocal-wall' && !selected?.reciprocal_meshes?.[e.target.value]?.length)setRingInterface('legacy');setGratingDomain('full');setGratingMaterial('volume-average');setMesh('');}}>
           {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
             <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
         </select></label>}
-        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>{setRingInterface(e.target.value);if(mesh && !selected?.ring_meshes?.[e.target.value]?.includes(+mesh))setMesh('');}}>
-          <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option><option value="wall-tensor">Curved wall tensor · constant materials</option>
+        {key==='ring-3d' && <label>Ring boundary sampling<select value={ringInterface} onChange={e=>{setRingInterface(e.target.value);if(mesh && !ringMeshes[e.target.value]?.includes(+mesh))setMesh('');}}>
+          <option value="legacy">6 × 6 area samples (baseline)</option><option value="exact-area">Exact lateral area</option><option value="wall-tensor">Curved wall tensor · constant materials</option>{ringMeshes['reciprocal-wall'].length>0 && <option value="reciprocal-wall">Reciprocal curved-wall update</option>}
         </select></label>}
         {dispersiveRing && <label>Ring material response<select value={ringMaterial} onChange={e=>setRingMaterial(e.target.value)}>
           <option value="constant">Constant index</option><option value="palik-ade">Palik dispersion control · 1500–1600 nm</option>

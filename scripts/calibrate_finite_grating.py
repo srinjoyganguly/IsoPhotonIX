@@ -257,7 +257,47 @@ def memory_admission(m, available_mib):
     return {'available_mib':available_mib,'required_free_with_reserve_mib':required,'profile_device':record['reference_runs'][m['geometry']]['shape_only']['gpu'], 'allocator':allocator or 'default'}
 
 
-def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
+def return_reference(path, expected_sha, m, hardware, source_hash, delays_hash):
+    """Read the exact settled incident plane bound into the device-stage cache key."""
+    receipt=json.loads((path/'receipt.json').read_text())
+    if (receipt['stage']!='reference' or receipt['identity']['settings']!=m or
+            receipt['arrays_sha256']!=expected_sha or file_hash(path/'arrays.npz')!=expected_sha):
+        raise ValueError('The temporal return basis differs from the matched incident checkpoint.')
+    cuda_identity.validate_worker(hardware,receipt['cuda_identity'])
+    if receipt['source_eh_sha256']!=source_hash or receipt['source_time_offsets_sha256']!=delays_hash:
+        raise ValueError('Temporal return projection requires identical source fields and delays.')
+    if not receipt['settled']:
+        return None
+    with np.load(path/'arrays.npz',allow_pickle=False) as data:
+        np.testing.assert_array_equal(data['wavelength_um'],monitoring_wavelengths(m))
+        field=data['upper']
+    power=-normal_flux(field,1/m['resolution'])
+    if not np.all(np.isfinite(power) & (power>0)):
+        raise ValueError('The native incident basis has invalid normalization.')
+    return field,power
+
+
+def return_window_status(series, ref_relative_change):
+    """Test the last two consecutive complex-return changes using fixed absolute gates."""
+    series=np.asarray(series)
+    if series.ndim!=2 or len(series)<3 or not np.isfinite(series).all():
+        raise ValueError('Return convergence requires three finite complex samples per bin.')
+    recent=series[-3:]
+    absolute=np.max(abs(np.diff(recent,axis=0)),axis=0)
+    phase=np.max(abs(np.angle(recent[1:]*recent[:-1].conj())),axis=0)
+    field_error=np.asarray(ref_relative_change)
+    if field_error.shape!=(series.shape[1],) or not np.isfinite(field_error).all():
+        raise ValueError('Missing matched reference-plane convergence samples.')
+    amplitude_ok=(absolute<=.001) & (field_error<=.002)
+    phase_ok=amplitude_ok & (np.min(abs(recent),axis=0)>=.005) & (phase<=.05)
+    return {'max_reference_plane_relative_l2_change':field_error.tolist(),
+            'max_absolute_return_change':absolute.tolist(),'max_phase_change_rad':phase.tolist(),
+            'amplitude_qualified':amplitude_ok.tolist(),'phase_qualified':phase_ok.tolist(),
+            'reference_l2_limit':.002,'absolute_amplitude_limit':.001,'phase_amplitude_floor':.005,
+            'phase_limit_rad':.05,'consecutive_changes':2}
+
+
+def native_stage(m, reference, *, memory_plan=False, observe_one_step=False, incident_path=None, incident_sha=None):
     worker_started=time.monotonic()
     if 'grating_allocator' in m:
         os.environ['XLA_PYTHON_CLIENT_ALLOCATOR'] = m['grating_allocator']
@@ -431,6 +471,9 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         impedance_error=float(np.max(abs(habs-lp[2]*eabs))/np.max(habs))
         if impedance_error>2e-4:
             raise RuntimeError('Tilted LP01 sheet does not carry its selected modal impedance.')
+    source_hash=digest(np.stack([electric,magnetic]))
+    delays_hash=digest(np.stack([delays_e,delays_h]))
+    incoming=None if incident_path is None else return_reference(incident_path,incident_sha,m,hardware,source_hash,delays_hash)
     basis = None
     if guided or not reference:
         section=jax.device_put(port_section,target) if mirror else arrays.inv_permittivities[:,px:px+1,sy:sy+py,sz:sz+pz]
@@ -498,7 +541,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                 'actual_compiled_live_bytes':stats.argument_size_in_bytes+stats.output_size_in_bytes-
                     stats.alias_size_in_bytes+stats.temp_size_in_bytes}
     schedule = np.flatnonzero(np.asarray(obj['energy']._is_on_at_time_step_arr))
-    spectra=[]; history=[]; before=None; consecutive=0
+    spectra=[]; history=[]; returns=[]; before=None; previous_plane=None; consecutive=0
     start=time.monotonic()
     timer.begin_steps()
     for end in range(math.ceil(60/dt),sim.time_steps_total+math.ceil(60/dt),math.ceil(60/dt)):
@@ -510,6 +553,17 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         upper=np.asarray(final.detector_states['upper']['phasor'])[0,:,:,:,:,0]
         if mirror:
             upper=grating_mirror.full_plane(upper,3,1,pml,ny-2*pml,mid)
+        plane_change=None
+        if reference and not guided:
+            if previous_plane is not None:
+                field_axes=tuple(range(1,upper.ndim))
+                numerator=np.sum(abs(upper-previous_plane)**2,axis=field_axes,dtype=np.float64)
+                denominator=np.sum(abs(upper)**2,axis=field_axes,dtype=np.float64)
+                plane_change=np.sqrt(numerator/np.maximum(denominator,1e-300)).tolist()
+            previous_plane=upper
+        elif incoming is not None:
+            inc_field,inc_power=incoming
+            returns.append(ansys.reflected_fiber_amplitude(upper-inc_field,inc_field,inc_power,dx))
         if reference and not guided:
             measure=-normal_flux(upper,dx)
         else:
@@ -531,7 +585,7 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
         change=None if before is None else float(np.max(abs(measure-before))/max(1e-30,np.max(abs(measure))))
         passed=(end*dt>pulse_end and change is not None and change<.002 and ratio<1e-4)
         consecutive=consecutive+1 if passed else 0
-        spectra.append(measure.copy()); history.append(dict(time_fs=end*dt,energy=current_energy,energy_ratio=ratio,relative_spectral_change=change))
+        spectra.append(measure.copy()); history.append(dict(time_fs=end*dt,energy=current_energy,energy_ratio=ratio,relative_spectral_change=change,relative_incident_plane_l2_change=plane_change))
         print(f"{'reference' if reference else 'device'} t={end*dt:.0f} fs, relative energy={ratio:.3g}, DFT-change={change}",flush=True)
         if consecutive>=2 or end==sim.time_steps_total: break
         before=measure.copy()
@@ -544,6 +598,8 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
           'energy':energy_trace,'energy_time_fs':times,
           'material_yz':eps[px],'material_xy':eps[:,:,at(2,.18)],'material_xz':eps[:,ny//2,:],
           'grid_x_um':axes[0],'grid_y_um':axes[1],'grid_z_um':axes[2]}
+    if returns:
+        data['reciprocal_return_history']=np.stack(returns)
     if guided or not reference:
         data.update(output=port,mode_e=basis['mode_e'],mode_h=basis['mode_h'],mode_neff=basis['mode_neff'],
                     output_amplitudes=modal_amplitudes(port,basis['mode_e'],basis['mode_h'],dx**2)[0])
@@ -563,8 +619,8 @@ def native_stage(m, reference, *, memory_plan=False, observe_one_step=False):
                 shape=list(shape),grid_resolution=m['resolution'],pml_cells=pml,time_steps=int(step),settled=consecutive>=2,
                 history=history,compile_seconds=compile_seconds,stepping_seconds=time.monotonic()-start,source_direction=direction.tolist(),
                 source_sampling='guided-mode' if guided else ('lp01' if fiber else 'host-sampled-air-gaussian'),
-                source_eh_sha256=digest(np.stack([electric,magnetic])),
-                source_time_offsets_sha256=digest(np.stack([delays_e,delays_h])),scalar_permittivity_sha256=eps_hash,
+                return_reference_arrays_sha256=incident_sha,source_eh_sha256=source_hash,
+                source_time_offsets_sha256=delays_hash,scalar_permittivity_sha256=eps_hash,
                 electric_component_permittivity_sha256=component_hash,
                 sample_plane_z_um=float(axes[2][az]),output_plane_x_um=float(axes[0][px]),
                 sampled_vertical_um=[float(axes[2][sz]),float(axes[2][sz+pz-1])],
@@ -585,17 +641,17 @@ def stage_signature(identity):
     return hashlib.sha256(json.dumps(identity,sort_keys=True,allow_nan=False).encode()).hexdigest()
 
 
-def stage_archive(m, label, cache):
+def stage_archive(m, label, cache, incident=None):
     gpu_lock=Path(os.environ.get('PHOTONICS_GPU_LOCK', '/tmp/photonics-v012-gpu.lock'))
     print(f"Waiting for NVIDIA device: {m['geometry']} {label}",flush=True)
     wait_start=time.monotonic()
     with gpu_lock.open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         wait_seconds=time.monotonic()-wait_start
-        return _locked_stage_archive(m,label,cache,wait_seconds)
+        return _locked_stage_archive(m,label,cache,wait_seconds,lock.fileno(),incident)
 
 
-def _locked_stage_archive(m, label, cache, wait_seconds):
+def _locked_stage_archive(m, label, cache, wait_seconds, gpu_lock_fd, incident):
     import subprocess
     salt=cuda_identity.cache_salt(cache)
     hardware=cuda_identity.fingerprint(salt)
@@ -613,6 +669,9 @@ def _locked_stage_archive(m, label, cache, wait_seconds):
     sources.append(ROOT/"scripts/grating_mirror.py")
     identity={'settings':m,'stage':label,'cuda_identity':hardware,'sources':{p.name:file_hash(p) for p in sources},
               'versions':{name:importlib.metadata.version(name) for name in ('fdtdx','jax','jaxlib','numpy','tidy3d','scipy')}}
+    if incident is not None:
+        incident_dir,incident_receipt=incident
+        identity['incident_reference']={'signature':incident_receipt['signature'],'arrays_sha256':incident_receipt['arrays_sha256']}
     signature=stage_signature(identity)
     dest=cache/(label+'-'+signature[:20]); cache.mkdir(exist_ok=True,parents=True)
     with (cache/(label+'-'+signature[:20]+'.lock')).open('a') as lock:
@@ -623,6 +682,8 @@ def _locked_stage_archive(m, label, cache, wait_seconds):
                 staged=Path(tmp)/'stage'; staged.mkdir()
                 cmd=[sys.executable,str(Path(__file__).resolve()),'--device','gpu','--geometry',m['geometry'],
                      '--resolution',str(m['resolution']),'--stage',label,'--output',str(staged)]
+                if incident is not None:
+                    cmd.extend(('--incident-stage',str(incident_dir),'--incident-sha256',incident_receipt['arrays_sha256']))
                 if 'grating_material_model' in m:
                     cmd.extend(('--grating-material-model',m['grating_material_model']))
                 if m.get('grating_allocator') == 'platform':
@@ -633,7 +694,9 @@ def _locked_stage_archive(m, label, cache, wait_seconds):
                 # Workers are separate processes so native device memory is released after each stage.
                 env={**os.environ,'PHOTONICS_GRATING_DEVICE_SALT':salt.hex()}
                 print(f"Running {m['geometry']} {label} on NVIDIA",flush=True)
-                subprocess.run(cmd,check=True,env=env)
+                # The child retains the open lock description even if its supervisor
+                # exits during GPU execution. Other native workers must still wait.
+                subprocess.run(cmd,check=True,env=env,pass_fds=(gpu_lock_fd,))
                 receipt=json.loads((staged/'receipt.json').read_text())
                 cuda_identity.validate_worker(hardware,receipt.get('cuda_identity'))
                 receipt['metadata_sha256']=hashlib.sha256(json.dumps(receipt,sort_keys=True,allow_nan=False).encode()).hexdigest()
@@ -661,7 +724,8 @@ def run(m, output, cache):
     wavelengths=monitoring_wavelengths(m)
     center_bin=wavelengths.tolist().index(1.55)
     ref,rr=stage_archive(m,'reference',cache)
-    dev,dr=stage_archive(m,'device',cache)
+    incident_stage=(ref,rr) if m['geometry']!='compact-radiation' else None
+    dev,dr=stage_archive(m,'device',cache,incident_stage)
     for key in ('source_eh_sha256','source_time_offsets_sha256','device_name','actual_device','cuda_identity'):
         if rr[key]!=dr[key]:
             raise ValueError(f'Reference and device acquisitions differ in {key}.')
@@ -693,6 +757,11 @@ def run(m, output, cache):
             stored.update(reflected_angular_fraction=angular_fraction,**{'angular_'+key:value for key,value in angles.items()})
             radiation={'polar_edges_deg':angles['polar_edges_deg'].tolist(),'fraction_of_incident':angular_fraction.tolist(),
                        'scope':'Upgoing propagating power below 80°, estimated from the finite rectangular air-plane aperture after complex incident-field subtraction. Each bin integrates azimuth; uncollected lateral light and grazing waves lie outside the aperture estimate.'}
+        if 'reciprocal_return_history' in d:
+            if dr['return_reference_arrays_sha256']!=rr['arrays_sha256']:
+                raise ValueError('Return history is bound to a different incident acquisition.')
+            changes=[h['relative_incident_plane_l2_change'] for h in rr['history'][-2:]]
+            radiation['reciprocal_return_settling']=return_window_status(d['reciprocal_return_history'],np.max(changes,axis=0))
         horiz=d['grid_x_um'][dr['pml_cells']:-dr['pml_cells']].tolist()
         vert=d['grid_z_um'][dr['pml_cells']:-dr['pml_cells']].tolist()
     np.savez_compressed(output/'arrays.npz',**stored)
@@ -748,14 +817,18 @@ def main():
     parser.add_argument('--on-demand-memory',action='store_true',
                         help='Use the measured on-demand CUDA allocator for the 12-cell control or a qualified 16-cell grating.')
     parser.add_argument('--checkpoint',type=Path)
+    parser.add_argument('--incident-stage',type=Path,help=argparse.SUPPRESS)
+    parser.add_argument('--incident-sha256',help=argparse.SUPPRESS)
     parser.add_argument('--stage',choices=('reference','device'),help=argparse.SUPPRESS)
     args=parser.parse_args(); m=settings(args.geometry,args.resolution,args.grating_material_model,args.grating_spectrum,args.grating_domain)
     if args.on_demand_memory:
         if m['geometry'] not in ('lumerical', 'tidy3d') or (m['resolution'] != 12 and 'grating_allocator' not in m):
             parser.error('On-demand grating memory is qualified for the matched 12-cell controls and selected 16-cell models.')
         m['grating_allocator']='platform'
+    if bool(args.incident_stage)!=bool(args.incident_sha256) or (args.incident_stage and args.stage!='device'):
+        parser.error('Temporal return projection requires both the reference stage path and its expected hash.')
     if args.stage:
-        report,arrays=native_stage(m,args.stage=='reference')
+        report,arrays=native_stage(m,args.stage=='reference',incident_path=args.incident_stage,incident_sha=args.incident_sha256)
         np.savez_compressed(args.output/'arrays.npz',**arrays)
         (args.output/'receipt.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
     else:

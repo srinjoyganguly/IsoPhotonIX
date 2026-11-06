@@ -9,14 +9,14 @@ from scripts.compare_ring_interface_models import BASE, check_record
 from scripts.compare_loaded_ring_controls import read
 
 
-def compare(directory,vendor,first,last):
+def compare(directory,vendor,first,last,interface='wall-tensor'):
     duration=3200 if vendor=='lumerical' else 4800
-    files=[directory/f'v014-ring3d-{vendor}-r{m}-t{duration}-wall-tensor.json' for m in (first,last)]
-    reports=[check_record(path,vendor,m,duration,'wall-tensor') for path,m in zip(files,(first,last))]
+    files=[directory/f'v014-ring3d-{vendor}-r{m}-t{duration}-{interface}.json' for m in (first,last)]
+    reports=[check_record(path,vendor,m,duration,interface) for path,m in zip(files,(first,last))]
     from scripts.diagnose_ring_stability import rejection_for
     rejected=[check for path in files if (check:=rejection_for(path))]
     if rejected:
-        return dict(vendor=vendor,meshes=[first,last],source_reports=[p.name for p in files],
+        return dict(vendor=vendor,meshes=[first,last],method=interface,source_reports=[p.name for p in files],
                     usable_mesh_comparison=False,qualified_comparison_bins=0,channels={},
                     original_native_bins=[r['valid_bins'] for r in reports],
                     reason=rejected[0]['reason'])
@@ -57,7 +57,7 @@ def compare(directory,vendor,first,last):
             center=np.flatnonzero(abs(w-1.55)<1e-12)
             ports[name]['published_power_at_1550']=float(ref1[center[0]]) if len(center) else None
     return dict(vendor=vendor,meshes=[first,last],source_reports=[p.name for p in files],
-                source_archive_sha256=[r['arrays_sha256'] for r in reports],method='Constant indices, wall-tensor Yee sampling.',
+                source_archive_sha256=[r['arrays_sha256'] for r in reports],method=interface,
                 native_all_bins_passed=[r['passed'] for r in reports],native_bins=[r['valid_bins'] for r in reports],
                 jointly_qualified_bins_1500_to_1600=int(mask.sum()),joint_wavelength_um=wl[mask].tolist(),
                 nominal_x_plane_absolute_um=fields[0][3],snapped_x_planes_absolute_um=[v[4] for v in fields],
@@ -71,8 +71,9 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory',type=Path,default=BASE)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--interface',choices=('wall-tensor','reciprocal-wall'),default='wall-tensor')
     parser.add_argument('--case',action='append',choices=('l16-20','l20-24','t16-20'))
     args=parser.parse_args()
     cases=args.case or ['l16-20','l20-24','t16-20']
-    comparisons=[compare(args.directory,'lumerical' if c[0]=='l' else 'tidy3d',*map(int,c[1:].split('-'))) for c in cases]
+    comparisons=[compare(args.directory,'lumerical' if c[0]=='l' else 'tidy3d',*map(int,c[1:].split('-')),interface=args.interface) for c in cases]
     args.output.write_text(json.dumps({'adjacent_mesh_controls':comparisons},indent=2,allow_nan=False)+'\n')

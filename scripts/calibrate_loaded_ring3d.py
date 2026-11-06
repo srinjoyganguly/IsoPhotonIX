@@ -172,7 +172,9 @@ def stage(runtime, g, duration, reference, frozen_source=None):
         config=sim,constraints=constraints,key=key)
     ade=g.get('ring_material')=='palik-ade'
     basis_wavelengths=BASIS_WAVELENGTHS
-    wall=g.get('ring_interface')=='wall-tensor'
+    reciprocal=g.get('ring_interface')=='reciprocal-wall'
+    wall=g.get('ring_interface') in ('wall-tensor','reciprocal-wall')
+    links=link_info=None
     full_inverse=None
     if wall:
         from scripts.ring_wall_tensor import forward_lossless_xy, wall_inverse
@@ -180,6 +182,9 @@ def stage(runtime, g, duration, reference, frozen_source=None):
         for x in (g['source_x'], *(p[0] for p in g['ports'])):
             if np.any(full_inverse[1,x]) or np.any(full_inverse[3,x]):
                 raise ValueError('A requested source or port intersects a curved sidewall.')
+        if reciprocal and not reference:
+            from scripts.reciprocal_ring_wall import reciprocal_links
+            links,link_info=reciprocal_links(full_inverse,1/g['silicon_index']**2,1/min(g['top_index'],g['substrate_index'])**2)
         diagonal=full_inverse[[0,4,8]]
         eps=1/diagonal
     elif ade:
@@ -215,6 +220,10 @@ def stage(runtime, g, duration, reference, frozen_source=None):
     raw = {'source_E':e,'source_H':h,
            'permittivity_midplane':eps[1,:,:,shape[2]//2].copy(),
            'permittivity_cross_section':eps[:,g['source_x']].copy()}
+    if links is not None:
+        raw['reciprocal_links_midplane']=links[:,:,:,shape[2]//2].copy()
+        link_info['links_sha256']=fingerprint(links)
+        links=jax.device_put(links,target)
     if wall:
         raw.update(inverse_xy_midplane=full_inverse[[1,3],:,:,shape[2]//2],
                    source_offset_E=np.asarray(native._time_offset_E),source_offset_H=np.asarray(native._time_offset_H))
@@ -257,10 +266,10 @@ def stage(runtime, g, duration, reference, frozen_source=None):
     points=[(round(x/dx+shape[0]/2),round(y/dx+shape[1]/2),shape[2]//2)
             for x,y in ((g['radius_um'],0.),(0.,-g['radius_um']),(0.,g['radius_um']))]
 
-    def sample(carry, _):
+    def sample(carry, _, material_links=None):
         def step(_,state):
             if wall and not reference:
-                return forward_lossless_xy(state,sim,objects)
+                return forward_lossless_xy(state,sim,objects,material_links)
             return forward(state=state,config=sim,objects=objects,key=key,
                            record_detectors=False,record_boundaries=False,simulate_boundaries=True)
         prior=jax.lax.fori_loop(0,stride-1,step,carry)
@@ -280,20 +289,21 @@ def stage(runtime, g, duration, reference, frozen_source=None):
         return following,(jnp.stack(result),probes)
     state=(jnp.asarray(0,dtype=jnp.int32),arrays)
     # Fixed sample count per execution amortizes dispatch. The last chunk uses its actual length.
-    jax.block_until_ready((state, weights))
+    jax.block_until_ready((state, weights, links))
     setup_seconds=time.monotonic()-stage_started
     start=time.monotonic()
     compiled={}
     for n_samples in {min(chunk,size),size % chunk} - {0}:
         with timer.compile():
-            evolve=jax.jit(lambda st:jax.lax.scan(sample,st,None,length=n_samples),donate_argnums=(0,))
-            compiled[n_samples]=evolve.lower(state).compile()
+            def advance(st,material_links):
+                return jax.lax.scan(lambda carry,it:sample(carry,it,material_links),st,None,length=n_samples)
+            compiled[n_samples]=jax.jit(advance,donate_argnums=(0,)).lower(state,links).compile()
     traces=[];probes=[];snapshots=[];snapshot_times=[]
     timer.begin_steps()
     for first in range(0,size,chunk):
         n_samples=min(chunk,size-first)
         with timer.step():
-            state,(signal,probe)=compiled[n_samples](state)
+            state,(signal,probe)=compiled[n_samples](state,links)
             jax.block_until_ready((state,signal,probe))
         signal_np, probe_np=np.asarray(signal),np.asarray(probe)
         if not np.isfinite(signal_np).all() or not np.isfinite(probe_np).all():
@@ -329,6 +339,8 @@ def stage(runtime, g, duration, reference, frozen_source=None):
                     curved_inverse_xy_nonzero_cells=int(np.count_nonzero(full_inverse[[1,3]])),
                     model='Sequential vertical-wall lamination, local radial normal, frozen positive-Ey source',
                     electric_update='Native diagonal' if reference else 'FDTDX lossless xy block, native CPML and H update')
+    if link_info is not None:
+        info.update(reciprocal_operator=link_info,electric_update='Reciprocal bounded edge coupling, native CPML and H update')
     if ade:
         info.update(material_validation=material_metadata,source_drive=source_drive)
     return raw,info
@@ -361,10 +373,25 @@ def qualified_spacing(peaks, valid):
     return min(adjacent,key=lambda pair:abs(sum(p['wavelength_um'] for p in pair)/2-1.55)) if adjacent else None
 
 
+def field_stability(probes, collected_power, duration):
+    peaks=[np.max(abs(chunk),axis=0) for chunk in np.array_split(probes,4)]
+    growth=peaks[-1]/np.maximum(np.maximum(peaks[0],peaks[1]),np.finfo(float).tiny)
+    late_checked=duration>2*PULSE_END
+    severe_growth=late_checked and np.all(peaks[3]>peaks[2]) and np.all(peaks[2]>peaks[1]) and np.all(growth>8)
+    passivity_failures=int(np.sum(collected_power>1.05))
+    rejected=bool(severe_growth and passivity_failures>=len(collected_power)/10)
+    return dict(usable_spectrum=not rejected,screen_checked=late_checked,
+                reason=('After source shutoff all three ring probes grow by over eight times their first-half peaks, and collected power exceeds the passivity limit across over 10% of the band.' if rejected
+                        else 'No joint severe post-pulse growth and widespread passivity failure.'),
+                first_to_fourth_quarter_probe_peak_abs_Hz=[p.tolist() for p in peaks],
+                fourth_to_first_half_peak_per_probe=growth.tolist(),passivity_failed_bins=passivity_failures,
+                max_collected_power=float(np.max(collected_power)))
+
+
 def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity):
     ref,dev = [stages[k][1] for k in ('reference','device')]
     ade=g.get('ring_material')=='palik-ade'
-    if g.get('ring_interface')=='wall-tensor':
+    if g.get('ring_interface') in ('wall-tensor','reciprocal-wall'):
         for key in ('source_E','source_H','source_offset_E','source_offset_H'):
             np.testing.assert_array_equal(ref[key],dev[key])
     if ade:
@@ -395,6 +422,11 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
     if ade:
         in_band=(WAVELENGTHS>=1.5)&(WAVELENGTHS<=1.6)
         valid &= in_band
+    stability=field_stability(dev['ring_Hz'],power.sum(axis=1),duration)
+    local_valid=valid.copy()
+    stability['sample_gates_passed_before_stability']=int(local_valid.sum())
+    if not stability['usable_spectrum']:
+        valid[:]=False
     reliable=[p for p in peaks if valid[np.argmin(abs(WAVELENGTHS-p['wavelength_um']))]]
     pair=qualified_spacing(peaks,valid)
     fsr=(pair[1]['wavelength_um']-pair[0]['wavelength_um'])*1000 if pair else None
@@ -404,7 +436,7 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
     # Peak spacings are meaningful only when adjacent peaks and their neighborhood are settled.
     passed=bool(valid[in_band].all() and pair is not None)
     row=dict(wavelength_um=WAVELENGTHS.tolist(),valid_bins=valid.tolist(),**{k:power[:,i].tolist() for i,k in enumerate(PORTS)})
-    data={'s':s,'s_early':early,'incident':incident,'valid_bins':valid,'wavelength_um':WAVELENGTHS,
+    data={'s':s,'s_early':early,'incident':incident,'valid_bins':valid,'local_valid_bins':local_valid,'wavelength_um':WAVELENGTHS,
           'basis_wavelength_um':ref.get('projection_wavelengths_um',BASIS_WAVELENGTHS),'reference_straight_power':straight,'incident_device_over_reference':ratio}
     for label,(info,arrays) in stages.items():
         data.update({label+'_'+key:value for key,value in arrays.items()})
@@ -412,7 +444,7 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
     report=dict(case_id='loaded-ring-3d',vendor=vendor,solver='fdtdx',device='gpu',
         actual_device=stages['device'][0]['device'],device_name=stages['device'][0]['device_name'],
         passed=passed,measurement_complete=True,physical_model=g,versions=versions,checkpoint_identity=checkpoint_identity,
-        stages={k:v[0] for k,v in stages.items()},series={vendor:row},
+        stages={k:v[0] for k,v in stages.items()},series={vendor:row},stability=stability,
         duration_um_c=duration,early_fraction=.8,peaks=peaks,qualified_peaks=reliable,
         measured_drop_fsr_nm=fsr,published_drop_fsr_nm=external_fsr,
         published_peaks_um=published,source_url=CASES[vendor]['source'],reference_spacing_pair_um=list(external_pair),
@@ -422,8 +454,10 @@ def assemble(g, vendor, stages, duration, output, versions, checkpoint_identity)
         max_collected_port_power=float(power.sum(axis=1).max()),incident_ratio_magnitude_range=[float(abs(ratio).min()),float(abs(ratio).max())],
         arrays_file='arrays.npz',arrays_sha256=hashlib.sha256((output/'arrays.npz').read_bytes()).hexdigest(),
         limits='Lossless, fixed central indices. Modal E/H overlaps interpolate five independently solved mode profiles across the band. FSR is loaded drop-peak spacing. Intrinsic/external rate estimates require the independent spectral/temporal gates in loaded_loss.')
-    if g.get('ring_interface')=='wall-tensor':
+    if g.get('ring_interface') in ('wall-tensor','reciprocal-wall'):
         report['limits']+=' The rotated sidewall model uses native off-diagonal electric updates; subcell corners use sequential mixing. The midplane display stores the reciprocal inverse yy coefficient.'
+        if g['ring_interface']=='reciprocal-wall':
+            report['limits']+=' The evolution uses shared Ex/Ey edge-pair coefficients bounded by the material eigenvalue range. Accuracy requires mesh and vendor comparisons.'
         report['physical_port_x_um']=[(x-g['shape'][0]/2)/g['resolution'] for x,y,z in g['ports']]
     if ade:
         report['material_band_bins']=int(in_band.sum())
@@ -448,7 +482,7 @@ def main():
     parser.add_argument('--vendor',choices=tuple(CASES),required=True)
     parser.add_argument('--device',choices=['gpu'],required=True)
     parser.add_argument('--resolution',type=int,choices=(12,16,20,24),default=16)
-    parser.add_argument('--ring-interface', choices=('legacy','exact-area','wall-tensor'), default='legacy',
+    parser.add_argument('--ring-interface', choices=('legacy','exact-area','wall-tensor','reciprocal-wall'), default='legacy',
                         help='How the ring and straight guides occupy the lateral Yee cells.')
     parser.add_argument('--ring-material',choices=('constant','palik-ade'),default='constant')
     parser.add_argument('--duration-um-c',type=float,help='Total recording in µm/c (Lumerical 3200, Tidy3D 4800).')
@@ -461,7 +495,7 @@ def main():
         args.duration_um_c=3200. if args.vendor=='lumerical' else 4800.
     if not 100<=args.duration_um_c<=6000 or not .5<=args.pml_um<=1.2 or not 1.5<=args.aperture_um<=2.5:
         parser.error('Require duration 100–6000 µm/c, PML 0.5–1.2 µm and aperture 1.5–2.5 µm.')
-    if args.ring_interface=='wall-tensor' and args.resolution<16:
+    if args.ring_interface in ('wall-tensor','reciprocal-wall') and args.resolution<16:
         parser.error('The separated-wall tensor control requires at least 16 cells/µm.')
     if args.ring_material=='palik-ade' and (args.vendor!='lumerical' or args.ring_interface!='exact-area'):
         parser.error('The Palik material control requires the exact-area Lumerical ring.')
@@ -472,6 +506,9 @@ def main():
     versions={k:importlib.metadata.version(k) for k in ('jax','jaxlib','fdtdx','scipy','numpy','tidy3d')}
     g=geometry(args.vendor,args.resolution,args.pml_um,args.aperture_um,args.ring_interface)
     provenance, reusable = stage_fingerprint(ROOT, runtime, versions)
+    if args.ring_interface=='reciprocal-wall':
+        from scripts.reciprocal_ring_wall import fresh_admission,worker_hashes
+        provenance['source_files'].update(worker_hashes(ROOT))
     if args.ring_material=='palik-ade':
         from scripts.ring_palik_dispersion import MATERIAL_FILE, MATERIAL_SOURCE_SHA256
         g['ring_material']=args.ring_material
@@ -499,7 +536,7 @@ def main():
             frozen_source=None
             if args.ring_material=='palik-ade':
                 settings['basis']=[1.5,1.525,1.55,1.575,1.6]
-            if not is_reference and (args.ring_material=='palik-ade' or args.ring_interface=='wall-tensor'):
+            if not is_reference and (args.ring_material=='palik-ade' or args.ring_interface in ('wall-tensor','reciprocal-wall')):
                 frozen_source=stages['reference'][1]
                 settings['frozen_source_sha256']={key:fingerprint(frozen_source[key]) for key in
                     ('source_E','source_H','source_offset_E','source_offset_H')}
@@ -507,7 +544,10 @@ def main():
             def calculate():
                 nonlocal calculated_here
                 calculated_here=True
+                admission=fresh_admission(ROOT,g,runtime[3],provenance) if args.ring_interface=='reciprocal-wall' else None
                 raw,info=stage(runtime,g,interval,is_reference,frozen_source)
+                if admission:
+                    info['fresh_memory_admission']=admission
                 return info,raw
             stages[label]=cache.acquire(label,settings,calculate)
             acquisitions[label]='computed_this_invocation' if calculated_here else 'reused_verified_receipt'

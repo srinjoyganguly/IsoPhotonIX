@@ -5,11 +5,16 @@ from collections import Counter
 from pathlib import Path
 
 import numpy as np
+from scripts.calibrate_loaded_ring3d import field_stability
 from scripts.check_ring_wall_windows import load, check_window
 from scripts.compare_ring_interface_models import digest
 
 
 def rejection_for(path):
+    record=json.loads(path.read_text())
+    current=record.get('stability',{})
+    if current.get('usable_spectrum') is False:
+        return dict(current,source_receipt=path.name,source_report_sha256=digest(path),source_arrays_sha256=record['arrays_sha256'])
     receipt=path.parent/'v014-ring-wall-stability.json'
     if not receipt.is_file():
         return None
@@ -28,20 +33,13 @@ def diagnose(path):
         np.testing.assert_array_equal(original,mask & r['stability']['usable_spectrum'])
     else:
         np.testing.assert_array_equal(mask,original)
-    hz=dev['ring_Hz']
-    q=[np.max(abs(v),axis=0) for v in np.array_split(hz,4)]
-    first=np.maximum(q[0],q[1])
-    growth=q[-1]/np.maximum(first,np.finfo(float).tiny)
+    screen=field_stability(dev['ring_Hz'],(abs(s)**2).sum(1),r['duration_um_c'])
     failing=Counter(g for bin in window['failed_bins'] for g in bin['gates_failed'])
-    temporal_growth=bool(np.all(q[3]>q[2]) and np.all(q[2]>q[1]) and np.all(growth>8))
-    violated=temporal_growth and failing['collected_port_power']>=len(wl)/10
-    reason=('After source shutoff all three ring probes grow by over eight times their first-half peaks, and collected power exceeds the passivity limit across over 10% of the band.'
-            if violated else 'No joint late-growth and widespread passivity failure detected by this diagnostic.')
     return dict(source_receipt=path.name,source_report_sha256=digest(path),source_arrays_sha256=r['arrays_sha256'],
-                usable_spectrum=not violated,reason=reason,
+                usable_spectrum=screen['usable_spectrum'],reason=screen['reason'],
                 original_mask_qualified=int(mask.sum()),original_qualified_wavelengths_um=wl[mask].tolist(),
-                native_gate_failure_counts=dict(failing),first_to_fourth_quarter_probe_peak_abs_Hz=[v.tolist() for v in q],
-                fourth_to_first_half_peak_per_probe=growth.tolist(),
+                native_gate_failure_counts=dict(failing),first_to_fourth_quarter_probe_peak_abs_Hz=screen['first_to_fourth_quarter_probe_peak_abs_Hz'],
+                fourth_to_first_half_peak_per_probe=screen['fourth_to_first_half_peak_per_probe'],
                 max_collected_power=float((abs(s)**2).sum(1).max()),
                 source_shutoff_um_c=2*4/.14,window_um_c=r['duration_um_c'],
                 limits='A global rejection overrides even an isolated nominally valid bin. Absence of this severe growth signal does not establish vendor agreement or convergence.')

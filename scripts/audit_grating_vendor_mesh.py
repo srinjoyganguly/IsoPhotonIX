@@ -48,7 +48,7 @@ def geometry_steps(axes, m):
                                     "groove":section(x,*groove),"ridge":section(x,*ridge)}}
 
 
-def tidy_grid(m):
+def tidy_simulation(m):
     import tidy3d as td
     si=td.Medium(permittivity=m["n_si"]**2);ox=td.Medium(permittivity=m["n_oxide"]**2)
     h,etch,width=m["height"],m["etch"],m["width"]
@@ -75,7 +75,11 @@ def tidy_grid(m):
     sim=td.Simulation(center=domain.center,size=domain.size,symmetry=(0,-1,0),
                       grid_spec=td.GridSpec.auto(min_steps_per_wvl=15,wavelength=1.55),
                       structures=structures,sources=[beam],monitors=[monitor],run_time=2e-12)
-    b=sim.grid.boundaries
+    return sim
+
+
+def tidy_grid(m):
+    b=tidy_simulation(m).grid.boundaries
     return geometry_steps((b.x,b.y,b.z),m)
 
 

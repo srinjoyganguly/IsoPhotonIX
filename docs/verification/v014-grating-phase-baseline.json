@@ -33,6 +33,13 @@
         "fiber_clad_n": 1.43482,
         "fiber_center_x": 2.74533,
         "angle_deg": 10.0,
+        "waist": null,
+        "buffer": null,
+        "pml": 0.667,
+        "output_x": -25.5,
+        "sample_z": 0.82,
+        "upper_half_span": 10.0,
+        "residual_slab_laterally_extended": null,
         "grating_material_model": "direct-yee",
         "physical_bounds": [
           [
@@ -221,6 +228,13 @@
         "fiber_clad_n": 1.43482,
         "fiber_center_x": 2.74533,
         "angle_deg": 10.0,
+        "waist": null,
+        "buffer": null,
+        "pml": 0.667,
+        "output_x": -25.5,
+        "sample_z": 0.82,
+        "upper_half_span": 10.0,
+        "residual_slab_laterally_extended": null,
         "grating_material_model": "direct-yee",
         "physical_bounds": [
           [

@@ -10,6 +10,7 @@ type PowerDiagnostic =
       gain_only:{feasible:boolean;tolerance_power_fraction:number}};
 type SpatialReport = {vendor?:string;case_id?:string;settings?:{geometry:string};result?:{wavelength_um:number[];beam_to_guide:number[]};
   power_diagnostic?:PowerDiagnostic;accuracy_criteria?:Record<string,boolean|null>;
+  figure_readout?:{wavelength_um?:number;drop_power_bounds?:[number,number];uncertainty_db?:number};
   vendor_comparison?:{channels:Record<string,{paired_spectrum:Paired}>}; loaded_loss?:{peaks:LossPeak[]};
   comparisons?:{vendor:string;geometry_matched?:boolean;wavelength_um?:number[];published_power?:number[];published_s21_power?:number[]}[];
   radiation?:{polar_edges_deg?:number[];fraction_of_incident?:number[][];fiber_return_power?:number[]};
@@ -95,6 +96,7 @@ export function SpatialComparison({value}:{value:unknown}) {
     pairs['Guided output']={wavelength_um:r.result.wavelength_um,local_power:r.result.beam_to_guide,published_power:ref};
   }
   const vendor=r.vendor?.toLowerCase()==='lumerical'?'Lumerical':'Tidy3D';
+  const figure=r.figure_readout;
   const qualified=r.loaded_loss?.peaks.filter(p=>p.qualified && p.qualified_equal_bus_loss);
   const angles=r.radiation;
   const wavelengths=r.result?.wavelength_um || [];
@@ -103,6 +105,9 @@ export function SpatialComparison({value}:{value:unknown}) {
     <table><thead><tr><th>Criterion</th><th>Result</th></tr></thead><tbody>{Object.entries(r.accuracy_criteria).map(([key,pass])=>
       <tr key={key}><th>{criteriaLabels[key] || key}</th><td>{pass===null?'Unresolved':pass?'Passed':'Outside limit'}</td></tr>)}</tbody></table></details>}
     <PairedSpectrum series={pairs} vendor={vendor}/>
+    {figure?.drop_power_bounds && figure.wavelength_um && <p>At {(figure.wavelength_um*1000).toFixed(0)} nm the published Tidy3D ring trace spans
+      {' '}{(100*figure.drop_power_bounds[0]).toFixed(2)}–{(100*figure.drop_power_bounds[1]).toFixed(2)}% drop power when its plotted line thickness is included.</p>}
+    {figure?.uncertainty_db && <p>The Tidy3D grating values were read from the published figure with a ±{figure.uncertainty_db.toFixed(2)} dB readout uncertainty.</p>}
     {r.power_diagnostic && <PowerExplanation data={r.power_diagnostic} vendor={vendor}/>}
     {qualified && <section aria-label="Loaded resonance measurements"><h3>Loaded resonances</h3>
       {qualified.length ? <><table><thead><tr><th>Peak (µm)</th><th>Loaded Q from linewidth</th><th>Loaded Q from decay</th><th>External Q per bus</th><th>Apparent internal Q</th></tr></thead>

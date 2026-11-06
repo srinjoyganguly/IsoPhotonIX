@@ -68,6 +68,15 @@ class PhaseRegistrationTests(unittest.TestCase):
         record={'max_collected_port_power':1.74}
         arrays={'device_ring_Hz':field,'device_time_um_c':np.arange(12.)}
         self.assertTrue(growth_diagnostic(record,arrays)['reject_scattering'])
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            archive=root/'arrays.npz';np.savez(archive,**arrays,valid_bins=[True,False,False])
+            record.update(case_id='loaded-ring-3d',passed=False,actual_device='cuda:0',measurement_complete=True,
+                          checkpoint_identity={'persistent_reuse_eligible':True},stages={'reference':{'device':'cuda:0'},'device':{'device':'cuda:0'}},
+                          valid_bins=1,total_bins=3,arrays_sha256=hashlib.sha256(archive.read_bytes()).hexdigest())
+            path=root/'report.json';path.write_text(json.dumps(record))
+            with self.assertRaisesRegex(ValueError,'runaway late fields'):
+                native_data(path,allow_partial_ring=True)
 
     def test_sparse_return_power_integral_skips_unqualified_gaps(self):
         w=np.array([1.5,1.51,1.52,1.55,1.60])

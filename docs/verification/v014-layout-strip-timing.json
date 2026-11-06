@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "case": "layout-3d",
+  "actual_device": "cuda:0",
+  "settings": {
+    "geometry": "strip",
+    "resolution": 16
+  },
+  "versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6"
+  },
+  "baseline": "v010-all-family-fdtdx-gpu.json",
+  "baseline_receipt_sha256": "5fef97acd3290c3933b5a601fee761d219e6862746431339fe552cda167a0c50",
+  "physical_configuration_sha256": "abfb5001de0ed28cb742aa2784845a9d8bc46f0b521fc20db24516cd1a5b2153",
+  "matched_array_sha256": {
+    "field": "60153ba2edff24701199bbb8fc5ef2b0e633dee86d6f0738baff445ec8a4481e",
+    "fields": "8f3cc33380b36285f009bcf8c5e06c8d2b1609d866ca0c967271d21b7b77d866",
+    "epsilon": "3a582fa76323151b591bc9483b9f2c1f1c8157e3c20a0949afd225d91f6af268",
+    "raw_fields": "4198c5c52799f5fce6f45a0eb010eb2241b4e7f8c79a630afbffcff674fe24c8",
+    "raw_epsilon": "6349c555a97cc857ea323041506a2927e85fc600bae49090dffe88bf96274060",
+    "x_um": "3118c2a36b0d8eb52776b8df7e41fb42b91e76f26ebb385e43da6f084b357c6a",
+    "y_um": "e6566b1122c927ccac49620c02af24b7da4cff55c1e7f528f087f9b407428cee",
+    "z_um": "57b5b7e12283017e37c658517634405df4f8d885db1a59f4e9540644caf2b567",
+    "raw_x_um": "d0e62470d35b7be92d24499114865530732997573e71a991427e92623cb4c9e9",
+    "raw_y_um": "330e9e182d60bff67e0e52b33f478b397b113220f533251faf7e16685e506044",
+    "raw_z_um": "a169106f9aaeb85c99a0923d9b9dc21c6481dd7efff90e9cd99d6d84b58c4298"
+  },
+  "source_implementation_sha256": "1e577984e32af0b83f42d32c7661c015a15d6bb9670a47327296f449158ed60f",
+  "timing_purpose": "finite-layout field replay",
+  "stages": {
+    "device": {
+      "performance": {
+        "schema": 1,
+        "acquisition_id": "120a875eec4a465e9308bbfd7f4c7aef",
+        "platform": "gpu",
+        "device": "cuda:0",
+        "device_kind": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+        "grid_shape": [
+          167,
+          47,
+          42
+        ],
+        "cells": 329658,
+        "spacing_um": 0.0625,
+        "pml_cells": 13,
+        "steps": 201,
+        "dt_seconds": 1.1916092934568783e-16,
+        "simulated_time_fs": 23.951346798483254,
+        "compile_seconds": 1.0178152119915467,
+        "synchronized_step_seconds": 0.4960794859944144,
+        "step_batches": 1,
+        "cuda_event_elapsed_seconds": 0.49652752685546875,
+        "cuda_event_note": null,
+        "kernel_active_seconds": null,
+        "kernel_count": null,
+        "kernel_timing_note": "Native stepping records elapsed time. Exclusive kernel-active time was not acquired.",
+        "stage_through_steps_seconds": 7.872267106999061,
+        "million_cell_steps_per_second": 133.56984086365964
+      },
+      "acquisition": {
+        "status": "fresh"
+      }
+    }
+  },
+  "requested_duration_fs": 24.0,
+  "scope": "Normal finite-layout worker. All 11 material, coordinate and actual field arrays match the earlier NVIDIA acquisition byte for byte; the published field hashes anchor the comparison. No port S values are inferred from this dipole study."
+}

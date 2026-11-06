@@ -1,0 +1,44 @@
+{
+  "geometry": "lumerical",
+  "resolution": 20,
+  "domain": "mirror-y",
+  "stage": "device",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "grid_shape": [
+    866,
+    213,
+    76
+  ],
+  "cells": 14018808,
+  "dt_seconds": 9.532874347655028e-17,
+  "completed_fdtd_steps_lower_bound": 8190,
+  "completed_time_fs_lower_bound": 780.7424090729469,
+  "completed_windows_fs_as_logged": [
+    60,
+    120,
+    180,
+    240,
+    300,
+    360,
+    420,
+    480,
+    541,
+    601,
+    661,
+    721,
+    781
+  ],
+  "synchronized_step_seconds": null,
+  "cuda_event_elapsed_seconds": null,
+  "exit_signal": 15,
+  "framebuffer_observations": {
+    "samples": 163,
+    "observed_worker_wall_span_seconds": 337.425408,
+    "maximum_observed_global_used_mib": 11865,
+    "minimum_observed_global_free_mib": 4309
+  },
+  "reference_stage_arrays_sha256": "c106baabcdf3e45510b93fabcf719c017faa4dd106ea85ec528287b7b6b0de1a",
+  "worker_sha256": "7e870344b755bc78be28bb3b8dc7c3ec4b2031511c38b15dd40ce381bafc5f0e",
+  "scope": "The foreground supervisor exited with status 143 after the 781 fs window. The sender of SIGTERM is unknown. No OOM-kill or termination event identified the sender in the system journal for the observed interruption window. Framebuffer sampling measures observed process wall span and global occupancy; the worker did not publish synchronized stepping or final optical observables for this partial acquisition. A user service relaunches the same immutable worker and preserves the verified reference."
+}

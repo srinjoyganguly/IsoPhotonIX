@@ -160,10 +160,14 @@ export function VolumeSlices({ job }: { job: { id: string; result?: Record<strin
   }, [job.id, volume, plane, component, selectedIndex, retry]);
   const metadata = volume?.metadata ?? job.result ?? {};
   const time = metadata.actual_duration_fs ?? metadata.simulated_time_fs;
+  const performance=metadata.performance as {cells:number;steps:number;synchronized_step_seconds:number;cuda_event_elapsed_seconds:number|null}|undefined;
   // React renders before its fetch effect runs. Never pair old samples with a
   // newly selected plane/component/index, even for that intermediate render.
   const matchingSlice = slice?.plane === plane && slice.component === component && slice.index === selectedIndex ? slice : null;
   return <div className="volume3d-results">
+    {performance && <p aria-label="Measured field simulation cost">{performance.cells.toLocaleString()} cells · {performance.steps.toLocaleString()} time steps ·
+      {' '}{performance.synchronized_step_seconds.toFixed(3)} s synchronized stepping
+      {performance.cuda_event_elapsed_seconds!=null && <> · {performance.cuda_event_elapsed_seconds.toFixed(3)} s GPU clock</>}</p>}
     <div className="slice3d-header"><div><h3>Actual 3D fields</h3><p>Final solver snapshot{typeof time === 'number' ? ` · ${time.toFixed(2)} fs` : ''} · slices through the saved volume</p><p>Exploratory grid · Commercial solver agreement: not validated</p></div><span className="viewport-badge">COMPUTED</span></div>
     <div className="slice3d-controls">
       <label>Plane<select aria-label="3D slice plane" value={plane} onChange={event => { setPlane(event.target.value as Plane); setIndex(null); }}><option value="xy">XY · z normal</option><option value="xz">XZ · y normal</option><option value="yz">YZ · x normal</option></select></label>

@@ -76,6 +76,8 @@ def spatial_index():
     if not diagnostics_file.is_file():
         diagnostics_file = BASE/'v013-power-diagnostics.json'
     diagnostics = json.loads(diagnostics_file.read_text())['records']
+    tidy_ring_readout=json.loads((BASE/'v014-tidy-ring-grid.json').read_text())['central_plot_readout']
+    tidy_grating_readout=json.loads((BASE/'v012-grating-commercial-references.json').read_text())['tidy3d']['calibration']
     gates_path = BASE/'v014-accuracy-gates.json'
     gates = json.loads(gates_path.read_text()) if gates_path.is_file() else {}
     if gates and gates['diagnosis_sha256'] != hashlib.sha256(diagnostics_file.read_bytes()).hexdigest():
@@ -118,6 +120,11 @@ def spatial_index():
                        **subset(data,('case_id','vendor','vendor_comparison','loaded_loss'))}
                 mesh=data['physical_model']['resolution']
                 model=data['physical_model']
+                if (model.get('ring_interface')=='reciprocal-wall' and data['passed']
+                        and data.get('stability',{}).get('usable_spectrum') is True
+                        and data['valid_bins']==data['total_bins'] and data['stages']['device'].get('reciprocal_operator')):
+                    index[case].setdefault('reciprocal_runs',[]).append({'geometry':vendor,'resolution':mesh,
+                        'run':path.name,'arrays_sha256':data['arrays_sha256']})
                 label=(f"{vendor.capitalize()} · {mesh} cells/µm · {data['duration_um_c']:g} µm/c · "
                        f"{model['pml']} PML cells · {model['aperture_um']:g} µm port")
                 if model.get('ring_interface','legacy') != 'legacy':
@@ -157,6 +164,12 @@ def spatial_index():
                         detail['native_arrays_sha256'] != data['arrays_sha256']):
                     raise ValueError(f'Regenerate power diagnostics for {path.name}.')
                 panel['power_diagnostic'] = {key:value for key,value in detail.items() if key!='additional_spectra'}
+                if data['vendor'].lower()=='tidy3d':
+                    if case=='ring-3d':
+                        panel['figure_readout']={'wavelength_um':tidy_ring_readout['wavelength_um'],
+                            'drop_power_bounds':tidy_ring_readout['channels']['drop']['stroke_and_half_pixel_bounds']}
+                    elif data['settings']['geometry']=='tidy3d':
+                        panel['figure_readout']={'uncertainty_db':tidy_grating_readout['conservative_readout_uncertainty_db']}
                 if detail.get('additional_spectra'):
                     panel['vendor_comparison']['channels'].update(
                         {name:{'paired_spectrum':series} for name,series in detail['additional_spectra'].items()})
@@ -233,10 +246,12 @@ def spatial_index():
 
 
 if __name__=='__main__':
-    index_json = json.dumps(spatial_index(), separators=(',', ':'), allow_nan=False)
-    with NamedTemporaryFile(mode='w', dir=BASE, delete=False) as temporary:
-        temporary.write(index_json + '\n')
-    destination = BASE/'v012-calibrated-index.json'
-    staging = Path(temporary.name)
-    staging.chmod(0o644)
-    staging.replace(destination)
+    index=spatial_index()
+    for filename,document in [('v012-calibrated-index.json',index),
+                              ('v014-ring-meshes.json',{'qualified':index['ring-3d'].get('reciprocal_runs',[])})]:
+        with NamedTemporaryFile(mode='w', dir=BASE, delete=False) as temporary:
+            json.dump(document,temporary,separators=(',', ':'),allow_nan=False)
+            temporary.write('\n')
+        staging=Path(temporary.name)
+        staging.chmod(0o644)
+        staging.replace(BASE/filename)

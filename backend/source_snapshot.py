@@ -19,7 +19,7 @@ FILENAME = 'implementation.zip'
 MANIFEST = 'implementation-manifest.json'
 FORBIDDEN = {'backend.app', 'backend.jobs', 'backend.runtime', 'backend.reproduce',
              'backend.reproduction_runtime'}
-SOURCE_NAME = re.compile(r'source/backend/(?:[A-Za-z_][A-Za-z0-9_]*/)*[A-Za-z_][A-Za-z0-9_]*\.py\Z')
+SOURCE_NAME = re.compile(r'source/(?:backend/(?:[A-Za-z_][A-Za-z0-9_]*/)*[A-Za-z_][A-Za-z0-9_]*|scripts/gpu_timing)\.py\Z')
 
 
 def _root(root):
@@ -72,7 +72,7 @@ def source_files(root=None):
                     base = package[:len(package)-node.level+1]
                     imported = (['.'.join(base+node.module.split('.'))] if node.module else
                                 ['.'.join(base+[alias.name]) for alias in node.names])
-                elif node.module and (node.module == 'backend' or node.module.startswith('backend.')):
+                elif node.module and (node.module == 'backend' or node.module.startswith('backend.') or node.module=='scripts.gpu_timing'):
                     imported = [node.module]
                     # "from backend import helper" also executes helper when
                     # it is a local module, rather than a package attribute.

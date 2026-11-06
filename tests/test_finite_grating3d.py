@@ -103,7 +103,10 @@ class FiniteGrating3D(unittest.TestCase):
                   'compute_capability':'8.6','per_cache_device_sha256':'gpu-a'}
         versions={'scipy':'1'}
         def version(name): return versions.get(name,'test')
-        def stage(cmd, check, env):
+        def stage(cmd, check, env, pass_fds):
+            import os
+            self.assertEqual(len(pass_fds),1)
+            self.assertEqual(os.fstat(pass_fds[0]).st_ino,Path(env['PHOTONICS_GPU_LOCK']).stat().st_ino)
             target=Path(cmd[cmd.index('--output')+1])
             np.savez(target/'arrays.npz',measured=np.array([1.]))
             info={'cuda_identity':hardware.copy(),'native_worker_sha256':grating.file_hash(grating.__file__)}

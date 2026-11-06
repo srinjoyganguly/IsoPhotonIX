@@ -61,7 +61,7 @@ def wall_inverse(g, reference, disk_fractions, lateral_fraction, permittivity):
     return inv
 
 
-def forward_lossless_xy(state, config, objects):
+def forward_lossless_xy(state, config, objects, links=None):
     """Specialize the native FDTDX 0.6.2 update for a lossless xy electric block.
 
     The native B=c*solve(I,epsilon_inverse) reduces to c*epsilon_inverse and
@@ -81,12 +81,16 @@ def forward_lossless_xy(state, config, objects):
         raise ValueError('The wall update requires nine lossless, nondispersive xy-block coefficients.')
     padded_h = pad_fields_for_boundaries(arrays.fields.H, objects, config)
     curl, psi = curl_H(config, padded_h, arrays.fields.psi_E, arrays.alpha, arrays.kappa, arrays.sigma, True)
-    padded_curl = pad_fields_for_boundaries(curl, objects, config)
-    y_at_x = avg_anisotropic_E_component(padded_curl, component=1, location=0)
-    x_at_y = avg_anisotropic_E_component(padded_curl, component=0, location=1)
-    c = config.courant_number
-    increment = jnp.stack(((c*inv[0])*curl[0] + (c*inv[1])*y_at_x,
-                           (c*inv[3])*x_at_y + (c*inv[4])*curl[1], (c*inv[8])*curl[2]))
+    if links is not None:
+        from scripts.reciprocal_ring_wall import apply_inverse
+        increment=config.courant_number*apply_inverse(curl,inv,links)
+    else:
+        padded_curl = pad_fields_for_boundaries(curl, objects, config)
+        y_at_x = avg_anisotropic_E_component(padded_curl, component=1, location=0)
+        x_at_y = avg_anisotropic_E_component(padded_curl, component=0, location=1)
+        c = config.courant_number
+        increment = jnp.stack(((c*inv[0])*curl[0] + (c*inv[1])*y_at_x,
+                               (c*inv[3])*x_at_y + (c*inv[4])*curl[1], (c*inv[8])*curl[2]))
     electric = arrays.fields.E + increment
     for source in objects.sources:
         def add_source(field):

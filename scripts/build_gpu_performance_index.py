@@ -56,7 +56,7 @@ def extra_costs(report, name):
         for trial in report['trials']:
             rows.append(item('grating-3d',trial['geometry'],trial['trial'],'interrupted profiling attempt',
                              mesh_cells_per_um=trial['resolution'],kernel_timing_note=trial['error']))
-    elif name in ('v014-grating-control-interruption.json','v014-grating-return-validation-interruption.json'):
+    elif name.startswith('v014-grating-') and name.endswith('-interruption.json'):
         rows.append(item('grating-3d',report['geometry'],report['stage'],'interrupted optical simulation',
                          mesh_cells_per_um=report['resolution'],grid_shape=report['grid_shape'],cells=report['cells'],
                          device_kind=report.get('device_name'),dt_seconds=report['dt_seconds'],

@@ -10,7 +10,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from scripts.calibrate_finite_grating import monitoring_wavelengths, file_hash, normal_flux, digest
+from scripts.calibrate_finite_grating import monitoring_wavelengths, file_hash, normal_flux, digest, sampled_gaussian_fields, return_window_status
 from scripts.grating_angular_spectrum import air_angular_flux, incident_beam_check
 from scripts.lumerical_grating3d import reflected_fiber_amplitude
 from scripts.grating_mirror import PARITY
@@ -59,6 +59,12 @@ def verify(run):
             if m.get('grating_domain')=='mirror-y':
                 verify_mirror_archive(data,stage,prefix)
             profile=np.stack([data[prefix+'_source_E'],data[prefix+'_source_H']])
+            if stage.get('source_sampling')=='host-sampled-air-gaussian':
+                xs=data[prefix+'_grid_x_um']; ys=data[prefix+'_grid_y_um']; pml=stage['pml_cells']
+                lo=max(pml,int(np.argmin(abs(xs-(m['beam_x']-2*m['waist'])))))
+                hi=min(len(xs)-pml,int(np.argmin(abs(xs-(m['beam_x']+2*m['waist']))))+1)
+                expected=sampled_gaussian_fields(xs[lo:hi],ys[pml:-pml],m['beam_x'],m['waist'],m['angle_deg'])
+                np.testing.assert_array_equal(profile,np.stack(expected))
             if digest(profile)!=stage['source_eh_sha256']:
                 raise ValueError('Source fields changed.')
             if 'source_time_offsets_sha256' in stage:
@@ -77,6 +83,19 @@ def verify(run):
         if r.get('source_time_offsets_sha256')!=d.get('source_time_offsets_sha256'):
             raise ValueError('Reference source phase delays differ from device.')
         if r['source_eh_sha256']!=d['source_eh_sha256']:raise ValueError('Reference source differs from device.')
+        if 'dev_reciprocal_return_history' in data:
+            series=data['dev_reciprocal_return_history']
+            if series.shape!=(len(d['history']),len(wavelengths)):
+                raise ValueError('Return history is missing measured time windows.')
+            expected={'signature':r['signature'],'arrays_sha256':r['arrays_sha256']}
+            if d.get('return_reference_arrays_sha256')!=r['arrays_sha256'] or d['identity'].get('incident_reference')!=expected:
+                raise ValueError('Weak-return history has a different incident reference.')
+            incident=-normal_flux(data['ref_upper'],dx)
+            final_return=reflected_fiber_amplitude(data['dev_upper']-data['ref_upper'],data['ref_upper'],incident,dx)
+            np.testing.assert_allclose(series[-1],final_return,rtol=1e-7,atol=1e-10)
+            ref_changes=np.max([h['relative_incident_plane_l2_change'] for h in r['history'][-2:]],axis=0)
+            if return_window_status(series,ref_changes)!=report['radiation']['reciprocal_return_settling']:
+                raise ValueError('Weak-return qualification contradicts the recorded time windows.')
         if m['geometry']=='compact-radiation':
             from scripts.grating_emission import observables
             archives=[{key[len(prefix):]:data[key] for key in data.files if key.startswith(prefix)}
