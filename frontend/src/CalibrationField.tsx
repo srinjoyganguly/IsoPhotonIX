@@ -33,7 +33,7 @@ export function CalibrationField({field}: {field: FieldPlane}) {
     <h3>Measured field</h3>
     <p>{field.description}{field.wavelength_um != null && ` · ${field.wavelength_um} µm`}
       {field.time_um_c != null && ` · t = ${field.time_um_c.toFixed(2)} µm/c`}</p>
-    <canvas ref={canvas} width={xs.length} height={ys.length} role="img" tabIndex={0}
+    <div className="cal-field-image"><canvas ref={canvas} width={xs.length} height={ys.length} role="img" tabIndex={0}
       aria-label={`${field.component} field. Use arrow keys to inspect neighboring samples.`}
       style={{aspectRatio: String(rangeX / rangeY)}}
       onKeyDown={event => {
@@ -49,6 +49,10 @@ export function CalibrationField({field}: {field: FieldPlane}) {
         const y = Math.max(0, Math.min(ys.length-1, ys.length-1-Math.floor((event.clientY-box.top)/box.height*ys.length)));
         setCursor([x,y]);
       }}/>
+      <span aria-hidden="true" className="cal-field-cursor" style={{
+        left:`${100*(ix+.5)/xs.length}%`, top:`${100*(ys.length-iy-.5)/ys.length}%`,
+      }}/></div>
+    <p className="cal-field-extent">{field.horizontal_axis}: {xs[0].toFixed(2)} to {xs[xs.length-1].toFixed(2)} µm · {field.vertical_axis}: {ys[0].toFixed(2)} to {ys[ys.length-1].toFixed(2)} µm</p>
     <p className="cal-field-scale">−{peak.toPrecision(3)} <span/> +{peak.toPrecision(3)} · solver units</p>
     <p><output aria-label="Field sample">{field.horizontal_axis} = {xs[ix].toFixed(4)} µm · {field.vertical_axis} = {ys[iy].toFixed(4)} µm · {field.component} = {values[iy][ix].toPrecision(7)}</output></p>
   </section>;

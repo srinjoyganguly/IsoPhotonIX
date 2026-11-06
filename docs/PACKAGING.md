@@ -69,9 +69,10 @@ photonics-workbench calibrate ring-3d --solver fdtdx --device gpu --geometry-3d 
 photonics-workbench calibrate grating-3d --solver fdtdx --device gpu --geometry-3d compact --resolution 12 --output finite-grating
 photonics-workbench calibrate multimode-tm --solver meep --device cpu --port-distance-um 1.25 --output tm-joint
 photonics-workbench calibrate layout-ports-2d --solver meep --device cpu --resolution 32 --output planar-elbow
+photonics-workbench calibrate layout-ports-3d --solver fdtdx --device gpu --resolution 16 --output finite-elbow
 ```
 
-For the planar layout, open **Edit polygons and ports** to inspect or change the layout document. The installed command accepts the same file with `--layout PATH`. Use `--export-only` to get the exact study program and notebook before a solver run, or take the measured bundle from a completed run. The original planar ring and grating programs remain available as `ring` and `grating`. [Bus-loaded ring model and numerical checks](LOADED_RING_3D.md) · [Finite-width grating model](FINITE_GRATING_3D.md).
+For either layout-port study, open **Edit polygons and ports** to inspect or change the layout document. The installed command accepts the same file with `--layout PATH`. Use `--export-only` to get the exact study program and notebook before a solver run, or take the measured bundle from a completed run. The original planar ring and grating programs remain available as `ring` and `grating`. [Bus-loaded ring model and numerical checks](LOADED_RING_3D.md) · [Finite-width grating model](FINITE_GRATING_3D.md).
 
 ## Set up the numerical runtimes
 

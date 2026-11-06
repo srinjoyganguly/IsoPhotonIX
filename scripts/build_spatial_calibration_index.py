@@ -32,6 +32,9 @@ def spatial_index():
         'multimode-tm':case_entry('Planar Hz polarization','Meep CPU',
             'Each side excites both TM modes independently. All coefficients refer to the selected physical port planes.',
             'Compare the independent modal interface reference and the measured effects of moving the planes.'),
+        'layout-ports-3d':case_entry('Full-vector finite-height silicon extrusion','FDTDX NVIDIA',
+            'A measured straight incident reference accompanies each excitation of the selected polygon ports.',
+            'These are cardinal-axis quasi-TE ports with a fixed silicon height and oxide background.'),
         'layout-ports-2d':case_entry('Planar Ez polarization','Meep CPU',
             'An isolated straight lead calibrates each excitation of the polygon design.',
             'These finite apertures collect the fundamental guided mode. Each new layout has its own convergence requirements.'),
@@ -114,12 +117,12 @@ def spatial_index():
             j=min(range(len(r['result']['wavelength_um'])),key=lambda i:abs(r['result']['wavelength_um'][i]-1.55))
             note=f"At 1.55 µm the native guided output is {r['result']['beam_to_guide'][j]*100:.2f}% of measured incident power."
         index['grating-3d']['comparisons'].append(dict(vendor=brand,url=url,description=note))
-    for case in ('multimode-tm','layout-ports-2d'):
+    for case in ('multimode-tm','layout-ports-2d','layout-ports-3d'):
         index[case]['comparisons'] = [
             dict(vendor='Lumerical',url='https://optics.ansys.com/hc/en-us/articles/360042304134-Asymmetric-slab-dielectric-waveguide',
                  description='The published asymmetric-slab reference checks guided indices separately from the device scattering matrix.'),
             dict(vendor='Tidy3D',url='https://www.flexcompute.com/tidy3d/examples/notebooks/EMESolver/',
-                 description='A local Tidy3D mode solve checks the port modes. The complete planar matrix is compared with an independent wave-equation calculation.')]
+                 description=('The finite-height reference checks port modes separately from the measured circuit matrix.' if case=='layout-ports-3d' else 'A local Tidy3D mode solve checks the port modes. The complete planar matrix is compared with an independent wave-equation calculation.'))]
     return index
 
 

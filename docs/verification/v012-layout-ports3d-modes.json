@@ -1,0 +1,354 @@
+{
+  "local_transverse_modes": {
+    "tidy3d": {
+      "engine": "tidy3d",
+      "version": "2.11.2",
+      "device": "CPU",
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "width_um": 0.375,
+      "height_um": 0.25,
+      "aperture_um": 2.0,
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "scope": "Bound fundamental transverse mode of two perpendicular straight leads. Tidy3D is set up independently but FDTDX also calls Tidy3D internally; MPB uses a separate plane-wave eigensolver.",
+      "source_sha256": "e64d025f067884cb832788da8fa3c5632fedc21f752e059fadb6166367716fef",
+      "rows": {
+        "32": {
+          "x": {
+            "neff": [
+              2.369516775884159,
+              2.431225547612748,
+              2.491592664046075
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9787113428359571,
+              0.9818047830414443,
+              0.9845907731465673
+            ]
+          },
+          "y": {
+            "neff": [
+              2.369516775884159,
+              2.431225547612748,
+              2.491592664046075
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9787113428359571,
+              0.9818047830414443,
+              0.9845907731465673
+            ]
+          }
+        },
+        "64": {
+          "x": {
+            "neff": [
+              2.2782018362441807,
+              2.3433026247698097,
+              2.4073330858424082
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9700563318164215,
+              0.9739966666801377,
+              0.9776599292356033
+            ]
+          },
+          "y": {
+            "neff": [
+              2.2782018362441807,
+              2.3433026247698097,
+              2.4073330858424082
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9700563318164215,
+              0.9739966666801377,
+              0.9776599292356033
+            ]
+          }
+        },
+        "96": {
+          "x": {
+            "neff": [
+              2.247366014908541,
+              2.313485288601434,
+              2.3786694051085027
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9667187590763889,
+              0.970921686830735,
+              0.9748803360748716
+            ]
+          },
+          "y": {
+            "neff": [
+              2.247366014908541,
+              2.313485288601434,
+              2.3786694051085027
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9667187590763889,
+              0.970921686830735,
+              0.9748803360748716
+            ]
+          }
+        }
+      },
+      "max_axis_neff_delta": 0.0
+    },
+    "mpb": {
+      "engine": "mpb",
+      "version": "1.35.0",
+      "device": "CPU",
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "width_um": 0.375,
+      "height_um": 0.25,
+      "aperture_um": 2.0,
+      "core_index": 3.48,
+      "cladding_index": 1.44,
+      "scope": "Bound fundamental transverse mode of two perpendicular straight leads. Tidy3D is set up independently but FDTDX also calls Tidy3D internally; MPB uses a separate plane-wave eigensolver.",
+      "source_sha256": "e64d025f067884cb832788da8fa3c5632fedc21f752e059fadb6166367716fef",
+      "rows": {
+        "32": {
+          "x": {
+            "neff": [
+              2.1682950641981744,
+              2.2355106278895645,
+              2.302307605579548
+            ],
+            "inplane_transverse_e_fraction": [
+              0.962083639628713,
+              0.9665818349259849,
+              0.970979116534901
+            ]
+          },
+          "y": {
+            "neff": [
+              2.1682950640289755,
+              2.235510625249699,
+              2.3023076115569707
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9620834911081955,
+              0.9665807976007748,
+              0.9709762228515458
+            ]
+          }
+        },
+        "64": {
+          "x": {
+            "neff": [
+              2.181247708956209,
+              2.248982104919368,
+              2.316179093905729
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9607502718787148,
+              0.9653264141934779,
+              0.9697744387588794
+            ]
+          },
+          "y": {
+            "neff": [
+              2.181247708945742,
+              2.2489821049324545,
+              2.316179093912306
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9607502538643298,
+              0.965326413350299,
+              0.9697744307528814
+            ]
+          }
+        },
+        "96": {
+          "x": {
+            "neff": [
+              2.1836869485112866,
+              2.251518403913957,
+              2.318790332279504
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9603249105340845,
+              0.96492746868811,
+              0.9693889360691496
+            ]
+          },
+          "y": {
+            "neff": [
+              2.183686948504627,
+              2.2515184039126797,
+              2.318790332285429
+            ],
+            "inplane_transverse_e_fraction": [
+              0.9603248748652238,
+              0.9649274636112568,
+              0.9693888211656475
+            ]
+          }
+        }
+      },
+      "max_axis_neff_delta": 5.977422556924239e-09
+    }
+  },
+  "local_tidy3d_documentation": "https://docs.flexcompute.com/projects/tidy3d/en/latest/faq/docs/faq/how-do-i-run-the-mode-solver-locally.html",
+  "native_frame_check": {
+    "study": "FDTDX signed transverse source and reciprocal-overlap checks",
+    "version": "0.6.2",
+    "device": "cpu:0",
+    "wavelength_um": [
+      1.6,
+      1.55,
+      1.5
+    ],
+    "rows": [
+      {
+        "mesh": 12,
+        "axis": "x",
+        "direction": 1,
+        "basis_neff": [
+          2.304772138595581,
+          2.3697052001953125,
+          2.4336659908294678
+        ],
+        "source_neff": 2.3697052001953125,
+        "signed_source_flux_native_units": 1.0,
+        "source_transverse_fraction": 0.9619061350822449,
+        "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+        "max_basis_edge_fraction": 3.2824096706463024e-05
+      },
+      {
+        "mesh": 12,
+        "axis": "x",
+        "direction": -1,
+        "basis_neff": [
+          2.304772138595581,
+          2.3697052001953125,
+          2.4336659908294678
+        ],
+        "source_neff": 2.3697052001953125,
+        "signed_source_flux_native_units": -1.0,
+        "source_transverse_fraction": 0.9619061350822449,
+        "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+        "max_basis_edge_fraction": 3.2824096706463024e-05
+      },
+      {
+        "mesh": 12,
+        "axis": "y",
+        "direction": 1,
+        "basis_neff": [
+          2.304772138595581,
+          2.3697052001953125,
+          2.4336659908294678
+        ],
+        "source_neff": 2.3697052001953125,
+        "signed_source_flux_native_units": 1.0,
+        "source_transverse_fraction": 0.9619061350822449,
+        "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+        "max_basis_edge_fraction": 3.2824096706463024e-05
+      },
+      {
+        "mesh": 12,
+        "axis": "y",
+        "direction": -1,
+        "basis_neff": [
+          2.304772138595581,
+          2.3697052001953125,
+          2.4336659908294678
+        ],
+        "source_neff": 2.3697052001953125,
+        "signed_source_flux_native_units": -1.0,
+        "source_transverse_fraction": 0.9619061350822449,
+        "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+        "max_basis_edge_fraction": 3.2824096706463024e-05
+      },
+      {
+        "mesh": 16,
+        "axis": "x",
+        "direction": 1,
+        "basis_neff": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "source_neff": 2.2553977966308594,
+        "signed_source_flux_native_units": 1.000000238418579,
+        "source_transverse_fraction": 0.9628591537475586,
+        "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+        "max_basis_edge_fraction": 3.132259735139087e-05
+      },
+      {
+        "mesh": 16,
+        "axis": "x",
+        "direction": -1,
+        "basis_neff": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "source_neff": 2.2553977966308594,
+        "signed_source_flux_native_units": -1.000000238418579,
+        "source_transverse_fraction": 0.9628591537475586,
+        "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+        "max_basis_edge_fraction": 3.132259735139087e-05
+      },
+      {
+        "mesh": 16,
+        "axis": "y",
+        "direction": 1,
+        "basis_neff": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "source_neff": 2.2553977966308594,
+        "signed_source_flux_native_units": 1.000000238418579,
+        "source_transverse_fraction": 0.9628591537475586,
+        "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+        "max_basis_edge_fraction": 3.132259735139087e-05
+      },
+      {
+        "mesh": 16,
+        "axis": "y",
+        "direction": -1,
+        "basis_neff": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "source_neff": 2.2553977966308594,
+        "signed_source_flux_native_units": -1.000000238418579,
+        "source_transverse_fraction": 0.9628591537475586,
+        "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+        "max_basis_edge_fraction": 3.132259735139087e-05
+      }
+    ],
+    "scope": "Native CPU cross-section eigensolves and projections only. Whole-device spectra and time evolution use separately injected NVIDIA fields.",
+    "sources": {
+      "scripts/verify_layout_ports3d_frames.py": "d13d3a089b5657e47ef80feaefe16cd9389a54f5b65b3ffca1a55ce05af12c69",
+      "scripts/calibrate_layout_ports3d.py": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+      "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+      "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f"
+    }
+  },
+  "mode_solver_spread_neff_96": [
+    0.0636790663972544,
+    0.06196688468747702,
+    0.05987907282899885
+  ],
+  "ansys_lumerical_reference": {
+    "article": "https://optics.ansys.com/hc/en-us/articles/360042799933-Bent-waveguide-analysis",
+    "kind": "published Lumerical MODE curved-mode loss and straight-to-bend overlap estimate",
+    "radius_um": 1.5,
+    "curved_loss_db_per_um": 0.0009,
+    "straight_bent_mode_overlap": 0.988,
+    "estimated_quarter_bend_loss_db": 0.107,
+    "scope": "Published circular bend and two straight/bent mode junctions. The Workbench default is an abrupt polygon elbow. The published loss estimate has a different geometry and observable."
+  }
+}

@@ -445,6 +445,11 @@ def calibrated_presets():
     next_index = ROOT/'docs/verification/v012-calibrated-index.json'
     if next_index.is_file():
         receipts.update(json.loads(next_index.read_text()))
+    for case in ('coupler','splitter'):
+        phase_path = index.parent / f'v012-{case}-phase.json'
+        if case in receipts and phase_path.is_file():
+            study = json.loads(phase_path.read_text())
+            receipts[case]['phase_check'] = {**study['measurements'][-1], 'launch':study['launch'], 'receipt':phase_path.name}
     return [{'case':key,'name':title,'scope':scope,'routes':calibration_routes(key), 'evidence':receipts.get(key)}
             for key,(title,scope) in CASES.items()]
 

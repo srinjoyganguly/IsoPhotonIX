@@ -11,6 +11,8 @@ provide the solvers; [build provenance](docs/PROVENANCE.md) and
 
 **Calibrated components.** The workbench measures directional-coupler and splitter S matrices, multimode conversion, ring spectra and grating coupling in dedicated physical presets. Open **Calibrated components**, select an input, wavelength and local execution target, then inspect the measured data and export the run as Python and a Jupyter notebook. You can export the configured program before running it. In ring and grating plots, click the curve or choose a wavelength to read its measured power fraction. The release includes twelve example exports you can rerun. The checklist identifies which devices, meshes and commercial observables have been verified. [Download v0.11.0a3](https://github.com/srinjoyganguly/photonics-workbench/releases/tag/v0.11.0a3) · [Calibration checklist](docs/CALIBRATED_COMPONENTS.md) · [Lumerical and Tidy3D comparisons](docs/CALIBRATED_VENDOR_CHECKS.md).
 
+**Full spatial calibration.** Select **3D bus-loaded ring**, **3D finite-width grating**, or **3D layout ports**, choose NVIDIA, and run locally. Inspect normalized spectra, native field samples and published vendor curves at the same wavelength. Planar TM0/TM1 and custom polygon studies use Meep CPU. The observed discrepancies, including ring peak shifts and grating coupling differences, are recorded alongside the results. [Loaded rings](docs/LOADED_RING_3D.md) · [Finite-width gratings](docs/FINITE_GRATING_3D.md) · [Planar port controls](docs/PLANAR_PORT_CALIBRATION.md).
+
 **v0.10 preview.** Select an object in 3D or XY to delete a component and
 its ports in one edit, undo it or redo it. You can also join two components
 using their named ports. [Editing and recovery](docs/EDITOR_RECOVERY.md).

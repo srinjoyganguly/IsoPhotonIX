@@ -105,7 +105,8 @@ export function CalibrationMeasurement({value}:{value:unknown}) {
   }
   const options=Object.keys(r.series ?? r.studies ?? {});
   const compactLabel='Tidy3D compact aperture';
-  const beamLabel=r.case_id==='finite-grating-3d'?'Finite-width grating':r.vendor==='lumerical'?'Lumerical beam coupling':'Tidy3D beam coupling';
+  const fiber=r.case_id==='finite-grating-3d' && r.vendor?.toLowerCase()==='lumerical';
+  const beamLabel=r.case_id==='finite-grating-3d'?(fiber?'Lumerical fiber grating':'Finite-width grating'):r.vendor==='lumerical'?'Lumerical beam coupling':'Tidy3D beam coupling';
   if((r.case_id==='grating-gaussian-profile' || r.case_id==='finite-grating-3d') && r.result)options.push(beamLabel);
   if(r.compact_tidy_domain)options.push(compactLabel);
   if(!options.length && r.isolated_finite_height_ring){
@@ -122,7 +123,7 @@ export function CalibrationMeasurement({value}:{value:unknown}) {
   const qualified=(values:number[],mask?:boolean[])=>
     values.map((v,i)=>mask && !mask[i]?null:v);
   const spectrum: SpectrumData | null=ring?{wavelengths:ring.wavelength_um,series:[{label:'Through',values:qualified(ring.through,ring.valid_bins)},{label:'Drop',values:qualified(ring.drop,ring.valid_bins)},{label:'Reflection',values:qualified(ring.reflection,ring.valid_bins)},...(ring.add_side?[{label:'Add-side outgoing',values:qualified(ring.add_side,ring.valid_bins)}]:[])]}:
-    grating?{wavelengths:grating.wavelength_um,series:[...(grating.beam_to_guide?[{label:'Gaussian to TE guide',values:qualified(grating.beam_to_guide,grating.valid_beam_bins)}]:[]),...(grating.guide_to_beam?[{label:'TE guide to Gaussian',values:qualified(grating.guide_to_beam,grating.valid_energy_bins)}]:[]),...(grating.direct_output_fraction?[{label:'Total output aperture flux',values:qualified(grating.direct_output_fraction,grating.valid_direct_bins)}]:[]),...(grating.guide_radiation_up?[{label:'Upward radiation fraction',values:qualified(grating.guide_radiation_up,grating.valid_energy_bins)}]:[]),...(grating.guide_radiation_down?[{label:'Downward radiation fraction',values:qualified(grating.guide_radiation_down,grating.valid_energy_bins)}]:[])]}:null;
+    grating?{wavelengths:grating.wavelength_um,series:[...(grating.beam_to_guide?[{label:fiber?'Fiber to TE guide':'Gaussian to TE guide',values:qualified(grating.beam_to_guide,grating.valid_beam_bins)}]:[]),...(grating.guide_to_beam?[{label:'TE guide to Gaussian',values:qualified(grating.guide_to_beam,grating.valid_energy_bins)}]:[]),...(grating.direct_output_fraction?[{label:'Total output aperture flux',values:qualified(grating.direct_output_fraction,grating.valid_direct_bins)}]:[]),...(grating.guide_radiation_up?[{label:'Upward radiation fraction',values:qualified(grating.guide_radiation_up,grating.valid_energy_bins)}]:[]),...(grating.guide_radiation_down?[{label:'Downward radiation fraction',values:qualified(grating.guide_radiation_down,grating.valid_energy_bins)}]:[])]}:null;
   return spectrum && <section aria-label="Measured spectrum"><h3>Measured spectrum</h3>
     <label>Reference geometry<select value={selected} onChange={e=>setVendor(e.target.value)}>{options.map(v=><option key={v}>{v}</option>)}</select></label>
     <Spectrum key={selected} {...spectrum} inspect/>

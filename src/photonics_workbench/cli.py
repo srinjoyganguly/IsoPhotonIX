@@ -31,7 +31,7 @@ def main(argv=None):
     beamz.add_argument('--device', required=True, choices=['cpu', 'gpu'])
     beamz.add_argument('--output', required=True, type=Path, help='new folder for the numerical reference study')
     calibration = commands.add_parser('calibrate',help='run a calibrated component preset and export its exact program and measurements')
-    calibration.add_argument('case',choices=['coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d'])
+    calibration.add_argument('case',choices=['coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d','layout-ports-3d'])
     calibration.add_argument('--solver',choices=['meep','fdtdx'],required=True)
     calibration.add_argument('--device',choices=['cpu','gpu'],required=True)
     calibration.add_argument('--resolution',type=int,help='cells per µm on supported matrix presets')

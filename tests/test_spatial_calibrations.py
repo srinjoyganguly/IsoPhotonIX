@@ -14,7 +14,7 @@ from backend.calibrations import Calibration, design_archive
 
 class SpatialCalibrations(unittest.TestCase):
     def test_3d_targets_and_geometry_are_explicit(self):
-        for case in ('ring-3d','grating-3d'):
+        for case in ('ring-3d','grating-3d','layout-ports-3d'):
             for solver, device in [('meep','cpu'),('fdtdx','cpu')]:
                 with self.subTest(case=case, solver=solver), self.assertRaises(ValueError):
                     Calibration(case=case,solver=solver,device=device)
@@ -32,7 +32,7 @@ class SpatialCalibrations(unittest.TestCase):
 
     def test_3d_export_contains_the_indirect_numerical_dependencies(self):
         expected={'ring-3d':['scripts/calibrate_ring.py','scripts/calibration_checkpoint.py'],
-                  'grating-3d':['scripts/grating_angular_spectrum.py','docs/verification/v012-grating-commercial-references.json']}
+                  'grating-3d':['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/grating_angular_spectrum.py','docs/verification/v012-grating-commercial-references.json']}
         for case, dependencies in expected.items():
             config=Calibration(case=case,solver='fdtdx',device='gpu')
             with self.subTest(case=case), zipfile.ZipFile(io.BytesIO(design_archive(config))) as archive:
@@ -63,5 +63,9 @@ class SpatialCalibrations(unittest.TestCase):
             design=json.loads(archive.read('source/layout.json'))
             self.assertEqual(design, json.loads(archive.read('config.json'))['planar_layout'])
             self.assertIn('source/layout.json',json.loads(archive.read('manifest.json'))['files'])
+        gpu=Calibration(case='layout-ports-3d',solver='fdtdx',device='gpu',planar_layout=config.planar_layout)
+        with zipfile.ZipFile(io.BytesIO(design_archive(gpu))) as archive:
+            self.assertEqual(json.loads(archive.read('source/layout.json')),gpu.planar_layout)
+            self.assertIn('source/scripts/calibrate_layout_ports3d.py',archive.namelist())
         with self.assertRaises(ValueError):
             Calibration(case='multimode-tm',solver='meep',device='cpu',port_distance_um=1.0123)

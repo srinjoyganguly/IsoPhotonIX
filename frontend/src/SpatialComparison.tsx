@@ -64,10 +64,12 @@ export function SpatialComparison({value}:{value:unknown}) {
   return <>
     <PairedSpectrum series={pairs} vendor={vendor}/>
     {qualified && <section aria-label="Loaded resonance measurements"><h3>Loaded resonances</h3>
-      {qualified.length ? <><table><thead><tr><th>Peak (µm)</th><th>Loaded Q from linewidth</th><th>Loaded Q from decay</th><th>External Q per bus</th></tr></thead>
+      {qualified.length ? <><table><thead><tr><th>Peak (µm)</th><th>Loaded Q from linewidth</th><th>Loaded Q from decay</th><th>External Q per bus</th><th>Apparent internal Q</th></tr></thead>
         <tbody>{qualified.map(p=><tr key={p.sampled_drop_peak_um}><th>{p.sampled_drop_peak_um.toFixed(4)}</th>
           <td>{p.qualified_equal_bus_loss?.loaded_q?.toFixed(1)}</td><td>{p.field_decay?.loaded_q?.toFixed(1)}</td>
-          <td>{p.qualified_equal_bus_loss?.apparent_external_q_each_bus?.toFixed(1)}</td></tr>)}</tbody></table>
+          <td>{p.qualified_equal_bus_loss?.apparent_external_q_each_bus?.toFixed(1)}</td>
+          <td>{p.qualified_equal_bus_loss?.apparent_internal_q?.toFixed(0) ??
+            (p.qualified_equal_bus_loss?.apparent_internal_q_lower_bound ? '≥ '+p.qualified_equal_bus_loss.apparent_internal_q_lower_bound.toFixed(0) : 'Unresolved')}</td></tr>)}</tbody></table>
         <p>The external Q estimate assumes equal bus coupling.</p></>:<p>This observation window has no qualified linewidth and decay pair.</p>}
     </section>}
     {angles && wavelengths.length>0 && <section aria-label="Reflected power distribution"><h3>{r.settings?.geometry==='compact-radiation'?'Upward radiation':'Reflected power'}</h3>

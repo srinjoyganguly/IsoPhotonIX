@@ -33,3 +33,7 @@
 .planar-layout-input details{margin:9px 0}
 @media(max-width:600px){.planar-layout-input input[type=number]{width:3.5em}}
 .cal-native-key{color:#6de2c4}.cal-reference-key{color:#ffbf78}
+
+.cal-field-image{position:relative;width:100%;max-width:650px}
+.cal-field-cursor{position:absolute;transform:translate(-50%,-50%);width:8px;height:8px;border:1px solid white;box-shadow:0 0 0 1px #1d2630;border-radius:50%;pointer-events:none}
+.cal-field .cal-field-extent{font-size:11px}

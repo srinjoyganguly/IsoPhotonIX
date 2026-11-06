@@ -229,7 +229,7 @@ class CalibratedComponents(unittest.TestCase):
 
     def test_catalog(self):
         props=TestClient(app).get('/api/calibrations').json()
-        self.assertEqual({row['case'] for row in props}, {'coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d'})
+        self.assertEqual({row['case'] for row in props}, {'coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d','layout-ports-3d'})
 
     @unittest.skipUnless(importlib.util.find_spec('scipy'),'The independent Helmholtz solve requires SciPy.')
     def test_independent_straight_interface(self):

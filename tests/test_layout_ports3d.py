@@ -1,0 +1,48 @@
+"""Regression checks for signed cardinal-port frames and exact straight corridors."""
+import unittest
+
+import numpy as np
+
+from backend.planar_port_layout import default_planar_port_layout
+from scripts.calibrate_layout_ports3d import frame, grid, local_phasors, modal_amplitudes, permittivity
+
+
+class LayoutPorts3DTests(unittest.TestCase):
+    def test_y_port_uses_positive_ex_and_axial_h_sign(self):
+        # A +y wave with +Ex has -Hz. Its backward partner keeps Ex and reverses H.
+        electric = np.zeros((3,5,1,4))
+        magnetic = np.zeros_like(electric)
+        electric[0] = 1.
+        magnetic[2] = -1.
+        local_e = frame(electric,1)
+        local_h = frame(magnetic,1,axial=True)
+        np.testing.assert_array_equal(local_e[1],1)
+        np.testing.assert_array_equal(local_h[2],1)
+        np.testing.assert_equal(frame(local_h,1,axial=True),magnetic)
+        for sign in (1,-1):
+            global_fields = np.concatenate((electric,sign*magnetic))[None]
+            local = local_phasors(global_fields,1)
+            amplitudes,power = modal_amplitudes(local,local_e[:,0][None],local_h[:,0][None],1.)
+            expected = np.zeros(2)
+            expected[int(sign<0)] = np.sqrt(power[0])
+            np.testing.assert_allclose(amplitudes[0],expected)
+
+    def test_extrusion_and_attachment_match_at_all_source_and_monitor_slices(self):
+        design = default_planar_port_layout()
+        mesh = 12
+        _,ports = grid(design,mesh)
+        body = permittivity(design,mesh,0,False)
+        for launch,p in enumerate(ports):
+            reference = permittivity(design,mesh,launch,True)
+            for name in ('source','start'):
+                cuts = tuple(slice(s,s+n) for s,n in zip(p[name],p['shape']))
+                section = (slice(None),*cuts)
+                np.testing.assert_array_equal(body[section],reference[section])
+        # The mirrored straight rails have exactly equivalent permittivity tensors.
+        x = permittivity(design,mesh,0,True)
+        y = permittivity(design,mesh,1,True)
+        np.testing.assert_array_equal(frame(y,1),x)
+
+
+if __name__=='__main__':
+    unittest.main()

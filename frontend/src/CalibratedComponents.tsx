@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { request } from './api';
 import { PlanarPortLayoutEditor, parsePlanarLayout } from './PlanarPortLayoutEditor';
+import { PhaseSensitivity,type PhaseCheck } from './PhaseSensitivity';
 import { SpatialComparison } from './SpatialComparison';
 import { CalibrationField, type FieldPlane } from './CalibrationField';
 import { CodeExport } from './CodeExport';
@@ -8,7 +9,7 @@ import { CalibrationMeasurement, Spectrum, type Series } from './CalibrationMeas
 import './calibratedComponents.css';
 
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
-  limits: string; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
+  limits: string; phase_check?:PhaseCheck; recorded?: {label:string; receipt:string;report:unknown;field?:FieldPlane;qualification?:string}[]; comparisons: {vendor: string; description: string; url: string}[] };
 type Preset = { case: string; name: string; scope: string; routes: string[]; evidence?: Evidence };
 type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
@@ -31,17 +32,18 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const selected=catalog.find(p=>p.case===key), evidence=selected?.evidence;
   const job=jobs.find(j=>j.id===jobId), busy=jobs.some(j=>j.status==='running'||j.status==='queued');
   const history=jobs.filter(j=>j.config.case===key);
+  const editableLayout=key==='layout-ports-2d' || key==='layout-ports-3d';
   const gpuComponent = key==='ring-3d' || key==='grating-3d';
-  const meshes = key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? [12,16] :
+  const meshes = key==='layout-ports-3d' ? [12,16] : key==='layout-ports-2d' ? [24,32,40] : key==='ring-3d' ? [12,16,20,24] : key==='grating-3d' ? [12,16] :
     key==='multimode-tm' ? [48,64,80] : key==='grating' && gratingScope!=='full' ? [28,40,60] : target.startsWith('fdtdx:') ? [12,16,20,24] : key==='multimode' ? [32,48,64] : ['multimode-3d','coupler','splitter'].includes(key)?[16,20,24]:[];
   useEffect(()=>{
-    if(key!=='layout-ports-2d' || layoutText) return;
+    if(!editableLayout || layoutText) return;
     let live=true;
     request('/api/calibrations/planar-layout-example').then(data=>{if(live)setLayoutText(JSON.stringify(data,null,2));})
       .catch(e=>{if(live)setError(e.message);});
     return ()=>{live=false;};
-  },[key,layoutText]);
-  const layoutValid=key!=='layout-ports-2d' || parsePlanarLayout(layoutText)!==null;
+  },[editableLayout,layoutText]);
+  const layoutValid=!editableLayout || parsePlanarLayout(layoutText)!==null;
   const offsetValid = !key.startsWith('multimode') || (offset.trim()!=='' && Number.isFinite(Number(offset)) && +offset>=0 && +offset<=.25);
   useEffect(()=>{
     if(!active)return;
@@ -88,8 +90,8 @@ export function CalibratedComponents({active}:{active:boolean}) {
   const [solver,device]=target.split(':');
   const available=targets.some(t=>t.solver===solver && t.device===device && t.available);
   const configuration={revision:2,case:key,solver,device,resolution:mesh?Number(mesh):null,
-    offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'&&!gpuComponent?materialGrid:null,
-    planar_layout:key==='layout-ports-2d'?parsePlanarLayout(layoutText):null,
+    offset_um:key.startsWith('multimode')?Number(offset):null,material_model:solver==='fdtdx'&&!gpuComponent&&!editableLayout?materialGrid:null,
+    planar_layout:editableLayout?parsePlanarLayout(layoutText):null,
     duration_um_c:key==='ring-3d'&&ringDuration?Number(ringDuration):null,
     geometry_3d:gpuComponent?geometry3d:null,port_distance_um:key==='multimode-tm'?Number(portDistance):null,
     grating_scope:key==='grating'?gratingScope:null,ring_scope:key==='ring'?ringScope:null};
@@ -134,9 +136,9 @@ export function CalibratedComponents({active}:{active:boolean}) {
            target="_blank" rel="noreferrer">Full verification record</a></> :
           <Spectrum key={key} wavelengths={evidence.wavelengths_um} series={evidence.series}/>}
         <h3>Commercial comparisons</h3>{evidence.comparisons.map(c=><p key={c.vendor}>{c.description} <a href={c.url} target="_blank" rel="noreferrer">{c.vendor} example</a></p>)}
-        <p>{evidence.limits}</p></section>}
+        <p>{evidence.limits}</p>{evidence.phase_check && <PhaseSensitivity check={evidence.phase_check}/>}</section>}
       <section><h3>Run locally</h3>
-        {key==='layout-ports-2d' && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}
+        {editableLayout && <PlanarPortLayoutEditor text={layoutText} onChange={setLayoutText}/>}
         {gpuComponent && <label>3D geometry<select value={geometry3d} onChange={e=>setGeometry3d(e.target.value)}>
           {key==='ring-3d' ? <><option value="lumerical">Lumerical add/drop ring</option><option value="tidy3d">Tidy3D add/drop ring</option></> :
             <><option value="compact">Compact finite-width grating</option><option value="compact-narrow">Narrow finite-width control</option><option value="compact-radiation">Compact guided launch and upward radiation</option><option value="tidy3d">Tidy3D finite-width grating</option><option value="lumerical">Lumerical curved grating and fiber</option></>}
@@ -169,7 +171,7 @@ export function CalibratedComponents({active}:{active:boolean}) {
           onChange={()=>{setTarget(route);if(mesh==='12' && !route.startsWith('fdtdx:'))setMesh('');}}/>{route.replace(':',' · ').toUpperCase()}
           {info && !info.available && <small>{info.reason}</small>}</label>;
       })}</fieldset>
-      {solver==='fdtdx' && !gpuComponent && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
+      {solver==='fdtdx' && !gpuComponent && !editableLayout && <label>Material sampling<select value={materialGrid} onChange={e=>setMaterialGrid(e.target.value)}>
         <option value="yee-aligned">Electric-field-aligned grid</option><option value="legacy-x">Original grid</option>
       </select></label>}
       <button className="button primary compact" disabled={!available||pending||busy||!offsetValid||!layoutValid} onClick={()=>void run()}>Run calibrated study</button>

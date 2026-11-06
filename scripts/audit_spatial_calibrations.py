@@ -12,7 +12,7 @@ def read(path):
     return json.loads(path.read_text())
 
 
-def audit():
+def audit(require_qualified=False):
     index = spatial_index()
     if read(BASE/'v012-calibrated-index.json') != index:
         raise ValueError('Regenerate the spatial index from the native results.')
@@ -35,6 +35,8 @@ def audit():
                     # Acquisition workers preserve independently normalized modal power in the NPZ.
                     if key == 'beam_to_guide':
                         np.testing.assert_allclose(abs(data['output_mode'])**2/data['incident_power'],row[key],rtol=1e-10)
+                    else:
+                        np.testing.assert_allclose(abs(data['gaussian_channel'])**2,row[key],rtol=1e-10)
                     mask = row.get('valid_beam_bins',row.get('valid_energy_bins'))
                     np.testing.assert_array_equal(data['valid'], mask)
                 else:
@@ -45,6 +47,8 @@ def audit():
                     np.testing.assert_allclose(native,s,atol=1e-12,rtol=1e-12)
             records.append({'receipt':view['receipt'],'passed':src['passed'],
                             'actual_device':src['actual_device'],'has_native_field':bool(view.get('field'))})
+        if require_qualified and not any(r['passed'] for r in records):
+            raise ValueError(f'No numerically qualified public record for {case}.')
         cases[case]=records
     return {'passed':True,'cases':cases,'scope':'All included records are re-read; diagnostic ring spectra retain their original pass flag and wavelength mask.'}
 
@@ -52,8 +56,9 @@ def audit():
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--require-qualified',action='store_true',help='require a passing native result in each new preset')
     args=parser.parse_args()
-    result=audit()
+    result=audit(args.require_qualified)
     if args.output:
         args.output.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
     print({case:len(v) for case,v in result['cases'].items()})

@@ -138,7 +138,7 @@ def run(root, output, checkpoint=None):
                 raise ValueError('Choose a checkpoint folder outside the result directory.')
             option={'scripts.calibrate_ring':'--checkpoint','scripts.calibrate_grating':'--checkpoint',
                     'scripts.calibrate_multimode':'--checkpoint-dir','scripts.calibrate_planar_tm':'--checkpoint-dir',
-                    'scripts.calibrate_layout_ports':'--checkpoint-dir',
+                    'scripts.calibrate_layout_ports':'--checkpoint-dir','scripts.calibrate_layout_ports3d':'--checkpoint',
                     'scripts.calibrate_loaded_ring3d':'--checkpoint','scripts.calibrate_finite_grating':'--checkpoint'}.get(manifest['worker'])
             if option:
                 arguments += [option,str(cache)]

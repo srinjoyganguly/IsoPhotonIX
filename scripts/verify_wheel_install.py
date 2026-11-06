@@ -102,7 +102,7 @@ def main():
             assert not any(set(name.split('/')) & {'.local', 'runs', '.git', '.env', 'node_modules', '__pycache__'} for name in wheel_names)
         assert get('/api/benchmarks')['status'] == 'available'
         presets = get('/api/calibrations')
-        assert len(presets)==10 and {p['case'] for p in presets}=={'coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d'}
+        assert len(presets)==11 and {p['case'] for p in presets}=={'coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d','layout-ports-3d'}
         for preset in presets:
             solver, device = preset['routes'][0].split(':')
             config={'case':preset['case'],'solver':solver,'device':device}
@@ -195,7 +195,21 @@ def main():
             'calibrated-config-replay.log',timeout=7200)
     repeated=json.loads((target/'calibrated-config-replay/calculation/report.json').read_text())
     assert repeated['passed'] and abs(repeated['result']['center_beam_to_guide']-observed)<1e-6
+    spatial_folder=target/'planar-layout-cli'
+    command([cli,'calibrate','layout-ports-2d','--solver','meep','--device','cpu','--output',spatial_folder],
+            'planar-layout-cli.log', timeout=7200)
+    spatial=json.loads((spatial_folder/'calculation/report.json').read_text())
+    saved_planar=next(p for p in presets if p['case']=='layout-ports-2d')['evidence']['recorded'][0]['report']
+    assert spatial['passed'] and spatial['channels']==saved_planar['channels'] and spatial['wavelength_um']==saved_planar['wavelength_um']
+    def matrix_difference(first,other):
+        import numpy as np
+        def matrix(record):
+            return np.asarray(record['s_real'])+1j*np.asarray(record['s_imag'])
+        return float(np.max(np.abs(matrix(first)-matrix(other))))
+    layout_delta=matrix_difference(spatial,saved_planar)
+    assert layout_delta<2e-6
     cuda_check=None
+    spatial_cuda=None
     if args.fdtdx_gpu_python:
         folder=target/'calibrated-cuda-splitter'
         command([cli,'calibrate','splitter','--solver','fdtdx','--device','gpu','--resolution','12',
@@ -215,9 +229,25 @@ def main():
         assert maximum<2e-5 and (folder/'python-notebook-results.zip').is_file()
         cuda_check={'case':'splitter','actual_device':cuda['actual_device'],'resolution':12,'material_model':cfg['material_model'],
                     'compared_complex_coefficients':len(measured),'maximum_complex_difference':maximum}
+    if args.fdtdx_gpu_python:
+        folder=target/'finite-grating-cuda'
+        command([cli,'calibrate','grating-3d','--solver','fdtdx','--device','gpu','--output',folder],
+                'finite-grating-cuda.log',timeout=10800)
+        cuda=json.loads((folder/'calculation/report.json').read_text())
+        assert cuda['passed'] and cuda['actual_device'].lower().startswith(('cuda','gpu'))
+        grating=next(p for p in presets if p['case']=='grating-3d')
+        archived=next(row['report'] for row in grating['evidence']['recorded']
+                      if row['report']['settings']['geometry']=='compact' and row['report']['settings']['resolution']==12)
+        native=cuda['result']['beam_to_guide']
+        expected=archived['result']['beam_to_guide']
+        assert len(native)==len(expected)==5
+        maximum=max(abs(a-b) for a,b in zip(native,expected))
+        assert maximum<2e-6 and (folder/'python-notebook-results.zip').is_file()
+        spatial_cuda={'geometry':'compact','actual_device':cuda['actual_device'],'device_name':cuda['device_name'],
+                      'wavelengths':5,'max_coupling_fraction_difference':maximum}
     report = {'checked_at': datetime.now(timezone.utc).isoformat(), 'passed': True, 'wheel': wheel.name,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(), 'wheel_bytes': wheel.stat().st_size,
-              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),'installed_cuda_study':cuda_check,
+              'installed_from_offline_wheelhouse': True, 'calibrated_program_exports':len(presets),'installed_cuda_study':cuda_check,'installed_spatial_cuda':spatial_cuda,'installed_layout_max_complex_difference':layout_delta,
               'installed_grating_coupling':observed,'recorded_same_mesh_coupling':reference['beam_to_guide'][idx],
               'calibrated_cli_result_bundle_verified':True,
               'generic_calibration_config_coupling':repeated['result']['center_beam_to_guide'], 'export_found_registered_interpreter': True,

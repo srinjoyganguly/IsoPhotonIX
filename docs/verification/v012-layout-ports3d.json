@@ -1,0 +1,1168 @@
+{
+  "schema_version": 1,
+  "case": "layout-ports-3d",
+  "solver": "FDTDX",
+  "actual_device": "cuda:0",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "versions": {
+    "fdtdx": "0.6.2",
+    "jax": "0.10.2",
+    "jaxlib": "0.10.2",
+    "numpy": "2.4.6",
+    "tidy3d": "2.11.2"
+  },
+  "sources": {
+    "scripts/calibrate_layout_ports3d.py": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+    "scripts/calibrate_fdtdx_multiport.py": "68c10443b19fc53f14fd953b739c2d78af31cde044a4191c316355f7c4d7317c",
+    "scripts/grating_cuda_identity.py": "be8d811f485b8822afba80370464ac1a62d7276039539f863a3f7bfb3a71cb28",
+    "scripts/calibration_checkpoint.py": "509bc378033beba68ac8d05c03f7ce7cb29c0df923a7eadceabb8de6e5c444ad",
+    "backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+    "backend/planar_port_layout.py": "b5231e9cb659e91313fdedbdbdd28c7f919a9a43ea476364fe02ab12248c23d4",
+    "backend/geometry_draft.py": "00aec5e4f68d7f087cf09384892dec8879c261c58155b00c4babadd7121cd961",
+    "backend/calibrated_geometry.py": "01cd64d4474d675daa6d4b77da81d59324ad04fbfe83fc3672a891bf30c57fa9",
+    "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+    "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+    "backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+    "backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a"
+  },
+  "passed": true,
+  "channels": [
+    "west",
+    "north"
+  ],
+  "wavelength_um": [
+    1.6,
+    1.55,
+    1.5
+  ],
+  "s_real": [
+    [
+      [
+        -0.22134628894175037,
+        -0.18336874134951037
+      ],
+      [
+        -0.18333477138035464,
+        -0.22131391712652515
+      ]
+    ],
+    [
+      [
+        0.1459669722542635,
+        -0.34526140063017896
+      ],
+      [
+        -0.345316643003316,
+        0.14597861999895512
+      ]
+    ],
+    [
+      [
+        0.05787858271271975,
+        0.4508450674186935
+      ],
+      [
+        0.4510032314781967,
+        0.05785883729232303
+      ]
+    ]
+  ],
+  "s_imag": [
+    [
+      [
+        -0.045592713111654005,
+        0.44879943413506823
+      ],
+      [
+        0.44896866061505014,
+        -0.045629873517921554
+      ]
+    ],
+    [
+      [
+        -0.17822625491782682,
+        -0.3361082367966921
+      ],
+      [
+        -0.33611647468484535,
+        -0.17819949225571985
+      ]
+    ],
+    [
+      [
+        0.22810018645005864,
+        -0.12460636988041673
+      ],
+      [
+        -0.12459077027229817,
+        0.22806063546005217
+      ]
+    ]
+  ],
+  "power": [
+    [
+      [
+        0.05107287511716643,
+        0.23504502738406102
+      ],
+      [
+        0.23518449661155905,
+        0.05106193527114796
+      ]
+    ],
+    [
+      [
+        0.05307095493111112,
+        0.2321741816076942
+      ],
+      [
+        0.23221786848964787,
+        0.05306481653699569
+      ]
+    ],
+    [
+      [
+        0.05537962539538467,
+        0.21878802223054156
+      ],
+      [
+        0.21892677484082046,
+        0.05535929849926231
+      ]
+    ]
+  ],
+  "reference_through_power": [
+    [
+      0.998648741555892,
+      0.9986317135845868
+    ],
+    [
+      0.9999769072960689,
+      0.9999824149047941
+    ],
+    [
+      1.0015704331845465,
+      1.0016033083938716
+    ]
+  ],
+  "checks": {
+    "reference_power_error": 0.001603308393871572,
+    "max_complex_reciprocity_residual": 0.0001726023184418694,
+    "largest_squared_singular_value": 0.326396407153634,
+    "max_collected_port_power": 0.28625737172872545
+  },
+  "limits": {
+    "reference_power_error": 0.03,
+    "max_complex_reciprocity_residual": 0.05,
+    "largest_squared_singular_value": 1.05,
+    "max_collected_port_power": 1.03
+  },
+  "parameters": {
+    "design": {
+      "version": 1,
+      "name": "Silicon right-angle elbow",
+      "polygons": [
+        [
+          [
+            -1.0,
+            -0.1875
+          ],
+          [
+            0.1875,
+            -0.1875
+          ],
+          [
+            0.1875,
+            1.0
+          ],
+          [
+            -0.1875,
+            1.0
+          ],
+          [
+            -0.1875,
+            0.1875
+          ],
+          [
+            -1.0,
+            0.1875
+          ]
+        ]
+      ],
+      "ports": [
+        {
+          "name": "west",
+          "outward": "-x",
+          "center_um": [
+            -1.75,
+            0.0
+          ],
+          "width_um": 0.375
+        },
+        {
+          "name": "north",
+          "outward": "+y",
+          "center_um": [
+            0.0,
+            1.75
+          ],
+          "width_um": 0.375
+        }
+      ]
+    },
+    "resolution": 16,
+    "core_height_um": 0.25,
+    "core_index": 3.48,
+    "cladding_index": 1.44,
+    "cell_um": [
+      8.0,
+      8.0,
+      4.0
+    ],
+    "pml_um": 1.0,
+    "aperture_um": [
+      2.0,
+      2.0
+    ]
+  },
+  "sampled_ports": [
+    {
+      "name": "west",
+      "outward": "-x",
+      "center_um": [
+        -1.75,
+        0.0
+      ],
+      "width_um": 0.375,
+      "axis": 0,
+      "inward_sign": 1,
+      "start": [
+        36,
+        48,
+        16
+      ],
+      "shape": [
+        1,
+        32,
+        32
+      ],
+      "source": [
+        28,
+        48,
+        16
+      ],
+      "sampled_center_um": [
+        -1.75,
+        0.0
+      ]
+    },
+    {
+      "name": "north",
+      "outward": "+y",
+      "center_um": [
+        0.0,
+        1.75
+      ],
+      "width_um": 0.375,
+      "axis": 1,
+      "inward_sign": -1,
+      "start": [
+        48,
+        92,
+        16
+      ],
+      "shape": [
+        32,
+        1,
+        32
+      ],
+      "source": [
+        48,
+        100,
+        16
+      ],
+      "sampled_center_um": [
+        0.0,
+        1.75
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "label": "port0-reference",
+      "stage_key": "3e9b41693b4c698c196e330c0cac840e0cb97a2a00ed372f6516169d575e88fb",
+      "archive_sha256": "0c81ba532e55cff83cb99f7c24a18e5a7c84d153cd8615155e2cb571254f9267",
+      "field_device": "cuda:0",
+      "mode_neff": {
+        "west": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "opposite reference plane": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ]
+      },
+      "max_basis_edge_fraction": 3.132259735139087e-05,
+      "source_neff": 2.2553977966308594,
+      "source_profile_sha256": "40cbe52f663fe51a0837be3bc7a33f45f139e745b424235c544bdd461924435e",
+      "material_sha256": "c7f930caa761b1291db7ea2db362e6a75342bb429306f90aea84b0f6902bd548",
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 235.22367452838776,
+          "tail_energy_ratio": 0.33759811520576477,
+          "relative_amplitude_change": null
+        },
+        {
+          "time_fs": 261.91572270182184,
+          "tail_energy_ratio": 0.014790062792599201,
+          "relative_amplitude_change": 0.0073946085579403905
+        },
+        {
+          "time_fs": 288.60777087525594,
+          "tail_energy_ratio": 3.105766518274322e-05,
+          "relative_amplitude_change": 8.15668723790512e-05
+        },
+        {
+          "time_fs": 315.29981904869,
+          "tail_energy_ratio": 1.7268906304934717e-09,
+          "relative_amplitude_change": 2.3930830976463315e-06
+        }
+      ],
+      "steps": 2646
+    },
+    {
+      "label": "port0-device",
+      "stage_key": "be5b85c83d06575a1f12cef4614e5dafec8c524471b9ec313a1bb139fd758e0f",
+      "archive_sha256": "da9e5b73edf746b2f735b20f1009c08a5c4f87197b57c3f61512d432f52bdd65",
+      "field_device": "cuda:0",
+      "mode_neff": {
+        "west": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "north": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ]
+      },
+      "max_basis_edge_fraction": 3.132259735139087e-05,
+      "source_neff": 2.2553977966308594,
+      "source_profile_sha256": "40cbe52f663fe51a0837be3bc7a33f45f139e745b424235c544bdd461924435e",
+      "material_sha256": "d013bd8cc51f5ab0693205d8f1b345a4c1ecd377b2c7459f4b0624c3bc671711",
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 235.22367452838776,
+          "tail_energy_ratio": 0.11484792083501816,
+          "relative_amplitude_change": null
+        },
+        {
+          "time_fs": 261.91572270182184,
+          "tail_energy_ratio": 0.004870980512350798,
+          "relative_amplitude_change": 0.003706482421433944
+        },
+        {
+          "time_fs": 288.60777087525594,
+          "tail_energy_ratio": 1.195948243548628e-05,
+          "relative_amplitude_change": 5.090735675321509e-05
+        },
+        {
+          "time_fs": 315.29981904869,
+          "tail_energy_ratio": 1.8531908230201566e-09,
+          "relative_amplitude_change": 7.183491559544009e-07
+        }
+      ],
+      "steps": 2646,
+      "reference_source_relative_difference": 0.0
+    },
+    {
+      "label": "port1-reference",
+      "stage_key": "6898fae3ca5fc643f8bcd288acec2c9f319918d2f8b007199ba02ba110ef70f2",
+      "archive_sha256": "c6e96e0c37b6c986e15bf95e20c6a79e9927b271be72fec605892f23ab5322b2",
+      "field_device": "cuda:0",
+      "mode_neff": {
+        "north": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "opposite reference plane": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ]
+      },
+      "max_basis_edge_fraction": 3.132259735139087e-05,
+      "source_neff": 2.2553977966308594,
+      "source_profile_sha256": "3c1468b3d23cc392d888398efa8dd5228c566cc8b1af09848fbfd18538d6863c",
+      "material_sha256": "15fe15978776e76b7dcf4557026603d791fd2812ffe69bfcb26e2dfb25644b04",
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 235.22367452838776,
+          "tail_energy_ratio": 0.36014702916145325,
+          "relative_amplitude_change": null
+        },
+        {
+          "time_fs": 261.91572270182184,
+          "tail_energy_ratio": 0.016855109483003616,
+          "relative_amplitude_change": 0.007558044376316117
+        },
+        {
+          "time_fs": 288.60777087525594,
+          "tail_energy_ratio": 4.767338396050036e-05,
+          "relative_amplitude_change": 8.579161841982505e-05
+        },
+        {
+          "time_fs": 315.29981904869,
+          "tail_energy_ratio": 1.6995866936042603e-09,
+          "relative_amplitude_change": 2.4328538114223034e-06
+        }
+      ],
+      "steps": 2646
+    },
+    {
+      "label": "port1-device",
+      "stage_key": "9b7ba27680b80a5b4c13444d9dec2d68f0532309105cf2840ab80168947d5eb0",
+      "archive_sha256": "b417f12cc22b2a2c0eec69f6b07c57cddd39f26dc8e581aa78d4d3b8b67bc08a",
+      "field_device": "cuda:0",
+      "mode_neff": {
+        "west": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ],
+        "north": [
+          2.189319610595703,
+          2.2553977966308594,
+          2.3209352493286133
+        ]
+      },
+      "max_basis_edge_fraction": 3.132259735139087e-05,
+      "source_neff": 2.2553977966308594,
+      "source_profile_sha256": "3c1468b3d23cc392d888398efa8dd5228c566cc8b1af09848fbfd18538d6863c",
+      "material_sha256": "d013bd8cc51f5ab0693205d8f1b345a4c1ecd377b2c7459f4b0624c3bc671711",
+      "settled": true,
+      "history": [
+        {
+          "time_fs": 235.22367452838776,
+          "tail_energy_ratio": 0.11784114688634872,
+          "relative_amplitude_change": null
+        },
+        {
+          "time_fs": 261.91572270182184,
+          "tail_energy_ratio": 0.005298213101923466,
+          "relative_amplitude_change": 0.003785839122592405
+        },
+        {
+          "time_fs": 288.60777087525594,
+          "tail_energy_ratio": 1.5976927898009308e-05,
+          "relative_amplitude_change": 5.328075406067171e-05
+        },
+        {
+          "time_fs": 315.29981904869,
+          "tail_energy_ratio": 1.71848402175101e-09,
+          "relative_amplitude_change": 6.819099294101678e-07
+        }
+      ],
+      "steps": 2646,
+      "reference_source_relative_difference": 0.0
+    }
+  ],
+  "field_preview": {
+    "array": "port0-device_midplane_e",
+    "index": [
+      1
+    ],
+    "axis_order": "xy",
+    "horizontal_axis": "x",
+    "vertical_axis": "y",
+    "horizontal_um": [
+      -4.0,
+      -3.9375,
+      -3.875,
+      -3.8125,
+      -3.75,
+      -3.6875,
+      -3.625,
+      -3.5625,
+      -3.5,
+      -3.4375,
+      -3.375,
+      -3.3125,
+      -3.25,
+      -3.1875,
+      -3.125,
+      -3.0625,
+      -3.0,
+      -2.9375,
+      -2.875,
+      -2.8125,
+      -2.75,
+      -2.6875,
+      -2.625,
+      -2.5625,
+      -2.5,
+      -2.4375,
+      -2.375,
+      -2.3125,
+      -2.25,
+      -2.1875,
+      -2.125,
+      -2.0625,
+      -2.0,
+      -1.9375,
+      -1.875,
+      -1.8125,
+      -1.75,
+      -1.6875,
+      -1.625,
+      -1.5625,
+      -1.5,
+      -1.4375,
+      -1.375,
+      -1.3125,
+      -1.25,
+      -1.1875,
+      -1.125,
+      -1.0625,
+      -1.0,
+      -0.9375,
+      -0.875,
+      -0.8125,
+      -0.75,
+      -0.6875,
+      -0.625,
+      -0.5625,
+      -0.5,
+      -0.4375,
+      -0.375,
+      -0.3125,
+      -0.25,
+      -0.1875,
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125,
+      0.1875,
+      0.25,
+      0.3125,
+      0.375,
+      0.4375,
+      0.5,
+      0.5625,
+      0.625,
+      0.6875,
+      0.75,
+      0.8125,
+      0.875,
+      0.9375,
+      1.0,
+      1.0625,
+      1.125,
+      1.1875,
+      1.25,
+      1.3125,
+      1.375,
+      1.4375,
+      1.5,
+      1.5625,
+      1.625,
+      1.6875,
+      1.75,
+      1.8125,
+      1.875,
+      1.9375,
+      2.0,
+      2.0625,
+      2.125,
+      2.1875,
+      2.25,
+      2.3125,
+      2.375,
+      2.4375,
+      2.5,
+      2.5625,
+      2.625,
+      2.6875,
+      2.75,
+      2.8125,
+      2.875,
+      2.9375,
+      3.0,
+      3.0625,
+      3.125,
+      3.1875,
+      3.25,
+      3.3125,
+      3.375,
+      3.4375,
+      3.5,
+      3.5625,
+      3.625,
+      3.6875,
+      3.75,
+      3.8125,
+      3.875,
+      3.9375
+    ],
+    "vertical_um": [
+      -4.0,
+      -3.9375,
+      -3.875,
+      -3.8125,
+      -3.75,
+      -3.6875,
+      -3.625,
+      -3.5625,
+      -3.5,
+      -3.4375,
+      -3.375,
+      -3.3125,
+      -3.25,
+      -3.1875,
+      -3.125,
+      -3.0625,
+      -3.0,
+      -2.9375,
+      -2.875,
+      -2.8125,
+      -2.75,
+      -2.6875,
+      -2.625,
+      -2.5625,
+      -2.5,
+      -2.4375,
+      -2.375,
+      -2.3125,
+      -2.25,
+      -2.1875,
+      -2.125,
+      -2.0625,
+      -2.0,
+      -1.9375,
+      -1.875,
+      -1.8125,
+      -1.75,
+      -1.6875,
+      -1.625,
+      -1.5625,
+      -1.5,
+      -1.4375,
+      -1.375,
+      -1.3125,
+      -1.25,
+      -1.1875,
+      -1.125,
+      -1.0625,
+      -1.0,
+      -0.9375,
+      -0.875,
+      -0.8125,
+      -0.75,
+      -0.6875,
+      -0.625,
+      -0.5625,
+      -0.5,
+      -0.4375,
+      -0.375,
+      -0.3125,
+      -0.25,
+      -0.1875,
+      -0.125,
+      -0.0625,
+      0.0,
+      0.0625,
+      0.125,
+      0.1875,
+      0.25,
+      0.3125,
+      0.375,
+      0.4375,
+      0.5,
+      0.5625,
+      0.625,
+      0.6875,
+      0.75,
+      0.8125,
+      0.875,
+      0.9375,
+      1.0,
+      1.0625,
+      1.125,
+      1.1875,
+      1.25,
+      1.3125,
+      1.375,
+      1.4375,
+      1.5,
+      1.5625,
+      1.625,
+      1.6875,
+      1.75,
+      1.8125,
+      1.875,
+      1.9375,
+      2.0,
+      2.0625,
+      2.125,
+      2.1875,
+      2.25,
+      2.3125,
+      2.375,
+      2.4375,
+      2.5,
+      2.5625,
+      2.625,
+      2.6875,
+      2.75,
+      2.8125,
+      2.875,
+      2.9375,
+      3.0,
+      3.0625,
+      3.125,
+      3.1875,
+      3.25,
+      3.3125,
+      3.375,
+      3.4375,
+      3.5,
+      3.5625,
+      3.625,
+      3.6875,
+      3.75,
+      3.8125,
+      3.875,
+      3.9375
+    ],
+    "component": "Ey",
+    "wavelength_um": 1.55,
+    "description": "Real part of the port 1 device electric phasor on the central Ez grid plane."
+  },
+  "matrix_axes": [
+    "wavelength",
+    "outgoing port",
+    "incident port"
+  ],
+  "phase": "Physical exp(-i omega t), +Ey at x-normal ports and +Ex at y-normal ports for both directions. Reflection reference subtracted. Propagation phase retained.",
+  "scope": "Fundamental quasi-TE submatrix of a fixed-height lossless oxide-clad silicon extrusion with cardinal ports. Uncollected power includes radiation, other modes and numerical error.",
+  "native_arrays_sha256": "5aa95ec8a38fd7f65236e0032c73e253f585b87936b5f74f9aa79e6d15d7f25f",
+  "native_report_sha256": "970dcfad402e92bf2333cb3aa838b9953974e1774d5d77646b730064c0af25a2",
+  "studies": {
+    "elbow-r16": {
+      "checks": {
+        "reference_power_error": 0.001603308393871572,
+        "max_complex_reciprocity_residual": 0.0001726023184418694,
+        "largest_squared_singular_value": 0.326396407153634,
+        "max_collected_port_power": 0.28625737172872545
+      },
+      "channels": [
+        "west",
+        "north"
+      ],
+      "reference_through_power": [
+        [
+          0.998648741555892,
+          0.9986317135845868
+        ],
+        [
+          0.9999769072960689,
+          0.9999824149047941
+        ],
+        [
+          1.0015704331845465,
+          1.0016033083938716
+        ]
+      ],
+      "actual_device": "cuda:0",
+      "native_report_sha256": "970dcfad402e92bf2333cb3aa838b9953974e1774d5d77646b730064c0af25a2",
+      "native_arrays_sha256": "5aa95ec8a38fd7f65236e0032c73e253f585b87936b5f74f9aa79e6d15d7f25f",
+      "complete_native_stages": 4,
+      "resolution": 16
+    }
+  },
+  "controls": {
+    "lead_neff_vs_tidy3d_96": {
+      "native_minus_reference": [
+        -0.05804640431283792,
+        -0.0580874919705745,
+        -0.057734155779889385
+      ]
+    },
+    "lead_neff_vs_mpb_96": {
+      "native_minus_reference": [
+        0.005632662084416484,
+        0.003879392716902519,
+        0.0021449170491094627
+      ]
+    }
+  },
+  "references": {
+    "local_transverse_modes": {
+      "tidy3d": {
+        "engine": "tidy3d",
+        "version": "2.11.2",
+        "device": "CPU",
+        "wavelength_um": [
+          1.6,
+          1.55,
+          1.5
+        ],
+        "width_um": 0.375,
+        "height_um": 0.25,
+        "aperture_um": 2.0,
+        "core_index": 3.48,
+        "cladding_index": 1.44,
+        "scope": "Bound fundamental transverse mode of two perpendicular straight leads. Tidy3D is set up independently but FDTDX also calls Tidy3D internally; MPB uses a separate plane-wave eigensolver.",
+        "source_sha256": "e64d025f067884cb832788da8fa3c5632fedc21f752e059fadb6166367716fef",
+        "rows": {
+          "32": {
+            "x": {
+              "neff": [
+                2.369516775884159,
+                2.431225547612748,
+                2.491592664046075
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9787113428359571,
+                0.9818047830414443,
+                0.9845907731465673
+              ]
+            },
+            "y": {
+              "neff": [
+                2.369516775884159,
+                2.431225547612748,
+                2.491592664046075
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9787113428359571,
+                0.9818047830414443,
+                0.9845907731465673
+              ]
+            }
+          },
+          "64": {
+            "x": {
+              "neff": [
+                2.2782018362441807,
+                2.3433026247698097,
+                2.4073330858424082
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9700563318164215,
+                0.9739966666801377,
+                0.9776599292356033
+              ]
+            },
+            "y": {
+              "neff": [
+                2.2782018362441807,
+                2.3433026247698097,
+                2.4073330858424082
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9700563318164215,
+                0.9739966666801377,
+                0.9776599292356033
+              ]
+            }
+          },
+          "96": {
+            "x": {
+              "neff": [
+                2.247366014908541,
+                2.313485288601434,
+                2.3786694051085027
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9667187590763889,
+                0.970921686830735,
+                0.9748803360748716
+              ]
+            },
+            "y": {
+              "neff": [
+                2.247366014908541,
+                2.313485288601434,
+                2.3786694051085027
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9667187590763889,
+                0.970921686830735,
+                0.9748803360748716
+              ]
+            }
+          }
+        },
+        "max_axis_neff_delta": 0.0
+      },
+      "mpb": {
+        "engine": "mpb",
+        "version": "1.35.0",
+        "device": "CPU",
+        "wavelength_um": [
+          1.6,
+          1.55,
+          1.5
+        ],
+        "width_um": 0.375,
+        "height_um": 0.25,
+        "aperture_um": 2.0,
+        "core_index": 3.48,
+        "cladding_index": 1.44,
+        "scope": "Bound fundamental transverse mode of two perpendicular straight leads. Tidy3D is set up independently but FDTDX also calls Tidy3D internally; MPB uses a separate plane-wave eigensolver.",
+        "source_sha256": "e64d025f067884cb832788da8fa3c5632fedc21f752e059fadb6166367716fef",
+        "rows": {
+          "32": {
+            "x": {
+              "neff": [
+                2.1682950641981744,
+                2.2355106278895645,
+                2.302307605579548
+              ],
+              "inplane_transverse_e_fraction": [
+                0.962083639628713,
+                0.9665818349259849,
+                0.970979116534901
+              ]
+            },
+            "y": {
+              "neff": [
+                2.1682950640289755,
+                2.235510625249699,
+                2.3023076115569707
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9620834911081955,
+                0.9665807976007748,
+                0.9709762228515458
+              ]
+            }
+          },
+          "64": {
+            "x": {
+              "neff": [
+                2.181247708956209,
+                2.248982104919368,
+                2.316179093905729
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9607502718787148,
+                0.9653264141934779,
+                0.9697744387588794
+              ]
+            },
+            "y": {
+              "neff": [
+                2.181247708945742,
+                2.2489821049324545,
+                2.316179093912306
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9607502538643298,
+                0.965326413350299,
+                0.9697744307528814
+              ]
+            }
+          },
+          "96": {
+            "x": {
+              "neff": [
+                2.1836869485112866,
+                2.251518403913957,
+                2.318790332279504
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9603249105340845,
+                0.96492746868811,
+                0.9693889360691496
+              ]
+            },
+            "y": {
+              "neff": [
+                2.183686948504627,
+                2.2515184039126797,
+                2.318790332285429
+              ],
+              "inplane_transverse_e_fraction": [
+                0.9603248748652238,
+                0.9649274636112568,
+                0.9693888211656475
+              ]
+            }
+          }
+        },
+        "max_axis_neff_delta": 5.977422556924239e-09
+      }
+    },
+    "local_tidy3d_documentation": "https://docs.flexcompute.com/projects/tidy3d/en/latest/faq/docs/faq/how-do-i-run-the-mode-solver-locally.html",
+    "native_frame_check": {
+      "study": "FDTDX signed transverse source and reciprocal-overlap checks",
+      "version": "0.6.2",
+      "device": "cpu:0",
+      "wavelength_um": [
+        1.6,
+        1.55,
+        1.5
+      ],
+      "rows": [
+        {
+          "mesh": 12,
+          "axis": "x",
+          "direction": 1,
+          "basis_neff": [
+            2.304772138595581,
+            2.3697052001953125,
+            2.4336659908294678
+          ],
+          "source_neff": 2.3697052001953125,
+          "signed_source_flux_native_units": 1.0,
+          "source_transverse_fraction": 0.9619061350822449,
+          "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+          "max_basis_edge_fraction": 3.2824096706463024e-05
+        },
+        {
+          "mesh": 12,
+          "axis": "x",
+          "direction": -1,
+          "basis_neff": [
+            2.304772138595581,
+            2.3697052001953125,
+            2.4336659908294678
+          ],
+          "source_neff": 2.3697052001953125,
+          "signed_source_flux_native_units": -1.0,
+          "source_transverse_fraction": 0.9619061350822449,
+          "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+          "max_basis_edge_fraction": 3.2824096706463024e-05
+        },
+        {
+          "mesh": 12,
+          "axis": "y",
+          "direction": 1,
+          "basis_neff": [
+            2.304772138595581,
+            2.3697052001953125,
+            2.4336659908294678
+          ],
+          "source_neff": 2.3697052001953125,
+          "signed_source_flux_native_units": 1.0,
+          "source_transverse_fraction": 0.9619061350822449,
+          "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+          "max_basis_edge_fraction": 3.2824096706463024e-05
+        },
+        {
+          "mesh": 12,
+          "axis": "y",
+          "direction": -1,
+          "basis_neff": [
+            2.304772138595581,
+            2.3697052001953125,
+            2.4336659908294678
+          ],
+          "source_neff": 2.3697052001953125,
+          "signed_source_flux_native_units": -1.0,
+          "source_transverse_fraction": 0.9619061350822449,
+          "reciprocal_projection_wrong_direction_ratio": 3.83568607675781e-09,
+          "max_basis_edge_fraction": 3.2824096706463024e-05
+        },
+        {
+          "mesh": 16,
+          "axis": "x",
+          "direction": 1,
+          "basis_neff": [
+            2.189319610595703,
+            2.2553977966308594,
+            2.3209352493286133
+          ],
+          "source_neff": 2.2553977966308594,
+          "signed_source_flux_native_units": 1.000000238418579,
+          "source_transverse_fraction": 0.9628591537475586,
+          "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+          "max_basis_edge_fraction": 3.132259735139087e-05
+        },
+        {
+          "mesh": 16,
+          "axis": "x",
+          "direction": -1,
+          "basis_neff": [
+            2.189319610595703,
+            2.2553977966308594,
+            2.3209352493286133
+          ],
+          "source_neff": 2.2553977966308594,
+          "signed_source_flux_native_units": -1.000000238418579,
+          "source_transverse_fraction": 0.9628591537475586,
+          "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+          "max_basis_edge_fraction": 3.132259735139087e-05
+        },
+        {
+          "mesh": 16,
+          "axis": "y",
+          "direction": 1,
+          "basis_neff": [
+            2.189319610595703,
+            2.2553977966308594,
+            2.3209352493286133
+          ],
+          "source_neff": 2.2553977966308594,
+          "signed_source_flux_native_units": 1.000000238418579,
+          "source_transverse_fraction": 0.9628591537475586,
+          "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+          "max_basis_edge_fraction": 3.132259735139087e-05
+        },
+        {
+          "mesh": 16,
+          "axis": "y",
+          "direction": -1,
+          "basis_neff": [
+            2.189319610595703,
+            2.2553977966308594,
+            2.3209352493286133
+          ],
+          "source_neff": 2.2553977966308594,
+          "signed_source_flux_native_units": -1.000000238418579,
+          "source_transverse_fraction": 0.9628591537475586,
+          "reciprocal_projection_wrong_direction_ratio": 1.8003261833790196e-08,
+          "max_basis_edge_fraction": 3.132259735139087e-05
+        }
+      ],
+      "scope": "Native CPU cross-section eigensolves and projections only. Whole-device spectra and time evolution use separately injected NVIDIA fields.",
+      "sources": {
+        "scripts/verify_layout_ports3d_frames.py": "d13d3a089b5657e47ef80feaefe16cd9389a54f5b65b3ffca1a55ce05af12c69",
+        "scripts/calibrate_layout_ports3d.py": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+        "backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f"
+      }
+    },
+    "mode_solver_spread_neff_96": [
+      0.0636790663972544,
+      0.06196688468747702,
+      0.05987907282899885
+    ],
+    "ansys_lumerical_reference": {
+      "article": "https://optics.ansys.com/hc/en-us/articles/360042799933-Bent-waveguide-analysis",
+      "kind": "published Lumerical MODE curved-mode loss and straight-to-bend overlap estimate",
+      "radius_um": 1.5,
+      "curved_loss_db_per_um": 0.0009,
+      "straight_bent_mode_overlap": 0.988,
+      "estimated_quarter_bend_loss_db": 0.107,
+      "scope": "Published circular bend and two straight/bent mode junctions. The Workbench default is an abrupt polygon elbow. The published loss estimate has a different geometry and observable."
+    }
+  },
+  "source_arrays": {
+    "file": "v012-layout-ports3d-arrays.npz",
+    "sha256": "b96dd2e022b7d11b3557b1f2856bd7d2e6181b059dc121fe401279ce5ac742ed"
+  },
+  "material_sampling": "Eight by eight lateral quadrature points per Yee component cell, exact slab thickness overlap. Ex/Ey use arithmetic volume mixing. Ez uses harmonic mixing across the flat vertical interface and an arithmetic lateral area average.",
+  "qualification": "All published matrices were reconstructed from native E/H phasors and signed reciprocal overlaps. Mesh and reference-plane differences are reported separately."
+}

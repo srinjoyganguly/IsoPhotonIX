@@ -23,6 +23,7 @@ CASES = {
     'multimode': ('Multimode slab joint', 'Two TE modes on each side of a planar offset joint, checked against independent mode matching.'),
     'ring-3d': ('3D bus-loaded ring', 'A full-vector, finite-height ring with two bus guides and a separate incident reference.'),
     'grating-3d': ('3D finite-width grating', 'A finite-width grating and taper with Gaussian illumination and a calibrated guided output.'),
+    'layout-ports-3d': ('3D layout ports', 'Full-vector scattering between user-positioned ports of a finite-height polygon layout on NVIDIA.'),
     'layout-ports-2d': ('Planar layout ports', 'Excite user-positioned ports on a lossless polygon layout and measure its complex fundamental-mode matrix.'),
     'multimode-tm': ('TM multimode slab joint', 'Two independently launched transverse-magnetic modes on each side of a planar joint.'),
     'multimode-3d': ('Finite-height multimode joint', 'Two quasi-TE modes on each side of a finite-height offset silicon strip.'),
@@ -32,8 +33,11 @@ CASES = {
 GPU_COMPONENTS = ('ring-3d', 'grating-3d')
 
 
+LAYOUT_CASES = ('layout-ports-2d','layout-ports-3d')
+
+
 def calibration_routes(case):
-    if case in GPU_COMPONENTS:
+    if case in GPU_COMPONENTS or case=='layout-ports-3d':
         return ['fdtdx:gpu']
     if case in ('coupler', 'splitter'):
         return ['meep:cpu', 'fdtdx:cpu', 'fdtdx:gpu']
@@ -44,7 +48,7 @@ class Calibration(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     study_type: Literal['calibrated-component'] = 'calibrated-component'
     revision: Literal[1,2] = 2
-    case: Literal['coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d']
+    case: Literal['coupler','splitter','ring','grating','multimode','multimode-3d','ring-3d','grating-3d','multimode-tm','layout-ports-2d','layout-ports-3d']
     solver: Literal['meep','fdtdx']
     device: Literal['cpu','gpu']
     resolution: int | None = None
@@ -70,13 +74,13 @@ class Calibration(BaseModel):
 
     @model_validator(mode='after')
     def available_route(self):
-        if self.planar_layout is not None and self.case != 'layout-ports-2d':
+        if self.planar_layout is not None and self.case not in LAYOUT_CASES:
             raise ValueError('A planar layout belongs to the planar layout ports preset.')
-        if self.case == 'layout-ports-2d':
+        if self.case in LAYOUT_CASES:
             from .planar_port_layout import default_planar_port_layout, validate_planar_port_layout
             document = default_planar_port_layout() if self.planar_layout is None else self.planar_layout
             self.planar_layout = validate_planar_port_layout(document)
-        if self.case in (*GPU_COMPONENTS, 'multimode-tm', 'layout-ports-2d') and self.revision != 2:
+        if self.case in (*GPU_COMPONENTS, 'multimode-tm', *LAYOUT_CASES) and self.revision != 2:
             raise ValueError('New calibrated components require revision 2.')
         if self.geometry_3d is not None and self.case not in GPU_COMPONENTS:
             raise ValueError('Choose a full 3D ring or grating for the reference geometry.')
@@ -84,6 +88,16 @@ class Calibration(BaseModel):
             raise ValueError('Movable port planes are supported on the planar TM joint.')
         if self.duration_um_c is not None and self.case != 'ring-3d':
             raise ValueError('Choose the 3D ring to set an observation duration.')
+        if self.case == 'layout-ports-3d':
+            if f'{self.solver}:{self.device}' not in calibration_routes(self.case):
+                raise ValueError('Select the NVIDIA FDTDX target for finite-height layout ports.')
+            if any(value is not None for value in (self.offset_um, self.ring_scope, self.grating_scope, self.material_model)):
+                raise ValueError('The finite-height layout uses its captured constant-index stack.')
+            if self.resolution is None:
+                self.resolution = 16
+            if self.resolution not in (12,16):
+                raise ValueError('Choose 12 or 16 cells/µm for the finite-height layout.')
+            return self
         if self.case in GPU_COMPONENTS:
             if f'{self.solver}:{self.device}' not in calibration_routes(self.case):
                 raise ValueError('This 3D preset requires explicit FDTDX NVIDIA execution.')
@@ -135,7 +149,7 @@ class Calibration(BaseModel):
             raise ValueError('Choose a supported mesh for this preset.')
         if self.offset_um is not None and (not self.case.startswith('multimode') or not 0 <= self.offset_um <= .25):
             raise ValueError('The offset is available only for multimode joints, between 0 and 0.25 µm.')
-        if self.case == 'layout-ports-2d':
+        if self.case in LAYOUT_CASES:
             for port in self.planar_layout['ports']:
                 axis = 0 if port['outward'].endswith('x') else 1
                 cells = port['center_um'][axis] * self.resolution
@@ -168,8 +182,14 @@ def specification(config):
         if ring:
             helpers += ['scripts/calibrate_ring.py','scripts/measure_loaded_ring_losses.py','scripts/calibration_checkpoint.py']
         else:
-            helpers += ['scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json']
+            helpers += ['scripts/grating_cuda_identity.py','scripts/grating_emission.py','scripts/lumerical_grating3d.py','scripts/grating_angular_spectrum.py', 'docs/verification/v012-grating-commercial-references.json']
         return worker, args, helpers
+    if config.case == 'layout-ports-3d':
+        helpers = ['backend/__init__.py','backend/planar_port_layout.py','backend/geometry_draft.py','backend/calibrated_geometry.py',
+                   'scripts/grating_cuda_identity.py','scripts/calibration_checkpoint.py','scripts/calibrate_fdtdx_multiport.py']
+        helpers += ['backend/adapters/'+name+'.py' for name in (
+            'fdtdx_adapter','fdtdx3d_adapter','fdtdx_ports_adapter','fdtdx_ports3d_adapter')]
+        return 'calibrate_layout_ports3d', ['--design','layout.json','--device','gpu','--resolution',str(config.resolution)],helpers
     if config.case == 'layout-ports-2d':
         helpers = ['backend/__init__.py','backend/planar_port_layout.py','backend/geometry_draft.py','scripts/calibration_checkpoint.py']
         return 'calibrate_layout_ports', ['--design','layout.json','--resolution',str(config.resolution)], helpers

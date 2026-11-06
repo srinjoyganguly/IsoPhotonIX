@@ -21,6 +21,13 @@ const {chromium} = require('playwright');
     await panel.getByLabel('Mesh resolution').selectOption('12');
     await panel.locator('input[value="fdtdx:gpu"]').check();
     assert.equal(await panel.getByRole('radio').count(),1);
+    let job;
+    if(process.env.PHOTONICS_JOB_ID) {
+      const saved=await page.request.get(origin+'/api/jobs/'+process.env.PHOTONICS_JOB_ID);
+      job=await saved.json();
+      assert(saved.ok() && job.config.case==='grating-3d' && job.config.geometry_3d==='compact');
+      await panel.getByLabel('Saved run').selectOption(job.id);
+    } else {
     const designDownload=page.waitForEvent('download');
     await panel.getByRole('button',{name:/Export Python/i}).click();
     await (await designDownload).saveAs(path.join(directory,'compact-program.zip'));
@@ -28,19 +35,24 @@ const {chromium} = require('playwright');
       response.request().method()==='POST');
     await panel.getByRole('button',{name:'Run calibrated study',exact:true}).click();
     const response=await created;
-    const job=await response.json();
+    job=await response.json();
     assert.equal(response.status(),202,JSON.stringify(job));
     fs.writeFileSync(path.join(directory,'started.json'),JSON.stringify({job_id:job.id,config:job.config},null,2)+'\n');
-    await page.waitForFunction(async id=>{
-      const r=await fetch('/api/jobs/'+id);
-      const job=await r.json();
-      return !['running','queued'].includes(job.status);
-    },job.id,{timeout:6*3600*1000,polling:3000});
-    const saved=await (await page.request.get(origin+'/api/jobs/'+job.id)).json();
+    }
+    const deadline=Date.now()+6*3600*1000;
+    let saved;
+    while(Date.now()<deadline){
+      const state=await page.request.get(origin+'/api/jobs/'+job.id);
+      assert(state.ok(),'Local job status request failed.');
+      saved=await state.json();
+      if(['completed','failed','cancelled'].includes(saved.status))break;
+      assert(['queued','running'].includes(saved.status),'Unknown local job status '+saved.status);
+      await new Promise(resolve=>setTimeout(resolve,3000));
+    }
     assert.equal(saved.status,'completed',saved.error);
     const fields=await (await page.request.get(origin+'/api/calibrations/jobs/'+job.id+'/field')).json();
     const report=await (await page.request.get(origin+'/api/calibrations/jobs/'+job.id+'/report')).json();
-    const local=panel.getByRole('region',{name:'Measured field plane'});
+    const local=panel.getByRole('region',{name:'Measured field plane'}).last();
     await local.locator('canvas').waitFor();
     const x=Math.floor(fields.horizontal_um.length/2), y=Math.floor(fields.vertical_um.length/2);
     assert((await local.getByLabel('Field sample').textContent()).endsWith(fields.values[y][x].toPrecision(7)));
