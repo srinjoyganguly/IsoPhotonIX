@@ -119,6 +119,28 @@ class JobManager:
             threading.Thread(target=self._run, args=(job_id,), daemon=True).start()
             return dict(job)
 
+    def calibration_can_resume(self, job):
+        if job.get('config',{}).get('study_type')!='calibrated-component':
+            return False
+        if job['status'] not in ('cancelled','failed') or job['id'] in self.processes:
+            return False
+        output=self.directory/job['id']
+        return ((output/'replay/manifest.json').is_file() and (output/'checkpoints').is_dir()
+                and not (output/'calculation').exists())
+
+    def resume_calibration(self, job_id):
+        with self.lock:
+            self._require_active()
+            job=self.jobs[job_id]
+            if not self.calibration_can_resume(job):
+                raise RuntimeError('There is no interrupted calibrated study to resume.')
+            if any(record['status'] in ('queued','running') for record in self.jobs.values()):
+                raise RuntimeError('Another simulation is active.')
+            job.update(status='queued',error=None,attempt=job.get('attempt',1)+1)
+            self._save(job)
+            threading.Thread(target=self._run,args=(job_id,),daemon=True).start()
+            return dict(job)
+
     def _command(self, config, output):
         if config.get('study_type') == 'calibrated-component':
             return [sys.executable, '-m', 'backend.calibrations', str(output)]
@@ -133,7 +155,11 @@ class JobManager:
                 if job["status"] == "cancelled":
                     return
                 config = job["config"]
-                log = (output/"worker.log").open("w")
+                resumed = job.get('attempt',1)>1
+                log = (output/"worker.log").open("a" if resumed else "w")
+                if resumed:
+                    log.write(f"\nResuming saved calibration, attempt {job['attempt']}.\n")
+                    log.flush()
                 try:
                     process = subprocess.Popen(self._command(config, output), cwd=ROOT,
                         env=worker_env(config["solver"], config["device"]), stdout=log,

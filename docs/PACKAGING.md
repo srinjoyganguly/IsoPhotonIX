@@ -58,7 +58,7 @@ photonics-workbench calibrate splitter --solver fdtdx --device gpu --material-mo
 photonics-workbench calibrate grating --solver meep --device cpu --grating-scope tidy3d-compact --resolution 40 --output beam-results
 ```
 
-The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
+The first command creates a report, raw numerical samples and `python-notebook-results.zip`. The second creates `python-notebook.zip` for execution on a CUDA machine. The third measures the published grating geometry with the compact beam aperture. Use `calibrate ring --solver meep --device cpu --ring-scope lumerical --output ring-results` for one loaded-ring spectrum. In the extracted directory, run `python run.py --output new-result` or open `calibration.ipynb`. A replay of a result export checks its numerical arrays and recorded observables. For long calculations, pass `--checkpoint PATH` to the installed calibrate command or exported run.py. Choose a fresh result directory on retry. The worker checks the saved stages and the numerical source before reuse. For interrupted calibrated jobs started in the GUI, select the original run and choose **Resume saved study** to continue its captured program. Solvers, sources, materials, mesh and wavelength samples are specified in each export. [Per-preset verification](CALIBRATED_COMPONENTS.md).
 
 ## Set up the numerical runtimes
 
@@ -302,3 +302,5 @@ reference screenshots remain excluded.
 8. CI and release notes distinguish tested platform/profile combinations from
    experimental or unsupported ones. Linux/WSL2 x86-64 comes first; macOS and
    other platforms require their own installation and numerical evidence.
+
+A browser interrupted a native compact-grating study after its incident reference had been recorded, then resumed the original job. The checksum and timestamp of the native reference and the captured source manifest were preserved. The resumed result measured the same central coupling as the original run. [Browser resume verification](verification/v011-browser-resume.json).

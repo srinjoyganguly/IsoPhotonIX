@@ -121,6 +121,53 @@ class CalibratedComponents(unittest.TestCase):
             self.assertEqual(json.loads(archive.read('config.json')),config.model_dump())
             self.assertIn('source/scripts/calibration_checkpoint.py',archive.namelist())
 
+    def test_saved_revision_preserves_historical_default_grid(self):
+        from backend.calibrations import specification
+        old=Calibration(case='coupler',solver='fdtdx',device='cpu')
+        modern=Calibration(case='coupler',solver='fdtdx',device='cpu',revision=2)
+        self.assertIn('legacy-x',specification(old)[1])
+        self.assertIn('yee-aligned',specification(modern)[1])
+        explicit=Calibration(case='coupler',solver='fdtdx',device='cpu',revision=2,material_model='legacy-x')
+        self.assertIn('legacy-x',specification(explicit)[1])
+        old_ring=Calibration(case='ring',solver='meep',device='cpu')
+        new_ring=Calibration(case='ring',solver='meep',device='cpu',revision=2)
+        self.assertEqual(specification(old_ring)[1],[])
+        self.assertEqual(specification(new_ring)[1],['--loaded-case','lumerical','--profile','fine'])
+
+    def test_resume_requires_an_interrupted_job_and_frozen_source(self):
+        from backend.calibrations import run_job
+        from backend.jobs import JobManager
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            mgr=JobManager(root)
+            job_dir=root/'study'
+            job_dir.mkdir()
+            cfg=Calibration(case='grating',solver='meep',device='cpu',grating_scope='tidy3d-compact').model_dump()
+            job={'id':'study','config':cfg,'status':'cancelled','error':'interrupted'}
+            mgr.jobs['study']=job
+            self.assertFalse(mgr.calibration_can_resume(job))
+            captured=create_bundle(cfg,job_dir/'replay')
+            (job_dir/'checkpoints').mkdir()
+            self.assertTrue(mgr.calibration_can_resume(job))
+            with patch('backend.jobs.threading.Thread') as thread:
+                updated=mgr.resume_calibration('study')
+                thread.return_value.start.assert_called_once()
+            self.assertEqual((updated['status'],updated['attempt']),('queued',2))
+            with self.assertRaisesRegex(RuntimeError,'no interrupted'):
+                mgr.resume_calibration('study')
+            captured.joinpath('source/scripts/calibrate_grating.py').write_text('changed')
+            with self.assertRaisesRegex(ValueError,'changed'):
+                run_job(cfg,job_dir,job_dir/'checkpoints')
+
+    def test_interrupted_gpu_study_cannot_resume_on_cpu(self):
+        job={'config':{'case':'splitter','study_type':'calibrated-component','solver':'fdtdx','device':'gpu'}}
+        with patch('backend.app.calibration_directory',return_value=(job,Path('unused'))), \
+             patch('backend.app.capabilities',return_value={'targets':[{'solver':'fdtdx','device':'cpu','available':True}]}), \
+             patch('backend.app.manager.resume_calibration') as resume:
+            response=TestClient(app).post('/api/calibrations/jobs/saved/resume',json={})
+            self.assertEqual(response.status_code,409)
+            resume.assert_not_called()
+
     def test_catalog(self):
         props=TestClient(app).get('/api/calibrations').json()
         self.assertEqual(len(props),6)

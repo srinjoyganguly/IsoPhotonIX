@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "job_id": "798f52c0bcc04e6082ca24e974f7ec06",
+  "attempt": 2,
+  "resume_action": "browser",
+  "actual_device": "CPU",
+  "config": {
+    "study_type": "calibrated-component",
+    "revision": 1,
+    "case": "grating",
+    "solver": "meep",
+    "device": "cpu",
+    "resolution": 40,
+    "offset_um": null,
+    "material_model": null,
+    "ring_scope": null,
+    "grating_scope": "tidy3d-compact"
+  },
+  "source_manifest_sha256": "8fa6c7dda097ae9d4ed3099b611a9c7f20e5d3b51374a3b6c16393217254126d",
+  "reference_receipt_sha256": "7bf2e5b022d2bc4a8f560b5cf4af52c24efc6c6f4f701202905dfe280c29d36f",
+  "reference_timestamp_preserved": true,
+  "coupling_fraction": 0.5823413109784943
+}

@@ -28,6 +28,7 @@ CASES = {
 class Calibration(BaseModel):
     model_config=ConfigDict(extra='forbid',strict=True)
     study_type: Literal['calibrated-component'] = 'calibrated-component'
+    revision: Literal[1,2] = 1
     case: Literal['coupler','splitter','ring','grating','multimode','multimode-3d']
     solver: Literal['meep','fdtdx']
     device: Literal['cpu','gpu']
@@ -39,6 +40,13 @@ class Calibration(BaseModel):
 
     @model_validator(mode='after')
     def available_route(self):
+        if self.revision==2:
+            if self.solver=='fdtdx' and self.material_model is None:
+                self.material_model='yee-aligned'
+            if self.case=='ring' and self.ring_scope is None:
+                self.ring_scope='lumerical'
+            if self.case=='grating' and self.grating_scope is None:
+                self.grating_scope='tidy3d-compact'
         if self.solver=='meep' and self.device!='cpu':
             raise ValueError('Meep requires CPU execution.')
         if self.solver=='fdtdx' and self.case not in ('coupler','splitter'):
@@ -117,7 +125,9 @@ def create_bundle(config, destination):
         'Install the selected native worker with the workbench setup command or use MEEP_PYTHON / FDTDX_PYTHON for an existing environment. '
         'With a nondefault workbench store, set PHOTONICS_DATA_DIR to that directory. Keep the original export for replay.\n\n'
         'Run `python run.py --output fresh-result` or execute the notebook in this directory. '
-        'The program launches its solver afresh. A completed run export contains reference/report.json, numerical NPZ files and their hashes. '
+        'The program launches its solver afresh. For long studies, run.py accepts --checkpoint PATH to reuse matching completed stages after an interruption. '
+        'In the notebook, pass checkpoint=Path("stages") to run() when you want that behavior. '
+        'A completed run export contains reference/report.json, numerical NPZ files and their hashes. '
         'A fresh replay compares numerical arrays with the saved samples. Small floating-point differences are listed in reproduction.json. '
         'Physical lengths are in micrometres unless identified otherwise in the report.\n')
     cells=[
@@ -134,7 +144,7 @@ def create_bundle(config, destination):
     (destination/'calibration.ipynb').write_text(json.dumps(notebook,indent=2)+'\n')
     files={str(p.relative_to(destination)):hashlib.sha256(p.read_bytes()).hexdigest()
            for p in sorted(destination.rglob('*')) if p.is_file()}
-    manifest={'format':1,'worker':'scripts.'+name,'arguments':args,'files':files}
+    manifest={'format':1,'native_checkpoints':True,'worker':'scripts.'+name,'arguments':args,'files':files}
     (destination/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     return destination
 
@@ -163,7 +173,16 @@ def run_config(config, output, checkpoint=None):
 
 
 def run_job(config, directory, checkpoint=None):
-    bundle=create_bundle(config,directory/'replay')
+    from .calibration_replay import verify_source
+    bundle=directory/'replay'
+    if bundle.exists():
+        manifest=verify_source(bundle)
+        if not manifest.get('native_checkpoints') or json.loads((bundle/'config.json').read_text())!=config:
+            raise ValueError('The saved worker or configuration cannot resume this job.')
+    else:
+        bundle=create_bundle(config,bundle)
+    if checkpoint is not None:
+        Path(checkpoint).mkdir(parents=True,exist_ok=True)
     env = {**os.environ,config['solver'].upper()+'_PYTHON':interpreter(config['solver'],config['device'])}
     command=[sys.executable,str(bundle/'run.py'),'--output',str(directory.resolve()/'calculation')]
     if checkpoint is not None:
@@ -189,4 +208,4 @@ def result_zip(directory, target):
 
 if __name__=='__main__':
     job=Path(sys.argv[1]).resolve()
-    raise SystemExit(run_job(json.loads((job/'config.json').read_text()),job))
+    raise SystemExit(run_job(json.loads((job/'config.json').read_text()),job,job/'checkpoints'))

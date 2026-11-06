@@ -7,7 +7,7 @@ import './calibratedComponents.css';
 type Evidence = { summary: string; dimension: string; routes: string[]; wavelengths_um: number[]; series: Series[];
   limits: string; recorded?: {label:string; receipt:string;report:unknown}[]; comparisons: {vendor: string; description: string; url: string}[] };
 type Preset = { case: string; name: string; scope: string; routes: string[]; evidence?: Evidence };
-type Job = { id: string; status: string; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
+type Job = { id: string; status: string; can_resume?:boolean;attempt?:number; created_at: string; error?: string; result?: {actual_device?:string;device_name?:string}; config: {case: string; solver: string; device: string} };
 type Target = {solver: string; device: string; available: boolean; reason?: string};
 
 export function CalibratedComponents({active}:{active:boolean}) {
@@ -80,6 +80,14 @@ export function CalibratedComponents({active}:{active:boolean}) {
       setJobs(rows=>rows.map(j=>j.id===updated.id?updated:j));
     }catch(e){setError((e as Error).message);}
   }
+  async function resume(){
+    if(!job || pending)return;
+    setPending(true);setError('');
+    try {
+      const updated=await request<Job>('/api/calibrations/jobs/'+job.id+'/resume',{});
+      setJobs(rows=>rows.map(j=>j.id===updated.id?updated:j));
+    }catch(e){setError((e as Error).message);}finally{setPending(false);}
+  }
   function choose(next:string){setKey(next);setRecord(0);setMesh('');setOffset('.125');setTarget('');setMaterialGrid('legacy-x');setGratingScope('tidy3d-compact');setRingScope('lumerical');setJobId('');setError('');setReport(null);}
   return <section className="cal-lab" aria-label="Calibrated components">
     <header><h1>Calibrated components</h1><p>Inspect measured reference results or run the same physical study on this machine.</p></header>
@@ -127,10 +135,11 @@ export function CalibratedComponents({active}:{active:boolean}) {
       {busy&&<p role="status">A local calibration is running.</p>}</section>
       <section><h3>Local runs</h3>{history.length>0?<label>Saved run<select value={jobId} onChange={e=>setJobId(e.target.value)}>
         <option value="">Select a run</option>{history.map(j=><option key={j.id} value={j.id}>{j.id.slice(0,8)} · {j.config.solver}/{j.config.device} · {j.status}</option>)}</select></label>:<p>No saved runs for this preset.</p>}
-      {job && <><p role="status">Run {job.id.slice(0,8)} · {job.status}</p>
+      {job && <><p role="status">Run {job.id.slice(0,8)} · {job.status}{job.attempt && job.attempt>1 && ' · attempt '+job.attempt}</p>
         {(job.status==='queued'||job.status==='running')&&<button className="button secondary compact" onClick={()=>void cancel()}>Cancel run</button>}
         {job.result?.actual_device && <p>Measured execution target {job.result.actual_device}{job.result.device_name && ` · ${job.result.device_name}`}</p>}
         {log && <details><summary>Solver progress</summary><pre>{log}</pre></details>}
+        {job.can_resume && <button className="button secondary compact" disabled={pending||busy} onClick={()=>void resume()}>Resume saved study</button>}
         {job.error && <p role="alert">{job.error}</p>}
         {job.status==='completed'&&<p><a href={'/api/calibrations/jobs/'+job.id+'/export'}>Export Python, notebook and measured arrays</a></p>}
         {report!=null&&<CalibrationMeasurement key={job.id} value={report}/>}

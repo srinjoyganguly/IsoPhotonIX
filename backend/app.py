@@ -461,7 +461,7 @@ def calibrated_jobs():
     with manager.lock:
         rows = sorted((j for j in manager.jobs.values() if j['config'].get('study_type')=='calibrated-component'),
                       key=lambda j:j['created_at'],reverse=True)
-        return [dict(j) for j in rows[:50]]
+        return [dict(j,can_resume=manager.calibration_can_resume(j)) for j in rows[:50]]
 
 
 def calibration_directory(job_id):
@@ -469,6 +469,19 @@ def calibration_directory(job_id):
     if job['config'].get('study_type') != 'calibrated-component':
         raise HTTPException(409, 'Choose a calibrated component job.')
     return job, manager.directory/job_id
+
+
+@app.post('/api/calibrations/jobs/{job_id}/resume',status_code=202)
+def resume_calibration(job_id: str):
+    job,_=calibration_directory(job_id)
+    config=job['config']
+    target=next((t for t in capabilities(target=(config['solver'],config['device']))['targets'] if t['solver']==config['solver'] and t['device']==config['device']),None)
+    if not target or not target['available']:
+        raise HTTPException(409,(target or {}).get('reason','The captured execution target is unavailable.'))
+    try:
+        return manager.resume_calibration(job_id)
+    except RuntimeError as exc:
+        raise HTTPException(409,str(exc)) from exc
 
 
 @app.get('/api/calibrations/jobs/{job_id}/report')
@@ -513,7 +526,7 @@ def create_job(config: WaveguideConfig):
 
 
 def submit_checked(config):
-    target = next((t for t in capabilities()["targets"] if t["solver"] == config.solver and t["device"] == config.device), None)
+    target = next((t for t in capabilities(target=(config.solver,config.device))["targets"] if t["solver"] == config.solver and t["device"] == config.device), None)
     if not target or not target["available"]:
         raise HTTPException(409, (target or {}).get("reason", "Requested execution target is unavailable."))
     try:
