@@ -81,6 +81,20 @@
       },
       "all_evidenced_and_met": true
     },
+    "v013-grating3d-lumerical-dense-direct-yee-r12.json": {
+      "criteria": {
+        "target_within_five_points": false,
+        "band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
+    "v013-grating3d-lumerical-dense-volume-average-r12.json": {
+      "criteria": {
+        "target_within_five_points": false,
+        "band_mean_within_five_points": false
+      },
+      "all_evidenced_and_met": false
+    },
     "v013-grating3d-lumerical-direct-r12.json": {
       "criteria": {
         "target_within_five_points": false,
@@ -152,5 +166,5 @@
       "within_two_points": false
     }
   ],
-  "diagnosis_sha256": "571be76b8722dda28ecae9f6a6015855bce78e529a353b2dc1d102d038a43b5f"
+  "diagnosis_sha256": "4daed4567287653d127f3e05901efb6a027f5fca82c302eb528c77414cf78045"
 }

@@ -1,0 +1,171 @@
+{
+  "passed": true,
+  "release": "v0.12.0a2",
+  "assets": {
+    "grating-lumerical-direct-3d-gpu-r14-v0.12.0a2.zip": {
+      "sha256": "235613c9b7a4e473bf1569cff87d70d9c233be03b454b53a7e514876573c572e",
+      "bytes": 37167312
+    },
+    "grating-lumerical-dense-volume-average-3d-gpu-r12-v0.12.0a2.zip": {
+      "sha256": "b5cdf9a6897478855ce0fe6714873dbaacff3d24cc0caf3546750f3387e566cd",
+      "bytes": 108854408
+    },
+    "grating-lumerical-dense-volume-average-3d-gpu-r12-v0.12.0a2.npz": {
+      "sha256": "47465b36295514dbc433947a72a6ebe8228264989f244dd0bc24d5b6fd7a49bc",
+      "bytes": 108960921
+    },
+    "grating-lumerical-dense-direct-yee-3d-gpu-r12-v0.12.0a2.zip": {
+      "sha256": "74fa808da18623c31d2915cbea412d44bf3fa97b93cf3927cd1369ad05077bb0",
+      "bytes": 108976113
+    },
+    "grating-lumerical-dense-direct-yee-3d-gpu-r12-v0.12.0a2.npz": {
+      "sha256": "aa579b3bd55c5bf42faf9c962d523da4d7283c1e572498e4b8d1e3ffd56706b8",
+      "bytes": 109082509
+    }
+  },
+  "studies": {
+    "grating-lumerical-direct-3d-gpu-r14-v0.12.0a2.zip": {
+      "native_receipt": "v013-grating3d-lumerical-direct-r14.json",
+      "receipt_sha256": "4bd24b1639cc7d749a6930f64867f8ff92a724cf51b994c164c8e628884b916b",
+      "source_manifest_sha256": "d8b862687061323d35154d006561fc4d3e2f3cf47275d5d85e0b12b76ae19c4e",
+      "reference_sha256": {
+        "arrays.npz": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e",
+        "report.json": "0ee836299a7daff782204810662e118b8b899cab4723ac511a675b15b2769719"
+      },
+      "all_zip_members_sha256": {
+        "CREDITS.md": "d3f0cc4279bab37a58491fcafe13c3cde59b6c6728dc749e05fc162ee52e6806",
+        "LICENSE": "285e1388f8e1cd037d258a74a6397acbaab5644c9a7b8cf2a71d584a829bb5b3",
+        "README.md": "99836f69380348d1c19a49d0494b251ce82412d99b5fe3e92c993adad8102ca7",
+        "calibration.ipynb": "63be43e9fe806ec267a308a27f3c5cafbd65cea0c957e1b82b09606df3dbd41d",
+        "config.json": "d29ef827314ba6efde3154f0c80336b1b577f968888e4bd56287c7a7469e0df5",
+        "environment-fdtdx-cuda12-linux-64.lock": "2d2727c04c75559548c5b1af866e230710578add65410943e08b56edd61a9a62",
+        "manifest.json": "d8b862687061323d35154d006561fc4d3e2f3cf47275d5d85e0b12b76ae19c4e",
+        "reference-sha256.json": "b4c0ca41f7e183ad144d63d82dc949c448fb9523260854b28a895a14af05887e",
+        "reference/report.json": "0ee836299a7daff782204810662e118b8b899cab4723ac511a675b15b2769719",
+        "requirements-fdtdx-cuda.txt": "49f2ee3486c28be3639954061c9097b0a96cf05c5251f97b3095294f7cf0ed86",
+        "requirements-fdtdx.txt": "604b5eb564e3d98e43e8247031d48149350066f95bfcbcade2bad377325a0c85",
+        "run.py": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9",
+        "source/backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "source/backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "source/backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "source/backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "source/backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "source/docs/verification/v012-grating-commercial-references.json": "e36c4f699040b718b8c6656b3eed9bc87e50ac7795b7a80a93565c3e8c5417d2",
+        "source/docs/verification/v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655",
+        "source/scripts/calibrate_finite_grating.py": "74a23c3c871c42c1f78469dd4d9d209d8c719a5e591603a46908998079bbf9fd",
+        "source/scripts/grating_angular_spectrum.py": "e95a23cb4517c2e1168c73fe438c33acefe2e6c9a3d8236e77440178e1637045",
+        "source/scripts/grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "source/scripts/grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+        "source/scripts/lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+        "workbench_solver_environment.py": "2f652e2080b9d5010fa059700a5577ff46fc9668e63f206053c0806715ce809a",
+        "reference/arrays.npz": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e"
+      },
+      "frozen_source_files": 12,
+      "measured_wavelengths": 5,
+      "numeric_arrays": 45,
+      "published_s21_file_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+      "measured_cuda_device": "cuda:0",
+      "companion_sha256": "633edcea57fffbcb928c9e0de4c714c81606c4501fd78282446d576cbdf5081e"
+    },
+    "grating-lumerical-dense-volume-average-3d-gpu-r12-v0.12.0a2.zip": {
+      "native_receipt": "v013-grating3d-lumerical-dense-volume-average-r12.json",
+      "receipt_sha256": "04c412553676c9a666466cba9e77c9160490476d0f16292607fee5f5b35e7d20",
+      "source_manifest_sha256": "024115a609144154cc8a6a17d91be2c4753ec78591404f4908f4c59108512017",
+      "reference_sha256": {
+        "arrays.npz": "47465b36295514dbc433947a72a6ebe8228264989f244dd0bc24d5b6fd7a49bc",
+        "report.json": "df5015569670710e2404795d78bee292487786735fa485dd13344262f661196a"
+      },
+      "all_zip_members_sha256": {
+        "CREDITS.md": "d3f0cc4279bab37a58491fcafe13c3cde59b6c6728dc749e05fc162ee52e6806",
+        "LICENSE": "285e1388f8e1cd037d258a74a6397acbaab5644c9a7b8cf2a71d584a829bb5b3",
+        "README.md": "99836f69380348d1c19a49d0494b251ce82412d99b5fe3e92c993adad8102ca7",
+        "calibration.ipynb": "63be43e9fe806ec267a308a27f3c5cafbd65cea0c957e1b82b09606df3dbd41d",
+        "config.json": "31dd763cd094d644f41d8f0dde00f6a5912619b73f5eda81086d1dbbdc254be1",
+        "environment-fdtdx-cuda12-linux-64.lock": "2d2727c04c75559548c5b1af866e230710578add65410943e08b56edd61a9a62",
+        "manifest.json": "024115a609144154cc8a6a17d91be2c4753ec78591404f4908f4c59108512017",
+        "reference-sha256.json": "5653a9c79f9ada44a064bc9f34e6f08b1e6d62953e35489358053aa871d03cb7",
+        "reference/report.json": "df5015569670710e2404795d78bee292487786735fa485dd13344262f661196a",
+        "requirements-fdtdx-cuda.txt": "49f2ee3486c28be3639954061c9097b0a96cf05c5251f97b3095294f7cf0ed86",
+        "requirements-fdtdx.txt": "604b5eb564e3d98e43e8247031d48149350066f95bfcbcade2bad377325a0c85",
+        "run.py": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9",
+        "source/backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "source/backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "source/backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "source/backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "source/backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "source/docs/verification/v012-grating-commercial-references.json": "e36c4f699040b718b8c6656b3eed9bc87e50ac7795b7a80a93565c3e8c5417d2",
+        "source/docs/verification/v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655",
+        "source/docs/verification/v013-grating-dense-memory.json": "a6725cb91b8d62fff7b93fab528d1f2f5577d80b9dd3ff85af8f275dc0839954",
+        "source/docs/verification/v013-grating-dense-reference.json": "bd719b117e5d6e82a9c42e4eaf40aa1fda2006d4d65505a0d62e7a9e72222831",
+        "source/scripts/calibrate_finite_grating.py": "04be02cfc5101607abb7f8ab137205769f9c691fe1a3212a872837cce8e0df42",
+        "source/scripts/grating_angular_spectrum.py": "e95a23cb4517c2e1168c73fe438c33acefe2e6c9a3d8236e77440178e1637045",
+        "source/scripts/grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "source/scripts/grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+        "source/scripts/lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+        "workbench_solver_environment.py": "2f652e2080b9d5010fa059700a5577ff46fc9668e63f206053c0806715ce809a",
+        "reference/arrays.npz": "47465b36295514dbc433947a72a6ebe8228264989f244dd0bc24d5b6fd7a49bc"
+      },
+      "frozen_source_files": 14,
+      "measured_wavelengths": 21,
+      "numeric_arrays": 45,
+      "published_s21_file_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+      "measured_cuda_device": "cuda:0",
+      "companion_sha256": "71957905800f740e29d182932d94df2425d1fbc2bac73c8e41a6f2017f64ac2c"
+    },
+    "grating-lumerical-dense-direct-yee-3d-gpu-r12-v0.12.0a2.zip": {
+      "native_receipt": "v013-grating3d-lumerical-dense-direct-yee-r12.json",
+      "receipt_sha256": "4b77c6f94c8ccbcf0c6c40564c934076e2dbb08fbdc9b89e6dc2646a76facf03",
+      "source_manifest_sha256": "f09a2b8ecf3e11293d0b5ca74238d857555254dd3cba99fac829119503ade9ce",
+      "reference_sha256": {
+        "arrays.npz": "aa579b3bd55c5bf42faf9c962d523da4d7283c1e572498e4b8d1e3ffd56706b8",
+        "report.json": "010acd5681727bc71a48e7f04c072e4138a0e7a33e3bdc24b9887af590ea766f"
+      },
+      "all_zip_members_sha256": {
+        "CREDITS.md": "d3f0cc4279bab37a58491fcafe13c3cde59b6c6728dc749e05fc162ee52e6806",
+        "LICENSE": "285e1388f8e1cd037d258a74a6397acbaab5644c9a7b8cf2a71d584a829bb5b3",
+        "README.md": "99836f69380348d1c19a49d0494b251ce82412d99b5fe3e92c993adad8102ca7",
+        "calibration.ipynb": "63be43e9fe806ec267a308a27f3c5cafbd65cea0c957e1b82b09606df3dbd41d",
+        "config.json": "eb98786b7585e7f28898fa63db263f36db28367332646ef806d0269fc4707abc",
+        "environment-fdtdx-cuda12-linux-64.lock": "2d2727c04c75559548c5b1af866e230710578add65410943e08b56edd61a9a62",
+        "manifest.json": "f09a2b8ecf3e11293d0b5ca74238d857555254dd3cba99fac829119503ade9ce",
+        "reference-sha256.json": "6180db4f9ab15c08e4b3b3d928e1503c6777e2e24aea95bb37171c392cee551a",
+        "reference/report.json": "010acd5681727bc71a48e7f04c072e4138a0e7a33e3bdc24b9887af590ea766f",
+        "requirements-fdtdx-cuda.txt": "49f2ee3486c28be3639954061c9097b0a96cf05c5251f97b3095294f7cf0ed86",
+        "requirements-fdtdx.txt": "604b5eb564e3d98e43e8247031d48149350066f95bfcbcade2bad377325a0c85",
+        "run.py": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9",
+        "source/backend/__init__.py": "80f2615aecb18410326774af3d326bf5f53e384c8b179a0a6b4def330aa67214",
+        "source/backend/adapters/fdtdx3d_adapter.py": "a9706783c229897a7a4057fb5b24d32b838194635e7004e00bda2bee32f1c5e8",
+        "source/backend/adapters/fdtdx_adapter.py": "ddd5474bb05fcacbdcbdd780d875f40773891990963ea457581b07f3f0ccc30a",
+        "source/backend/adapters/fdtdx_ports3d_adapter.py": "426c773d4b7e4d6359fb6d0f249919b87a82fffe5194b5ee92ae24a1e20b3661",
+        "source/backend/adapters/fdtdx_ports_adapter.py": "8ea9a80bad1892cc670b2d2042825bd7ef17fb128cf0a6f4f98512422843c33f",
+        "source/docs/verification/v012-grating-commercial-references.json": "e36c4f699040b718b8c6656b3eed9bc87e50ac7795b7a80a93565c3e8c5417d2",
+        "source/docs/verification/v012-grating-memory-budget.json": "f2679537ce89af2e5b2b3222408e7824d756a54fe85f29cf7392e2becd61b655",
+        "source/docs/verification/v013-grating-dense-memory.json": "a6725cb91b8d62fff7b93fab528d1f2f5577d80b9dd3ff85af8f275dc0839954",
+        "source/docs/verification/v013-grating-dense-reference.json": "bd719b117e5d6e82a9c42e4eaf40aa1fda2006d4d65505a0d62e7a9e72222831",
+        "source/scripts/calibrate_finite_grating.py": "04be02cfc5101607abb7f8ab137205769f9c691fe1a3212a872837cce8e0df42",
+        "source/scripts/grating_angular_spectrum.py": "e95a23cb4517c2e1168c73fe438c33acefe2e6c9a3d8236e77440178e1637045",
+        "source/scripts/grating_cuda_identity.py": "b6361ca12ebf470b5ae5d3ed02946b5026a49ff3142825c4afec0abc5b35b4c0",
+        "source/scripts/grating_emission.py": "43cf1048a5374cdba38f8d55c57355f338a769873897ac31e9aee0aa2d781f76",
+        "source/scripts/lumerical_grating3d.py": "ef53a9a84d36e45eec85e20161f3bd1b67432e75c283c124b12eb78bc3607b9a",
+        "workbench_solver_environment.py": "2f652e2080b9d5010fa059700a5577ff46fc9668e63f206053c0806715ce809a",
+        "reference/arrays.npz": "aa579b3bd55c5bf42faf9c962d523da4d7283c1e572498e4b8d1e3ffd56706b8"
+      },
+      "frozen_source_files": 14,
+      "measured_wavelengths": 21,
+      "numeric_arrays": 45,
+      "published_s21_file_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+      "measured_cuda_device": "cuda:0",
+      "companion_sha256": "864e36548d6dc5252e1aa4b7dbf84278726413357901cded377dae8a28c16379"
+    }
+  },
+  "checks": [
+    "Exact program and array member allowlists and ZIP CRCs",
+    "Worker source files compared with frozen acquisition directories and native stage identities",
+    "Python sources and Jupyter code cells parsed; source and reference manifests rehashed",
+    "Recognizable machine paths, contact information and credential patterns scanned in text and decompressed arrays",
+    "Full native arrays decoded without pickle; complex fields, mode powers and qualification flags checked by the grating verifier",
+    "Dense display companions compared byte-for-byte per array with the original samples",
+    "Published Lumerical reference archive, project, and S21 file verified; S21 samples re-derived"
+  ],
+  "scope": "Offline checks of the acquired data and frozen program. This audit launches no solver and makes no independent replay or commercial-agreement claim."
+}

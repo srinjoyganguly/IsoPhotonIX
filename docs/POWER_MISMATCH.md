@@ -2,7 +2,7 @@
 
 The comparisons use physical wavelengths and incident guided power. No gain or wavelength offset is fitted to the vendor spectrum. Each candidate material or geometry change is measured against the unmodified workbench calculation at the same mesh. The published Tidy3D and Lumerical examples describe different devices.
 
-## Ring: follow the power through all four ports
+## Where the ring power goes
 
 The Lumerical text attachment contains the complex fundamental-mode amplitudes for every port. For excitation at port 1, we square the amplitude magnitudes and interpolate power onto the qualified workbench wavelengths. At 1550 nm the 24-cell/µm workbench ring and the published file give:
 
@@ -33,7 +33,7 @@ On the finer 20-cell Lumerical mesh, exact area changes 1550 nm drop power from 
 
 We propagated an actual plane wave through 0.50 µm films on NVIDIA and compared transmitted power and phase with the analytic Fresnel solution using the **filed** permittivities. For silicon the maximum power errors were **19.96**, **2.38** and **0.64 percentage points** at 16, 48 and 96 cells/µm. The 96-cell phase error was 0.00794 rad and all fine-grid gates passed. The 16-cell phase error was 0.247 rad. The coarse ring grid therefore has a substantial demonstrated propagation error even for a flat film. Matching the material data improves the physical model, but the fit alone cannot justify a coarse-mesh power claim. [Fields, phase, held-out data and per-mesh decisions](verification/v013-palik-slab.json) · [FDTDX polarization recurrence](https://fdtdx.readthedocs.io/en/latest/_modules/fdtdx/dispersion.html).
 
-## Grating: distinguish a power-scale error from a spectral-shape error
+## Grating power and spectral shape
 
 At 1550 nm the 14-cell Lumerical reconstruction transfers 24.91% into the guide versus 40.03% published. At 1500 nm it transfers 33.68% versus 15.06% published. The sign reversal matters. To agree within five percentage points at all five samples, the same positive multiplier of the local power would have to be **at least 3.78** at 1600 nm and **at most 0.60** at 1500 nm. Thus a single constant source-power calibration cannot explain the difference. The channel returning to the incident fiber is also too small to account for it on its own. At 1550 nm its power is 0.36% locally and 0.42% published. [Lumerical grating and S-parameter workflow](https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler) · [Native grating measurement](verification/v012-grating3d-lumerical-r14.json).
 
@@ -44,6 +44,8 @@ The Tidy3D uniform grating is a separate Gaussian-to-guide experiment. The local
 The actual Lumerical receiver mode is also available inside the downloaded project. Reprojecting the **already measured 14-cell fields** onto that E/H basis changes the 1550 nm estimate from 24.91% to 25.18%. Net power through the whole local strip aperture is 26.88%. This check distinguishes a receiver-basis mismatch from power lost or redirected before the strip. The independent strip-mode refinement reaches an effective index of 2.45337, close to the filed 2.45279, while the original local 14-cell port gives 2.39120. An accurate mode at the receiver alone cannot restore power missing from the propagated field. [Receiver projection](verification/v013-grating-port-basis.json) · [Independent mode refinement](verification/v013-grating-strip-tidy-modes.json).
 
 **Controlled material sampling change.** Direct integration at the electric-field sites raised the 14-cell fiber-to-guide result from 24.91% to **33.61%**, compared with 40.03% published. Across the same five samples its mean absolute difference fell from 16.14 to **5.73 percentage points**. At 12 cells/µm it fell from 16.23 to 10.65 points. The launch fields, timing and physical geometry were checked independently. This experiment implicates dielectric sampling in the original error. It also shows why selecting the best single run would be misleading: corrected coupling changes by 8.46 points between meshes at 1550 nm, and both 5-point accuracy targets still miss at 14 cells/µm. [Matched GPU controls and all five wavelength values](GRATING_POWER_DIAGNOSIS.md).
+
+**Denser spectral check.** With 21 actual detector wavelengths on the 12-cell GPU grid, the baseline's strongest measured sample is 1510 nm (33.37%) and the direct model's is 1580 nm (34.80%). The published 50-sample file peaks at 1557.62 nm (40.96%). Removing the last two observation windows moves the broad baseline maximum to 1515 nm; the direct peak remains at 1580 nm. All five shared powers reproduce the original five-detector calculations exactly. Across 21 samples the mean error drops from 16.47 to 11.01 percentage points. The calculation shows a physically meaningful shift in spectral shape and also shows that the correction overshoots the reference peak. [Full spectra, phase checks and source-bound downloads](DENSE_GRATING_SPECTRA.md).
 
 ## What the independent notebook runs establish
 

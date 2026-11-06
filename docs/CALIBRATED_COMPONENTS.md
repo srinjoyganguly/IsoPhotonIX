@@ -10,7 +10,9 @@ The v0.11 backlog's full 3D ring and finite-width grating measurements shipped i
 
 - [x] Reconstruct all four Lumerical ring port powers at 1550 nm and compare resonance position and width separately. Compare both grating meshes and test whether a constant power scale could explain all five wavelengths. [Measurements, interpretation and acceptance targets](POWER_MISMATCH.md).
 - [x] Executed both original 14-cell grating notebooks independently on the RTX 3080 Ti. The five guided powers and displayed field matched exactly for both geometries. Only integrated-energy arrays changed within the declared tolerances. [Fresh notebook evidence](verification/v013-grating-notebook-replays.json) · [Lumerical execution](verification/v013-grating-notebook-replays-lumerical.ipynb) · [Tidy3D execution](verification/v013-grating-notebook-replays-tidy3d.ipynb).
-- [ ] Test controlled changes to ring boundary coverage and etched-grating material sampling against their original meshes, keeping source and detector definitions fixed. Report failed accuracy checks as well as improvements.
+- [x] Tested exact ring boundary coverage on two Lumerical meshes and a held-out Tidy3D geometry. The drop-power mismatch persists. [Ring controls](RING_INTERFACE_VALIDATION.md).
+- [x] Tested direct electric-cell sampling on both Lumerical grating meshes and completed two independent 21-wavelength sweeps. The 14-cell five-wavelength mean error decreased from 16.14 to 5.73 percentage points. The corrected 1550 nm coupling still changes by 8.46 points across meshes. [Material controls](GRATING_POWER_DIAGNOSIS.md) · [21 measured wavelengths](DENSE_GRATING_SPECTRA.md).
+- [ ] Qualify absolute loaded-ring and grating powers, mesh stability and the open phase/weak-return targets. Each failed or unresolved check is identified in the [numerical criteria](verification/v013-accuracy-gates.json).
 
 | Work item | Implemented and measured | Qualification criteria |
 | --- | --- | --- |
