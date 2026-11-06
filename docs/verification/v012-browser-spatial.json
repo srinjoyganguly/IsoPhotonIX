@@ -1,9 +1,9 @@
 {
   "passed": true,
-  "checked_at": "2026-11-06T04:23:29.867Z",
-  "matched_vendor_readouts": 36,
-  "native_field_readouts": 14,
-  "qualified_loaded_q_rows": 9,
+  "checked_at": "2026-11-06T05:55:00.838Z",
+  "matched_vendor_readouts": 66,
+  "native_field_readouts": 20,
+  "qualified_loaded_q_rows": 23,
   "editable_port_position": true,
   "mobile_width_px": 390,
   "browser_errors": []

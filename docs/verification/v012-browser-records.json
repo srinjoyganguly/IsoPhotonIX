@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "checked_at": "2026-11-06T04:23:26.106Z",
+  "checked_at": "2026-11-06T05:54:55.757Z",
   "cases": {
     "coupler": {
       "records": 6,
@@ -43,19 +43,19 @@
       "bare_ring_pairs": 0
     },
     "ring-3d": {
-      "records": 5,
+      "records": 9,
       "matrix_entries": 0,
-      "spectra": 20,
-      "plotted_samples": 4768,
-      "sample_readouts": 68,
+      "spectra": 36,
+      "plotted_samples": 8624,
+      "sample_readouts": 116,
       "bare_ring_pairs": 0
     },
     "grating-3d": {
-      "records": 6,
+      "records": 8,
       "matrix_entries": 0,
-      "spectra": 7,
-      "plotted_samples": 35,
-      "sample_readouts": 21,
+      "spectra": 9,
+      "plotted_samples": 45,
+      "sample_readouts": 27,
       "bare_ring_pairs": 0
     },
     "layout-ports-3d": {
