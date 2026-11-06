@@ -36,6 +36,16 @@ The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coup
 
 [Twelve downloadable Python and notebook result exports](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.11.0a3/calibration-examples-v0.11.0a3.zip) include their native data, exact worker programs, selected targets and hashes. [Archive manifest](verification/v011-a3-example-exports.json) · [Test and coverage summary](verification/v011-checks.json).
 
+## Current 3D qualification
+
+| Work item | Status | Evidence required for completion |
+| --- | --- | --- |
+| Bus-loaded ring in 3D | Implementing on FDTDX NVIDIA | Separate straight-input calibration, finite-height ring and both bus guides, through/drop spectra, observation-time sensitivity and comparison with the published Lumerical and Tidy3D loaded spectra. |
+| Finite-width grating in 3D | Implementing on FDTDX NVIDIA | Separate incident calibration, finite transverse geometry, measured radiation or Gaussian-mode coupling, mesh or width sensitivity, and each vendor's detector definition. |
+| Additional mode and port placement | Implementing a planar TM joint on Meep CPU | Independent transverse-magnetic mode matching, native excitation from both sides, and explicit reference-plane checks. |
+
+The WSL worker executed JAX on the RTX 3080 Ti Laptop GPU. Device availability and numerical acceptance of each electromagnetic study are recorded separately. [Device check](verification/v012-cuda-probe.json).
+
 ## Remaining calibration work
 
 - [ ] Measure finite-height **bus-loaded** ring spectra and separate intrinsic and coupling loss. The current full 3D check measures the isolated ring.
