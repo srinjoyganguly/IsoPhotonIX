@@ -38,6 +38,16 @@ class LoadedRing(unittest.TestCase):
         target=(np.exp(2j*np.pi*ts[None,:]/WAVELENGTHS[:,None]) @ signal)*.1*(WAVELENGTHS-.5)
         np.testing.assert_allclose(result[:,2,1],target,rtol=1e-12,atol=1e-12)
 
+    def test_spacing_cannot_jump_an_unqualified_resonance(self):
+        from scripts.calibrate_loaded_ring3d import WAVELENGTHS,qualified_spacing
+        mask=np.ones(len(WAVELENGTHS),bool)
+        roots=[{'wavelength_um':WAVELENGTHS[i]} for i in (40,80,120)]
+        mask[80]=False
+        self.assertIsNone(qualified_spacing(roots,mask))
+        mask[80]=True
+        mask[70]=False
+        self.assertEqual(qualified_spacing(roots,mask),tuple(roots[1:]))
+
     def test_decay_and_equal_bus_fit_have_the_same_known_loaded_q(self):
         from scripts.measure_loaded_ring_losses import ring_decay, fit_symmetric_peak
         wave=np.arange(1.53,1.571,.0002)

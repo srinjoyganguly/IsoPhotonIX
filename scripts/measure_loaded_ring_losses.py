@@ -80,14 +80,48 @@ def ring_decay(time, probes, center, fsr):
                 maximum_log_envelope_residual=residual,fits=fits)
 
 
-def measure(folder):
-    report=json.loads((folder/'report.json').read_text())
+def native_port_spectra(time, signals, basis, waves, fraction):
+    """Evaluate only the bins near a pole directly from its native sampled modal traces."""
+    count=int(len(time)*fraction)
+    t=time[:count]
+    dt=t[1]-t[0]
+    groups=np.searchsorted(basis,waves,side='right').clip(1,len(basis)-1)-1
+    result=np.empty((len(waves),4,2),complex)
+    for group in np.unique(groups):
+        ids=np.flatnonzero(groups==group)
+        for start in range(0,len(ids),24):
+            selected=ids[start:start+24]
+            wavelengths=waves[selected]
+            dft=np.exp(2j*np.pi*t[None,:]/wavelengths[:,None])*dt
+            span=(signals[:count,:,group:group+2,:]).reshape(count,-1)
+            projections=(dft @ span).reshape(len(selected),4,2,2)
+            weight=((wavelengths-basis[group])/(basis[group+1]-basis[group]))[:,None,None]
+            result[selected]=(1-weight)*projections[:,:,0,:]+weight*projections[:,:,1,:]
+    return result
+
+
+def fine_powers(device, reference, basis, waves):
+    r=native_port_spectra(reference['time'],reference['signals'],basis,waves,1.)
+    incident=r[:,0,0]
+    values=[]
+    for fraction in (1.,.8):
+        f=native_port_spectra(device['time'],device['signals'],basis,waves,fraction)
+        out=np.stack([f[:,0,1]-r[:,0,1],f[:,1,0],f[:,2,1],f[:,3,0]],axis=1)/incident[:,None]
+        power=abs(out)**2
+        power[:,1]/=abs(r[:,1,0]/incident)**2
+        values.append(power)
+    return values
+
+
+def measure(folder, report=None):
+    if report is None:
+        report=json.loads((folder/'report.json').read_text())
     with np.load(folder/'arrays.npz',allow_pickle=False) as a:
         wave=a['wavelength_um']
-        s,early_s=a['s'],a['s_early']
+        basis=a['basis_wavelength_um']
+        native={k:{'time':a[k+'_time_um_c'],'signals':a[k+'_projections']} for k in ('reference','device')}
         t,probes=a['device_time_um_c'],a['device_ring_Hz']
         valid=a['valid_bins']
-        straight=a['reference_straight_power']
     candidate=[p['wavelength_um'] for p in report['peaks']]
     peaks=[]
     for i,center in enumerate(candidate):
@@ -95,20 +129,22 @@ def measure(folder):
         if not adjacent:
             continue
         spacing=min(adjacent)
-        power=abs(s)**2
-        early=abs(early_s)**2
-        power[:,1]/=straight
-        early[:,1]/=straight
-        fitted=fit_symmetric_peak(wave,power,center,spacing)
+        # The 0.5 nm overview samples cannot reliably resolve a narrow linewidth.
+        # Compute 0.1 nm samples from the actual two-stage signals within this resonance.
+        dense_step=.0001
+        half=int(.28*spacing/dense_step)
+        fine=center+np.arange(-half,half+1)*dense_step
+        power,early=fine_powers(native['device'],native['reference'],basis,fine)
+        fitted=fit_symmetric_peak(fine,power,center,spacing)
         if fitted is None:
             continue
-        cut=fit_symmetric_peak(wave,early,center,spacing)
+        cut=fit_symmetric_peak(fine,early,center,spacing)
         decay=ring_decay(t,probes,center,spacing)
         all_bins=bool(valid[abs(wave-center)<.28*spacing].all())
         width_change=abs(fitted['linewidth_nm']-cut['linewidth_nm'])/fitted['linewidth_nm']
         duration=t[-1]-57.15
         temporal_nm=1000*center**2/duration
-        width_resolved=fitted['linewidth_nm']>=max(4*1000*float(wave[1]-wave[0]),2*temporal_nm)
+        width_resolved=fitted['linewidth_nm']>=max(4*1000*dense_step,2*temporal_nm)
         qualified=bool(all_bins and width_change<=.1 and fitted['rms_power_residual']<=.05 and
                      fitted['maximum_power_residual']<=.13 and fitted['rms_reflected_add_power']<=.04 and
                      width_resolved and decay['qualified'] and abs(decay['loaded_q']/fitted['loaded_q']-1)<=.12)
@@ -119,7 +155,7 @@ def measure(folder):
                    apparent_external_q_each_bus=2*q/(1-internal),
                    apparent_internal_q=q/internal if internal>2*uncertainty else None,
                    apparent_internal_q_lower_bound=q/min(internal+uncertainty,1.))
-        peaks.append(dict(sampled_drop_peak_um=center,qualified=qualified,all_nearby_bins_valid=all_bins,
+        peaks.append(dict(sampled_drop_peak_um=center,line_fit_spacing_nm=dense_step*1000,qualified=qualified,all_nearby_bins_valid=all_bins,
                     linewidth_resolved=bool(width_resolved),finite_window_resolution_nm=temporal_nm,
                     relative_width_change_last_20_percent=width_change,full_fit=fitted,prefix_fit=cut,
                     field_decay=decay,qualified_equal_bus_loss=split if qualified else None))

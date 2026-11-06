@@ -28,8 +28,13 @@ From a checkout, use the registered FDTDX CUDA interpreter in a fresh process.
   --resolution 16 --duration-um-c 3200 --checkpoint ring-stages --output ring-result
 ```
 
+To recompute a public comparison, download the [Lumerical S-parameter file](https://optics.ansys.com/hc/en-us/article_attachments/50334805245587) or the [pinned Tidy3D notebook](https://raw.githubusercontent.com/flexcompute/tidy3d-notebooks/18fd47f8bd87ad89582b507c20bf4997f79d55c0/RingResonator.ipynb). Pass that file as `--source` to `scripts/compare_loaded_ring3d.py` with `--run ring-result --output comparison.json`. The comparison checks its SHA-256 and reports the mean and RMS difference in power fraction. The source ring run also retains the raw E/H projections needed to evaluate the 0.1 nm loss-fit samples independently of the 0.5 nm overview plot.
+
 The preset exports Python and Jupyter through the local workbench. The standalone worker accepts both vendor names, verifies the actual CUDA field device, and saves a measured result with its qualification mask. Completed reference and device checkpoints are checked against source, solver identity, settings and hardware. Opening a recorded result or inspecting a field snapshot only reads the saved data.
 
 ## Measured results
 
 The 16-cell Lumerical run at 1600 µm/c reached 233 of 241 qualified bins. Its two central measured peaks occurred at 1530.5 and 1556.5 nm, giving 26.0 nm spacing versus the published 25.4549 nm. Eight wavelengths near the shortest-band resonance require a longer acquisition. That first run withheld all linewidth-based Q estimates. [Native 16-cell partial spectrum, matched vendor samples and decay fits](verification/v012-ring3d-lumerical-r16-t1600.json).
+
+
+The 16-cell Tidy3D geometry measured at 2700 µm/c has 236 of 241 qualified wavelengths. The measured central pair lies at 1550.5 and 1568.0 nm, a 17.5 nm interval versus the published 17.74 nm. Five samples still change beyond the chosen temporal threshold. Across 200 jointly qualified comparison wavelengths in the vendor band, mean absolute discrepancies are 0.152 in through power fraction and 0.126 in drop power fraction. The finer temporal and mesh controls are separate measurements. [Native 16-cell Tidy3D spectrum and figure readout](verification/v012-ring3d-tidy3d-r16-t2700.json).

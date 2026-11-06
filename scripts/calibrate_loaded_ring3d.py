@@ -21,6 +21,7 @@ if (ROOT / "backend").is_dir():
 from backend.adapters.fdtdx_ports_adapter import _ports_runtime
 from backend.adapters.fdtdx_ports3d_adapter import canonical_source_profile, port_basis
 from scripts.calibrate_ring import CASES, characterize
+from scripts.measure_loaded_ring_losses import measure as measure_loaded_loss
 
 LIGHT = 299792458.
 SILICON, OXIDE = 3.48, 1.44
@@ -239,6 +240,16 @@ def directional_spectrum(data, fraction):
     return (1-a[:,None,None])*transformed[rows,:,i,:]+a[:,None,None]*transformed[rows,:,i+1,:]
 
 
+def qualified_spacing(peaks, valid):
+    """Use consecutive detected peaks whose entire wavelength interval passes the gate."""
+    adjacent=[]
+    for left,right in zip(peaks,peaks[1:]):
+        interval=(WAVELENGTHS>=left['wavelength_um']) & (WAVELENGTHS<=right['wavelength_um'])
+        if interval.any() and valid[interval].all():
+            adjacent.append((left,right))
+    return min(adjacent,key=lambda pair:abs(sum(p['wavelength_um'] for p in pair)/2-1.55)) if adjacent else None
+
+
 def assemble(g, vendor, stages, duration, output, versions):
     ref,dev = [stages[k][1] for k in ('reference','device')]
     for k in ('source_E','source_H'):
@@ -260,14 +271,13 @@ def assemble(g, vendor, stages, duration, output, versions):
     valid &= (abs(abs(ratio)-1)<.05)&(abs(np.angle(ratio))<.06)
     # Never report a finite-window resonance from an isolated reassuring wavelength sample.
     reliable=[p for p in peaks if valid[np.argmin(abs(WAVELENGTHS-p['wavelength_um']))]]
-    pairs=list(zip(reliable,reliable[1:]))
-    pair=min(pairs,key=lambda p:abs((p[0]['wavelength_um']+p[1]['wavelength_um'])/2-1.55)) if pairs else None
+    pair=qualified_spacing(peaks,valid)
     fsr=(pair[1]['wavelength_um']-pair[0]['wavelength_um'])*1000 if pair else None
     published=CASES[vendor]['reference_peaks_um']
     external_pair=min(zip(published,published[1:]),key=lambda p:abs(sum(p)/2-1.55))
     external_fsr=1000*(external_pair[1]-external_pair[0])
     # Peak spacings are meaningful only when adjacent peaks and their neighborhood are settled.
-    passed=bool(valid.all() and len(reliable)>=2)
+    passed=bool(valid.all() and pair is not None)
     row=dict(wavelength_um=WAVELENGTHS.tolist(),valid_bins=valid.tolist(),**{k:power[:,i].tolist() for i,k in enumerate(PORTS)})
     data={'s':s,'s_early':early,'incident':incident,'valid_bins':valid,'wavelength_um':WAVELENGTHS,
           'basis_wavelength_um':BASIS_WAVELENGTHS,'reference_straight_power':straight,'incident_device_over_reference':ratio}
@@ -286,7 +296,7 @@ def assemble(g, vendor, stages, duration, output, versions):
         max_power_change_early_to_final=float(difference.max()),straight_reference_power_range=[float(straight.min()),float(straight.max())],
         max_collected_port_power=float(power.sum(axis=1).max()),incident_ratio_magnitude_range=[float(abs(ratio).min()),float(abs(ratio).max())],
         arrays_file='arrays.npz',arrays_sha256=hashlib.sha256((output/'arrays.npz').read_bytes()).hexdigest(),
-        limits='Lossless, fixed central indices. Modal E/H overlaps interpolate five independently solved mode profiles across the band. FSR is loaded drop-peak spacing. Q requires a resolved line and finite-window stability. Intrinsic and external Q are not inferred from a single spectrum.')
+        limits='Lossless, fixed central indices. Modal E/H overlaps interpolate five independently solved mode profiles across the band. FSR is loaded drop-peak spacing. Intrinsic/external rate estimates require the independent spectral/temporal gates in loaded_loss.')
     nx,ny,_=g['shape']
     snapshot=int(np.argmin(abs(dev['snapshot_times_um_c']-(PULSE_END+40))))
     report['field_preview']=dict(array='device_E_midplane_snapshots',index=[snapshot,1],axis_order='xy',
@@ -295,6 +305,7 @@ def assemble(g, vendor, stages, duration, output, versions):
         vertical_um=((np.arange(ny)-ny/2+.5)/g['resolution']).tolist(),
         time_um_c=float(dev['snapshot_times_um_c'][snapshot]),
         description='Instantaneous Ey electric field at z = 0 µm')
+    report['loaded_loss']=measure_loaded_loss(output,report)
     (output/'report.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
     return report
 

@@ -72,14 +72,21 @@ def publish(folder, source, output, checkpoint):
     vendor=report['vendor']
     base=f"v012-ring3d-{vendor}-r{report['physical_model']['resolution']}-t{int(report['duration_um_c'])}"
     dest=output/(base+'-arrays.npz')
-    shutil.copyfile(folder/'arrays.npz',dest)
+
     report['arrays_file']=dest.name
     report['vendor_comparison']=compare(report,source)
     report['loaded_loss']=measure(folder)
     report['validation_scope']='One physical port launch and its matched unpatterned two-bus reference. Checking the complete output spectrum uses all 241 illuminated bins; partial spectra preserve each wavelength mask.'
     report['native_stage_provenance']=stage_provenance(checkpoint,folder,report)
     report['source_report_sha256']=hashlib.sha256((folder/'report.json').read_bytes()).hexdigest()
-    (output/(base+'.json')).write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
+    # Publish verified numerical data first; each visible file is complete after rename.
+    temporary=dest.with_suffix('.npz.tmp')
+    shutil.copyfile(folder/'arrays.npz',temporary)
+    temporary.replace(dest)
+    json_dest=output/(base+'.json')
+    temporary=json_dest.with_suffix('.json.tmp')
+    temporary.write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
+    temporary.replace(json_dest)
     return report
 
 

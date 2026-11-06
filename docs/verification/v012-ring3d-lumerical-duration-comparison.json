@@ -1,0 +1,47 @@
+{
+  "vendor": "lumerical",
+  "first": "v012-ring3d-lumerical-r16-t1600.json",
+  "second": "v012-ring3d-lumerical-r16-t3200.json",
+  "jointly_qualified_wavelengths": 233,
+  "first_resolution": 16,
+  "second_resolution": 16,
+  "first_duration_um_c": 1600.0,
+  "second_duration_um_c": 3200.0,
+  "first_fsr_nm": 26.00000000000002,
+  "second_fsr_nm": 26.00000000000002,
+  "fsr_change_nm": 0.0,
+  "nominal_plane_distance_from_center_um": 3.8600000000000003,
+  "first_snapped_plane_um": 3.875,
+  "second_snapped_plane_um": 3.875,
+  "port_differences": {
+    "reflection": {
+      "max_power_difference": 0.013039515579168846,
+      "mean_absolute_power_difference": 0.0001311497630942584,
+      "max_complex_amplitude_difference": 0.029934545999066007,
+      "phase_bins_with_both_powers_above_0_01": 4,
+      "max_wrapped_phase_difference_rad": 0.1571857336096826
+    },
+    "through": {
+      "max_power_difference": 0.06113145493454031,
+      "mean_absolute_power_difference": 0.005028665381238375,
+      "max_complex_amplitude_difference": 0.055250078568432226,
+      "phase_bins_with_both_powers_above_0_01": 232,
+      "max_wrapped_phase_difference_rad": 0.11130606245125095
+    },
+    "drop": {
+      "max_power_difference": 0.02680837563975702,
+      "mean_absolute_power_difference": 0.0018800684880964998,
+      "max_complex_amplitude_difference": 0.05539219435197345,
+      "phase_bins_with_both_powers_above_0_01": 194,
+      "max_wrapped_phase_difference_rad": 0.06879796360723142
+    },
+    "add_side": {
+      "max_power_difference": 0.012702076273806276,
+      "mean_absolute_power_difference": 0.000130658626693451,
+      "max_complex_amplitude_difference": 0.029740435745277922,
+      "phase_bins_with_both_powers_above_0_01": 4,
+      "max_wrapped_phase_difference_rad": 0.15791216657600163
+    }
+  },
+  "phase_correction": "Known guided propagation distance from each sampled plane to its common physical plane. Effective indices from the five independently solved lossless port modes, linearly interpolated in wavelength. No fitted phase or spectral registration."
+}
