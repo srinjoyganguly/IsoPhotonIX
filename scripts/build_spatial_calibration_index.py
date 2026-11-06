@@ -2,6 +2,7 @@
 import hashlib
 import json
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from backend.calibration_fields import field_plane
 
@@ -141,4 +142,10 @@ def spatial_index():
 
 
 if __name__=='__main__':
-    (BASE/'v012-calibrated-index.json').write_text(json.dumps(spatial_index(),separators=(',',':'),allow_nan=False)+'\n')
+    index_json = json.dumps(spatial_index(), separators=(',', ':'), allow_nan=False)
+    with NamedTemporaryFile(mode='w', dir=BASE, delete=False) as temporary:
+        temporary.write(index_json + '\n')
+    destination = BASE/'v012-calibrated-index.json'
+    staging = Path(temporary.name)
+    staging.chmod(0o644)
+    staging.replace(destination)

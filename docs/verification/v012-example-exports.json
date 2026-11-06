@@ -1,0 +1,387 @@
+{
+  "passed": true,
+  "release": "v0.12.0a1",
+  "asset": "calibration-examples-v0.12.0a1.zip",
+  "sha256": "fd9075063ef5ec96c84c7cdd63d0386c7aab2008d38fbe6386c8a045233204aa",
+  "size_bytes": 25963583,
+  "example_count": 5,
+  "exports_index_sha256": "b15a3075263a13f0fc138eb45aa26b08d5bfb9bbe55b3739c9ad67fd9ee6598c",
+  "checks": {
+    "scope": "Offline integrity checks on the five original measured exports and independent readback of the staged asset. No numerical solver was executed during packaging.",
+    "safe_zip_member_names_and_crc": true,
+    "exact_expected_file_allowlists": true,
+    "all_archives_and_members_hashed": true,
+    "source_and_reference_manifests_matched": true,
+    "python_and_notebook_code_parsed": true,
+    "numeric_arrays_decoded_without_pickle_and_checked_for_finite_values": true,
+    "report_values_reconstructed_from_saved_arrays": true,
+    "cuda_incident_profile_hashes_recomputed": true,
+    "privacy_scan_passed": true,
+    "privacy_scan_scope": "Member names and decoded text, structured JSON and notebook text, decompressed NumPy headers and array bytes checked for machine paths, private workspace and contact data, and recognizable credential formats. The per-case filename allowlists include only the measured run, captured Workbench source, published source-reference metadata, license, credits and solver environment. Raw commercial project files and unrelated assets are excluded.",
+    "independent_staged_asset_readback": true
+  },
+  "staged_readback": {
+    "original_archives_matched_byte_for_byte": 5,
+    "files_rehashed": 108,
+    "source_hashes_verified": 87,
+    "reference_hashes_verified": 11,
+    "numeric_arrays_reloaded": 213,
+    "notebooks_and_python_entry_points_reparsed": 5,
+    "preexisting_meep_replay_receipts_bound_to_exports": 2,
+    "native_reports_bound_to_arrays": 2
+  },
+  "runs": {
+    "fdtdx-gpu-layout-ports3d-r16.zip": {
+      "case": "layout-ports-3d",
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "layout-ports-3d",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": null,
+        "planar_layout": {
+          "version": 1,
+          "name": "Silicon right-angle elbow",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            }
+          ]
+        }
+      },
+      "worker": "scripts.calibrate_layout_ports3d",
+      "arguments": [
+        "--design",
+        "layout.json",
+        "--device",
+        "gpu",
+        "--resolution",
+        "16"
+      ],
+      "archive_sha256": "f1f2c8ecfb9b52a32bc4096d2a8c593d6fd0ddf0b3499db030435f96b35a0225",
+      "size_bytes": 2386887,
+      "worker_source_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+      "python_controller_sha256": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9",
+      "notebook_sha256": "87b2d2f86f5aadc9db374c3f0b1ee691b9b235f57b48022539758a220829550d",
+      "source_manifest_sha256": "f0ffcd54b18afc7dd553acaf7d7374133ca12d9e02d98154ec1af3a675662985",
+      "reference_manifest_sha256": "20bf4a871e86ee01880fe52a695fbf3a4c06f345d5296cff26caf18688987e43",
+      "actual_device": "cuda:0",
+      "native_report_passed": true,
+      "declared_source_count": 23,
+      "reference_sha256": {
+        "arrays.npz": "5aa95ec8a38fd7f65236e0032c73e253f585b87936b5f74f9aa79e6d15d7f25f",
+        "report.json": "970dcfad402e92bf2333cb3aa838b9953974e1774d5d77646b730064c0af25a2"
+      },
+      "inspection_counts": {
+        "text_members": 26,
+        "parsed_notebooks": 1,
+        "numpy_archives": 1,
+        "numeric_arrays": 56,
+        "parsed_python_files": 14
+      },
+      "independent_numerical_replay_receipt": "v012-layout-ports3d-replays.json",
+      "independent_numerical_replay_receipt_sha256": "944dccd822d3e65d333a2be415ec83091d1afbd268a1dba69c71b9e35eceb9c2"
+    },
+    "meep-planar-tm-r48.zip": {
+      "case": "multimode-tm",
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "multimode-tm",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 48,
+        "offset_um": 0.125,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": null,
+        "port_distance_um": 1.25
+      },
+      "worker": "scripts.calibrate_planar_tm",
+      "arguments": [
+        "--resolution",
+        "48",
+        "--offset",
+        "0.125",
+        "--port-distance",
+        "1.25"
+      ],
+      "archive_sha256": "eb589abae45c4ba67a0479f91b23bc4107fb09d8bdb1a7b7b62c3d3f96b43259",
+      "size_bytes": 11357072,
+      "worker_source_sha256": "8188765105427a542291a328c17f565fee8996261b12a4e76eaff4bce1f562f6",
+      "python_controller_sha256": "fcf1e33230e6d2e21e5442f37e924c12f624de124e57173e3fffc1cbbda9a642",
+      "notebook_sha256": "6e0cfca0284bc867951f91796328c506ca6dbcf9c03f6ba67d18500fa4c1992e",
+      "source_manifest_sha256": "293b63715dd9bcd041401bcee6766d7e0413f26ec842ac9f132856c680f6d1e5",
+      "reference_manifest_sha256": "216088ad38131bd3faf6cb0531b5e06940ac7d0e57eb3a13851c1db4838a226d",
+      "actual_device": "CPU",
+      "native_report_passed": true,
+      "declared_source_count": 11,
+      "reference_sha256": {
+        "arrays.npz": "64a52c141631c12d477f0d13509d848584e09153dd9e4e3516a6a69d02e99940",
+        "reference.npz": "71a2e1b8823dc2c320cbccff134ffe8b9347c0628d2b8550c7e700d5942db21b",
+        "report.json": "7bbf1cefa27b09a78deb913813462661b61819aa3a2f9f52cbe6853468ab6c03"
+      },
+      "inspection_counts": {
+        "text_members": 14,
+        "parsed_notebooks": 1,
+        "numpy_archives": 2,
+        "numeric_arrays": 34,
+        "parsed_python_files": 4
+      },
+      "existing_native_replay_receipt": "v012-planar-tm-replays.json",
+      "independent_numerical_replay_receipt": "v012-planar-tm-replays.json",
+      "independent_numerical_replay_receipt_sha256": "4a64612fca0fc1667707e99a10888cd3727d7fbcf3e1b91baf4b39019a5c5735"
+    },
+    "meep-layout-elbow-r32.zip": {
+      "case": "layout-ports-2d",
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "layout-ports-2d",
+        "solver": "meep",
+        "device": "cpu",
+        "resolution": 32,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": null,
+        "planar_layout": {
+          "version": 1,
+          "name": "Silicon right-angle elbow",
+          "polygons": [
+            [
+              [
+                -1.0,
+                -0.1875
+              ],
+              [
+                0.1875,
+                -0.1875
+              ],
+              [
+                0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                1.0
+              ],
+              [
+                -0.1875,
+                0.1875
+              ],
+              [
+                -1.0,
+                0.1875
+              ]
+            ]
+          ],
+          "ports": [
+            {
+              "name": "west",
+              "outward": "-x",
+              "center_um": [
+                -1.75,
+                0.0
+              ],
+              "width_um": 0.375
+            },
+            {
+              "name": "north",
+              "outward": "+y",
+              "center_um": [
+                0.0,
+                1.75
+              ],
+              "width_um": 0.375
+            }
+          ]
+        }
+      },
+      "worker": "scripts.calibrate_layout_ports",
+      "arguments": [
+        "--design",
+        "layout.json",
+        "--resolution",
+        "32"
+      ],
+      "archive_sha256": "6708e1c8a9b0c5f34499dbb0f403fe53211719f55632fc6f3d58c87b6d3b39d6",
+      "size_bytes": 1988763,
+      "worker_source_sha256": "f4b2d8418492a238133d05bfde80bb25f2004bcad738663208393f8ab912cae1",
+      "python_controller_sha256": "c2b84f8a1b413108d261e102acd9038277ccf2badc7770ed7c3de4c4445c9158",
+      "notebook_sha256": "1b8dfd4acc23441af760ea430ea8e7a49c17fdfe6646c32b549464a8f4070ddb",
+      "source_manifest_sha256": "2f64de9a9c7a98bfd1092336ead24777be9af9af34101b735a1e8ba4a705cbf3",
+      "reference_manifest_sha256": "026d517afef9059f98b52aae2acffa787997bca7068549f5bd66e8f86fd92c13",
+      "actual_device": "CPU",
+      "native_report_passed": true,
+      "declared_source_count": 15,
+      "reference_sha256": {
+        "arrays.npz": "4e3add16405c9ef260913a1da068cded00dc91813d22fce57f73c72de118f6d2",
+        "report.json": "025a00b3358b3b11ce508c84e8d38cd3b9a4266dc233e78998e70e371a45349c"
+      },
+      "inspection_counts": {
+        "text_members": 18,
+        "parsed_notebooks": 1,
+        "numpy_archives": 1,
+        "numeric_arrays": 29,
+        "parsed_python_files": 7
+      },
+      "existing_native_replay_receipt": "v012-layout-ports-replays.json",
+      "independent_numerical_replay_receipt": "v012-layout-ports-replays.json",
+      "independent_numerical_replay_receipt_sha256": "4ece2701ec00c54e213ffad5f315ba94a4cb822176099b4693d2a2a17253a75a"
+    },
+    "fdtdx-gpu-loaded-lumerical-ring3d-r16.zip": {
+      "case": "ring-3d",
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "ring-3d",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 16,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": null,
+        "geometry_3d": "lumerical",
+        "duration_um_c": 3200.0
+      },
+      "worker": "scripts.calibrate_loaded_ring3d",
+      "arguments": [
+        "--device",
+        "gpu",
+        "--vendor",
+        "lumerical",
+        "--resolution",
+        "16",
+        "--duration-um-c",
+        "3200.0"
+      ],
+      "archive_sha256": "15c63cca385a706fc55651fdd46625d3327fd96740d4481ede853d69b217698a",
+      "size_bytes": 7448486,
+      "worker_source_sha256": "a453993cf43d575ac018a82eed364e659db37ab0b8a29b2d432290e3019fdffc",
+      "python_controller_sha256": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9",
+      "notebook_sha256": "632598b972d0ff4852f203eb7c220c798cb9df02d4848da557be495c6367096c",
+      "source_manifest_sha256": "dce859e4a4eaf1e4bee22cb6f86e6985364aac518cb7ac7b3070b1e789ab3590",
+      "reference_manifest_sha256": "7470d33edcf9774ba4ff46693113a601ae5f575eb9e1392013923c1cbc022dac",
+      "actual_device": "cuda:0",
+      "native_report_passed": true,
+      "declared_source_count": 19,
+      "reference_sha256": {
+        "arrays.npz": "b792e3c8bd3be09921d2fb5fd78593e44873020a137046cc28aedff338388ab1",
+        "report.json": "6355a408752698449f26a4bdce3d211d194a7606e48033f9c4870234f273573a"
+      },
+      "inspection_counts": {
+        "text_members": 22,
+        "parsed_notebooks": 1,
+        "numpy_archives": 1,
+        "numeric_arrays": 48,
+        "parsed_python_files": 11
+      },
+      "independent_numerical_replay_receipt": "v012-ring3d-python-notebook-replay.json",
+      "independent_numerical_replay_receipt_sha256": "7ea6d2ab3702ae4d9aa034345e3c51b0a23b7d9ac2e2e92453d8bfc72b9b725a"
+    },
+    "fdtdx-gpu-compact-grating3d-r12.zip": {
+      "case": "grating-3d",
+      "config": {
+        "study_type": "calibrated-component",
+        "revision": 2,
+        "case": "grating-3d",
+        "solver": "fdtdx",
+        "device": "gpu",
+        "resolution": 12,
+        "offset_um": null,
+        "material_model": null,
+        "ring_scope": null,
+        "grating_scope": null,
+        "geometry_3d": "compact"
+      },
+      "worker": "scripts.calibrate_finite_grating",
+      "arguments": [
+        "--device",
+        "gpu",
+        "--geometry",
+        "compact",
+        "--resolution",
+        "12"
+      ],
+      "archive_sha256": "1e7bd3c6cc8a6eb1847066af22abeaca6534e72b691cb3fa55a4055f1f2e88cc",
+      "size_bytes": 2757861,
+      "worker_source_sha256": "b28556e55870756754c73f326b8d361a8a83971f05024c65c5dbece908e39712",
+      "python_controller_sha256": "c2b84f8a1b413108d261e102acd9038277ccf2badc7770ed7c3de4c4445c9158",
+      "notebook_sha256": "63be43e9fe806ec267a308a27f3c5cafbd65cea0c957e1b82b09606df3dbd41d",
+      "source_manifest_sha256": "19507301e6675a557f2629f17a895f53f063a3ba315f0397b26d02d83fc92bb0",
+      "reference_manifest_sha256": "46849d51a5698c9e49b7d977416284214c41368731ba5b37917ed368141ea21c",
+      "actual_device": "cuda:0",
+      "native_report_passed": true,
+      "declared_source_count": 19,
+      "reference_sha256": {
+        "arrays.npz": "6bb9403ab95ba82e3dd4077d74c4214ce59c1b61828f5e080c9b088c02b29458",
+        "report.json": "4d8910aaf805ec3b423689413b4c927adaf06942b1554e634cfb8333174b6324"
+      },
+      "inspection_counts": {
+        "text_members": 22,
+        "parsed_notebooks": 1,
+        "numpy_archives": 1,
+        "numeric_arrays": 46,
+        "parsed_python_files": 10
+      },
+      "pre_run_gui_program_sha256": "7b9842fed0021e3cbef8c8473aa74c0234240249ccad428a01d72e991b9e715b",
+      "original_gui_program_and_completed_job_bytes_matched": true,
+      "independent_numerical_replay_receipt": "v012-grating3d-python-notebook-replay.json",
+      "independent_numerical_replay_receipt_sha256": "6ed7b31631c13d4cd02d2c223d6403209338a8fb4ce05572c8b422be503da984"
+    }
+  },
+  "independently_replayed_products": {
+    "python": 5,
+    "jupyter": 5
+  }
+}

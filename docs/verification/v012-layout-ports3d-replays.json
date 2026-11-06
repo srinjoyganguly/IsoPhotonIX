@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "case": "layout-ports-3d",
+  "verified_at": "2026-11-06T05:10:46.098276+00:00",
+  "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+  "actual_device": "cuda:0",
+  "export_sha256": "f1f2c8ecfb9b52a32bc4096d2a8c593d6fd0ddf0b3499db030435f96b35a0225",
+  "resolution": 16,
+  "native_worker_sha256": "39e8a6b46d4f51d074317e84333a1a3651b88f47241a3117e704e75c105b310f",
+  "projection": "Both independent runtimes used the exported worker and fresh straight references/device pulses without a shared checkpoint.",
+  "products": {
+    "python": {
+      "passed": true,
+      "fresh_actual_device": "cuda:0",
+      "fresh_stages": 4,
+      "max_s_delta": 0.0,
+      "max_power_delta": 0.0,
+      "all_array_bytes_equal": true,
+      "comparison_tolerance": {
+        "relative": 2e-06,
+        "absolute": 1e-10,
+        "per_array_peak_fraction": 2e-06
+      },
+      "fresh_arrays_sha256": "5aa95ec8a38fd7f65236e0032c73e253f585b87936b5f74f9aa79e6d15d7f25f",
+      "array_differences_within_tolerance": 0,
+      "executed_program_sha256": "209af3ef69a657698822229fb85a2a335224f3bcca27fb5963b89d917d8a7be9"
+    },
+    "notebook": {
+      "passed": true,
+      "fresh_actual_device": "cuda:0",
+      "fresh_stages": 4,
+      "max_s_delta": 0.0,
+      "max_power_delta": 0.0,
+      "all_array_bytes_equal": false,
+      "comparison_tolerance": {
+        "relative": 2e-06,
+        "absolute": 1e-10,
+        "per_array_peak_fraction": 2e-06
+      },
+      "fresh_arrays_sha256": "acdea791304f81aa2e859328f1122f4828a9267747bcafa9d67a9eb445860d7b",
+      "array_differences_within_tolerance": 1,
+      "executed_program_sha256": "3c20f5f688a72c63a46bfa1aa9e39b7763a72eda9ff0590a7cca5e7c83746b1d"
+    }
+  }
+}

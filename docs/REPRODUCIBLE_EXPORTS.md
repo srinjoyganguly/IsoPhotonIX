@@ -20,6 +20,17 @@ does not call the workbench API when executed. A completed-run export also
 includes the original numerical arrays, so a replay can be checked against the
 actual GUI result. Solver binaries and environments remain separate.
 
+## Calibrated component programs
+
+In **Calibrated components**, choose the physical model and its execution target. **Export Python + notebook** saves the configured program. After a completed run, **Export Python, notebook and measured arrays** also includes the native reference data and its checksums. The ZIP contains the actual numerical worker, material and geometry inputs, selected device, and worker environment requirements.
+
+Extract the ZIP to its own directory. Run `python run.py --output new-result` or execute `calibration.ipynb` with a Python 3.11 kernel and NumPy. Both launch the captured solver locally. A saved-run replay compares the resulting arrays and displayed quantities and writes its result to `reproduction.json`. The ring, finite grating and finite-height layout examples require an NVIDIA CUDA worker. The two planar examples use Meep CPU. [Installation and export examples](PACKAGING.md).
+
+Two independently executed exports reproduced the planar TM and elbow complex matrices within 4.25 × 10⁻¹⁰ and 7.67 × 10⁻¹¹ respectively. For the compact 3D grating, Python reproduced every native array byte; Jupyter reproduced the measured spectra and fields with a small difference in the integrated-energy trace. Each receipt identifies the source export and numerical tolerances. [TM](verification/v012-planar-tm-replays.json) · [Polygon ports](verification/v012-layout-ports-replays.json) · [Actual GUI grating](verification/v012-grating3d-python-notebook-replay.json).
+
+The finite-height loaded-ring export reproduced every array byte in both fresh NVIDIA runs, including the 241 wavelength qualification flags and the fitted Q values. The finite-height polygon elbow reproduced every complex S coefficient and power value in both formats. Its Python arrays were byte-identical; its notebook arrays passed the recorded numerical tolerances. [Ring replay](verification/v012-ring3d-python-notebook-replay.json) · [3D polygon replay](verification/v012-layout-ports3d-replays.json) · [Five-example export manifest](verification/v012-example-exports.json).
+
+
 ## What is included
 
 | Artifact | Purpose |
