@@ -161,5 +161,45 @@
       0.7856950496764691,
       0.3922969522939138
     ]
-  }
+  },
+  "independent_coarse_reference": {
+    "receipt": "v012-grating3d-tidy3d-r12.json",
+    "arrays_sha256": "70bedf2c162edf5b37fd9a370aeed26bfa60bcfbc29a56a31642d665d0da7e8c",
+    "source_E": {
+      "sample_shape": [
+        3,
+        247,
+        152,
+        1
+      ],
+      "max_absolute": 3.725290298461914e-09,
+      "relative_l2": 1.3264427880994517e-07,
+      "fitted_scale": 0.9999999595183912,
+      "relative_shape_residual": 1.263160476457382e-07,
+      "polarity_changes": 0
+    },
+    "source_H": {
+      "sample_shape": [
+        3,
+        247,
+        152,
+        1
+      ],
+      "max_absolute": 2.7939677238464355e-09,
+      "relative_l2": 1.341542585042881e-07,
+      "fitted_scale": 0.99999996263853,
+      "relative_shape_residual": 1.2884675202886835e-07,
+      "polarity_changes": 0
+    },
+    "prescribed_x_angle_deg": -14.500000005066456,
+    "measured_original_x_angle_deg": [
+      -14.500154367796735,
+      -14.500473945021879,
+      -14.500591640663272,
+      -14.500644501125782,
+      -14.50067372931223
+    ]
+  },
+  "arrays_file": "v012-grating-tidy-rejected-source-pair-arrays.npz",
+  "arrays_sha256": "9e27dbb598d358d1df3d74ba2432de9e7e027be890d54043ec97a05971aeb7a1"
 }

@@ -40,5 +40,7 @@
     }
   },
   "phase_delays_saved": false,
-  "coordinate_axes_equal": true
+  "coordinate_axes_equal": true,
+  "arrays_file": "v012-grating-lumerical-rejected-source-pair-arrays.npz",
+  "arrays_sha256": "34a191e7cc256c5521ce021b5f1256f32ab2dd7867889889ceba3f2d427df204"
 }
