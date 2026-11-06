@@ -271,7 +271,8 @@ def main():
                    and row['report']['settings']['resolution']==12 and len(row['report']['result']['wavelength_um'])==5)
         assert direct['passed'] and direct['actual_device']==cuda['actual_device']
         assert direct['result']['wavelength_um']==saved['result']['wavelength_um']
-        delta=float(np.max(np.abs(np.subtract(direct['result']['beam_to_guide'],saved['result']['beam_to_guide']))))
+        delta=max(abs(observed-archived) for observed,archived in
+                  zip(direct['result']['beam_to_guide'],saved['result']['beam_to_guide'],strict=True))
         assert delta<2e-6
         interface_cuda={'case':'grating-3d','material_model':'direct-yee','actual_device':direct['actual_device'],
                         'wavelengths':5,'max_coupling_fraction_difference':delta}
