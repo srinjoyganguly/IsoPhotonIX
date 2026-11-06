@@ -1,0 +1,77 @@
+{
+  "resolution": 24,
+  "grid_shape": [
+    336,
+    168,
+    96
+  ],
+  "raster_source_sha256": "5aab0f60cc3f35ae9c8aebe72d060c7819a2afad52492815b4ecd3639a2ce1e7",
+  "nominal_geometry": {
+    "width_um": 0.5,
+    "gap_um": 0.125,
+    "height_um": 0.25
+  },
+  "mirror_disagreeing_voxels": 1152,
+  "mismatch_only_at_exact_evaluated_boundary": true,
+  "mismatched_y_um": [
+    -0.5625,
+    -0.0625,
+    0.0625,
+    0.5625
+  ],
+  "mismatched_x_cell_count": 48,
+  "mismatched_z_cell_count": 6,
+  "mismatched_y_cell_count": 4,
+  "mismatched_x_range_um": [
+    -0.9791666666666666,
+    0.9791666666666666
+  ],
+  "exact_y_interface_voxels": 1152,
+  "near_but_unequal_interface_voxels_within_1e_minus_13_um": 0,
+  "symmetric_sample_coordinates": true,
+  "central_rails": [
+    {
+      "side": "lower",
+      "nominal_center_um": -0.3125,
+      "sample_centroid_um": -0.3333333333333333,
+      "centroid_shift_um": -0.020833333333333315,
+      "half_open_sample_count": 12,
+      "half_open_width_um": 0.5,
+      "closed_width_um": 0.5416666666666666,
+      "open_width_um": 0.4583333333333333
+    },
+    {
+      "side": "upper",
+      "nominal_center_um": 0.3125,
+      "sample_centroid_um": 0.2916666666666667,
+      "centroid_shift_um": -0.020833333333333315,
+      "half_open_sample_count": 12,
+      "half_open_width_um": 0.5,
+      "closed_width_um": 0.5416666666666666,
+      "open_width_um": 0.4583333333333333
+    }
+  ],
+  "diagnostic_masks": {
+    "half_open": {
+      "mirror_disagreements": 1152,
+      "core_voxel_sum": 48384.0
+    },
+    "closed": {
+      "mirror_disagreements": 0,
+      "core_voxel_sum": 48960.0
+    },
+    "open": {
+      "mirror_disagreements": 0,
+      "core_voxel_sum": 47808.0
+    },
+    "half_weighted_ties": {
+      "mirror_disagreements": 0,
+      "core_voxel_sum": 48384.0
+    }
+  },
+  "interpretation": "All 1,152 asymmetric voxels occur at exactly equal interface/sample coordinates under the explicit half-open interval convention. Changing equality to closed or open restores mask symmetry while changing the central represented widths to 13 or 11 cells. Half-weighted interface samples preserve total material volume and symmetry, but would constitute a separately validated material representation.",
+  "scope": "Static diagnostics on the existing sampled geometry. The recorded native electromagnetic fields and their source model are preserved. No electromagnetic solve used the alternative masks in this report.",
+  "recorded_native_material_grid_sha256": "903b8ab923ce0230dd9134da70037514ff94ad5eee8290b1a004e587d08e61fe",
+  "recorded_native_field_archive_sha256": "c92a7d4aceb42e904b779c75b7e2099fb6e4f529b6b0197abe7b0c2b8ce6d7da",
+  "measured_mask_verified": true
+}

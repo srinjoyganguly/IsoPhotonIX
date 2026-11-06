@@ -1,0 +1,86 @@
+{
+  "case_id": "bare-ring-vertical-mesh-alignment",
+  "vendor": "lumerical",
+  "solver": "Meep CPU",
+  "version": "1.35.0",
+  "physical_geometry": {
+    "radius": 3.1,
+    "width": 0.4,
+    "height": 0.18,
+    "gap": 0.1,
+    "reference_peaks_um": [
+      1.52463718,
+      1.55009208,
+      1.57724075
+    ],
+    "source": "https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction"
+  },
+  "resolution": 50,
+  "vertical_core_cells": 9,
+  "vertical_domain_cells": 169,
+  "rows": {
+    "24": {
+      "angular_order": 24,
+      "resolution": 50,
+      "radial_padding_um": 0.8,
+      "pml_um": 0.8,
+      "first_post_source_window": {
+        "wavelength_um": 1.5541831355522142,
+        "frequency_per_um": 0.6434248172720596,
+        "imaginary_frequency_per_um": -3.988359719698314e-06,
+        "field_amplitude": 9.809481271430222,
+        "harminv_error_magnitude": 4.7483402640254783e-11
+      },
+      "second_post_source_window": {
+        "wavelength_um": 1.5541831385294043,
+        "frequency_per_um": 0.6434248160395163,
+        "imaginary_frequency_per_um": -3.9895390767376865e-06,
+        "field_amplitude": 9.782471707218484,
+        "harminv_error_magnitude": 6.80012230510579e-11
+      },
+      "sample_core_radial_fraction": 0.999690740533358,
+      "inner_outer_radial_phase_correlation": 0.9999999998065965,
+      "pole_repeat_passed": true
+    },
+    "25": {
+      "angular_order": 25,
+      "resolution": 50,
+      "radial_padding_um": 0.8,
+      "pml_um": 0.8,
+      "first_post_source_window": {
+        "wavelength_um": 1.5273093970098175,
+        "frequency_per_um": 0.6547461843407829,
+        "imaginary_frequency_per_um": -1.1836501496541118e-06,
+        "field_amplitude": 9.739323920305267,
+        "harminv_error_magnitude": 1.1033761731319362e-11
+      },
+      "second_post_source_window": {
+        "wavelength_um": 1.5273093985325437,
+        "frequency_per_um": 0.6547461836880015,
+        "imaginary_frequency_per_um": -1.1834794598735128e-06,
+        "field_amplitude": 9.731359005881172,
+        "harminv_error_magnitude": 1.9373482015192746e-11
+      },
+      "sample_core_radial_fraction": 0.9997306187372382,
+      "pole_repeat_passed": true,
+      "inner_outer_radial_phase_correlation": 0.9999999999820597
+    }
+  },
+  "pair_um": [
+    1.5273093985325437,
+    1.5541831385294043
+  ],
+  "pair_brackets_1550nm": true,
+  "bare_fsr_nm": 26.8737399968606,
+  "published_loaded_pair_um": [
+    1.52463718,
+    1.55009208
+  ],
+  "published_loaded_fsr_nm": 25.454899999999945,
+  "bare_minus_loaded_fsr_nm": 1.4188399968606547,
+  "passed": true,
+  "arrays_file": "v011-ring-aligned-lumerical-r50-arrays.npz",
+  "arrays_sha256": "e2c487ab3a7bdf6f620bb4cc37042b38bea118e4e01542e21c22eae59c6b31b1",
+  "source_url": "https://optics.ansys.com/hc/en-us/articles/360042800213-Ring-resonator-getting-started-Final-parameter-extraction",
+  "scope": "Measured finite-height isolated-ring adjacent orders, compared with a bus-loaded commercial spectrum; both physical silicon faces coincide with vertical mesh boundaries. A given grid alone cannot certify mesh convergence."
+}

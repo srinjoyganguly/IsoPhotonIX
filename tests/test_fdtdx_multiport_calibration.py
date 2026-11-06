@@ -1,11 +1,14 @@
 """Check multiport calibration arithmetic and detector geometry, without a solver."""
 import copy
+import hashlib
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
 
 import numpy as np
 
 from backend.calibrated_geometry import multiport_model
-from scripts.calibrate_fdtdx_multiport import grid, normalize, raster, reference_cache_key, yee_material
+from scripts.calibrate_fdtdx_multiport import device_cache_key, grid, measured_stage, normalize, raster, reference_cache_key, yee_material
 
 
 class MultiportCalibrationTests(unittest.TestCase):
@@ -136,3 +139,74 @@ class MultiportCalibrationTests(unittest.TestCase):
         for resolution, gap in ((12, 2/12), (16, .125), (20, .1), (24, .125), (32, .125)):
             _, measured = central_section(model, resolution)
             self.assertAlmostEqual(measured, gap)
+
+    def test_mesh_comparison_matches_persisted_geometry_and_requires_the_same_material_model(self):
+        import json
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        from scripts.measure_fdtdx_mesh_column import compare_baseline
+
+        model = multiport_model("splitter")
+        plan = {"model":model, "resolution":24, "material_model":"yee-aligned",
+                "actual_device":"cuda:0", "numerical_sha256":"test"}
+        saved = {"physical_model":model, "resolution":16, "material_model":"yee-aligned",
+                 "actual_device":"cuda:0", "numerical_sha256":"test", "sampled_setup_checks_passed":True}
+        matrix = np.ones((3,3,3), dtype=complex)
+        with TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            (folder/"report.json").write_text(json.dumps(saved))
+            np.savez(folder/"arrays.npz", s=matrix, valid_column=np.ones(3, dtype=bool))
+            self.assertEqual(compare_baseline(folder, plan, matrix[:,:,0])["max_complex_difference"], 0.)
+            with self.assertRaisesRegex(ValueError, "baseline"):
+                compare_baseline(folder, dict(plan, material_model="legacy-x"), matrix[:,:,0])
+
+    def test_device_cache_locks_the_exact_plan_and_input_and_refuses_a_changed_archive(self):
+        from concurrent.futures import ThreadPoolExecutor
+        from threading import Barrier
+        from unittest.mock import patch
+
+        model = multiport_model("splitter")
+        plan = {"model":model, "resolution":16, "actual_device":"cpu:0", "material_model":"yee-aligned",
+                "numerical_sha256":"fixture"}
+        key = device_cache_key(plan, 1)
+        for other in (dict(plan, resolution=12), dict(plan, actual_device="cuda:0"),
+                      dict(plan, material_model="legacy-x"), dict(plan, model=multiport_model("coupler"))):
+            self.assertNotEqual(key, device_cache_key(other, 1))
+        self.assertNotEqual(key, device_cache_key(plan, 2))
+        def compute(runtime, study, port, reference, archive, bases):
+            self.assertFalse(reference)
+            self.assertEqual(port, 1)
+            np.savez(archive, marker=np.array([1+2j]))
+            return {"settled":True, "field_device":"cpu:0", "material_model":"yee-aligned",
+                    "monitor_names":[p["name"] for p in model["ports"]],
+                    "archive_sha256":hashlib.sha256(archive.read_bytes()).hexdigest()}
+
+        with TemporaryDirectory() as temp, patch("scripts.calibrate_fdtdx_multiport.compute_stage", side_effect=compute) as native:
+            root = Path(temp)
+            cache = root/"cache"
+            start = Barrier(2)
+            def claim(i):
+                start.wait()
+                return measured_stage(None, plan, 1, False, root/f"worker{i}.npz", {}, None, cache)
+            with ThreadPoolExecutor(2) as pool:
+                rows = list(pool.map(claim, (0,1)))
+            self.assertEqual(native.call_count, 1)
+            self.assertEqual(sorted(r["reuse_existing_device"] for r in rows), [False, True])
+            self.assertEqual((root/"worker0.npz").read_bytes(), (root/"worker1.npz").read_bytes())
+            (cache/(key+".npz")).write_bytes(b"damaged measurement")
+            with self.assertRaisesRegex(ValueError, "missing or changed"):
+                measured_stage(None, plan, 1, False, root/"reject.npz", {}, None, cache)
+
+    def test_24_cell_mirror_difference_is_at_exact_half_open_interface_ties(self):
+        from scripts.inspect_coupler_boundary_ties import audit
+
+        row = audit()
+        self.assertEqual(row["mirror_disagreeing_voxels"], 1152)
+        self.assertEqual(row["near_but_unequal_interface_voxels_within_1e_minus_13_um"], 0)
+        self.assertTrue(row["mismatch_only_at_exact_evaluated_boundary"])
+        masks = row["diagnostic_masks"]
+        self.assertEqual(masks["half_weighted_ties"]["core_voxel_sum"], masks["half_open"]["core_voxel_sum"])
+        self.assertEqual(masks["half_weighted_ties"]["mirror_disagreements"], 0)
+        for rail in row["central_rails"]:
+            self.assertAlmostEqual(rail["centroid_shift_um"], -1/48)
+            self.assertAlmostEqual(rail["closed_width_um"]-rail["open_width_um"], 2/24)

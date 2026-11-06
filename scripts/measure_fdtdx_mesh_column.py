@@ -1,5 +1,6 @@
-"""Measure one independent input on a finer grid and compare with saved full device matrices."""
+"""Measure one independent input port and compare with saved full device matrices."""
 import argparse
+import fcntl
 import hashlib
 import json
 from pathlib import Path
@@ -11,11 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if (ROOT / "backend").is_dir():
     sys.path.insert(0, str(ROOT))
 from scripts.calibrate_fdtdx_multiport import (
-    _ports_runtime, build_plan, complex_components, compute_stage, grid, multiport_model, raster, save_record,
+    _ports_runtime, build_plan, complex_components, grid, load_stage, measured_stage, multiport_model, raster, save_record,
 )
 
 
-def first_column(model, ref, dev):
+def project_column(model, launch, ref, dev):
     """Apply the reference subtraction and outward directions to the single measured launch."""
     frequencies = model["frequency_per_um"]
     if not all(np.array_equal(data["frequency_per_um"], frequencies) for data in (ref, dev)):
@@ -25,7 +26,7 @@ def first_column(model, ref, dev):
     if not np.isfinite(source_difference) or source_difference > 1e-5:
         raise ValueError("The device and reference have different incident fields.")
     ports = model["ports"]
-    incoming = 0 if ports[0]["inward_sign"] == 1 else 1
+    incoming = 0 if ports[launch]["inward_sign"] == 1 else 1
     ref_amplitudes = ref["amplitudes"]
     incident = ref_amplitudes[0, :, incoming]
     if np.any(abs(incident)**2 <= np.max(abs(incident)**2) * 1e-6):
@@ -34,7 +35,7 @@ def first_column(model, ref, dev):
     for i, port in enumerate(ports):
         outward = 1 if port["inward_sign"] == 1 else 0
         outgoing = dev["amplitudes"][i, :, outward].copy()
-        if i == 0:
+        if i == launch:
             outgoing -= ref_amplitudes[0, :, outward]
         result.append(outgoing / incident)
     column = np.stack(result, axis=-1)
@@ -44,16 +45,20 @@ def first_column(model, ref, dev):
     return column, incident, through, source_difference
 
 
-def compare_baseline(folder, plan, column):
+def first_column(model, ref, dev):
+    return project_column(model, 0, ref, dev)
+
+
+def compare_baseline(folder, plan, column, launch=0):
     other = json.loads((folder / "report.json").read_text())
     if not (
-        other["physical_model"] == plan["model"] and other["material_model"] == plan["material_model"]
+        other["physical_model"] == json.loads(json.dumps(plan["model"])) and other["material_model"] == plan["material_model"]
         and other["actual_device"] == plan["actual_device"] and other["numerical_sha256"] == plan["numerical_sha256"]
         and other["sampled_setup_checks_passed"] and other["resolution"] != plan["resolution"]
     ):
         raise ValueError("Each baseline must be a passing complete matrix for this circuit, target, material model and another mesh.")
     with np.load(folder / "arrays.npz", allow_pickle=False) as archive:
-        previous = archive["s"][:, :, 0]
+        previous = archive["s"][:, :, launch]
         if previous.shape != column.shape or not archive["valid_column"].all():
             raise ValueError("The baseline lacks the requested complete column.")
         delta = column - previous
@@ -67,25 +72,56 @@ def compare_baseline(folder, plan, column):
         }
 
 
-def measure(case, device, resolution, destination, baselines):
+def measure(case, device, resolution, destination, baselines, resume=False, launch_port=None,
+            reference_cache=None, device_cache=None):
     runtime = _ports_runtime(device)
     target = runtime[-1]
     model = multiport_model(case)
+    names = [port["name"] for port in model["ports"]]
+    launch_port = launch_port or names[0]
+    if launch_port not in names:
+        raise ValueError("Choose a port from " + ", ".join(names))
+    launch = names.index(launch_port)
     plan = build_plan(model, device, resolution, 80., target, "yee-aligned")
-    destination.mkdir(parents=True, exist_ok=False)
-    save_record(destination / "run.json", plan)
+    if resume and not destination.is_dir():
+        raise ValueError("There is no mesh-control directory to resume.")
+    destination.mkdir(parents=True, exist_ok=resume)
+    with (destination / ".run.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        manifest = destination / "run.json"
+        selection = destination / "column.json"
+        if resume:
+            if not manifest.is_file() or json.loads(manifest.read_text()) != json.loads(json.dumps(plan)):
+                raise ValueError("The saved mesh-control geometry, solver, target or numerical code differs.")
+            saved_port = json.loads(selection.read_text())["launch"] if selection.is_file() else names[0]
+            if saved_port != launch_port:
+                raise ValueError("This single-column study measured a different input port.")
+        else:
+            save_record(manifest, plan)
+            save_record(selection, {"launch":launch_port})
+        return measure_locked(runtime, plan, destination, baselines, resume, launch, reference_cache, device_cache)
+
+
+def measure_locked(runtime, plan, destination, baselines, resume, launch, reference_cache, device_cache):
+    model, target = plan["model"], runtime[-1]
+    case, resolution = model["case"], plan["resolution"]
     bases, stages = {}, {}
-    port = model["ports"][0]["name"]
+    port = model["ports"][launch]["name"]
     for role in ("reference", "device"):
         name = f"{port}-{role}"
         archive = destination / (name + ".npz")
         print(f"Starting {case} {resolution} {name}", flush=True)
-        stages[role] = compute_stage(runtime, plan, 0, role == "reference", archive, bases)
-        save_record(destination / (name + ".json"), stages[role])
+        receipt = destination / (name + ".json")
+        if resume and receipt.is_file():
+            stages[role] = load_stage(receipt, archive)
+        else:
+            stages[role] = measured_stage(runtime, plan, launch, role == "reference", archive, bases,
+                                          reference_cache, device_cache)
+            save_record(receipt, stages[role])
         print(name, stages[role]["time_steps"], stages[role]["settled"], flush=True)
         runtime[0].clear_caches()
     with np.load(destination / (port + "-reference.npz")) as ref, np.load(destination / (port + "-device.npz")) as dev:
-        column, incident, through, source_diff = first_column(model, ref, dev)
+        column, incident, through, source_diff = project_column(model, launch, ref, dev)
     power = abs(column)**2
     if not np.allclose(stages["reference"]["mode_neff"][port], stages["device"]["mode_neff"][port], rtol=1e-6, atol=1e-6):
         raise ValueError("Reference and device projected different input modes.")
@@ -111,8 +147,8 @@ def measure(case, device, resolution, destination, baselines):
         "stage_sha256": {role: stage["archive_sha256"] for role, stage in stages.items()},
         "stage_step_counts": {role: stage["time_steps"] for role, stage in stages.items()},
         "stage_final_convergence": {role: stage["history"][-2:] for role, stage in stages.items()},
-        "mesh_comparisons": [compare_baseline(folder, plan, column) for folder in baselines],
-        "scope": "Independently measured first-input column; other input ports were not launched in this mesh control. Reciprocity and full-matrix passivity are outside this column's scope.",
+        "mesh_comparisons": [compare_baseline(folder, plan, column, launch) for folder in baselines],
+        "scope": "One independently measured input column. Full-matrix reciprocity and passivity require launching every other input port.",
     }
     np.savez_compressed(destination / "arrays.npz", s_column=column, incident=incident, reference_through=through,
                         frequency_per_um=model["frequency_per_um"])
@@ -126,10 +162,15 @@ def main():
     parser.add_argument("--case", choices=("coupler", "splitter"), required=True)
     parser.add_argument("--resolution", type=int, choices=(12, 16, 20, 24), default=24)
     parser.add_argument("--device", choices=("cpu", "gpu"), required=True)
+    parser.add_argument("--launch-port", help="Named physical input to measure; defaults to the first port.")
+    parser.add_argument("--reference-cache", type=Path, help="Share physically identical measured straight references.")
+    parser.add_argument("--device-cache", type=Path, help="Share this measured device stage with a full run of the identical plan.")
     parser.add_argument("--compare", action="append", default=[], type=Path, help="Complete differently sampled FDTDX study directory.")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--resume", action="store_true", help="Reuse verified stages from this exact mesh control.")
     args = parser.parse_args()
-    result = measure(args.case, args.device, args.resolution, args.output, args.compare)
+    result = measure(args.case, args.device, args.resolution, args.output, args.compare, args.resume,
+                     args.launch_port, args.reference_cache, args.device_cache)
     if not result["passed"]:
         raise SystemExit("The measured column failed its sampled checks.")
 

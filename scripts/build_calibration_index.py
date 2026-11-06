@@ -143,6 +143,13 @@ def build():
                 panel={'case_id':beam['case_id'],'vendor':beam['vendor'],
                        'result':{k:beam['result'][k] for k in ('wavelength_um','beam_to_guide','valid_beam_bins')}}
                 index['grating']['recorded'].append({'label':label,'receipt':name,'report':panel})
+    if 'grating' in index:
+        for name in ('tidy3d','lumerical'):
+            filename=f'v011-grating-guided-{name}-r40.json'
+            guide=read(filename)
+            if guide and guide.get('passed'):
+                index['grating']['recorded'].append({'label':f'{name} · guide-launched radiation · Meep CPU',
+                                                    'receipt':filename,'report':{'studies':guide['studies']}})
     return index
 
 

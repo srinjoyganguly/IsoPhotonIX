@@ -29,6 +29,20 @@ Changing mesh, PML or aperture changes the study identity. GPU requests verify
 JAX's actual device on initialization and at the end of every simulation.
 The local mode preparation uses the pinned CPU eigensolver.
 
+For coordinated runs, `--device-cache DIRECTORY` shares a native device
+stage only when the complete study plan, input port, solver implementation,
+versions, target and host CPU architecture match. Both caches use exclusive
+locks and verify the raw archive checksum before reuse. Reused stages carry
+an explicit flag. The default full run computes every input independently.
+
+The single-column program accepts `--launch-port right_upper`. Supplying
+the same reference and device cache directories to this program and a full
+study lets the two workers coordinate a selected input. A real concurrent
+GPU check issued two negative-x port requests, performed one device solve,
+and returned identical native fields to both. That fresh solve also reproduced
+the corresponding earlier full-matrix launch byte-for-byte.
+[Native cache coordination check](verification/v011-fdtdx-device-cache-concurrency.json).
+
 ## Choosing the Yee material grid
 
 `--material-model legacy-x` reproduces the original adjacent-x tangential
@@ -107,6 +121,22 @@ The high-resolution MPB calculation gives 21.85 µm for the same section.
 The local Tidy3D series and its distinct material sampling are recorded
 alongside these results. [Measured grid gaps and local supermodes](verification/v011-fdtdx-yee-coupler-grid.json).
 
+The independent 24-cell first-input controls measured center-wavelength
+splitter arm powers of 0.378430 and 0.378427, and coupler through/cross
+powers of 0.823761 and 0.052301. The maximum 16-to-24-cell guided-power
+changes across the band were 0.01683 for the splitter and 0.05280 for the
+coupler. Both physical-plane complex columns retain substantial mesh
+sensitivity. [Measured splitter column](verification/v011-fdtdx-yee-splitter-column24.json) ·
+[Measured coupler column](verification/v011-fdtdx-yee-coupler-column24.json).
+
+At 24 cells/µm, four rail interfaces fall exactly on voxel centers within
+the coupler's uniform middle section. The explicit half-open convention
+produces 1,152 mirror-differing voxels, all at these exact ties. Both sampled
+rail centroids shift by −0.020833 µm while retaining their 0.5 µm widths.
+Closed or open inclusion restores a symmetric binary mask but changes the
+widths to 0.541667 or 0.458333 µm. The recorded field data retain the
+original material model. [Exact-interface audit and static diagnostic masks](verification/v011-fdtdx-coupler-boundary-ties.json).
+
 The 12- and 16-cell CUDA splitter matrices differ by up to 0.02164 in
 guided port power. The relative L2 difference in their complex physical-plane
 matrices is 1.003 using the 16-cell matrix as the denominator. The two meshes
@@ -120,10 +150,28 @@ source profile, time-step count, monitor-plane field discrepancy and complex
 S matrix. Its acceptance limits apply to execution on different hardware at
 one fixed mesh.
 
+The complete 12-cell coupler CPU/CUDA comparison measured a maximum
+complex S difference of 0.000000131 across all entries. The maximum
+discrepancy across six-component monitor planes was 0.000000566 relative
+to the respective CPU scale. [Matched raw-field and matrix checks](verification/v011-fdtdx-yee-coupler-cpu-cuda12.json).
+
+The corresponding splitter had a maximum complex S difference of
+0.000000104 and a maximum guided-power difference of 0.000000063. Its CPU
+worker resumed after interruption, reused five verified native stages and
+ran the final device launch afresh. [Matched splitter fields](verification/v011-fdtdx-yee-splitter-cpu-cuda12.json) ·
+[Measured checkpoint recovery](verification/v011-fdtdx-splitter-checkpoint-resume.json).
+
+A fresh Jupyter kernel ran the exported 12-cell CUDA splitter notebook in
+743 seconds. All seven numerical archives reproduced every array byte,
+including native six-component monitor fields, the source profiles, energy
+samples, and all three frequency-dependent S matrices. [Executed notebook replay](verification/v011-fdtdx-yee-notebook-replay.json).
+
 For a separate first-input mesh control,
 `scripts/measure_fdtdx_mesh_column.py --case coupler --device gpu --resolution 24 --compare BASE16 --output fresh-column`
 measures a straight reference and one device launch. Its output records
 `s_column[frequency, outgoing_port]` and identifies the sole incident port.
+Repeat with `--resume` to reuse completed stages from the same numerical
+implementation and execution target after verifying their checksums.
 
 ## What the matrix measures
 

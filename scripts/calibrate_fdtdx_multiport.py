@@ -378,29 +378,53 @@ def compute_stage(runtime,plan,launch,reference,archive,bases):
     return {**details,'seconds':time.perf_counter()-start,'archive_sha256':hashlib.sha256(archive.read_bytes()).hexdigest()}
 
 
-def measured_stage(runtime,plan,launch,reference,archive,bases,cache):
-    if cache is None or not reference:
+def device_cache_key(plan, launch):
+    """Only the identical physical circuit, source port, solver, target and numerical settings can share a device stage."""
+    import platform
+    port = plan['model']['ports'][launch]['name']
+    architecture = {'machine':platform.machine()}
+    cpu_info = Path('/proc/cpuinfo')
+    if cpu_info.is_file():
+        fields = dict(line.split(':',1) for line in cpu_info.read_text().split('\n\n',1)[0].splitlines() if ':' in line)
+        architecture.update({name.strip():value.strip() for name,value in fields.items()
+                             if name.strip() in {'vendor_id','cpu family','model','model name','stepping','flags','Features','CPU implementer','CPU part'}})
+    payload = {'kind':'device', 'launch':port, 'plan':plan, 'host_architecture':architecture}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+
+
+def measured_stage(runtime,plan,launch,reference,archive,bases,cache,device_cache=None):
+    cache = cache if reference else device_cache
+    if cache is None:
         return compute_stage(runtime,plan,launch,reference,archive,bases)
     import fcntl
     cache.mkdir(parents=True,exist_ok=True)
-    key=reference_cache_key(plan,launch)
+    kind = 'reference' if reference else 'device'
+    key = reference_cache_key(plan,launch) if reference else device_cache_key(plan,launch)
+    key_field, reuse_field = kind+'_cache_key', 'reuse_existing_'+kind
     report,stored=cache/(key+'.json'),cache/(key+'.npz')
     with (cache/(key+'.lock')).open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
         if report.exists():
             entry=load_stage(report,stored)
-            if entry.get('reference_cache_key')!=key or entry['field_device']!=plan['actual_device']:
-                raise ValueError('The cached physical reference or device does not match.')
+            if entry.get(key_field)!=key or entry['field_device']!=plan['actual_device'] or not entry['settled']:
+                raise ValueError('The cached stage is unqualified or belongs to another physical study or device.')
+            if not reference and (entry.get('cache_launch_port') != plan['model']['ports'][launch]['name']
+                    or entry.get('material_model') != plan['material_model']
+                    or entry.get('monitor_names') != [p['name'] for p in plan['model']['ports']]):
+                raise ValueError('The cached device stage has different ports or material sampling.')
             shutil.copyfile(stored,archive)
-            return {**entry,'reuse_existing_reference':True}
-        details=compute_stage(runtime,plan,launch,True,archive,bases)
-        details.update(reference_cache_key=key,reuse_existing_reference=False)
-        shutil.copyfile(archive,stored)
-        save_record(report,details)
+            return {**entry,reuse_field:True}
+        details=compute_stage(runtime,plan,launch,reference,archive,bases)
+        details.update({key_field:key, reuse_field:False})
+        if not reference:
+            details['cache_launch_port'] = plan['model']['ports'][launch]['name']
+        if details['settled']:
+            shutil.copyfile(archive,stored)
+            save_record(report,details)
         return details
 
 
-def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=False,reference_cache=None,material_model='legacy-x'):
+def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=False,reference_cache=None,material_model='legacy-x',device_cache=None):
     import fcntl
     if resolution not in (12,16,20,24) or not 24<=after_time<=160:
         raise ValueError('Use a supported resolution (12/16/20/24) and an after-source time between 24 and 160 µm/c.')
@@ -431,7 +455,7 @@ def run(case,device,resolution,output,pml=.75,aperture=2.,after_time=80.,resume=
                     details=load_stage(record,archive)
                 else:
                     print(f'{case} {device} {key}: calibrating',flush=True)
-                    details=measured_stage(runtime,plan,i,kind=='reference',archive,bases,reference_cache)
+                    details=measured_stage(runtime,plan,i,kind=='reference',archive,bases,reference_cache,device_cache)
                     save_record(record,details)
                     print(key,details['settled'],details['history'][-1],f"{details['seconds']:.1f}s",flush=True)
                     jax.clear_caches()
@@ -457,10 +481,11 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--resume',action='store_true',help='verify and reuse completed stages from this exact study folder')
     parser.add_argument('--reference-cache',type=Path,help='optional cache of exactly matching measured straight references')
+    parser.add_argument('--device-cache',type=Path,help='coordinate native device stages from identical study plans and input ports')
     parser.add_argument('--material-model',choices=('legacy-x','yee-aligned'),default='legacy-x',
                         help='explicit material translation onto the E-component locations')
     args=parser.parse_args()
-    report=run(args.case,args.device,args.resolution,args.output,args.pml,args.aperture,args.after_time,args.resume,args.reference_cache,args.material_model)
+    report=run(args.case,args.device,args.resolution,args.output,args.pml,args.aperture,args.after_time,args.resume,args.reference_cache,args.material_model,args.device_cache)
     if not report['sampled_setup_checks_passed']:
         raise SystemExit('The sampled setup missed a numerical check; inspect report.json before using the matrix.')
 

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "case": "splitter",
+  "resolution": 12,
+  "material_model": "yee-aligned",
+  "actual_device": "cuda:0",
+  "launch": "right_upper",
+  "incoming_direction": "-x",
+  "requests": 2,
+  "actual_device_stages_computed": 1,
+  "device_stage_reuse": [
+    true,
+    false
+  ],
+  "native_stage_archive_sha256": "070a785b440000b397e363ab783a2750afc7dff43eb146de2941677df5781c83",
+  "device_cache_key": "bcad00c43fe7c8563d51670cf3c95bc7de8b277cd9d2c01aa9c7a6a0e2299e46",
+  "native_fields_exactly_equal_to_prior_independent_GPU_full_matrix_launch": true,
+  "max_complex_coefficient_difference_from_prior_full_matrix_column": 0.0,
+  "numerical_sha256": "46929f700351fc817e56b9182cf049157d2488888165b69df7f1735df202ea44",
+  "driver_sha256": "1d22d50d1e1f7da2309e5906761b4a7ccae1471ea80014eed2a747e141616875",
+  "column_helper_sha256": "bde9dee9e2492c208f47ff365dde28a77cf074b7bed4ce42a945a90535acc775",
+  "scope": "Two concurrent real native-worker requests, with exact-plan/port locking. One independently emitted negative-direction device pulse was simulated and the second request reused its verified native field archive. Both references reused an identical earlier native straight reference."
+}
