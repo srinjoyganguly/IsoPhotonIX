@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-11-06T06:05:37.686958+00:00",
+  "passed": true,
+  "wheel": "photonics_workbench-0.12.0a1-py3-none-any.whl",
+  "wheel_sha256": "7a99c97bff2bb2cb48437d3920435937e49fcbf24e61a46f6e93d3899c8a283a",
+  "wheel_bytes": 4483167,
+  "installed_from_offline_wheelhouse": true,
+  "calibrated_program_exports": 11,
+  "installed_cuda_study": {
+    "case": "splitter",
+    "actual_device": "cuda:0",
+    "resolution": 12,
+    "material_model": "yee-aligned",
+    "compared_complex_coefficients": 27,
+    "maximum_complex_difference": 0.0
+  },
+  "installed_spatial_cuda": {
+    "geometry": "compact",
+    "actual_device": "cuda:0",
+    "device_name": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "wavelengths": 5,
+    "max_coupling_fraction_difference": 0.0
+  },
+  "installed_layout_max_complex_difference": 7.662456412643984e-11,
+  "installed_grating_coupling": 0.5823413109784932,
+  "recorded_same_mesh_coupling": 0.5823413109784932,
+  "calibrated_cli_result_bundle_verified": true,
+  "generic_calibration_config_coupling": 0.5823413109784932,
+  "export_found_registered_interpreter": true,
+  "cavity_four_modes_equal_to_packaged_reference": true,
+  "installed_port_alignment": true,
+  "pip_check": true,
+  "doctor_meep_ready": true,
+  "served_frontend_assets": [
+    "/assets/index-CK2J3fgZ.js",
+    "/assets/index-u5w--iZA.css"
+  ],
+  "catalog_families": 27,
+  "benchmark_data": true,
+  "job_id": "a02715b8b10c40fdbef6a7cb563bdff8",
+  "actual_device": "CPU",
+  "field_shape_zyx": [
+    42,
+    72,
+    118
+  ],
+  "state_separate_from_package": true,
+  "exclusive_store": true,
+  "saved_run_after_restart": true,
+  "cli_run_all_arrays_exact": true,
+  "standalone_python_all_arrays_exact": true,
+  "solver_versions": {
+    "meep": "1.35.0",
+    "numpy": "2.4.6",
+    "python": "3.11.18"
+  },
+  "state": "Fresh disposable user state and virtual environment."
+}
