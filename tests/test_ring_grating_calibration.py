@@ -179,13 +179,22 @@ class ResonatorAndGrating(unittest.TestCase):
 
     def test_ansys_total_flux_and_late_window_are_separate_measured_controls(self):
         folder=ROOT/'docs/verification'
-        far=json.loads((folder/'v011-grating-ansys-output-r40.json').read_text())
-        result=far['result']
-        self.assertEqual((result['output_x_um'],result['output_aperture_um']),(-40.,1.))
-        with np.load(folder/far['arrays_file'],allow_pickle=False) as raw:
-            incoming=-raw['lumerical_reference'][0]
-            np.testing.assert_allclose(result['direct_output_fraction'],-raw['lumerical_output_flux']/incoming)
-            np.testing.assert_allclose(result['beam_to_guide'],abs(raw['lumerical_device_modes'][:,1])**2/incoming)
+        far_reports=[]
+        for mesh in (40,60):
+            far=json.loads((folder/f'v011-grating-ansys-output-r{mesh}.json').read_text())
+            result=far['result']
+            far_reports.append(far)
+            self.assertEqual((result['output_x_um'],result['output_aperture_um']),(-40.,1.))
+            archive=folder/far['arrays_file']
+            self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),far['arrays_sha256'])
+            with np.load(archive,allow_pickle=False) as raw:
+                incoming=-raw['lumerical_reference'][0]
+                np.testing.assert_allclose(result['direct_output_fraction'],-raw['lumerical_output_flux']/incoming)
+                np.testing.assert_allclose(result['beam_to_guide'],abs(raw['lumerical_device_modes'][:,1])**2/incoming)
+        coarse,fine=far_reports
+        self.assertEqual(coarse['physical_model'],fine['physical_model'])
+        change=100*(fine['result']['center_direct_output_fraction']-coarse['result']['center_direct_output_fraction'])
+        self.assertAlmostEqual(fine['same_observable_refinement']['delta_direct_percentage_points'],change)
         long=json.loads((folder/'v011-grating-guided-lumerical-r40-long.json').read_text())
         control=long['window_control']
         self.assertEqual((control['earlier_qualified_bins'],control['longer_qualified_bins']),(13,19))

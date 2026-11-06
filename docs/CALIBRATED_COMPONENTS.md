@@ -34,4 +34,11 @@ The largest CPU/CUDA guided-power differences at 16 cells/µm are 1.72e-07 (coup
 
 [Eleven downloadable Python and notebook result exports](https://github.com/srinjoyganguly/photonics-workbench/releases/download/v0.11.0a2/calibration-examples-v0.11.0a2.zip) include their native data, exact worker programs, selected targets and hashes. See the embedded manifest for individual bundles.
 
+## Remaining calibration work
+
+- [ ] Measure finite-height **bus-loaded** ring spectra and separate intrinsic and coupling loss. The current full 3D check measures the isolated ring.
+- [ ] Measure laterally finite 3D gratings and resolve the broadband output-aperture discrepancy against the Lumerical reference.
+- [ ] Qualify accumulated phase and weak reflections under further mesh refinement. The 20→24 cells/µm Meep control changes forward phase by up to 1.74 rad.
+- [ ] Extend arbitrary port placement, polarizations and additional modes beyond the named presets. Qualify additional backend routes separately where requested.
+
 [Remaining product chunks](NEXT_CHUNKS.md) · [Detailed solver and convergence limits](FDTDX_MULTIPORT.md).
