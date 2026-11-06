@@ -1,0 +1,229 @@
+{
+  "tidy3d": {
+    "vendor": "Tidy3D",
+    "source": "https://www.flexcompute.com/tidy3d/examples/notebooks/GratingCoupler/",
+    "notebook": "https://raw.githubusercontent.com/flexcompute/tidy3d-notebooks/18fd47f8bd87ad89582b507c20bf4997f79d55c0/GratingCoupler.ipynb",
+    "notebook_sha256": "d90e91b8a4b83e616e9661679908e715a020253ae76d75c1139bf2e21d4c692a",
+    "figure_sha256": "2eb81a1f20080105be90bbca17fd2ecfe5295327f1c148e40da86a4c88f35a90",
+    "observable": "Gaussian incident beam to backward output TE0 after the 50 \u00b5m taper",
+    "calibration": {
+      "wavelength_um": [
+        1.5,
+        1.6
+      ],
+      "x_px": [
+        91.0,
+        542.0
+      ],
+      "decibels": [
+        0,
+        -12
+      ],
+      "y_px": [
+        15.0,
+        385.0
+      ],
+      "conservative_readout_uncertainty_db": 0.08
+    },
+    "wavelength_um": [
+      1.5,
+      1.525,
+      1.55,
+      1.575,
+      1.6
+    ],
+    "coupling_db": [
+      -11.481081081081081,
+      -5.8662162162162526,
+      -4.2,
+      -5.614864864864861,
+      -9.162162162162161
+    ],
+    "coupling": [
+      0.07110364946451826,
+      0.2590468874157015,
+      0.38018939632056115,
+      0.2744817749939425,
+      0.12127849076095215
+    ],
+    "digitized_peak_db": -4.135135135135135,
+    "digitized_peak_wavelength_um": 1.5472283813747227
+  },
+  "lumerical": {
+    "vendor": "Lumerical",
+    "source": "https://optics.ansys.com/hc/en-us/articles/360042305334-Grating-coupler",
+    "download": "https://api.lumerical.com/app-gallery/fetch-download-web?id=c118296f-grating-coupler",
+    "archive_sha256": "7cdfcc80e7a0646d9ef15f68c2dfc0a47b7cc8788175976cfa75ea07c55478d3",
+    "s_file_sha256": "8d3c6ffc490831ddc616433a3b26a5a6fee4088840e0a81209f893a0dbc90233",
+    "project_sha256": "422335a903fe187c99910efca2eb38c1e85dbb7bbae021954fa1109e71a6e60f",
+    "wavelength_um": [
+      1.5,
+      1.525,
+      1.55,
+      1.575,
+      1.6
+    ],
+    "samples": {
+      "S11": {
+        "power": [
+          0.001268209874007498,
+          0.0008574615401667274,
+          0.004187484351639351,
+          0.007300020054434153,
+          0.004036927671417264
+        ],
+        "peak_power": 0.00811999733391078,
+        "peak_wavelength_um": 1.5721925133689838
+      },
+      "S12": {
+        "power": [
+          0.1730607681450897,
+          0.312935499969415,
+          0.40955514996824005,
+          0.3843644116745302,
+          0.24997949706383335
+        ],
+        "peak_power": 0.4187262797189814,
+        "peak_wavelength_um": 1.557615894039735
+      },
+      "S21": {
+        "power": [
+          0.15061306067750885,
+          0.29454587861600057,
+          0.4002656827642284,
+          0.37022350201649884,
+          0.2237287914242699
+        ],
+        "peak_power": 0.40958389114445337,
+        "peak_wavelength_um": 1.557615894039735
+      },
+      "S22": {
+        "power": [
+          0.0030614576070790767,
+          0.005399073682692198,
+          0.009369267726340308,
+          0.016998463310319185,
+          0.033652048882378695
+        ],
+        "peak_power": 0.033652048882378695,
+        "peak_wavelength_um": 1.6
+      }
+    },
+    "fiber_group": {
+      "core diameter": 9e-06,
+      "cladding diameter": 5e-05,
+      "z span": 2e-05,
+      "theta": 10.0,
+      "core index": 1.44427,
+      "cladding index": 1.43482
+    },
+    "grating_group": {
+      "target length": 2.5e-05,
+      "h total": 2.2e-07,
+      "etch depth": 1e-07,
+      "duty cycle": 0.3992,
+      "pitch": 6.713e-07,
+      "radius": 2.5e-05,
+      "y span": 1.5e-05,
+      "L extra": 1e-05,
+      "waveguide width": 5e-07,
+      "index": 3.5,
+      "material": "{321d4423-4aa4-435f-a2f9-6201b5b2c998}",
+      "m": 1.15,
+      "waveguide length": 1e-05
+    },
+    "port_centers_um": {
+      "x": [
+        2.8582013154835044,
+        -25.5
+      ],
+      "y": [
+        0.0,
+        0.0
+      ],
+      "z": [
+        0.9901250394579352,
+        0.049999999999999996
+      ]
+    },
+    "material_epsilon": {
+      "Si (Silicon) - Palik": {
+        "real": [
+          12.113767098181818,
+          12.102386552846498,
+          12.085214794079697,
+          12.066231279626518,
+          12.047841
+        ],
+        "imaginary": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "SiO2 (Glass) - Palik": {
+        "real": [
+          2.0868903295539103,
+          2.08606259835634,
+          2.0851426458070788,
+          2.0842260681762776,
+          2.083338133596439
+        ],
+        "imaginary": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "layers_xyz_bounds_um": {
+      "SiO2 TOX": {
+        "x": [
+          -59.99999999999999,
+          59.99999999999999
+        ],
+        "y": [
+          -59.99999999999999,
+          59.99999999999999
+        ],
+        "z": [
+          0.0,
+          0.7
+        ]
+      },
+      "SiO2 BOX": {
+        "x": [
+          -59.99999999999999,
+          59.99999999999999
+        ],
+        "y": [
+          -59.99999999999999,
+          59.99999999999999
+        ],
+        "z": [
+          -1.0,
+          0.0
+        ]
+      },
+      "Si substrate": {
+        "x": [
+          -59.99999999999999,
+          59.99999999999999
+        ],
+        "y": [
+          -59.99999999999999,
+          59.99999999999999
+        ],
+        "z": [
+          -4.0,
+          -0.9999999999999998
+        ]
+      }
+    },
+    "scope": "Filed curved 38-period SOI sector, unlike the Tidy3D uniform linear grating. The S21 magnitude in this file is squared to obtain the transfer power between the tilted fiber port and the integrated guide."
+  }
+}
